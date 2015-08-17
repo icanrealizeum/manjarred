@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#this shows the diff for modified files 
+#and also shows the deleted files as lines beginning with: Only in rsync-backed/
+
+sudo diff -rup rsync-backed gentoo |grep -E -v '^Only in gentoo' | colordiff | less
+#^ sudo is needed because gentoo/root for example is inaccessible to normal user!
+
+

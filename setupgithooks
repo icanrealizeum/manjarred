@@ -1,0 +1,62 @@
+#!/bin/bash
+
+githooksdir="githooks"
+dest=".git/hooks"
+
+if ! type realpath >/dev/null; then
+  echo "required program not found 'realpath'"
+  exit 10
+fi
+
+echo "Run this only once after git clone, it will symlink all hooks from '$githooksdir' dir into '$dest' dir, unless they already exist."
+echo "You can run this again in the future to check for symlinks consistency"
+
+if test ! -d "$dest" ; then
+  echo "'$dest' folder not detected!"
+  exit 2
+fi
+
+for fd in "${githooksdir}"/*; do
+  f=${fd##*/}
+  ffull="`realpath -- "$fd"`"
+  d="${dest}/$f"
+  destfull="`realpath -- "$d"`"
+  echo "processing: '$f'"
+  echo " from '$ffull'"
+  echo " to '$d'"
+  if test -z "$f" -o -z "$ffull" -o -z "$d" -o -z "$destfull"; then
+    echo "one of the following is empty: '$f' or '$ffull' or '$d' or '$destfull'"
+    exit 81
+  fi
+  if test -h "$d" ; then
+    echo " existing symlink"
+    if test "$ffull" != "$destfull"; then
+      echo "  symlink doesn't point to '$ffull' but rather to '$destfull'"
+      echo "  you may want to manually check that folder for possibly broken links"
+      echo "  aborting"
+      exit 6
+    else
+      echo "  points to same thing as expected"
+    fi
+    echo "  skipped"
+    continue
+  elif test -e "$f" ; then
+    echo " '$f' exists as something that's not a symlink"
+    echo "  bailing out!"
+    exit 3
+  else
+    echo " symlinking"
+    ln --relative --symbolic --target-directory="${dest}" -- "$ffull"
+    ec=$?
+    if test "$ec" -ne 0; then
+      echo "  failed, ln exitcode=$ec  bailing out"
+      exit 5
+    fi
+    echo "  done $?"
+    continue
+  fi
+  echo "unreached"
+  exit 80
+done
+
+echo "Everything OK!"

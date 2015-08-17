@@ -1,0 +1,9 @@
+#!/bin/bash
+
+src='rsync-backed'
+dest="/tmp/${src} $(date)"
+mkdir -p "$dest"
+sudo mv -t "$dest" -- "$src"
+
+#/tmp is tmpfs (aka in RAM)
+

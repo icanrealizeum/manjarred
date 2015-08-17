@@ -1,0 +1,19 @@
+#!/bin/bash
+src="/home/emacs/rsync/gentoo/" #where to update from (aka source)
+backupdirfordeletions="/rsync-backed/" #dir where modified files will be moved from destination before being updated! this is on remote!
+
+declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
+--exclude='*.tmp *~ *.swp'
+
+--backup
+--backup-dir="${backupdirfordeletions}"
+
+#--no-delete #rsync: --no-delete: unknown option
+--max-delete=0  #attempt to prevent deletions, in case I forgot some args around
+#--no-delete-after #unknown option
+
+--update  #this was already implied in rsyncy, but just to be extra sure!
+)
+
+rsyncy 'ssh -v -p 8822 -l root' "${src}" "127.0.0.188:/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+

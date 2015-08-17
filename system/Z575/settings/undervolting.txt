@@ -1,0 +1,172 @@
+Lenovo IdeaPad Z575 (Z575am) A6-3400M APU (UDMA mode gfx card - from BIOS, meaning only APU gfx is used, 
+the discreet gfx is disabled from bios, otherwise it would've been the Dynamic option in BIOS)
+k10stat options:
+all below options are tested with prime95 64bit (Blend)running while the options are active/being set (p95v279.win64)
+only one row is tested at a time (by setting all P0 to P7 to same value and having Boost/turbo disabled)
+also running OCCT 4.4.0 CPU: OCCT test 64bit Large Data Set 8(automatic) threads at the same time....
+
+temperature is in degrees celsius
+tested with AC power (not on battery)
+
+mintemp	maxtemp	fid 	did 	freq 	voltage	info
+		0	4	400	0.5875	freezes like 2 sec after setting it
+	47	0	4	400	0.6000	!works so far...
+		0	4	400	0.6250  (yep skipped one 0.6125 that is) works for sure!
+		11	1	1800	0.9875	works for sure
+		14	1	2000	0.9875	fails prime95 on 3rd core
+46	65	14	1	2000	1.0000	works when gfx is on UDMA(or seems to work); core 3 fails with gfx on Dynamic in BiOS but this 2nd card is in fact sleeping (enableulps is 1 'cause using lenovo drivers); tested this again, seems to be working after like 5min already; ok nvm it failed again core 3! for sure!
+(dynamic gfx was turned on(for sure) in BIOS after this line)
+45	72	14	1	2000	1.0125	works so far... tested when dynamic gfx was on
+	75	24	2	2000	1.0000	seems to work but fails(prime95 on Blend), tested when dynamic gfx was on; tested again failed at test 4
+		24	2	2000	0.9875	fails for sure, 1 core fails; tested when dynamic gfx was on
+	76	24	2	2000	1.0125	!works so far... tested when dynamic gfx was on; prime95 Blend and some occt  at the same time
+		20	2	1800	0.9875	works for sure
+	66	20	2	1800	0.9750	works so far...
+	66	20	2	1800	0.9625	works so far...
+	64	20	2	1800	0.9500	!works so far...
+	64	20	2	1800	0.9375	failed one core
+	47	0	6	200	0.6000	works, clearly (47degC because fan seems to be very silent now almost like it's off)
+	48	0	6	200	0.5875	works so far
+	48	0	6	200	0.5750	works so far
+	49	0	6	200	0.5625	!works so far (very silent!!) temp reached 52 when occt gpu dx11 was also started
+	48	0	6	200	0.5500	worked for a while but failed after like 1min
+	48	0	6	200	0.5375	failed one core, like 2-5 secs after setting this
+		0	8	100	0.5375	failed one core, after like max 20sec
+		31	8	294	0.5375	instant freeze on setting it
+		16	8	200	0.5375	failed one core (sum error)
+		16	8	200	0.5500	failed one core, after like 20 sec; 
+	52	16	4	800	0.8375	works
+	52	16	4	800	0.8250	works
+	52	16	4	800	0.8125	works
+	52	16	4	800	0.8000	works
+	50	16	4	800	0.7875	works
+	50	16	4	800	0.7750	works
+	49	16	4	800	0.7625	works and tests went unusually faster than previoously... odd(16 prime95 Blend tests in 6 mins; might've been a fluke, can't reproduce after restart)
+	49	16	4	800	0.7500	works
+	49	16	4	800	0.7375	works
+	49	16	4	800	0.7250	works
+	48	16	4	800	0.7125	works
+	47	16	4	800	0.7000	!works so far..
+	48	16	4	800	0.6850	one core failed after like 10sec
+	74	26	2	2100	1.0375	works...
+		26	2	2100	1.0500	works for sure
+	77	28	2	2200	1.0500	fails after 10 sec
+	77	28	2	2200	1.0625	fails after 10 sec
+	77	28	2	2200	1.0750	!works so far...
+---
+	63	18	2	1700	0.9375	works so far...
+	63	18	2	1700	0.9250	!works so far...
+	64	18	2	1700	0.9125	works so far...; nope megafail! would also cause temporary freeze when doing normal stuff!!
+	64	18	2	1700	0.9000	failed after 10 sec
+found a new way to test, set all P0-P6 to lowest aka 0/6/200/0.5625V
+then set B0 to what you wanna test, and tick Boost, go!
+this way transition settling is also tested
+	49	16	2	1600	0.9000	works so far...
+	49	16	2	1600	0.8875	!works so far...
+	49	16	2	1600	0.8750	instant fail!
+	49	30	2	2300	1.0750	insta fail
+	49	30	2	2300	1.0875	works; actually failed when on non boost so full time after like 20sec also went at 72 degC
+	79	30	2	2300	1.1000	!works
+5th march:
+_	_	12	2	1400	0.8250 fails for sure (2 cores instantly)
+_	_	12	2	1400	0.8375 seems to be working...but after 3 mins failed 1 core
+_	56	12	2	1400	0.8500 !works even after 23mins of prime95
+_	58	12	2	1400	0.8625 works for sure
+_	58+	12	2	1400	0.8750->0.9000 undoubtably works! (prime95 btw)
+_	53	8	2	1200	0.8000 !seems to work (also all above this work)
+_	_	8	2	1200	0.7875 seems to be working... but nope failed one core (in place large test of prime95) after 2min; but not the normal test tho
+_	_	8	2	1200	0.7750 fails instantly one core
+
+
+
+============
+NB voltages
+
+--
+NB P0 6/6/6/6  666Mhz  normal voltage: 0.9875(rechecked)
+
+0.8375 seems to work but prime95 failed several times(rarely!) but it can't be reproduced
+could be prin cpu settings...
+!0.8500! which is next should be pretty safe!
+ok so while prime95 is running, setting this to 0.8250 will make it fail in like 5 sec
+and also 0.8375 fails but only sometimes... but i'm saying 0.8500 is sure to be stable!
+
+--
+NB P1 10/10/10/10 400Mhz normal voltage: 0.8875
+
+0.8250 tested ok should go much lower 
+0.7625 tested ok so far...
+...
+0.7000 fails almost instantly with prime95 at 1800mhz cpu, 2 cores fail to round in like 5 sec after setting this;
+0.7125 seems stable but maybe's like the 0.8375 for NB P0
+!0.7250! is likely most stable (guess)
+
+too bad multipliers(ok dividers) cannot be changed
+--
+
+update 18 feb 2014:
+increased all voltages(including NB) by 0.125 due to BSODs and one time comodo firewall crashing
+update 22 feb 2014: was already increased NB voltages by another 0.125
+so NB P0 is 0.8750 and NB P1 is 0.7500
+cpu voltages remained as in 18 feb above.
+
+update 4 march 2014: when the last two states are 400mhz and 200mhz instead of both 800mhz then sometime the programs will hang as if they are in not responding mode in win7
+they recover though after like 1 minute, or after replugging the usb mouse. Sometimes the mouse also freezes.
+I'm currently trying without the 200Mhz one, as FusionTweaker doesn't accept it, but it accepts the 400mhz one. If it still happens even with 400mhz one (last two are 400mhz currently) then it's clear that the minimum mult must be 8 (800mhz) to avoid such app hangs.
+
+update 5 march 2014: these are the voltages thus far
+(the cpu ones are already increased (in table below) from the original table found above by +0.0125 just to be safe; just like we did in 18 feb update above)
+
+CPU:
+P-state	mintemp	maxtemp	fid	did	freq	voltage	comment
+B0	_	_	28	2	2200	1.0875	
+P0	_	_	24	2	2000	1.0250
+P1	_	_	20	2	1800	0.9625
+P2	_	_	18	2	1700	0.9375
+P3	_	_	16	2	1600	0.9000
+P4	_	58	12	2	1400	0.8625	
+P5	_	54	8	2	1200	0.8125
+P6	_	48	16	4	800	0.7125
+
+northbridge voltages(as follows) are already increased by 2 x 0.0125 because they were unstable (prior to 18feb; the table already has this done)
+NB:
+P-state	multdiv	vid	clk	freq
+NBP0	6	0.8750	100	666
+NBP1	10	0.7500	100	400
+(mult= 40 divided by multdiv)
+the only thing changeable is vid (with fusiontweaker) i see no way to change anything else (about NB)
+
+the following is the original table/votages as if nothing is changed
+CPU:
+====
+fid 	did 	freq 	voltage
+-----
+30	2	2300	1.3250	normal default B0
+26	3	1400	1.0625	normal default P0
+23	3	1300	1.0250	normal default P1
+20	3	1200	0.9875	normal default P2
+17	3	1100	0.9750	normal default P3
+14	3	1000	0.9625	normal default P4
+11	3	900	0.9500	normal default P5
+16	4	800	0.9250	normal default P6
+-----
+
+so, note that these: http://www.overclock.net/t/1365671/unable-to-overclock-amd-a6-3400m#post_19430939
+did not work for me, that is, it seems stable but it will fail prime95 ! at least the 2000Mhz one
+this guy is right about 3rd core failing first: http://arstechnica.com/civis/viewtopic.php?p=22253806&sid=1bbb184bf4b10593042f50e1f824eee4#p22253806
+
+NB:
+----
+P-state	multdiv	vid	clk	freq
+NBP0	6	0.9875	100	666
+NBP1	10	0.8875	100	400
+----
+
+Something to note about CPU multiplier: although the frequency can be set to below 800Mhz
+doing so (for example to 400Mhz and/or 200Mhz) will cause programs to enter "Not Responding" state for like 1 minute or two in windows 7; no idea why, but it wasn't the voltage because I increased it by 0.0250 from the one that I thought was already stable;
+but when 800Mhz is lowest used voltage these hangs don't happen; as soon as you add 400Mhz (without the 200Mhz) then they happen; but it's not that often; maybe once per hour or half an hour;
+Also all Cool&Quiet (C&Q) was disabled, in the sense that CCC (catalyst) or windows power or whoever does that, they were not doing anything, was set to lowest speed/frequency in CCC and remains this way unchanged (for example when k10stat changes the state for higher, it remains so, nothing changes it back down to lowest state (well P6 aka 800Mhz))
+so whatever makes it hang is maybe not an interference between k10stat and other C&Q managers stuff...
+
+in FusionTweaker (reported)state 0 is (k10stat's)B0 and state 1 is P0, state 2 is P1 etc state 8 is P6
+

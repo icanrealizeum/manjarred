@@ -1,0 +1,34 @@
+#!/bin/bash
+
+srcdir='./gentoo'  #copies this folder... (backup/archive style)
+destdir='/tmp/moo/' #... inside this folder! (the end / is ignored anyway)
+
+#--------
+#ensuring no / at the end!
+srcdir=${srcdir%%/}
+destdir=${destdir%%/}
+#echo "$srcdir $destdir"
+#exit 1
+
+mkdir -p -- "$destdir" #making sure it exists
+
+sudo --validate
+if test -n "$DEBUG" -a "0$DEBUG" -ne "0"; then
+  verbose='--verbose'
+else
+  verbose=''
+fi
+
+if test -n "$EXTRASAFE"; then
+  extrasafe='--backup=numbered'
+else
+  extrasafe=''
+fi
+
+sudo cp $verbose --archive --reflink=auto --sparse=always $extrasafe --strip-trailing-slashes -- "$srcdir" "$destdir"
+#^ note here: any extra files/dirs are not deleted, but any modified files will be! Maybe I should use rsync --update ? hmm, then I won't need ./reaccess script! because rsync can do the chmod for me.
+#rsync --no-perms --executability --update
+#passing --update to cp is interesting, but I do want to overwrite newer files in destination though! which this does not do!
+
+
+
