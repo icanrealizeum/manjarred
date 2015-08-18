@@ -3,7 +3,11 @@
 #this shows the diff for modified files 
 #and also shows the deleted files as lines beginning with: Only in rsync-backed/
 
-sudo diff -rup rsync-backed gentoo |grep -E -v '^Only in gentoo' | colordiff | less
+thedir='rsync-backed'  #TODO: make these vars a common file sourced in each script!
+
+sudo diff -rup "$thedir" gentoo |grep -E -v '^Only in gentoo' | colordiff | less
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
 
+
+sudo diff -rup "$thedir" gentoo |grep "Only in $thedir: "
 
