@@ -45,7 +45,7 @@ for fd in "${githooksdir}"/*; do
     echo "  bailing out!"
     exit 3
   else
-    echo " symlinking"
+    echo " symlinking(relative)"
     ln --relative --symbolic --target-directory="${dest}" -- "$ffull"
     ec=$?
     if test "$ec" -ne 0; then
