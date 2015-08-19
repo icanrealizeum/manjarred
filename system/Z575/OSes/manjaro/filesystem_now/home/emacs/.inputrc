@@ -1,0 +1,21 @@
+$include /etc/inputrc
+
+
+# already in /etc/inputrc
+"\e[1;5C": forward-word     # Ctrl+right  => forward word
+"\e[1;5D": backward-word    # Ctrl+left   => backward word
+
+# urxvt:
+"\eOc": forward-word     # Ctrl+right  => forward word
+"\eOd": backward-word    # Ctrl+left   => backward word
+#"\e[6~": #keypad_PgDn, same code as PgDn
+#"\e[5~": #keypad_PgUp, same code as PgUp
+#ok, had to use xmodmap for these numpadkeys to work under vim with urxvt
+
+# this is the default anyway: "the terminal now echoes ^C after Ctrl+C is pressed"
+# src: https://wiki.archlinux.org/index.php/Readline#Disabling_control_echo
+set echo-control-characters on
+
+#TODO: disable flowcontrol instead: stty -ixon
+"\C-y": forward-search-history
+

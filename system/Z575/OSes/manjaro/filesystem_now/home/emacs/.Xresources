@@ -1,0 +1,427 @@
+! reload by running:
+! xrdb ~/.Xresources
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+!Xft.antialias: false
+!Xft.hinting: false
+Xft.rgba: rgb
+Xft.autohint: false
+!Xft.hintstyle: hintslight
+Xft.hintstyle:	hintfull
+Xft.lcdfilter: lcddefault
+!Xft.lcdfilter: 0
+
+! note that something else was adding the following without using ~/.Xresources when X was started, so reloading this ~/.Xresources would_ve overriden these (unless -merge was used, maybe?) so urxvt font would look different after reload
+Xcursor.size: 0
+Xcursor.theme: Chameleon-White-Small
+Xcursor.theme_core: 1
+
+! Loading the perl modules matcher which underlines URLs and makes them
+! clickable, and those referenced by default which are the following:
+!
+!     â€¢ selection â€“ a more intelligent way of selecting with mouseclicks
+!     â€¢ option-popup â€“ Ctrl Button2, toggles some options at runtime
+!     â€¢ selection-popup â€“ Ctrl Button3, conversion of selected text
+!     â€¢ searchable-scrollback â€“ Meta-s, regex searching scrollback buffer
+!     â€¢ readline â€“ Shift Button1 to move the cursor in the commandline
+!
+! Please see the urxvtperl(3) manual page for more information on these
+! and other available perl modules
+! src: http://www.fagotten.org/grifter/rcfiles/Xdefaults.conf
+
+!URxvt.perl-ext-common:      default,-tabbed,clipboard,url-select,keyboard-select,selection,selection-popup,searchable-scrollback,readline,-xft
+URxvt*perl-ext-common:      default,-tabbed,clipboard,url-select,keyboard-select,selection,selection-popup,searchable-scrollback,readline,-xft
+!URxvt*perl-ext:      default,-tabbed,clipboard,url-select,keyboard-select,selection,selection-popup,-searchable-scrollback,readline,-xft
+
+! -xft  workaround for when using URxvt*font: xft:...
+URxvt.keysym.M-c:   perl:clipboard:copy
+URxvt.keysym.M-v:   perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+!You can also overwrite the system commands to use for copying/pasting. The default ones are:
+URxvt.clipboard.copycmd:  xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
+!If you prefer xclip, then put these lines instead:
+!URxvt.clipboard.copycmd:  xclip -i -selection clipboard
+!URxvt.clipboard.pastecmd: xclip -o -selection clipboard
+
+! Alt+u allows slecting urls with keyboard, press Enter to open in browser
+URxvt.keysym.M-u:           perl:url-select:select_next
+! read what the following does: https://github.com/muennich/urxvt-perls
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt*keysym.M-F3:           perl:keyboard-select:search
+!URxvt.keysym.M-s:           perl:keyboard-select:search
+! if set to true, selected URLs are automatically copied to the PRIMARY buffer
+URxvt.url-select.autocopy:  false
+! mouse button to click-open URLs (default: 2)
+URxvt.url-select.button:    2
+! middle click opens url with:
+URxvt.url-select.launcher:  chromium-dev
+!browser/command to open selected URL with
+!
+! if set to true, all URLs get underlined
+URxvt.url-select.underline: true
+! URxvt*.background: rgba:1111/1111/1111/dddd
+! it_s transparent only when false (oddly enough, well something else must be doing it)
+URxvt*.transparent: false
+! URxvt*.shading: 0 to 99 darkens, 101 to 200 lightens
+! URxvt*.shading: 110
+
+! Compile xft: Attempt to find a visual with the given bit depth;
+! URxvt*depth: bitdepth
+URxvt*.depth: 32
+
+! Compile xft: Turn on/off double-buffering for xft (default
+! URxvt*buffered: boolean
+
+! Create the window with the specified X window geometry [default
+! URxvt*geometry: geom
+
+! Use the specified colour as the windows background colour [default
+! URxvt*background: colour
+URxvt*background: [91]#000000
+
+! Use the specified colour as the windows foreground colour [default
+! URxvt*foreground: colour
+URxvt*foreground: #FFFFFF
+
+! Use the specified colour for the colour value n, where 0-7
+! URxvt*colorn: colour
+URxvt*color7: #999999
+
+! URxvt*color4:MidnightBlue
+! the following is for ls folder color (dark blue was too indistinguishable):
+URxvt*color12:CornflowerBlue
+
+! 
+! URxvt*colorBD: colour
+URxvt*colorBD: #339933
+
+! test underline and bold (can_t find the code for italic) src: http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x405.html
+! echo "begin$(tput smul)underlined$(tput rmul)norm$(tput bold)bold$(tput sgr0)end"
+
+! Use the specified colour to display bold or italic characters when
+! URxvt*colorIT: colour
+URxvt*colorIT: #200090
+
+! Use the specified colour to display underlined characters when the
+! URxvt*colorUL: colour
+URxvt*colorUL: #ffff00
+
+! test with: echo "begin$(tput smul)test$(tput rmul)end"
+ 
+! If set, use the specified colour as the colour for the underline
+! URxvt*underlineColor: colour
+URxvt*underlineColor: #009000
+
+! If set, use the specified colour as the background for highlighted
+! URxvt*highlightColor: colour
+
+! If set and highlightColor is set, use the specified colour as the
+! URxvt*highlightTextColor: colour
+
+! Use the specified colour for the cursor. The default is to use the
+! URxvt*cursorColor: colour
+URxvt*cursorColor: #FFFF00
+
+! Use the specified colour for the colour of the cursor text. For
+! URxvt*cursorColor2: colour
+URxvt*cursorColor2: #FF00FF
+! maybe this works only when cursor is block not blinking underline
+
+! True: simulate reverse video by foreground and background colours;
+! URxvt*reverseVideo: boolean
+
+! True: specify that jump scrolling should be used. When receiving
+! URxvt*jumpScroll: boolean
+URxvt*jumpScroll: true
+
+! True: (the default) specify that skip scrolling should be used.
+! URxvt*skipScroll: boolean
+URxvt*skipScroll: true
+
+! Fade the text by the given percentage when focus is lost; option
+! URxvt*fading: number
+!URxvt*fading: 20
+
+! Fade to this colour, when fading is used (see fading:). The default
+! URxvt*fadeColor: colour
+!URxvt*fadeColor: #000020
+
+! use alternate colors when window loses focus
+URxvt*unfocus: true
+
+! Set the application icon pixmap; option -icon.
+! URxvt*iconFile: file
+
+! Use the specified colour for the scrollbar [default #B2B2B2].
+! URxvt*scrollColor: colour
+! green: URxvt*scrollColor: [90]#00FF00
+URxvt*scrollColor: [70]#00FF00
+! URxvt*scrollColor: [90]#3F3900
+URxvt*unfocusedScrollColor: [70]#007000
+
+! Use the specified colour for the scrollbars trough area [default
+! URxvt*troughColor: colour
+!URxvt*troughColor: [90]#FF0000
+
+! The colour of the border around the text area and between the
+! URxvt*borderColor: colour
+URxvt*borderColor: [70]#ff2045
+URxvt*unfocusedBorderColor: [70]#2045FF
+
+! Select the fonts to be used. This is a comma separated list of font
+! URxvt.font: fontlist
+!URxvt.font: xft:monospace:size=11:Minspace=true
+!URxvt.font: xft:DejaVu Sans Mono:size=11
+!URxvt.font: xft:nimbus mono 1:size=11
+!URxvt.font: xft:-*-nimbus mono l-*-*-*-*-*-*-*-*-m-*-*-uni
+!URxvt.font: xft:-*-nimbus mono l-*-o-*-*-*-*-*-*-m-*-*-uni
+!URxvt.font: xft:-urw-nimbus mono l-medium-o-normal--17-120-100-100-m-0-koi8-uni
+!using .font instead of *font  to avoid triggering loading perl extension named "xft", thanks to exg on freenode #rxvt-unicode for this workaround!
+!it has the same effect because other fonts are using Font: as suffix (case sensitive matters, I presume)
+URxvt.font: xft:Bitstream Vera Sans Mono:pixelsize=12:antialias=true
+
+! URxvt*boldFont: fontlist
+
+! 
+! URxvt*italicFont: fontlist
+
+! The font list to use for displaying bold, italic or bold italic
+! URxvt*boldItalicFont: fontlist
+
+! When font styles are not enabled, or this option is enabled (True,
+! URxvt*intensityStyles: boolean
+
+! Set window title string, the default title is the command-line
+! URxvt*title: string
+
+! Set the name used to label the windows icon or displayed in an
+! URxvt*iconName: string
+
+! True: de-iconify (map) on receipt of a bell character. False: no
+! URxvt*mapAlert: boolean
+
+! True: set the urgency hint for the wm on receipt of a bell
+! URxvt*urgentOnBell: boolean
+
+! True: use visual bell on receipt of a bell character; option -vb.
+! URxvt*visualBell: boolean
+URxvt*visualBell: true
+
+! True: start as a login shell by prepending a - to argv[0] of the
+! URxvt*loginShell: boolean
+
+! True: inhibit writing record into the system log file utmp; option
+! URxvt*utmpInhibit: boolean
+
+! Specify a command pipe for vt100 printer [default lpr(1)]. Use
+! URxvt*print-pipe: string
+
+! Set scrollbar style to rxvt, plain, next or xterm. plain is the
+! URxvt*scrollstyle: mode
+URxvt*scrollstyle: plain
+
+! Set the scrollbar width in pixels.
+! URxvt*thickness: number
+
+! True: enable the scrollbar [default]; option -sb. False: disable
+! URxvt*scrollBar: boolean
+URxvt*scrollBar: true
+
+! True: place the scrollbar on the right of the window; option -sr.
+! URxvt*scrollBar_right: boolean
+URxvt*scrollBar_right: false
+
+! True: display an rxvt scrollbar without a trough; option -st.
+! URxvt*scrollBar_floating: boolean
+! URxvt*scrollBar_floating: true
+
+! Align the top, bottom or centre [default] of the scrollbar thumb
+! URxvt*scrollBar_align: mode
+! URxvt*scrollBar_align: centre
+
+! True: scroll to bottom when tty receives output; option -si.
+! URxvt*scrollTtyOutput: boolean
+URxvt*scrollTtyOutput: false
+
+! True: scroll with scrollback buffer when tty receives new lines
+! URxvt*scrollWithBuffer: boolean
+URxvt*scrollWithBuffer: true
+
+! True: scroll to bottom when a non-special key is pressed. Special
+! URxvt*scrollTtyKeypress: boolean
+URxvt*scrollTtyKeypress: true
+
+! Save number lines in the scrollback buffer [default 64]. This
+! URxvt*saveLines: number
+URxvt*saveLines: 999999
+
+! Internal border of number pixels. This resource is limited to 100;
+! URxvt*internalBorder: number
+!URxvt*internalBorder: 0
+URxvt*internalBorder: 2
+
+! External border of number pixels. This resource is limited to 100;
+! URxvt*externalBorder: number
+!URxvt*externalBorder: 0
+!URxvt*externalBorder: 10
+
+! Set MWM hints to request a borderless window, i.e. if honoured by
+! URxvt*borderLess: boolean
+URxvt*borderLess: true
+
+! Compile frills: Disable the usage of the built-in block
+! URxvt*skipBuiltinGlyphs: boolean
+
+! Specifies the terminal type name to be set in the TERM environment
+! URxvt*termName: termname
+
+! Specifies number of lines (pixel height) to insert between each row
+! URxvt*lineSpace: number
+
+! True: handle Meta (Alt) + keypress to set the 8th bit. False:
+! URxvt*meta8: boolean
+
+! True: the mouse wheel scrolls a page full. False: the mouse wheel
+! URxvt*mouseWheelScrollPage: boolean
+URxvt*mouseWheelScrollPage: false
+
+! True: store tabs as wide characters. False: interpret tabs as
+! URxvt*pastableTabs: boolean
+
+! True: blink the cursor. False: do not blink the cursor [default];
+! URxvt*cursorBlink: boolean
+URxvt*cursorBlink: true
+
+! True: Make the cursor underlined. False: Make the cursor a box
+! URxvt*cursorUnderline: boolean
+URxvt*cursorUnderline: false
+
+! True: blank the pointer when a key is pressed or after a set number
+! URxvt*pointerBlank: boolean
+URxvt*pointerBlank: false
+
+! Mouse pointer foreground colour.
+! URxvt*pointerColor: colour
+
+! Mouse pointer background colour.
+! URxvt*pointerColor2: colour
+
+! Specifies number of seconds before blanking the pointer [default
+! URxvt*pointerBlankDelay: number
+
+! The string to send when the backspace key is pressed. If set to DEC
+! URxvt*backspacekey: string
+
+! The string to send when the delete key (not the keypad delete key)
+! URxvt*deletekey: string
+
+! The characters used as delimiters for double-click word selection
+! URxvt*cutchars: string
+URxvt*cutchars: "()*,<>[]{}|'\":="
+
+! 
+! URxvt*{|}
+
+! OverTheSpot, OffTheSpot, Root; option -pt.
+! URxvt*preeditType: style
+
+! name of inputMethod to use; option -im.
+! URxvt*inputMethod: name
+
+! The locale to use for opening the IM. You can use an "LC_CTYPE" of
+! URxvt*imLocale: name
+
+! Specify the font-set used for XIM styles "OverTheSpot" or
+! URxvt*imFont: fontset
+
+! Change the meaning of triple-click selection with the left mouse
+! URxvt*tripleclickwords: boolean
+URxvt*tripleclickwords: true
+
+! Enables "insecure" mode. Rxvt-unicode offers some escape sequences
+! URxvt*insecure: boolean
+
+! Set the key to be interpreted as the Meta key to: alt, meta, hyper,
+! URxvt*modifier: modifier
+
+! Specify the reply rxvt-unicode sends to the shell when an ENQ
+! URxvt*answerbackString: string
+
+! Turn on/off secondary screen (default enabled).
+! URxvt*secondaryScreen: boolean
+! this is the screen in less or vim, as opposed to the shell that started them
+URxvt*secondaryScreen: true
+
+! Turn on/off secondary screen scroll (default enabled). If this
+! URxvt*secondaryScroll: boolean
+URxvt*secondaryScroll: false
+!about to enable scrolling in less and vim,
+!src: http://mywaytoarch.tumblr.com/post/14455320734/scrolling-mouse-wheel-improvments-vte-like-in-urxvt
+
+URxvt*secondaryWheel: true
+
+! Turn on/off hold window after exit support. If enabled, urxvt will
+! URxvt*hold: boolean
+URxvt*hold: false
+
+! Sets the working directory for the shell (or the command specified
+! URxvt*chdir: path
+
+! Compile frills: Associate string with keysym sym. The intervening
+! URxvt*keysym.sym: string
+!nvm URxvt*keysym.Control-Left: 
+
+!resizing
+URxvt.keysym.M-C-3: command:\033[8;24;80t
+URxvt.keysym.M-C-4: command:\033[8;48;110t
+
+
+! URxvt*perl-ext-common: string
+
+! Comma-separated list(s) of perl extension scripts (default:
+! URxvt*perl-ext: string
+
+! Perl code to be evaluated when all extensions have been registered.
+! URxvt*perl-eval: string
+
+! Colon-separated list of additional directories that hold extension
+! URxvt*perl-lib: path
+
+! Additional selection patterns, see the urxvtperl(3) manpage for
+! URxvt*selection.pattern-idx: perl-regex
+!URxvt.selection.pattern-0: "([[:word:]]+)"
+URxvt.selection.pattern-0: "([^\"&\'()*,;<=>?@[\\\\]^`{|}]+)"
+
+! Selection auto-transform patterns, see the urxvtperl(3) manpage for
+! URxvt*selection-autotransform.idx: perl-transform
+
+! Sets the hotkey that starts the incremental scrollback buffer
+! M-s  is default!
+! URxvt*searchable-scrollback: keysym
+! nevermind disabled this perl extension:
+!URxvt*searchable-scrollback: M-F1
+!URxvt.searchable-scrollback: M-F1
+! ok that_s DEPRECATED!
+URxvt*keysym.M-F1: searchable-scrollback:start
+
+! Specifies the program to be started with a URL argument. Used by
+! URxvt*url-launcher: string
+
+! Compile frills: Sets the WM_TRANSIENT_FOR property to the given
+! URxvt*transient-for: windowid
+
+! Compile frills: Sets override-redirect for the terminal window,
+! URxvt*override-redirect: boolean
+
+! Turn on/off ISO 14755 (default enabled).
+! URxvt*iso14755: boolean
+URxvt*iso14755: true
+! needed for shift+ctrl+mouseclick to tell me the font char code
+
+! Turn on/off ISO 14755 5.2 mode (default enabled).
+! URxvt*iso14755_52: boolean
+
+
