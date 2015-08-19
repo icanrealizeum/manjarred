@@ -7,11 +7,13 @@ backupdirfordeletions="${basedir}/rsync-backed/" #dir where deleted/modified fil
 mkdir -p "$where"
 
 declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
---exclude='*.tmp *~ *.swp'
 
 # all paths here are relative to the source dir (which is passed to rsync on cmdline, see --files-from in man rsync for exact explanation on how)
 --files-from='/home/emacs/rsync/rsync_filesfrom.list'
 #^ you cannot put comments inside this .list file!!
+
+#--exclude='*.tmp *~ *.swp'
+#^ this has no effect now, it only has effect from in --exclude-from list!
 
 #commented lines work inside these .list files though:
 #--include-from='/home/emacs/rsync/rsync_include.list' #useless when --files-from is used!
