@@ -1,0 +1,17 @@
+use this to see the actual command instead of UNDEF
+ACPI : EC: ***** Command(UNDEF) started *****
+this enabled -DDEBUG for the entire folder structure of acpi
+
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index f74317c..3b88290 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -2,6 +2,8 @@
+ # Makefile for the Linux ACPI interpreter
+ #
+ 
++KBUILD_CFLAGS += -DDEBUG
++
+ ccflags-y			:= -Os
+ ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
+ 

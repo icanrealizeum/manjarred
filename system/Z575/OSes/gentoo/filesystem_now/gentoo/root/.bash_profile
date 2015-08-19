@@ -1,0 +1,1 @@
+/home/zazdxscf/.bash_profile

@@ -1,0 +1,9 @@
+#! /bin/sh
+
+#source for this script: http://tmp.tomaw.net/dpaste.txt
+#^ 404
+#thanks for exg on freenode for pointing me to this
+
+url=$(curl -si -F 'content=<-' http://dpaste.com/api/v1/ < "$1" | sed -ne 's/Location: \(.*\)/\1/p' | tr -d '\r')
+echo ${url}.txt
+

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+gdb_get_backtrace() {
+#src: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Backtraces
+    if test "$#" -gt 4; then
+      echo "too many params $#"
+      exit 1
+    fi
+    local exe=$1
+    local core=$2
+    local typ=$3
+    
+    local autoq=$4
+    if test -z "$autoq"; then
+      qcmd=('-ex' 'quit' '--batch')
+    else
+      if test "-q" != "$autoq"; then
+        echo "fourth parameter should be missing or -q to signify autoquit respectively not."
+        #XXX: it always quits regardless, when using any --batch
+        exit 3
+      fi
+      qmd=''
+    fi
+
+    local -a btcmd=('-ex')
+#    echo "~${typ}~"
+    case "$typ" in 
+      all)
+        btcmd+=('thread apply all bt full')
+        ;;
+      firefoxffmpeg)
+        btcmd+=('') #TODO:
+        ;;
+      ffmpeg)
+        btcmd+=('disass $pc-32,$pc+32' '-ex' 'info all-registers')
+        ;;
+      *)
+        btcmd+=('bt full')
+        ;;
+    esac
+    echo "${#btcmd[@]} ${btcmd[@]}"
+    echo "${#qcmd[@]} ${qcmd[@]}"
+#exit 1 
+        #--batch \
+    gdb ${exe} \
+        --core ${core} \
+        --quiet \
+        "${btcmd[@]}" \
+        "${qcmd[@]}"
+}
+
+gdb_get_backtrace "$@"
+

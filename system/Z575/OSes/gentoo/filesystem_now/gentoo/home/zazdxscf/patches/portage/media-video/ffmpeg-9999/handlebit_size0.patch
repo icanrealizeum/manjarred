@@ -1,0 +1,13 @@
+Index: ffmpeg-9999/libavcodec/get_bits.h
+===================================================================
+--- ffmpeg-9999.orig/libavcodec/get_bits.h
++++ ffmpeg-9999/libavcodec/get_bits.h
+@@ -413,7 +413,7 @@ static inline int init_get_bits(GetBitCo
+     int buffer_size;
+     int ret = 0;
+ 
+-    if (bit_size >= INT_MAX - 7 || bit_size < 0 || !buffer) {
++    if (bit_size >= INT_MAX - 7 || bit_size <= 0 || !buffer) {
+         bit_size    = 0;
+         buffer      = NULL;
+         ret         = AVERROR_INVALIDDATA;
