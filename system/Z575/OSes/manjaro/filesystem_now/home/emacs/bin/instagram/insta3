@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for each in `cat /tmp/list.lst`; do
+  ./insta "$each"
+done

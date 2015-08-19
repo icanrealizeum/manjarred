@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#set -x
+echo "this saves all the instagram urls for each picture of a specified user"
+sleep 5
+
+set -e
+                                                                                
+source instaclientid.sh
+
+if [ -z "$cid" ]; then
+  echo "nope"
+  exit 22
+fi
+
+
+userid="3546854"
+nexturl="https://api.instagram.com/v1/users/${userid}/media/recent/?client_id=${cid}"
+
+
+urldecode(){
+  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;s/\\\//\//g;')"
+}
+
+lst="/tmp/list.lst"
+
+while [ -n "$nexturl" ]; do
+  echo "a"
+  echo "$nexturl"
+  recentpage="`wget -O - -- "$nexturl"`"
+  #urls=("`echo "" | sed -e 's/"link":/\n"link":/g' |perl -n -e '/("link":"(((?!")[\s\S])*)")/g && print "$2 "'`")
+  urls="`echo "$recentpage" | sed -e 's/"link":/\n"link":/g' |perl -n -e '/("link":"(((?!")[\s\S])*)")/g && print "$2 "'`"
+#  echo "$urls"
+  for eachurl in $urls; do
+#    echo "b"
+    echo "$eachurl" | urldecode >> "$lst"
+#    echo -e "$eachurl"
+#    echo -e "$eachurl" >>
+  done
+  nexturl="`echo "$recentpage" | perl -n -e '/"next_url":"(((?!")[\s\S])*)",/ && print "$1"' | urldecode`"
+#  nexturl="`echo -e "$nexturl"`"
+#  echo "$nexturl"
+#  nexturl=""
+done
+

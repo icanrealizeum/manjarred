@@ -1,0 +1,48 @@
+#!/bin/bash
+
+echo "this saves one instagram picture+metadata given you have its url"
+sleep 5
+
+set -e
+
+
+UA="Mozilla/5.0 (X11; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/39.0"
+
+source instaclientid.sh
+
+if [ -z "$cid" ]; then
+  echo "nope"
+  exit 22
+fi
+
+instaimgurl="$@" #ie. https://instagram.com/p/tjbfnjnPz_/
+outdir="/tmp/instadir"
+mkdir -p -- "$outdir"
+
+if [ -z "$instaimgurl" ]; then
+  echo "pass instagram image url"
+  exit 1
+fi
+
+urldecode(){
+  echo -e "$(sed 's/+/ /g;s/%\(..\)/\\x/g;s/\\\//\//g;')"
+#  sed -e 's/\\\//\//g'
+}
+
+
+imgoembed="`wget --user-agent="$UA" -O - -- "https://api.instagram.com/oembed?url=${instaimgurl}"`"
+media_id=`echo "$imgoembed" | perl -n -e'/"media_id":"(\d+_\d+)"/ && print $1'`
+
+echo "media_id: $media_id"
+imgdata=`wget --user-agent="$UA" -O - -- "https://api.instagram.com/v1/media/${media_id}/?client_id=${cid}"`
+comments=`wget --user-agent="$UA" -O - -- "https://api.instagram.com/v1/media/${media_id}/comments/?client_id=${cid}"`
+
+lat="`echo "$imgdata" | perl -n -e'/"latitude":([-]*\d+\.\d+)/ && print $1'`"
+long="`echo "$imgdata" | perl -n -e'/"longitude":([-]*\d+\.\d+)/ && print $1'`"
+stdres="`echo "$imgdata" | perl -n -e '/("standard_resolution":{"url":"(((?!")[\s\S])*)")/g && print "$2"' | urldecode`"
+#echo "$lat $long"
+echo "$instaimgurl	$lat	$long	$imgoembed	$imgdata"
+wget --user-agent="$UA" -P "$outdir" -- "$stdres"
+echo "$instaimgurl	$lat	$long	$imgoembed	$imgdata $comments" >> "${outdir}/latlong3.txt"
+
+
