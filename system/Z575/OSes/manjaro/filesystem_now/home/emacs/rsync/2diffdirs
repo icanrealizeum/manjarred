@@ -9,5 +9,5 @@ sudo diff -rup "$thedir" gentoo |grep -E -v '^Only in gentoo' | colordiff | less
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
 
 
-sudo diff -rup "$thedir" gentoo |grep "Only in $thedir: "
+sudo diff -rup "$thedir" gentoo |grep "Only in $thedir"
 
