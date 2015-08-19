@@ -1,0 +1,22 @@
+#!/bin/bash
+
+in1=$1
+in2=$2
+diff=diff
+
+if test -z "$3" ; then
+  echo "using colordiff" >&2
+  diff=colordiff
+fi
+
+#used for comparing these type of files: Xorg.0.log.old Xorg.0.log
+
+splitify() {
+  cat "$1" | cut -d ']' -f2-
+}
+
+$diff -up0 -- <(splitify "$in1") <(splitify "$in2") | less -R
+
+# |grep -ve '^\(+++\|---\) '
+# ^ this won't trigger colordiff though
+

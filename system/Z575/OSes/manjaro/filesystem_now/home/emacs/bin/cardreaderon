@@ -1,0 +1,20 @@
+#!/bin/bash
+
+__die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+source funx.bash || __die 100 "funx.bash not in PATH"
+
+
+if ! isroot ; then
+	safepromptkey "you are not root! press a key, not shift/ctrl/alt"
+	exit 1
+fi
+
+
+#workaround for the issue that the card isn't detected
+#turn on power temporarily which results in card being detected until unplugged
+echo 'on' > '/sys/bus/usb/devices/2-1/power/control'
+#give it a lil bit of time to detect, tho likely not needed
+sleep 1
+#turn power to auto (aka off basically)
+echo 'auto' > '/sys/bus/usb/devices/2-1/power/control'
+

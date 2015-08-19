@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "diff-ing dirs that reside in two different kernel tree sources, ignore new files"
+
+opts="-pru5" diffkdirs "$1" "$2"
+

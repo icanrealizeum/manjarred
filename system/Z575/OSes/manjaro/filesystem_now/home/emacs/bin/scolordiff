@@ -1,0 +1,9 @@
+#!/bin/bash
+
+function notonpmlines() {
+  #get rid of literal "^I" on +++ and --- lines from that diff output
+  sed -re 's|^(.*)(\+\+\+\|\-\-\-) (.*)\^I(.*)$|\1\2 \3\t\4|g'
+}
+
+colordiff "$@" | seespecials | notonpmlines
+
