@@ -3,7 +3,7 @@ src="/home/emacs/rsync/gentoo/" #where to update from (aka source)
 backupdirfordeletions="/rsync-backed/" #dir where modified files will be moved from destination before being updated! this is on remote!
 
 declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
---exclude='*.tmp *~ *.swp'
+--exclude='*.tmp *~ *.swp' #FIXME: maybe it should be *.sw?  but I don't want it to be too broad
 
 --backup
 --backup-dir="${backupdirfordeletions}"
