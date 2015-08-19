@@ -1,0 +1,31 @@
+* incorrect udp checkums ? (seen with tcpdump) with software from within virtualbox
+  \ fix: ethtool --offload eth0 rx off tx off ; ethtool -K eth0 gso off
+  \ within the virtualbox guest OS
+  \ src: http://ubuntuforums.org/showthread.php?t=1940190
+* how to echo(or use) escape chars without using echo -e
+  \ echo -e '\n'
+  \ echo $'\n'
+
+* don't update samsung ssd 840 evo 's firmware to EXT0DB6Q  (currently still EXT0BB6Q) even though the intermediary EXT0CB6Q apparently is working as reported here: http://www.overclock.net/t/1507897/samsung-840-evo-read-speed-drops-on-old-written-data-in-the-drive/2660
+  \ motherlode src: https://bugs.launchpad.net/ubuntu/+source/fstrim/+bug/1449005
+
+* the 3 sec delay when login password is wrong is in /etc/login.defs as FAIL_DELAY 3
+  \ this doesn't affect wrong password for sudo (delay 3 sec also)
+
+- kernel 4.2.0 rc2 (tag) crashes system when startx inside a virtualbox (4.3.26) so you should update to the immediate commits after it (specifically this: 4.2.0-rc2-g97d6e2b) - tested to not crash anymore.
+  \ NOPE: it still OOPSes after a few minutes... so maybe that didn't get fixed at all!
+
+
+* to force kernel to reread partition (sfdisk -R  doesn't work anymore)
+  \ sudo blockdev --rereadpt /dev/sde
+
+
+* telinit q (or Q) will tell init to re-read /etc/inittab
+  \ run only as root(or sudo) else telinit is not even in path
+
+
+* if you have the segfault line in the log (eg. dmesg) then
+  \ http://coredump.io/blog/2012/02/23/debugging-segfaults-from-logs-to-gdb/
+  \ also can use this hex calculator for the difference: http://www.miniwebtool.com/hex-calculator/
+
+

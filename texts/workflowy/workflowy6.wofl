@@ -1,0 +1,1681 @@
+* Everything
+  * Personal
+    * todos board
+      * ToDo
+        * read
+          * epistemology - an introduction to the theory of knowledge next:13/369
+            \ "http://commonsenseatheism.com/wp-content/uploads/2009/07/Audi-Epistemology-2e.pdf"
+          * read about this git branch model
+            \ "http://nvie.com/posts/a-successful-git-branching-model/"
+          - the Help Vampires
+            \ "http://slash7.com/2006/12/22/vampires/"
+          - how to ask questions the smart way
+            \ "http://www.catb.org/esr/faqs/smart-questions.html"
+          * books to read from here:
+            \ "http://www.downes.ca/me/mybooks.htm"
+          * read this concurrent interface by rob pike
+            \ "http://doc.cat-v.org/bell_labs/concurrent_window_system/concurrent_window_system.pdf"
+          * read about compilers stuff  (postpone until I've arch installed)
+            \ "let's do them in order:"
+            * http://www.nand2tetris.org/course.php
+            * 1. how to build a compiler: http://compilers.iecc.com/crenshaw/
+            * 2. http://www.cs.indiana.edu/~dyb/pubs/nano-jfp.pdf
+            * 3. http://scheme2006.cs.uchicago.edu/11-ghuloum.pdf
+            * 4. if need more resources like above, visit this: https://stackoverflow.com/a/1672
+        * in manjaro
+          * install snort for security, see how it works, if it would conflict with iptables firewalls or with grsecurity
+            \ "https://wiki.archlinux.org/index.php/snort"
+          - (done via systemd's /etc/udev/rules.d/) find a way to usb disconnect the webcam just like Fn+Esc does when you press it once after booted in
+            - (done)find out if there's a way to disconnect aka Eject any USB device like a webcam (not like a HDD)
+              \ "https://stackoverflow.com/questions/4702216/controlling-a-usb-power-supply-on-off-with-linux"
+            * powertop can set power level (control) from on to auto (also it shows you the command to do it) - but I am unsure whether 4:3 is always where the internal webcam will be (it was on 2-3 in an older message, and it's 2-3 again now 3.16-rc4)
+              \ "yaourt -S powertop-git
+              \ "
+          * #fix #howto #manjaro (#arch ?) set vsync for desktop
+            * using fglrx aka non-free video driver for ATI internal gfx card (in the APU)
+              \ "#todo add an entry telling people how I did it, to this: https://bbs.archlinux.org/viewtopic.php?id=135042&p=2"
+              * set Graphics from Dynamic to UDMA in bios (just make sure it's not Dynamic!)
+                \ "this reduces temperature by 10 degress celsius from like 49 degC to 38degC, as reported by sensors (3 sensors, except the battery one)
+                \ will go up to 55.6degC when watching youtube videos in html5 (never with flash, not using it) because firefox cpu usage is 172% and xorg is like 69% - probably not using hardware gfx to play it, but rather just software - remove vlc and let youtube use gstreamer or so, and temp is like 42degC now, ok like 48degC for the same video"
+              * enter ati catalyst (AMD Catalyst Control Center, non-admin; 'cause the admin one fails to start) and set in Display Options->Tear Free
+                \ "Enable Tear Free Desktop to reduce tearing"
+                * this Tear Free option is available only if you set Graphics to Ultra DMA in bios - and not available when it's set on Dynamic (odd!!!)
+                * click Apply and move the window to see the effect was instant!
+              * don't use vlc at all because it causes big cpu usage, remove it and let it use gstreamer in youtube and the temp is normal like 42 degC while video is somewhere in background(and like 48 when active, on 720p), as opposed to 55.6degC with vlc
+              * as a normal player don't use parole but rather xnoise
+                \ neither has the play at x speed feature like x1.5 or x2 like youtube html5 player has
+          * #howto prevent boot messages from being cleared after login prompt appears
+            \ "src: https://wiki.archlinux.org/index.php/Talk:Disable_Clearing_of_Boot_Messages"
+            * remove the flag `quiet` from GRUB_CMDLINE_LINUX_DEFAULT in /etc/defaults/grub in order to see the actual boot messages
+            * create a drop-in directory /etc/systemd/system/getty@tty1.service.d/ and place this file in it to override only TTYVTDisallocate : 
+              * sudo mkdir -p /etc/systemd/system/getty\@tty1.service.d/
+              * sudo vim /etc/systemd/system/getty\@tty1.service.d/noclear.conf
+                \ "[Service]
+                \ TTYVTDisallocate=no"
+          * ==> WARNING: Possibly missing firmware for module: smsmdtv
+            \ "no solution"
+            * sudo modprobe smsusb
+              \ "is the module which also loads smsmdtv
+              \ [  950.367540] usbcore: registered new interface driver smsusb"
+            - possibly some more info related to this, seen it
+              \ "https://bugzilla.kernel.org/show_bug.cgi?id=60645"
+          * #fix #howto #manjaro "==> WARNING: Possibly missing firmware for module: aic94xx"
+            \ "get it from AUR then sudo mkinitcpio -p linux312  (if that's the preset in /etc/mkinitcpio.d/linux312.preset )
+            \ [  950.367540] usbcore: registered new interface driver smsusb"
+          * optimize power consumption with powertop
+            \ "https://wiki.manjaro.org/index.php?title=PowerTOP_to_Optimise_Laptop_Power_Consumption"
+            \ use tlp for automating this on startup!
+          * choose a https mirror, maybe?
+            \ "https://forum.manjaro.org/index.php?topic=5287.0"
+          * read this for powersaving
+            \ "https://forum.manjaro.org/index.php?topic=6867.0"
+          * find a way to prevent shift+numkeys generating numbers while just numkeys work as arrows
+            \ "fix is this: http://superuser.com/questions/351976/mint-map-number-keys-to-higlight-text
+              * this seems to work in manjaro to make shift+7 do select even when numlock is on
+                \ $ setxkbmap -option "numpad:microsoft"
+                \ $ setxkbmap -query
+                \ rules:      evdev
+                \ model:      pc105
+                \ layout:     us,hu
+                \ variant:    ,
+                \ options:    numpad:microsoft,grp:alt_caps_toggle,terminate:ctrl_alt_bksp
+              * find a permanent way for the above ^
+                \ look here: /home/emacs/.config/xfce4/xfconf/xfce-perchannel-xml/keyboard-layout.xml
+                \ seems that we can replace this line:
+                \ <property name="XkbOptions" type="empty">
+                \ with this line:
+                \ <property name="XkbOptions" type="string" value="numpad:microsoft"/>
+                \ untested as of yet!
+                * tested this to work:
+                  \ add to /etc/profile
+                  \ setxkbmap -option "numpad:microsoft"
+                * supposedly there are more ways to do this, with xorg.conf (untested)
+                  \ http://bbs.archbang.org/viewtopic.php?id=1880
+            \ http://forums.linuxmint.com/viewtopic.php?f=90&t=133566
+            \ perhaps here for archlinux: https://wiki.archlinux.org/index.php/Home_and_End_keys_not_working#Why_do_not_my_Home_and_End_keys_work_in_terminals.3F"
+          * "disable" webcam #howto #manjaro #fix
+            \ "blacklist uvcvideo ? (and bluetooth module)"
+            * sudo vim /etc/modprobe.d/blacklist-uvcvideo.conf (this is a newfile)
+              \ "#disable internal webcam
+              \ #[ 1230.363677] usb 2-3: new high-speed USB device number 5 using ehci-pci
+              \ #[ 1230.774015] uvcvideo: Found UVC 1.00 device Lenovo EasyCamera (5986:0364)
+              \ #[ 1230.792011] input: Lenovo EasyCamera as /devices/pci0000:00/0000:00:13.2/usb2
+              \ blacklist uvcvideo
+              \ blacklist bluetooth
+              \ "
+          * find how to enable discard on luks+lvm2 root partition and then try to run fstrim -v /
+            * write howto
+            * this are the install steps to enable discard with luks+lvm2 in manjaro
+              \ "https://wiki.manjaro.org/index.php/Installation_to_SSD_%28quick_guide%29"
+            * you must replace the "plymouth plymouth-encrypt" hooks in /etc/mkinitcpio.conf with "encrypt" or else they won't let trim pass and fstrim / -v  won't work
+              - "#bug reported https://bugs.freedesktop.org/show_bug.cgi?id=80146 #fail that's the wrong place to report it hehe, this one is the fix: https://github.com/manjaro/packages-extra/pull/2/files
+              \ 
+              \ sudo mkinitcpio -p linux312  (that .preset file in /etc/mkinitcpio.d/ )  to update after the change and obviously don't forget to put :allow-discards at the end of ... in /etc/default/grub like so:
+              \ GRUB_CMDLINE_LINUX="cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards"
+              \ don't put discard in fstab, but rather use fstrim / -v   like once per week or something
+              \ "
+            * for manjaro this works: (ignore the dm-crypt part with crypttab that's not for root partition)
+              \ "https://wiki.archlinux.org/index.php/SSD#TRIM"
+            * also switch disk scheduler from cfq to noop
+              \ "https://wiki.archlinux.org/index.php/SSD#I.2FO_Scheduler"
+              * find a way to make this persistent
+            * how to rebuild mkinitcpio and also enable/disable hibernate aka resume
+              \ "http://www.larsen-b.com/Article/460.html"
+              * sudo vim /etc/mkinitcpio.conf
+                \ "remove "resume" from the uncommented HOOKS line
+                \ then sudo mkinitcpio -p linux312 (if that's the preset in /etc/mkinitcpio.d/linux312.preset )"
+            * try to use trim/discard in cron rather than in fstab, but keep the other under layers on discard
+              \ "http://blog.neutrino.es/2013/howto-properly-activate-trim-for-your-ssd-on-linux-fstrim-lvm-and-dmcrypt/"
+          * read this about acpi DSDT
+            \ "http://acpi.sourceforge.net/dsdt/"
+          * install arch in a vm to have the steps necessary to install it in real mode
+          - keepassx and others
+            * passwords, check this for a better way to gen passwords? #bash #script #keepass
+              \ "https://github.com/lanzz/bash-supergenpass/blob/master/supergenpass.sh"
+              * also recheck grc.com for those paper passwords generator
+            - this seem to be the best?
+              \ "http://www.passwordstore.org/"
+              * but must check if it needs a master password or what?
+        * in ArchLinux
+          * installing arch
+            - installing arch from existing (linux mint) OS
+              * get bootstrap .gz file ie. archlinux-bootstrap-2013.11.01-x86_64.tar.gz
+                \ "http://ftp.mfa.kfki.hu/pub/mirrors/ftp.archlinux.org/iso/2013.11.01/"
+              * sudo bash
+              * cd /tmp
+              * tar zxvf ~/Downloads/archlinux-bootstrap-2013.11.01-x86_64.tar.gz
+              * vim /tmp/root.x86_64/etc/pacman.d/mirrorlist
+              * if you have bash v4+ enter the chroot
+                * /tmp/root.x86_64/bin/arch-chroot /tmp/root.x86_64/
+                * pacman-key --init
+                * open new console
+                  * do something like
+                    \ "dd if=/dev/sda of=/dev/tty7"
+                  * after like 500mb pacman will complete, so Ctrl+C this dd
+                  * close this console
+                * pacman-key --populate archlinux
+                * mkdir /run/shm
+                  \ "because /dev/shm -> /run/shm on our debian based mint (unsure if this was necessary but did it anyway)"
+              * outside of chroot just partition the drive and stuff, and then (inside the chroot) From that point, simply follow the Mount the partitions section of the Installation Guide and following sections. 
+                \ "https://wiki.archlinux.org/index.php/Installation_Guide#Mount_the_partitions"
+                * ok, not doing this due to lack of tools like gdisk inside chroot, or updated cryptsetup outside of it(and none inside it)
+            - installing arch(this is for when on real - also outdated)  (if virtualbox then set the network interface to bridged)
+              * boot from live cd or in my case from fz100 (as usb device) via memdisk
+                * prepare the fz100 SD card
+                  * either have fz100 format it (tested) or use your current OS (linux mint in my case) to format it
+                    * fz100 format does this: /dev/sdc1   *        8192    30865407    15428608    c  W95 FAT32 (LBA)  that means 4MB free before the partition starts
+                      \ "Disk /dev/sdc: 15.8 GB, 15803088896 bytes
+                      \ 255 heads, 63 sectors/track, 1921 cylinders, total 30865408 sectors
+                      \ Units = sectors of 1 * 512 = 512 bytes
+                      \ Sector size (logical/physical): 512 bytes / 512 bytes
+                      \ I/O size (minimum/optimal): 512 bytes / 512 bytes
+                      \ Disk identifier: 0x00000000
+                      \ 
+                      \    Device Boot      Start         End      Blocks   Id  System
+                      \ /dev/sdc1   *        8192    30865407    15428608    c  W95 FAT32 (LBA)
+                      \                                  Disk: /dev/sde
+                      \              Size: 14.7 GiB, 15803088896 bytes, 30865408 sectors
+                      \                       Label: dos, identifier: 0x00000000
+                      \
+                      \    Device       Boot     Start        End   Sectors   Size  Id Type
+                      \>>  Free space             2048       8191      6144     3M                     
+                      \    /dev/sde1              8192   30865407  30857216  14.7G   c W95 FAT32 (LBA)
+                      \
+                      * there might be some issues with CHS on the desktop computer (if the boot message shows at all and says CHS in the version instead of EDD and also says something about ldlinux.c32 ) then might need to zero the mbr(and thus partition table too) and reboot! then don't cfdisk, but use fdisk -l -u=cylinders to see CHS configuration then use that when creating the new partition
+                        \ thanks to Ady2 and genec on #syslinux  freenode irc channel
+                        \ sudo fdisk -c=dos -u=cylinders -C 1016 -H 127 -S 62 /dev/sdc
+                        \ Sep 06 18:26:21 <genec> 'o' new table.  'n' new partition, let it default to whole device.
+                        \ Sep 06 18:27:47 <genec> 't' type, 'b' FAT32, 'a' toggle bootable
+                        \ w to write and quit
+                        \ that was for my 4g sony ms pro card inside the usb cardreader(that can read only ms pro) which can also be seen here: http://dpaste.com/3D7BSXD.txt
+                        \ sudo mkfs.vfat -F32 /dev/sdc1
+                  * don't mind the folders created by the fz100 like DCIM and stuff, they don't matter if they exist
+                * put the files on the SD card(this means the SD card is now inside your laptop card reader, because fz100 won't allow you to write to it when accessing it via usb cable), as follows:
+                  \ "source(also if you are in Windows, use this, it uses different syslinux command): https://wiki.archlinux.org/index.php/USB_Installation_Media#Loading_the_installation_media_from_RAM"
+                  \ WARNING: this doesn't work on the (my)desktop computer because for some reason it cannot select which card to boot from(like laptop can ie. number 2 out of 0..3 (so 4) slots) tested with 2 external cardreaders and with fz100 and it still won't boot, while it works ok on laptop(z575) with one cardreader(not the internal one 'cause bios doesn't know about it) so I guess it's the BIOS! also only does something when sleecting USB HDD  not on USB FDD, USB CDROM, USB ZIP. If either mbr or partition isn't marked active(bootable) then laptop won't boot either!
+                  * make these folders(this means sdc1 is mounted)
+                    * Boot/ISOs
+                    * Boot/Settings
+                  * Copy the needed files to the USB flash drive  - don't forget MEMDISK!!!
+                    * copy the ISO that you would like to boot to the Boot/ISOs folder, ie. from here: https://www.archlinux.org/download/
+                      \ "in my case was: archlinux-2013.11.01-dual.iso"
+                    * get the syslinux zip for your version(or latest? didn't test this) from here: https://www.kernel.org/pub/linux/utils/boot/syslinux/
+                      \ "syslinux --version"
+                      * in my case was 4.05
+                      * copy ./bios/memdisk/memdisk (from the downloaded .zip) to the Boot/Settings folder on your USB flash drive.
+                        \ "it's like 26Kb"
+                        * in version 6.03 is 25372 bytes in /usr/lib/syslinux/bios/memdisk
+                    * note: you already have a syslinux (executable) on your linux mint installation (hence you did syslinux --version above)
+                  * Create the configuration file
+                    * navigate to the USB flash drive, /boot/Settings and create a syslinux.cfg file, with this contents
+                      \ "DEFAULT arch_iso
+                      \ 
+                      \ LABEL arch_iso
+                      \         MENU LABEL Arch Setup
+                      \         LINUX memdisk
+                      \         INITRD /Boot/ISOs/archlinux-2013.11.01-dual.iso
+                      \         APPEND iso
+                      \ "
+                  * now install the boot loader (not mbr/active here)
+                    \ syslinux command below requires mtools package installed (for mcopy command)
+                    * (if unmounted fs) sudo syslinux -i -d /Boot/Settings /dev/sde1
+                      \ "sde1 is the only partition from the SD card"
+                    - (if still mounted fs) different command with extlinux instead of syslinux
+                  * mark partition as active (required!)
+                    * sudo cfdisk /dev/sde
+                      \ Bootable, Write, yes, Quit
+                    - sudo fdisk /dev/sdc
+                      * press a for  toggle a bootable flag, then 1 to choose first(and only) partition from SD card
+                      * press p to see if it worked, should be a star * under Boot
+                      * then w to  write table to disk and exit
+                  * write the mbr code without overwriting partition(yeah it works, tested) [required!]
+                    * sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/bios/mbr.bin of=/dev/sde
+                      \ in manjaro
+                    - sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/mbr.bin of=/dev/sdc
+                      \ "note: the mbr.bin is either inside the zip or there in /usr/... in linux mint, note that I took the same version of syslinux in the .zip also"
+                  * done, go boot
+                    \ will only work if you select USB HDD  (not on USB FDD, USB CDROM, USB ZIP)  that is the usb card reader with 4g sdpro card on the desktop computer!
+                  * note MHDD .iso mhdd32ver4.6.iso can do security erase (fast and slow) ... can't do low level format though (as far as I can tell) but i read that new drives ignore low level format (and the long SMART self-test does the trick)
+                  * try hiren's bootcd .iso has many tools
+                    * hdat2 on hiren's bootcd cannot do hdd tests! however it can initiate smart self tests and doing the long one will revive drive with bad sectors! (reserved sectors didn't increase; maybe the "init" command that did the recalibration did the trick? otherwise it was for sure the long test!)
+                      * download hdat2 5 from http://www.hdat2.com/download.html the exe program (not sfx) and this will work!
+              * to enable console (USB)mouse (in virtualbox, at least, but copy/paste won't work in vbox from host)
+                \ "gpm -m /dev/input/mice -t imps2"
+                * to make it permanent look here
+                  \ "https://wiki.archlinux.org/index.php/Console_Mouse_Support"
+                  * add this line in file: /etc/conf.d/gpm
+                    \ "GPM_ARGS="-m /dev/input/mice -t imps2""
+                  * to start right now (only once)
+                    \ "systemctl start gpm.service"
+                  * to start at boot time (everytime), run this once:
+                    \ "systemctl enable gpm.service"
+              * get this mirror list into /etc/pacman.d/mirrorlist  (ok just get the first one [germany] it's max speed)
+                \ "##
+                \ ## Arch Linux repository mirrorlist
+                \ ## Generated on 2013-12-01
+                \ ##
+                \ 
+                \ ## Greece
+                \ #Server = https://foss.aueb.gr/mirrors/linux/archlinux/$repo/os/$arch
+                \ 
+                \ ## Iceland
+                \ #Server = https://mirror.system.is/arch/$repo/os/$arch
+                \ 
+                \ ## Netherlands
+                \ #Server = https://mirror.i3d.net/pub/archlinux/$repo/os/$arch
+                \ #Server = https://kluisip.nl/public/archlinux/$repo/os/$arch
+                \ 
+                \ ## Sweden
+                \ #Server = https://ftp.lysator.liu.se/pub/archlinux/$repo/os/$arch"
+              * setup network https://wiki.archlinux.org/index.php/Configuring_network#Check_the_connection
+                * systemctl stop dhcpcd.service   (wait, do I need to use disable instead of stop here? hmm i guess not, unless it copies files from the current livecd state to the newly installed system, but it shouldn't right?)
+                  \ "because it tends to overwrite /etc/resolv.conf (i think?)"
+                * hostnamectl set-hostname myhostname
+                * You can run ip link or ls /sys/class/net to list all available interfaces.
+                * ip addr add 192.168.0.2/24 dev enp0s3
+                * ip route add default via 192.168.0.1
+                * edit /etc/resolv.conf and add nameserver 8.8.8.8 and nameserver 8.8.4.4 and nameserver 208.67.222.222 and 208.67.220.220
+                  \ "actually just add the gateway ip here ('cause we're not using google dns anymore, and opendns servers have the evil redirect)"
+              * pacman -Syu
+                \ "squashfs allows changing the running system in memory until next reboot"
+              * install w3m to browse archwiki or something  (note that i can not view this workflowy with w3m )
+                \ "pacman -S w3m"
+              * 
+              * later on when in chroot setup the static ip networking:
+                \ "https://wiki.archlinux.org/index.php/Configuring_network#Manual_connection_at_boot_using_systemd"
+            * installing arch inside virtualbox
+              * make new  arch 64 bit machine
+                * 6123 ram
+                * create new dynamically allocated .VDI drive of 80gig on the 100gig (840 evo)ssd partition
+                  * go to settings, tick Solid State Drive, hit ok
+                  * exit virtualbox completely
+                  * (optional) mklink the arch 64 folder after moving it to the 100gig partition
+                  * (for trim to work) edit the .vbox file and search for "rot" (or "nonrotational") and add after this:
+                    \ "discard="true""
+                    * the harddisk file must be in .VDI format (file extension) and not .VMDK  - if it's VMDK it will not show TRIM support, so you're f*cked! NOTE: after importing from .OVA the hdd file will be VMDK unfortunately
+                      \ "$ VBoxManage clonehd --format VDI myserver.vmdk myserver.vdi"
+                    * in Windows works fine without further action
+                    - invalid(because it was vmdk instead of vdi):in Linux you have to do this(ok this doesn't work, just install virtual box additions that come with your version of virtualbox, within linux:  sudo VBoxLinuxAdditions.run but please create this folder /usr/lib/xorg/modules/drivers/  or else it will fail to install the X11 video driver link and say so on the console; dang it this still doesn't enable trim hmm) to see TRIM in sudo hdparm -I /dev/sda
+                      \ "in linux manjaro install(pacman):
+                      \ `virtualbox-guest-dkms`  with optional deps `linux-headers` (for your current kernel which was 3.12 at the time i wrote this, just: uname -a )
+                      \ then do what it says ie.
+                      \ sudo systemctl enable dkms.service
+                      \ sudo dkms install vboxguest/4.3.12
+                      \ which will compile the stuff
+                      \ if `sudo VBoxControl version` shows something like OSE in the versions then you need to do the above because you don't have TRIM as seen by hdparm
+                      \ "
+                  * exit editor, run virtualbox
+                * edit settings and increase cpus to 4, notice that PAE is not exposed
+                * set network adapter to bridged
+                * add z:\vm  as shared folder with automount and not readonly
+                * add the arch .iso
+              * start the vm
+                * set Shared Clipboard (from virtualbox menus) to Bidirectional (this won't work yet)
+                * to enable console (USB)mouse (in virtualbox, at least, but copy/paste won't work in vbox from host) (copy)
+                  \ "gpm -m /dev/input/mice -t imps2"
+                  * to make it permanent look here
+                    \ "https://wiki.archlinux.org/index.php/Console_Mouse_Support"
+                    * add this line in file: /etc/conf.d/gpm
+                      \ "GPM_ARGS="-m /dev/input/mice -t imps2""
+                    * to start right now (only once)
+                      \ "systemctl start gpm.service"
+                    * to start at boot time (everytime), run this once:
+                      \ "systemctl enable gpm.service"
+                * get this mirror list into /etc/pacman.d/mirrorlist  (ok just get the first one [germany] it's max speed) (copy)  generated by: https://www.archlinux.org/mirrorlist/all/https/
+                  \ "##
+                  \ ## Arch Linux repository mirrorlist
+                  \ ## Generated on 2014-04-09
+                  \ ##
+                  \ 
+                  \ ## Germany
+                  \ #Server = https://archlinux.limun.org/$repo/os/$arch
+                  \ 
+                  \ ## Greece
+                  \ #Server = https://foss.aueb.gr/mirrors/linux/archlinux/$repo/os/$arch
+                  \ 
+                  \ ## Iceland
+                  \ #Server = https://mirror.system.is/arch/$repo/os/$arch
+                  \ 
+                  \ ## Netherlands
+                  \ #Server = https://mirror.i3d.net/pub/archlinux/$repo/os/$arch
+                  \ #Server = https://kluisip.nl/public/archlinux/$repo/os/$arch
+                  \ 
+                  \ ## Sweden
+                  \ #Server = https://ftp.lysator.liu.se/pub/archlinux/$repo/os/$arch
+                  \ 
+                  \ "
+                  * i guess just add the first one, since we cannot paste this in the vm yet, so:
+                    \ "## Germany
+                    \ Server = https://archlinux.limun.org/$repo/os/$arch"
+                * setup network https://wiki.archlinux.org/index.php/Configuring_network#Check_the_connection (copy)
+                  * systemctl stop dhcpcd.service   (wait, do I need to use disable instead of stop here? hmm i guess not, unless it copies files from the current livecd state to the newly installed system, but it shouldn't right?)
+                    \ "because it tends to overwrite /etc/resolv.conf (i think?)"
+                  * hostnamectl set-hostname myhostname
+                  * You can run ip link or ls /sys/class/net to list all available interfaces.
+                  * ip addr add 192.168.0.2/24 dev enp0s3
+                  * ip route add default via 192.168.0.1
+                  * edit /etc/resolv.conf and add nameserver 8.8.8.8 and nameserver 8.8.4.4 and nameserver 208.67.222.222 and 208.67.220.220
+                    \ "actually just add the gateway ip here ('cause we're not using google dns anymore, and opendns servers have the evil redirect)"
+                * pacman -Syu (copy)
+                  \ "squashfs allows changing the running system in memory until next reboot"
+                * LVM
+                  \ "https://wiki.archlinux.org/index.php/LVM#Installing_Arch_Linux_on_LVM  need LVM because: https://wiki.archlinux.org/index.php/LVM#Advantages"
+                  * make sure lvm2 package is installed (usually isn't)
+                    \ "pacman -S lvm2"
+                  * partitioning
+                    * how to zero both MBR and GPT partitions (say bye bye to any existing data - since we're in virtualbox there was no data already anyway)
+                      \ "sgdisk --zap-all /dev/sda"
+                    * GPT
+                    * 
+                * 
+                * later on when in chroot, setup the static ip networking: (copy)
+                  \ "https://wiki.archlinux.org/index.php/Configuring_network#Persistent_configuration_on_boot_using_systemd_and_udev_rules"
+          * compiling arch kernel
+            * to support GPT partitions
+              \ "needs CONFIG_EFI_PARTITION  in kernel(not as module) to support GPT partitions! remember this"
+            * don't forget about grsecurity!
+              \ "currently no idea how to get it and didn't yet check it out"
+          * after install
+            * things that apply to any installs (real or virtual machine ones)
+              * profile-sync-daemon
+                \ "https://wiki.archlinux.org/index.php/Psd"
+                * more
+                  \ "http://bernaerts.dyndns.org/linux/74-ubuntu/250-ubuntu-tweaks-ssd"
+              * chromium settings and tweaks
+                \ https://wiki.archlinux.org/index.php/Chromium_Tips_and_Tweaks
+                * use chromium only for youtube videos or anything that doesn't require login, due to it being insecure (at least when compared to firefox+certificate patrol)
+                * get that cache in tmpfs one, at least
+                  \ "https://wiki.archlinux.org/index.php/Chromium_Tips_and_Tweaks#Cache_in_tmpfs"
+                * some privacy settings from uBlock creator
+                  \ https://github.com/gorhill/uBlock/wiki/Privacy-stuff
+            * things that apply only if installed on real bare metal (aka not inside virtualbox)
+              - swap chmod - well, unless it's a partition which it is so...
+                \ "https://wiki.archlinux.org/index.php/swap"
+              - deprecation update
+                \ "https://www.archlinux.org/news/deprecation-of-etcsysctlconf/"
+              * set swappiness to 10 (from 60, but not 0 because it will lag constantly) [this happened on linux mint]
+                \ "http://bernaerts.dyndns.org/linux/74-ubuntu/250-ubuntu-tweaks-ssd"
+                * ie. sudo sh -c "echo 10 > /proc/sys/vm/swappiness"  (but this is temporary)
+              * blacklist uvcvideo  to prevent internal lenovo camera from being used (press Fn+Esc once, to unplug camera)
+                * sudo vim /etc/modprobe.d/blacklist.conf
+                * add this line:
+                  \ "blacklist uvcvideo"
+          * install emoji font(s)
+            - actually first install the symbola font below, then if not all symbols are seen install this: http://fsymbols.com/emoji-bookmarklet/
+            * check if you see the fonts: I only see the right one here: 
+              * http://www.fileformat.info/info/emoji/browsertest.htm
+            * install symbola font in manjaro/arch with: sudo pacman -S ttf-symbola
+              \ chromium needs restart after that ^
+              \ test with this: http://www.fileformat.info/info/unicode/char/1f4a9/browsertest.htm
+            - install the symbola font for the other moon on the left from http://users.teilar.gr/~g1951d/  direct link here: http://users.teilar.gr/~g1951d/Symbola.ttf
+              - recheck the links to see if you see the emojis now, works on mint
+        * get
+          - Xylitol sugar aka Xilit (nyírfacukor)
+            \ http://www.healingteethnaturally.com/rinsing-mouth-brushing-teeth-with-xylitol-sugar.html
+          * Tea tree oil (Melaleuca alternifolia, also melaleuca oil) aka teafa olaj (teafaolaj) - seen this somewhere, thus I could get it
+            \ aka Teebaumöl
+            \ http://www.healingteethnaturally.com/essential-oils-for-oral-care-and-healing-of-gums.html
+          - a terminal that doesn't save scrollback in /tmp #security
+            \ http://www.climagic.org/bugreports/libvte-scrollback-written-to-disk.html
+            * urxvt aka rxvt
+              * really bugged tho, must find alternative OR strip out non-essentials?
+          * lint-free clothes #fabrican
+            \ "they don't sell this yet, apparently"
+        * checkout/explore/maybe_use/
+          * check out these tree visualizations for inspiration
+            \ "DONE://this: http://www.mind-mapping.org/mind-mapping-software/15?selectedCategories[]=all%20categories&selectedOSes[]=Linux&pastOrPresent[]=current&datePicker2=&filterData=Show+selected+items
+            \ 
+            \ not done,next: http://vcg.informatik.uni-rostock.de/~hs162/treeposter/poster.html
+            \ 
+            \ not done, but outdated, next: http://semanticweb.org/wiki/Tools"
+            * yWorks yED and yFiles  - these are good for diagrams (not tested yet, but way better than kDia apparently)
+              \ "http://www.yworks.com/en/products_yed_about.html"
+            * this is looking quite #good: protege
+              \ "https://github.com/protegeproject/protege/wiki/Building-from-Source
+              \ https://github.com/protegeproject/protege"
+            * maltego is good, but only testing its little brother CaseFile and it seems to have some nice graph editing capabilities! but not sure if the Notes part is enough for filling in my text(from workflowy) for that node
+              \ "http://www.paterva.com/web6/products/download.php"
+            - deepamehta comes quite close to what I want but it's currently unusable for me as a workflowy and trello replacement
+            * at MindRaider currently - almost #good but not really, maybe we can find better?
+              \ "http://sourceforge.net/projects/mindraider/"
+            - outwiker not as good with attachments, ie. can't drag/drop on article, and didn't check for note to note links easiness
+            - keepnote - i don't like it :) the editing is too  clumsy, esp. the node-to-node linking
+            * tomboy #good but lacking attachment features
+              \ "pretty good and simple, but doesn't have ability to keep pics or something; but has links between notes easily; but doesn't have a hierarchy"
+            - WikiPad
+              * fail to run it
+                \ "$ python WikidPad.py
+                \ Traceback (most recent call last):
+                \   File "WikidPad.py", line 1, in <module>
+                \     import WikidPadStarter
+                \   File "/home/emacs/Downloads/wikipad/WikidPadStarter.py", line 237
+                \     except Exception, e:
+                \                     ^
+                \ SyntaxError: invalid syntax
+                \ [emacs@manji wikipad]$ python --version
+                \ Python 3.4.1
+                \ "
+            - MyTetra #nofeatures #lacking
+              \ "https://github.com/xintrea/mytetra_dev/"
+              * to compile it from github (the `experimental` branch) #manjaro #arch
+                * requirements
+                  * gdb
+                    \ "sudo pacman -S gdb"
+                    * because getting this error when gdb is missing
+                      \ "{ test -n "bin/" && DESTDIR="bin/" || DESTDIR=.; } && test $(gdb --version | sed -e 's,[^0-9][^0-9]*\([0-9]\)\.\([0-9]\).*,\1\2,;q') -gt 72 && gdb --nx --batch --quiet -ex 'set confirm off' -ex "save gdb-index $DESTDIR" -ex quit 'bin/mytetra' && test -f bin/mytetra.gdb-index && objcopy --add-section '.gdb_index=bin/mytetra.gdb-index' --set-section-flags '.gdb_index=readonly' 'bin/mytetra' 'bin/mytetra' && rm -f bin/mytetra.gdb-index || true
+                      \ /bin/sh: gdb: command not found
+                      \ /bin/sh: line 0: test: -gt: unary operator expected
+                      \ "
+                    * but hmm, cannot make `make` continue now, says nothing to do, as if it worked ok the last time
+                      * make clean && make
+                        \ "no error now:
+                        \ { test -n "bin/" && DESTDIR="bin/" || DESTDIR=.; } && test $(gdb --version | sed -e 's,[^0-9][^0-9]*\([0-9]\)\.\([0-9]\).*,\1\2,;q') -gt 72 && gdb --nx --batch --quiet -ex 'set confirm off' -ex "save gdb-index $DESTDIR" -ex quit 'bin/mytetra' && test -f bin/mytetra.gdb-index && objcopy --add-section '.gdb_index=bin/mytetra.gdb-index' --set-section-flags '.gdb_index=readonly' 'bin/mytetra' 'bin/mytetra' && rm -f bin/mytetra.gdb-index || true
+                        \ "
+                * compile
+                  * qmake-qt4 mytetra.pro && make
+                  * to run:
+                    \ "./bin\mytetra"
+              * doesn't have highlight on the main Find, but it has secondary find, so it's a hassle trying to find exact phrase in the text: you have to enter it twice in two different finds, for each article that was found with the first main Find.
+              * no ability to link to nodes or anything else, unless maybe editing the html, but can insert images! worse than zim
+              * how to set up git with MyTetra (scroll down)
+                \ "http://webhamster.ru/site/page/index/articles/projectcode/138"
+            * treepad lite TreePad Lite for Linux 64 bit Version 4.6 beta  #nofeatures #lacking
+              \ "there is no Undo whatsoever, how teh fsk, really?!really man?!"
+            * zim is great #good, but some #bugs .... and nothing done to fix them ie. #outdated
+              \ "https://bugs.launchpad.net/zim"
+              * it has backlinks!
+              * it has links but moving the node doesn't update the links grrr
+            - cherrytree is great but #bugs
+              * has anchors in text which can be linked to
+              * but segfault!!!! maybe I shouldn't try encrypt+pack at all
+              - I will use this, apparently. - nevermind I found Leo
+            - explore this as workflowy/trello replacer
+              \ "IHMC CmapTools http://cmap.ihmc.us/download/index.php"
+            * there's a list of a lot of them here:
+              \ "http://www.mind-mapping.org/full-list-historical.php"
+              * check Leo - ooooh this is the sheeeet! :)
+                \ Literate programmer's editor, outliner, and project manager
+                \ "http://sourceforge.net/projects/leo/"
+                \ yaourt -S leo
+            - also check theBrain
+            - this is better: TreeSheets
+              \ "http://strlen.com/treesheets/"
+              * but some editing bugs
+              * slow to move around when lots of stuff are added
+            * explore more from here: https://pcmonk.wordpress.com/2014/04/01/why-dont-we-have-a-general-purpose-tree-editor/
+              \ "after graphcommons in comments"
+            - explore if this is better than workflowy
+              \ Actually this one is ok: workflowysh on github (a vim plugin)
+          * find which foods are needed to satisfy essential nutrients
+            * https://en.wikipedia.org/wiki/Essential_nutrient
+            * https://en.wikipedia.org/wiki/Parsnip
+            * vitamin A from Japanese persimmon
+            * https://en.wikipedia.org/wiki/Horseradish
+            * Weight Loss Explained! Why Diets Fail, How to Really Lose Weight, Nutrition & Health Tips
+              \ "https://www.youtube.com/watch?v=nmSVXovVQSI"
+          * openwrt for my router
+            * or just recompile the software for it
+              * remove heartbeat and led flashing when that ping doesn't happen
+                * wait, does this mean it received ping replies?
+          * #rust
+            * http://static.rust-lang.org/doc/master/tutorial.html
+            * http://rust-class.org/pages/using-rust-for-an-undergraduate-os-course.html
+            * compile rust locally (2.1gig expected folder size)
+              * why compiling rust is so slow
+                \ "https://mail.mozilla.org/pipermail/rust-dev/2012-October/002467.html"
+              * well here's make (rust)
+                \ "real 43m50.019s
+                \ user 48m53.912s
+                \ sys 1m8.836s
+                \ but i already had stuff made before, so it likely used cache (ccache even)"
+              * make check
+                \ "real 7m14.869s
+                \ user 10m28.844s
+                \ sys 0m8.088s
+                \ 
+                \ real 7m14.979s
+                \ user 10m28.848s
+                \ sys 0m8.104s
+                \ "
+          * preparing arch inside a virtualbox, as guest
+            \ "wanted to install arch since Oct 16, 2013 at 8:08 am  and still didn't... #procrastination is so easy when the steps are unclear due to lack of accessibility ie. if one could see all the limitations that is the things defined in terms of limits/limitations, so one knows what is possible as well as what is not possible... then it would be simpler and it would decrease procrastination - this will be doable with the program that i want to make"
+            * cpufreq-info
+              * maybe set to conservative (after arch)
+              * check to see if this still holds, on arch
+            * make use of iotop
+              \ "http://www.binarytides.com/monitor-disk-io-iotop-cron/
+              \ sudo iotop -botqqqk --iter=60"
+            * get a freaking linux firewall, that is, per application settings for outgoing
+              \ "https://grsecurity.net"
+              * https://wiki.archlinux.org/index.php/grsecurity#Installation
+            * how to configure ext4 to enable trim - should use Scheduled TRIM (apparently)
+              \ "http://lightrush.ndoytchev.com/random-1/howtoconfigureext4toenabletrimforssdsonubuntu"
+              * also has testing if trim worked with --fibmap here:
+                \ "http://askubuntu.com/questions/18903/how-to-enable-trim/19480#19480"
+            * hybrid gfx, maybe read this: http://www.taringa.net/posts/linux/17364666/Configurar-Hybrid-Graphics-y-reducir-temperatura-en-Arch-Lin.html or PRIME
+              \ "there's also wiki: https://wiki.archlinux.org/index.php/hybrid_graphics"
+            * read this about pacman https://www.digitalocean.com/community/articles/how-to-use-arch-linux-package-management
+              \ "also wiki: https://wiki.archlinux.org/index.php/pacman"
+            * do cronky http://xmodulo.com/2013/12/install-configure-conky-linux.html
+            * get the hosts file up http://www.putorius.net/2012/01/block-unwanted-advertisements-on.html
+              * actually use dnscrypt and unbound here, just like i did in windows before switching to linux (not yet switched atm)
+            * get this mp3 searcher/player stuff for #arch https://plus.google.com/u/0/113913784152698409714/posts/2hebKxu2Jt2?cfem=1
+              \ "check this pkgbuild script: http://ix.io/9fW (it's text) github: https://github.com/np1/mps"
+            * LXDM+LXDE as desktop/display manager; openbox is the vm (window manager? or virtual manager? what did I mean here?) 
+              \ "or XFCE or wtw it's called, seems ok for the Manjaro distribution(arch-based)"
+              * https://wiki.archlinux.org/index.php/LXDE#Installation
+              * https://wiki.archlinux.org/index.php/LXDM
+            * LUKS on LVM (not LVM on LUKS)
+              \ "https://wiki.archlinux.org/index.php/Encrypted_LVM#Spanned.2FMultiple_Disks"
+            * #swap : supposedly I don't need swap because I've plenty of ram, however this means no hibernation(wouldn't want it anyway because SSD wear)
+              * but swap does support TRIM though
+                \ "https://wiki.archlinux.org/index.php/swap"
+              * Btrfs does not support swap files.
+                \ "This is due to swap files requiring a function that Btrfs doesn't have for possibility of corruptions.link A swap file can be mounted on a loop device with poorer performance but will not be able to hibernate."
+              * set swappiness to 10% or 20%(forgot which) (not 0% because this didn't work in linux mint when I had like 3.5gig memory)
+            - need more scrollback buffer when shift+pgup in arch linux vm (live cd at least has way too less)
+              \ "maybe needs kernel recompile"
+              - done https://bbs.archlinux.org/viewtopic.php?pid=1442384#p1442384
+            * partition will be GPT
+              \ "https://wiki.archlinux.org/index.php/Partitioning#Choosing_between_GPT_and_MBR"
+            * reading this
+              \ "https://wiki.archlinux.org/index.php/LVM#Installing_Arch_Linux_on_LVM"
+            * check if trim works:
+              \ "https://sites.google.com/site/lightrush/random-1/checkiftrimonext4isenabledandworking"
+        * github
+          * make a chromium patch that reintroduces this flag: https://codereview.chromium.org/2013008
+            \ "https://code.google.com/p/chromium/issues/detail?id=40083
+            \ https://codereview.chromium.org/2013008/patch/26001/27001"
+        * fix
+          - find a software way to prevent double-clicks from happening when single clicking due to hardware issue in the mouse
+            * basically here, prevent too fast single clicks from registering as double clicks, just like too slow single clicks are prevented... that kind of threshold
+            * more exact info: http://superuser.com/questions/519151/mouse-double-click-min-interval
+            * https://en.wiktionary.org/wiki/debounce
+            * ok let's try finding the source code
+              * starting from `mate-mouse-properties`
+                * skipped (documenting here)a few steps and we are here
+                  \ "http://www.unix.com/man-page/all/3x/XChangeActivePointerGrab/"
+                  * reading this now: http://menehune.opt.wfu.edu/Kokua/Irix_6.5.21_doc_cd/usr/share/Insight/library/SGI_bookshelves/SGI_Developer/books/XLib_PG/sgi_html/ch09.html
+    * howtos
+      * life
+        * L-Lysine for herpes/HPV virus  (also fenivir cream - UPD: actually either L-Lysine is so good or it+Acyclovir AL 2gr 5 times per day every 4 hours  did the job)
+          \ it's regenerative (on my skin + makes skin oily)
+          \ it's also diuretic
+          * "Dr. Herold and her colleagues had previously shown that infection by the herpes viruses depends on calcium released within the cells. In this study, they found that calcium release occurs because the viruses activate a critical cell-signaling molecule called Akt at the cell membrane."
+            \ "src: http://www.sciencedaily.com/releases/2013/03/130325160231.htm"
+      * on any platform (linux/windows)
+        * gcc -Q -c -v -march=native --help=target
+          \ this creates help-dummy.o in current dir !
+        * ca-42 router cable pinouts
+          \ "http://mennucc1.debian.net/lacie_network_space/nokia-ca-42/nokia%20ca-42%20usb%20to%20TTL%20serial%20with%20arkmicro%20chip%20and%20belkin%20router%20F5D8235-4%20V2000%20serial%20console%20at%2057600%20baud.png"
+        * convert .m4a (DASH) from youtube to .mp3 playable in foobar2000 (thanks to 3dyd who made foo_youtube) can be done with this command:
+          \ "ffmpeg.exe -i "Kirk Gadget - Hot Pursuit-L3j7qwyNRG8.m4a" -c:a copy xxx.m4a"
+          * also mentioned in: https://github.com/rg3/youtube-dl/issues/2288#issuecomment-38015672
+          * here's a windows batch for this: m4a to mp3
+            \ "@echo off
+            \ if "z%1" == "z" goto :badusage
+            \ if not "z%2" == "z" goto :badusage
+            \ 
+            \ "%~dp0\ffmpeg.exe" -i %1 -c:a copy "%~1.foobar2000.m4a"
+            \ 
+            \ goto :zeof
+            \ 
+            \ :badusage
+            \ echo pass input file as first parameter, make sure it's quoted
+            \ goto :zeof
+            \ 
+            \ :zeof
+            \ pause"
+        * setup chromium
+          * issues:
+            * 3 random DNS queries (well, http requests actually, with original user agent - umatrix cannot spoof this one)
+              \ https://code.google.com/p/chromium/issues/detail?id=47262
+          * start chromium with:
+            \ "chromium --disk-cache-dir=/tmp/cache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83
+            \ 
+            \ and/or
+            \ 
+            \ export CHROMIUM_USER_FLAGS="--disk-cache-dir=/tmp/cache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83"
+            \ 
+            \ in ~/.profile
+            \ (not tested yet)"
+            * obviously don't login or associate with a google account
+            * disable all plugins from chrome://plugins/
+            * cache in tmpfs #arch
+              \ "https://wiki.archlinux.org/index.php/Chromium_Tips_and_Tweaks#Cache_in_tmpfs"
+            * to disable rc4 cypher in chromium (add to command line launch):
+              \ "--cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83"
+          * set startpage as the search engine
+            \ "https://support.startpage.com/index.php?/Knowledgebase/Article/View/201/9/how-do-i-install-startpage-as-my-default-search-engine-in-chrome"
+            * open this in new tab
+              \ "chrome://settings/searchEngines"
+            * use this as url (it has embedded preferences/Settings already set - so no need for them to be in a cookie already)
+              \ this: https://startpage.com/do/search?prf=f5c8491e12d33a809c848ecb603ba82b&query=%s
+            * remove all other search engines from there
+          * set home page to startpage (in settings -> appearance -> show home button -> Change)
+            \ https://startpage.com/do/mypage.pl?prf=f5c8491e12d33a809c848ecb603ba82b
+            \ if searches from this home page turn out to not work(home page is displayed again) then use this as home page  instead:
+            \ https://startpage.com/do/mypage.pl?prf=f5c8491e12d33a809c848ecb603ba82b&query=home
+          * disable
+            \ "Use a prediction service to help complete searches and URLs typed in the address bar"
+          * disable
+            \ "Send a ‘Do Not Track’ request with your browsing traffic"
+          * enable
+            \ "Enable phishing and malware protection"
+          * disable
+            \ "Predict network actions to improve page load performance"
+          * disable
+            \ "Enable Autofill to fill out web forms in a single click."
+          * disable
+            \ "Offer to save passwords I enter on the web."
+          * obviously disable
+            \ "Continue running background apps when Chromium is closed"
+          * in settings->Advanced->privacy->Content Settings
+            \ "Cookies:
+            \ select: Keep local data only until you quit your browser;  
+            \ tick: Block third-party cookies and site data
+            \ Handlers:
+            \ select: Do not allow any site to handle protocols
+            \ Plug-ins:
+            \ select: Block All
+            \ Location:
+            \ select: Do not allow any site to track your physical location
+            \ Notifications:
+            \ select: Do not allow any site to show desktop notifications
+            \ Mouse cursor:
+            \ select: Do not allow any site to disable the mouse cursor
+            \ Media:
+            \ select: Do not allow sites to access your camera and microphone
+            \ Unsandboxed plugin access:
+            \ select: Do not allow any sites to use a plug-in to access your computer
+            \ Automatic downloads:
+            \ select: do not allow...
+            \ "
+          * in Settings->Downloads->Download location: Change
+            \ "download location: /tmp   and tick Ask where to save each file before downloading"
+          * install the following (5-6) extensions
+            * WebRTC Block - doesn't block WebRTC anymore( https://diafygi.github.io/webrtc-ips/ ) so only use this if you haven't compiled chromium to disable webrtc, but don't expect it to work
+              \ https://chrome.google.com/webstore/detail/webrtc-block/nphkkbaidamjmhfanlpblblcadhfbkdm/reviews
+              \ with uMatrix you may need to add this line
+              \ * googleusercontent.com other allow
+              \ to Temporary Rules in uMatrix->My rules tab, otherwise you will get an error: "There was a problem adding the item to Chrome. Please refresh the page and try again."
+              * chromium reports your local IP (LAN IP) via WebRTC! well fml
+                \ see your local IP here: https://diafygi.github.io/webrtc-ips/
+                \ also this(but doesn't show local IP): https://www.browserleaks.com/webrtc
+            - adblock plus
+              \ "https://chrome.google.com/webstore/detail/adblock-plus/cfhdojbkjhnklbpkdaibdccddilifddb"
+            - requestpolicy for chrome called KISS Privacy: https://chrome.google.com/webstore/detail/kiss-privacy/lfopjlendebbnfddpgpoaahmpbgmffii
+              \ "https://github.com/hultqvist/Kiss   looks like need MS Visual Studio to compile(?)"
+              * options:
+                \ "untick: Ignore leading www.
+                \ Cross domain: block
+                \ Same exact domain: pass
+                \ Same top domain: block
+                \ Preset action: clear  (when allowing new rules, always use clear)
+                \ untick: Allow request within same domain even though "block:*>domain" is set.
+                \ "
+            - html5 video for youtube (optional, if you wanna watch youtube - without flash plugin that is)
+              \ "https://chrome.google.com/webstore/detail/html5-video-for-youtube/dolajcekhnohkpncmhgledbmndjpblei
+              \ 
+              \ https://github.com/chrisrobins/YouTubeHTML5"
+              * also this may be needed for some videos
+                \ "https://www.youtube.com/html5"
+            * https everywhere
+              \ "https://www.eff.org/https-everywhere"
+            - scriptsafe
+              \ "https://chrome.google.com/webstore/detail/scriptsafe/oiigbmnaadbkfbmpbfijlflahbdbdgdf"
+              * settings:
+                \ "Unwanted Content Mode: Strict
+                \ 
+                \ annoyances|true
+                \ annoyancesmode|strict
+                \ antisocial|true
+                \ applet|true
+                \ audio|true
+                \ blackList|["*.google.com"]
+                \ classicoptions|false
+                \ cookies|true
+                \ domainsort|true
+                \ embed|true
+                \ enable|true
+                \ frame|true
+                \ iframe|true
+                \ image|false
+                \ linktarget|off
+                \ mode|block
+                \ noscript|true
+                \ object|true
+                \ preservesamedomain|false
+                \ rating|true
+                \ referrer|true
+                \ referrerspoof|off
+                \ refresh|true
+                \ script|true
+                \ sync|false
+                \ syncenable|false
+                \ syncfromnotify|true
+                \ syncnotify|true
+                \ updatenotify|true
+                \ useragentspoof|off
+                \ useragentspoof_os|off
+                \ video|true
+                \ webbugs|true
+                \ whiteList|["github.com"]
+                \ xml|true"
+            - bitdefender trafficlight (kinda optional)
+              \ "https://chrome.google.com/webstore/detail/trafficlight/cfnpidifppmenkapgihekkeednfoenal"
+            - (optional) sidewise tree style tabs
+              \ "https://chrome.google.com/webstore/detail/sidewise-tree-style-tabs/biiammgklaefagjclmnlialkmaemifgo"
+              * Better one: TABS OUTLINER  which does the same thing as Tree Style Tabs
+                \ "https://chrome.google.com/webstore/detail/tabs-outliner/eggkanocgddhmamlbiijnphhppkpkmkl"
+            - (optional) TabHibernate will be a Chrome Extension that will send inactive Tabs into some kind of "Hibernate" mode - this will send all tabs to sleep with 1 click of an icon
+              \ "https://chrome.google.com/webstore/detail/tab-hibernation/pbdpajcdgknpendpmecafmopknefafha/details"
+            - flashcontrol - need this to disable the "need flash" nag
+              \ "https://chrome.google.com/webstore/detail/flashcontrol/mfidmkgnfgnkihnjeklbekckimkipmoe"
+            - Referer Control extension  (set Block 3rd party)
+              \ "https://chrome.google.com/webstore/detail/referer-control/hnkcfpcejkafcihlgbojoidoihckciin/related?hl=en"
+              * but it conflicts with ScriptSafe, so disable, set to Off the Referrer Spoof in ScriptSafe because this Referer Control extension is better ie. it won't break the image on this page http://www.hardwaresecrets.com/article/Understanding-RAM-Timings/26/2
+                \ "Warning:    This extension failed to modify the request header "Referer" of a network request because the modification conflicted with another extension (Referer Control)."
+              * ok i guess we don't need this because ScriptSafe has Referrer Spoof:
+            * uBlock
+              \ from github
+            * YouTweak for YouTube from my github
+            * HTTP Switchboard from github
+              * options
+                * Settings tab
+                  * Enable strict blocking
+                  * Auto create temporary site-level scope
+                  * Auto delete unused temporary scopes
+                  * when the matrix is closed, smart reload these tabs: Current
+                * Privacy tab
+                  * Delete blocked cookies
+                  * Delete local storage content set by blocked hostnames
+                  * Remove third-party HTTP referer information from requests to non-whitelisted hostnames. 
+                  * Block all hyperlink auditing attempts.
+                * Ubiquitous rules - all deselected
+                * import recipe httpsb-all-rules-backup.txt
+            * FooTab from my coostomhuston
+              \ to prevent autorestoring tabs from slowing down chromium
+            * optional extensions:
+              * see JSON better (like a tree): jSON_formatter
+                \ "https://chrome.google.com/webstore/detail/json-formatter/bcjindcccaagfpapjjmafapmmgkkhgoa"
+              - Tree History: browsing history as a tree
+                \ "https://chrome.google.com/webstore/detail/tree-history/kfgnedbkboedeildkjiodjhpldgfekjm"
+              - github octotree
+                \ "https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc"
+        * setup firefox
+          * in about:config
+            * extensions.sdk.console.logLevel
+              \ New->String, Ctrl+Alt+J (or K) to open console and see the logs
+              \ set to: all
+              \ more info https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/console#Setting_the_Logging_Level
+            * extensions.https_everywhere.LogLevel  (integer)
+              \ 1 meaning VERBose
+              \ 2 DBUG
+              \ 3 INFO
+              \ 4 NOTE
+              \ 5 WARN  (default)
+            - enable (true) XXX: this will fail with google sites and now on gentoo wiki too(that rackcdn) - so keep on false as it's the default now
+              \ security.OCSP.require
+              \ just set this to false which is default, because it suxxx
+              \ see: disable Online Certificate Status Protocol (OCSP) checks
+              \ here: https://calomel.org/firefox_ssl_validation.html
+              \ for more info.
+            * disable by setting to 0 OR just do this from Calomel!
+              \ security.OCSP.enabled
+            * disable geo 
+              \ geo.enabled false
+              * also clear the geo.wifi.url key contents
+              * also clear browser.search.geoip.url
+              * browser.search.geoSpecificDefaults = false
+              * already cleared: browser.search.geoip.url
+            * some more safebrowsing things to disable
+              * browser.safebrowsing.downloads.remote.enabled  = false
+            * disable WebRTC
+              \ https://www.browserleaks.com/webrtc#webrtc-disable
+              \ about:config and toggle media.peerconnection.enabled to false.
+              \ XXX: do I need to false this too? media.peerconnection.video.enabled
+            * disable WebGL
+              \ https://www.browserleaks.com/webgl#howto-enable-disable-webgl
+              \ webgl.disabled true
+            * remove insecure RC4 cypher  by setting the related security.ssl3.* prefs to false.; just search for: rc4
+              \ can do all this by installing calomel, selecting 256 bit only and clicking apply. Restart browser then deselect 256 bit... Apply. (don't select anything else on that subsection)
+              \ or manually:
+              \ http://blog.laimbock.com/2014/01/09/how-to-make-firefox-more-secure-with-tls-1-2/
+              \ security.ssl3.rsa_fips_des_ede3_sha: false
+              \ security.ssl3.rsa_rc4_128_md5
+              \ security.ssl3.rsa_rc4_128_sha
+              \ security.ssl3.ecdhe_ecdsa_rc4_128_sha
+              \ security.ssl3.ecdhe_rsa_rc4_128_sha
+            * make new: plugins.notifyMissingFlash  (so firefox doesn't bother you when flash is needed but you don't have it installed) but also install flashblock or else you see placeholder with Install Flash button
+              \ "false"
+            * set cache in /tmp  (it's good to have the cache, rather than in memory)
+              * Right-click somewhere in the list and select "New > String"
+              * For the name of the preference type:
+                \ "browser.cache.disk.parent_directory"
+              * For its value type the path to where you want to store the cache:
+                \ "/tmp/firefoxcache/"
+              * browser.cache.disk.smart_size.enabled
+                \ "false"
+              * browser.cache.disk.capacity
+                \ "3145728
+                \ limited to 1048576 when set from Edit->Preferences->Advanced->Network->Limit cache to: 1024 MB"
+              * browser.cache.disk.max_entry_size
+                \ "1151200
+                \ default is: 51200"
+              * browser.cache.memory.enable
+                \ "true"  (already true)
+              * browser.cache.memory.capacity  (make new, integer)
+                \ 5131072
+                \ default: 131072
+              * browser.cache.memory.max_entry_size
+                \ 125120
+                \ default: 5120
+              * cache number of webpages for use with Back button
+                \ browser.sessionhistory.max_total_viewers 512
+              * browser.cache.disk.enable
+                \ "true"  already true
+            * remove new tab thumbnails
+              \ "Double-click the browser.newtab.url preference and change the url from about:newtab to about:blank. "
+              * also, to be sure, set this to false:
+                \ "browser.newtabpage.enabled"
+            * disable shift+wheel doing back/forward in browser (and rather just do what normal wheel does: scroll up/down - there doesn't seem to be a way to scroll horiz tho, or so they say)
+              \ "http://askubuntu.com/questions/404737/horizontal-scrolling-in-firefox-to-shiftmouse-scroll-instead-of-back-forward"
+              * mousewheel.with_shift.action
+                \ "1" (was 2)
+            * places.history.enabled   (actually I need this in linux, else it won't cache the urls that I visited; just remember that bug https://bugzilla.mozilla.org/show_bug.cgi?id=1015001 )
+              \ "false"
+              \ actually setting this to false may be a good idea to avoid the epic slowdown after a few months of a few seconds when loading any page (had to get a new firefox profile to get rid of it) - YES let's do this!
+            - enable 3D hardware acceleration: (it's slower with this than just software acceleration, so avoid)
+              \ http://askubuntu.com/questions/491750/force-enable-hardware-acceleration-in-firefox
+              * 0. enabled by default: Edit->Preferences->Advanced->General->Use hardware acceleration when available
+              * 1. Check if Hardware acceleration is actually enabled in Firefox by visiting about:support looking for "GPU Accelerated Windows 1/1 OpenGL (OMTC)" under graphics. If this shows 1/1 you can stop right here, you not need this tweak. But if it shows 0/1 you can force it on ...
+              * 2. Open about:config in Firefox (url bar)
+              * 3. Set layers.acceleration.force-enabled and layers.offmainthreadcomposition.enabled to true
+              * 4. start firefox like this: MOZ_USE_OMTC=1 firefox
+                \ or put this in ~/.xinitrc
+                \ export MOZ_USE_OMTC=1
+              * test hardware acceleration FPS
+                \ https://developer.mozilla.org/media/uploads/demos/p/a/paulrouget/8bfba7f0b6c62d877a2b82dd5e10931e/hacksmozillaorg-achi_1334270447_demo_package/HWACCEL/
+            * reflows
+              \ from here: http://www.computerworld.com/article/2541429/networking/hacking-firefox--the-secrets-of-about-config.html?page=2
+              \ create integer:
+              \ content.notify.interval 500000
+              \ content.max.tokenizing.time 10000
+              \ content.switch.threshold 30000000
+              \ content.notify.ontimer true
+              \ content.interrupt.parsing true  (already exists and set to true, by something else apparently)
+              \ I think it needs browser restart to see the effect
+            - open search in new tab
+              \ browser.search.openintab true
+              \ changed my mind: this is better when false and using Ctrl+T when also using treestyle tabs, otherwise the new tab is not sibbling of current but rather sibbling of last root...
+            - open bookmarks in new tab
+              \ browser.tabs.loadFolderAndReplace true
+              \ also this, leave it false
+            * browser.search.update
+              \ false
+            * set security.tls.version.min to 2 to allow only tls v1.1 and 1.2 (not 1.0 or ssl3)
+              \ calomel can do this from a setting!
+              \ this break gnu.org which can do only tls v1.0
+          - add startpage by visiting it: Add to firefox - make default engine
+          - remove all search engines from the toolbar (left click)
+          - add this as homepage (preferences embedded in url, so cookie independent)
+            \ https://startpage.com/do/mypage.pl?prf=f5c8491e12d33a809c848ecb603ba82b
+            \ but set: show my windows and tabs from last time
+          * disable all plugins
+            \ "about:addons"
+          * Edit->Preferences
+            * Privacy
+              * Use Custom Setting for history
+                * untick Remember my browsing and download history
+                * untick Remember search and form history
+                * tick Accept cookies from sites
+                  * Never - Accept third party cookies
+                  * Keep Until
+                    * they expire
+                    - I close firefox
+                  * untick Clear history when firefox closes
+            * Security
+              - untick Block reported attack sites
+              - untick Block reported web forgeries
+              * untick Remember password for sites
+            * Advanced (vertical tab)
+              * General (horizontal tab)
+                * Accessibility (vertical label)
+                  * Warn me when websites try to redirect or reload the page
+                    \ mainly to prevent really quick(flood-like) page-reloads due to some bugs or lacking their expectes scripts (noscript-caused)
+                * Browsing (vertical label)
+                  * untick Use hardware acceleration when available
+              * Data Choices
+                * untick Firefox Health Report
+          * addons(aka extensions)
+            \ "about:addons"
+            * uBlock Origin (do I really need this if I have policeman? I do apparently because eg. it blocks urls like this: https://piwik.gentoo.org/piwik.php?idsite=7 )
+              \ https://addons.mozilla.org/en-us/firefox/addon/ublock-origin/
+            - SDC aka self destructing cookies
+              \ https://addons.mozilla.org/en-US/firefox/addon/self-destructing-cookies/
+              \ Idea to use this addon is from privacytools.io website (check it out!)
+              * make sure "Site Preferences" are not auto-cleared on firefox exit because "SDC's whitelist is stored as site preferences."
+                \ Edit->Preferences->Privacy->History->Settings->Site Preferences (untick!)
+              * install addon. (no ff restart needed)
+              * add sites that you need to logon into, to your whitelist (none currently; so nothing more to do)
+            - RAS aka random agent spoofer (not using this due to the need to have nodejs-jpm which seems to carry ~/.npm 17meg of npm stuff and requires jpm to make the .xpi everytime) TODO: make sure some options from this are set in about:config eg. disable pdfjs,webgl,webrtc
+              \ //dont get this: https://addons.mozilla.org/en-US/firefox/addon/random-agent-spoofer/
+              \ XXX: there's a github version, remove the AMO version (^ above) if you want to install the github version!!!
+              \ github(get this!): https://github.com/dillbyrne/random-agent-spoofer
+              \ Idea to use this addon is from privacytools.io website (check it out!)
+              * ensure Calomel's ->Privacy->[ ]anonymize the user agent - is unset!
+              * install addon (no ff restart needed btw)
+                \ instructions: https://github.com/dillbyrne/random-agent-spoofer/wiki/Installation-instructions
+                * git clone https://github.com/dillbyrne/random-agent-spoofer.git
+                * need mozilla sdk to make the .xpi
+                  \ nope, this is oldway: on manjaro/archlinux: aur/addon-sdk  (formerly (called?): jetpack)
+                  * newway, install: aur/nodejs-jpm   (you should have jpm command after this!)
+                    \ XXX: there's no jpm on gentoo! (e-file jpm)
+                * chdir to your cloned github dir
+                * jpm xpi
+                  \ run that!
+                  \ you see something like this:
+                  \ JPM undefined Successfully created xpi at /home/emacs/build/1nonpkgs/random-agent-spoofer/jid1-AVgCeF1zoVzMjA@jetpack-0.9.5.4.xpi
+                * point firefox to that file to install it! (make sure AMO version of this addon didn't previously exist in firefox!(author says)  but github version of it, could've existed just fine!)
+              * configuring:
+                * left click the blue icon
+                  * Profile (tab)
+                    * choose Random(Desktop)
+                    * Change Periodically: Random
+                  * Headers (tab)
+                    * Spoof Source Referer: Match base domain
+                      \ TODO: maybe this means we don't need the addon called: RefControl with block 3rd party set
+                    * Referer trimming policy: Send Full URI (default)
+                    * Disable Authorization
+                  * Options (tab)
+                    * Script Injection Options, enable(select) only the following:
+                      * Enable script injection
+                      * Time zone spoofing (UTC): Random
+                      * Screen size spoofing : 1920x1080
+                      * Protect window.name
+                      * Disable canvas support
+                      * Limit tab history to 2
+                    * Standard Options, enable(select/set) only the following(aka deselet everything else!):
+                      * Disable local dom storage
+                        \ XXX: this needs to be unset when using openmailbox.org (if ever)  and maybe anything else that's using roundcube!
+                      * Disable disk cache
+                      * Disable webGL
+                      * Disable webRTC
+                      * Disable pdfjs
+                      * Disable search suggestions
+                      * Disable dom performance
+                      * Disable dom resource timing
+                      * Disable battery api
+                      * Disable gamepad api
+                      * Use click to play for plugins
+                      * Block active mixed content
+                      * Block display mixed content
+                        \ TODO: testing if works with this selected
+                      * Disable browser pings
+                      * Disable web beacons
+                      * Disable clipboard events
+                        \ XXX: this can also be done with the extension called RightToClick in options:  "Disable page cut/copy/paste/text-selection handlers"
+                      * Disable context menu events
+                      * Enable tracking protection
+                        \ this is about:config privacy.trackingprotection.enabled = true  aka Mozilla’s new built in tracking protection.
+                        \ XXX: maybe this uses these about:config keys browser.trackingprotection.gethashURL  and  browser.trackingprotection.updateURL  which both use a SAFEBROWSING_ID passed to the tracking.services.mozilla.com url, which I used to have in /etc/hosts as blocked.  To note that safebrowsing also passes the same ID, see key: browser.safebrowsing.updateURL
+                      * Disable plugin name enumeration
+                      * Disable CSS visited links
+                    * Reporting Options (select all):
+                      * Disable safe browsing (Google)
+                      * Disable safe browsing downloads check (Google)
+                      * Disable safe browsing malware check (Google)
+                      * Disable browser health reports
+                      * Disable health report uploads
+                      * Disable telemetry reports 
+                  * Whitelist (tab), unset for now:
+                    * [ ] Enable whitelist support 
+            * gui:config maybe get this about:config extension which allows GUI editing
+              \ https://addons.mozilla.org/en-US/firefox/addon/guiconfig/
+            - this one is great for backing up things like about:config (aka prefs.js)
+              \ https://addons.mozilla.org/en-US/firefox/addon/febe/
+              \ warning: some popup windows(from FEBE's Options) remain even after firefox exits
+            * get this SSL validation extension (calomel)
+              \ https://addons.mozilla.org/en-US/firefox/addon/calomel-ssl-validation/
+              \ https://calomel.org/firefox_ssl_validation.html
+              * XXX: don't select privacy->do not send any referer... (because there's refcontrol which blocks 3rd party only, and that's what we want, instead of no referer ever)
+              * XXX: WARNING: don't select (only) eg. Security->Cipher Restrictions:->256 bit PFS and GCM ciphers  because it disables a bunch of ciphers on each browser restart, so it will override your cipher settings that you manually set in about:config !
+              * XXX: WARNING: deselecting every cipher  once they were already applied, will leave ciphers as they were (set to false mostly) and thus to fix this, you'd have to select `allow all ciphers` and apply it, or you will be stuck with a bunch of missing ciphers, assuming that just by deselecting all options here will default to all ciphers is a wrong assumption, that caused me to wrongly see a bug where there was none: https://bugs.gentoo.org/show_bug.cgi?id=533468
+              * select: disable Online ... OCSP checks
+              * XXX: do NOT select: disable short URL keyword guessing
+                \ if disabled it won't allow you to search by typing in the address bar directly
+              * Optimization tab
+                * select:
+                  * wait up to 2000ms before page rendering
+                  * disable prefetch of unvisited links
+            * to see domStorage
+              \ //IGNORE this: https://addons.mozilla.org/en-us/firefox/addon/foundstone-html5-local-storage/  this is still better because it can show ALL storage! without having to go on the specific website(like firestorage plus!) ACTUALLY, just tested, and firestorage plus! can see the null value vars from openmailbox.org but foundstone cannot see anything inside the storage!(eg. empty) well it hasn't been updated since 2011 so maybe that's why. OK, maybe it is empty! because firestorage seems to show those null keys(key,getItem,setItem,removeItem,clear,length) for more sites (although not for all!)
+              \ this might be better: https://github.com/NickBelhomme/firestorageplus aka FireStorage Plus! (no restart) https://addons.mozilla.org/en-us/firefox/addon/firestorage-plus/   THIS NEEDS: Firebug https://addons.mozilla.org/en-us/firefox/addon/firebug/ then use F12 to open firebug and see a new tab with firestorage plus!  BUT you have to be on the site (eg. openmailbox.org) then press F12 to see its localstorage/sessionstorage  OR else, it will not show it!
+              - more info and how to disable: about:config dom.storage.enabled false
+                \ OK, DO NOT disable this, because roundcube webmail will not work, Logout won't work and roundcube will seem broken (eg. some menus and some compose options won't appear)!
+                \ http://webdevwonders.com/clear-dom-storage/
+                \ also set dom.storage.default_quota from 5120 to 0 (has no effect on existing entries even after restart)
+              * interestingly, there's a key discopane-url which seems to be filled by firefox since it's related to addons and plugins and the value contains them all
+                \ it doesn't seem to affect anything after deletion and browser restart
+            - adblock plus (nope, got uBlock Origin)
+              * obviously don't forget to untick:
+                \ "Allow some non-intrusive advertising"
+            - requestpolicy 1.0.1a1 (or after) (use policeman instead)
+              \ //old: "just compile this(from my repo - which isn't online anymore!): /requestpolicy  branch dev-1.0"
+              \ or this: https://github.com/RequestPolicyContinued/requestpolicy.git
+              \ install from file: ./dist/*.xpi
+              * #caveat if youtube videos sometimes fail to load with whitenoise screen then remember to allow requests from *.googlevideo.com to *.googlevideo.com
+                \ "https://github.com/klemens/ff-youtube-all-html5/issues/31#issuecomment-46915299"
+            - JSON viewer
+              \ "https://addons.mozilla.org/en-US/firefox/addon/jsonview/"
+            - don't install:
+              * cipherfox 3.7.3 because #bugged apparently, it crashes firefox in linux manjaro
+            - betterprivacy (optional? since it deals exclusively with flash cookies and we have flash disabled in plugins)
+            * certificate patrol
+            - perspectives, set to High (it's like certificate patrol, maybe better?)
+              \ "https://addons.mozilla.org/en-US/firefox/addon/perspectives/"
+            - flashblock (optional, since all plugins are disabled above)
+              \ "note that this apparently needs to be installed as well, since the lame noscript doesn't seem to be blocking it right, even when flash plugin is inexistent, well it blocks it but not the firefox placeholder which has a button asking to Install Flash"
+            - flashgot (not installed, unless you wanna download youtube videos even when flash is not installed)
+            - ghostery
+            * https everywhere
+              \ actually don't do the devel version, do normal: https://addons.mozilla.org/en-Us/firefox/addon/https-everywhere/
+              \ //install devel version:
+              \ git clone https://github.com/EFForg/https-everywhere
+              \ cd https-everywhere && ./makexpi.sh
+              \ go about:addons
+              \ Install Addon from file...
+              \ browse to ./pkg/*.xpi file
+              \ restart firefox
+            * noscript (use Policeman instead; actually, NoScript is still good due to its ABE for example)
+              * remove value for key: (reason: it's for some wireless stuff like verizon to allow login)
+                \ "noscript.inclusionTypeChecking.exceptions"
+              - don't do these following things(see children), it breaks sites, at least trello won't show images for example, and requestpolicy doesn't even detect that trello would point to the s3 amazon for those images
+                * select
+                  \ "Apply these restrictions to whitelisted sites too"
+                * deselect (or github/trello will look like chinese chars and not right)
+                  \ "Forbid @font-face"
+            - redirector (optional, was used for google, golang and googleapis to force them to go https)
+              \ "by einaregilsson"
+              * example
+                * include pattern: http://*.ajax.googleapis.com*
+                * reditect to: https://$1.ajax.googleapis.com$2
+                * Pattern type: Wildcard
+                * Enabled: x
+            * refcontrol
+              * default for sites not listed: block (3rd party)
+            - session manager (can use 
+            * tree style tab
+              \ "by Piro (piro_or)"
+              \ https://addons.mozilla.org/en-us/firefox/addon/tree-style-tab/
+            - Unplug (for downloading videos from ie. youtube, tho it's kinda bugged need to open in new tab instead of Download where you see the option)
+              \ "by h2g2bob"
+            * RightToClick (if I want to be able to rightclick on pages and prevent javascript from blocking it)
+              \ "by IKRG"
+            - youtube all html5  - Play all videos on youtube without flash in your preferred size using only HTML5.
+              \ "https://addons.mozilla.org/en-US/firefox/addon/youtube-all-html5/"
+              * youtube video size: calculate from window or 480p
+              * keep `disable youtube SPF` unticked, because otherwise it fails to load 720p most of the time because it loads 360p then tries to switch but then the static replaces it instead.
+              * disable flash on youtube
+              * fix volume bug
+              * youtube loading method: emulate internet explorer (default) !
+            * Wired-Marker 4. (for marking text within pages)
+            * DNS Flusher 3.1.1
+          * add a dictionary or spellchecker won't work (apparently; 35.0.1 on a new profile)
+            \ US: https://addons.mozilla.org/en-US/firefox/addon/united-states-english-spellche/
+            \ UK: https://addons.mozilla.org/en-US/firefox/addon/british-english-dictionary/
+          * when all done
+            * check this https://www.howsmyssl.com/
+              \ all are green GOOD
+      * on Linux
+        * lenovo z575 hybrid graphics (discrete graphics card) 
+          \ "an interesting article for linux http://ubuntuforums.org/showthread.php?t=1942151  about the hybrid graphics on lenovo z575
+          \ also don't forget about this: https://wiki.archlinux.org/index.php/hybrid_graphics#ATI_Dynamic_Switchable_Graphics"
+          * see #manjaro #howto for this
+        * disable ipv6
+          \ "src: https://forum.manjaro.org/index.php?topic=5255.0"
+          * steps to disable ipv6
+            * Edit /etc/default/grub and add ipv6.disable=1 to your GRUB_CMDLINE_LINUX_DEFAULT
+              \ "GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1  quiet splash""
+            * Edit /etc/hosts and hash out the IPv6 line,
+              \ "#::1		localhost.localdomain	localhost"
+            * sudo update-grub
+              \ "which is apparently equivalent to: sudo grub-mkconfig -o /boot/grub/grub.cfg
+              \ at least on linux manjaro 0.8.10"
+            * reboot
+            * this works for java previously auto listening on tcp6 only #caveat 
+          * also see:
+            \ "https://wiki.archlinux.org/index.php/Ipv6#Disable_IPv6"
+          * For example, dhcpcd will continue to harmlessly attempt to perform IPv6 router solicitation. To disable this, as stated in the dhcpcd.conf man page, add the following to /etc/dhcpcd.conf: 
+            \ "noipv6rs"
+          * disabling ipv6 may cause errors with ufw or gufw
+        * inside a virtualbox guest(that is linux)
+          * to mount a shared folder
+            \ "mount -t vboxsf sharename localfoldertomountto "
+          * to make drag'n'drop work
+            \ "can't!"
+        * in manjaro with xfce4 (64bit) sha1:
+          \ "07818595f17db2dd444c89c2a140b2fadab8b95a  manjaro-xfce-minimal-0.8.10-rc2-x86_64.iso
+          \ from here: http://sourceforge.net/projects/manjarotest/files/0.8.10/xfce-minimal/0.8.10-rc2/"
+          * sensors plugin
+            \ "monitors temperatures and shows them in the panel"
+            * package name is:
+              \ "xfce4-sensors-plugin"
+            * put this for Execute on double click:
+              \ "xfce4-panel -r
+              \ because it refreshes the xfce4 panel when autohide is not working anymore, it's a good workaround"
+          * catalyst control center ati fglrx driver
+            * #bug don't set Switchable Graphics to `Power-saving GPU for improved battery life` because it will lockup on next reboot when trying to start X
+              \ keep it on High-performance
+              \ this only appears when BIOS Graphics is set to Dynamic (not UDMA) that is, both gfx cards are on.
+            * powerplay
+              * set both ac and battery to
+                \ Maximum battery
+              * disable vari-bright
+            * 3D->More Settings->Wait for vertical refresh-> Always On
+            * (optional)Color->Temperature->6400  (6500 is default)
+        * set governor for all 4 cores on linux
+          * on linux mint
+            \ "cpufreq-set -g conservative -c 0
+            \ cpufreq-set -g conservative -c 1
+            \ cpufreq-set -g conservative -c 2
+            \ cpufreq-set -g conservative -c 3"
+          * on manjaro/arch linux
+            \ "cpupower frequency-set -g conservative
+            \ #all 4 cores affected"
+            * required package:
+              \ "pacman -S cpupower"
+        * truecrypt under linux
+          \ "https://github.com/bwalex/tc-play/"
+          * mount when whole disk is encrypted
+            * sudo tcplay -m stuff2 -d /dev/sdb --fde -t
+              \ "always select the entire disk (with --fde) not the partitions (sdb3)"
+            * sudo kpartx -av /dev/mapper/stuff2
+              \ "this gets partitions in /dev/mapper/"
+            * sudo mount /dev/mapper/stuff2p3 here -o ro
+              \ "mounting sdb3 after it was made into a device by kpartx  (the readonly is optional ofc)"
+        - to erase SSD, a password is needed to be set before erase would work, also put PC to sleep to unfreeze #howto
+          \ "https://wiki.archlinux.org/index.php/SSD_Memory_Cell_Clearing"
+          * the original article with the Eins password:
+            \ "https://ata.wiki.kernel.org/index.php/ATA_Secure_Erase"
+          * put to sleep(suspend to ram, works for me(z575) only with proprietary ati/amd videocard drivers, otherwise black screen after resume):
+            \ "echo -n mem > /sys/power/state"
+          * next set password ("pass" or Eins hehe):
+            \ "hdparm --user-master u --security-set-pass pass /dev/sd_
+            \ hdparm -I /dev/sd_
+            \  Security:
+            \         Master password revision code = 65534
+            \                 supported
+            \                 enabled
+            \         not     locked
+            \         not     frozen
+            \ 
+            \ 
+            \ "
+          * next erase ssd:
+            \ "hdparm --user-master u --security-erase pass /dev/sd_ hdparm -I /dev/sd_ Security: Master password revision code = 65534 supported not enabled not locked not frozen"
+          * If the SECURITY ERASE fails, use --disable-security to set your drive back to normal. Do not set the password to an empty string or NULL.
+            \ "My hdparm program has an option --security-disable pass"
+        * to erase HDDs
+          \ http://tinyapps.org/docs/wipe_drives_hdparm.html
+        * generate ssh key
+          \ ssh-keygen -t ed25519 -a 100
+          \ -a is rounds; use at least 100
+          \ ed25519 you want because https://blog.filippo.io/scrypt-all-the-things/#fn:4
+      * on Windows
+        * unbound
+          * caveat
+            \ "ok the problem with unbound blocking this way:
+            \ local-zone: "googleapis.com" redirect
+            \ local-data: "googleapis.com A 0.0.0.0"
+            \ 
+            \ is that now with that also ajax.googleapis.com is blocked!
+            \ "
+            * to fix:
+              \ "replace "redirect" with "transparent""
+            * also, don't use 0.0.0.0  because firefox is thrashing the disk and cpu
+              \ "https://bugzilla.mozilla.org/show_bug.cgi?id=1015001"
+          * service ImagePath
+            \ ""c:\usedones\unbound-1.4.22\unbound.exe" -w service -c "C:\usedones\unbound-1.4.22\ema.conf""
+          * ema.conf file (note: dnscrypt server(proxy) is running at 127.0.0.201:40 )
+            \ "# Unbound configuration file on windows.
+            \ # See example.conf for more settings and syntax
+            \ 
+            \ server:
+            \     # verbosity level 0-4 of logging
+            \     verbosity: 4
+            \     num-threads: 4
+            \     interface: 127.0.0.1@53
+            \     port: 53
+            \     outgoing-interface: 127.0.0.1
+            \     do-ip4: yes
+            \     do-ip6: no
+            \     do-udp: yes
+            \     do-tcp: no
+            \     tcp-upstream: no
+            \     
+            \ 
+            \     # if you want to log to a file use
+            \     logfile: "D:\TEMP\unbound.log"
+            \ 
+            \     # on Windows, this setting makes reports go into the Application log
+            \     # found in ControlPanels - System tasks - Logs
+            \     #use-syslog: yes
+            \     
+            \     log-time-ascii: yes
+            \     log-queries: yes
+            \     hide-identity: yes
+            \     hide-version: yes
+            \     harden-glue: yes
+            \     harden-dnssec-stripped: yes
+            \     use-caps-for-id: yes
+            \     #auto-trust-anchor-file: "C:\usedones\unbound-1.4.22\root.key"
+            \     private-address: 10.0.0.0/8
+            \     private-address: 172.16.0.0/12
+            \     private-address: 192.168.0.0/16
+            \     private-address: 169.254.0.0/16
+            \     private-address: fd00::/8
+            \     private-address: fe80::/10
+            \     val-log-level: 2
+            \     include: "C:\usedones\unbound-1.4.22\makefilter\filter.conf"
+            \     
+            \ 
+            \ do-not-query-localhost: no
+            \ 
+            \ forward-zone:
+            \     name: "."
+            \     forward-addr: 127.0.0.201@40
+            \     forward-first: no
+            \ 
+            \  "
+            * when wanting DNSSEC (yes, (unbound's)DNSSEC not dnscrypt-proxy!)
+              * update anchor on each start with:
+                \ "c:\usedones\unbound-1.4.22\unbound-anchor.exe -a "c:\usedones\unbound-1.4.22\root.key" -4 -v -c "c:\usedones\unbound-1.4.22\dummydnscrypt_foranchor.conf""
+                * and the dummy anchor script is dummydnscrypt_foranchor.conf (note: dnscrypt server(proxy) is running at 127.0.0.201:40 and this is the only reason this conf is used)
+                  \ "# Unbound configuration file on windows.
+                  \ # See example.conf for more settings and syntax
+                  \ 
+                  \ server:
+                  \     # verbosity level 0-4 of logging
+                  \     verbosity: 4
+                  \     num-threads: 4
+                  \     interface: 127.0.0.201@40
+                  \     port: 40
+                  \     outgoing-interface: 127.0.0.201
+                  \     do-ip4: yes
+                  \     do-ip6: no
+                  \     do-udp: yes
+                  \     do-tcp: no
+                  \     tcp-upstream: no
+                  \     
+                  \ 
+                  \     # if you want to log to a file use
+                  \     logfile: "D:\TEMP\unbound_anchor.log"
+                  \ 
+                  \     # on Windows, this setting makes reports go into the Application log
+                  \     # found in ControlPanels - System tasks - Logs
+                  \     #use-syslog: yes
+                  \     
+                  \     log-time-ascii: yes
+                  \     log-queries: yes
+                  \     hide-identity: yes
+                  \     hide-version: yes
+                  \     harden-glue: yes
+                  \     harden-dnssec-stripped: yes
+                  \     use-caps-for-id: yes
+                  \     #auto-trust-anchor-file: "C:\usedones\unbound-1.4.22\root.key"
+                  \     private-address: 10.0.0.0/8
+                  \     private-address: 172.16.0.0/12
+                  \     private-address: 192.168.0.0/16
+                  \     private-address: 169.254.0.0/16
+                  \     private-address: fd00::/8
+                  \     private-address: fe80::/10
+                  \     val-log-level: 1
+                  \     #include: "C:\usedones\unbound-1.4.22\makefilter\filter.conf"
+                  \     
+                  \ 
+                  \ do-not-query-localhost: no
+                  \ 
+                  \ forward-zone:
+                  \     name: "."
+                  \     forward-addr: 127.0.0.201@40
+                  \     forward-first: no
+                  \ 
+                  \  "
+                  * alternatively can use this resolv.conf with -f parameter instead of -c
+                    \ "nameserver 127.0.0.201:40"
+          * make filter.conf from hosts file  (.bat) [needs sed.exe sort.exe uniq.exe in current folder]
+            \ "rem // remove "#" comments
+            \ rem // remove space and tab
+            \ rem // remove blank lines
+            \ rem // remove locahost and broadcasthost lines
+            \ rem // keep just the hosts
+            \ rem // remove leading and trailing space and tab (again)
+            \ rem // make everything lower case
+            \ 
+            \ set temp1=%temp%\temp1.txt
+            \ set temp2=%temp%\temp2.txt
+            \ 
+            \ sed -e "s/#.*//" -e "s/[ \x09]*$//" -e "/^$/ d" -e "/^.*local.*/ d" -e "/^.*broadcasthost.*/ d" -e "s/\(^.*\)[ \x09]\([a-zA-Z0-9\.\-]*\)/\2/" -e "s/^[ \x09]*//;s/[ \x09]*$//" -e "s/\(.*\)/\L\1/" "c:\windows\system32\drivers\etc\hosts" >%temp1%
+            \ rem // remove any duplicate hosts
+            \ 
+            \ sort %temp1% | uniq.exe >%temp2%
+            \ 
+            \ rem // remove any hosts starting with "."
+            \ rem // create the two required lines for each host.
+            \ 
+            \ sed -e "/^\..*/ d" -e "s/\(^.*\)/local-zone: \x22\1\x22 transparent\nlocal-data: \x22\1 A 127.0.0.5\x22/" %temp2% >filter.conf
+            \ 
+            \ rem // clean up
+            \ del temp1.txt
+            \ del temp2.txt
+            \ 
+            \ "
+          * this is the hosts file in Windows right now c:\windows\system32\drivers\etc\hosts.
+            \ "nevermind it's too huge to allow it be reside here (500+KB)"
+        * dnscrypt
+          \ "dnscrypt-proxy.exe --resolver-name=opendns --local-address=0.0.0.0 --loglevel=255"
+          * caveats
+            - plugins won't work for some unknown reason the file is not found
+              \ "https://github.com/jedisct1/dnscrypt-proxy/issues/111"
+            * there's no TXT record (with the sha256) yet for the 1.4.0 version which was like 17 days ago released
+              \ "ok, reported: https://github.com/jedisct1/dnscrypt-proxy/issues/110"
+            * when starting as a service, it won't start because it doesn't put itself the fully path to the .csv file so u have to edit that key and put it manually, here's full .reg file
+              \ "Windows Registry Editor Version 5.00
+              \ 
+              \ [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\dnscrypt-proxy]
+              \ "Type"=dword:00000010
+              \ "Start"=dword:00000002
+              \ "ErrorControl"=dword:00000001
+              \ "ImagePath"=hex(2):63,00,3a,00,5c,00,75,00,73,00,65,00,64,00,6f,00,6e,00,65,00,\
+              \   73,00,5c,00,64,00,6e,00,73,00,63,00,72,00,79,00,70,00,74,00,2d,00,70,00,72,\
+              \   00,6f,00,78,00,79,00,2d,00,77,00,69,00,6e,00,33,00,32,00,5c,00,62,00,69,00,\
+              \   6e,00,5c,00,64,00,6e,00,73,00,63,00,72,00,79,00,70,00,74,00,2d,00,70,00,72,\
+              \   00,6f,00,78,00,79,00,2e,00,65,00,78,00,65,00,00,00
+              \ "DisplayName"="dnscrypt-proxy"
+              \ "WOW64"=dword:00000001
+              \ "ObjectName"="LocalSystem"
+              \ 
+              \ [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\dnscrypt-proxy\Parameters]
+              \ "ResolversList"="c:\\usedones\\dnscrypt-proxy-win32\\bin\\dnscrypt-resolvers.csv"
+              \ "ResolverName"="opendns"
+              \ "LocalAddress"="0.0.0.0"
+              \ 
+              \ "
+              * here's the ImagePath for starting the service:
+                \ "c:\usedones\dnscrypt-proxy-win32\bin\dnscrypt-proxy.exe --user=Guest"
+              * this is the Plugins registry value
+                \ "C:\usedones\dnscrypt-proxy-win32\plugins\libdcplugin_example_ldns_aaaa_blocking.dll
+                \ C:\usedones\dnscrypt-proxy-win32\plugins\libdcplugin_example_ldns_blocking.dll,--domains=c:\usedones\dnscrypt-proxy-win32\filter_domains.txt,--ips=c:\usedones\dnscrypt-proxy-win32\filter_ips.txt
+                \ c:\usedones\dnscrypt-proxy-win32\plugins\libdcplugin_example_logging.dll,d:\temp\dns_queries.txt
+                \ "
+                * filter_domains.txt must exist, so, this is: makednscrypt_domainsfilter.bat  (sed.exe sort.exe uniq.exe must be in current folder)
+                  \ "rem // remove "#" comments
+                  \ rem // remove space and tab
+                  \ rem // remove blank lines
+                  \ rem // remove locahost and broadcasthost lines
+                  \ rem // keep just the hosts
+                  \ rem // remove leading and trailing space and tab (again)
+                  \ rem // make everything lower case
+                  \ 
+                  \ set temp1=%temp%\temp1.txt
+                  \ set temp2=%temp%\temp2.txt
+                  \ 
+                  \ sed -e "s/#.*//" -e "s/[ \x09]*$//" -e "/^$/ d" -e "/^.*local.*/ d" -e "/^.*broadcasthost.*/ d" -e "s/\(^.*\)[ \x09]\([a-zA-Z0-9\.\-]*\)/\2/" -e "s/^[ \x09]*//;s/[ \x09]*$//" -e "s/\(.*\)/\L\1/" "c:\windows\system32\drivers\etc\hosts" >%temp1%
+                  \ rem // remove any duplicate hosts
+                  \ 
+                  \ sort %temp1% | uniq.exe >%temp2%
+                  \ 
+                  \ rem // remove any hosts starting with "."
+                  \ rem // create the two required lines for each host.
+                  \ 
+                  \ sed -e "/^\..*/ d" -e "s/\(^.*\)/\1/" %temp2% >filter_domains.txt
+                  \ 
+                  \ rem // clean up
+                  \ del temp1.txt
+                  \ del temp2.txt
+                  \ 
+                  \ "
+                * filter_ips.txt file must exist and block at least one entry
+                  \ "8.8.8.8
+                  \ 8.8.4.4
+                  \ 0.0.0.0
+                  \ "
+              * ResolverName
+                \ "dnscrypt.eu-nl"
+              * ResolversList
+                \ "c:\usedones\dnscrypt-proxy-win32\bin\dnscrypt-resolvers.csv"
+              * LocalAddress
+                \ "127.0.0.201:40"
+              * ok they say, I must use -L to specify full path to .csv file, but this should be enforced by the program and not just go ahead without any warnings/errors - or at least, that's how I'd do it
+          * linux (manjaro)
+            * make special user
+              \ $ sudo useradd --system --base-dir "/dnscrypt-proxy" --home-dir "/dnscrypt-proxy" --user-group --shell "" -- dnscrypt-proxy
+              \ not using --create-home because it puts a bunch of files in like .bashrc etc.
+              \ $ id dnscrypt-proxy
+              \ uid=992(dnscrypt-proxy) gid=992(dnscrypt-proxy) groups=992(dnscrypt-proxy)
+              \ the --system param makes it be prior to id 1000 which is what unbound user is also doing!
+            * make folder
+              \ $ sudo mkdir /dnscrypt-proxy/ ; sudo chown dnscrypt-proxy:dnscrypt-proxy /dnscrypt-proxy ; sudo chmod g+rwx,o-rwx /dnscrypt-proxy
+            * add yourself(aka user emacs) to the group
+              \ sudo usermod -a --groups dnscrypt-proxy emacs
+              \ XXX: has effect only on next login!!!
+              \ run command:
+              \ $ id
+              \ uid=1000(emacs) gid=100(users) groups=100(users),14(uucp)
+              \ see? no effect!
+            * relogin !
+              \ su - emacs
+            * look at the folder
+              \ $ ls -la / | grep dnscrypt-proxy
+              \ drwxrwx---   2 dnscrypt-proxy dnscrypt-proxy   4096 25.04.2015 19:21 dnscrypt-proxy/
+              \ $ ls -la /dnscrypt-proxy/
+              \ total 8
+              \ drwxrwx---  2 dnscrypt-proxy dnscrypt-proxy 4096 25.04.2015 19:21 ./
+              \ drwxr-xr-x 21 root           root           4096 25.04.2015 19:21 ../
+            * to UNDO later on(if ever):
+              * delete the user:
+                \ $ sudo userdel dnscrypt-proxy
+                \ this also deletes the group!
+              * also remove the folder (do look that it's empty before doing this! or bye bye data!)
+                \ $ sudo rm -rf /dnscrypt-proxy
+            * run dnscrypt-proxy like this:
+              \ see file named 'dcp'
+            * see the log
+              * $ sudo chmod g+r  /dnscrypt-proxy/dnscrypt-proxy.log
+                \ because it's:
+                \ -rw------- 1 dnscrypt-proxy dnscrypt-proxy 470 25.04.2015 22:30 /dnscrypt-proxy/dnscrypt-proxy.log
+              * $ tail -f  /dnscrypt-proxy/dnscrypt-proxy.log
+                \ don't mind that the fingerprint is different from the one in the .csv file
+                \ https://github.com/jedisct1/dnscrypt-proxy/issues/54
+    * bugs
+      - firefox evil dns - high cpu usage and disk writes bug 0.0.0.0 (in Windows at least)
+        \ "https://bugzilla.mozilla.org/show_bug.cgi?id=1015001"
+    * notes
+      * personal
+        - updated dmc-fz100 firmware to 1.2
+          \ "fe278e4dea29408a77b11227279962ea4808a32c774a71eb0c5fe9a0943a1f4a7a84450207e08859365d18376a41c49019645cea6a21eebcee7412976fb6893c *FZ100V12.bin
+          \ instructions from here: http://panasonic.jp/support/global/cs/dsc/download/FZ100/index2.html"
+        - replaced fluoride toothpaste with something non-flouride
+          \ parodontax classic
+          \ found just one, on 15th apr 2014
+          * background #psychetruth video
+            \ "https://www.youtube.com/watch?v=wfnxZUrGvs8&list=PLvP8YsX0ebXZUpQ3BsUhdZHUrJykndOL9"
+            \ add this to reasons to avoid going to US
+            \ add this too: Civil Forfeiture http://www.youtube.com/watch?v=3kEpZWGgJks
+        * concepts that I resonate with
+          * the semantic web /ontology #todo check: http://semanticweb.org/wiki/Main_Page
+            \ "https://www.youtube.com/watch?v=rhgUDGtT2EM"
+            * linked data #video
+              \ "https://www.youtube.com/watch?v=4x_xzT5eF5Q"
+            * yep semantic web
+              \ "https://www.youtube.com/watch?v=bd8zR0v7Jts"
+          * #dry https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+          * http://camlistore.org/
+          * bazaar style I like, from here: https://en.wikipedia.org/wiki/The_Cathedral_and_the_Bazaar
+          * https://en.wikipedia.org/wiki/Open_business
+            * some companies that practice transparency
+              * https://stripe.com/blog/email-transparency
+              * http://open.bufferapp.com/introducing-open-salaries-at-buffer-including-our-transparent-formula-and-all-individual-salaries/
+              * http://www.fastcompany.com/3009585/7-slightly-crazy-ways-to-build-a-happy-productive-and-transparent-company
+          * https://en.wikipedia.org/wiki/Hierarchical_temporal_memory
+        * cool concepts:
+          * R-tree https://en.wikipedia.org/wiki/R-tree
+          * https://en.wikipedia.org/wiki/OsmocomBB
+        * concepts I agree with and are put into words better by others
+          * want: low power chip
+            \ http://arstechnica.com/information-technology/2015/03/new-arm-powered-chip-aims-for-battery-life-measured-in-decades/#p3
+          * memristor - this is really gold!
+            \ "http://arstechnica.com/information-technology/2014/06/hp-labs-machine-dissolves-the-difference-between-disk-and-memory/"
+          * https://pcmonk.wordpress.com/2014/04/01/why-dont-we-have-a-general-purpose-tree-editor/
+            \ "graph editor, not tree editor - in my case:)"
+            * this looks close(r)
+              \ "http://cmap.ihmc.us/"
+            * #todo get this http://cmap.ihmc.us/download/index.php
+          * "You can't trust code that you did not totally create yourself. [...] No amount of source-level verification or scrutiny will protect you from using untrusted code."
+            \ "http://cm.bell-labs.com/who/ken/trust.html"
+          * "I would like to criticize the press in its handling of the "hackers," [...]. The acts performed by these kids are vandalism at best and probably trespass and theft at worst. It is only the inadequacy of the criminal code that saves the hackers from very serious prosecution. The companies that are vulnerable to this activity (and most large companies are very vulnerable) are pressing hard to update the criminal code. Unauthorized access to computer systems is already a serious crime in a few states and is currently being addressed in many more state legislatures as well as Congress. There is an explosive situation brewing. On the one hand, the press, television, and movies make heroes of vandals by calling them whiz kids. On the other hand, the acts performed by these kids will soon be punishable by years in prison. I have watched kids testifying before Congress. It is clear that they are completely unaware of the seriousness of their acts. There is obviously a cultural gap. The act of breaking into a computer system has to have the same social stigma as breaking into a neighbor's house. It should not matter that the neighbor's door is unlocked. The press must learn that misguided use of a computer is no more amazing than drunk driving of an automobile."
+            \ "http://cm.bell-labs.com/who/ken/trust.html"
+      * generic informational
+        * mindlife
+          * so, if you remove X percent of something, then how much percent Y from what's left is equal to what you removed?
+            \ "answer: Y=(X/(100-X))  % of what was left, you have to add to what's left and get the original quantity that you applied X on.
+            \ example: 43% of 1234 = 530.62
+            \ now remove 43% of that 1234  => 1234 - 530.62=703.38
+            \ how much % of 703.38 do I have to add to 703.38 to get back to 1234 ?
+            \ (43/(100-43))=(43/57)=0.7543859649122807 aka 75.44%
+            \ 0.7543859649122807 * 703.38 = 530.619999999999998766
+            \ 703.38+530.619= 1233.999
+            \ 
+            \ in other words, removing 43% of 1234 is equal to adding 75.44%)of what was left) to what was left  to reach the original quantity(of 1234)
+            \ 
+            \ and that is what i wanted to find out on my own, as a toy curiosity test
+            \ 22 june 2014 02:05am
+            \ 'cause by end of page 2 of this http://www.dtc.umn.edu/~odlyzko/doc/privacy.economics.pdf
+            \ (the part with 10%)
+            \ "
+        * software
+          * utils
+            * os independent
+              * wireshark chromium / netstat / tcpdump / sniff requests/packets
+                \ chrome://net-internals/#events
+              * terms of service; didn't read
+                \ "tosdr.org"
+              * online colored diff checker
+                \ "http://www.diffchecker.com/tas54ez4"
+              * google dns
+                * 8.8.8.8
+                * 8.8.4.4
+              * amdmsrtweaker
+                \ "for underclocking/overclock/undervolting CPU for linux/windows"
+            * uncategorized
+              * sqrl
+                \ https://www.grc.com/groups/sqrl
+              * perfect paper passwords
+                \ "https://www.grc.com/ppp.htm"
+              * to synchronize files on two+ different computers #syncthing http://syncthing.net/  #rsync
+                \ "http://discourse.syncthing.net/t/getting-started/46"
+    * hardware
+      * Lenovo IdeaPad Z575
+        * quirks/caveats
+          - sometimes, in linux (mint and manjaro tested) one of the CPUs (CPU1 of 0-3) does not respond and it thus ignored for the session; a warm reboot will fix this
+            - this is because DX-ECO Genius wireless mouse was turned on (reported this kernel bug)
+              \ https://bugzilla.kernel.org/show_bug.cgi?id=81101#c30
+          * avoid sans serif fonts
+            \ "https://en.wikipedia.org/wiki/Sans_serif
+            \ because of that lowercase L and uppercase i  looking practically the same, indistinguishable => unacceptable for me"
+          * powering down(by holding power button for 4 sec) the laptop (while prompted by bios password(not when entering bios though) or whenever else, especially when unresponsive/locked up for some reason) then (hours later even) when you try to power on you see that the hdds (or ssds) are not being powered on or something(and takes more seconds to show startup password) because the hdd password isn't being asked and it tries to book from network card
+            - "solve by going into bios F2 and now hdd password is asked, just save and exit (haven't tried to not save) - works"
+            \ actually better to just ctrl+alt+del twice when you see it hangs before asking for system password; so don't get into bios at all
+          * virtualbox(4.3.8 tested) is the only one(between it and vmware workstation 10.0.1 tested) which can pass TRIM from guest OS to host OS, and does so only when rotational and discard are set to true inside .vbox file for that drive (discard must be manually edited in) AND it will not pass TRIM to host if the partition where the virtualbox hdd file (.vdi) resides is truecrypt encrypted regardless if mounted in removable or normal mode.
+            \ "if getting any virtualbox .vdi virtual hdd in the future, make the .vdi (which resides on ssd) have trim http://superuser.com/questions/646559/virtualbox-and-ssds-trim-command-support"
+            * this is why there can't be ssd trim passthru from virtualbox (that is, when using raw ssd as storage, not the .vdi files)
+              \ "https://forums.virtualbox.org/viewtopic.php?f=6&t=48693 (this first link)
+              \ http://www.virtualbox.org/manual/ch09.html unfortunatelly there won't be any trim passing thru
+              \ http://www.sysprobs.com/access-physical-disk-virtualbox-desktop-virtualization-software"
+          * LH-50 wireless headphones are mono(EDIT: FM signal received is mono in the headphones) instead of stereo(EDIT: FM signal sent is stereo though! external radio can receive stereo and L/R tested to be true) - I guess it makes sense since they are working on the FM band; the headphones work well in stereo when the cable is connected directly(and the jack turns off the batteries ofc; and the volume stays fixed, depending on the input - ie. PC output volume; the volume on the headphones has no effect)
+            * it seems that a normal radio device picks up the signal as stereo, so this would mean that only the headphones are unable to pick stereo signal from the receiver (unsure if from all/other normal radio stations too)
+          * genius DX ECO mouse
+            * how long does the charge last, as per my experience/usage (lasts almost 3 hours, like 2 hours 55mins avg; charges in 2min30sec or at most 3 min basically):
+              \ "17 march 2014 monday 13:43 mouse RF on after first charge
+              \ died at 16:53 (1% & led flashing)
+              \ 
+              \ lasted: 3 hours 10 mins  (was a mix of 800dpi and 1600dpi)
+              \ 
+              \ charging since 16:53:40, charging done at: 16:55:36 (100%)
+              \ so 2 minutes to fully charge! great :))
+              \ 
+              \ (at 1600dpi btw, not 800dpi)
+              \ 16:56:30 discharging from 100%
+              \ 17:29 at 98%
+              \ 17:30 at 97%
+              \ 17:35 at 96% i see, 95% now
+              \ 17:37 at 94%
+              \ 17:49 at 90%
+              \ 17:56 at 85%
+              \ 18:03 at 82% and i turn it off 'cause me sleep
+              \ 19:05 resumed, it's at 80%
+              \ 19:17 at 72%
+              \ 19:35 at 61% and turned off 'cause me sleep now fo realz
+              \ 23:32 turned on, 56%
+              \ 00:45 died, 1% and led on
+              \ 
+              \ lasted: 1 hour 7 mins + 32 mins + 1 hour 13 mins = 2 hours 52 mins (on 1600dpi)
+              \ 
+              \ charging since 00:45:20 until 00:48:33  so 3 mins 13 sec (we can assume 3 sec were already since it was 00:45:26  3 secs after by the time i looked)
+              \ 
+              \ 00:50 discharging from 100% (at 1600dpi still)
+              \ 00:54 switched to 800dpi still 100% (but will need another charge at 800dpi to test for sure, so next one will remain at 800dpi)
+              \ note: mouse acceleration needs to be upped to max (previously halved for 1600dpi, in windows control pannel mouse)
+              \ 
+              \ 01:35 at 98%
+              \ 01:42 at 94%
+              \ 02:25 at 67%
+              \ 02:44 at 59%
+              \ 03:47 done, 1%, led on
+              \ lasted: 2 hours 57mins
+              \ from 03:48:20 charging, until done at: 03:50:48 so 2min 28 sec
+              \ 
+              \ from 03:51:30, discharging from 100% (at 800dpi)
+              \ 07:57 at 2% stopped moving, then jumped back to 14%, now back to 1% after a few sec. and led on
+              \ lasted: 4 hours 6 mins  but I haven't used it as much for a while, that explains it!
+              \ 
+              \ charging from 07:58:00, done at: 08:00:31   so 2 min 31 sec charging time
+              \ (that is until the led light turns off, though the systray icon still says charging 100%)
+              \ (it's 18th march 2014 now, obviously)
+              \ 
+              \ from 08:02:30 discharging from 100% (800dpi still)
+              \ it's 8:39 and it's still showing 100% ... i smell cheating
+              \ 10:34 at 27% and turned off 'cause i go sleep or something
+              \ 15:05:40 at 25%, turned on, i'm awake
+              \ 15:29 at 2%, led is on, died.
+              \ lasted: 2 hours 32mins +24mins = 2 hours 56 mins
+              \ 
+              \ 15:31:00 charging... until: 15:33:19  so 2min 19sec to full charge(that is, until led off)
+              ----
+              it's 19 march 2014
+              from 04:33:50AM mouse discharging from 100%
+              08:10:40 died, 2%, led flashing
+              lasted: 3 hours 43mins
+              
+              was charging from 8:11:?? until: some seconds less than 8:13:40
+              I'll assume it was 2 mins 30 sec
+              
+              08:14:15 discharging from 100%
+              12:15 died
+              lasted: 4 hours
+              (i was afk for 1 hour maybe)
+              
+              12:15:15 charging, 3% jumped to 23% then 30% but led was flashing, so i guess it was out
+              just that the report was like wrong in systray, oddly enough
+              yeah i forgot it with cable on for a while... dno how much it took to charge...
+              "
+            * good thing is, you can keep the usb cable plugged in at all times even while the on/off switch is in OFF position (it will still transmit wireless; and as soon as you unplug it it stops, unless you turn it ON then it's capacitor powered)
+            * switching from 800dpi to 1600dpi doubles the speed (which is obvious why, and should happen with every mouse, right?) and this entails having to go to control panel mouse settings and halve the acceleration!
+              \ "there's a button on the mouse allowing the switch between 800dpi and 1600dpi (only these two settings, like a toggle)"
+          * linux
+            * make sure fbcon module is loaded (or CONFIG_EXPERT=N  to have it loaded it automatically) or else startx will black screen with FOSS radeon driver (not fglrx)
+            * keepass2 (wine) will lockup sometimes when clipboard pasting happens and the workaround is `pkill xsel` - yes really! (oh, in linux mint 15 oliva 64bit)
+
+

@@ -1,0 +1,617 @@
+* check AppArmor
+* remember tlp and powertop when installing in arch(arch=archlinux but we're going gentoo now instead!)
+  \ systemctl status tlp    if not enabled, enable it!
+* find out what other errors happen on reboot
+  * find a way to delay/stop(wait for Enter to be pressed) the rebooting action at the end, so to can read the msgs!
+
+* investigate why mc (midnight commander) doesn't flush output from commands like ls -laR / and find a way to reproduce this
+  * so far it seems to do it only after a while of using it, not on first start
+* note the mc macrovariables like %D %d %p %p etc
+  \ http://www.softpanorama.org/OFM/MC/macrovariables.shtml
+* investigate a way to rsync some chosen files from my system into a specific folder (which is excluded from any kind of rsync) in my home dir possibly, and this folder is a git repo which I can git commit and push to github
+  * don't include passwords or stuff like that!
+* acpidump corrupted double linked list
+  * test the new version to see if it's fixed
+* add that acpi_debug.txt patch to kernel PKGBUILD to avoid getting dmesg spam
+
+- maybe get on this mailinglist http://lists.x.org/mailman/listinfo/xorg-driver-ati DONE but this is for xorg part not for the kernel module :/
+- replace underline in vim currentline with background color
+- //find a way to change radeon to power state 6 aka thermal
+  \ [    0.597198] == power state 6 ==
+  \ [    0.597199]  ui class: none
+  \ [    0.597201]  internal class: thermal 
+  \ [    0.597203]  caps: 
+  \ [    0.597204]  uvd    vclk: 0 dclk: 0
+  \ [    0.597206]          power level 0    sclk: 20000 vddc: 888
+  \ [    0.597208]  status: 
+* vgacon scrollback buffer
+  * DO THIS FIRST maybe merge the two patches, because it's getting harder to maintain/add features to only one of them
+  * shift+up/down should scroll up/down only 1 line per keypress
+  * find a way to add shift+ctrl+PgUp go to top of SB and shift+ctrl+PgDn to go to end
+  * find a way to prevent new output from messing up the scrollback position
+  * remember scrollback position even after switching consoles
+  * find a way to dump contents of scrollback buffer
+    * allow only root to do it
+      * maybe expose it in /sys/class/vtconsole/
+  * printk when console scrollbuffer is being allocated (aside from first time, which is already printed)
+* find a way to enable SysRq+B which says it's disabled! this supposedly reboots
+* see if we can use this bash history audit thing
+  \ http://www.pointsoftware.ch/howto-bash-audit-command-logger/
+* use set -e
+  \ makepkg is likely using it for PKGBUILD
+- find a way to set xfce4-terminal title to currently executing command
+  \ nolonger relevant, not using this terminal anymore, and urxvt has no titlebar anymore - how I like it
+  \ oh but can still change title, seen in taskbar (panel bar?) I'll add this to urxvt todo
+* find out why bash completion for tlp isn't working? file is in: /etc/bash_completion.d
+* urxvt
+  * make shift+mousewheel scroll horizontally (shouldn't be too hard by modyfing the mouse scrollwheel patch)
+  - investigate a slowdown and cpu 100% usage issue with urxvt when it processed many screens of text, works in normal screen but also with secondScreen (ie. less) it will scroll slower as PgDn is held during less, and scroll faster again as PgUp is coming near the top of the file in less.
+  \ this doesn't seem to happen with seq  seq 100000|less
+  \ but happens with grep -r kernel --exclude-dir=.config --exclude-dir=build|less  in my home dir (i see lots of urls tho)
+  \ wow PgDn scroll is done line by line, i just realize - it became that slow that I can see it - maybe less is doing this line-by-line scrolling, and it's slow because urxvt got slow although since we're in secondScreen, it isn't really supposed to be storing the scrolllines, right?
+  \ FOUND: it's because of long lines (no \n) like 72000 chars line will slow down pagedown scroll in less to the point that you can see line-by-line scrolling when trying pagedown once.
+  * find out why switching window to bigger (Ctrl+Alt+4) causes:
+  \ error: command terminated by signal 13: Broken pipe
+  \ while compiling linux-git
+  \ and when pacman is prompting it exits with: :: Proceed with installation? [Y/n] -----------
+  \ that --- is from pacman, supposed to be on next line tho
+  \ NOTE: this also happens during mouse window resize(ie. Alt+F8) when size changes (rows/columns!)
+  * (like impossible) make ability to select with the mouse, more than one screen while in secondScreen (ie. less) - currently the selection deselects if moved outside top/bottom. 
+  * explore this urxvt perl script, just in case I want to do something similar or even use this one.
+    \ https://github.com/johntyree/urxvt-perls/blob/master/rotate-colors
+  - make less enter second screen (when used from git diff, 'cause otherwise less worked ok) and thus allows scrollwheel patch to work
+  * make numEnter do Enter in less while search is on, pressing / key
+  * find a way to copy to clipboard(the clipboard that eg. mousepad uses when Ctrl+C) via keyboard, so that Ctrl+Alt+V pastes it! while middle click pastes the other clipboard(X clipboard?)
+  * see the clipboard options here https://github.com/muennich/urxvt-perls
+  * find a way to change title bar to reflect currently executing command not just current folder
+  - patch urxvt to add 2 more options to set border color when not in focus, just like fading happens when not in focus
+  * find a way to make shift+up/down arrows scroll buffer
+  - fixed a bunch with xmodmap
+  \ https://wiki.archlinux.org/index.php/rxvt-unicode#My_numerical_keypad_acts_weird_and_generates_differing_output.3F_.28e.g._in_vim.29
+  - Home/End keys on keypad, inside vim command ":" mode aren't working as normal Home/End keys, but do work in xfce4-terminal
+  - Ctrl+left/right don't jump one word, but do  in xfce4-terminal
+  \ in .inputrc
+  \ "\eOc": forward-word     # Ctrl+right  => forward word
+  \ "\eOd": backward-word    # Ctrl+left   => backward word
+  - Home/End on keypad, while in mc, not working
+  * find a way to paste a line that's on two lines(in mc viewer only!), but it's obviously just one, paste it as one line instead of two - xfce4-terminal does it correctly
+    \ actually this works fine in bash
+    \ but not within midnight commander's file viewer, with word wrap on (F2)
+    \ neither urxvt nor xfce4-terminal work with this case!
+    \ in mc with mouse disabled (mc --nomouse) still doesn't work, - it works in vim editor or bash command line
+  * when word wrap isn't on (F2) in mc, searching for something (F7, Shift+F7) doesn't show it on screen if it's past the screen on the same line to the right.
+  - apply this urxvt patch for Ctrl+L (try `seq 1000` then C-L, scroll up, they're gone from 980->1000)
+    \ this one's better: https://github.com/jjk-jacky/rxvt-unicode/commits/clear
+    \ maybe this one's better: https://gist.github.com/anonymous/2559054
+    \ https://bbs.archlinux.org/viewtopic.php?id=129302
+  - scrolldown with mouse wheel while viewing a man page doesn't work as long as the text below wasn't already seen/loaded before. works with xfce4-terminal though
+    \ apply this urxvt patch https://github.com/jjk-jacky/rxvt-unicode/commit/bf7f54bc2449372b5061cf4e50106be252bc0f71
+  - numpad PgUp/PgDn in less, not working
+* vim
+  * see why vim doesn't know how to indent PKGBUILD when function names contain _ and - such as package_linux-git-headers()  all inner code is indented with 0 spaces
+  * numpad keys: up/down/Home/End/5/left/right (except PgUp and PgDn) are broken in vim!
+    \ well it's because something was overriding xmodmap so I had to reload it: xmodmap ~/.Xmodmap
+    - fixed that by making sure /etc/profile reloads xmodmap from ~
+      * found it! - sometimes pacman installs execute this: source /etc/profile  which does change the mapping of keys and requires running: xmodmap ~/Xmodmap !! finally this issue is found!
+    * TODO: test open vim and enter insert mode then Ctrl+Left to see if it works, if it doesn't make sure xmodmap is loaded in xinitrc ! 'cause this fixes it when reloading it in terminal.
+    \ maybe that's why I was getting some lockups in mc with keypad keys hmm
+      * nope that's not why, see why keypad keys and up/down of non-keypad keys for example(not just them) lock-up in some cases, not sure what's the fix! but xmodmap (re)loading isn't it but seems to happen after a vim session while in mc. Could be urxvt doing it, quitting the terminal altogether is the "solution" for that terminal. Starting up a new one works fine, but just quitting mc, loading xmodmap and starting mc again doesn't unlock the keys.
+        \ this is a different issue, apparently related to mc !! probably not urxvt because I remember xfce4-terminal having the same issue in mc
+        \ this doesn't modify xmodmap at all! at least not the -pke part And the -pk part!
+        \ but quitting mc and re-entering does fix it! and what brokes it is running a command, like ls, then when back: broken  ie. keypad star  key
+        \ changing folder(ie. enter on it) fixes it also!
+        * need to check if executing 'cd' (when pressing enter on a folder) does anything different from executing a cmd like 'ls' - maybe the former restores some things!
+  - see why vim doesn't enter second screen (as per urxvt) but less does
+    \ so, while in vim, mousewheelup will scroll past the vim screen into what was in the shell before
+    \ actually less doesn't either, at least when there's scrollback(which is not what you have when you just started the terminal)
+    \ works with jjacky's mouseWheel patch
+  - make background transparent, or urxvt's second screen background transparent
+  - make blue line show ok on blue text, eg. /usr/include/X11/keysymdef.h
+    \ hi CursorLine   cterm=NONE ctermbg=darkred ctermfg=white guibg=darkred guifg=white
+    \ actually, made it bold: highlight CursorLine cterm=bold
+  - check why shift+left/right works to move past words but ctrl+left/right doesn't!
+    \ both versions were working with xfce4-terminal, in both insert and non-edit modes
+- chromium-dev
+  * build chromium
+    \ http://www.chromium.org/developers/how-tos/get-the-code#Prerequisites
+    * remove curl from sha1 and use sha512 if still needed to get the .xz
+    * get the git chromium, with PKGBUILD instead of .xz
+  - checkout chromium extension that might be like NoScript
+  \ https://github.com/gorhill/httpswitchboard
+  \ need to learn how to use this, it's not intuitive
+  - find a way to clear all history from Tabs Outliner - many dups accrued due to browser restoring last session on startup, something like 11 thousand tabs
+    \ stored in here: /home/emacs/.config/chromium-dev/Default/IndexedDB/chrome-extension_eggkanocgddhmamlbiijnphhppkpkmkl_0.indexeddb.leveldb
+    \ ok more folders: /home/emacs/.config/chromium-dev/Default/databases/chrome-extension_eggkanocgddhmamlbiijnphhppkpkmkl_0
+    \ neither having any effect on the list within Tabs Outliner, when deleted
+- find out why xflock4 doesn't do anything, should lock screen
+  - because no screensaver commands are found/installed eg. xlock slock (don't use 'dm-tool lock' because it's easily circumvented, apparently)
+    \ use slock ! (sudo pacman -S slock) and now locking will work
+
+- find a way to make Winkey+tab work inplace of alt+tab which we'll use in mc for word completion
+  - find where Winkey is defined to open start menu - this is blocking all winkey combinations from having any effect
+    \ it's in Keyboard->Application Shortcuts (tab)->xfce4-popup-whiskermenu
+* check if xmodmap can be used to set mouse button 8&9 (as per xev) as being the mod3 modifier and thus can be used to move windows while held, currently Ctrl
+  \ see this when ready to map mouse buttons to keyboard keys https://wiki.archlinux.org/index.php/All_Mouse_Buttons_Working#evrouter
+* edit color for mc .xml files to not be so similar to selection color (yellow)
+  * find where this is - maybe in the theme? the group for it is [doc] though
+  - changed theme - temporary workaround
+- finish the script for /etc/hosts
+* finish the script for kernel 3.15 from 3.16
+  - recompile next rc version
+  - empty ~/.ccache before building kernel - 975M so far
+* find place in workflowy*.wofl file to place these:
+  * alternative email services to consider (aside from openmailbox.org ) if ever needed(in this order):
+    * https://startmail.com
+      \ doesn't have threads view of email (like gmail.com and openmailbox.org have and also riseup.net because they are using roundcube)
+    * riseup.net
+    * https://www.mailfence.com/
+    * https://www.vmail.me/en/
+    * https://bitmessage.ch
+
+* read about traffic shaping / QoS
+  \ http://www.lartc.org/howto/
+  \ and http://shorewall.net/simple_traffic_shaping.html
+  \ and http://wiki.linuxwall.info/doku.php/en:ressources:dossiers:networking:traffic_control#motivation
+  * need a better traffic shaper (wondershaper limits download rate for no reason, to like 40KB/s)
+
+* add different timer to mouse suspend, but allow it to suspend(rather than make it stay on all the time as it is now)
+  \ by peeking at dmsg: [    3.244601] input: Genius 2.4G Wireless BlueEye Mouse as /devices/pci0000:00/0000:00:12.0/usb3/3-3/3-3:1.0/0003:0458:00F2.0001/input/input8
+  \ the folder is /sys//devices/pci0000:00/0000:00:12.0/usb3/3-3//power/autosuspend_delay_ms
+  \ so echo there (currently 2000 ms) something like 600000 (10mins)
+  \ # echo '600000' > /sys//devices/pci0000:00/0000:00:12.0/usb3/3-3//power/autosuspend_delay_ms
+  \ it'd be still better than nothing!
+* something happened with -+* on numpad while numlock is off, inside mc - investigate why they lockup
+  \ look for this in sourcecode: 
+  \    * use Num_Lock to toggle Keypad on/off.  If Num_Lock is off, allow an
+  \    * escape sequence to toggle the Keypad.
+  \ also pressing enter after returning from shell, makes +-* work again!
+  
+- see why whatch -dn1 df  doesn't stop highlighting once started
+  \ oh it works except -dn1 is taken to mean -dy -n2 instead of watch -d -n1 df where y is optional argument which seems to can be anything  to mean permanent
+- get ls -la folders to show up with different than dark-blue color 'cause readability
+- see why iproute2 depends on iptables
+  \ http://lists.busybox.net/pipermail/buildroot/2010-December/039507.html
+- make own catalyst-hook PKGBUILD to build the testing one (instead of may6 one which is current)
+  \ this was already done as package catalyst-test
+* fix acpi_call (package acpi_call-git-dkms ) from not compiling on 3.17-rc1
+* nftables
+  \ http://www.netfilter.org/projects/nftables/
+  \ http://wiki.nftables.org/wiki-nftables/index.php/Main_Page
+* explore kernel option related to using custom DSDT
+  \ ACPI_CUSTOM_DSDT_FILE
+  \ see if DSDT is being used to set CPU voltages/multipliers maybe we can use this to replace amdmsrtweaker this way
+  \ also this: Documentation/acpi/initrd_table_override.txt
+- when copying ISOs to sdcard through external card reader (ie. from mc or with cp) the copy from 0 to 100% takes 2 sec and then stuck at 100% until done copying (in like minutes!) - investigate why this happens.
+  \ seems like the debug(on dmesg) might be the one stalling all writes, thus everything is slower!
+  * it's not debug, it's 3.17-rc1 kernel vs 3.16 kernel, the former is really slow for unknown reasons.
+* when yaourt building a package, before build happens  some prerequisites might need installing and if they do, sudo password is given and I presume cached normally - if it's cached normally then a script could call sudo and no pass prompt would happen
+- thunar is so broken - find alternative! found: pcmanfm --desktop
+  - currently I Copy a zip file of 30MB and then Paste in same folder, the newly created file "copy of ..." shows up as 18.6MB no matter how I refresh or start new thunars and navigate to its location. But ls shows both have same size!
+  - added ^ to bugs
+* add this to videos:
+  * diet
+    \ vegan https://www.youtube.com/watch?v=es6U00LMmC4
+    \ https://www.youtube.com/watch?v=gCIhUebuy4w
+* need to disable systemd-tmpfiles-clean from running whenever! just k-line it!
+
+- find a way to prevent sudo from exiting when prompting for password for 5 mins, useful when making kernel to avoid having to run ./inst because password prompt timedout
+- use different PS1 for mc to avoid constricted command line space (like 5 chars long)
+* investigate the epic lockup from accidentally doing: vim file|less
+* include in kernel uname -a  the type (git, tip, next) so that we know which one we're running, typically tip was running before git, since it's last in /etc/mkinitcpio.d/
+* fix acpi_call building for the wrong(current) kernel with dkms, even though the kernel version is being specified! see bugs/dkms/acpi_call
+* get rid of mdm and all of its dependencies!
+- investigate what makes cd linux-git  work if the folder is in fact linuxgit
+  \ it's shopt -s cdspell
+  \ fix by: shopt -u cdspell
+* see why bootsector(from boot partition) not mbr is messed up after plugging msproduo in 750 - maybe they rewrite it with some evil bootsector?
+  \ this fixed it:  sudo syslinux -i -d /Boot/Settings /dev/sdc1
+* make gopreplinks prompt to remove any /tmp/ symlinks unless any of them are dirs
+  \ this allows building anything without manually having to remove those links
+- maybe re-enable sudo powertop SATA link powersave, check it!
+- syslinux-git
+  * about int 13h EDD stuff
+    \ https://en.wikipedia.org/wiki/BIOS_interrupt_call
+  * make this timer for syslinux
+    \ http://www.intel-assembler.it/portale/5/high-precision-timer-clock/source-code-fast-timer-8259-c-asm.asp
+  * use cmos seconds to get past time, because int8 is slowed down during read
+    \ http://www.bioscentral.com/misc/cmosmap.htm
+    \ http://wiki.osdev.org/CMOS#Accessing_CMOS_Registers
+* check that coreboot/libreboot BIOS to see if we can replace bios
+  \ http://www.coreboot.org/Supported_Chipsets_and_Devices
+* ensure machine-id is not existing OR use a generic one like 01234...etc.
+  \ /etc/machine-id and /var/lib/dbus/machine-id
+  \ pulse-audio will stop working if the /etc/ one is moved, ie. when trying to play youtube videos in chromium - will work again after chromium restart(if that file is put back) - maybe will work again after reboot
+
+
+* Z575 underclocking info
+  \ good undervolt info DSDT ACPI http://forum.notebookreview.com/acer/480992-acer-laptop-phoenix-bios-bios-mod-request.html#post6212306
+  \ good read on overclocking and MSR http://www.overclock.net/t/1205257/overclock-cpu-in-linux-necessary-program-names-given
+  \ these were the latest (windows) May 29, 2014 at 9:39 am k10stat: http://i.imgur.com/98BV47U.jpg , fusiontweaker: http://i.imgur.com/QHd5D48.jpg
+  * pics of the new memory(RAM) http://imgur.com/a/synyN
+  * pics of the old memory RAM http://imgur.com/a/buk20
+  * disassembling z575 https://www.youtube.com/watch?v=pqN1m5zhnww
+  * my cpu-z (old pics): http://imgur.com/a/PyzjF
+
+* read more on powersave
+  \ http://www.ibm.com/developerworks/library/l-cpufreq-1/l-cpufreq-1-pdf.pdf
+* memory SPD info
+  \ SPD: http://www.simmtester.com/page/news/showpubnews.asp?num=153
+  \ exactly what i wanted to have confirmed: http://www.tomshardware.co.uk/forum/281464-30-corsair-xms3-1600mhz-corsair-dominator-2133mhz#4291955 and what I did with the new ram
+
+* grsecurity kernel
+
+- something happened when pacman saw downgrade from 3.17-rc7 to 3.17 and it didn't remove a bunch of files which I had to remove manually or else it would complain file already exists in filesystem and abort transaction
+  \ it was this https://lists.archlinux.org/pipermail/pacman-dev/2014-October/019422.html
+  \ thanks to grawity and demize on #archlinux on freenode irc
+- use deadline instead of noop for ssds
+  \ https://wiki.archlinux.org/index.php/Solid_State_Drives#Using_udev_for_one_device_or_HDD.2FSSD_mixed_environment
+  - make sure it's in kernel, and also set it as default there.
+
+* a stop job is in progress for ... remove that timeout from systemd!
+  - yaourt -S systemd-git
+- see what sets sysrq to disabled in manjaro, because sysrq+b to reboot works at luks password prompt
+  \ If you wish to have it enabled during boot, edit /etc/sysctl.d/99-sysctl.conf and set kernel.sysrq = 1 
+  \ thanks <gehidore> on #archlinux freenode irc for making me look at the wiki and find that wiki link: https://wiki.archlinux.org/index.php/Keyboard_shortcuts#Kernel even though I've already figured it out on my own.
+  \ for me, Alt+Fn+PrtSc (not Fn+Alt+PrtSc) triggers sysrq
+
+
+* cd /sys/devices/pci0000:00/0000:00:13.2/usb2
+  \ see if we should disconnect that hub, and then the usb1.1 one on 13.0 (as opposed to usb2.0 on 13.2)
+  \ if we disconnect hub, then we can't bring it back, I believe; however it is in idle/suspended mode right now;
+
+- try udev rule while disabling macchanger with systemctl, reboot to see if it works with all xx:xx:xx:xx:xx:xx
+  \ see files in /etc/udev/rules.d/*.rules
+
+- find a way to make vim create .swp files in /tmp and make sure they have only owner permissions - instead of in current folder on ssd
+  \ :set directory=/tmp
+  - make swp files in a subdir of /tmp with proper user-owner-only permissions
+    \ done by patching vim source
+
+
+* psd firefox https://wiki.archlinux.org/index.php/Profile-sync-daemon#Benefits_of_psd
+
+* make ccd in ~/bin/ to cd to passed param and if this is a file then cd to its folder instead - should easy copy/pasting e.g. from git status
+
+- make iotop accumulated output from batch be sorted and watchable with watch, maybe using awk to display newly updated list after each output line - this is so that we don't lose lost processes(ie. those that finished, disappear from iotop)
+  \ sudo iotop -aokb -qqq
+  \ can make iotop exit: sudo iotop --iter=1 --batch --kilobytes --only
+  - all done, see iotap
+
+- look into fbcon.c and switch from kmalloc fbcon_softback_size to vmalloc, to allow for bigger framebuffer scrollback buffer
+  \ there's a patch for this already - but was something else capping this to 32k (if I remember right)
+
+- test dual gfx turning off of discrete card, with this update
+  \ https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=df20ce5a6fa618e236ff6b33ee88413d6f1bfa0a
+  \ forgot but I'm pretty sure that I tested this and had no effect - still freezes!
+
+* ASD - look into using this, possibly for pacman/makepkg compilations
+  \ https://wiki.archlinux.org/index.php/Anything-sync-daemon
+
+* install gentoo
+  * in VM
+  * on SSD
+
+* gentoo
+  *  I think it'd be a great idea to make a link from 5.b. in the Handbook to https://www.gentoo.org/proj/en/releng/#doc_chap5  because that tells how to get the keys too (also shasum -c)
+    \ <kurly> amanual: make a patch, submit a bug on bugs.gentoo.org, and your change may well be accepted :)
+    \ sources: http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo/xml/htdocs/doc/en/handbook/  no https and it's cvs, weird hmm
+    \ now that I think about it, the steps and the link are provided in a previous section(when getting the iso) in section 2.c. of the Handbook
+    \ but it may still be a good idea to mention all that in 5.b.
+    * hmm, could even add those keys (from that url) into the livecd iso as trusted already - unless hmm maybe in case they get compromised in the future and the iso is now outdated, they don't want the user who uses the iso to think they are still trusted/valid 
+  * add mount -t tmpfs tmpfs /mnt/gentoo/tmp/  to Code Listing 1.4: Mounting /proc and /dev in the Handbook
+  * don't use systemd! but rather openrc!
+
+- yunohost - failed
+  * install in vm
+    * get debian7
+      * find a way to make sure downloaded iso is authentic
+        \ https://www.debian.org/CD/http-ftp/#stable
+        * find a way to make sure the keys are authentic
+          \ https://www.debian.org/CD/verify
+          \ changes sent to keyring.debian.org via HKP are likely insecurely sent (verify this)
+          \ http://anonscm.debian.org/cgit/keyring/keyring.git/commit/?id=b3b953a159dbe2e8636cf98865ecbe3b72f2c385
+      - install debian - failed: something about not recognizing the fs after partitioning and formatting! - don't try again!
+    * install from here https://yunohost.org/#/install_manually
+
+
+* use this email client:
+  \ https://github.com/sup-heliotrope/sup/wiki/Complete-gmail-configuration
+
+* ssh key from gpg  (instead of from ~/.ssh/ )
+  \ https://inuits.eu/blog/ssh-authentication-your-pgp-key
+  \ https://github.com/sup-heliotrope/sup/wiki/Securely-Store-Password
+
+* find out if gpg --refresh-keys  can overwrite existing keys completely, so that their fingerprints for example gets changed and thus invalidating any previous manually done verification (this shouldn't happen if I signed those with my own key, right?)
+
+* gentoo TODO
+  * shouldn't size be first in this:
+    \ tail -f /var/log/emerge-fetch.log
+    \ * gentoo-syntax-20130619.tar.bz2 SHA256 SHA512 WHIRLPOOL size ;-) ...    [ ok ]
+    \ size should be checked first because it consumes less cpu cycles to detect broken/malicious download than doing a checksum first
+  * FEATURES flags that require other things to exist.
+    \ so check that these are satisfied (in gentoo_vm.wofl)
+    - fakeroot
+      \ requires fakeroot(8)
+      \ emerge --ask sys-apps/fakeroot
+    * ipc-sandbox
+      \ Requires IPC namespace support in kernel.
+    * network-sandbox
+      \ Requires network namespace support in kernel.
+    * prelink-checksums
+      \ needs prelink(8) to be installed
+  * see why ACCEPT_LICENSE="-* @FREE" masks kernel sources:
+    \ !!! The following installed packages are masked:
+    \ - sys-kernel/gentoo-sources-3.17.7::gentoo (masked by: freedist license(s))
+    \ A copy of the 'freedist' license is located at '/usr/portage/licenses/freedist'.
+
+
+
+* add RAIN (cpu cool hlt instructions) while in GRUB menu/commandline to avoid 100% cpu usage!
+  \ remember RAIN from DOS? it would act like Windows' System Idle cooling the cpu with hlt instructions
+
+
+* investigate in bash, why "rm some\ files\ *" will remove(and tab show) "some Files *" notice the f vs F
+
+* use i8042.c to add code to detect if a key is getting duplicated too soon, because I'm often getting double keys when I type - so it's either hardware, or software, either way hopefuly detectable with i8042
+  * show only duplicated keys instead of all
+
+
+* this kernel bug: https://bugzilla.kernel.org/show_bug.cgi?id=47331
+
+* investigate why, on gentoo, in chroot(at least), on bash prompt, when freshly returned to prompt, pressing Shift+1 aka tilde(~) will not show it! pressing it again shows it once as: ~  but if instead pressing another key like 1, then both are shown at once(~1). What's with not showing it? and just pressing ~ and enter, shows it and obviously: bash: /root: Is a directory
+
+
+* fix volume notifier(on top right in xfce4, when Fn+Left/RightArrows, or volup/voldown keys are pressed) from stealing focus, which it does only after it dissapears(fade out).
+  \ well, can't reproduce this anymore!
+  \ it's back again, maybe happens only with vlc playing(but not focused), and urxvt being focused
+
+- fix QA warnings/messages get stacked(actually doubled!) ie. when using ebuild successively with keeptemp and keepwork FEATURES flags.
+  \ this is in temp/logging/other (file) has 3.3megs now)
+  \ something else recreates this file. so it's a grep from the log which is: /var/log/portage/ebuild.logs/build/sys-boot/grub-9999-r1:20150212-035520.log
+  \ and the grep code is here: /usr/lib/portage/python2.7/install-qa-check.d/90gcc-warnings
+  \ https://bugs.gentoo.org/show_bug.cgi?id=539848
+  \ f=$(LC_CTYPE=C LC_COLLATE=C "${grep_cmd}" --invert-match -E $'^( \x1b\[33;01m\*\x1b\[0m |\x1b\[31;01m \* \x1b\[39;49;00m)' "${PORTAGE_LOG_FILE}" | LC_CTYPE=C LC_COLLATE=C "${grep_cmd}" -E "${joined_msgs}")
+  \ /usr/lib/portage/python2.7/install-qa-check.d/90gcc-warnings
+  \ /usr/lib/portage/python3.3/install-qa-check.d/90gcc-warnings
+  \ line 85 or so
+  \ maybe instead that .log file should be recreated on every ebuild run - not with keeptemp/keepwork !
+  - TODO: add this workaround in .wofl
+  * TODO: add this to quilt patch and in repo
+
+* cd /etc/default && colordiff -up tlp tlp.pacnew |less
+  \ on Manjaro
+
+* fix script: vim ~/bin/hasaccess
+  \ on Manjaro
+
+* make the eutils.eclass epatch  patch report only when /etc/portage/patches is a symlink - to avoid too many warnings; even though this limits the case severely
+
+* make `quilt edit` work if `quilt files` reports only one file, so `quilt edit` will just edit that file
+
+* make a note and save /etc/portage/bashrc and apply the eutils.eclass patch(es)
+
+* use mosh
+
+* bash: investigate why "{#coment" gives syntax error for a function definition like "isnum()\n{#comment"  but "{ #comment" works.
+
+
+* gentoo: add grub patches(from gentoo_vm.wofl, the sed ones) or can't boot! - looks like this was because forgot to moount /but
+  \ after fixing prefix and root via set, enter menu by:
+  \ insmod normal
+  \ normal
+  \ the prefix should be pointing to grub folder like: 
+  \ set prefix=(lvm/vgall-bootlvol)/grub
+  \ set root=(lvm/vgall-bootlvol)
+  * add them as portage patches, don't just run sed again - because they get overwritted on next grub install or something.
+    * see if can integrate them in wofl at that stage and replace sed
+
+* gentoo:
+  * tmux:
+    * find out how to:
+      * scroll up
+      * detach
+  * add note to edit /etc/ssh/sshd_config  to set UseDNS to no because without LAN, sshd tries to reverse PTR the hostname that I'm connecting from.
+  * stop netmount from auto running at boot, and add to wofl
+
+* maybe add a function to funx.bash that will save current bash settings(like shopt) and allow you to embed them in the script to warn the user that some settings are different than what the script author used when testing/running that script, so as to know that if something goes wrong, to flip some settings.
+
+* ensure_existing_commands_or_die
+  * make sure this shows the type of command when error-ing! due to 'none' meaning it found a command and is of certain type instead!
+  * use funx.bash in trimtest script
+    * make all funx.bash functions readonly
+    - make 2 funcs to start and stop block that has set +e respectively set -e; and the stopcmd will return the same $? as exit code from the function, thus keeping the exit code without requiring caller to catch it before calling stopcmd.
+      \ forgot where exactly I wanted to use this, oh yeah: executing commands! I forgot -e is not -x
+      \ done: startexternal / stopexternal
+  * maybe add %type% and expand it to eg. builtin, and %cmd% to command; so it can be used in that on die msg.
+
+* use the hasaccess script's code into eutil.class epatch_user() to detect exactly which part of the path is inaccessible and differentiate between non-existing path and existing but permission denied one.
+
+* switch from xfce4-sensors to conky
+  \ https://wiki.archlinux.org/index.php/Conky#Prevent_flickering
+  * only if it has temp sensors!
+
+* switch from bash to zsh
+
+* find all bash scripts that I have (in ~)
+  - replace == with 'test', unless regex was needed
+    - = should be used with the test command for POSIX conformance.
+  - search for [ and replace with test
+  - replace all [[ with 'test'
+    \ because that arithmetic double expansion
+    \ grep -nr -- "\[\["
+    \ grep -nrF -- '[['
+  - mktemp invocations must have corresponding traps
+    \ trap cleanup 0
+    \ https://docs.fedoraproject.org/en-US/Fedora_Security_Team/1/html/Defensive_Coding/sect-Defensive_Coding-Shell-Temporary_Files.html
+  * Guarding shell scripts against changes
+    \ main "$@" ; exit $?
+    \ https://docs.fedoraproject.org/en-US/Fedora_Security_Team/1/html/Defensive_Coding/sect-Defensive_Coding-Shell-Edit_Guard.html
+
+* add to i8042 code a counter of how many keys were pressed and released
+  \ for statistics, just like .bash_history
+  * ignore some key releases like: e0(224) aka #096
+  * see how to export it via /sys or /proc
+    * autosave on shutdown/restart
+
+* replace all bash scripts with their zsh counterparts OR abort doing any scripts unless something better like python or rust
+  * postpone this until set -x is properly displaying $0:$LINENO
+
+* need a way to crypt (probably using pub/priv keys) such that there are two keys: one for read and one for write; so that if read is ever required (eg. for the govt.) then only the read key needs to be provided; so this way they cannot implant evidence.
+  \ although they can still write physical sectors and could in theory brute force write stuff and check the read data for validity to what they actually want to write - so this way they could eventually write whatever they wanted.
+  \ Unsure how possible this is atm.
+
+* put ssh key on a luks container or something and mount only when needed
+  * make a symlink of the keyfiles to the where container will be mounted
+  * make ssh alias which would mount container if it wasn't mounted, and possibly unmount it when done
+
+* replace echo -n  with printf?
+  \ https://github.com/gentoo/netifrc/pull/10#issuecomment-76241328
+  \ because it's not portable
+  \ or maybe do this only in the future, because I am counting on scripts using echo -n to be run in bash
+  \ zsh does know of echo -n  and it displays it nicely with a % at the end while still new-lining for readability. Good for you!
+
+* apply workround https://bugzilla.kernel.org/show_bug.cgi?id=91191#c34
+  * also find out exactly why that happens
+    \ it's not ideapad_laptop module! it's acpi something
+
+* check if gentoo has hosts.deny since Manjaro/Arch Linux does't
+
+* git patch to use proper .git repo for git diff
+  \ git diff can get multiple file args!
+  \ git diff "/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/WebKit/Source/bindings/bindings.gni"
+  \ ^ that will not cd to that folder and git diff bindings.gni ! which is what I propose, because otherwise it fails, or if another .git repo is in current folder the diff will be silently empty!
+  \ since git diff can get multiple file args, the .git repo should be recomputed for each file arg before diff-ing
+  * get in source code and add this patch
+
+* check if chromium still shows this broken jpeg after a few F5 refreshes
+  \ https://scontent-fra.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11008134_764460296955897_1969655048_n.jpg
+  \ also if it's fixed
+  \ Corrupt JPEG data: premature end of data segment
+  \ may also show this:
+  \ [5288:5288:0318/204243:ERROR:navigation_entry_screenshot_manager.cc(153)] Invalid entry with unique id: 286
+
+* get this git signing in place
+  \ https://ariejan.net/2014/06/04/gpg-sign-your-git-commits/
+  \ https://git-scm.herokuapp.com/book/es/v2/Git-Tools-Signing-Your-Work
+  \ http://mikegerwitz.com/papers/git-horror-story
+
+* distributed hash tables
+  \ Kademlia https://en.wikipedia.org/wiki/Kademlia
+  \ that seems to describe the same thing that Steve Gibson described in the distributed hash tables episode
+
+* get aria2c instead of curl/wget  I guess
+  \ https://calomel.org/aria2.html
+
+* what in the world, libdrm
+  \ * QA Notice: Package triggers severe warnings which indicate that it
+  \ *            may exhibit random runtime failures.
+  \ * /var/tmp/portage/x11-libs/libdrm-2.4.60/work/libdrm-2.4.60/xf86drmSL.c:273:8: warning: 'update[0]' is used uninitialized in this function [-Wuninitialized]
+  \ * /var/tmp/portage/x11-libs/libdrm-2.4.60/work/libdrm-2.4.60/xf86drmMode.c:861:15: warning: dereferencing type-punned pointer will break strict-aliasing rules [-Wstrict-aliasing]
+  \ http://lists.freedesktop.org/archives/mesa-dev/2012-July/023730.html
+
+* undefined symbol: vgaHWFreeHWRec 
+  \ https://forums.gentoo.org/viewtopic-p-7695994.html
+  \ fixed by choosing a vanilla 4.9.2 gcc (also not using ccache for other errors like PIC) but not 4.8.3 (that gave other errors)
+
+
+* need to add this to once per day or something
+  \ sudo ntpdate -s time.nist.gov
+
+* this is nolonger valid about deleted certs inside firefox
+  \ src: https://wiki.mozilla.org/CA:UserCertDB
+  \ "Important: Deleting a root certificate that is in the default root store is equivalent to turning off all of the trust bits for that root. Therefore, even though the root certificate will re-appear in the Certificate Manager, it will be treated as though you changed the trust bits of that root certificate to turn them all off."
+  \ XXX: what actually happens is, you delete the cert(even if it has all 3 options unset: to not trust it to identify websites, email and software), it comes back with the trust it to identify websites bit set!!
+  \ tested on https://forum.videolan.org/ with cert named UTN-USERFirst-Hardware  serial: 44:BE:0C:8B:50:00:24:B4:11:D3:36:2A:FE:65:0A:FD
+
+- in vim, add a key mapping for # and * so that they save a mark like /text does for mark `s to get back to where you were before the /text search happened
+  \ hard to implement, best use ms to mask and `s  to get back
+
+- NEVERMIND: make a safer rm command, not an alias, but actually replace the existing rm with one that chdirs into the folder and removes whatever is left; well actually I didn't think this through because rm dir/ will cd dir; rm "" (nothing) or rm . which won't work (didn't test) but i guess there's already a test in place so you can't remove / by mistake, inside rm, since this is my intention with this anyway. Wonder if cd /dir ; rm -rf ../   removes what? or what happens, I don't wanna test yet. whatever
+
+* interesting, bash globing is case-insensitive
+  * eg. ls alien1.pi?  or ls *.pig or ls alien1.* will show ALIEN1.PIG file
+
+
+* use this instead of sudo netstat -pantu
+  \ $ sudo netstat -pantuvelc
+
+
+* extra params to cd are ignored
+  \ eg. cd ksalda 1 23
+  \ bash: cd: ksalda: No such file or directory
+  \ cd 1 2 3
+  \ worked, cd-ed in dir 1
+
+* need a way to prevent kernel from ever panic-ing and thus leaving me without the reason why it panic'd (in dmesg, since i can't use sysrq+s to sync while panic'd) - SO, disabled kernel panics!!
+
+* dnscrypt-proxy with unbound, instead of normal DNS queries!
+
+* use mitmproxy and genymotion  for snapchat app, in order to respect snapchat devs' wishes for not using 3rd party software  and still do what I want - have my cake and eat it too :)
+  \ https://github.com/mitmproxy/mitmproxy/tree/master/examples
+  * make two of each:
+    * genymotion vm(nexus ... which?)
+      * install google services
+      * get a google account
+        \ otherwise can't log into google services and as a consequence can't run snapchat, not to mention can't download snapchat without a google account(from google play store)
+        * if needed by any chance, I can get an app specific password, rather than using the gmail password(this should not be needed with this mitmproxy variant; only when using 3rd party programs like SnAPI-Chat on github)
+          \ https://support.google.com/mail/answer/1173270?hl=en
+          \ https://www.google.com/accounts/IssuedAuthSubTokens?hide_authsub=1
+      * run mitmdump on host, to capture traffic
+        \ see exactly how
+      * get snapchat app from google play store
+      * run snapchat
+        * make snapchat account
+        * add the other snapchat account as friends
+
+
+
+* enable KASAN
+  \ https://github.com/google/kasan/wiki
+  * need gcc 5 for inline kasan, but should enable it when we got gcc5
+  * enable outline kasan in kernel config (because we only got gcc 4.9.2)
+    * this won't work currently, it panics on boot! find a way to log the panics' texts! (on panic?)
+
+
+- get audio from manjaro vbox to work in gentoo vbox  eg. lsmod
+
+* modify sshd and ssh(client) to can auth using BOTH password and key(signature auth) so that first the pass is asked, then the key is used; if either fails, don't let it in; but if pass is ok, and if key fails then maybe give some other error(as to not alert whoever else is trying this, that a key was also tried and failed) like maybe say the pwd was wrong.
+
+- (nevermind! C-c won't work) stop using urxvt and use xfce4-terminal instead
+  \ because urxvt github version isn't updated and the real one uses cvs! and it's bugged! even though xfce4-terminal does that make file in /tmp and unlink it thing which makes it "easy" to spy on the window's contents!
+  * FIXME: no colors with less and man ! they were fine with urxvt, probably because now TERM=xterm  (can be set in options)
+    - can't use xterm-color because: *** VTE ***: Failed to load terminal capabilities from '/etc/termcap'
+    * also missing colors in vim!
+    * mc is downgraded from 256 colors to 16
+  * FIXME: C-c doesn't work (eg. when at sudo prompt that repeats until successful  while compiling kernel) 
+    \ so switched back to urxvt!
+
+
+
+
+
+* check out claws-mail.org as a thunderbird replacement
+* check out if we should also get this addon(for firefox and chromium)
+  \ https://addons.mozilla.org/en-US/firefox/addon/disconnect/
+  \ https://github.com/disconnectme/disconnect
+
+
+* todo: no encryption, wherever possible - certainly no dmcrypt/LUKS!!!
+  \ why? because, why make life harder for whoever is trying to access that data, even if they want to do it for evil reasons; and most importantly because denying accessibility like that(by using encryption/LUKS) will breed into my life and just like any type of hiding, supposedly, will prevent me from progressing!
+  \ this also implies that I will do only what I want to do, not what my subconscious wants me to do while it feels under the protection veil of privacy.
+  * will think more about how to protect stuff like .ssh/key  and keepassx passwords ...
+  * let the browser user agent be normal (don't spoof/hide it)
+  * don't use proxy for reading arstechnica (although this means no ads then? proxy would load them tho)
+  * ssh/key already has a password, maybe make it be stronger or longer; since there won't be LUKS on underlaying storage
+  * hmm, I guess all that grsecurity santitizing or memory/stack will slow down the system more than LUKS would have! so no gains there, unless I disable that. Maybe I should... maybe simpler is better, until I achieve my goal(my program).
+  * I think I have to erase some/all git history from coostomhuston because i don't want all those eg. instagram/youtube links to creep into the future - giving up on all of that!
+
+* remove stuff from /etc/hosts  and find a way to deny all by default, and only allow those in a list...
+
+
+
+* media-plugins/gst-plugins-libav needs a gentoo git ebuild, to fix firefox crashing when watching youtube videos
+
+* in gentoo(vm/bare) need to move /etc/portage/patches symlink to a root folder or something not in /home/usernamehere/patches 
+  * see gentoo/etc/portage/postsync.d/repatch1 which needs a path change when this changes!
+
+

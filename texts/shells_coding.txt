@@ -1,0 +1,15 @@
+in bash(and zsh?):
+\ inspired from and more info: https://docs.fedoraproject.org/en-US/Fedora_Security_Team/1/html/Defensive_Coding/chap-Defensive_Coding-Shell.html
+
+* never use '[[' ']]' 
+  * if you need regex use 'grep -E' eg. if [[ $totest =~ $regexpr ]]  becomes if grep -E -q -- "$regexpr" <<< "$totest"
+  * if you used: `if [[ var1 -eq 1 ]]; then` now you use: `if test "$var1" -eq "1"; then`
+* never use '[' , use 'test' instead  even though they are equivalent; see: `help test`
+* never use '==' , use '=' with 'test' for POSIX compliance; you use -a and -o for && and || You will need to use || and && only when using external commands eg. if test -z '$a' || ! grep -E -q "[0-9]+" <<<"$a"; then echo "fail"; fi
+* don't use 'set -e' to exit when return is != 0 (eg. if function or external command returns non-zero exit code)
+* always quote the arguments to 'test' - single quote when no expansion is needed
+  * except when you want to use ~ to expand to homedir eg. test -f ~/.bashrc  cannot be (double|single)quoted
+* never use `bash -c 'cmds here'` because of double expansion
+* if you ever use arithmetic 'let' or '((' '))' then, because of double expansion, you should single quote(not double quote!) the arguments: eg. let 'ar[$key]+=$val'  or (('ar[$key]+=$val'))
+
+

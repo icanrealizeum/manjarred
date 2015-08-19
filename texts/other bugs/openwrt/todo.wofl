@@ -1,0 +1,12 @@
+* switch from md5 to sha512 or something
+* redirect to newly changed ip page
+  \ https://forum.openwrt.org/viewtopic.php?id=46828
+* fix typo:
+  \ feeds/packages/net/ntpd/Makefile: system clock with remote NTP time servers and run/montior local NTP
+* use different kernel tree, git version
+  * see if pointing to existing tree modifies anything inside it, or it is simply used as a source
+* see why /etc/preinit doesn't get new ip address as specified in make menuconfig but instead just remains with 192.168.1.1 and all other addresses related to this remain unchanged!
+  \ looks like package/base-files/Makefile doesn't regen /lib/preinit/00_preinit.conf so pi_ifname was still empty - trying a make clean ... the .conf is now regenerated but /etc/preinit is still using defaults of 192.168.1.1 and empty ifname
+  \ maybe it only works after firstboot (command) ?
+
+
