@@ -2134,6 +2134,7 @@
     \ notify_when_patches_folder_inaccessible_by_portage.patch
     \ it's in gentoo/quilt.patches/ 
     \ apparently no package owns /usr/portage/eclass/eutils.eclass which is kinda odd(?) but then for sure it got there via stage3 or even portage snapshot (via webrsync -v -k)
+    \ FIXME: looks like patching /usr/portage/eclass/eutils.eclass after each emerge-webrsync (via hooks) 'causes the next emerge to rebuild whatever (ebuild.sh depend) everything (portage list of all packages? depends and stuff) which takes like 15mins(I can't remember actually)
   * build your own iso
     - get catalyst (for building stages and .iso)
       * time emerge -nav dev-util/catalyst

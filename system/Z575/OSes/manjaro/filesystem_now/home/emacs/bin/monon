@@ -6,3 +6,8 @@ setterm --blank poke
 #to also get back from blanking
 xset s reset
 
+#sometimes you move mouse when brightness is getting set low, and it doesn't get set back to high because of this timing.
+#echo '255' >> /sys/class/backlight/radeon_bl0/brightness
+echo '255' | sudo tee /sys/class/backlight/radeon_bl0/brightness
+
+
