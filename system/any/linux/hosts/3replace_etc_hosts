@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+set -e
+#sudo --validate
+colordiff -up /etc/hosts hosts | less -R
+sudo cp -i ./hosts /etc/hosts
+#reload /etc/hosts (if you're using dnsmasq as your dns server)
+sudo systemctl reload dnsmasq.service
+
