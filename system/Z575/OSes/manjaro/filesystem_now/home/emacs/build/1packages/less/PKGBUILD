@@ -1,0 +1,33 @@
+# $Id$
+# Maintainer: Sébastien "Seblu" Luttringer <seblu@archlinux.org>
+# Contributor: Allan McRae <allan@archlinux.org>
+# Contributor: judd <jvinet@zeroflux.org>
+
+pkgname=less
+pkgver=470
+pkgrel=1
+pkgdesc='A terminal based program for viewing text files'
+license=('GPL3')
+arch=('i686' 'x86_64')
+url='http://www.greenwoodsoftware.com/less'
+groups=('base')
+depends=('glibc' 'ncurses' 'pcre')
+source=("http://www.greenwoodsoftware.com/$pkgname/$pkgname-$pkgver.tar.gz"
+#{,.sig}
+)
+md5sums=('abf7c37b1a2c3d83865eba3ab2eb369f')
+sha512sums=('4892c41f7146cad0f5bfb10ef96adf4814ab41401e64252f4b3ef8cf447b4036960925ae76651b5a81b55988fc3065c06af7393b923455173266d15170cfcc77')
+
+
+build() {
+  cd $pkgname-$pkgver
+  ./configure --prefix=/usr --sysconfdir=/etc --with-regex=pcre
+  make
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+}
+
+# vim:set ts=2 sw=2 et:

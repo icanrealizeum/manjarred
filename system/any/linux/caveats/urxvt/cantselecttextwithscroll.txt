@@ -1,0 +1,18 @@
+ok this works with primary screen (urxvt)
+but not with git diff
+echo $GIT_PAGER
+less -+X -R -S -+F -+E
+
+and not withing less/vim which use second screens too(like git diff)
+
+but git diff is slightly different because it doesn't clear the previous screens and thus allows mouse LMB selection drag towards the top but not towards the bottom.
+I think the mousewheel patch could maybe address this, or something similar
+
+---------
+can't seem to select more than one screen of text with mouse
+1. it won't scroll down while holding LMB and going to bottom
+(but window border is disabled, if it matters)
+2. if already selected, scrolling down past the beginning of selection, deselects the entire selected block!!
+
+crap
+

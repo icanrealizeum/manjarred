@@ -1,0 +1,10 @@
+# we want to exclude all but *.orig files in folder ./2/
+# 2/drivers/video/console/*
+# !2/drivers/video/console/*.orig
+
+2/*/*/*/*
+3/*/*/*/*
+!*.orig
+
+# both variants work ^ but incomplete because subfolders must be specified
+

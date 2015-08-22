@@ -1,0 +1,66 @@
+yep that was:
+chrome://flags/#extension-content-verification
+being on bootstrap instead of Default
+when on Default, this doesn't happen!
+
+==========
+tcp        0      0 manji:58837             31.46.5.83:https        ESTABLISHED 8131/chromiumcache
+
+
+chromium-dev, while running, but not when idle, apparently, keeps a https connection to what seems to be google IPs for the current country
+
+must investigate why
+maybe by installing unbound to log dns queries
+
+the connection is established on making a new tab and loading a url there
+
+the thing is, I've a bunch of options disabled which would otherwise explain this:
+Enable phishing and malware protection
+Automatically report details of possible security incidents to Google
+Use a prediction service to help complete searches and URLs typed in the address bar or the app launcher search box
+Use a web service to help resolve navigation errors
+
+
+
+connection is established on chromium start, even if no sites need to be loaded
+(they are all asleep using the tab sleep addon)
+
+refreshing or entering new urls in the same tab, doesn't reestablish connection to those google IPs; hmm not even new tab and new urls don't now
+
+I'll have to check and see if it happens only on startup
+
+I did mention that after a while that connection gets closed (4mins)
+
+so starting chromium, establishes about 5 concurrent connections to the same google IP, then in about 15 sec they reduce to just one, which lasts for exactly 4 minutes!
+
+tcp        0      0 manji:57136             31.46.5.88:https        ESTABLISHED 19294/chromiumcache
+
+  PID TTY      STAT   TIME COMMAND
+	19294 ?        Sl     0:14 /usr/lib/chromium-dev/chromium-dev --disk-cache-dir=/tmp/chromiumcache --disable-sync-preferences --disab
+
+actuall full cmdline is:
+chromium-dev --disk-cache-dir=/tmp/chromiumcache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83
+
+actual chrome://version
+
+Chromium	38.0.2107.2 (Developer Build 286086) 
+OS	Linux 
+Blink	537.36 (@179092)
+JavaScript	V8 3.28.43.1
+Flash	(Disabled)
+User Agent	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2107.2 Safari/537.36
+Command Line	/usr/lib/chromium-dev/chromium-dev --disk-cache-dir=/tmp/chromiumcache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83 --disk-cache-dir=/tmp/chromiumcache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83 --flag-switches-begin --disable-device-discovery-notifications --disable-device-discovery --disable-ntp-other-sessions-menu --disable-touch-adjustment --disable-webgl --enable-async-dns --enable-download-resumption --disable-new-profile-management --enable-offline-auto-reload-visible-only --enable-offline-load-stale-cache --disable-password-generation --disable-permissions-bubbles --disable-pinch-virtual-viewport --disable-pinch --disable-quic --disable-save-password-bubble --disable-session-crashed-bubble --disable-sync-app-list --disable-sync-synced-notifications --enable-tcp-fastopen --disable-touch-editing --disable-zero-copy --extension-content-verification=bootstrap --enable-accelerated-overflow-scroll --ignore-gpu-blacklist --enable-impl-side-painting --enable-lcd-text --malware-interstitial-v3-history --num-raster-threads=4 --disable-origin-chip --disable-overlay-scrollbar --enable-search-button-in-omnibox-always --enable-spelling-auto-correct --ssl-interstitial-v2-yellow --touch-events=disabled --wallet-service-use-sandbox=0 --flag-switches-end
+Executable Path	/usr/lib/chromium-dev/chromium-dev
+Profile Path	/home/emacs/.config/chromium-dev/Default
+Variations	24dca50e-455c9cca
+ca65a9fe-91ac3782
+5e29d81-cf4f6ead
+246fb659-a5822863
+f296190c-72d8285f
+4442aae2-d7f6b13c
+ed1d377-e1cc0f14
+75f0f0a0-4ad60575
+e2b18481-75cb33fc
+e7e71889-4ad60575
+
+

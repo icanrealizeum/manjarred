@@ -1,0 +1,29 @@
+#!/bin/bash
+
+sd_booted() {
+  [[ -d run/systemd/system ]]
+}
+
+post_common() {
+  systemd-machine-id-setup
+
+  udevadm hwdb --update
+  journalctl --update-catalog
+
+  if sd_booted; then
+    systemctl --system daemon-reexec
+  fi
+}
+
+post_install() {
+  post_common
+
+  # enable getty@tty1 by default, but don't track the file
+  systemctl enable getty@tty1.service
+}
+
+post_upgrade() {
+  post_common
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,364 @@
+--- "raw original upstream_dkms-2.2.0.3/usr/bin/dkms"	2011-12-07 19:23:58.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/usr/bin/dkms"	2014-11-05 12:34:38.000000000 +0100
+@@ -21,11 +21,11 @@
+ 
+ 
+ # All of the variables we will accept from dkms.conf.
+ # Does not include directives
+ readonly dkms_conf_variables="CLEAN REMAKE_INITRD remake_initrd PACKAGE_NAME
+-       PACKAGE_VERSION POST_ADD POST_INSTALL POST_REMOVE PRE_BUILD
++       PACKAGE_VERSION POST_ADD POST_BUILD POST_INSTALL POST_REMOVE PRE_BUILD
+        PRE_INSTALL BUILD_EXCLUSIVE_KERNEL BUILD_EXCLUSIVE_ARCH
+        build_exclude OBSOLETE_BY MAKE MAKE_MATCH MODULES_CONF
+        modules_conf_array PATCH PATCH_MATCH patch_array BUILT_MODULE_NAME
+        built_module_name BUILT_MODULE_LOCATION built_module_location
+        DEST_MODULE_NAME dest_module_name MODULES_CONF_OBSOLETES
+@@ -42,11 +42,11 @@ readonly rh_kernels='(debug|summit|smp|e
+ 
+ #Areas that will vary between Linux and other OS's
+ _get_kernel_dir() {
+     KVER=$1
+     case ${current_os} in
+-       Linux)          DIR="/lib/modules/$KVER/build" ;;
++       Linux)          DIR="/usr/lib/modules/$KVER/build" ;;
+        GNU/kFreeBSD)   DIR="/usr/src/kfreebsd-headers-$KVER/sys" ;;
+     esac
+     echo $DIR
+ }
+ 
+@@ -160,15 +160,18 @@ set_kernel_source_dir()
+     kernel_source_dir="$(_get_kernel_dir "$1")"
+ }
+ 
+ # A little test function for DKMS commands that only work on one kernel.
+ have_one_kernel() {
+-    (( ${#kernelver[@]} > 1 )) && \
+-	die 4 $"The action $1 does not support multiple kernel version" \
+-	$"parameters on the command line."
+-    [[ $all ]] && die 5 $"The action $1 does not support the --all" \
+-	$"parameter."
++       if (( ${#kernelver[@]} != 1 )); then
++	  die 4 $"The action $1 does not support multiple kernel version" \
++	  $"parameters on the command line."
++       fi
++       if [[ $all ]]; then  
++           die 5 $"The action $1 does not support the --all" \
++	   $"parameter."
++       fi 
+ }
+ 
+ # Set up the kernelver and arch arrays.  You must have a 1:1 correspondence --
+ # if there is an entry in kernelver[$i], there must also be an entry in arch[$i]
+ # Note the special casing for the status action -- the status functions just
+@@ -194,11 +197,11 @@ setup_kernels_arches()
+ 	if [[ ! $kernelver && ! $all ]]; then
+ 	    kernelver[0]=$(uname -r)
+ 	    kernels_arches_default="yes"
+ 	fi
+ 	if [[ ! $arch ]]; then
+-	    kernelver_rpm=$(rpm -qf "/lib/modules/$kernelver" 2>/dev/null | \
++	    kernelver_rpm=$(rpm -qf "/usr/lib/modules/$kernelver" 2>/dev/null | \
+ 		grep -v "not owned by any package" | grep kernel | head -n 1)
+ 	    if ! arch[0]=$(rpm -q --queryformat "%{ARCH}" "$kernelver_rpm" 2>/dev/null); then
+ 		arch[0]=$(uname -m)
+ 		if [[ $arch = x86_64 ]] && \
+ 		    grep -q Intel /proc/cpuinfo && \
+@@ -233,13 +236,13 @@ do_depmod()
+     # $1 = kernel version
+     if [ "${current_os}" != "Linux" ] ; then
+         return
+     fi
+     if [[ -f /boot/System.map-$1 ]]; then
+-	/sbin/depmod -a "$1" -F "/boot/System.map-$1"
++	depmod -a "$1" -F "/boot/System.map-$1"
+     else
+-	/sbin/depmod -a "$1"
++	depmod -a "$1"
+     fi
+ }
+ 
+ # This function is a little hairy -- every distro has slightly different tools
+ # and naming conventions for creating initial ramdisks.  It should probably
+@@ -454,11 +457,11 @@ read_conf()
+     # Find which conf file to check
+     [[ $conf ]] && read_conf_file="$conf"
+     [[ $3 ]] && read_conf_file="$3"
+ 
+     [[ -r $read_conf_file ]] || die 4 $"Could not locate dkms.conf file." \
+-	$"File: $conf does not exist."
++	$"File: $read_conf_file does not exist."
+ 
+     [[ $last_mvka = $module/$module_version/$1/$2 && \
+ 	$last_mvka_conf = $(readlink -f $read_conf_file) ]] && return
+ 
+ 
+@@ -579,21 +582,23 @@ read_conf()
+ 	[[ ${MAKE[$index]} && ${MAKE_MATCH[$index]} && \
+ 	    $1 =~ ${MAKE_MATCH[$index]} ]] && \
+ 	    make_command="${MAKE[$index]}"
+     done
+ 
++    multicoremakeflag=-j$(nproc) || multicoremakeflag=-j4
++
+     # Use the generic make and make clean commands if not specified
+     if [[ $(VER $1) < $(VER 2.6.6) ]]; then
+ 	[[ ! $make_command ]] && \
+ 	    make_command="make -C $kernel_source_dir SUBDIRS=$dkms_tree/$module/$module_version/build modules"
+ 	[[ ! $clean ]] && \
+ 	    clean="make -C $kernel_source_dir SUBDIRS=$dkms_tree/$module/$module_version/build clean"
+     else
+ 	[[ ! $make_command ]] && \
+-	    make_command="make -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build"
++	    make_command="make ${multicoremakeflag} -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build"
+ 	 [[ ! $clean ]] && \
+-	     clean="make -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build clean"
++	     clean="make ${multicoremakeflag} -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build clean"
+     fi
+ 
+     # Set modules_conf_array
+     for ((index=0; index < ${#MODULES_CONF[@]}; index++)); do
+ 	[[ ${MODULES_CONF[$index]} ]] && modules_conf_array[$index]="${MODULES_CONF[$index]}"
+@@ -683,21 +688,36 @@ check_version_sanity()
+ 	# use obsolete checksum info
+ 	dkms_info[1]=${dkms_info[2]}
+ 	kernels_info[1]=${kernels_info[2]}
+     fi
+ 
++    if ! diff -q "$dkms_module" "$kernels_module" >/dev/null 2>&1 ; then
++        diffcontents=1
++    else
++        diffcontents=
++    fi
++
++
+     if [[ ${kernels_info[1]} && ${dkms_info[1]} && \
+ 	${kernels_info[1]} = ${dkms_info[1]} && ! $force ]]; then
+-	echo $"" >&2
+-	echo $"Good news! Module version $dkms_info for ${4}$module_suffix" >&2
+-	echo $"exactly matches what is already found in kernel $1." >&2
+-	echo $"DKMS will not replace this module." >&2
+-	echo $"You may override by specifying --force." >&2
+-	return 1
++	if [ $diffcontents ] ; then
++	    echo $"Bad news! Module version $dkms_info for ${4}$module_suffix" >&2
++	    echo $"matches, but the files have different content:" >&2
++	    echo $"src: $dkms_module" >&2
++	    echo $"dest: $kernels_module" >&2
++	    echo $"updating dest contents to match src ..." >&2
++	else
++	    echo $"" >&2
++	    echo $"Good news! Module version $dkms_info for ${4}$module_suffix" >&2
++	    echo $"exactly matches what is already found in kernel $1." >&2
++	    echo $"DKMS will not replace this module." >&2
++	    echo $"You may override by specifying --force." >&2
++	    return 1
++	fi
+     fi
+ 
+-    if [[ $kernels_info && $dkms_info && \
++    if [[ ! $diffcontents && $kernels_info && $dkms_info && \
+ 	! ( $(VER $dkms_info) > $(VER $kernels_info) ) && ! $force ]]; then
+ 	error $"Module version $dkms_info for ${4}$module_suffix" \
+ 	    $"is not newer than what is already found in kernel $1 ($kernels_info)." \
+ 	    $"You may override by specifying --force."
+ 	return 1
+@@ -1015,11 +1035,11 @@ prepare_kernel()
+ 	    Debian* | Ubuntu* )
+ 		die 1 $"Your kernel headers for kernel $1 cannot be found." \
+ 		    $"Please install the linux-headers-$1 package," \
+ 		    $"or use the --kernelsourcedir option to tell DKMS where it's located";;
+ 	    * ) die 1 echo $"Your kernel headers for kernel $1 cannot be found at" \
+-		$"/lib/modules/$1/build or /lib/modules/$1/source."
++		$"/usr/lib/modules/$1/build or /usr/lib/modules/$1/source."
+ 		$"You can use the --kernelsourcedir option to tell DKMS where it's located."
+ 	esac
+     }
+ 
+     [[ $no_prepare_kernel ]] && return
+@@ -1148,16 +1168,10 @@ prepare_build()
+     local base_dir="$dkms_tree/$module/$module_version/$kernelver/$arch"
+ 
+     # Check that the right arguments were passed
+     check_module_args build
+ 
+-    # Check that the module has not already been built for this kernel
+-    [[ -d $base_dir ]] && die 3 \
+-	$"This module/version has already been built on: $kernelver" \
+-	$"Directory: $base_dir" \
+-	$"already exists.  Use the dkms remove function before trying to build again."
+-
+     # Read the conf file
+     set_module_suffix "$kernelver"
+     read_conf_or_die "$kernelver" "$arch"
+ 
+     # Error out if build_exclude is set
+@@ -1223,12 +1237,19 @@ do_build()
+     # Build success, so create DKMS structure for a built module
+     mkdir -p "$base_dir/log"
+     [[ $kernel_config ]] && cp -f "$kernel_config" "$base_dir/log/"
+     mv -f "$dkms_tree/$module/$module_version/build/make.log" "$base_dir/log/make.log" 2>/dev/null
+ 
++    # save a copy of current kernel version information to know when to rebuild if it changes (ie. incremental compilation of the same kernel release)
++    cp -vT --remove-destination "$kernel_source_dir/include/generated/compile.h" "$base_dir/compile.h" >>"$base_dir/log/make.log"
++    cat "$base_dir/compile.h" >>"$base_dir/log/make.log"
++#example of $base_dir is: /var/lib/dkms/vboxhost/4.3.12/3.15.3-1-MANJARO/x86_64
++#example of $kernel_source_dir is: /usr/lib/modules/3.15.3-1-MANJARO/build
++
++
+     # Save a copy of the new module
+-    mkdir "$base_dir/module" >/dev/null
++    mkdir "$base_dir/module" >/dev/null 2>&1
+     for ((count=0; count < ${#built_module_name[@]}; count++)); do
+ 	[[ ${strip[$count]} != no ]] && strip -g "$dkms_tree/$module/$module_version/build/${built_module_location[$count]}${built_module_name[$count]}$module_suffix"
+ 	cp -f "$dkms_tree/$module/$module_version/build/${built_module_location[$count]}${built_module_name[$count]}$module_suffix" "$base_dir/module/${dest_module_name[$count]}$module_suffix" >/dev/null
+     done
+ 
+@@ -1442,21 +1463,57 @@ is_module_added() {
+ is_module_built() {
+     [[ $1 && $2 && $3 && $4 ]] || return 1
+     local d="$dkms_tree/$1/$2/$3/$4" m=''
+     [[ -d $d/module ]] || return 1
+     read_conf_or_die "$3" "$4" "$dkms_tree/$1/$2/source/dkms.conf"
++
++#example of $d is: /var/lib/dkms/vboxhost/4.3.12/3.15.3-1-MANJARO/x86_64
++#example of $kernel_source_dir is: /usr/lib/modules/3.15.3-1-MANJARO/build
++
++diff -q "${kernel_source_dir}/include/generated/compile.h" "$d/compile.h" >/dev/null 2>&1 || return 1
++
+     for m in "${dest_module_name[@]}"; do
+ 	[[ -f $d/module/$m.ko || -f $d/module/$m.o ]] || return 1
+     done
++
+ }
+ 
++files_already_up_to_date() (
++# must not echo anything here unless is >&2  or else dkms autoinstall will fail
++    [[ $1 && $2 && $3 && $4 ]] || return 1
++    is_module_built $1 $2 $3 $4 || return 1
++    set_module_suffix "$3"
++    read_conf "$3" "$4" "$dkms_tree/$1/$2/source/dkms.conf"
++    for ((count=0; count < ${#dest_module_name[@]}; count++)); do
++        tree_mod="$dkms_tree/$1/$2/$3/$4/module/${dest_module_name[$count]}$module_suffix"
++        if ! [[ -e $tree_mod ]]; then
++#            echo -n " (WARNING! Missing some built modules!)" >&2
++		return 1
++        else
++            real_dest="$(find_actual_dest_module_location "$1" $count "$3" "$4")"
++#	    echo $real_dest >&2
++#	    echo src: "$tree_mod" >&2
++#		echo dest: "$install_tree/$3${real_dest}/${dest_module_name[$count]}$module_suffix" >&2
++            if ! diff -q "$tree_mod" "$install_tree/$3${real_dest}/${dest_module_name[$count]}$module_suffix" >/dev/null 2>&1; then
++#                echo -n " (WARNING! Diff between built and installed module!)" >&2
++		return 1
++            fi
++        fi
++    done
++
++    # all files are up to date
++    return 0
++)
++
++
+ # This assumes we have already checked to see if the module has been built.
+ _is_module_installed() {
++# must not echo anything here unless is >&2  or else dkms autoinstall will fail
+     [[ $1 && $2 && $3 && $4 ]] || return 1
+     local d="$dkms_tree/$1/$2/$3/$4"
+     local k="$dkms_tree/$1/kernel-$3-$4"
+-    [[ -L $k && $(readlink -f $k) = $d ]]
++    [[ -L $k && $(readlink -f $k) = $d ]] && files_already_up_to_date $1 $2 $3 $4
+ }
+ 
+ # This does not.
+ is_module_installed() { is_module_built "$@" && _is_module_installed "$@"; }
+ 
+@@ -1468,11 +1525,11 @@ maybe_add_module() (
+     module="$1" module_version="$2" add_module
+ )
+ 
+ maybe_build_module() (
+     is_module_built "$1" "$2" "$3" "$4" && {
+-	echo $"Module $1/$2 already built for kernel $3/4"
++	echo $"Module $1/$2 already built for kernel $3/$4"
+ 	return 0
+     }
+     module="$1" module_version="$2" kernelver="$3" arch="$4" build_module
+ )
+ 
+@@ -1610,11 +1667,11 @@ do_uninstall()
+     fi
+ 
+     # Run the post_remove script
+     run_build_script post_remove "$post_remove"
+ 
+-    # Run depmod because we changed /lib/modules
++    # Run depmod because we changed /usr/lib/modules
+     invoke_command "do_depmod $1" "depmod" background
+ 
+     # Do remake_initrd things (remake initrd)
+     if [[ $remake_initrd && $was_active ]] && ! make_initrd "$1" "$2"; then
+ 	warn $"There was a problem remaking your initrd.  You must manually remake it" \
+@@ -1719,12 +1776,20 @@ remove_module()
+ 	[[ $(find $dkms_tree/$module/$module_version/${kernelver[$i]}/* \
+ 	    -maxdepth 0 -type d 2>/dev/null) ]] || \
+ 	    rm -rf "$dkms_tree/$module/$module_version/${kernelver[$i]}"
+     done
+ 
+-    # Delete the $module_version part of the tree if no other $module_version/$kernel_version dirs exist
+-    if ! find $dkms_tree/$module/$module_version/* -maxdepth 0 -type d 2>/dev/null | egrep -qv "(build|tarball|driver_disk|rpm|deb|source)$"; then
++
++    # Delete the $module_version part of the tree if no other $module_version/$kernel_version dirs exist, 
++    # here the problem is with kernel versions that were upgraded, their older obsolete versions now are still present and won't be deleted by above `for` because they are not in that list of ${kernelver[$i]}
++    # but this works when specific kernel version is given to -k
++    # so when --all is specified it is assumed that whatever else is in that folder is only kernel folders that are to be removed nonetheless (that folder is eg. /var/lib/dkms/vboxhost/4.3.12/ )
++    # so this is a hack which checks for --all and if present it removes that folder entirely
++    # the non-hack would be making sure ${kernelver[$i]} has all kernel versions (basicaly folders) from within the module folder(that is /var/lib/dkms/vboxhost/4.3.12/ )
++    #if ! find $dkms_tree/$module/$module_version/* -maxdepth 0 -type d 2>/dev/null | egrep -qv "(build|tarball|driver_disk|rpm|deb|source)$"; then
++    find $dkms_tree/$module/$module_version/* -maxdepth 0 -type d 2>/dev/null | egrep -qv "(build|tarball|driver_disk|rpm|deb|source)$"
++    if [[ ($? -ne 0) || $all ]] ; then
+ 	echo $""
+ 	echo $"------------------------------"
+ 	echo $"Deleting module version: $module_version"
+ 	echo $"completely from the DKMS tree."
+ 	echo $"------------------------------"
+@@ -2211,12 +2276,12 @@ make_suse_driver_disk()
+ 	    case $suse_arch in
+ 		i?86) suse_arch=i386;;
+ 	    esac
+ 
+ 	    echo "Marking ${kernelver[$i]}/${arch[$i]}/modules/${dest_module_name[$count]}$module_suffix..."
+-	    mkdir -p "$driver_disk_dir/$topdir/$suse_arch-$release/install/lib/modules/${kernelver[$i]}${dest_module_location[$count]}"
+-	    cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/${dest_module_name[$count]}$module_suffix" "$driver_disk_dir/$topdir/$suse_arch-$release/install/lib/modules/${kernelver[$i]}${dest_module_location[$count]}/"
++	    mkdir -p "$driver_disk_dir/$topdir/$suse_arch-$release/install/usr/lib/modules/${kernelver[$i]}${dest_module_location[$count]}"
++	    cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/${dest_module_name[$count]}$module_suffix" "$driver_disk_dir/$topdir/$suse_arch-$release/install/usr/lib/modules/${kernelver[$i]}${dest_module_location[$count]}/"
+ 
+ 	    case ${kernelver[$i]} in
+ 		*-default)
+ 		    mkdir -p "$driver_disk_dir/$topdir/$suse_arch-$release/modules/"
+ 		    cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/${dest_module_name[$count]}$module_suffix" "$driver_disk_dir/$topdir/$suse_arch-$release/modules/"
+@@ -2328,11 +2393,11 @@ make_ubuntu_driver_disk()
+ 	  rm -rf "$tempdir"
+ 	  die 5 $"Unable to build $module/$module_version for Ubuntu driver disk."
+       }
+       mkdir -p "$tempdir/$dd_prefix"
+       local deb_dir="$tempdir/$dd_prefix/debian"
+-      local deb_lib_dir="$deb_dir/lib/modules/${kernelver[$i]}/updates/dkms"
++      local deb_lib_dir="$deb_dir/usr/lib/modules/${kernelver[$i]}/updates/dkms"
+       mkdir -p "$deb_lib_dir"
+       cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/"*"$module_suffix" "$deb_lib_dir"
+       pushd "$deb_dir" > /dev/null 2>&1
+       mkdir DEBIAN
+       cat > DEBIAN/control <<EOF
+@@ -3344,11 +3409,11 @@ unset CC CXX CFLAGS CXXFLAGS LDFLAGS
+ # Set important variables
+ current_kernel=$(uname -r)
+ current_os=$(uname -s)
+ dkms_tree="/var/lib/dkms"
+ source_tree="/usr/src"
+-install_tree="/lib/modules"
++install_tree="/usr/lib/modules"
+ tmp_location=${TMPDIR:-/tmp}
+ verbose=""
+ dkms_frameworkconf="/etc/dkms/framework.conf"
+ 
+ # these can come from the environment or the config file

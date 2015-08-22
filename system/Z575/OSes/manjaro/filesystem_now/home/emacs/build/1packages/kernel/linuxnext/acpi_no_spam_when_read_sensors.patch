@@ -1,0 +1,15 @@
+this will allow you to have INFO and not get spammed in dmesg by sensors reading every 3 seconds
+
+
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/acpi/utils.c linux-3.16-rc6/drivers/acpi/utils.c
+--- linux-3.16-rc6.orig/drivers/acpi/utils.c	2014-07-28 00:13:24.000000000 +0200
++++ linux-3.16-rc6/drivers/acpi/utils.c	2014-07-25 07:53:54.040767429 +0200
+@@ -288,7 +288,7 @@ acpi_evaluate_integer(acpi_handle handle
+ 
+ 	*data = element.integer.value;
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Return value [%llu]\n", *data));
++	ACPI_DEBUG_PRINT((ACPI_DB_DEBUG_OBJECT, "Return value [%llu]\n", *data));
+ 
+ 	return AE_OK;
+ }

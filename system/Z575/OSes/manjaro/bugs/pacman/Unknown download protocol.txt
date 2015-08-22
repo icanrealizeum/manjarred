@@ -1,0 +1,11 @@
+Pacman v4.1.2-460-ga0cfed-dirty - libalpm v8.0.2
+
+if you get this:
+==> ERROR: Unknown download protocol: hg
+even though you used: makepkg -s
+and makedepends contains mercurial
+you have to manually: pacman -S mercurial
+then continue and run: makepkg -s
+
+this may or may not be due to the --incremental patch
+

@@ -1,0 +1,18 @@
+use -Z no-trans to show warnings(yellow) too!
+
+Note why you wouldn't want this: https://github.com/scrooloose/syntastic/commit/a39b397e6ae3b32d2a0497d0f4ddfec0479ad2bb#commitcomment-6651494
+
+
+diff --git a/src/etc/vim/syntax_checkers/rust/rustc.vim b/src/etc/vim/syntax_checkers/rust/rustc.vim
+index 5cd419c..8df084b 100644
+--- a/syntax_checkers/rust/rustc.vim
++++ b/syntax_checkers/rust/rustc.vim
+@@ -14,7 +14,7 @@ let s:save_cpo = &cpo
+ set cpo&vim
+ 
+ function! SyntaxCheckers_rust_rustc_GetLocList() dict
+-    let makeprg = self.makeprgBuild({ 'args': '-Zparse-only' })
++    let makeprg = self.makeprgBuild({ 'args': '-Zno-trans' })
+ 
+     let errorformat  =
+         \ '%E%f:%l:%c: %\d%#:%\d%# %.%\{-}error:%.%\{-} %m,'   .

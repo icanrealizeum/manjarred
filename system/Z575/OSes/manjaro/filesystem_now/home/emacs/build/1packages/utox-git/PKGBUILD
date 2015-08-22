@@ -1,0 +1,81 @@
+# Maintainer: Håvard Pettersson <mail@haavard.me>
+# Contributor: Madotsuki <madotsuki at cock dot li>
+
+_pkgname=utox
+pkgname="${_pkgname}-git"
+pkgver=r1811.d16f539
+pkgrel=1
+
+pkgdesc='Lightweight Tox client'
+arch=('i686' 'x86_64' 'arm' 'armv6h' 'armv7h')
+url='https://github.com/notsecure/uTox'
+license=('GPL3')
+
+depends=(
+  'desktop-file-utils'
+  'fontconfig'
+#  'libfilteraudio'
+  'hicolor-icon-theme'
+  'libdbus'
+  'libxext'
+  'libxrender'
+  'openal'
+  'tox'
+  'v4l-utils'
+)
+makedepends=('git')
+optdepends=('gtk2: GTK file picker')
+
+provides=("${_pkgname}")
+conflicts=("${_pkgname}")
+patch1='myownDHTnode.patch'
+#patch2='yieldmore.patch'
+#patch3='notcprelayconnect.patch'
+source=("${pkgname}::git+https://github.com/notsecure/uTox"
+"$patch1"
+#"$patch2"
+#"$patch3"
+)
+md5sums=('SKIP'
+         'd3aa23df56912ad966f282b4e6119fd9'
+#         'ae4f2a1c40501e2d53b89ab34f24fef0'
+#         '0cd23232f5047c4f1d70a6a3b265929e'
+         )
+sha512sums=('SKIP'
+            '7b3e58e3b60121c032c5817692efb9205ca7865f0353a416334d436d3087f6a5bc7582c37bedce31546b6e5afe8911826a4f9759b381b4b0be6318e2bb479faa'
+#            '5b72c90c4f7a997f8392afa1579948a05b93abde1bc51a473181ad4998418e146516f8e655092fea96c95c4baa695c089a151c5662f1033e2b1db0bd14d338b2'
+#            '15cc8d3773f9cadbbf6684205f8e137bf2137a1e91b70c97b39b72d07c76c5a5b3269bcf9ef057e9fb6abc2412d444c057401b64a699bc330399db6d075448a7'
+)
+
+install="${pkgname}.install"
+
+pkgver()
+{
+  cd "${srcdir}/${pkgname}"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  cd "${srcdir}/${pkgname}"
+  patch -Np1 -i "../${patch1}"
+##  patch -Np1 -i "../${patch2}" #audio stutter issues? if applied
+##  patch -Np1 -i "../${patch3}"
+
+#ok this commit for 0.3.2 works ok: d16f53912b161893431fd16025af94d4d8a14f53
+}
+
+build()
+{
+  cd "${srcdir}/${pkgname}"
+  #gentoo one is stuck fixed at this commit:
+#old:#  git checkout bdd1a009518e325a73a527da152793102b765ef6
+  make FILTER_AUDIO=0
+}
+
+package()
+{
+  cd "${srcdir}/${pkgname}"
+  make PREFIX=/usr DESTDIR="${pkgdir}" install
+}
+
+

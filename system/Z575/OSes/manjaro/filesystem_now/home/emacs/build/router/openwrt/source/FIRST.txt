@@ -1,0 +1,54 @@
+make sure you have created an environment first by using
+cd openwrt
+./scripts/env new somenamehere
+
+and THEN you can use the contents of ./openwrt/ from this git
+
+-----------
+THEN, apply the *.patch  manually! (if they aren't already in effect due to new commits having them made obsolete)
+
+eg. cd ./openwrt && patch -Np1 -i /home/emacs/build/router/openwrt/source/env_diff_params_pass.patch
+
+-----------
+NOTE: need to set CONFIG_LOCALMIRROR="file:///home/emacs/build/router/openwrt/mirror"  
+      ... ONLY AFTER ./go because ./go downloads(in the process of compiling) all packages needed into ./openwrt/dl/ folder! The "dl/" folder which is inside openwrt folder(which in turn has the openwrt repo inside)
+----------
+Note: the docs inside git are outdated(last commit log 2012) compared to the wiki(last update 2013)
+for the docs, in Manjaro/Arch Linux, you need:
+sudo pacman -S latex2html
+^ that has pdflatex and latex  commands
+
+for htlatex command get:
+sudo pacman -S texlive-htmlxml
+
+now you can cd ./openwrt/docs && make
+well, do ./go instead!
+------------
+
+
+see here: https://wiki.openwrt.org/doc/howto/build
+how to use diffconfig
+
+copy/pasted:
+Configure using config diff file
+
+Beside make menuconfig another way to configure is using a configuration diff file. This file includes only the changes compared to the default configuration. A benefit is that this file can be version controlled with your OpenWRT based project. It's also less affected by OpenWRT updates, because it only contains the changes.
+
+Creating diff file
+
+This file is created using the <buildroot dir>/scripts/diffconfig.sh script.
+
+Using diff file
+
+These changes can form the basis of a config file (<buildroot dir>/.config). By running make defconfig these changes will be expanded into a full config.
+
+cat diffconfig > .config # append changes to bottom of .config
+make defconfig # expand to full config
+These changes can also be added to the bottom of the config file (<buildroot dir>/.config), by running make defconfig these changes will override the existing configuration.
+
+cat diffconfig >> .config # append changes to bottom of .config
+make defconfig # apply changes
+
+=================
+
+

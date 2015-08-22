@@ -1,0 +1,28 @@
+=============================
+--- to make fglrx driver work with new kerneli(3.15.3, whereas old one is 3.12.22...):
+
+make sure the header files for current(old!) kernel are installed:
+sudo pacman -S linux312-headers
+
+after you set up the new kernel, but while still in the old kernel:
+use yaourt to install catalyst-hook from AUR on manjaro
+
+this will ensure that fglrx is recompiled when needed
+
+it may work to install it while in the new kernel but it will need a reboot i guess, haven't tried!
+
+
+catalyst-hook needs the headers to be in this folder:
+/usr/lib/modules/3.12.22-1-MANJARO/build/
+which they will be after they're installed above with this cmd:
+sudo pacman -S linux312-headers
+
+and the new kernel will have them also in it's own build dir, currently:
+/usr/lib/modules/3.15.3-1-MANJARO/build/
+
+NOW, to rebuild fglrx module run:
+sudo /usr/bin/catalyst_build_module
+that is, if you are in the old kernel and you didn't already have the linux headers
+otherwise, if u had them, no need! you can check in catalyst or run parole
+if work, u have it good! if it doesn't work, u can modprobe fglrx but u need to restart X -> this tested to work!
+

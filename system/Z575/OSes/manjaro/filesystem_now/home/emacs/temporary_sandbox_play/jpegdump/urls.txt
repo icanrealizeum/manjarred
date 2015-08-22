@@ -1,0 +1,56 @@
+still not fixed, just that different hosts have it:
+
+this has the bug:
+https://scontent.cdninstagram.com/hphotos-xap1/t51.2885-15/e15/10514085_358350024353559_1763466152_n.jpg
+
+and this works:
+https://scontent-vie.cdninstagram.com/hphotos-xap1/t51.2885-15/e15/10514085_358350024353559_1763466152_n.jpg
+
+
+but maybe they fixed it on the new pics? just that the old ones remain foo-barred, actually no, 24 march one is still affected: (aka a new pic since reported)
+https://scontent.cdninstagram.com/hphotos-xap1/t51.2885-15/e15/10684364_1648289335401453_388145234_n.jpg
+
+i mean they could find those who are different on two different hosts, or just look for JFIF occuring twice i guess
+
+i re-reported it just in case the last report failed to send.
+
+------------
+they fixed it now!
+eg. https://scontent-vie.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11008134_764460296955897_1969655048_n.jpg
+yep the hostname is different!
+-------------
+further thumbs discovered show this pattern:
+whatever the should-be file size is, say X, X mod 64KiB is replaced with the same amount of bytes from the beginning of file.
+it's either that photoshop 3.0.8 BIM (from jfif)
+or whatever program they are using to copy that resulting file, not doing it correctly.
+
+-----------
+instagram messed up jpg thumbnail, detected by chromium as:
+Corrupt JPEG data: premature end of data segment
+
+and by imagemagick
+convert: Invalid JPEG file structure: two SOI markers 
+
+the bad file (matrix.jpg) has 65536 bytes and then the first 13130 bytes appended after that
+see part1.jpg and part2.jpg
+
+used vbindiff to compare
+
+guessing that photoshop thing which they use to process the jpeg messed up things!
+
+-------
+
+original good file:
+https://igcdn-photos-b-a.akamaihd.net/hphotos-ak-xaf1/t51.2885-15/11008134_764460296955897_1969655048_n.jpg
+
+the wannabe thumbnail(but actually original file which is broken; processed by something photoshop):
+https://scontent-fra.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11008134_764460296955897_1969655048_n.jpg
+
+---
+other example of
+orig file:
+https://igcdn-photos-c-a.akamaihd.net/hphotos-ak-xaf1/t51.2885-15/11024152_909004502464226_1887699552_n.jpg
+and thumb:
+https://scontent-fra.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11024152_909004502464226_1887699552_n.jpg
+both are fine.
+

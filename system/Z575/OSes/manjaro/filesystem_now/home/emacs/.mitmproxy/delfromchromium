@@ -1,0 +1,4 @@
+#!/bin/bash
+#^ for syntax in vim
+certutil -d sql:$HOME/.pki/nssdb -D -n mitmnick && echo "done! but,"
+echo "this isn't needed for me, because tmpfs"

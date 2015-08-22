@@ -1,0 +1,832 @@
+-- Logs begin at Sat 2014-07-05 00:52:24 CEST, end at Sun 2014-07-06 00:58:54 CEST. --
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys cpuset
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys cpu
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys cpuacct
+Jul 06 00:57:03 manji kernel: Linux version 3.12.22-1-MANJARO (nobody@phil) (gcc version 4.9.0 20140604 (prerelease) (GCC) ) #1 SMP PREEMPT Thu Jun 12 06:06:43 UTC 2014
+Jul 06 00:57:03 manji kernel: Command line: BOOT_IMAGE=/vmlinuz-312-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=7 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y nofb mminit_loglevel=0
+Jul 06 00:57:03 manji kernel: e820: BIOS-provided physical RAM map:
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009d7ff] usable
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x000000000009d800-0x000000000009ffff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x0000000000100000-0x00000000bed9afff] usable
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000bed9b000-0x00000000bf39afff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000bf39b000-0x00000000bf49afff] ACPI NVS
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000bf49b000-0x00000000bf51afff] ACPI data
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000bf51b000-0x00000000bfdfffff] usable
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000bfe00000-0x00000000bfffffff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000fec00000-0x00000000fecfffff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000fed80000-0x00000000fed80fff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x00000000ffe00000-0x00000000ffffffff] reserved
+Jul 06 00:57:03 manji kernel: BIOS-e820: [mem 0x0000000100000000-0x000000041effffff] usable
+Jul 06 00:57:03 manji kernel: NX (Execute Disable) protection: active
+Jul 06 00:57:03 manji kernel: SMBIOS 2.6 present.
+Jul 06 00:57:03 manji kernel: DMI: LENOVO Sabine/Torpedo, BIOS 54CN18WW 07/20/2011
+Jul 06 00:57:03 manji kernel: e820: update [mem 0x00000000-0x00000fff] usable ==> reserved
+Jul 06 00:57:03 manji kernel: e820: remove [mem 0x000a0000-0x000fffff] usable
+Jul 06 00:57:03 manji kernel: No AGP bridge found
+Jul 06 00:57:03 manji kernel: e820: last_pfn = 0x41f000 max_arch_pfn = 0x400000000
+Jul 06 00:57:03 manji kernel: MTRR default type: uncachable
+Jul 06 00:57:03 manji kernel: MTRR fixed ranges enabled:
+Jul 06 00:57:03 manji kernel:   00000-9FFFF write-back
+Jul 06 00:57:03 manji kernel:   A0000-BFFFF uncachable
+Jul 06 00:57:03 manji kernel:   C0000-FFFFF write-protect
+Jul 06 00:57:03 manji kernel: MTRR variable ranges enabled:
+Jul 06 00:57:03 manji kernel:   0 base 0000000000 mask FF80000000 write-back
+Jul 06 00:57:03 manji kernel:   1 base 0080000000 mask FFC0000000 write-back
+Jul 06 00:57:03 manji kernel:   2 base 00FFF90000 mask FFFFFF0000 uncachable
+Jul 06 00:57:03 manji kernel:   3 base 00FED80000 mask 0FFFFFF000 uncachable
+Jul 06 00:57:03 manji kernel:   4 disabled
+Jul 06 00:57:03 manji kernel:   5 disabled
+Jul 06 00:57:03 manji kernel:   6 disabled
+Jul 06 00:57:03 manji kernel:   7 base 00FFE00000 mask FFFFE00000 write-protect
+Jul 06 00:57:03 manji kernel: TOM2: 000000041f000000 aka 16880M
+Jul 06 00:57:03 manji kernel: x86 PAT enabled: cpu 0, old 0x7040600070406, new 0x7010600070106
+Jul 06 00:57:03 manji kernel: mtrr: your BIOS has configured an incorrect mask, fixing it.
+Jul 06 00:57:03 manji kernel: e820: last_pfn = 0xbfe00 max_arch_pfn = 0x400000000
+Jul 06 00:57:03 manji kernel: found SMP MP-table at [mem 0x000fa8b0-0x000fa8bf] mapped at [ffff8800000fa8b0]
+Jul 06 00:57:03 manji kernel: Scanning 1 areas for low memory corruption
+Jul 06 00:57:03 manji kernel: Base memory trampoline at [ffff880000097000] 97000 size 24576
+Jul 06 00:57:03 manji kernel: Using GB pages for direct mapping
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0x00000000-0x000fffff]
+Jul 06 00:57:03 manji kernel:  [mem 0x00000000-0x000fffff] page 4k
+Jul 06 00:57:03 manji kernel: BRK [0x01b43000, 0x01b43fff] PGTABLE
+Jul 06 00:57:03 manji kernel: BRK [0x01b44000, 0x01b44fff] PGTABLE
+Jul 06 00:57:03 manji kernel: BRK [0x01b45000, 0x01b45fff] PGTABLE
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0x41ee00000-0x41effffff]
+Jul 06 00:57:03 manji kernel:  [mem 0x41ee00000-0x41effffff] page 2M
+Jul 06 00:57:03 manji kernel: BRK [0x01b46000, 0x01b46fff] PGTABLE
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0x41c000000-0x41edfffff]
+Jul 06 00:57:03 manji kernel:  [mem 0x41c000000-0x41edfffff] page 2M
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0x400000000-0x41bffffff]
+Jul 06 00:57:03 manji kernel:  [mem 0x400000000-0x41bffffff] page 2M
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0x00100000-0xbed9afff]
+Jul 06 00:57:03 manji kernel:  [mem 0x00100000-0x001fffff] page 4k
+Jul 06 00:57:03 manji kernel:  [mem 0x00200000-0x3fffffff] page 2M
+Jul 06 00:57:03 manji kernel:  [mem 0x40000000-0x7fffffff] page 1G
+Jul 06 00:57:03 manji kernel:  [mem 0x80000000-0xbebfffff] page 2M
+Jul 06 00:57:03 manji kernel:  [mem 0xbec00000-0xbed9afff] page 4k
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0xbf51b000-0xbfdfffff]
+Jul 06 00:57:03 manji kernel:  [mem 0xbf51b000-0xbf5fffff] page 4k
+Jul 06 00:57:03 manji kernel:  [mem 0xbf600000-0xbfdfffff] page 2M
+Jul 06 00:57:03 manji kernel: BRK [0x01b47000, 0x01b47fff] PGTABLE
+Jul 06 00:57:03 manji kernel: init_memory_mapping: [mem 0x100000000-0x3ffffffff]
+Jul 06 00:57:03 manji kernel:  [mem 0x100000000-0x3ffffffff] page 1G
+Jul 06 00:57:03 manji kernel: log_buf_len: 1073741824
+Jul 06 00:57:03 manji kernel: early log buf free: 519556(99%)
+Jul 06 00:57:03 manji kernel: RAMDISK: [mem 0x3759e000-0x37ac6fff]
+Jul 06 00:57:03 manji kernel: ACPI: RSDP 00000000000f0110 00024 (v02 LENOVO)
+Jul 06 00:57:03 manji kernel: ACPI: XSDT 00000000bf51a120 00074 (v01 LENOVO CB-01    00000001 LENO 00000001)
+Jul 06 00:57:03 manji kernel: ACPI: FACP 00000000bf508000 000F4 (v04 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: DSDT 00000000bf50a000 0FD10 (v01 LENOVO CB-01    00001000 LENO 00000001)
+Jul 06 00:57:03 manji kernel: ACPI: FACS 00000000bf478000 00040
+Jul 06 00:57:03 manji kernel: ACPI: HPET 00000000bf507000 00038 (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: APIC 00000000bf506000 0007A (v02 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: MCFG 00000000bf505000 0003C (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: SLIC 00000000bf504000 00176 (v01 LENOVO CB-01    00000001 LENO 00000001)
+Jul 06 00:57:03 manji kernel: ACPI: UEFI 00000000bf503000 0003E (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: UEFI 00000000bf502000 00042 (v01 PTL      COMBUF 00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: SSDT 00000000bf501000 00E34 (v01 AMD    POWERNOW 00000001 AMD  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: SSDT 00000000bf4ff000 0193D (v02    AMD     ALIB 00000001 MSFT 04000000)
+Jul 06 00:57:03 manji kernel: ACPI: UEFI 00000000bf4fe000 0021A (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 00:57:03 manji kernel: ACPI: Local APIC address 0xfee00000
+Jul 06 00:57:03 manji kernel: No NUMA configuration found
+Jul 06 00:57:03 manji kernel: Faking a node at [mem 0x0000000000000000-0x000000041effffff]
+Jul 06 00:57:03 manji kernel: Initmem setup node 0 [mem 0x00000000-0x41effffff]
+Jul 06 00:57:03 manji kernel:   NODE_DATA [mem 0x3deff9000-0x3deffdfff]
+Jul 06 00:57:03 manji kernel:  [ffffea0000000000-ffffea00107fffff] PMD -> [ffff8803cee00000-ffff8803de5fffff] on node 0
+Jul 06 00:57:03 manji kernel: Zone ranges:
+Jul 06 00:57:03 manji kernel:   DMA      [mem 0x00001000-0x00ffffff]
+Jul 06 00:57:03 manji kernel:   DMA32    [mem 0x01000000-0xffffffff]
+Jul 06 00:57:03 manji kernel:   Normal   [mem 0x100000000-0x41effffff]
+Jul 06 00:57:03 manji kernel: Movable zone start for each node
+Jul 06 00:57:03 manji kernel: Early memory node ranges
+Jul 06 00:57:03 manji kernel:   node   0: [mem 0x00001000-0x0009cfff]
+Jul 06 00:57:03 manji kernel:   node   0: [mem 0x00100000-0xbed9afff]
+Jul 06 00:57:03 manji kernel:   node   0: [mem 0xbf51b000-0xbfdfffff]
+Jul 06 00:57:03 manji kernel:   node   0: [mem 0x100000000-0x41effffff]
+Jul 06 00:57:03 manji kernel: On node 0 totalpages: 4056604
+Jul 06 00:57:03 manji kernel:   DMA zone: 64 pages used for memmap
+Jul 06 00:57:03 manji kernel:   DMA zone: 21 pages reserved
+Jul 06 00:57:03 manji kernel:   DMA zone: 3996 pages, LIFO batch:0
+Jul 06 00:57:03 manji kernel:   DMA32 zone: 12186 pages used for memmap
+Jul 06 00:57:03 manji kernel:   DMA32 zone: 779904 pages, LIFO batch:31
+Jul 06 00:57:03 manji kernel:   Normal zone: 51136 pages used for memmap
+Jul 06 00:57:03 manji kernel:   Normal zone: 3272704 pages, LIFO batch:31
+Jul 06 00:57:03 manji kernel: ACPI: PM-Timer IO Port: 0x808
+Jul 06 00:57:03 manji kernel: ACPI: Local APIC address 0xfee00000
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC (acpi_id[0x00] lapic_id[0x00] enabled)
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC (acpi_id[0x01] lapic_id[0x01] enabled)
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC (acpi_id[0x02] lapic_id[0x02] enabled)
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC (acpi_id[0x03] lapic_id[0x03] enabled)
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x00] high edge lint[0x1])
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x01] high edge lint[0x1])
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x02] high edge lint[0x1])
+Jul 06 00:57:03 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x03] high edge lint[0x1])
+Jul 06 00:57:03 manji kernel: ACPI: IOAPIC (id[0x02] address[0xfec00000] gsi_base[0])
+Jul 06 00:57:03 manji kernel: IOAPIC[0]: apic_id 2, version 33, address 0xfec00000, GSI 0-23
+Jul 06 00:57:03 manji kernel: ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+Jul 06 00:57:03 manji kernel: ACPI: IRQ0 used by override.
+Jul 06 00:57:03 manji kernel: ACPI: IRQ2 used by override.
+Jul 06 00:57:03 manji kernel: ACPI: IRQ9 used by override.
+Jul 06 00:57:03 manji kernel: Using ACPI (MADT) for SMP configuration information
+Jul 06 00:57:03 manji kernel: ACPI: HPET id: 0x43538210 base: 0xfed00000
+Jul 06 00:57:03 manji kernel: smpboot: Allowing 4 CPUs, 0 hotplug CPUs
+Jul 06 00:57:03 manji kernel: nr_irqs_gsi: 40
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0x0009d000-0x0009dfff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0x0009e000-0x0009ffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0x000a0000-0x000dffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0x000e0000-0x000fffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xbed9b000-0xbf39afff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xbf39b000-0xbf49afff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xbf49b000-0xbf51afff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xbfe00000-0xbfffffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xc0000000-0xfebfffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xfec00000-0xfecfffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xfed00000-0xfed7ffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xfed80000-0xfed80fff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xfed81000-0xffdfffff]
+Jul 06 00:57:03 manji kernel: PM: Registered nosave memory: [mem 0xffe00000-0xffffffff]
+Jul 06 00:57:03 manji kernel: e820: [mem 0xc0000000-0xfebfffff] available for PCI devices
+Jul 06 00:57:03 manji kernel: Booting paravirtualized kernel on bare hardware
+Jul 06 00:57:03 manji kernel: setup_percpu: NR_CPUS:128 nr_cpumask_bits:128 nr_cpu_ids:4 nr_node_ids:1
+Jul 06 00:57:03 manji kernel: PERCPU: Embedded 29 pages/cpu @ffff8803dec00000 s87488 r8192 d23104 u524288
+Jul 06 00:57:03 manji kernel: pcpu-alloc: s87488 r8192 d23104 u524288 alloc=1*2097152
+Jul 06 00:57:03 manji kernel: pcpu-alloc: [0] 0 1 2 3 
+Jul 06 00:57:03 manji kernel: Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 3993197
+Jul 06 00:57:03 manji kernel: Policy zone: Normal
+Jul 06 00:57:03 manji kernel: Kernel command line: BOOT_IMAGE=/vmlinuz-312-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=7 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y nofb mminit_loglevel=0
+Jul 06 00:57:03 manji kernel: PID hash table entries: 4096 (order: 3, 32768 bytes)
+Jul 06 00:57:03 manji kernel: Checking aperture...
+Jul 06 00:57:03 manji kernel: No AGP bridge found
+Jul 06 00:57:03 manji kernel: Calgary: detecting Calgary via BIOS EBDA area
+Jul 06 00:57:03 manji kernel: Calgary: Unable to locate Rio Grande table in EBDA - bailing!
+Jul 06 00:57:03 manji kernel: Memory: 14840164K/16226416K available (5228K kernel code, 862K rwdata, 1656K rodata, 1148K init, 1296K bss, 1386252K reserved)
+Jul 06 00:57:03 manji kernel: SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+Jul 06 00:57:03 manji kernel: Preemptible hierarchical RCU implementation.
+Jul 06 00:57:03 manji kernel:         RCU dyntick-idle grace-period acceleration is enabled.
+Jul 06 00:57:03 manji kernel:         Dump stacks of tasks blocking RCU-preempt GP.
+Jul 06 00:57:03 manji kernel:         RCU restricting CPUs from NR_CPUS=128 to nr_cpu_ids=4.
+Jul 06 00:57:03 manji kernel: NR_IRQS:8448 nr_irqs:712 16
+Jul 06 00:57:03 manji kernel: spurious 8259A interrupt: IRQ7.
+Jul 06 00:57:03 manji kernel: Console: colour VGA+ 80x25
+Jul 06 00:57:03 manji kernel: console [tty0] enabled
+Jul 06 00:57:03 manji kernel: allocated 65011712 bytes of page_cgroup
+Jul 06 00:57:03 manji kernel: please try 'cgroup_disable=memory' option if you don't want memory cgroups
+Jul 06 00:57:03 manji kernel: hpet clockevent registered
+Jul 06 00:57:03 manji kernel: tsc: Fast TSC calibration using PIT
+Jul 06 00:57:03 manji kernel: tsc: Detected 1397.448 MHz processor
+Jul 06 00:57:03 manji kernel: Calibrating delay loop (skipped), value calculated using timer frequency.. 2796.35 BogoMIPS (lpj=4658160)
+Jul 06 00:57:03 manji kernel: pid_max: default: 32768 minimum: 301
+Jul 06 00:57:03 manji kernel: Security Framework initialized
+Jul 06 00:57:03 manji kernel: AppArmor: AppArmor disabled by boot time parameter
+Jul 06 00:57:03 manji kernel: Yama: becoming mindful.
+Jul 06 00:57:03 manji kernel: Dentry cache hash table entries: 2097152 (order: 12, 16777216 bytes)
+Jul 06 00:57:03 manji kernel: Inode-cache hash table entries: 1048576 (order: 11, 8388608 bytes)
+Jul 06 00:57:03 manji kernel: Mount-cache hash table entries: 256
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys memory
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys devices
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys freezer
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys net_cls
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys blkio
+Jul 06 00:57:03 manji kernel: Initializing cgroup subsys bfqio
+Jul 06 00:57:03 manji kernel: tseg: 00bfe00000
+Jul 06 00:57:03 manji kernel: CPU: Physical Processor ID: 0
+Jul 06 00:57:03 manji kernel: CPU: Processor Core ID: 0
+Jul 06 00:57:03 manji kernel: mce: CPU supports 6 MCE banks
+Jul 06 00:57:03 manji kernel: Last level iTLB entries: 4KB 512, 2MB 16, 4MB 8
+                              Last level dTLB entries: 4KB 1024, 2MB 128, 4MB 64
+                              tlb_flushall_shift: 5
+Jul 06 00:57:03 manji kernel: Freeing SMP alternatives memory: 20K (ffffffff819f8000 - ffffffff819fd000)
+Jul 06 00:57:03 manji kernel: ACPI: Core revision 20130725
+Jul 06 00:57:03 manji kernel: ACPI: All ACPI Tables successfully acquired
+Jul 06 00:57:03 manji kernel: ftrace: allocating 20480 entries in 81 pages
+Jul 06 00:57:03 manji kernel: ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+Jul 06 00:57:03 manji kernel: smpboot: CPU0: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam: 12, model: 01, stepping: 00)
+Jul 06 00:57:03 manji kernel: Performance Events: AMD PMU driver.
+Jul 06 00:57:03 manji kernel: ... version:                0
+Jul 06 00:57:03 manji kernel: ... bit width:              48
+Jul 06 00:57:03 manji kernel: ... generic registers:      4
+Jul 06 00:57:03 manji kernel: ... value mask:             0000ffffffffffff
+Jul 06 00:57:03 manji kernel: ... max period:             00007fffffffffff
+Jul 06 00:57:03 manji kernel: ... fixed-purpose events:   0
+Jul 06 00:57:03 manji kernel: ... event mask:             000000000000000f
+Jul 06 00:57:03 manji kernel: NMI watchdog: enabled on all CPUs, permanently consumes one hw-PMU counter.
+Jul 06 00:57:03 manji kernel: smpboot: Booting Node   0, Processors  #   1
+Jul 06 00:57:03 manji kernel: TSC synchronization [CPU#0 -> CPU#1]:
+Jul 06 00:57:03 manji kernel: Measured 133104485 cycles TSC warp between CPUs, turning off TSC clock.
+Jul 06 00:57:03 manji kernel: tsc: Marking TSC unstable due to check_tsc_sync_source failed
+Jul 06 00:57:03 manji kernel:  #   2 #   3 OK
+Jul 06 00:57:03 manji kernel: Brought up 4 CPUs
+Jul 06 00:57:03 manji kernel: smpboot: Total of 4 processors activated (11184.40 BogoMIPS)
+Jul 06 00:57:03 manji kernel: devtmpfs: initialized
+Jul 06 00:57:03 manji kernel: PM: Registering ACPI NVS region [mem 0xbf39b000-0xbf49afff] (1048576 bytes)
+Jul 06 00:57:03 manji kernel: RTC time: 22:56:56, date: 07/05/14
+Jul 06 00:57:03 manji kernel: NET: Registered protocol family 16
+Jul 06 00:57:03 manji kernel: cpuidle: using governor ladder
+Jul 06 00:57:03 manji kernel: cpuidle: using governor menu
+Jul 06 00:57:03 manji kernel: ACPI FADT declares the system doesn't support PCIe ASPM, so disable it
+Jul 06 00:57:03 manji kernel: ACPI: bus type PCI registered
+Jul 06 00:57:03 manji kernel: acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+Jul 06 00:57:03 manji kernel: PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
+Jul 06 00:57:03 manji kernel: PCI: not using MMCONFIG
+Jul 06 00:57:03 manji kernel: PCI: Using configuration type 1 for base access
+Jul 06 00:57:03 manji kernel: PCI: Using configuration type 1 for extended access
+Jul 06 00:57:03 manji kernel: bio: create slab <bio-0> at 0
+Jul 06 00:57:03 manji kernel: ACPI: Added _OSI(Module Device)
+Jul 06 00:57:03 manji kernel: ACPI: Added _OSI(Processor Device)
+Jul 06 00:57:03 manji kernel: ACPI: Added _OSI(3.0 _SCP Extensions)
+Jul 06 00:57:03 manji kernel: ACPI: Added _OSI(Processor Aggregator Device)
+Jul 06 00:57:03 manji kernel: ACPI: EC: Look up EC in DSDT
+Jul 06 00:57:03 manji kernel: [Firmware Bug]: ACPI: BIOS _OSI(Linux) query ignored
+Jul 06 00:57:03 manji kernel: ACPI: Interpreter enabled
+Jul 06 00:57:03 manji kernel: ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S1_] (20130725/hwxface-571)
+Jul 06 00:57:03 manji kernel: ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S2_] (20130725/hwxface-571)
+Jul 06 00:57:03 manji kernel: ACPI: (supports S0 S3 S4 S5)
+Jul 06 00:57:03 manji kernel: ACPI: Using IOAPIC for interrupt routing
+Jul 06 00:57:03 manji kernel: PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
+Jul 06 00:57:03 manji kernel: PCI: MMCONFIG at [mem 0xf8000000-0xfbffffff] reserved in ACPI motherboard resources
+Jul 06 00:57:03 manji kernel: PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+Jul 06 00:57:03 manji kernel: ACPI: No dock devices found.
+Jul 06 00:57:03 manji kernel: ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+Jul 06 00:57:03 manji kernel: acpi PNP0A08:00: Requesting ACPI _OSC control (0x1d)
+Jul 06 00:57:03 manji kernel: acpi PNP0A08:00: ACPI _OSC control (0x1d) granted
+Jul 06 00:57:03 manji kernel: acpi PNP0A08:00: host bridge window expanded to [mem 0xe0000000-0xffffffff]; [mem 0xe1000000-0xffffffff] ignored
+Jul 06 00:57:03 manji kernel: acpi PNP0A08:00: ignoring host bridge window [mem 0x000ce000-0x000cffff] (conflicts with Video ROM [mem 0x000c0000-0x000cefff])
+Jul 06 00:57:03 manji kernel: acpi PNP0A08:00: [Firmware Info]: MMCONFIG for domain 0000 [bus 00-3f] only partially covers this bridge
+Jul 06 00:57:03 manji kernel: PCI host bridge to bus 0000:00
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [bus 00-ff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c0000-0x000c1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c2000-0x000c3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c4000-0x000c5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c6000-0x000c7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c8000-0x000c9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ca000-0x000cbfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000cc000-0x000cdfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d0000-0x000d1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d2000-0x000d3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d4000-0x000d5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d6000-0x000d7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d8000-0x000d9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000da000-0x000dbfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000dc000-0x000ddfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000de000-0x000dffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e0000-0x000e1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e2000-0x000e3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e4000-0x000e5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e6000-0x000e7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e8000-0x000e9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ea000-0x000ebfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ec000-0x000edfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ee000-0x000effff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [mem 0xe0000000-0xffffffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: root bus resource [io  0x0d00-0xffff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:00.0: [1022:1705] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.0: [1002:9647] type 00 class 0x030000
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.0: reg 0x10: [mem 0xe0000000-0xefffffff pref]
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.0: reg 0x14: [io  0x2000-0x20ff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.0: reg 0x18: [mem 0xf0100000-0xf013ffff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.0: supports D1 D2
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.1: [1002:1714] type 00 class 0x040300
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.1: reg 0x10: [mem 0xf0144000-0xf0147fff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.1: supports D1 D2
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0: [1022:1709] type 01 class 0x060400
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0: PME# supported from D0 D3hot D3cold
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: [1022:7804] type 00 class 0x010601
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: reg 0x10: [io  0x2118-0x211f]
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: reg 0x14: [io  0x2124-0x2127]
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: reg 0x18: [io  0x2110-0x2117]
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: reg 0x1c: [io  0x2120-0x2123]
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: reg 0x20: [io  0x2100-0x210f]
+Jul 06 00:57:03 manji kernel: pci 0000:00:11.0: reg 0x24: [mem 0xf014a000-0xf014a7ff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.0: [1022:7807] type 00 class 0x0c0310
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.0: reg 0x10: [mem 0xf0149000-0xf0149fff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.0: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.2: [1022:7808] type 00 class 0x0c0320
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.2: reg 0x10: [mem 0xf014a900-0xf014a9ff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.2: supports D1 D2
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.2: PME# supported from D0 D1 D2 D3hot
+Jul 06 00:57:03 manji kernel: pci 0000:00:12.2: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.0: [1022:7807] type 00 class 0x0c0310
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.0: reg 0x10: [mem 0xf0148000-0xf0148fff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.0: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.2: [1022:7808] type 00 class 0x0c0320
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.2: reg 0x10: [mem 0xf014a800-0xf014a8ff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.2: supports D1 D2
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.2: PME# supported from D0 D1 D2 D3hot
+Jul 06 00:57:03 manji kernel: pci 0000:00:13.2: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.0: [1022:780b] type 00 class 0x0c0500
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.2: [1022:780d] type 00 class 0x040300
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.2: reg 0x10: [mem 0xf0140000-0xf0143fff 64bit]
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.2: PME# supported from D0 D3hot D3cold
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.2: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.3: [1022:780e] type 00 class 0x060100
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4: [1022:780f] type 01 class 0x060401
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4: System wakeup disabled by ACPI
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.0: [1022:1700] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.1: [1022:1701] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.2: [1022:1702] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.3: [1022:1703] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.4: [1022:1704] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.5: [1022:1718] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.6: [1022:1716] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:00:18.7: [1022:1719] type 00 class 0x060000
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: [10ec:8136] type 00 class 0x020000
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: reg 0x10: [io  0x1000-0x10ff]
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: reg 0x18: [mem 0xf0004000-0xf0004fff 64bit pref]
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: reg 0x20: [mem 0xf0000000-0xf0003fff 64bit pref]
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: supports D1 D2
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0: PCI bridge to [bus 01]
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0:   bridge window [io  0x1000-0x1fff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0:   bridge window [mem 0xf0000000-0xf00fffff 64bit pref]
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4: PCI bridge to [bus 02] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000a0000-0x000bffff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c0000-0x000c1fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c2000-0x000c3fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c4000-0x000c5fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c6000-0x000c7fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c8000-0x000c9fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ca000-0x000cbfff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000cc000-0x000cdfff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d0000-0x000d1fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d2000-0x000d3fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d4000-0x000d5fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d6000-0x000d7fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d8000-0x000d9fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000da000-0x000dbfff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000dc000-0x000ddfff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000de000-0x000dffff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e0000-0x000e1fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e2000-0x000e3fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e4000-0x000e5fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e6000-0x000e7fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e8000-0x000e9fff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ea000-0x000ebfff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ec000-0x000edfff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ee000-0x000effff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [mem 0xe0000000-0xffffffff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [io  0x0000-0x0cf7] (subtractive decode)
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4:   bridge window [io  0x0d00-0xffff] (subtractive decode)
+Jul 06 00:57:03 manji kernel: acpi PNP0A08:00: Disabling ASPM (FADT indicates it is unsupported)
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKA] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKB] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKC] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKD] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKE] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKF] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKG] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: PCI Interrupt Link [LNKH] (IRQs 10 11) *0
+Jul 06 00:57:03 manji kernel: ACPI: Enabled 2 GPEs in block 00 to 1F
+Jul 06 00:57:03 manji kernel: ACPI: \_SB_.PCI0: notify handler is installed
+Jul 06 00:57:03 manji kernel: Found 1 acpi root devices
+Jul 06 00:57:03 manji kernel: ACPI: EC: GPE = 0x3, I/O: command/status = 0x66, data = 0x62
+Jul 06 00:57:03 manji kernel: vgaarb: device added: PCI:0000:00:01.0,decodes=io+mem,owns=io+mem,locks=none
+Jul 06 00:57:03 manji kernel: vgaarb: loaded
+Jul 06 00:57:03 manji kernel: vgaarb: bridge control possible 0000:00:01.0
+Jul 06 00:57:03 manji kernel: PCI: Using ACPI for IRQ routing
+Jul 06 00:57:03 manji kernel: PCI: pci_cache_line_size set to 64 bytes
+Jul 06 00:57:03 manji kernel: e820: reserve RAM buffer [mem 0x0009d800-0x0009ffff]
+Jul 06 00:57:03 manji kernel: e820: reserve RAM buffer [mem 0xbed9b000-0xbfffffff]
+Jul 06 00:57:03 manji kernel: e820: reserve RAM buffer [mem 0xbfe00000-0xbfffffff]
+Jul 06 00:57:03 manji kernel: e820: reserve RAM buffer [mem 0x41f000000-0x41fffffff]
+Jul 06 00:57:03 manji kernel: NetLabel: Initializing
+Jul 06 00:57:03 manji kernel: NetLabel:  domain hash size = 128
+Jul 06 00:57:03 manji kernel: NetLabel:  protocols = UNLABELED CIPSOv4
+Jul 06 00:57:03 manji kernel: NetLabel:  unlabeled traffic allowed by default
+Jul 06 00:57:03 manji kernel: hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0
+Jul 06 00:57:03 manji kernel: hpet0: 3 comparators, 32-bit 14.318180 MHz counter
+Jul 06 00:57:03 manji kernel: Switched to clocksource hpet
+Jul 06 00:57:03 manji kernel: pnp: PnP ACPI init
+Jul 06 00:57:03 manji kernel: ACPI: bus type PNP registered
+Jul 06 00:57:03 manji kernel: system 00:00: [io  0x0f50-0x0f51] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:00: [mem 0xfec00000-0xfec00fff] could not be reserved
+Jul 06 00:57:03 manji kernel: system 00:00: [mem 0xfee00000-0xfee00fff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:00: [mem 0xf8000000-0xfbffffff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:00: Plug and Play ACPI device, IDs PNP0c02 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:01: [dma 4]
+Jul 06 00:57:03 manji kernel: pnp 00:01: Plug and Play ACPI device, IDs PNP0200 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:02: Plug and Play ACPI device, IDs PNP0c04 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:03: Plug and Play ACPI device, IDs PNP0b00 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:04: Plug and Play ACPI device, IDs PNP0800 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:05: disabling [io  0x1200-0x120f] because it overlaps 0000:00:04.0 BAR 13 [io  0x1000-0x1fff]
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x04d0-0x04d1] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0530-0x0537] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0800-0x0827] could not be reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0830] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0840-0x0847] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0b00-0x0b1f] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0b20-0x0b3f] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0c00-0x0c01] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0c14] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0c50-0x0c52] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0cd0-0x0cd1] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0cd2-0x0cd3] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0cd4-0x0cd5] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0cd6-0x0cd7] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0cd8-0x0cdf] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x0cf9] could not be reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x8100-0x81ff window] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [io  0x8200-0x82ff window] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [mem 0xff800000-0xff80ffff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: [mem 0xff810000-0xff81003f] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:05: Plug and Play ACPI device, IDs PNP0c02 (active)
+Jul 06 00:57:03 manji kernel: system 00:06: [mem 0x000e0000-0x000fffff] could not be reserved
+Jul 06 00:57:03 manji kernel: system 00:06: [mem 0xffe00000-0xffffffff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:06: [mem 0xfec10000-0xfec1001f] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:06: [mem 0xfed00000-0xfed003ff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:06: [mem 0xfed61000-0xfed613ff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:06: [mem 0xfed80000-0xfed80fff] has been reserved
+Jul 06 00:57:03 manji kernel: system 00:06: Plug and Play ACPI device, IDs PNP0c01 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:07: Plug and Play ACPI device, IDs PNP0303 (active)
+Jul 06 00:57:03 manji kernel: pnp 00:08: Plug and Play ACPI device, IDs SYN0326 SYN0300 SYN0002 PNP0f13 (active)
+Jul 06 00:57:03 manji kernel: pnp: PnP ACPI: found 9 devices
+Jul 06 00:57:03 manji kernel: ACPI: bus type PNP unregistered
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0: PCI bridge to [bus 01]
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0:   bridge window [io  0x1000-0x1fff]
+Jul 06 00:57:03 manji kernel: pci 0000:00:04.0:   bridge window [mem 0xf0000000-0xf00fffff 64bit pref]
+Jul 06 00:57:03 manji kernel: pci 0000:00:14.4: PCI bridge to [bus 02]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 4 [mem 0x000a0000-0x000bffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 5 [mem 0x000c0000-0x000c1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 6 [mem 0x000c2000-0x000c3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 7 [mem 0x000c4000-0x000c5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 8 [mem 0x000c6000-0x000c7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 9 [mem 0x000c8000-0x000c9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 10 [mem 0x000ca000-0x000cbfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 11 [mem 0x000cc000-0x000cdfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 12 [mem 0x000d0000-0x000d1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 13 [mem 0x000d2000-0x000d3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 14 [mem 0x000d4000-0x000d5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 15 [mem 0x000d6000-0x000d7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 16 [mem 0x000d8000-0x000d9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 17 [mem 0x000da000-0x000dbfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 18 [mem 0x000dc000-0x000ddfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 19 [mem 0x000de000-0x000dffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 20 [mem 0x000e0000-0x000e1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 21 [mem 0x000e2000-0x000e3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 22 [mem 0x000e4000-0x000e5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 23 [mem 0x000e6000-0x000e7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 24 [mem 0x000e8000-0x000e9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 25 [mem 0x000ea000-0x000ebfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 26 [mem 0x000ec000-0x000edfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 27 [mem 0x000ee000-0x000effff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 28 [mem 0xe0000000-0xffffffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 29 [io  0x0000-0x0cf7]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:00: resource 30 [io  0x0d00-0xffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:01: resource 0 [io  0x1000-0x1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:01: resource 2 [mem 0xf0000000-0xf00fffff 64bit pref]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 4 [mem 0x000a0000-0x000bffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 5 [mem 0x000c0000-0x000c1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 6 [mem 0x000c2000-0x000c3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 7 [mem 0x000c4000-0x000c5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 8 [mem 0x000c6000-0x000c7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 9 [mem 0x000c8000-0x000c9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 10 [mem 0x000ca000-0x000cbfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 11 [mem 0x000cc000-0x000cdfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 12 [mem 0x000d0000-0x000d1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 13 [mem 0x000d2000-0x000d3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 14 [mem 0x000d4000-0x000d5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 15 [mem 0x000d6000-0x000d7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 16 [mem 0x000d8000-0x000d9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 17 [mem 0x000da000-0x000dbfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 18 [mem 0x000dc000-0x000ddfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 19 [mem 0x000de000-0x000dffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 20 [mem 0x000e0000-0x000e1fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 21 [mem 0x000e2000-0x000e3fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 22 [mem 0x000e4000-0x000e5fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 23 [mem 0x000e6000-0x000e7fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 24 [mem 0x000e8000-0x000e9fff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 25 [mem 0x000ea000-0x000ebfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 26 [mem 0x000ec000-0x000edfff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 27 [mem 0x000ee000-0x000effff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 28 [mem 0xe0000000-0xffffffff]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 29 [io  0x0000-0x0cf7]
+Jul 06 00:57:03 manji kernel: pci_bus 0000:02: resource 30 [io  0x0d00-0xffff]
+Jul 06 00:57:03 manji kernel: NET: Registered protocol family 2
+Jul 06 00:57:03 manji kernel: TCP established hash table entries: 131072 (order: 9, 2097152 bytes)
+Jul 06 00:57:03 manji kernel: TCP bind hash table entries: 65536 (order: 8, 1048576 bytes)
+Jul 06 00:57:03 manji kernel: TCP: Hash tables configured (established 131072 bind 65536)
+Jul 06 00:57:03 manji kernel: TCP: reno registered
+Jul 06 00:57:03 manji kernel: UDP hash table entries: 8192 (order: 6, 262144 bytes)
+Jul 06 00:57:03 manji kernel: UDP-Lite hash table entries: 8192 (order: 6, 262144 bytes)
+Jul 06 00:57:03 manji kernel: NET: Registered protocol family 1
+Jul 06 00:57:03 manji kernel: pci 0000:00:01.0: Boot video device
+Jul 06 00:57:03 manji kernel: PCI: CLS 32 bytes, default 64
+Jul 06 00:57:03 manji kernel: Unpacking initramfs...
+Jul 06 00:57:03 manji kernel: Freeing initrd memory: 5284K (ffff88003759e000 - ffff880037ac7000)
+Jul 06 00:57:03 manji kernel: PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+Jul 06 00:57:03 manji kernel: software IO TLB [mem 0xbad9b000-0xbed9b000] (64MB) mapped at [ffff8800bad9b000-ffff8800bed9afff]
+Jul 06 00:57:03 manji kernel: LVT offset 0 assigned for vector 0x400
+Jul 06 00:57:03 manji kernel: perf: AMD IBS detected (0x000000ff)
+Jul 06 00:57:03 manji kernel: Scanning for low memory corruption every 60 seconds
+Jul 06 00:57:03 manji kernel: audit: initializing netlink socket (disabled)
+Jul 06 00:57:03 manji kernel: type=2000 audit(1404601016.513:1): initialized
+Jul 06 00:57:03 manji kernel: HugeTLB registered 2 MB page size, pre-allocated 0 pages
+Jul 06 00:57:03 manji kernel: zbud: loaded
+Jul 06 00:57:03 manji kernel: VFS: Disk quotas dquot_6.5.2
+Jul 06 00:57:03 manji kernel: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+Jul 06 00:57:03 manji kernel: msgmni has been set to 28995
+Jul 06 00:57:03 manji kernel: Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
+Jul 06 00:57:03 manji kernel: io scheduler noop registered
+Jul 06 00:57:03 manji kernel: io scheduler deadline registered
+Jul 06 00:57:03 manji kernel: io scheduler cfq registered
+Jul 06 00:57:03 manji kernel: io scheduler bfq registered (default)
+Jul 06 00:57:03 manji kernel: BFQ I/O-scheduler version: v7r4
+Jul 06 00:57:03 manji kernel: pcieport 0000:00:04.0: irq 40 for MSI/MSI-X
+Jul 06 00:57:03 manji kernel: pcieport 0000:00:04.0: Signaling PME through PCIe PME interrupt
+Jul 06 00:57:03 manji kernel: pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
+Jul 06 00:57:03 manji kernel: pcie_pme 0000:00:04.0:pcie01: service driver pcie_pme loaded
+Jul 06 00:57:03 manji kernel: pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+Jul 06 00:57:03 manji kernel: pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+Jul 06 00:57:03 manji kernel: GHES: HEST is not enabled!
+Jul 06 00:57:03 manji kernel: Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+Jul 06 00:57:03 manji kernel: Linux agpgart interface v0.103
+Jul 06 00:57:03 manji kernel: i8042: PNP: PS/2 Controller [PNP0303:KBD0,PNP0f13:PS2M] at 0x60,0x64 irq 1,12
+Jul 06 00:57:03 manji kernel: serio: i8042 KBD port at 0x60,0x64 irq 1
+Jul 06 00:57:03 manji kernel: serio: i8042 AUX port at 0x60,0x64 irq 12
+Jul 06 00:57:03 manji kernel: mousedev: PS/2 mouse device common for all mice
+Jul 06 00:57:03 manji kernel: rtc_cmos 00:03: RTC can wake from S4
+Jul 06 00:57:03 manji kernel: rtc_cmos 00:03: rtc core: registered rtc_cmos as rtc0
+Jul 06 00:57:03 manji kernel: rtc_cmos 00:03: alarms up to one month, 114 bytes nvram, hpet irqs
+Jul 06 00:57:03 manji kernel: drop_monitor: Initializing network drop monitor service
+Jul 06 00:57:03 manji kernel: TCP: cubic registered
+Jul 06 00:57:03 manji kernel: IPv6: Loaded, but administratively disabled, reboot required to enable
+Jul 06 00:57:03 manji kernel: NET: Registered protocol family 17
+Jul 06 00:57:03 manji kernel: Key type dns_resolver registered
+Jul 06 00:57:03 manji kernel: registered taskstats version 1
+Jul 06 00:57:03 manji kernel:   Magic number: 6:606:956
+Jul 06 00:57:03 manji kernel: pcieport 0000:00:04.0: hash matches
+Jul 06 00:57:03 manji kernel: memory memory9: hash matches
+Jul 06 00:57:03 manji kernel: rtc_cmos 00:03: setting system clock to 2014-07-05 22:56:56 UTC (1404601016)
+Jul 06 00:57:03 manji kernel: PM: Hibernation image not present or could not be loaded.
+Jul 06 00:57:03 manji kernel: Freeing unused kernel memory: 1148K (ffffffff818d9000 - ffffffff819f8000)
+Jul 06 00:57:03 manji kernel: Write protecting the kernel read-only data: 8192k
+Jul 06 00:57:03 manji kernel: Freeing unused kernel memory: 904K (ffff88000151e000 - ffff880001600000)
+Jul 06 00:57:03 manji kernel: Freeing unused kernel memory: 392K (ffff88000179e000 - ffff880001800000)
+Jul 06 00:57:03 manji systemd-udevd[57]: starting version 214
+Jul 06 00:57:03 manji kernel: device-mapper: uevent: version 1.0.3
+Jul 06 00:57:03 manji kernel: device-mapper: ioctl: 4.26.0-ioctl (2013-08-15) initialised: dm-devel@redhat.com
+Jul 06 00:57:03 manji kernel: input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input0
+Jul 06 00:57:03 manji kernel: sha256_ssse3: Neither AVX nor SSSE3 is available/usable.
+Jul 06 00:57:03 manji kernel: sha512_ssse3: Neither AVX nor SSSE3 is available/usable.
+Jul 06 00:57:03 manji kernel: SCSI subsystem initialized
+Jul 06 00:57:03 manji kernel: ACPI: bus type USB registered
+Jul 06 00:57:03 manji kernel: usbcore: registered new interface driver usbfs
+Jul 06 00:57:03 manji kernel: usbcore: registered new interface driver hub
+Jul 06 00:57:03 manji kernel: usbcore: registered new device driver usb
+Jul 06 00:57:03 manji kernel: libata version 3.00 loaded.
+Jul 06 00:57:03 manji kernel: ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+Jul 06 00:57:03 manji kernel: ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+Jul 06 00:57:03 manji kernel: ehci-pci: EHCI PCI platform driver
+Jul 06 00:57:03 manji kernel: ohci-pci: OHCI PCI platform driver
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:12.2: EHCI Host Controller
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:12.2: new USB bus registered, assigned bus number 1
+Jul 06 00:57:03 manji kernel: QUIRK: Enable AMD PLL fix
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:12.2: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:12.2: debug port 1
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:12.2: irq 17, io mem 0xf014a900
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:12.2: USB 2.0 started, EHCI 1.00
+Jul 06 00:57:03 manji kernel: hub 1-0:1.0: USB hub found
+Jul 06 00:57:03 manji kernel: hub 1-0:1.0: 5 ports detected
+Jul 06 00:57:03 manji kernel: ohci-pci 0000:00:12.0: OHCI PCI host controller
+Jul 06 00:57:03 manji kernel: ohci-pci 0000:00:12.0: new USB bus registered, assigned bus number 2
+Jul 06 00:57:03 manji kernel: ohci-pci 0000:00:12.0: irq 18, io mem 0xf0149000
+Jul 06 00:57:03 manji kernel: hub 2-0:1.0: USB hub found
+Jul 06 00:57:03 manji kernel: hub 2-0:1.0: 5 ports detected
+Jul 06 00:57:03 manji kernel: ohci-pci 0000:00:13.0: OHCI PCI host controller
+Jul 06 00:57:03 manji kernel: ohci-pci 0000:00:13.0: new USB bus registered, assigned bus number 3
+Jul 06 00:57:03 manji kernel: ohci-pci 0000:00:13.0: irq 18, io mem 0xf0148000
+Jul 06 00:57:03 manji kernel: hub 3-0:1.0: USB hub found
+Jul 06 00:57:03 manji kernel: hub 3-0:1.0: 5 ports detected
+Jul 06 00:57:03 manji kernel: ahci 0000:00:11.0: version 3.0
+Jul 06 00:57:03 manji kernel: ahci 0000:00:11.0: irq 41 for MSI/MSI-X
+Jul 06 00:57:03 manji kernel: ahci 0000:00:11.0: AHCI 0001.0300 32 slots 3 ports 3 Gbps 0xe impl SATA mode
+Jul 06 00:57:03 manji kernel: ahci 0000:00:11.0: flags: 64bit ncq sntf ilck pm led clo pmp pio slum part ccc sxs 
+Jul 06 00:57:03 manji kernel: scsi0 : ahci
+Jul 06 00:57:03 manji kernel: scsi1 : ahci
+Jul 06 00:57:03 manji kernel: scsi2 : ahci
+Jul 06 00:57:03 manji kernel: scsi3 : ahci
+Jul 06 00:57:03 manji kernel: ata1: DUMMY
+Jul 06 00:57:03 manji kernel: ata2: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a180 irq 41
+Jul 06 00:57:03 manji kernel: ata3: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a200 irq 41
+Jul 06 00:57:03 manji kernel: ata4: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a280 irq 41
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:13.2: EHCI Host Controller
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:13.2: new USB bus registered, assigned bus number 4
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:13.2: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:13.2: debug port 1
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:13.2: irq 17, io mem 0xf014a800
+Jul 06 00:57:03 manji kernel: ehci-pci 0000:00:13.2: USB 2.0 started, EHCI 1.00
+Jul 06 00:57:03 manji kernel: hub 4-0:1.0: USB hub found
+Jul 06 00:57:03 manji kernel: hub 4-0:1.0: 5 ports detected
+Jul 06 00:57:03 manji kernel: hub 3-0:1.0: USB hub found
+Jul 06 00:57:03 manji kernel: hub 3-0:1.0: 5 ports detected
+Jul 06 00:57:03 manji kernel: ata3: SATA link down (SStatus 0 SControl 300)
+Jul 06 00:57:03 manji kernel: ata4: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Jul 06 00:57:03 manji kernel: ata2: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Jul 06 00:57:03 manji kernel: ata2.00: ATA-7: INTEL SSDSA2M080G2GC, 2CV102M3, max UDMA/133
+Jul 06 00:57:03 manji kernel: ata2.00: 156301488 sectors, multi 16: LBA48 NCQ (depth 31/32)
+Jul 06 00:57:03 manji kernel: ata2.00: configured for UDMA/133
+Jul 06 00:57:03 manji kernel: scsi 1:0:0:0: Direct-Access     ATA      INTEL SSDSA2M080 2CV1 PQ: 0 ANSI: 5
+Jul 06 00:57:03 manji kernel: ata4.00: supports DRM functions and may not be fully accessible
+Jul 06 00:57:03 manji kernel: ata4.00: failed to get NCQ Send/Recv Log Emask 0x1
+Jul 06 00:57:03 manji kernel: ata4.00: ATA-9: Samsung SSD 840 EVO 1TB, EXT0BB6Q, max UDMA/133
+Jul 06 00:57:03 manji kernel: ata4.00: 1953525168 sectors, multi 1: LBA48 NCQ (depth 31/32), AA
+Jul 06 00:57:03 manji kernel: ata4.00: supports DRM functions and may not be fully accessible
+Jul 06 00:57:03 manji kernel: ata4.00: failed to get NCQ Send/Recv Log Emask 0x1
+Jul 06 00:57:03 manji kernel: ata4.00: configured for UDMA/133
+Jul 06 00:57:03 manji kernel: scsi 3:0:0:0: Direct-Access     ATA      Samsung SSD 840  EXT0 PQ: 0 ANSI: 5
+Jul 06 00:57:03 manji kernel: sd 1:0:0:0: [sda] 156301488 512-byte logical blocks: (80.0 GB/74.5 GiB)
+Jul 06 00:57:03 manji kernel: sd 3:0:0:0: [sdb] 1953525168 512-byte logical blocks: (1.00 TB/931 GiB)
+Jul 06 00:57:03 manji kernel: sd 3:0:0:0: [sdb] Write Protect is off
+Jul 06 00:57:03 manji kernel: sd 1:0:0:0: [sda] Write Protect is off
+Jul 06 00:57:03 manji kernel: sd 1:0:0:0: [sda] Mode Sense: 00 3a 00 00
+Jul 06 00:57:03 manji kernel: sd 3:0:0:0: [sdb] Mode Sense: 00 3a 00 00
+Jul 06 00:57:03 manji kernel: sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Jul 06 00:57:03 manji kernel: sd 3:0:0:0: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Jul 06 00:57:03 manji kernel:  sdb: sdb1
+Jul 06 00:57:03 manji kernel:  sda: sda1 sda2
+Jul 06 00:57:03 manji kernel: sd 1:0:0:0: [sda] Attached SCSI disk
+Jul 06 00:57:03 manji kernel: sd 3:0:0:0: [sdb] Attached SCSI disk
+Jul 06 00:57:03 manji kernel: usb 4-1: new high-speed USB device number 2 using ehci-pci
+Jul 06 00:57:03 manji kernel: usb 4-3: new high-speed USB device number 3 using ehci-pci
+Jul 06 00:57:03 manji kernel: usb 2-3: new full-speed USB device number 2 using ohci-pci
+Jul 06 00:57:03 manji kernel: hidraw: raw HID events driver (C) Jiri Kosina
+Jul 06 00:57:03 manji kernel: usbcore: registered new interface driver usbhid
+Jul 06 00:57:03 manji kernel: usbhid: USB HID core driver
+Jul 06 00:57:03 manji kernel: input: Genius 2.4G Wireless BlueEye Mouse as /devices/pci0000:00/0000:00:12.0/usb2/2-3/2-3:1.0/input/input2
+Jul 06 00:57:03 manji kernel: hid-generic 0003:0458:00F2.0001: input,hiddev0,hidraw0: USB HID v1.11 Mouse [Genius 2.4G Wireless BlueEye Mouse] on usb-0000:00:12.0-3/input0
+Jul 06 00:57:03 manji kernel: bio: create slab <bio-1> at 1
+Jul 06 00:57:03 manji kernel: bio: create slab <bio-1> at 1
+Jul 06 00:57:03 manji kernel: EXT4-fs (dm-1): mounted filesystem with ordered data mode. Opts: (null)
+Jul 06 00:57:03 manji systemd[1]: systemd 214 running in system mode. (+PAM -AUDIT -SELINUX -IMA -SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP -APPARMOR)
+Jul 06 00:57:03 manji systemd[1]: Detected architecture 'x86-64'.
+Jul 06 00:57:03 manji systemd[1]: Set hostname to <manji>.
+Jul 06 00:57:03 manji systemd[1]: Starting Forward Password Requests to Wall Directory Watch.
+Jul 06 00:57:03 manji systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+Jul 06 00:57:03 manji systemd[1]: Starting Remote File Systems.
+Jul 06 00:57:03 manji systemd[1]: Reached target Remote File Systems.
+Jul 06 00:57:03 manji systemd[1]: Starting Dispatch Password Requests to Console Directory Watch.
+Jul 06 00:57:03 manji systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+Jul 06 00:57:03 manji systemd[1]: Starting Paths.
+Jul 06 00:57:03 manji systemd[1]: Reached target Paths.
+Jul 06 00:57:03 manji systemd[1]: Starting Encrypted Volumes.
+Jul 06 00:57:03 manji systemd[1]: Reached target Encrypted Volumes.
+Jul 06 00:57:03 manji systemd[1]: Starting Arbitrary Executable File Formats File System Automount Point.
+Jul 06 00:57:03 manji systemd[1]: Set up automount Arbitrary Executable File Formats File System Automount Point.
+Jul 06 00:57:03 manji systemd[1]: Starting Swap.
+Jul 06 00:57:03 manji systemd[1]: Reached target Swap.
+Jul 06 00:57:03 manji systemd[1]: Expecting device dev-disk-by\x2duuid-13750594\x2d5d0d\x2d41be\x2d9e21\x2d274609445286.device...
+Jul 06 00:57:03 manji systemd[1]: Expecting device dev-disk-by\x2duuid-0708e2ae\x2d32bf\x2d4e5b\x2dad0b\x2da140b5e9adf0.device...
+Jul 06 00:57:03 manji systemd[1]: Starting Root Slice.
+Jul 06 00:57:03 manji systemd[1]: Created slice Root Slice.
+Jul 06 00:57:03 manji systemd[1]: Starting Delayed Shutdown Socket.
+Jul 06 00:57:03 manji systemd[1]: Listening on Delayed Shutdown Socket.
+Jul 06 00:57:03 manji systemd[1]: Starting Device-mapper event daemon FIFOs.
+Jul 06 00:57:03 manji systemd[1]: Listening on Device-mapper event daemon FIFOs.
+Jul 06 00:57:03 manji systemd[1]: Starting /dev/initctl Compatibility Named Pipe.
+Jul 06 00:57:03 manji systemd[1]: Listening on /dev/initctl Compatibility Named Pipe.
+Jul 06 00:57:03 manji systemd[1]: Starting Journal Socket (/dev/log).
+Jul 06 00:57:03 manji systemd[1]: Listening on Journal Socket (/dev/log).
+Jul 06 00:57:03 manji systemd[1]: Starting Syslog Socket.
+Jul 06 00:57:03 manji systemd[1]: Listening on Syslog Socket.
+Jul 06 00:57:03 manji systemd[1]: Starting LVM2 metadata daemon socket.
+Jul 06 00:57:03 manji systemd[1]: Listening on LVM2 metadata daemon socket.
+Jul 06 00:57:03 manji systemd[1]: Starting udev Kernel Socket.
+Jul 06 00:57:03 manji systemd[1]: Listening on udev Kernel Socket.
+Jul 06 00:57:03 manji systemd[1]: Starting udev Control Socket.
+Jul 06 00:57:03 manji systemd[1]: Listening on udev Control Socket.
+Jul 06 00:57:03 manji systemd[1]: Starting User and Session Slice.
+Jul 06 00:57:03 manji systemd[1]: Created slice User and Session Slice.
+Jul 06 00:57:03 manji systemd[1]: Starting Journal Socket.
+Jul 06 00:57:03 manji systemd[1]: Listening on Journal Socket.
+Jul 06 00:57:03 manji systemd[1]: Starting System Slice.
+Jul 06 00:57:03 manji systemd[1]: Created slice System Slice.
+Jul 06 00:57:03 manji systemd[1]: Started File System Check on Root Device.
+Jul 06 00:57:03 manji systemd[1]: Starting system-systemd\x2dfsck.slice.
+Jul 06 00:57:03 manji systemd[1]: Created slice system-systemd\x2dfsck.slice.
+Jul 06 00:57:03 manji systemd[1]: Starting Remount Root and Kernel File Systems...
+Jul 06 00:57:03 manji systemd[1]: Mounting Temporary Directory...
+Jul 06 00:57:03 manji systemd[1]: Starting Set Up Additional Binary Formats...
+Jul 06 00:57:03 manji systemd[1]: Starting Setup Virtual Console...
+Jul 06 00:57:03 manji systemd[1]: Starting Apply Kernel Variables...
+Jul 06 00:57:03 manji systemd[1]: Mounting POSIX Message Queue File System...
+Jul 06 00:57:03 manji systemd[1]: Starting udev Coldplug all Devices...
+Jul 06 00:57:03 manji systemd[1]: Mounting Debug File System...
+Jul 06 00:57:03 manji systemd[1]: Starting Load Kernel Modules...
+Jul 06 00:57:03 manji systemd[1]: Starting Create list of required static device nodes for the current kernel...
+Jul 06 00:57:03 manji systemd[1]: Mounting Huge Pages File System...
+Jul 06 00:57:03 manji systemd[1]: Starting system-getty.slice.
+Jul 06 00:57:03 manji systemd[1]: Created slice system-getty.slice.
+Jul 06 00:57:03 manji systemd[1]: Starting Journal Service...
+Jul 06 00:57:03 manji systemd[1]: Started Journal Service.
+Jul 06 00:57:03 manji systemd-udevd[201]: starting version 214
+Jul 06 00:57:04 manji kernel: vboxdrv: Found 4 processor cores.
+Jul 06 00:57:04 manji kernel: vboxdrv: fAsync=1 offMin=0x7ee9849 offMax=0x7ee9849
+Jul 06 00:57:04 manji kernel: vboxdrv: TSC mode is 'asynchronous', kernel timer mode is 'normal'.
+Jul 06 00:57:04 manji kernel: vboxdrv: Successfully loaded version 4.3.12_OSE (interface 0x001a0007).
+Jul 06 00:57:04 manji kernel: EXT4-fs (dm-1): re-mounted. Opts: data=ordered
+Jul 06 00:57:04 manji kernel: vboxpci: IOMMU not found (not registered)
+Jul 06 00:57:04 manji kernel: ACPI: acpi_idle registered with cpuidle
+Jul 06 00:57:04 manji kernel: acpi-cpufreq: overriding BIOS provided _PSD data
+Jul 06 00:57:04 manji kernel: input: Power Button as /devices/LNXSYSTM:00/device:00/PNP0C0C:00/input/input3
+Jul 06 00:57:04 manji kernel: ACPI: Power Button [PWRB]
+Jul 06 00:57:04 manji kernel: input: Lid Switch as /devices/LNXSYSTM:00/device:00/PNP0C0D:00/input/input4
+Jul 06 00:57:04 manji kernel: ACPI: Lid Switch [LID0]
+Jul 06 00:57:04 manji kernel: input: Sleep Button as /devices/LNXSYSTM:00/device:00/PNP0C0E:00/input/input5
+Jul 06 00:57:04 manji kernel: ACPI: Sleep Button [SLPB]
+Jul 06 00:57:04 manji kernel: input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input6
+Jul 06 00:57:04 manji kernel: ACPI: Power Button [PWRF]
+Jul 06 00:57:04 manji kernel: AMD IOMMUv2 driver by Joerg Roedel <joerg.roedel@amd.com>
+Jul 06 00:57:04 manji kernel: AMD IOMMUv2 functionality not available on this system
+Jul 06 00:57:04 manji kernel: fglrx: module license 'Proprietary. (C) 2002 - ATI Technologies, Starnberg, GERMANY' taints kernel.
+Jul 06 00:57:04 manji kernel: Disabling lock debugging due to kernel taint
+Jul 06 00:57:04 manji kernel: <6>[fglrx] Maximum main memory to use for locked dma buffers: 14152 MBytes.
+Jul 06 00:57:04 manji kernel: <6>[fglrx]   vendor: 1002 device: 9647 count: 1
+Jul 06 00:57:04 manji kernel: <6>[fglrx] ioport: bar 1, base 0x2000, size: 0x100
+Jul 06 00:57:04 manji kernel: <6>[fglrx] Kernel PAT support is enabled
+Jul 06 00:57:04 manji kernel: <6>[fglrx] module loaded - fglrx 14.10.2 [May  5 2014] with 1 minors
+Jul 06 00:57:04 manji kernel: FS-Cache: Loaded
+Jul 06 00:57:04 manji kernel: acpi device:38: registered as cooling_device4
+Jul 06 00:57:04 manji kernel: ACPI: Video Device [VGA1] (multi-head: yes  rom: no  post: no)
+Jul 06 00:57:04 manji kernel: input: Video Bus as /devices/LNXSYSTM:00/device:00/PNP0A08:00/LNXVIDEO:01/input/input7
+Jul 06 00:57:04 manji kernel: RPC: Registered named UNIX socket transport module.
+Jul 06 00:57:04 manji kernel: RPC: Registered udp transport module.
+Jul 06 00:57:04 manji kernel: RPC: Registered tcp transport module.
+Jul 06 00:57:04 manji kernel: RPC: Registered tcp NFSv4.1 backchannel transport module.
+Jul 06 00:57:04 manji kernel: FS-Cache: Netfs 'nfs' registered for caching
+Jul 06 00:57:04 manji kernel: ACPI: Battery Slot [BAT0] (battery present)
+Jul 06 00:57:04 manji kernel: shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+Jul 06 00:57:04 manji kernel: ACPI: AC Adapter [ADP1] (on-line)
+Jul 06 00:57:04 manji kernel: input: Ideapad extra buttons as /devices/platform/ideapad/input/input8
+Jul 06 00:57:04 manji kernel: wmi: Mapper loaded
+Jul 06 00:57:04 manji kernel: ACPI Warning: 0x0000000000000b00-0x0000000000000b07 SystemIO conflicts with Region \_SB_.PCI0.SMB_.SMB0 1 (20130725/utaddress-251)
+Jul 06 00:57:04 manji kernel: ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+Jul 06 00:57:04 manji kernel: thermal LNXTHERM:00: registered as thermal_zone0
+Jul 06 00:57:04 manji kernel: ACPI: Thermal Zone [TZS0] (63 C)
+Jul 06 00:57:04 manji kernel: thermal LNXTHERM:01: registered as thermal_zone1
+Jul 06 00:57:04 manji kernel: ACPI: Thermal Zone [TZS1] (44 C)
+Jul 06 00:57:04 manji kernel: microcode: CPU0: patch_level=0x03000014
+Jul 06 00:57:04 manji kernel: input: PC Speaker as /devices/platform/pcspkr/input/input10
+Jul 06 00:57:04 manji kernel: microcode: CPU0: new patch_level=0x03000027
+Jul 06 00:57:04 manji kernel: microcode: CPU1: patch_level=0x03000014
+Jul 06 00:57:04 manji kernel: microcode: CPU1: new patch_level=0x03000027
+Jul 06 00:57:04 manji kernel: microcode: CPU2: patch_level=0x03000014
+Jul 06 00:57:04 manji kernel: microcode: CPU2: new patch_level=0x03000027
+Jul 06 00:57:04 manji kernel: microcode: CPU3: patch_level=0x03000014
+Jul 06 00:57:04 manji kernel: microcode: CPU3: new patch_level=0x03000027
+Jul 06 00:57:04 manji kernel: microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+Jul 06 00:57:04 manji kernel: r8169 Gigabit Ethernet driver 2.3LK-NAPI loaded
+Jul 06 00:57:04 manji kernel: r8169 0000:01:00.0: can't disable ASPM; OS doesn't have ASPM control
+Jul 06 00:57:04 manji kernel: r8169 0000:01:00.0: irq 42 for MSI/MSI-X
+Jul 06 00:57:04 manji kernel: r8169 0000:01:00.0 eth0: RTL8105e at 0xffffc900070f2000, f0:de:f1:98:0f:7c, XID 00a00000 IRQ 42
+Jul 06 00:57:04 manji kernel: acer_wmi: Acer Laptop ACPI-WMI Extras
+Jul 06 00:57:04 manji kernel: acer_wmi: Brightness must be controlled by acpi video driver
+Jul 06 00:57:04 manji kernel: input: Acer BMA150 accelerometer as /devices/virtual/input/input11
+Jul 06 00:57:05 manji kernel: kvm: Nested Virtualization enabled
+Jul 06 00:57:05 manji kernel: kvm: Nested Paging enabled
+Jul 06 00:57:05 manji systemd-udevd[223]: renamed network interface eth0 to enp1s0
+Jul 06 00:57:05 manji kernel: snd_hda_intel 0000:00:01.1: irq 43 for MSI/MSI-X
+Jul 06 00:57:05 manji kernel: input: HD-Audio Generic HDMI/DP,pcm=3 as /devices/pci0000:00/0000:00:01.1/sound/card0/input12
+Jul 06 00:57:05 manji kernel: input: HDA Digital PCBeep as /devices/pci0000:00/0000:00:14.2/input/input13
+Jul 06 00:57:05 manji kernel: input: HD-Audio Generic Headphone as /devices/pci0000:00/0000:00:14.2/sound/card1/input15
+Jul 06 00:57:05 manji kernel: input: HD-Audio Generic Mic as /devices/pci0000:00/0000:00:14.2/sound/card1/input14
+Jul 06 00:57:05 manji kernel: Non-volatile memory driver v1.3
+Jul 06 00:57:05 manji kernel: psmouse serio1: synaptics: Touchpad model: 1, fw: 7.5, id: 0x1e0b1, caps: 0xd00073/0x240000/0xa0400, board id: 1695, fw id: 739436
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: ThinkPad ACPI Extras v0.24
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: http://ibm-acpi.sf.net/
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: ThinkPad BIOS 54CN18WW, EC unknown
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: Lenovo LENOVO, model Sabine
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: detected a 8-level brightness capable ThinkPad
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: Standard ACPI backlight interface available, not loading native one
+Jul 06 00:57:05 manji kernel: thinkpad_acpi: Console audio control enabled, mode: monitor (read only)
+Jul 06 00:57:05 manji kernel: input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input16
+Jul 06 00:57:05 manji kernel: input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input9
+Jul 06 00:57:05 manji kernel: EXT4-fs (sda1): mounting ext2 file system using the ext4 subsystem
+Jul 06 00:57:05 manji kernel: EXT4-fs (sda1): mounted filesystem without journal. Opts: (null)
+Jul 06 00:57:05 manji kernel: EXT4-fs (dm-2): mounted filesystem with ordered data mode. Opts: (null)
+Jul 06 00:57:07 manji kernel: rts5139: module is from the staging directory, the quality is unknown, you have been warned.
+Jul 06 00:57:07 manji kernel: scsi4 : SCSI emulation for RTS5139 USB card reader
+Jul 06 00:57:07 manji kernel: usbcore: registered new interface driver rts5139
+Jul 06 00:57:07 manji kernel: scsi 4:0:0:0: Direct-Access     Generic- xD/SD/M.S.       1.00 PQ: 0 ANSI: 0 CCS
+Jul 06 00:57:07 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 00:57:07 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 00:57:07 manji kernel: sd 4:0:0:0: [sdc] Attached SCSI removable disk
+Jul 06 00:57:08 manji kernel: fglrx_pci 0000:00:01.0: irq 44 for MSI/MSI-X
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Firegl kernel thread PID: 559
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Firegl kernel thread PID: 560
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Firegl kernel thread PID: 561
+Jul 06 00:57:08 manji kernel: <6>[fglrx] IRQ 44 Enabled
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Reserved FB block: Shared offset:0, size:1000000 
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Reserved FB block: Unshared offset:fb38000, size:4000 
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Reserved FB block: Unshared offset:fb3c000, size:4c4000 
+Jul 06 00:57:08 manji kernel: <6>[fglrx] Reserved FB block: Unshared offset:1fff4000, size:c000 
+Jul 06 00:57:08 manji kernel: <6>[fglrx] ATIF platform detected with notification ID: 0x81
+Jul 06 00:57:08 manji kernel: mtrr: your BIOS has configured an incorrect mask, fixing it.
+Jul 06 00:57:09 manji kernel: r8169 0000:01:00.0 enp1s0: link up
+Jul 06 00:57:09 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 00:57:09 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 00:57:10 manji kernel: r8169 0000:01:00.0 enp1s0: link up
+Jul 06 00:57:13 manji kernel: fuse init (API version 7.22)
+Jul 06 00:57:37 manji kernel: input input2: event field not found

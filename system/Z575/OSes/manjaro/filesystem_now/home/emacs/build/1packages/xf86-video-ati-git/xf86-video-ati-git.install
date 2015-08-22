@@ -1,0 +1,10 @@
+post_install()
+{
+    echo ":: This works best(or sometimes at all) with the rest of the graphics stack from git (x11 etc.)"
+    echo "you need to recompile/install this (and maybe also mesa-dri-git aka ati-dri) ONLY after you upgraded X and co, or else startx won't work due to ABI version change!"
+}
+post_upgrade()
+{
+    echo ":: This works best(or sometimes at all) with the rest of the graphics stack from git (x11 etc.)"
+    echo "you need to recompile/install this (and maybe also mesa-dri-git aka ati-dri) ONLY after you upgraded X and co, or else startx won't work due to ABI version change!"
+}

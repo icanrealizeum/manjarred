@@ -1,0 +1,13 @@
+diff --git a/toxcore/Messenger.c b/toxcore/Messenger.c
+index dc0e605..7dbdbb6 100644
+--- a/toxcore/Messenger.c
++++ b/toxcore/Messenger.c
+@@ -1760,6 +1760,7 @@ Messenger *new_messenger(Messenger_Options *options, unsigned int *error)
+     } else {
+         IP ip;
+         ip_init(&ip, options->ipv6enabled);
++        addr_parse_ip("192.168.244.1", &ip);//this must be either missing(aka 0.0.0.0) or the same IP as the local tun5 device (which means different IPs for server and client each)
+         m->net = new_networking_ex(ip, options->port_range[0], options->port_range[1], &net_err);
+     }
+ 
+

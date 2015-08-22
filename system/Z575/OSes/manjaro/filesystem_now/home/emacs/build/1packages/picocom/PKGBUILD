@@ -1,0 +1,46 @@
+# $Id$
+# Maintainer: Sébastien Luttringer
+# Contributor: Jens Adam (byte/jra) <j_adam@web.de>
+
+pkgname=picocom
+pkgver=1.7
+pkgrel=3
+pkgdesc='Minimal dumb-terminal emulation program, very much like minicom'
+url='http://code.google.com/p/picocom/'
+license=('GPL2')
+arch=('i686' 'x86_64')
+depends=('glibc')
+install=$pkgname.install
+patch1file="log_file_feature.diff"
+source=(
+  "http://$pkgname.googlecode.com/files/$pkgname-$pkgver.tar.gz"
+  "$patch1file"
+)
+sha1sums=('bde6e36af71db845913f9d61f28dee1b485218fa'
+          'cd79a0dacfb0dd7ac8af471b36276067dc7dbdb9')
+sha512sums=('a222cc61be1e3e9759d8d6269348f6ac13159089e41b5a6aade3dc15abab8d76571a91c970f14af89244055f8bb9adf1ad5b336d7a9b4db5a9449558b86577ec'
+            '280e3629408d2017071c05b65f22f44bdc4e3a8284aa4c5908444bdb2450c36a4f3fcb3ce183c2b3d68e8472cd34d282cc44c7365346522a722c4c498ac6ca52')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  pwd
+  patch -Np0 -i "../$patch1file"
+}
+
+build() {
+  cd "$pkgname-$pkgver"
+  make UUCP_LOCK_DIR=/run/lock/picocom
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -D -m 755 picocom "$pkgdir/usr/bin/picocom"
+  install -D -m 644 picocom.8 "$pkgdir/usr/share/man/man8/picocom.8"
+  # install tmpfiles for lock files
+  # http://lists.freedesktop.org/archives/systemd-devel/2011-March/001823.html
+  install -D -m 644 /dev/null "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+  echo "d /run/lock/$pkgname 0770 root uucp" \
+    > "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+}
+
+# vim:set ts=2 sw=2 et:

@@ -1,0 +1,21 @@
+http://blog.relentless-coding.org/2011/10/social-engineering-with-unicode.html
+https://github.com/zhuowei/FancyTwitterNames
+thanks to this person: https://twitter.com/munin/status/512357817747914752
+
+echo "" > $(echo -e /tmp/"SexyAl\xe2\x80\xaetpp.exe")
+now open pcmanfm and look in /tmp
+you see SexyAlexe.ppt  but the icon is right (for an .exe)
+
+8238 or U+202E converts to 0xE280AE
+8237 or U+202D = 0xE280AD
+
+echo "" > $(echo -e "/tmp/\xe2\x80\xaecod.yrammus_evituc\xe2\x80\xad2011.exe")
+looks like: 2011.executive_summary.doc
+
+
+in linux(eg. inside mousepad) Ctrl+Shift+u  then type 202e and press Enter
+works
+
+can't directly set it with editing twitter profile, use that github project above instead!
+
+

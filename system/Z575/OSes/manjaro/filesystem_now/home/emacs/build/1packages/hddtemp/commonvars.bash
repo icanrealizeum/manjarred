@@ -1,0 +1,1 @@
+../commonvars_normal.bash

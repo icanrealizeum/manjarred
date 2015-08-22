@@ -1,0 +1,151 @@
+# $Id$
+# Maintainer : Ionut Biru <ibiru@archlinux.org>
+# Contributor: Jakub Schmidtke <sjakub@gmail.com>
+
+pkgname=firefox-hg
+pkgver=32.0.1
+pkgrel=1
+pkgdesc="Standalone web browser from mozilla.org"
+arch=('i686' 'x86_64')
+license=('MPL' 'GPL' 'LGPL')
+url="https://www.mozilla.org/firefox/"
+depends=('gtk2' 
+#'mozilla-common' #no
+'libxt' 'startup-notification' 'mime-types'
+         'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
+         'libvpx' 'icu' 'libevent' 'nss' 'hunspell' 'sqlite')
+makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
+             'xorg-server-xvfb' 'libpulse' 'gstreamer0.10-base'
+             'inetutils' 'mercurial' 'freetype2' 'pkg-config' 'gtk2' 
+             'dbus-glib' 'iw' 'libidl2' 'alsa-lib' 'curl' 'libnotify' 'libxt'
+             'autoconf2.13' #yes really 2.13 they say
+             #'gstreamer0.10' 'gstreamer0.10-base-plugins'
+             'wireless_tools'
+             'ccache-git' #it must support -fprofile-generate or else cache misses! 3.1.9 the git version works, but not the 3.1.9 non-git which is current now.
+             )
+optdepends=('networkmanager: Location detection via available WiFi networks'
+            'gstreamer0.10-base-plugins: vorbis decoding, ogg demuxing'
+            'gstreamer0.10-good-plugins: webm and mp4 demuxing'
+            'gstreamer0.10-bad-plugins: aac, vp8 and opus decoding'
+            'gstreamer0.10-ugly-plugins: h.264 and mp3 decoding'
+            'gstreamer0.10-ffmpeg: more decoders'
+            #'libpulse: PulseAudio audio driver'
+            )
+install=firefox.install
+options=('!emptydirs' '!makeflags')
+_hgfolder="$pkgname"
+source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central/"
+        mozconfig
+        firefox.desktop
+        firefox-install-dir.patch
+        vendor.js
+        firefox-20.0.1-fixed-loading-icon.png)
+sha256sums=('SKIP'
+            '12b445666b0a597d2debb5b014197d64755e23994ab424a503541a1df11ed838'
+            'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
+            '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256'
+            '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
+            '68e3a5b47c6d175cc95b98b069a15205f027cab83af9e075818d38610feb6213')
+sha512sums=('SKIP'
+            '2161ef824a8b21e4f579a7554433e4c450aefeee58d6e59c1758b82e23ac0b88f6c5bc37b0a045c7461b733d3bdfd62fe377915aeb49e4aab0f021d6d8af31ce'
+            '6338bd399df04dcbfd2d4150c59be8716aebcb60edbfd298ba8671059c4f02ffcec3e9f750255c951fb197edf6130b0c25a4157e27fe0087dad89b3d40eb2627'
+            '0af631e61cf7d773fe9966060c52bc9a95426915370e5bbe1325c0ed89e8c2bbe483fdb58e12c90b4719f206c0624330ad030aadd7228ea72a4c64ee4db7ff1b'
+            '9fcb4c6bbf09d8b245d726fc3b5188e59ffb0cb8ed31436be3690bd53d5fd111faac0e6acf2b2a5b1fb67574895d509a72062ed958881d804259789042c60486'
+            'd51119170cc8fb99c50610a8e5e94f38a31722c1c1a2260ca32d8e376732e30c8e1deac7d8c599348892e783fb4c75ce8c38bbd238282b0c9da21608d902ba28')
+
+
+# Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
+# Note: These are for Arch Linux use ONLY. For your own distribution, please
+# get your own set of keys. Feel free to contact foutrelis@archlinux.org for
+# more information.
+#_google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
+
+prepare() {
+#  cd firefox-hg
+  cd "${_hgfolder}"
+
+  cp ../mozconfig .mozconfig
+  patch -Np1 -i ../firefox-install-dir.patch
+
+#  echo -n "$_google_api_key" >google-api-key
+#  echo "ac_add_options --with-google-api-keyfile=\"$PWD/google-api-key\"" >>.mozconfig
+
+#  mkdir "${srcdir}/path"
+
+  # WebRTC build tries to execute "python" and expects Python 2
+#  ln -s /usr/bin/python2 "$srcdir/path/python"
+#using mk_add_options PYTHON=/usr/bin/python2  INSTEAD
+
+  # Use gold, as Mozilla can use some of its features, such as safe ICF
+  #ln -s /usr/bin/ld.gold "$srcdir/path/ld"
+
+  # configure script misdetects the preprocessor without an optimization level
+  # https://bugs.archlinux.org/task/34644
+  sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure.in
+
+  # Fix tab loading icon (flickers with libpng 1.6)
+  # https://bugzilla.mozilla.org/show_bug.cgi?id=841734
+  cp "$srcdir/firefox-20.0.1-fixed-loading-icon.png" \
+    "browser/themes/linux/tabbrowser/loading.png"
+}
+
+build() {
+  #cd firefox-hg
+  cd "${_hgfolder}"
+  cp ../mozconfig .mozconfig
+
+#  export PATH="$srcdir/path:$PATH"
+#  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
+#  export PYTHON="/usr/bin/python2" # unsure if this is needed
+
+  # Set up PGO
+  export DISPLAY=:99
+  Xvfb -nolisten tcp -extension GLX -screen 0 1280x1024x24 $DISPLAY &
+
+  #fixed: fix this so it works the first time too! without requiring to run just 'mach build' without params like that.
+  #looks like this should work: mk_add_options MOZ_PGO=1
+  #although it's probably 1 by default by now: https://hg.mozilla.org/mozilla-central/rev/0900f062f796
+
+  #if ! make -f client.mk build MOZ_PGO=1; then
+  #if ! ./mach --log-file /tmp/mach.log -v build MOZ_PGO=1; then
+  if ! ./mach -v build -v; then
+    kill $!
+    return 1
+  fi
+
+  kill $! || true
+}
+
+package() {
+  #cd firefox-hg
+  cd "${_hgfolder}"
+  #make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
+  ./mach -v DESTDIR="$pkgdir" INSTALL_SDK= install
+
+  install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
+
+  for i in 16 22 24 32 48 256; do
+      install -Dm644 browser/branding/official/default$i.png \
+        "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
+  done
+  install -Dm644 browser/branding/official/content/icon64.png \
+    "$pkgdir/usr/share/icons/hicolor/64x64/apps/firefox.png"
+  install -Dm644 browser/branding/official/mozicon128.png \
+    "$pkgdir/usr/share/icons/hicolor/128x128/apps/firefox.png"
+  install -Dm644 browser/branding/official/content/about-logo.png \
+    "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
+  install -Dm644 browser/branding/official/content/about-logo@2x.png \
+    "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
+
+  install -Dm644 ../firefox.desktop \
+    "$pkgdir/usr/share/applications/firefox.desktop"
+
+  # Use system-provided dictionaries
+  rm -rf "$pkgdir"/usr/lib/firefox/{dictionaries,hyphenation}
+  ln -s /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
+  ln -s /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
+
+  #workaround for now
+  #https://bugzilla.mozilla.org/show_bug.cgi?id=658850
+  ln -sf firefox "$pkgdir/usr/lib/firefox/firefox-bin"
+}

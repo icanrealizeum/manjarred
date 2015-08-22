@@ -1,0 +1,51 @@
+# Maintainer: Anatol Pomozov <anatol.pomozov@gmail.com>
+
+DEBUG=1
+
+pkgname=libnftnl-git
+pkgver=1.0.3.r37.g0edeb66
+pkgrel=1
+pkgdesc='Netfilter nf_tables infrastructure library'
+arch=(i686 x86_64)
+url='http://netfilter.org/projects/nftables/'
+license=(GPL2)
+depends=(libmnl)
+makedepends=(git)
+source=(git+https://git.netfilter.org/libnftnl)
+sha1sums=('SKIP')
+conflicts=('libnftnl')
+provides=('libnftnl')
+
+if [ -n "$DEBUG" ] && [ "$DEBUG" == "1" ]; then                                 
+  options+=('!strip')
+  export CFLAGS+=" -g3 -O1 -DDEBUG"                                              
+  export CPPFLAGS+=" -g3 -O1 -DDEBUG"
+  export CXXFLAGS+=" -g3 -O1 -DDEBUG"
+fi
+
+
+pkgver() {
+  cd libnftnl
+  git describe | sed 's/^libnftnl-//; s/-/.r/; s/-/./'
+}
+
+prepare() {
+  cd libnftnl
+  ./autogen.sh
+  ./configure --prefix=/usr
+}
+
+build() {
+  cd libnftnl
+  make
+}
+
+check() {
+  cd libnftnl
+  make check
+}
+
+package() {
+  cd libnftnl
+  make DESTDIR="$pkgdir" install
+}

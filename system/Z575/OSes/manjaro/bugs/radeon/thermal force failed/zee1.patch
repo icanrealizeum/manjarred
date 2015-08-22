@@ -1,0 +1,212 @@
+diff-ing dirs that supposedly reside in two different kernel tree sources
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/Documentation/dontdiff linux-3.16-rc6/Documentation/dontdiff
+--- linux-3.16-rc6.orig/Documentation/dontdiff	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/Documentation/dontdiff	2014-07-28 00:24:49.907076208 +0200
+@@ -258,3 +258,11 @@ wakeup.lds
+ zImage*
+ zconf.hash.c
+ zoffset.h
++vdso-image-32-int80.c
++vdso-image-32-syscall.c
++vdso-image-32-sysenter.c
++vdso-image-64.c
++devicetable-offsets.h
++asn1_compiler
++sortextable
++
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/acpi/blacklist.c linux-3.16-rc6/drivers/acpi/blacklist.c
+--- linux-3.16-rc6.orig/drivers/acpi/blacklist.c	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/drivers/acpi/blacklist.c	2014-07-25 07:16:22.000000000 +0200
+@@ -324,6 +324,61 @@ static struct dmi_system_id acpi_osi_dmi
+ 	},
+ 
+ 	/*
++	 * The following Lenovo models have a broken workaround in the
++	 * acpi_video backlight implementation to meet the Windows 8
++	 * requirement of 101 backlight levels. Reverting to pre-Win8
++	 * behavior fixes the problem.
++	 */
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad L430",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L430"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad T430s",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T430s"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad T530",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T530"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad W530",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad W530"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad X1 Carbon",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X1 Carbon"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad X230",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X230"),
++		},
++	},
++
++	/*
+ 	 * BIOS invocation of _OSI(Linux) is almost always a BIOS bug.
+ 	 * Linux ignores it, except for the machines enumerated below.
+ 	 */
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/acpi/utils.c linux-3.16-rc6/drivers/acpi/utils.c
+--- linux-3.16-rc6.orig/drivers/acpi/utils.c	2014-07-28 00:13:24.000000000 +0200
++++ linux-3.16-rc6/drivers/acpi/utils.c	2014-07-25 07:53:54.040767429 +0200
+@@ -288,7 +288,7 @@ acpi_evaluate_integer(acpi_handle handle
+ 
+ 	*data = element.integer.value;
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Return value [%llu]\n", *data));
++	ACPI_DEBUG_PRINT((ACPI_DB_DEBUG_OBJECT, "Return value [%llu]\n", *data));
+ 
+ 	return AE_OK;
+ }
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/gpu/drm/radeon/evergreen.c linux-3.16-rc6/drivers/gpu/drm/radeon/evergreen.c
+--- linux-3.16-rc6.orig/drivers/gpu/drm/radeon/evergreen.c	2014-07-28 00:13:24.000000000 +0200
++++ linux-3.16-rc6/drivers/gpu/drm/radeon/evergreen.c	2014-07-28 00:21:57.998110489 +0200
+@@ -5137,8 +5137,10 @@ restart_ih:
+ 		schedule_work(&rdev->hotplug_work);
+ 	if (queue_hdmi)
+ 		schedule_work(&rdev->audio_work);
+-	if (queue_thermal && rdev->pm.dpm_enabled)
++	if (rdev->pm.dpm_enabled) { //#emacs act as if in thermal mode
++			rdev->pm.dpm.thermal.high_to_low = false;
+ 		schedule_work(&rdev->pm.dpm.thermal.work);
++  }
+ 	rdev->ih.rptr = rptr;
+ 	WREG32(IH_RB_RPTR, rdev->ih.rptr);
+ 	atomic_set(&rdev->ih.lock, 0);
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/gpu/drm/radeon/radeon_pm.c linux-3.16-rc6/drivers/gpu/drm/radeon/radeon_pm.c
+--- linux-3.16-rc6.orig/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 00:13:24.000000000 +0200
++++ linux-3.16-rc6/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-27 23:59:38.520806483 +0200
+@@ -683,23 +683,35 @@ static void radeon_dpm_thermal_work_hand
+ 	/* switch to the thermal state */
+ 	enum radeon_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 
+-	if (!rdev->pm.dpm_enabled)
++	DRM_INFO("radeon: started radeon_dpm_thermal_work_handler\n");
++  printk("radeon_dpm_thermal_work_handler\n");
++
++	if (!rdev->pm.dpm_enabled) {
++	  DRM_INFO("radeon: byebyebabe\n");
++    printk("byebyebaby!\n");
+ 		return;
++  }
+ 
+-	if (rdev->asic->pm.get_temperature) {
+-		int temp = radeon_get_temperature(rdev);
++//	if (rdev->asic->pm.get_temperature) {
++//		int temp = radeon_get_temperature(rdev);
+ 
+-		if (temp < rdev->pm.dpm.thermal.min_temp)
++//		if (temp < rdev->pm.dpm.thermal.min_temp)
+ 			/* switch back the user state */
+-			dpm_state = rdev->pm.dpm.user_state;
+-	} else {
+-		if (rdev->pm.dpm.thermal.high_to_low)
++//			dpm_state = rdev->pm.dpm.user_state;
++//	} else {
++//		if (rdev->pm.dpm.thermal.high_to_low)
+ 			/* switch back the user state */
+-			dpm_state = rdev->pm.dpm.user_state;
+-	}
++//			dpm_state = rdev->pm.dpm.user_state;
++//	}
++
++	dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL; //always thermal state #emacs
++
+ 	mutex_lock(&rdev->pm.mutex);
+-	if (dpm_state == POWER_STATE_TYPE_INTERNAL_THERMAL)
++	if (dpm_state == POWER_STATE_TYPE_INTERNAL_THERMAL) {
++    printk("ok thermal active #emacs\n");
++	  DRM_INFO("radeon: okthermalactive\n");
+ 		rdev->pm.dpm.thermal_active = true;
++  }
+ 	else
+ 		rdev->pm.dpm.thermal_active = false;
+ 	rdev->pm.dpm.state = dpm_state;
+@@ -1236,7 +1248,9 @@ static int radeon_pm_init_dpm(struct rad
+ 	if (ret)
+ 		return ret;
+ 
++	DRM_INFO("radeon: before INIT_WORK\n");
+ 	INIT_WORK(&rdev->pm.dpm.thermal.work, radeon_dpm_thermal_work_handler);
++	DRM_INFO("radeon: after INIT_WORK\n");
+ 	mutex_lock(&rdev->pm.mutex);
+ 	radeon_dpm_init(rdev);
+ 	rdev->pm.dpm.current_ps = rdev->pm.dpm.requested_ps = rdev->pm.dpm.boot_ps;
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/platform/x86/thinkpad_acpi.c linux-3.16-rc6/drivers/platform/x86/thinkpad_acpi.c
+--- linux-3.16-rc6.orig/drivers/platform/x86/thinkpad_acpi.c	2014-07-28 00:13:25.000000000 +0200
++++ linux-3.16-rc6/drivers/platform/x86/thinkpad_acpi.c	2014-07-25 07:16:22.000000000 +0200
+@@ -5157,8 +5157,10 @@ static const char * const tpacpi_led_nam
+ 	"tpacpi::unknown_led2",
+ 	"tpacpi::unknown_led3",
+ 	"tpacpi::thinkvantage",
++	"tpacpi::unknown_led4",
++	"tpacpi::micmute",
+ };
+-#define TPACPI_SAFE_LEDS	0x1081U
++#define TPACPI_SAFE_LEDS	0x5081U
+ 
+ static inline bool tpacpi_is_led_restricted(const unsigned int led)
+ {
+@@ -5381,7 +5383,7 @@ static const struct tpacpi_quirk led_use
+ 	{ /* Lenovo */
+ 	  .vendor = PCI_VENDOR_ID_LENOVO,
+ 	  .bios = TPACPI_MATCH_ANY, .ec = TPACPI_MATCH_ANY,
+-	  .quirks = 0x1fffU,
++	  .quirks = 0x5fffU,
+ 	},
+ 	{ /* IBM ThinkPads with no EC version string */
+ 	  .vendor = PCI_VENDOR_ID_IBM,
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/Makefile linux-3.16-rc6/Makefile
+--- linux-3.16-rc6.orig/Makefile	2014-07-28 00:13:23.000000000 +0200
++++ linux-3.16-rc6/Makefile	2014-07-25 07:16:33.000000000 +0200
+@@ -1,7 +1,7 @@
+ VERSION = 3
+ PATCHLEVEL = 16
+ SUBLEVEL = 0
+-EXTRAVERSION = -rc6
++EXTRAVERSION = -1
+ NAME = Shuffling Zombie Juror
+ 
+ # *DOCUMENTATION*
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/scripts/depmod.sh linux-3.16-rc6/scripts/depmod.sh
+--- linux-3.16-rc6.orig/scripts/depmod.sh	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/scripts/depmod.sh	2014-07-25 07:16:33.000000000 +0200
+@@ -1,4 +1,5 @@
+ #!/bin/sh
++exit 0
+ #
+ # A depmod wrapper used by the toplevel Makefile
+ 

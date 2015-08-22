@@ -1,0 +1,61 @@
+---
+open source centre http://belkin.force.com/Articles/articles/en_US/FAQ/7276
+---
+
+additional needs on Manjaro (chat vbox version)
+
+sudo pacman -S dos2unix
+//not the 64bit one: sudo pacman -S libstdc++5
+sudo pacman -S multilib/lib32-libstdc++5
+
+
+-------------
+NEVERMIND the following(that is saying 32bit one isn't found, but i had 64bit one)
+apparently still can't find that lib:
+# ldd mksquashfs_lzma-3.2 
+  linux-gate.so.1 (0xf77b4000)
+  libz.so.1 => /usr/lib32/libz.so.1 (0xf7776000)
+  libpthread.so.0 => /usr/lib32/libpthread.so.0 (0xf7759000)
+  libstdc++.so.5 => not found
+  libgcc_s.so.1 => /usr/lib32/libgcc_s.so.1 (0xf773f000)
+  libc.so.6 => /usr/lib32/libc.so.6 (0xf7587000)
+  libm.so.6 => /usr/lib32/libm.so.6 (0xf7539000)
+  /lib/ld-linux.so.2 (0xf77b5000)
+
+
+but ldconfig -v -p
+reports it there just fine!
+
+but ofc, it's not found even on my own system(on which I already had that lib installed ages ago)
+$ ldd mksquashfs_lzma-3.2 
+  linux-gate.so.1 (0xf771c000)
+  libz.so.1 => /usr/lib32/libz.so.1 (0xf76d9000)
+  libpthread.so.0 => /usr/lib32/libpthread.so.0 (0xf76bc000)
+  libstdc++.so.5 => not found
+  libgcc_s.so.1 => /usr/lib32/libgcc_s.so.1 (0xf76a2000)
+  libc.so.6 => /usr/lib32/libc.so.6 (0xf74ea000)
+  libm.so.6 => /usr/lib32/libm.so.6 (0xf749c000)
+  /lib/ld-linux.so.2 (0xf771d000)
+
+
+==========================
+
+
+# grep -nir "heartbeat.belkin.com"
+Binary file romfs/bin/sysinit matches
+Binary file user/sysinit/sysinit matches
+
+--------------
+
+
+end result, and what we need to tftp:
+
+ls -la /tmp/1/Belkin_F5D8235-4_v2000_v2.01.07/images/firmware.bin
+-rw-r--r-- 1 root root 6381568 02.06.2015 11:57 /tmp/1/Belkin_F5D8235-4_v2000_v2.01.07/images/firmware.bin
+
+--------------
+
+open source centre http://belkin.force.com/Articles/articles/en_US/FAQ/7276
+
+--------
+

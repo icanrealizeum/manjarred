@@ -1,0 +1,39 @@
+mc + urxvt
+and my keypad keys: only these 3: +-*
+run mc
+press + on keypad
+notice it works
+turn on numlock
+press + again, notice it works
+turn off numlock
+type: ls
+press enter
+return from terminal by pressing enter again
+now pressing +
+gets stuck does nothing and it will eat the next 20 chars
+say type: a
+20 times
+and the 21st one is shown
+
+if i keep pressing only +-* (of the numpad) I keep getting like 1 character per 2 seconds like these: mmkjmkjjjmkjmmkjkkjm
+
+to fix:
+temporary fix: turn on numlock
+[the keys work regardless of numlock state(when they work normally)]
+less temporary fix: restart mc
+
+permanent fix: unknown?
+
+another temporary fix is to press enter after returning from shell, which makes +-* work again!
+also look in sourcecode for:
+ /*
+   * use Num_Lock to toggle Keypad on/off.  If Num_Lock is off, allow an
+   * escape sequence to toggle the Keypad.
+   *
+   * Always permit `shift' to override the current setting
+   */
+in command.C
+maybe there's something there related to that which causes this!
+
+
+also, this issue definitely doesn't happen with xfce4-terminal

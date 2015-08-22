@@ -1,0 +1,77 @@
+Module                  Size  Used by
+fuse                   75296  3 
+rts5139               309161  0 
+thinkpad_acpi          62029  0 
+nvram                   6042  1 thinkpad_acpi
+psmouse                88310  0 
+joydev                 10311  0 
+snd_hda_codec_realtek    42728  1 
+acer_wmi               24038  0 
+r8169                  58943  0 
+mii                     4259  1 r8169
+snd_hda_codec_hdmi     31425  1 
+snd_hda_intel          37896  4 
+i2c_piix4              10873  0 
+snd_hda_codec         151235  3 snd_hda_codec_realtek,snd_hda_codec_hdmi,snd_hda_intel
+snd_hwdep               6340  1 snd_hda_codec
+snd_pcm                77869  3 snd_hda_codec_hdmi,snd_hda_codec,snd_hda_intel
+evdev                  12112  9 
+snd_page_alloc          7242  2 snd_pcm,snd_hda_intel
+kvm_amd                52895  0 
+snd_timer              18726  1 snd_pcm
+kvm                   394947  1 kvm_amd
+i2c_core               25016  1 i2c_piix4
+serio_raw               5017  0 
+snd                    59653  16 snd_hda_codec_realtek,snd_hwdep,snd_timer,snd_hda_codec_hdmi,snd_pcm,snd_hda_codec,snd_hda_intel,thinkpad_acpi
+soundcore               5615  1 snd
+k10temp                 3186  0 
+shpchp                 25586  0 
+pcspkr                  2067  0 
+microcode              16965  0 
+thermal                 8628  0 
+wmi                     8483  1 acer_wmi
+ideapad_laptop         10065  0 
+sparse_keymap           3186  2 acer_wmi,ideapad_laptop
+rfkill                 15907  3 acer_wmi,ideapad_laptop,thinkpad_acpi
+battery                 7765  0 
+ac                      3428  0 
+nfs                   199253  0 
+lockd                  77838  1 nfs
+sunrpc                238068  2 nfs,lockd
+fscache                47476  1 nfs
+fglrx                8672384  110 
+amd_iommu_v2            7182  1 fglrx
+pci_stub                1389  1 
+video                  11356  1 acer_wmi
+vboxpci                14867  0 
+vboxnetflt             17636  0 
+button                  4837  1 fglrx
+acpi_cpufreq           10971  0 
+processor              25212  5 acpi_cpufreq
+vboxnetadp             18547  0 
+vboxdrv               275822  3 vboxnetadp,vboxnetflt,vboxpci
+xts                     3111  1 
+gf128mul                5898  1 xts
+hid_generic             1225  0 
+usbhid                 40833  0 
+hid                    91734  2 hid_generic,usbhid
+sd_mod                 30885  3 
+ahci                   23408  2 
+libahci                21610  1 ahci
+ohci_pci                4200  0 
+ehci_pci                4160  0 
+ohci_hcd               24097  1 ohci_pci
+ehci_hcd               60820  1 ehci_pci
+libata                171452  2 ahci,libahci
+usbcore               182805  6 rts5139,ohci_hcd,ohci_pci,ehci_hcd,ehci_pci,usbhid
+scsi_mod              132525  3 rts5139,libata,sd_mod
+usb_common              1720  1 usbcore
+sha512_generic          5304  0 
+sha256_generic         10052  0 
+aes_x86_64              7471  2 
+ext4                  486210  3 
+crc16                   1367  1 ext4
+mbcache                 6146  1 ext4
+jbd2                   86167  1 ext4
+dm_crypt               15055  1 
+dm_mod                 83121  10 dm_crypt

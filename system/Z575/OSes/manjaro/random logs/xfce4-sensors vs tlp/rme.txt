@@ -1,0 +1,30 @@
+just as I suspected, xfce4-sensors was started faster(2 sec) than tlp is able to load thinkpad_hwmon(which presumably adds battery charge sensor) and thus it doesn't show the battry monitor(because as far as it sees, there isn't any)
+
+but then again, it is I who logs in and startx manually, so if I do it slower then this issue doesn't happen; because for some reason login prompt is available sooner than whatever systemd is doing to start up things(including running tlp)
+
+anyway that printk uptime dmesg TRACE (see prev 2 commits) did confirm this
+
+
+--------
+hmmm, this is still weird though:
+[      27]TRACE[acpi.c:265] read_battery_zone(): enters read_battery_zone
+DBG[acpi.c:290] read_battery_zone(): filename=/sys/class/power_supply/BAT0/model_name
+
+at second 27 of uptime, but then:
+[   29.921994] systemd[1]: Started TLP system startup/shutdown.
+
+so xfce4-sensors was able to see the battery but still decided to not show it? because it's only showing the other 2 selected ones(cpu+mobo)
+ OR maybe the name changed due to thinkpad_hwmon  when tlp adds it 2 sec later?
+
+--------
+disabling tlp, rebooting,
+yep if tlp is disabled, xfce4-sensors works and doesn't drop the battery from the sensors, as it does when tlp is enabled and xfce4-sensors runs 2 sec before tlp starts(as described above)
+
+sooooooooo, whatever tlp does... it messes up xfce4-sensors
+
+starting tlp afterwards has no effect on running instance of xfce4-sensors; also restarting the latter has no effect
+
+-----------
+ok looks like it's the thinkpad reported fan which is always 0 (named fan1_always0), but that's the one that's adding an extra sensor via libsensors which makes xfce4-sensors count 4 instead of 5 and thus miss the last one which happens to be a different one: the battery charge sensor.
+
+

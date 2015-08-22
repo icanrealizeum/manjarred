@@ -1,0 +1,20 @@
+added patch to make sure fbcon is autoloaded and also cannot deselect it
+works with current .config
+
+====
+more exact info about this:
+when CONFIG_EXPERT is set (=y) then fbcon module is not loaded automatically! when it's not set then it is(loaded automatically)!
+the code doing that is here: https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/drm_fb_helper.c?id=refs/tags/v3.16-rc7#n1657
+
+so with CONFIG_EXPERT set, you have to make sure you manually load fbcon before startx or else you end up with black screen for the entire session and consoles won't be available either
+
+
+
+===============
+CONFIG_EXPERT allows deselecting CONFIG_FRAMEBUFFER_CONSOLE which is actually required!
+this was why I was getting black screens, I think
+
+thanks to airlied for opening my eyes (#radeon on freenode)
+also thanks to MrCooper who said that I need fbcon, but I wasn't ready to hear it at that time.
+
+\

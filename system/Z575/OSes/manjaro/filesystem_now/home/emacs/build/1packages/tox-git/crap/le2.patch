@@ -1,0 +1,28 @@
+diff --git a/toxav/rtp.c b/toxav/rtp.c
+index ccac756..f7700f1 100644
+--- a/toxav/rtp.c
++++ b/toxav/rtp.c
+@@ -433,6 +433,7 @@ int rtp_send_msg ( RTPSession *session, Messenger *messenger, const uint8_t *dat
+     if ( 0 !=  ret) {
+         LOGGER_WARNING("Failed to send full packet (len: %d)! error: %i", length, ret);
+         rtp_free_msg ( session, msg );
++        fprintf(stderr,"!! meh\n");
+         return rtp_ErrorSending;
+     }
+ 
+diff --git a/toxav/toxav.c b/toxav/toxav.c
+index a51ec5e..36bc9be 100644
+--- a/toxav/toxav.c
++++ b/toxav/toxav.c
+@@ -434,8 +434,10 @@ static int toxav_send_rtp_payload(ToxAv *av,
+         for (i = 0; i < parts; i++) {
+             iter = cs_get_split_video_frame(call->cs, &part_size);
+ 
+-            if (rtp_send_msg(call->crtps[video_index], av->messenger, iter, part_size) < 0)
++            if (rtp_send_msg(call->crtps[video_index], av->messenger, iter, part_size) < 0) {
++                fprintf(stderr,"!! meh11111\n");
+                 return av_ErrorSendingPayload;
++            }
+         }
+ 
+         return av_ErrorNone;

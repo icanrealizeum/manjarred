@@ -1,0 +1,101 @@
+Patch for pacman to not clear git folder before rebuilding
+source: https://mailman.archlinux.org/pipermail/pacman-dev/2013-September/017874.html
+diff -upr5 a/scripts/makepkg.sh.in b/scripts/makepkg.sh.in
+--- a/scripts/makepkg.sh.in	2014-08-27 00:09:48.000000000 +0200
++++ b/scripts/makepkg.sh.in	2014-08-27 01:20:42.595092485 +0200
+@@ -66,10 +66,11 @@ CLEANBUILD=0
+ CLEANUP=0
+ DEP_BIN=0
+ FORCE=0
+ GENINTEG=0
+ HOLDVER=0
++VCSINCREMENTAL=0
+ IGNOREARCH=0
+ INFAKEROOT=0
+ INSTALL=0
+ LOGGING=0
+ NEEDED=0
+@@ -579,17 +580,32 @@ extract_git() {
+ 	local dir=$(get_filepath "$netfile")
+ 	[[ -z "$dir" ]] && dir="$SRCDEST/$(get_filename "$netfile")"
+ 
+ 	msg2 "$(gettext "Creating working copy of %s %s repo...")" "${repo}" "git"
+ 	pushd "$srcdir" &>/dev/null
+-	rm -rf "${dir##*/}"
++#	rm -rf "${dir##*/}"
++
++#	if ! git clone "$dir"; then
++#		error "$(gettext "Failure while creating working copy of %s %s repo")" "${repo}" "git"
++#		plain "$(gettext "Aborting...")"
++#		exit 1
++local ledir001abc="${dir##*/}"
++if [[ VCSINCREMENTAL -ne 0 && -d "${ledir001abc}" ]]; then
++	pushd $(pwd) &>/dev/null
++	cd_safe "${ledir001abc}"
++	git pull
++	popd &>/dev/null
++else
++	plain "$(gettext "removing folder %s")" "${ledir001abc}"
++	rm -rf "${ledir001abc}"
+ 
+ 	if ! git clone "$dir"; then
+ 		error "$(gettext "Failure while creating working copy of %s %s repo")" "${repo}" "git"
+ 		plain "$(gettext "Aborting...")"
+ 		exit 1
+ 	fi
++fi
+ 
+ 	cd_safe "${dir##*/}"
+ 
+ 	local ref
+ 	if [[ -n $fragment ]]; then
+@@ -606,11 +622,11 @@ extract_git() {
+ 				exit 1
+ 		esac
+ 	fi
+ 
+ 	if [[ -n $ref ]]; then
+-		if ! git checkout -b makepkg $ref; then
++		if ! git checkout -B makepkg $ref; then
+ 			error "$(gettext "Failure while creating working copy of %s %s repo")" "${repo}" "git"
+ 			plain "$(gettext "Aborting...")"
+ 			exit 1
+ 		fi
+ 	fi
+@@ -2919,10 +2935,11 @@ usage() {
+ 	printf -- "$(gettext "  -V, --version    Show version information and exit")\n"
+ 	printf -- "$(gettext "  --allsource      Generate a source-only tarball including downloaded sources")\n"
+ 	printf -- "$(gettext "  --check          Run the %s function in the %s")\n" "check()" "$BUILDSCRIPT"
+ 	printf -- "$(gettext "  --config <file>  Use an alternate config file (instead of '%s')")\n" "$confdir/makepkg.conf"
+ 	printf -- "$(gettext "  --holdver        Do not update VCS sources")\n"
++	printf -- "$(gettext "  --incremental    Incremental build with VCS sources (only updates build dir)")\n"
+ 	printf -- "$(gettext "  --key <key>      Specify a key to use for %s signing instead of the default")\n" "gpg"
+ 	printf -- "$(gettext "  --noarchive      Do not create package archive")\n"
+ 	printf -- "$(gettext "  --nocheck        Do not run the %s function in the %s")\n" "check()" "$BUILDSCRIPT"
+ 	printf -- "$(gettext "  --noprepare      Do not run the %s function in the %s")\n" "prepare()" "$BUILDSCRIPT"
+ 	printf -- "$(gettext "  --nosign         Do not create a signature for the package")\n"
+@@ -2968,11 +2985,11 @@ fi
+ ARGLIST=("$@")
+ 
+ # Parse Command Line Options.
+ OPT_SHORT="AcCdefFghiLmop:rRsSV"
+ OPT_LONG=('allsource' 'check' 'clean' 'cleanbuild' 'config:' 'force' 'geninteg'
+-          'help' 'holdver' 'ignorearch' 'install' 'key:' 'log' 'noarchive' 'nobuild'
++          'help' 'holdver' 'incremental' 'ignorearch' 'install' 'key:' 'log' 'noarchive' 'nobuild'
+           'nocolor' 'nocheck' 'nodeps' 'noextract' 'noprepare' 'nosign' 'pkg:' 'repackage'
+           'rmdeps' 'sign' 'skipchecksums' 'skipinteg' 'skippgpcheck' 'source' 'syncdeps'
+           'verifysource' 'version')
+ 
+ # Pacman Options
+@@ -3003,10 +3020,11 @@ while true; do
+ 		-e|--noextract)   NOEXTRACT=1 ;;
+ 		-f|--force)       FORCE=1 ;;
+ 		-F)               INFAKEROOT=1 ;;
+ 		-g|--geninteg)    GENINTEG=1 ;;
+ 		--holdver)        HOLDVER=1 ;;
++		--incremental)    VCSINCREMENTAL=1 ;;
+ 		-i|--install)     INSTALL=1 ;;
+ 		--key)            shift; GPGKEY=$1 ;;
+ 		-L|--log)         LOGGING=1 ;;
+ 		-m|--nocolor)     USE_COLOR='n'; PACMAN_OPTS+=" --color never" ;;
+ 		--noarchive)      NOARCHIVE=1 ;;

@@ -1,0 +1,14 @@
+workaround:
+systemctl enable temp-links-catalyst
+systemctl start temp-links-catalyst
+
+[2014-06-10 11:36] [ALPM-SCRIPTLET] There's a bug in fglrx found by lano1106 which generates
+[2014-06-10 11:36] [ALPM-SCRIPTLET] great amount of unneeded I/O operations
+[2014-06-10 11:36] [ALPM-SCRIPTLET]
+[2014-06-10 11:36] [ALPM-SCRIPTLET] To activate workaround enable systemd service:
+[2014-06-10 11:36] [ALPM-SCRIPTLET] systemctl enable temp-links-catalyst
+[2014-06-10 11:36] [ALPM-SCRIPTLET] systemctl start temp-links-catalyst
+[2014-06-10 11:36] [ALPM-SCRIPTLET]
+[2014-06-10 11:36] [ALPM-SCRIPTLET] More infos:
+[2014-06-10 11:36] [ALPM-SCRIPTLET] https://bbs.archlinux.org/viewtopic.php?pid=1279977#p1279977
+[2014-06-10 11:36] [ALPM-SCRIPTLET] https://bbs.archlinux.org/viewtopic.php?pid=1280193#p1280193

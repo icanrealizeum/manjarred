@@ -1,0 +1,102 @@
+# Maintainer: Kevin MacMartin <prurigro at gmail dot com>
+# Contributor: Boohbah <boohbah at gmail.com>
+# Contributor: naxuroqa <naxuroqa at gmail.com>
+
+_pkgname=tox
+pkgname=$_pkgname-git
+pkgver=r3428.1266347
+pkgrel=1
+pkgdesc='Secure, configuration-free, P2P Skype replacement backend'
+arch=('i686' 'x86_64' 'armv6h' 'armv7h')
+url='https://tox.im'
+license=('GPL3')
+depends=(
+  'libsodium'
+  'opus'
+  'libvpx'
+  'libconfig'
+  'openal-soft-tox'
+)
+makedepends=('git' 'check')
+optdepends=('qtox-git: qt-based frontend'
+            'utox-git: lightweight tox client'
+            'toxic-git: ncurses-based frontend')
+conflicts=("$_pkgname")
+provides=("$_pkgname")
+replaces=("$_pkgname")
+patch1='noipv6.patch'
+patch2='useripv4localhost.patch'
+patch3='notcplisten.patch'
+patch4='listenonlocalwhenutox.patch'
+patch5='newport.patch'
+patch6='notcpconntonodes.patch'
+source=("$_pkgname::git+https://github.com/irungentoo/toxcore.git"
+
+"$patch1"
+"$patch2"
+"$patch3"
+"$patch4"
+"$patch5"
+"$patch6"
+)
+sha512sums=('SKIP'
+            '201b1d6183c2a524a85aa435b719c5ddfc70cc150ea01ac4190e47385625d1c502ac9463e302a6811a6940a2642860486d3e86844a899a2d5baa2b10d361036c'
+            '75040d2d03eaa1a891e2c2ca4b3e77b78c21ac3b80e9e31b1f7122be94990bfe46dd975cad7f796194bedc330e223396e54176070b59cb3610319c172bbdb769'
+            'c9e477c88849e4176e591bf9bfa8bf3b07b5aeac4256ae20e0e5581c6dff65b937766eac8f2d9c1de2655b0a4abd5bd94527ba901bbfaafe756138703b2d8179'
+            '2e48f26a6a1c3a2f8ba1f25dcc80dc4c878d27d580c192851ad8d10c38194190bd86b911b70b0b2d6a2c6f290cee855084565251fde8dfdfc8c95dc71e35b3dd'
+            '6140b1a6c79ca972b5f9815fef6e5d22217dad05e3180154715cd45b507d5d9ec2bfb7f93eddc9398e0067973b52362c2e754348312222c165cedea30314f288'
+            'd3f528e21893d37d5db66cb8a08aa33939349f10c8eaf57471ed490d792506f61839c4f754575c816097e6a87adc89a7b5031e9d9c9019e9a9f9459d21dc0371')
+
+pkgver() {
+  cd $_pkgname
+  printf 'r%s.%s' "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  cd "$_pkgname"
+
+  patch -Np1 -i "../${patch1}"
+  patch -Np1 -i "../${patch2}"
+  patch -Np1 -i "../${patch3}"
+  patch -Np1 -i "../${patch4}"
+  patch -Np1 -i "../${patch5}"
+  patch -Np1 -i "../${patch6}"
+
+  ./autogen.sh
+  ./configure \
+    --prefix=/usr \
+    --enable-daemon \
+    --disable-ntox \
+    --disable-tests \
+  --enable-log \
+  --disable-daemon \
+  --with-log-level=TRACE \
+  --with-log-path=/tmp
+}
+
+
+build() {
+  cd "$_pkgname"
+
+  #gentoo version fixed stuck here:
+#  git checkout .
+#  git checkout 4ad76497881ee2a623acdedcf0ac10406208b716
+#last good build(on manjaro): b2350f2e26e4fd2c1e9627680663170d94b6d0b8
+#known to work with whatever the last good build was on gentoo
+
+#ok this commit for 0.3.2 works ok 12663475bcd06a11fc6ecbec9ceb6138ad322dc4
+
+
+  make
+}
+
+check() {
+  cd $_pkgname
+  make check
+}
+
+package() {
+  cd $_pkgname
+  make DESTDIR="$pkgdir" install
+  install -Dm644 ./other/bootstrap_daemon/tox-bootstrapd.service "$pkgdir/usr/lib/systemd/system/tox-bootstrapd.service"
+}

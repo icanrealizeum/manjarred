@@ -1,0 +1,39 @@
+reported as 2 comments to this bug:
+https://code.google.com/p/chromium/issues/detail?id=136054#c84
+-------
+this page:
+
+coostomhuston 3754a7ec227f5c327bec280d83d6cd374e5025c3/system/lenovo%20z575/OS/manjaro/bugs/kernel/3.15.3/general%20protection%20fault%20due%20to%20dkms%20not%20building%20vboxdrv/.config3%20still%20oopsing%20but%20only%20with%20dkms%20vbox%20drivers%20ofc
+
+fails to render like this:
+
+after mousewheel scroll down:
+https://i.imgur.com/rvSZ0Le.png
+
+when switching from another tab:
+https://i.imgur.com/u47yf6t.png
+
+chrome://version
+
+
+The Chromium Authors
+Copyright 2014 The Chromium Authors. All rights reserved.
+Chromium	38.0.2114.2 (Developer Build 287444) 
+OS	Linux 
+Blink	537.36 (@179495)
+JavaScript	V8 3.28.54
+Flash	(Disabled)
+User Agent	Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2114.2 Safari/537.36
+Command Line	/usr/lib/chromium-dev/chromium-dev --disk-cache-dir=/tmp/chromiumcache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83 --disk-cache-dir=/tmp/chromiumcache --disable-sync-preferences --disable-plugins --cipher-suite-blacklist=0x0001,0x0002,0x0004,0x0005,0x0017,0x0018,0xc002,0xc007,0xc00c,0xc011,0xc016,0xff80,0xff81,0xff82,0xff83 --flag-switches-begin --disable-device-discovery-notifications --disable-device-discovery --no-pings --disable-ntp-other-sessions-menu --disable-touch-adjustment --disable-webgl --enable-async-dns --enable-download-resumption --disable-new-profile-management --enable-offline-auto-reload-visible-only --enable-offline-load-stale-cache --disable-password-generation --disable-permissions-bubbles --disable-pinch-virtual-viewport --disable-pinch --disable-quic --disable-save-password-bubble --disable-session-crashed-bubble --disable-sync-app-list --disable-sync-synced-notifications --enable-tcp-fastopen --disable-touch-editing --disable-zero-copy --enable-accelerated-overflow-scroll --ignore-gpu-blacklist --enable-impl-side-painting --enable-lcd-text --malware-interstitial-v3-history --num-raster-threads=4 --disable-origin-chip --disable-overlay-scrollbar --enable-search-button-in-omnibox-always --enable-spelling-auto-correct --ssl-interstitial-v2-yellow --touch-events=disabled --wallet-service-use-sandbox=0 --flag-switches-end
+Executable Path	/usr/lib/chromium-dev/chromium-dev
+Profile Path	/home/emacs/.config/chromium-dev/Default
+Variations	24dca50e-c4e4c5f
+ca65a9fe-91ac3782
+5e29d81-cf4f6ead
+246fb659-5c63917a
+f296190c-72d8285f
+4442aae2-d7f6b13c
+ed1d377-e1cc0f14
+75f0f0a0-4ad60575
+e2b18481-75cb33fc
+e7e71889-4ad60575

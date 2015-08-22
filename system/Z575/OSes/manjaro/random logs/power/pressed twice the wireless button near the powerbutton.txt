@@ -1,0 +1,71 @@
+pressing:
+
+[ 2204.082126] <intr> acpi:advance_transaction:414: ACPI : EC: ===== IRQ (3) =====
+[ 2204.082153] <intr> acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x28 SCI_EVT=1 BURST=0 CMD=1 IBF=0 OBF=0
+[ 2204.082160] <intr> acpi:acpi_ec_submit_query:382: ACPI : EC: ***** Event started *****
+[ 2204.082244] [24680] acpi:acpi_ec_transaction_unlocked:549: ACPI : EC: 2: Increase command
+[ 2204.082261] [24680] acpi:acpi_ec_transaction_unlocked:552: ACPI : EC: ***** Command(QR_EC) started *****
+[ 2204.082268] [24680] acpi:advance_transaction:414: ACPI : EC: ===== TASK (3) =====
+[ 2204.082280] [24680] acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x28 SCI_EVT=1 BURST=0 CMD=1 IBF=0 OBF=0
+[ 2204.082287] [24680] acpi:acpi_ec_write_cmd:228: ACPI : EC: EC_SC(W) = 0x84
+[ 2204.082294] [24680] acpi:acpi_ec_complete_query:391: ACPI : EC: ***** Event stopped *****
+[ 2204.082300] [24680] acpi:acpi_ec_submit_query:382: ACPI : EC: ***** Event started *****
+[ 2204.082952] <intr> acpi:advance_transaction:414: ACPI : EC: ===== IRQ (2) =====
+[ 2204.082977] <intr> acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x09 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=1
+[ 2204.082987] <intr> acpi:acpi_ec_read_data:222: ACPI : EC: EC_DATA(R) = 0x29
+[ 2204.082993] <intr> acpi:advance_transaction:438: ACPI : EC: ***** Command(QR_EC) hardware completion *****
+[ 2204.083802] [24680] acpi:acpi_ec_transaction_unlocked:559: ACPI : EC: ***** Command(QR_EC) stopped *****
+[ 2204.083817] [24680] acpi:acpi_ec_transaction_unlocked:563: ACPI : EC: 1: Decrease command
+[ 2204.083826] [24680] acpi:acpi_ec_query:913: ACPI : EC: ##### Query(0x29) scheduled #####
+[ 2204.083846] [24680] acpi:acpi_ec_transaction_unlocked:549: ACPI : EC: 2: Increase command
+[ 2204.083852] [24680] acpi:acpi_ec_transaction_unlocked:552: ACPI : EC: ***** Command(QR_EC) started *****
+[ 2204.083859] [24680] acpi:advance_transaction:414: ACPI : EC: ===== TASK (3) =====
+[ 2204.083923] [24680] acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x08 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=0
+[ 2204.083931] [24680] acpi:acpi_ec_write_cmd:228: ACPI : EC: EC_SC(W) = 0x84
+[ 2204.083942] [24680] acpi:acpi_ec_complete_query:391: ACPI : EC: ***** Event stopped *****
+[ 2204.084152] [28802] acpi:acpi_ec_run:875: ACPI : EC: ##### Query(0x29) started #####
+[ 2204.084366] [28802] acpi:acpi_ec_run:880: ACPI : EC: ##### Query(0x29) stopped #####
+[ 2204.084794] <intr> acpi:advance_transaction:414: ACPI : EC: ===== IRQ (3) =====
+[ 2204.084817] <intr> acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x09 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=1
+[ 2204.084825] <intr> acpi:acpi_ec_read_data:222: ACPI : EC: EC_DATA(R) = 0x00
+[ 2204.084830] <intr> acpi:advance_transaction:438: ACPI : EC: ***** Command(QR_EC) hardware completion *****
+[ 2204.084879] [24680] acpi:acpi_ec_transaction_unlocked:559: ACPI : EC: ***** Command(QR_EC) stopped *****
+[ 2204.084885] [24680] acpi:acpi_ec_transaction_unlocked:563: ACPI : EC: 1: Decrease command
+
+
+pressing again:
+[ 2218.352656] <intr> acpi:advance_transaction:414: ACPI : EC: ===== IRQ (3) =====
+[ 2218.352683] <intr> acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x28 SCI_EVT=1 BURST=0 CMD=1 IBF=0 OBF=0
+[ 2218.352690] <intr> acpi:acpi_ec_submit_query:382: ACPI : EC: ***** Event started *****
+[ 2218.352770] [24680] acpi:acpi_ec_transaction_unlocked:549: ACPI : EC: 2: Increase command
+[ 2218.352777] [24680] acpi:acpi_ec_transaction_unlocked:552: ACPI : EC: ***** Command(QR_EC) started *****
+[ 2218.352784] [24680] acpi:advance_transaction:414: ACPI : EC: ===== TASK (3) =====
+[ 2218.352808] [24680] acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x28 SCI_EVT=1 BURST=0 CMD=1 IBF=0 OBF=0
+[ 2218.352814] [24680] acpi:acpi_ec_write_cmd:228: ACPI : EC: EC_SC(W) = 0x84
+[ 2218.352822] [24680] acpi:acpi_ec_complete_query:391: ACPI : EC: ***** Event stopped *****
+[ 2218.352828] [24680] acpi:acpi_ec_submit_query:382: ACPI : EC: ***** Event started *****
+[ 2218.353504] <intr> acpi:advance_transaction:414: ACPI : EC: ===== IRQ (3) =====
+[ 2218.353526] <intr> acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x09 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=1
+[ 2218.353534] <intr> acpi:acpi_ec_read_data:222: ACPI : EC: EC_DATA(R) = 0x29
+[ 2218.353539] <intr> acpi:advance_transaction:438: ACPI : EC: ***** Command(QR_EC) hardware completion *****
+[ 2218.353745] [24680] acpi:acpi_ec_transaction_unlocked:559: ACPI : EC: ***** Command(QR_EC) stopped *****
+[ 2218.353752] [24680] acpi:acpi_ec_transaction_unlocked:563: ACPI : EC: 1: Decrease command
+[ 2218.353760] [24680] acpi:acpi_ec_query:913: ACPI : EC: ##### Query(0x29) scheduled #####
+[ 2218.353778] [24680] acpi:acpi_ec_transaction_unlocked:549: ACPI : EC: 2: Increase command
+[ 2218.353784] [24680] acpi:acpi_ec_transaction_unlocked:552: ACPI : EC: ***** Command(QR_EC) started *****
+[ 2218.353791] [24680] acpi:advance_transaction:414: ACPI : EC: ===== TASK (3) =====
+[ 2218.353852] [24680] acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x08 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=0
+[ 2218.353857] [24680] acpi:acpi_ec_write_cmd:228: ACPI : EC: EC_SC(W) = 0x84
+[ 2218.353865] [24680] acpi:acpi_ec_complete_query:391: ACPI : EC: ***** Event stopped *****
+[ 2218.354394] [28802] acpi:acpi_ec_run:875: ACPI : EC: ##### Query(0x29) started #####
+[ 2218.354593] [28802] acpi:acpi_ec_run:880: ACPI : EC: ##### Query(0x29) stopped #####
+[ 2218.355327] <intr> acpi:advance_transaction:414: ACPI : EC: ===== IRQ (3) =====
+[ 2218.355349] <intr> acpi:acpi_ec_read_status:213: ACPI : EC: EC_SC(R) = 0x09 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=1
+[ 2218.355358] <intr> acpi:acpi_ec_read_data:222: ACPI : EC: EC_DATA(R) = 0x00
+[ 2218.355363] <intr> acpi:advance_transaction:438: ACPI : EC: ***** Command(QR_EC) hardware completion *****
+[ 2218.355432] [24680] acpi:acpi_ec_transaction_unlocked:559: ACPI : EC: ***** Command(QR_EC) stopped *****
+[ 2218.355438] [24680] acpi:acpi_ec_transaction_unlocked:563: ACPI : EC: 1: Decrease command
+
+
+
+

@@ -1,0 +1,23 @@
+go in kernel config and unset that option which disables crypto tests
+and notice that on boot it can't boot because some crypto fails
+but this crypto is not used for me
+
+but because testing it fails... it makes me unable to boot/mount the crypt device
+
+the line is printed from:
+linux315/src/linux-3.15/crypto/testmgr.c
+pr_err("alg: skcipher%s: %s failed on test %d for %s: ret=%d\n",
+                                       d, e, j, algo, -ret);
+
+but this is not where the error is....
+
+actually disabling CONFIG_CRYPTO_DEV_CCP , passes all tests i guess, with this:
+[    0.489067] alg: No test for stdrng (krng)
+
+that is: Support for AMD Cryptographic Coprocessor 
+
+but previously has all these on:
+[*]   Support for AMD Cryptographic Coprocessor
+<*>     Cryptographic Coprocessor device driver
+<*>       Encryption and hashing acceleration support
+

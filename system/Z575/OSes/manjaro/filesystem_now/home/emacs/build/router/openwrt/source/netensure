@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if ! ip addr|grep -i net0|grep -q UP; then
+  echo "net is probably down"
+  exit 1
+fi
+
+if ! ip addr|grep -qi "2.123"; then
+  echo "adding IPs"
+
+#make sure the proper IPs are in place for uboot tftp
+sudo ip addr add 192.168.2.123/24 brd 192.168.2.255 dev net0
+#these ^ can be changed just by changing uboot input parameters when prompted (they get saved to flash, which means 64KB erase then write will happen)
+
+#and for openwrt failsafe
+sudo ip addr add 192.168.1.2/24 brd 192.168.1.255 dev net0
+#cannot yet be changed ^
+
+else
+  echo "IPs were already added, doing nothing"
+fi
+
+

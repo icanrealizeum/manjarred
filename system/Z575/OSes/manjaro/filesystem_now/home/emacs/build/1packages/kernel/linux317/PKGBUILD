@@ -1,0 +1,426 @@
+# Based on the file created for Arch Linux by:
+# Tobias Powalowski <tpowa@archlinux.org>
+# Thomas Baechler <thomas@archlinux.org>
+# Based on the file modified for Manjaro Linux by:
+# Philip Müller <philm@manjaro.org>
+# Guinux <guillaume@manjaro.org>
+#
+# originally from: https://github.com/manjaro/packages-core/blob/77c5092233f6fedf22a20fb4073d2ada68af4967/linux316/PKGBUILD
+#
+# Maintainer: EmanueL Czirai
+# modified for my own needs
+
+#changing this requires changing function names also!
+_basekernel="3.17"
+_baseline="3.16"
+_basever="${_basekernel/./}"
+pkgbase="linux${_basever}"
+#pkgname=('linux316' 'linux316-headers') #<- old and bad for fglrx!
+#fixing install order so that compiling fglrx doesn't fail the first time!
+pkgname=("${pkgbase}-headers" "$pkgbase")
+_rc="rc7"
+#_rc=""
+_kernelname="MANJAROed"
+pkgver=${_basekernel}${_rc}
+pkgverdash=${_basekernel}
+if [ -n "${_rc}" ]; then
+	pkgverdash+="-${_rc}"
+fi
+fullkname="${pkgverdash}-${_kernelname}"
+lfoldername="linux-${pkgverdash}"
+pkgrel="1"
+arch=('x86_64')
+#arch inside kernel folder (don't change!):
+KARCH="x86"
+url="http://www.kernel.org/"
+license=('GPL2')
+makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc')
+options=('!strip')
+_patchname="patch-${pkgverdash}"
+_patchfnext=".xz"
+_urllocation="http://www.kernel.org/pub/linux/kernel/v3.x/"
+_fullpatchname="${_urllocation}"
+if [ -n "${_rc}" ]; then
+	_fullpatchname+="testing/"
+fi
+_fullpatchname+="${_patchname}"
+_signext=".sign"
+_fullpatchnamesignature="${_fullpatchname}${_signext}"
+_fullpatchname+="${_patchfnext}"
+
+_p1name=acpi_no_spam_when_read_sensors.patch
+_p2name=dontdiff_update.patch
+_p3name=radeon_thermal.patch
+_p4name=prevent_blackscreen_due_to_lacking_fbcon.patch
+_p5name=increase_scrollback_buffer_size_from_1024_to_4096_or_kernel_page_size.patch
+_p6name=persistent_scrollback_buffer.patch
+
+presetfile="${pkgbase}.preset"
+installfile="${pkgbase}.install"
+
+#TODO: use rsync to copy files into wherever, to avoid useless writes ie. in packages/  search for "install" in the current file
+
+#avoid making compressed packages? aka faster
+PKGEXT='.pkg.tar'
+#or the default(from /etc/makepkg.conf), make compressed packages:
+#PKGEXT='.pkg.tar.xz'
+
+source=(
+				"${_urllocation}/linux-${_baseline}.tar.xz"
+				"${_fullpatchname}"
+				#append an underscore to the name to prevent makepkg from checking pgp signature itself - which will fail because the signature is against decompressed .xz
+				"${_patchname}${_signext}_::${_fullpatchnamesignature}"
+				"linux-${_baseline}.tar${_signext}_::${_urllocation}/linux-${_baseline}.tar${_signext}"
+
+        # standard config files for mkinitcpio ramdisk
+        "config.x86_64"
+        "${presetfile}"
+				"${installfile}"
+
+        '1700_enable-thinkpad-micled.patch::http://sources.gentoo.org/cgi-bin/viewvc.cgi/linux-patches/genpatches-2.6/trunk/3.15/1700_enable-thinkpad-micled.patch'
+
+        "${_p1name}"
+        "${_p2name}"
+        "${_p3name}"
+        "${_p4name}"
+        "${_p5name}"
+        "${_p6name}"
+)
+#run updpksums to automatically update these
+#src: https://wiki.archlinux.org/index.php/makepkg#Generate_new_checksums
+#problem is that it kill my spacing! those horizontal lines also
+sha512sums=(
+						'64033e741d3f42ed06010e63e69d66e1d3d9414ef20f76834508878d4218b72619541a18ef4fd377204af2859e52198310998109b20ed9b67722586b28c9a231'
+            '951884bf7965970c44a97ebaaafd088bee6168515e40a1373ba3c0357ea7d6dd686a48301efcee5463fae9d7460d2bc060fb6e20644ec9cb383742059d17550d'
+
+            'SKIP'
+            'SKIP'
+
+            '43a8e23ee589b3f41053739f50751ab7a9958f87f22064e800ded92f6c963e5731192480df306e86187706758a355dda8957a2656fc0f833d68cbdb7d211946f'
+            '7571ea344dbff1ac0e5680b0a13477f13d3372947f98dc07e610c854612cea66309108c20a23855a7a0240303317f35fd9a59ba95d46f6d484bbdb7283b3929e'
+            '110247b010e349a4e76dd0aee671f8e19b3e5faab07a169eeff78cd91e201ed9fa2e81f3adf8f6f763bb8b68c905c0b5497aadca9d649973876b897a60ef4f22'
+#
+            'bb62d66a95e2d27378433d0f9c2fc7943bbcd655a89952fc25ef28d5796b8d65ca6c9c48bc70d40d71daada20707b266f781f57ba71950009b32cb6d58e155d0'
+# comment
+            '37165798bf8cef81ddb8caa02c7775d28e8ae01c9c90720d1886061385f86663806b4f3ab61cf65187b1b0c5d2bfab20305455eec93c3eecb035d5aebf2a518c'
+            '0cc382d790076c5c0abffd6e7643697f69bbf57f175eb2694f80dd800e1cb9eb03d086c46ba64025a8be1c4223caf7c1d6292ae856d21cd76975f2f47c62f722'
+            'e77667ed4cf72cd155da524e2d04750fa2c3ffa2192cd0ddff4c1b89ccfccfaf1f11182837507069f66325b20be4bb5e5579235c78262cec3abd106b225f63b9'
+            '241d8481d0dbaa465293f8a31e7661b5943c27c90378642ffa820c8608c2f6b4b40b388f8518b72b4abe5229199b9bc11493ab79181e9e74f70ee999b79c5172'
+            '38718c7ffddedcdedc52fa07eb5686e7d4841b4c6fed8cd18e899015b3bb672e5acd4aea4c20be88b8abce3cc2adb14c34f5374c99f6f7197178528e7af52e8c'
+            '2a197b5b9c297e37cf631f9273dfbdd0e1b6e6d42517977246afabbb010d6c58b6a8705ecb09af47727121c166cab67e72212d24ddfe6333e5a983f28d0a5501')
+
+prepare() {
+  dest1="${srcdir}/${lfoldername}"
+
+  if [ -d ${dest1} ]; then
+    #backup previous existing one
+    mv -v ${dest1} $(mktemp -d --tmpdir="${srcdir}" linux-${pkgverdash}.previousXXXXXXXX )
+  fi
+
+  #rename
+  mv -vT "${srcdir}/linux-${_baseline}/" ${dest1}
+  cd ${dest1}
+
+  #emacs
+  time make mrproper
+
+  # add upstream patch
+  patch -p1 -i "${srcdir}/${_patchname}"
+
+  # add latest fixes from stable queue, if needed
+  # http://git.kernel.org/?p=linux/kernel/git/stable/stable-queue.git
+  # enable only if you have "gen-stable-queue-patch.sh" executed before
+  #patch -Np1 -i "${srcdir}/prepatch-${_basekernel}`date +%Y%m%d`"
+
+
+  # add Gentoo patches
+  patch -Np1 -i "${srcdir}/1700_enable-thinkpad-micled.patch"
+
+
+  # add my patches
+  patch -p1 -i "${srcdir}/${_p1name}"
+  patch -p1 -i "${srcdir}/${_p2name}"
+  patch -p1 -i "${srcdir}/${_p3name}"
+  patch -p1 -i "${srcdir}/${_p4name}"
+  patch -p1 -i "${srcdir}/${_p5name}"
+  patch -p1 -i "${srcdir}/${_p6name}"
+
+#emacs
+#time make nconfig
+
+  if [ "${CARCH}" = "x86_64" ]; then
+    cat "${srcdir}/config.x86_64" > ./.config
+  else
+    echo "unhandled case when not 64bit"
+    exit 1
+    #cat "${srcdir}/config" > ./.config
+  fi
+
+
+  if [ "${_kernelname}" != "" ]; then
+    sed -i "s|CONFIG_LOCALVERSION=.*|CONFIG_LOCALVERSION=\"-${_kernelname}\"|g" ./.config
+    sed -i "s|CONFIG_LOCALVERSION_AUTO=.*|CONFIG_LOCALVERSION_AUTO=n|" ./.config
+  fi
+
+  # set extraversion to pkgrel - NOPE! rc7 is good here
+#  sed -ri "s|^(EXTRAVERSION =).*|\1 -${pkgrel}|" Makefile
+
+  # don't run depmod on 'make install'. We'll do this ourselves in packaging
+  sed -i '2iexit 0' scripts/depmod.sh
+
+  # normally not needed
+  make clean
+
+	echo "Just press F9 and save when asked!"
+  make nconfig # new CLI menu for configuration
+
+  # get kernel version
+  make prepare
+
+  # load configuration
+  # Configure the kernel. Replace the line below with one of your choice.
+  #make menuconfig # CLI menu for configuration
+
+  #emacs, just save and exit to make sure any new additions get their defaults
+  make nconfig # new CLI menu for configuration
+
+  #make xconfig # X-based configuration
+  #make oldconfig # using old config from previous kernel version
+  # ... or manually edit .config
+
+  # rewrite configuration
+ # yes "" | make config >/dev/null
+
+ #emacs, when including some firmware(builtin) the folders must exist in kernel src tree under firmware, else errors of not found happen during build
+  mkdir -p firmware/{amd-ucode,rtl_nic}
+
+}
+
+build() {
+   cd "${srcdir}/${lfoldername}"
+
+  # build!
+  make ${MAKEFLAGS} LOCALVERSION= bzImage modules
+
+}
+
+package_linux317() {
+  pkgdesc="The ${pkgbase/linux/Linux} kernel and modules"
+	depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=0.7' 'cpio')
+	#"${pkgbase}-headers")
+  optdepends=('crda: to set the correct wireless channels of your country')
+  provides=("linux=${pkgver}")
+  install=${installfile}
+
+  cd "${srcdir}/${lfoldername}"
+	
+  # get kernel version
+  _kernver="$(make LOCALVERSION= kernelrelease)"
+
+	if [ -z "$KARCH" ]; then
+		echo "KARCH isn't set!"
+		exit 1
+	fi
+
+	if [ -z "$_kernver" ]; then
+		echo "_kernver isn't set!"
+		exit 2
+	fi
+
+  mkdir -p "${pkgdir}"/{lib/modules,lib/firmware,boot}
+  make LOCALVERSION= INSTALL_MOD_PATH="${pkgdir}" modules_install
+  cp arch/$KARCH/boot/bzImage "${pkgdir}/boot/vmlinuz-${_basever}-${CARCH}"
+
+  # add kernel version
+  if [ "${CARCH}" = "x86_64" ]; then
+     echo "${pkgver}-${pkgrel}-MANJARO x64" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
+  else
+     echo "${pkgver}-${pkgrel}-MANJARO x32" > "${pkgdir}/boot/${pkgbase}-${CARCH}.kver"
+  fi
+
+  # set correct depmod command for install
+  cp -f "${startdir}/${install}" "${startdir}/${install}.pkg"
+  true && install=${install}.pkg
+  sed \
+    -e  "s/RELEASE=.*/RELEASE=${pkgver}-${pkgrel}/g" \
+    -e  "s/KERNEL_VERSION=.*/KERNEL_VERSION=${_kernver}/g" \
+    -e  "s/KERNEL_BASE=.*/KERNEL_BASE=${_basekernel}/g" \
+    -e  "s/BASEVER=.*/BASEVER=${_basever}/g" \
+    -e  "s/ARCH=.*/ARCH=${CARCH}/g" \
+    -i "${startdir}/${install}"
+
+  # install mkinitcpio preset file for kernel
+  install -D -m644 "${srcdir}/${presetfile}" "${pkgdir}/etc/mkinitcpio.d/${presetfile}"
+  sed \
+    -e "s|ALL_kver=.*|ALL_kver=\"/boot/vmlinuz-${_basever}-${CARCH}\"|g" \
+    -e "s|default_image=.*|default_image=\"/boot/initramfs-${_basever}-${CARCH}.img\"|g" \
+    -e "s|fallback_image=.*|fallback_image=\"/boot/initramfs-${_basever}-${CARCH}-fallback.img\"|g" \
+    -i "${pkgdir}/etc/mkinitcpio.d/${presetfile}"
+
+  # remove build and source links
+  rm -f "${pkgdir}"/lib/modules/${_kernver}/{source,build}
+  # remove the firmware
+  rm -rf "${pkgdir}/lib/firmware"
+  # gzip -9 all modules to save 100MB of space
+  find "${pkgdir}" -name '*.ko' -exec gzip -9 {} \;
+  # make room for external modules
+  ln -s "../extramodules-${fullkname}" "${pkgdir}/lib/modules/${_kernver}/extramodules"
+  # add real version for building modules and running depmod from post_install/upgrade
+  mkdir -p "${pkgdir}/lib/modules/extramodules-${fullkname}"
+  echo "${_kernver}" > "${pkgdir}/lib/modules/extramodules-${fullkname}/version"
+
+  # Now we call depmod...
+  depmod --errsyms -b "${pkgdir}" -F System.map "${_kernver}"
+
+  # move module tree /lib -> /usr/lib
+  mkdir -p "${pkgdir}/usr"
+  mv "${pkgdir}/lib" "${pkgdir}/usr/"
+
+  # add vmlinux
+  install -D -m644 vmlinux "${pkgdir}/usr/lib/modules/${_kernver}/build/vmlinux" 
+ #emacs:
+# save .config so that *.install file knows if to prepend microcode before firmware
+  cp "${srcdir}/${lfoldername}/.config" "${pkgdir}/kernel-${pkgverdash}.config"
+
+#emacs:
+#PLACEHOLDER_FOR_EARLY_LOAD_CPU_MICROCODE
+#here we should edit *.install file (not *.install.pkg file) so that we place the call to prepend microcode to initramfs*.img file or not place it, depending on the early load config option being set in the .config
+
+}
+
+package_linux317-headers() {
+  pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
+  provides=("linux-headers=$pkgver")
+
+  install -dm755 "${pkgdir}/usr/lib/modules/${_kernver}"
+
+  cd "${srcdir}/${lfoldername}"
+
+  # get kernel version
+  _kernver="$(make LOCALVERSION= kernelrelease)"
+
+	if [ -z "$KARCH" ]; then
+		echo "KARCH isn't set!"
+		exit 1
+	fi
+
+	if [ -z "$_kernver" ]; then
+		echo "_kernver isn't set!"
+		exit 2
+	fi
+	#pwd
+	#set -x
+	#env
+	#set
+	#exit 2
+  install -D -m644 Makefile \
+    "${pkgdir}/usr/lib/modules/${_kernver}/build/Makefile"
+  install -D -m644 kernel/Makefile \
+    "${pkgdir}/usr/lib/modules/${_kernver}/build/kernel/Makefile"
+  install -D -m644 .config \
+    "${pkgdir}/usr/lib/modules/${_kernver}/build/.config"
+
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/include"
+
+  for i in acpi asm-generic config crypto drm generated keys linux math-emu \
+    media net pcmcia scsi sound trace uapi video xen; do
+    cp -a include/${i} "${pkgdir}/usr/lib/modules/${_kernver}/build/include/"
+  done
+
+  # copy arch includes for external modules
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/x86"
+  cp -a arch/x86/include "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/x86/"
+
+  # copy files necessary for later builds, like nvidia and vmware
+  cp Module.symvers "${pkgdir}/usr/lib/modules/${_kernver}/build"
+  cp -a scripts "${pkgdir}/usr/lib/modules/${_kernver}/build"
+
+  # fix permissions on scripts dir
+  chmod og-w -R "${pkgdir}/usr/lib/modules/${_kernver}/build/scripts"
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/.tmp_versions"
+
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/${KARCH}/kernel"
+
+  cp arch/${KARCH}/Makefile "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/${KARCH}/"
+
+  if [ "${CARCH}" = "i686" ]; then
+    cp arch/${KARCH}/Makefile_32.cpu "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/${KARCH}/"
+  fi
+
+  cp arch/${KARCH}/kernel/asm-offsets.s "${pkgdir}/usr/lib/modules/${_kernver}/build/arch/${KARCH}/kernel/"
+
+  # add docbook makefile
+  install -D -m644 Documentation/DocBook/Makefile \
+    "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/DocBook/Makefile"
+
+  # add dm headers
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/md"
+  cp drivers/md/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/md"
+
+  # add inotify.h
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/include/linux"
+  cp include/linux/inotify.h "${pkgdir}/usr/lib/modules/${_kernver}/build/include/linux/"
+
+  # add wireless headers
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/net/mac80211/"
+  cp net/mac80211/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/net/mac80211/"
+
+  # add dvb headers for external modules
+  # in reference to:
+  # http://bugs.archlinux.org/task/9912
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-core"
+  cp drivers/media/dvb-core/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-core/"
+  # and...
+  # http://bugs.archlinux.org/task/11194
+
+#emacs: these cause errors because they weren't compiled in, so avoid:
+#  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/include/config/dvb/"
+#  cp include/config/dvb/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/include/config/dvb/"
+
+  # add dvb headers for http://mcentral.de/hg/~mrec/em28xx-new
+  # in reference to:
+  # http://bugs.archlinux.org/task/13146
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
+  cp drivers/media/dvb-frontends/lgdt330x.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
+  cp drivers/media/i2c/msp3400-driver.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/i2c/"
+
+  # add dvb headers
+  # in reference to:
+  # http://bugs.archlinux.org/task/20402
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/usb/dvb-usb"
+  cp drivers/media/usb/dvb-usb/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/usb/dvb-usb/"
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends"
+  cp drivers/media/dvb-frontends/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/dvb-frontends/"
+  mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/tuners"
+  cp drivers/media/tuners/*.h "${pkgdir}/usr/lib/modules/${_kernver}/build/drivers/media/tuners/"
+
+  # add xfs and shmem for aufs building
+  #mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/fs/xfs"
+  #mkdir -p "${pkgdir}/usr/lib/modules/${_kernver}/build/mm"
+  #cp fs/xfs/xfs_sb.h "${pkgdir}/usr/lib/modules/${_kernver}/build/fs/xfs/xfs_sb.h"
+
+  # copy in Kconfig files
+  for i in $(find . -name "Kconfig*"); do
+    mkdir -p "${pkgdir}"/usr/lib/modules/${_kernver}/build/`echo ${i} | sed 's|/Kconfig.*||'`
+    cp ${i} "${pkgdir}/usr/lib/modules/${_kernver}/build/${i}"
+  done
+
+  chown -R root.root "${pkgdir}/usr/lib/modules/${_kernver}/build"
+  find "${pkgdir}/usr/lib/modules/${_kernver}/build" -type d -exec chmod 755 {} \;
+
+  # strip scripts directory
+  find "${pkgdir}/usr/lib/modules/${_kernver}/build/scripts" -type f -perm -u+w 2>/dev/null | while read binary ; do
+    case "$(file -bi "${binary}")" in
+      *application/x-sharedlib*) # Libraries (.so)
+        /usr/bin/strip ${STRIP_SHARED} "${binary}";;
+      *application/x-archive*) # Libraries (.a)
+        /usr/bin/strip ${STRIP_STATIC} "${binary}";;
+      *application/x-executable*) # Binaries
+        /usr/bin/strip ${STRIP_BINARIES} "${binary}";;
+    esac
+  done
+
+  # remove unneeded architectures
+  rm -rf "${pkgdir}"/usr/lib/modules/${_kernver}/build/arch/{alpha,arc,arm,arm26,arm64,avr32,blackfin,c6x,cris,frv,h8300,hexagon,ia64,m32r,m68k,m68knommu,metag,mips,microblaze,mn10300,openrisc,parisc,powerpc,ppc,s390,score,sh,sh64,sparc,sparc64,tile,unicore32,um,v850,xtensa}
+}

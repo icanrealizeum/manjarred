@@ -1,0 +1,22 @@
+on 3.16-rc7
+# cat /proc/mtrr; dmesg|tail -n1
+reg00: base=0x000000000 (    0MB), size= 2048MB, count=1: write-back
+reg01: base=0x080000000 ( 2048MB), size= 1024MB, count=1: write-back
+reg02: base=0x0fff90000 ( 4095MB), size=   64KB, count=1: uncachable
+reg03: base=0x0fed80000 ( 4077MB), size=    4KB, count=1: uncachable
+reg04: base=0x0e0000000 ( 3584MB), size=  256MB, count=1: write-combining
+reg07: base=0x0ffe00000 ( 4094MB), size=    2MB, count=1: write-protect
+[11080.412851] mtrr: your BIOS has configured an incorrect mask, fixing it.
+
+---------
+doing
+$ cat /proc/mtrr 
+reg00: base=0x000000000 (    0MB), size= 2048MB, count=1: write-back
+reg01: base=0x080000000 ( 2048MB), size= 1024MB, count=1: write-back
+reg02: base=0x0fff90000 ( 4095MB), size=   64KB, count=1: uncachable
+reg03: base=0x0fed80000 ( 4077MB), size=    4KB, count=1: uncachable
+reg07: base=0x0ffe00000 ( 4094MB), size=    2MB, count=1: write-protect
+
+always causes a msg to pop on dmesg:
+[ 3370.415984] mtrr: your BIOS has configured an incorrect mask, fixing it.
+

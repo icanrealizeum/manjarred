@@ -1,0 +1,28 @@
+--- "archlinux version!_dkms-2.2.0.3-15-any/dkms"	2014-11-05 11:49:17.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/dkms"	2014-11-05 11:47:08.029088432 +0100
+@@ -582,21 +582,23 @@ read_conf()
+ 	[[ ${MAKE[$index]} && ${MAKE_MATCH[$index]} && \
+ 	    $1 =~ ${MAKE_MATCH[$index]} ]] && \
+ 	    make_command="${MAKE[$index]}"
+     done
+ 
++    multicoremakeflag=-j$(nproc) || multicoremakeflag=-j4
++
+     # Use the generic make and make clean commands if not specified
+     if [[ $(VER $1) < $(VER 2.6.6) ]]; then
+ 	[[ ! $make_command ]] && \
+ 	    make_command="make -C $kernel_source_dir SUBDIRS=$dkms_tree/$module/$module_version/build modules"
+ 	[[ ! $clean ]] && \
+ 	    clean="make -C $kernel_source_dir SUBDIRS=$dkms_tree/$module/$module_version/build clean"
+     else
+ 	[[ ! $make_command ]] && \
+-	    make_command="make -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build"
++	    make_command="make ${multicoremakeflag} -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build"
+ 	 [[ ! $clean ]] && \
+-	     clean="make -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build clean"
++	     clean="make ${multicoremakeflag} -C $kernel_source_dir M=$dkms_tree/$module/$module_version/build clean"
+     fi
+ 
+     # Set modules_conf_array
+     for ((index=0; index < ${#MODULES_CONF[@]}; index++)); do
+ 	[[ ${MODULES_CONF[$index]} ]] && modules_conf_array[$index]="${MODULES_CONF[$index]}"

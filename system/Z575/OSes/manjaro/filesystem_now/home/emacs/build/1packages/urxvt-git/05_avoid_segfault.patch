@@ -1,0 +1,16 @@
+this will avoid segfault when you've manually added some Rs_ colors but forgot to add their default name in def_colorName[] array and they are assumed to be NULL
+note however that order matters, so you should've probably added the Rs_ colors at the end and this patch will make sure they default with their names to NULL
+
+diff --git a/src/init.C b/src/init.C
+index 301b6b2..6898d06 100644
+--- a/src/init.C
++++ b/src/init.C
+@@ -148,7 +148,7 @@ rxvt_network_display (const char *display)
+ }
+ #endif
+ 
+-static const char *const def_colorName[] =
++static const char *const def_colorName[NRS_COLORS] =
+   {
+     COLOR_FOREGROUND,
+     COLOR_BACKGROUND,

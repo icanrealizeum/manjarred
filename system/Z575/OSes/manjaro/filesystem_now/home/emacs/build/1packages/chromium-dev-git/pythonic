@@ -1,0 +1,131 @@
+#!/bin/bash
+
+#set -ex
+
+#if 1 then it will ask sudo password lots of times due to uncaching it while executing the other stuff
+#set to 1 only if paranoid :)
+PROTECT_SUDO=1
+
+#b="/home/emacs/bin/to e a dor"
+#a="$(realpath "$a")"
+#exit 1
+
+tmppypath="/tmp/makepkg/chromium-dev-git/src/python-path"
+if test ! -d "$tmppypath"; then
+  echo "'$tmppypath' doesn't exist"
+  exit 31
+fi
+pylink="/usr/bin/python"
+py2="python2"
+py3="python3" #$(realpath "$pylink")" # /usr/bin/python3.4
+
+if [ "$py2" = "$py3" ]; then
+  echo "python 2 and 3 are using same filename in this script - bad"
+  exit 1
+fi
+
+#XXX: changed tactics: using PATH insteaad of link renaming(so most of this script[eg. symlinks stuff] is obsolete now)
+#if [ "$py2" = "$(readlink "$pylink")" ]; then
+#  echo "oopsies, link already points to python2: $pylink =>> $(readlink "$pylink")"
+#  echo "ignoring..."
+#  alreadypy2=1
+#else
+#  alreadypy2=0
+#fi
+
+
+must_not_be_sym(){
+  # $1 file to check
+  lesym="$(realpath "$1")"
+  if [ "$lesym" != "$1" ]; then
+    echo "not expecting $1 to be a symlink ==> $lesym"
+    exit 1
+  fi
+}
+
+#they are actually symlinks!
+#must_not_be_sym "$py3"
+#must_not_be_sym "$py2"
+
+if [ -f "$pylink" ]; then
+  if [ ! -L "$pylink" ]; then
+    echo "are you not on Arch linux? $pylink is expected to be a symlink"
+    exit 1
+  fi
+else
+  echo "$pylink not found"
+  exit 2
+fi
+
+ensure_not_timeout() {
+  # ask for sudo password before using it
+  # also makes sure it doesn't timeout and thus fail the script!
+  while ! sudo -v ; do
+    echo "freaking timeout, amirite?! `date`"
+    echo "waiting 3 sec... C-c if you really wanna"
+    sleep 3
+  done
+}
+
+uncache_credentials(){
+  if [ "$PROTECT_SUDO" = "1" ]; then
+    sudo --remove-timestamp --
+  fi
+}
+
+
+rm_if_exists() {
+  if [ -L "$pylink" ]; then
+    sudo rm -v "$pylink"
+  fi
+}
+
+restore_python_3() {
+  ensure_not_timeout
+  rm_if_exists
+  new_link_to "$py3"
+  uncache_credentials
+}
+
+
+
+
+new_link_to() {
+  # $1 = new link to make python point at
+  newlink="$1"
+  if [ -z "$newlink" ]; then
+    echo "didn't specify parameter"
+    return 1
+  fi
+  sudo ln -sT "$newlink" "$pylink"
+  if [[ $? -eq 0 ]]; then
+    currentlink="$(readlink "$pylink")"
+    if [ "$currentlink" = "$newlink" ]; then
+      echo "success. $pylink =>> $currentlink"
+      return 0
+    fi
+  fi
+  echo -e "\e[1;31mfail!\e[0m"
+  return 1
+}
+
+
+#if [ "$alreadypy2" = "0" ]; then
+#  ensure_not_timeout
+#  trap restore_python_3 EXIT
+#  rm_if_exists
+#  new_link_to "$py2"
+#fi
+
+#good to uncache sudo, to prevent script from running sudo stuff without password prompt eg. sudo -n id
+uncache_credentials
+echo "doing stuff"
+echo "$@"
+export PATH="$tmppypath:$PATH"
+"$@"
+ec="$?"
+echo "done doing stuff"
+
+
+#last:
+exit $ec

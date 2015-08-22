@@ -1,0 +1,39 @@
+#!/bin/bash
+#^ for the syntax coloring in vim
+
+
+fil="/tmp/cumulate.txt"
+
+if test -z "$1"; then
+
+sudo -v
+while true; do
+  sudo -- nft -a list ruleset | grep -i "ct state new limit rate " | awk '{ print $9 }' >> "$fil"
+  sleep 1
+done
+
+else
+  awk 'BEGIN { 
+  maxdiff=0; 
+  last=0
+  } 
+
+  { 
+    print $1
+
+    if (last == 0) {
+      last=$1
+    }
+
+    if ( $1 - last > maxdiff ) { 
+      maxdiff = $1 - last; 
+    } 
+    last=$1 
+  } 
+  
+  END { 
+    print "max diff: " maxdiff;  #freaking 114 !! that is insane!! might be dns requests(chromium) since they are unchached!!
+  }'  "$fil"
+
+fi
+

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+a='1'
+
+rexpr='[0-9]+'
+
+if test -z '$a' || ! grep -E -q "$rexpr" <<<"$a"; then
+  echo "FAIL"
+fi
+

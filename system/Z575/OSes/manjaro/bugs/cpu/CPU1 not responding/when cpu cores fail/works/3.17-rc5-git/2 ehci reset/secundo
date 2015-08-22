@@ -1,0 +1,17 @@
+#!/bin/bash
+
+fil="2000_bios_usb_legacy_Lenovo_Z575_avoid_CPU_Not_Responding.patch"
+cat >"$fil" <<EOF
+this will prevent "CPU1: Not Respoding" on Lenovo Z575 laptop when USB Legacy is Enabled in BIOS
+and moving USB mouse during a critical INIT part
+see bug 81101 https://bugzilla.kernel.org/show_bug.cgi?id=81101
+any(and all) of CPU1,2,3 can lock up like this and act as if using 100% CPU
+
+patch by EmanueL Czirai
+17 September 2014
+
+EOF
+
+cat le.patch >>"$fil"
+
+

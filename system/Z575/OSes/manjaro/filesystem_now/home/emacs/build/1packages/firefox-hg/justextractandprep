@@ -1,0 +1,49 @@
+#!/bin/bash
+
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  TARGET="$(readlink "$SOURCE")"
+  if [[ $SOURCE == /* ]]; then
+    echo "SOURCE '$SOURCE' is an absolute symlink to '$TARGET'"
+    SOURCE="$TARGET"
+  else
+    DIR="$( dirname "$SOURCE" )"
+    echo "SOURCE '$SOURCE' is a relative symlink to '$TARGET' (relative to '$DIR')"
+    SOURCE="$DIR/$TARGET" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  fi
+done
+echo "SOURCE is '$SOURCE'"
+RDIR="$( dirname "$SOURCE" )"
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+if [ "$DIR" != "$RDIR" ]; then
+  echo "DIR '$RDIR' resolves to '$DIR'"
+fi
+echo "DIR is '$DIR'"
+
+__die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+source funx.bash || __die 100 "funx.bash not in PATH"
+
+echo "You should only run this first time! Second+ times just run ./recompile which takes care of updating the tree first via makepkg --incremental"
+
+#still applies!
+echo "You should only run this when you've no changes made by you in the repo folder"
+echo "WARNING: destroys any changes made in the repo working folder"
+sleep 1
+safepromptkey "press a key to continue, or C-c out of here"
+sleep 1
+safepromptkey "you really sure about this? press a key, or C-c out of here"
+
+
+$DIR/gopreplinks || echo FAILED TO ENSURE LINKS EXIST!
+
+[ -L /tmp/makepkg ] || rm -ri /tmp/makepkg/
+$DIR/gopreplinks || die 209 "failed for the final time, to ensure links exist!"
+time makepkg --nobuild -s
+
+if [ ! -L /tmp/makepkg ]; then
+ echo "WARNING: the symlink folder /tmp/makepkg/ was replaced(by makepkg program?) with a real folder"
+ echo "you need to copy its contents into $DIR/makepkg/ and remove /tmp/makepkg/"
+ echo "then run ./gopreplinks to recreate the symlink"
+fi
+

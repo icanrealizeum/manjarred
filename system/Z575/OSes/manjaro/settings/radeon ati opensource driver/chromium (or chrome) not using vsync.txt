@@ -1,0 +1,16 @@
+if you see no vsync in chromium (or chrome) but you see it everywhere else
+for example there's tearing mostly seen in youtube videos
+eg. 
+https://www.youtube.com/watch?v=laDA1NOn-C4
+
+then 
+
+chrome://flags
+
+and click Enable on this one:
+Override software rendering list Mac, Windows, Linux, Chrome OS, Android
+Overrides the built-in software rendering list and enables GPU-acceleration on unsupported system configurations. #ignore-gpu-blacklist
+Disable
+
+
+also made a note of it here: https://wiki.archlinux.org/index.php/Talk:Chromium

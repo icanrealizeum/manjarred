@@ -1,0 +1,29 @@
+reports the temp on dmesg every 3 seconds (xfce4 panel addon reads it every 3 seconds)
+Jul  9 01:43:28 manji kernel:     utils-0291 evaluate_integer      : Return value [3142]
+Jul  9 01:43:31 manji kernel:     utils-0291 evaluate_integer      : Return value [3122]
+
+but I've disabled therm monitoring via linux params in /etc/default/grub
+acpi.debug_layer=0xfbff0000 acpi.debug_level=0x4
+that b there not being F means no thermal mon
+and that 0x4 means show INFO type msgs
+
+in
+/home/emacs/build/packages-core/linux3154/makepkg/linux315/src/linux-3.15/drivers/acpi
+
+$ diff -pruN utils.c.orig utils.c
+--- utils.c.orig	2014-07-09 01:47:47.277959182 +0200
++++ utils.c	2014-07-09 02:00:28.850681468 +0200
+@@ -288,7 +288,7 @@ acpi_evaluate_integer(acpi_handle handle
+ 
+ 	*data = element.integer.value;
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Return value [%llu]\n", *data));
++	ACPI_DEBUG_PRINT((ACPI_DB_DEBUG_OBJECT, "Return value [%llu]\n", *data));
+ 
+ 	return AE_OK;
+ }
+
+after this patch, this kernel cmdline works:
+acpi.debug_layer=0xfbff0000 acpi.debug_level=0xFFFFFFFD
+to avoid showing that on console
+

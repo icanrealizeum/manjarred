@@ -1,0 +1,3 @@
+after suspend, then resume
+the cpu is nolonger undervolted, so it reverts back to original voltages...
+see the included .txt files which show the difference

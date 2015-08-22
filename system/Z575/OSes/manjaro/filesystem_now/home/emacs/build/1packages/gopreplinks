@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#set -x 
+set -u
+
+source ./commonscripts.bash
+
+DIR="$(dirname "$0")"
+DIR="$(realpath "$DIR")"
+echo "$DIR"
+
+#DIR is the dir of this script
+#if it's a symlink to the script then it's the dir of the symlink, not of that script - this is what we want
+
+__die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+source funx.bash || __die 100 "funx.bash not in PATH"
+
+ensuredir_ordie "/tmp/packages/"
+ensuredir_ordie "$DIR/sources"
+ensuredir_ordie "$DIR/srcpackages"
+ensuredir_ordie "$DIR/makepkg"
+
+ensurelink_ordie "$DIR/sources" "/tmp/sources"
+ensurelink_ordie "$DIR/srcpackages" "/tmp/srcpackages"
+
+makepkgdir="/tmp/makepkg"
+if [ -d "$makepkgdir" ] && [ ! -L "$makepkgdir" ]; then
+  if [ -z "$(ls -A "$makepkgdir")" ]; then
+    #empty dir
+    echo "empty folder detected: $makepkgdir"
+    echo "saving your time by deleting it"
+    rm -d -- "$makepkgdir"
+  else
+    echo "non empty folder exists: $makepkgdir"
+    echo "allowing you to delete it manually"
+    exit 18
+  fi
+fi
+ensurelink_ordie "$DIR/makepkg" "/tmp/makepkg"
+
+
+

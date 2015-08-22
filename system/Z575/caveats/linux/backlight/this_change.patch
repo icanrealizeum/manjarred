@@ -1,0 +1,40 @@
+this change was done to prevent thinkpad_acpi module from being loaded
+and while loaded X would choose the wrong backlight which had no effect when using Fn+Up/Dn arrows to increase/decrease backlight intensity
+The ideapad_laptop module was already blacklisted and was the one of the causing the below error
+https://bugzilla.kernel.org/show_bug.cgi?id=91191#c34
+
+so now there's only one backlight: radeon_bl0 which is the one working without causing that error:
+APIC error on CPU0: 80 : Illegal register address
+
+"ideapad_laptop is not the culprit. But something else acpi related."
+note that this needs: acpi_backlight=vendor at kernel cmdline to work.
+
+diff --git a/system/lenovo z575/OS/manjaro/filesystem now/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/.config b/system/lenovo z575/OS/manjaro/filesystem now/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/.config
+index 8df78ce..e3986e1 100644
+--- a/system/lenovo z575/OS/manjaro/filesystem now/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/.config	
++++ b/system/lenovo z575/OS/manjaro/filesystem now/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/.config	
+@@ -1,6 +1,6 @@
+ #
+ # Automatically generated file; DO NOT EDIT.
+-# Linux/x86 3.19.0-rc7 Kernel Configuration
++# Linux/x86 3.19.0 Kernel Configuration
+ #
+ CONFIG_64BIT=y
+ CONFIG_X86_64=y
+@@ -3007,14 +3007,8 @@ CONFIG_X86_PLATFORM_DEVICES=y
+ # CONFIG_PANASONIC_LAPTOP is not set
+ # CONFIG_COMPAL_LAPTOP is not set
+ # CONFIG_SONY_LAPTOP is not set
+-CONFIG_IDEAPAD_LAPTOP=m
+-CONFIG_THINKPAD_ACPI=m
+-# CONFIG_THINKPAD_ACPI_ALSA_SUPPORT is not set
+-CONFIG_THINKPAD_ACPI_DEBUGFACILITIES=y
+-CONFIG_THINKPAD_ACPI_DEBUG=y
+-# CONFIG_THINKPAD_ACPI_UNSAFE_LEDS is not set
+-# CONFIG_THINKPAD_ACPI_VIDEO is not set
+-# CONFIG_THINKPAD_ACPI_HOTKEY_POLL is not set
++# CONFIG_IDEAPAD_LAPTOP is not set
++# CONFIG_THINKPAD_ACPI is not set
+ # CONFIG_SENSORS_HDAPS is not set
+ # CONFIG_INTEL_MENLOW is not set
+ # CONFIG_EEEPC_LAPTOP is not set

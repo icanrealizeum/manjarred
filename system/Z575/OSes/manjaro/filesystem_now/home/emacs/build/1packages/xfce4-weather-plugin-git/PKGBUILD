@@ -1,0 +1,62 @@
+# Contributor: Lex Black <autumn-wind at web dot de>
+# Contributor: Baurzhan Muftakhidinov <baurthefirst@gmail.com>
+# Maintainer: twa022 <twa022 at gmail dot com>
+
+_pkgname=xfce4-weather-plugin
+pkgname=${_pkgname}-git
+pkgver=xfce4.weather.plugin.0.8.4.7.g9fbf05c
+pkgrel=1
+pkgdesc="A weather plugin for the Xfce4 panel"
+arch=('i686' 'x86_64')
+license=('GPL2')
+url="http://www.xfce.org"
+groups=('xfce4-git')
+depends=('xfce4-panel' 'libxml2' 'hicolor-icon-theme')
+makedepends=('git' 'xfce4-dev-tools')
+conflicts=('xfce4-weather-plugin')
+provides=('xfce4-weather-plugin')
+options=('!libtool')
+sha512sums=('SKIP'
+            '9670a8a22d08ecd977529c9c25b6188a1e4a3d2ba66a59af11b3aed373727a02fad07b3b386c7c263373754278354c18d671930b90b85071ac47239ee618fb21'
+            'de8671d5cd403b1639fb6b39ba08859c9200b6060bd9136e9820d1c77ce37d5472c862c900a1ab981d9c9d1a445453ab9564c0726f0a0fde0ba72350cc97ad9f')
+install=${_pkgname}.install
+
+
+_gitroot="git://git.xfce.org/panel-plugins/xfce4-weather-plugin/"
+_gitname="$_pkgname"
+
+patch1="001_use_https_where_possible.patch"
+
+source=(
+"${_gitname}::${_gitroot}"
+"${install}"
+"${patch1}"
+)
+
+
+pkgver() {
+  cd "${_gitname}"
+  git describe | sed 's/^v//;s/-/./g'
+}
+
+
+prepare() {
+	cd "$srcdir/$_gitname"
+  patch -Np1 -i "${srcdir}/${patch1}"
+  ./autogen.sh --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib  \
+    --localstatedir=/var --disable-static  --enable-debug=minimum \
+   --enable-maintainer-mode
+}
+
+build() {
+    
+	cd "$srcdir/$_gitname"
+    
+  make -j4
+}
+
+package() {
+	cd "$srcdir/$_gitname"
+  make DESTDIR="$pkgdir" install
+}
+

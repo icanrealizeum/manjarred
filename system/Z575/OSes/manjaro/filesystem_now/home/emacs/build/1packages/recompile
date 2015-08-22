@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#1. rebuild unconditionally, reusing existing srcdir
+#2. create pkg file, using existing srcdir but removing existing pkgdir(which is normal)
+
+source ./commonscripts.bash
+
+./gopreplinks || exit 1
+
+#don't use --noextract here because it won't update srcdir while --incremental
+time makepkg -s --noprepare --force "${useincremental[@]}" "$@"
+

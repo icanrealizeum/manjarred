@@ -1,0 +1,19 @@
+#!/bin/bash
+
+lefunc() { // so I can use local
+local lepatch="`pwd`/le3.patch"
+pushd .
+cd "/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git"
+pushd .
+cd "kernel"
+git diff . >"${lepatch}"
+popd
+pushd .
+cd "arch/x86/kernel"
+git diff . >>"${lepatch}"
+popd
+popd
+}
+
+lefunc
+

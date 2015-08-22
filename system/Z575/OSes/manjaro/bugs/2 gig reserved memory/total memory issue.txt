@@ -1,0 +1,36 @@
+ok this was reduced drastically by me reducing the log file size kernel parameter:
+log_buf_len=10M
+oh wait I already said that but it's at the end (I guess updates go at the end in this .txt file)
+==========
+with 3.15.3-1 
+[    0.000000] Memory: 14812972K/16226416K available (4439K kernel code, 498K rwdata, 2096K rodata, 804K init, 2572K bss, 1413444K reserved)
+
+17179869184-15178043392
+2,001,825,792
+
+16226416*1024
+16,615,849,984
+
+1,437,806,592
+
+with 3.15.4-1  but .config has changed
+[    0.000000] Memory: 14838628K/16226416K available (5840K kernel code, 770K rwdata, 2072K rodata, 904K init, 2740K bss, 1387788K reserved)
+
+
+=============
+this is when i turned on the discrete gfx card in bios:
+[    0.000000] Memory: 14838632K/16226416K available (5814K kernel code, 770K rwdata, 2072K rodata, 900K init, 2740K bss, 1387784K reserved)
+the care was off before, to save temperature/power 
+==============
+ok, on this:
+Jul 08 07:40:50 manji kernel: Memory: 14838632K/16226416K available (5814K kernel code, 770K rwdata, 2072K rodata, 900K init, 2740K bss, 1387784K reserved)
+(which is the same as above but this is from journalctl -b 0 | grep Memory )
+
+there was a:
+Jul 08 07:40:50 manji kernel: log_buf_len: 1073741824
+
+even though the passed parameter was 5110M
+guess it got wrapped around after 4G ?
+setting it to 10M  now, got:
+[    0.000000] Memory: 15870824K/16226416K available (5814K kernel code, 770K rwdata, 2072K rodata, 900K init, 2740K bss, 355592K reserved)
+

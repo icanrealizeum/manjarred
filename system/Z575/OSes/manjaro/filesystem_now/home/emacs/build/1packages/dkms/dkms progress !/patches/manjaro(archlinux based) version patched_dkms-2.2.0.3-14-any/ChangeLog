@@ -1,0 +1,22 @@
+- remove the entire module folder when --all is specified to dkms remove
+  - some leftover outdated kernel folders will remain after kernel is updated
+	eg. from 3.12.23 to 3.12.24 and these are not detected and thus prevents
+	`dkms remove vboxhost/4.3.12 --all` (for example) from removing 4.3.12 which
+	in turn leaves a symlink `source` in /var/lib/dkms/vboxhost/4.3.12/ folder
+	and this prevents dkms status or dkms autoinstall from running when 4.3.14
+	version is installed(which means 4.3.12 package is gone), looks something like this:
+	$ dkms status
+	acpi_call, 1.1.0, 3.16.0-1-MANJARO, x86_64: installedError! Could not locate
+	dkms.conf file.
+	File: /var/lib/dkms/vboxhost/4.3.12/source/dkms.conf does not exist.
+	- with this hack in the above does not happen
+
+- automatically use all cores with make -j (by using /usr/bin/nproc is owned by coreutils 8.22-4 ) only for kernel version >= 2.6.6
+  - if nproc doesn't exist then use 4 threads
+- only replace destination if the built module has different contents (uses diff to test)
+- save a copy of current kernel version information(this file: $kernel_source_dir/include/generated/compile.h ) to know when to rebuild if it changes (ie. incremental compilation of the same kernel release) and append a copy of it to the make.log file when rebuilding
+  - rebuild happens when existing module files (ie. vboxdrv.ko) are different (diff-wise) than the already built ones (yep there are two copies, dkms was already keeping them this way)
+  - rebuild happens also when compile.h file changed (diff with the copied one)
+- fixed a typo where kernel arch was reported as "4": "$3/4" should be "$3/$4" when reporting that module doesn't exist for the kernel arch
+- fixed a typo when reporting .conf didn't exist to report the actual filename that didn't exist
+

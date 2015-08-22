@@ -1,0 +1,12 @@
+
+#assumed you already did:
+#git clone https://github.com/rust-lang/cargo
+#cd cargo
+
+#now doing these:
+patch -Np1 -i dontremove_downloaded_rust_tars.patch
+git submodule update --init
+./.travis.install.deps.sh
+./conf
+./go
+

@@ -1,0 +1,15 @@
+to prevent history rewrites
+from : https://programmers.stackexchange.com/questions/145315/does-git-have-a-safe-mode-to-prevent-rewriting-history
+
+To sum it up you can enable
+
+git config --system receive.denyNonFastforwards true
+
+and
+
+git config --system receive.denyDeletes true
+
+Or write a post receive hook to reject anything you determine is a rewrite.
+
+hmm, looks like I already had this set!
+

@@ -1,0 +1,28 @@
+sudo iotop  won't work
+
+$ sudo iotop -o
+[sudo] password for emacs: 
+Could not run iotop as some of the requirements are not met:
+- Linux >= 2.6.20 with
+  - I/O accounting support (CONFIG_TASKSTATS, CONFIG_TASK_DELAY_ACCT, CONFIG_TASK_IO_ACCOUNTING)
+
+
+same things that it needs, also powertop needs(guessing) to display some statics like:
+Summary: -nan wakeups/second,  -nan GPU ops/seconds, -nan VFS ops/sec and -0.0%
+
+ok, for iotop to work (but not powertop wakeups/second and others seen above):
+these two must also be enabled:
+
+[*]   Enable extended accounting over taskstats
+[*]     Enable per-task storage I/O accounting
+
+so those are in addition to the usual(with which iotop didn't work):
+
+    Cputime accounting (Simple tick based cputime accounting)  --->
+[*] BSD Process Accounting
+[*]   BSD Process Accounting version 3 file format
+-*- Export task/process statistics through netlink
+-*-   Enable per-task delay accounting
+
+
+so powertop.... still needs other stuff to show those wakeups/second and stuff right

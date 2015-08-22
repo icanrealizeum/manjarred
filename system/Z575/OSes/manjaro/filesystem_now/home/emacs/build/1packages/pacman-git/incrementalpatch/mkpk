@@ -1,0 +1,15 @@
+#!/bin/bash
+
+dir="pacman-git"
+fil="pacman_incremental.patch"
+
+cat > "${fil}" <<EOF
+Patch for pacman to not clear git folder before rebuilding
+source: https://mailman.archlinux.org/pipermail/pacman-dev/2013-September/017874
+.html
+
+updated 03 Oct. 2014 by EmanueL Czirai to include mercurial aka hg
+EOF
+
+diff -Npru5 "${dir}.orig" "${dir}" >> "${fil}"
+

@@ -1,0 +1,51 @@
+TODO; report all errors when these warnings(treated as errors)happen
+
+
+diff --git a/build/config/clang/BUILD.gn b/build/config/clang/BUILD.gn
+index 39fe251..3213036 100644
+--- a/build/config/clang/BUILD.gn
++++ b/build/config/clang/BUILD.gn
+@@ -39,5 +39,8 @@ config("extra_warnings") {
+ 
+     # Warns when a const char[] is converted to bool.
+     "-Wstring-conversion",
++    "-Wno-empty-body",
++    "-Wno-parentheses-equality",
++    "-Wno-error", #this has no effect!
+   ]
+ }
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 64b91fe..d2469e9 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -793,7 +793,7 @@ config("default_warnings") {
+     cflags = [
+       # Enables.
+       "-Wendif-labels",  # Weird old-style text after an #endif.
+-      "-Werror",  # Warnings as errors.
++      "-Wno-error",  # Warnings as errors.
+ 
+       # Disables.
+       "-Wno-missing-field-initializers",  # "struct foo f = {0};"
+@@ -839,13 +839,14 @@ config("default_warnings") {
+       # NaCl's Clang compiler and Chrome's hermetic Clang compiler will almost
+       # always have different versions. Certain flags may not be recognized by
+       # one version or the other.
+-      if (!is_nacl) {
+-        # Flags NaCl does not recognize.
+-        cflags += [
+-          # TODO(hans): Get this cleaned up.
+-          "-Wno-inconsistent-missing-override",
+-        ]
+-      }
++#warning: unknown warning option '-Wno-inconsistent-missing-override' [-Wunknown-warning-option]
++#      if (!is_nacl) {
++#        # Flags NaCl does not recognize.
++#        cflags += [
++#          # TODO(hans): Get this cleaned up.
++#          "-Wno-inconsistent-missing-override",
++#        ]
++#      }
+     }
+     if (gcc_version >= 48) {
+       cflags_cc += [

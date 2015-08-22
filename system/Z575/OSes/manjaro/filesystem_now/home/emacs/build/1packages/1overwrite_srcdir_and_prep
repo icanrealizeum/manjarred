@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#0. installs all makedepends packages
+#1. unconditionally removes $srcdir then runs prepare() - so WARNING: you lose any changes in $srcdir !
+#2. does nothing else, just exits (so, no build and no repackage/install)
+
+source ./commonscripts.bash
+
+__die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+
+"./gopreplinks" || __die 210 "FAILED TO ENSURE LINKS EXIST!"
+
+time makepkg --nobuild --syncdeps
+

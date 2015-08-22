@@ -1,0 +1,29 @@
+this is the error when compiling kernel 3.16-rc4, when folder amd-ucode doesn't exist in kernel tree under firmware folder
+
+(workaround is simply mkdir -ing it)
+
+  MK_FW   firmware/radeon/TURKS_me.bin.gen.S
+  MK_FW   firmware/radeon/TURKS_pfp.bin.gen.S
+  MK_FW   firmware/radeon/TURKS_smc.bin.gen.S
+  MK_FW   firmware/amd-ucode/microcode_amd.bin.gen.S
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+/bin/sh: firmware/amd-ucode/microcode_amd.bin.gen.S: No such file or directory
+firmware/Makefile:185: recipe for target 'firmware/amd-ucode/microcode_amd.bin.gen.S' failed
+make[1]: *** [firmware/amd-ucode/microcode_amd.bin.gen.S] Error 1
+Makefile:896: recipe for target 'firmware' failed
+make: *** [firmware] Error 2
+make: *** Waiting for unfinished jobs....
+

@@ -1,0 +1,1097 @@
+
+(xfce4-session:4197): xfce4-session-WARNING **: gpg-agent returned no PID in the variables
+
+(xfce4-session:4197): xfce4-session-WARNING **: xfsm_manager_load_session: Something wrong with /home/emacs/.cache/sessions/xfce4-session-manji:0, Does it exist? Permissions issue?
+Logging to /tmp/xfwm4-debug-4221.log
+env: Thunar: No such file or directory
+env: xfdesktop: No such file or directory
+Logging to /tmp/xfwm4-debug-4232.log
+xfce4-panel: There is already a running instance
+
+
+** (pcmanfm:4234): WARNING **: The directory '/home/emacs/Templates' doesn't exist, ignoring it
+[      24]TRACE[sensors-plugin.c:2315] sensors_plugin_construct(): enters sensors_plugin_construct
+[      24]TRACE[sensors-plugin.c:2280] create_sensors_control(): enters create_sensors_control
+[      24]TRACE[sensors-interface-common.c:44] sensors_new(): enters sensors_new
+[      24]TRACE[sensors-interface-common.c:100] sensors_init_default_values(): enters sensors_init_default_values
+[      24]TRACE[sensors-interface-common.c:131] sensors_init_default_values(): leaves sensors_init_default_values
+[      24]TRACE[configuration.c:264] sensors_read_preliminary_config(): enters sensors_read_preliminary_config
+[      24]TRACE[configuration.c:283] sensors_read_preliminary_config(): leaves sensors_read_preliminary_config
+[      24]TRACE[middlelayer.c:63] initialize_all(): enters initialize_all
+[      24]TRACE[lmsensors.c:412] initialize_libsensors(): enters initialize_libsensors version over four
+[      24]TRACE[lmsensors.c:425] initialize_libsensors(): num_sensorchips after detect: 1
+
+[      24]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      24]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=Virtual device
+[      24]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      24]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=CPU temp feats=1
+[      24]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      24]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=MOBO temp feats=2
+[      24]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      24]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=PCI adapter
+[      24]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      24]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=gfx card feats=1
+[      24]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      24]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=PCI adapter
+[      24]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      24]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=CPU temp feats=1
+[      24]TRACE[lmsensors.c:447] initialize_libsensors(): leaves initialize_libsensors with 1
+[      24]TRACE[middlelayer.c:69] initialize_all(): libsensors result so far: 1 chips len:3
+[      24]TRACE[hddtemp.c:405] initialize_hddtemp(): enters initialize_hddtemp
+DBG[hddtemp.c:222] read_disks_netcat(): reply= with result=-1
+
+[      24]TRACE[hddtemp.c:324] remove_unmonitored_drives(): enters remove_unmonitored_drives
+[      24]TRACE[hddtemp.c:353] remove_unmonitored_drives(): leaves remove_unmonitored_drives
+DBG[hddtemp.c:445] initialize_hddtemp(): numfeatures=0
+
+[      24]TRACE[hddtemp.c:456] initialize_hddtemp(): leaves initialize_hddtemp
+[      24]TRACE[middlelayer.c:74] initialize_all(): hddtemp result so far: 1 chips len:3
+[      24]TRACE[acpi.c:526] initialize_ACPI(): enters initialize_ACPI
+[      24]TRACE[acpi.c:639] get_acpi_info(): enters get_acpi_info
+[      24]TRACE[acpi.c:713] get_acpi_value(): enters get_acpi_value for /proc/acpi/info
+[      24]TRACE[acpi.c:713] get_acpi_value(): enters get_acpi_value for /proc/acpi/info_
+[      24]TRACE[acpi.c:713] get_acpi_value(): enters get_acpi_value for /sys/module/acpi/parameters/acpica_version
+[      24]TRACE[acpi.c:724] get_acpi_value(): leaves get_acpi_value with 20141107
+
+[      24]TRACE[acpi.c:671] get_acpi_info(): leaves get_acpi_info
+[      24]TRACE[acpi.c:265] read_battery_zone(): enters read_battery_zone
+DBG[acpi.c:290] read_battery_zone(): filename=/sys/class/power_supply/BAT0/model_name
+
+DBG[acpi.c:302] read_battery_zone(): Name=L09S6Y02
+
+DBG[acpi.c:327] read_battery_zone(): Raw-Value=33800000.000000
+
+DBG[acpi.c:339] read_battery_zone(): Min-Value=0.000000
+
+[      24]TRACE[acpi.c:406] get_battery_max_value(): enters get_battery_max_value
+DBG[acpi.c:415] get_battery_max_value(): filename=/sys/class/power_supply/BAT0/energy_full
+
+DBG[acpi.c:424] get_battery_max_value(): Max-Value=33800.000000
+
+[      24]TRACE[acpi.c:442] get_battery_max_value(): leaves get_battery_max_value
+[      24]TRACE[acpi.c:384] read_battery_zone(): leaves read_battery_zone
+[      24]TRACE[acpi.c:94] read_thermal_zone(): enters read_thermal_zone
+[      24]TRACE[acpi.c:157] read_thermal_zone(): leaves read_thermal_zone
+[      24]TRACE[acpi.c:454] read_fan_zone(): enters read_fan_zone
+[      24]TRACE[acpi.c:515] read_fan_zone(): leaves read_fan_zone
+[      24]TRACE[acpi.c:557] initialize_ACPI(): leaves initialize_ACPI
+[      24]TRACE[middlelayer.c:79] initialize_all(): acpi result so far: 5 chips len:4
+[      24]TRACE[middlelayer.c:87] initialize_all(): leaves initialize_all, chips->len=4
+[      24]TRACE[sensors-interface-common.c:90] sensors_new(): leaves sensors_new
+[      24]TRACE[sensors-plugin.c:971] create_panel_widget(): enters create_panel_widget
+[      24]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      24]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      24]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      24]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 0 5
+[      24]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      24]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      24]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      24]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: No sensors selected!.
+
+[      24]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      24]TRACE[sensors-plugin.c:1004] create_panel_widget(): leaves create_panel_widget
+[      24]TRACE[sensors-plugin.c:2304] create_sensors_control(): leaves create_sensors_control
+[      24]TRACE[configuration.c:303] sensors_read_config(): enters sensors_read_config
+[      24]TRACE[configuration.c:314] sensors_read_config(): sensors pre read_general_config = 4
+[      24]TRACE[configuration.c:197] sensors_read_general_config(): enters sensors_read_general_config
+[      24]TRACE[configuration.c:255] sensors_read_general_config(): leaves sensors_read_general_config
+[      24]TRACE[configuration.c:316] sensors_read_config(): sensors aft read_general_config = 4
+[      24]TRACE[configuration.c:321] sensors_read_config(): Chip0/4
+[      24]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      24]TRACE[configuration.c:333] sensors_read_config(): acpitz-0
+
+[      24]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 0, number of expected or known chips: 4.
+
+[      24]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0x14009d0
+
+[      24]TRACE[configuration.c:368] sensors_read_config(): Chip0_Feature0
+
+[      24]TRACE[configuration.c:368] sensors_read_config(): Chip0_Feature1
+
+[      24]TRACE[configuration.c:412] sensors_read_config(): chipfeature->name = MOBO temp
+[      24]TRACE[configuration.c:424] sensors_read_config(): chipfeature->color = #00B000
+[      24]TRACE[configuration.c:432] sensors_read_config(): chipfeature->show = true
+[      24]TRACE[configuration.c:446] sensors_read_config(): chipfeature->max_value = 24.000000
+[      24]TRACE[configuration.c:321] sensors_read_config(): Chip1/4
+[      24]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      24]TRACE[configuration.c:333] sensors_read_config(): radeon-8
+
+[      24]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 1, number of expected or known chips: 4.
+
+[      24]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0x14009d0
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=2, chip=0x13e6440
+
+[      24]TRACE[configuration.c:368] sensors_read_config(): Chip1_Feature0
+
+[      24]TRACE[configuration.c:321] sensors_read_config(): Chip2/4
+[      24]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      24]TRACE[configuration.c:333] sensors_read_config(): k10temp-c3
+
+[      24]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 2, number of expected or known chips: 4.
+
+[      24]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0x14009d0
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=2, chip=0x13e6440
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=3, chip=0x13e6690
+
+[      24]TRACE[configuration.c:368] sensors_read_config(): Chip2_Feature0
+
+[      24]TRACE[configuration.c:412] sensors_read_config(): chipfeature->name = CPU temp
+[      24]TRACE[configuration.c:424] sensors_read_config(): chipfeature->color = #00B000
+[      24]TRACE[configuration.c:432] sensors_read_config(): chipfeature->show = true
+[      24]TRACE[configuration.c:446] sensors_read_config(): chipfeature->max_value = 34.380001
+[      24]TRACE[configuration.c:321] sensors_read_config(): Chip3/4
+[      24]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      24]TRACE[configuration.c:333] sensors_read_config(): thinkpad-0
+
+[      24]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 3, number of expected or known chips: 4.
+
+[      24]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0x14009d0
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=2, chip=0x13e6440
+
+[      24]TRACE[configuration.c:355] sensors_read_config(): k=3, chip=0x13e6690
+
+[      24]TRACE[configuration.c:469] sensors_read_config(): leaves sensors_read_config
+[      24]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      24]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      24]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      24]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      24]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      24]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      24]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      24]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      24]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 48 °C.
+
+[      24]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      24]TRACE[sensors-plugin.c:2359] sensors_plugin_construct(): leaves sensors_plugin_construct
+[      24]TRACE[sensors-plugin.c:911] sensors_set_orientation(): enters sensors_set_orientation: 1
+[      24]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      24]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      24]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      24]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      24]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      24]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      24]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      24]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      24]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 48 °C.
+
+[      24]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      24]TRACE[sensors-plugin.c:960] sensors_set_orientation(): leaves sensors_set_orientation
+[      24]TRACE[sensors-plugin.c:1074] sensors_set_size(): enters sensors_set_size
+[      24]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      24]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      24]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      24]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      24]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      24]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      24]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      24]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      24]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 48 °C.
+
+[      24]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      24]TRACE[sensors-plugin.c:1081] sensors_set_size(): leaves sensors_set_size
+[      24]TRACE[sensors-plugin.c:1074] sensors_set_size(): enters sensors_set_size
+[      24]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      24]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      24]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      24]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      24]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      24]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      24]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      24]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      24]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      24]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      24]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 48 °C.
+
+[      24]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      24]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      24]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      24]TRACE[sensors-plugin.c:1081] sensors_set_size(): leaves sensors_set_size
+[      29]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      29]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      29]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      29]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      29]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      29]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      29]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      29]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      29]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      29]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      29]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      29]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      29]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      29]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      29]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      29]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      29]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      29]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 46 °C.
+
+[      29]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      29]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      29]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      34]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      34]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      34]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      34]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      34]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      34]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      34]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      34]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      34]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      34]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      34]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      34]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      34]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      34]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      34]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      34]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      34]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      34]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C.
+
+[      34]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      34]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      34]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      39]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      39]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      39]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      39]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      39]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      39]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      39]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      39]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      39]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      39]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      39]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      39]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      39]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      39]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      39]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      39]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      39]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      39]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C.
+
+[      39]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      39]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      39]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      44]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      44]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      44]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      44]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      44]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      44]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      44]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      44]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      44]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      44]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      44]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      44]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      44]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      44]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      44]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      44]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      44]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      44]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C.
+
+[      44]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      44]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      44]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      49]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      49]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      49]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      49]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      49]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      49]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      49]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      49]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      49]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      49]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      49]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      49]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      49]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      49]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      49]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      49]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      49]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      49]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C.
+
+[      49]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      49]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      49]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      54]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      54]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      54]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      54]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      54]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      54]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      54]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      54]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      54]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      54]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      54]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      54]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      54]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      54]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      54]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      54]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      54]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      54]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C.
+
+[      54]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      54]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      54]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      59]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      59]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      59]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      59]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      59]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      59]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      59]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      59]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      59]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      59]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      59]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      59]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      59]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      59]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      59]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      59]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      59]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      59]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C.
+
+[      59]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      59]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      59]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      64]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      64]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      64]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      64]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      64]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      64]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      64]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      64]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      64]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      64]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      64]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      64]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      64]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      64]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      64]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      64]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      64]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      64]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C.
+
+[      64]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      64]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      64]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      68]TRACE[sensors-plugin.c:1014] execute_command(): enters execute_command
+[      68]TRACE[sensors-plugin.c:1032] execute_command(): leaves execute_command with FALSE
+[      69]TRACE[sensors-plugin.c:2185] sensors_create_options(): enters sensors_create_options
+[      69]TRACE[sensors-interface.c:438] init_widgets(): enters init_widgets
+[      69]TRACE[sensors-interface.c:92] fill_gtkTreeStore(): enters fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:154] fill_gtkTreeStore(): leaves fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:92] fill_gtkTreeStore(): enters fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:154] fill_gtkTreeStore(): leaves fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:92] fill_gtkTreeStore(): enters fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:154] fill_gtkTreeStore(): leaves fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:92] fill_gtkTreeStore(): enters fill_gtkTreeStore
+[      69]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      69]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      69]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      69]TRACE[sensors-interface.c:154] fill_gtkTreeStore(): leaves fill_gtkTreeStore
+[      69]TRACE[sensors-interface.c:504] init_widgets(): leaves init_widgets
+[      69]TRACE[sensors-interface.c:405] add_sensors_frame(): enters add_sensors_frame
+[      69]TRACE[sensors-interface.c:166] add_type_box(): enters add_type_box
+DBG[sensors-interface.c:186] add_type_box(): index: 0, chip: 0x14009d0
+
+[      69]TRACE[sensors-interface.c:211] add_type_box(): leaves add_type_box
+[      69]TRACE[sensors-interface.c:259] add_sensor_settings_box(): enters add_sensor_settings_box
+[      69]TRACE[sensors-interface.c:357] add_sensor_settings_box(): leaves add_sensor_settings_box
+[      69]TRACE[sensors-interface.c:366] add_temperature_unit_box(): enters add_temperature_unit_box
+[      69]TRACE[sensors-interface.c:395] add_temperature_unit_box(): leaves add_temperature_unit_box
+[      69]TRACE[sensors-interface.c:424] add_sensors_frame(): leaves add_sensors_frame
+[      69]TRACE[sensors-plugin.c:2076] add_view_frame(): enters add_view_frame
+[      69]TRACE[sensors-plugin.c:1813] add_title_box(): enters add_title_box
+[      69]TRACE[sensors-plugin.c:1829] add_title_box(): leaves add_title_box
+[      69]TRACE[sensors-plugin.c:1705] add_ui_style_box(): enters add_ui_style_box
+[      69]TRACE[sensors-plugin.c:1743] add_ui_style_box(): leaves add_ui_style_box
+[      69]TRACE[sensors-plugin.c:1752] add_labels_box(): enters add_labels_box
+[      69]TRACE[sensors-plugin.c:1774] add_labels_box(): leaves add_labels_box
+[      69]TRACE[sensors-plugin.c:1875] add_font_size_box(): enters add_font_size_box
+[      69]TRACE[sensors-plugin.c:1907] add_font_size_box(): leaves add_font_size_box
+[      69]TRACE[sensors-plugin.c:1917] add_font_settings_box(): enters add_font_settings_box
+
+(xfce4-sensors-plugin:4282): Gtk-CRITICAL **: IA__gtk_font_button_set_font_name: assertion 'fontname != NULL' failed
+[      69]TRACE[sensors-plugin.c:1944] add_font_settings_box(): leaves add_font_settings_box
+[      69]TRACE[sensors-plugin.c:1840] add_lines_box(): enters add_Lines_size_box
+[      69]TRACE[sensors-plugin.c:1865] add_lines_box(): leaves add_Lines_size_box
+[      69]TRACE[sensors-plugin.c:1782] add_colored_bars_box(): enters add_colored_bars_box
+[      69]TRACE[sensors-plugin.c:1805] add_colored_bars_box(): leaves add_colored_bars_box
+[      69]TRACE[sensors-plugin.c:1951] add_units_box(): enters add_units_box
+[      69]TRACE[sensors-plugin.c:1966] add_units_box(): leaves add_units_box
+[      69]TRACE[sensors-plugin.c:1972] add_smallspacings_box(): enters add_smallspacings_box
+[      69]TRACE[sensors-plugin.c:1987] add_smallspacings_box(): leaves add_smallspacings_box
+[      69]TRACE[sensors-plugin.c:2100] add_view_frame(): leaves add_view_frame
+[      69]TRACE[sensors-plugin.c:2110] add_miscellaneous_frame(): enters add_miscellaneous_frame
+[      69]TRACE[sensors-interface.c:222] add_update_time_box(): enters add_update_time_box
+[      69]TRACE[sensors-interface.c:247] add_update_time_box(): leaves add_update_time_box
+[      69]TRACE[sensors-plugin.c:1994] add_suppressmessage_box(): enters add_suppressmessage_box
+[      69]TRACE[sensors-plugin.c:2006] add_suppressmessage_box(): leaves add_suppressmessage_box
+[      69]TRACE[sensors-plugin.c:2012] add_suppresstooltips_box(): enters add_suppresstooltips_box
+[      69]TRACE[sensors-plugin.c:2024] add_suppresstooltips_box(): leaves add_suppresstooltips_box
+[      69]TRACE[sensors-plugin.c:2034] add_command_box(): enters add_command_box
+[      69]TRACE[sensors-plugin.c:2067] add_command_box(): leaves add_command_box
+[      69]TRACE[sensors-plugin.c:2131] add_miscellaneous_frame(): leaves add_miscellaneous_frame
+[      69]TRACE[sensors-plugin.c:2247] sensors_create_options(): leaves sensors_create_options
+[      69]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      69]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      69]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      69]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 2 5
+[      69]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      69]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      69]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      69]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      69]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      69]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      69]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      69]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      69]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      69]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      69]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      69]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      69]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      69]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 43 °C 
+<b>k10temp-c3</b>
+  CPU temp: 46 °C.
+
+[      69]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      69]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      69]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      70]TRACE[sensors-plugin.c:1252] sensor_entry_changed(): enters sensor_entry_changed
+[      70]TRACE[sensors-plugin.c:1263] sensor_entry_changed(): leaves sensor_entry_changed
+[      71]TRACE[sensors-plugin.c:1629] list_cell_toggle(): enters list_cell_toggle
+[      71]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      71]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      71]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      71]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 5
+[      71]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      71]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      71]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      71]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      71]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      71]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      71]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      71]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      71]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      71]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      71]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      71]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      71]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      71]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      71]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      71]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      71]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      71]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      71]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      71]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      71]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      71]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      71]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      71]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      71]TRACE[sensors-plugin.c:1676] list_cell_toggle(): leaves list_cell_toggle
+[      72]TRACE[sensors-plugin.c:2138] on_optionsDialog_response(): enters on_optionsDialog_response
+[      72]TRACE[configuration.c:77] sensors_write_config(): enters sensors_write_config
+[      72]TRACE[configuration.c:49] get_Id_from_address(): enters get_Id_from_address
+[      72]TRACE[configuration.c:61] get_Id_from_address(): leaves get_Id_from_address with -1
+[      72]TRACE[configuration.c:49] get_Id_from_address(): enters get_Id_from_address
+[      72]TRACE[configuration.c:56] get_Id_from_address(): leaves get_Id_from_address with 0
+[      72]TRACE[configuration.c:49] get_Id_from_address(): enters get_Id_from_address
+[      72]TRACE[configuration.c:56] get_Id_from_address(): leaves get_Id_from_address with 0
+[      72]TRACE[configuration.c:188] sensors_write_config(): leaves sensors_write_config
+[      72]TRACE[sensors-plugin.c:2173] on_optionsDialog_response(): leaves on_optionsDialog_response
+[      73]TRACE[sensors-plugin.c:1014] execute_command(): enters execute_command
+[      73]TRACE[sensors-plugin.c:1032] execute_command(): leaves execute_command with FALSE
+[      74]TRACE[sensors-plugin.c:1014] execute_command(): enters execute_command
+[      74]TRACE[sensors-plugin.c:1032] execute_command(): leaves execute_command with FALSE
+[      74]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      74]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      74]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=4)
+[      74]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 5
+[      74]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      74]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      74]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      74]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      74]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      74]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      74]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      74]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      74]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      74]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      74]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      74]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      74]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      74]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      74]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      74]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      74]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      74]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      74]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      74]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      74]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 43 °C 
+<b>k10temp-c3</b>
+  CPU temp: 44 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      74]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      74]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      74]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      75]TRACE[sensors-plugin.c:1014] execute_command(): enters execute_command
+[      75]TRACE[sensors-plugin.c:1032] execute_command(): leaves execute_command with FALSE
+[      75]TRACE[sensors-plugin.c:1014] execute_command(): enters execute_command
+[      75]TRACE[sensors-plugin.c:1032] execute_command(): leaves execute_command with FALSE
+[      75]TRACE[sensors-plugin.c:1014] execute_command(): enters execute_command
+[      75]TRACE[sensors-plugin.c:1027] execute_command(): leaves execute_command with TRUE
+[      75]TRACE[configuration.c:77] sensors_write_config(): enters sensors_write_config
+[      75]TRACE[configuration.c:49] get_Id_from_address(): enters get_Id_from_address
+[      75]TRACE[configuration.c:61] get_Id_from_address(): leaves get_Id_from_address with -1
+[      75]TRACE[configuration.c:49] get_Id_from_address(): enters get_Id_from_address
+[      75]TRACE[configuration.c:56] get_Id_from_address(): leaves get_Id_from_address with 0
+[      75]TRACE[configuration.c:49] get_Id_from_address(): enters get_Id_from_address
+[      75]TRACE[configuration.c:56] get_Id_from_address(): leaves get_Id_from_address with 0
+[      75]TRACE[configuration.c:188] sensors_write_config(): leaves sensors_write_config
+[      75]TRACE[sensors-plugin.c:1041] sensors_free(): enters sensors_free
+
+(xfce4-sensors-plugin:4282): GLib-CRITICAL **: Source ID 15 was not found when attempting to remove it
+[      75]TRACE[sensors-plugin.c:1067] sensors_free(): leaves sensors_free
+xfce4-panel: Restarting...
+
+
+(xfce4-panel:4225): GLib-WARNING **: GChildWatchSource: Exit status of a child process was requested but ECHILD was received by waitpid(). Most likely the process is ignoring SIGCHLD, or some other thread is invoking waitpid() with a nonpositive first argument; either behavior can break applications that use g_child_watch_add()/g_spawn_sync() either directly or indirectly.
+[      75]TRACE[sensors-plugin.c:2315] sensors_plugin_construct(): enters sensors_plugin_construct
+[      75]TRACE[sensors-plugin.c:2280] create_sensors_control(): enters create_sensors_control
+[      75]TRACE[sensors-interface-common.c:44] sensors_new(): enters sensors_new
+[      75]TRACE[sensors-interface-common.c:100] sensors_init_default_values(): enters sensors_init_default_values
+[      75]TRACE[sensors-interface-common.c:131] sensors_init_default_values(): leaves sensors_init_default_values
+[      75]TRACE[configuration.c:264] sensors_read_preliminary_config(): enters sensors_read_preliminary_config
+[      75]TRACE[configuration.c:283] sensors_read_preliminary_config(): leaves sensors_read_preliminary_config
+[      75]TRACE[middlelayer.c:63] initialize_all(): enters initialize_all
+[      75]TRACE[lmsensors.c:412] initialize_libsensors(): enters initialize_libsensors version over four
+[      75]TRACE[lmsensors.c:425] initialize_libsensors(): num_sensorchips after detect: 1
+
+[      75]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      75]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=Virtual device
+[      75]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      75]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=CPU temp feats=1
+[      75]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      75]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=MOBO temp feats=2
+[      75]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      75]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=PCI adapter
+[      75]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      75]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=gfx card feats=1
+[      75]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      75]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=PCI adapter
+[      75]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      75]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=CPU temp feats=1
+[      75]TRACE[lmsensors.c:84] setup_chip(): enters setup_chip
+[      75]TRACE[lmsensors.c:120] setup_chip(): leaves setup_chip  descr=ISA adapter
+[      75]TRACE[lmsensors.c:288] find_chipfeature(): enters find_chipfeature v4
+[      75]TRACE[lmsensors.c:336] find_chipfeature(): leaves find_chipfeature name=fan1_always0 feats=1
+[      75]TRACE[lmsensors.c:447] initialize_libsensors(): leaves initialize_libsensors with 1
+[      75]TRACE[middlelayer.c:69] initialize_all(): libsensors result so far: 1 chips len:4
+[      75]TRACE[hddtemp.c:405] initialize_hddtemp(): enters initialize_hddtemp
+DBG[hddtemp.c:222] read_disks_netcat(): reply= with result=-1
+
+[      75]TRACE[hddtemp.c:324] remove_unmonitored_drives(): enters remove_unmonitored_drives
+[      75]TRACE[hddtemp.c:353] remove_unmonitored_drives(): leaves remove_unmonitored_drives
+DBG[hddtemp.c:445] initialize_hddtemp(): numfeatures=0
+
+[      75]TRACE[hddtemp.c:456] initialize_hddtemp(): leaves initialize_hddtemp
+[      75]TRACE[middlelayer.c:74] initialize_all(): hddtemp result so far: 1 chips len:4
+[      75]TRACE[acpi.c:526] initialize_ACPI(): enters initialize_ACPI
+[      75]TRACE[acpi.c:639] get_acpi_info(): enters get_acpi_info
+[      75]TRACE[acpi.c:713] get_acpi_value(): enters get_acpi_value for /proc/acpi/info
+[      75]TRACE[acpi.c:713] get_acpi_value(): enters get_acpi_value for /proc/acpi/info_
+[      75]TRACE[acpi.c:713] get_acpi_value(): enters get_acpi_value for /sys/module/acpi/parameters/acpica_version
+[      75]TRACE[acpi.c:724] get_acpi_value(): leaves get_acpi_value with 20141107
+
+[      75]TRACE[acpi.c:671] get_acpi_info(): leaves get_acpi_info
+[      75]TRACE[acpi.c:265] read_battery_zone(): enters read_battery_zone
+DBG[acpi.c:290] read_battery_zone(): filename=/sys/class/power_supply/BAT0/model_name
+
+DBG[acpi.c:302] read_battery_zone(): Name=L09S6Y02
+
+DBG[acpi.c:327] read_battery_zone(): Raw-Value=33800000.000000
+
+DBG[acpi.c:339] read_battery_zone(): Min-Value=0.000000
+
+[      75]TRACE[acpi.c:406] get_battery_max_value(): enters get_battery_max_value
+DBG[acpi.c:415] get_battery_max_value(): filename=/sys/class/power_supply/BAT0/energy_full
+
+DBG[acpi.c:424] get_battery_max_value(): Max-Value=33800.000000
+
+[      75]TRACE[acpi.c:442] get_battery_max_value(): leaves get_battery_max_value
+[      75]TRACE[acpi.c:384] read_battery_zone(): leaves read_battery_zone
+[      75]TRACE[acpi.c:94] read_thermal_zone(): enters read_thermal_zone
+[      75]TRACE[acpi.c:157] read_thermal_zone(): leaves read_thermal_zone
+[      75]TRACE[acpi.c:454] read_fan_zone(): enters read_fan_zone
+[      75]TRACE[acpi.c:515] read_fan_zone(): leaves read_fan_zone
+[      75]TRACE[acpi.c:557] initialize_ACPI(): leaves initialize_ACPI
+[      75]TRACE[middlelayer.c:79] initialize_all(): acpi result so far: 5 chips len:5
+[      75]TRACE[middlelayer.c:87] initialize_all(): leaves initialize_all, chips->len=5
+[      75]TRACE[sensors-interface-common.c:90] sensors_new(): leaves sensors_new
+[      75]TRACE[sensors-plugin.c:971] create_panel_widget(): enters create_panel_widget
+[      75]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      75]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      75]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=5)
+[      75]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 0 6
+[      75]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      75]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      75]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      75]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: No sensors selected!.
+
+[      75]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      75]TRACE[sensors-plugin.c:1004] create_panel_widget(): leaves create_panel_widget
+[      75]TRACE[sensors-plugin.c:2304] create_sensors_control(): leaves create_sensors_control
+[      75]TRACE[configuration.c:303] sensors_read_config(): enters sensors_read_config
+[      75]TRACE[configuration.c:314] sensors_read_config(): sensors pre read_general_config = 5
+[      75]TRACE[configuration.c:197] sensors_read_general_config(): enters sensors_read_general_config
+[      75]TRACE[configuration.c:255] sensors_read_general_config(): leaves sensors_read_general_config
+[      75]TRACE[configuration.c:316] sensors_read_config(): sensors aft read_general_config = 5
+[      75]TRACE[configuration.c:321] sensors_read_config(): Chip0/5
+[      75]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      75]TRACE[configuration.c:333] sensors_read_config(): acpitz-0
+
+[      75]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 0, number of expected or known chips: 5.
+
+[      75]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0xcf0a00
+
+[      75]TRACE[configuration.c:368] sensors_read_config(): Chip0_Feature0
+
+[      75]TRACE[configuration.c:368] sensors_read_config(): Chip0_Feature1
+
+[      75]TRACE[configuration.c:412] sensors_read_config(): chipfeature->name = MOBO temp
+[      75]TRACE[configuration.c:424] sensors_read_config(): chipfeature->color = #00B000
+[      75]TRACE[configuration.c:432] sensors_read_config(): chipfeature->show = true
+[      75]TRACE[configuration.c:446] sensors_read_config(): chipfeature->max_value = 24.000000
+[      75]TRACE[configuration.c:321] sensors_read_config(): Chip1/5
+[      75]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      75]TRACE[configuration.c:333] sensors_read_config(): radeon-8
+
+[      75]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 1, number of expected or known chips: 5.
+
+[      75]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0xcf0a00
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=2, chip=0xcde8f0
+
+[      75]TRACE[configuration.c:368] sensors_read_config(): Chip1_Feature0
+
+[      75]TRACE[configuration.c:321] sensors_read_config(): Chip2/5
+[      75]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      75]TRACE[configuration.c:333] sensors_read_config(): k10temp-c3
+
+[      75]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 2, number of expected or known chips: 5.
+
+[      75]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0xcf0a00
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=2, chip=0xcde8f0
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=3, chip=0xcdeb40
+
+[      75]TRACE[configuration.c:368] sensors_read_config(): Chip2_Feature0
+
+[      75]TRACE[configuration.c:412] sensors_read_config(): chipfeature->name = CPU temp
+[      75]TRACE[configuration.c:424] sensors_read_config(): chipfeature->color = #00B000
+[      75]TRACE[configuration.c:432] sensors_read_config(): chipfeature->show = true
+[      75]TRACE[configuration.c:446] sensors_read_config(): chipfeature->max_value = 34.380001
+[      75]TRACE[configuration.c:321] sensors_read_config(): Chip3/5
+[      75]TRACE[configuration.c:330] sensors_read_config(): got sensorName:
+[      75]TRACE[configuration.c:333] sensors_read_config(): ACPI
+
+[      75]TRACE[configuration.c:344] sensors_read_config(): number of chip from file: 3, number of expected or known chips: 5.
+
+[      75]TRACE[configuration.c:346] sensors_read_config(): Success.
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=1, chip=0xcf0a00
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=2, chip=0xcde8f0
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=3, chip=0xcdeb40
+
+[      75]TRACE[configuration.c:355] sensors_read_config(): k=4, chip=0xcded20
+
+[      75]TRACE[configuration.c:368] sensors_read_config(): Chip3_Feature0
+
+[      75]TRACE[configuration.c:412] sensors_read_config(): chipfeature->name = L09S6Y02
+[      75]TRACE[configuration.c:424] sensors_read_config(): chipfeature->color = #0000B0
+[      75]TRACE[configuration.c:432] sensors_read_config(): chipfeature->show = true
+[      75]TRACE[configuration.c:446] sensors_read_config(): chipfeature->max_value = 33800.000000
+[      75]TRACE[configuration.c:321] sensors_read_config(): Chip4/5
+[      75]TRACE[configuration.c:469] sensors_read_config(): leaves sensors_read_config
+[      75]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      75]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      75]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=5)
+[      75]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 6
+[      75]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      75]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      75]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      75]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      75]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      75]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      75]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      75]TRACE[sensors-plugin.c:2359] sensors_plugin_construct(): leaves sensors_plugin_construct
+[      75]TRACE[sensors-plugin.c:911] sensors_set_orientation(): enters sensors_set_orientation: 1
+[      75]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      75]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      75]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=5)
+[      75]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 6
+[      75]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      75]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      75]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      75]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      75]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      75]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      75]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      75]TRACE[sensors-plugin.c:960] sensors_set_orientation(): leaves sensors_set_orientation
+[      75]TRACE[sensors-plugin.c:1074] sensors_set_size(): enters sensors_set_size
+[      75]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      75]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      75]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=5)
+[      75]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 6
+[      75]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      75]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      75]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      75]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      75]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      75]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      75]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      75]TRACE[sensors-plugin.c:1081] sensors_set_size(): leaves sensors_set_size
+[      75]TRACE[sensors-plugin.c:1074] sensors_set_size(): enters sensors_set_size
+[      75]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      75]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      75]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=5)
+[      75]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 6
+[      75]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      75]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      75]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      75]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      75]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      75]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      75]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      75]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      75]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      75]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      75]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      75]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      75]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+
+[      75]TRACE[sensors-plugin.c:1081] sensors_set_size(): leaves sensors_set_size
+[      80]TRACE[sensors-plugin.c:876] sensors_show_panel(): enters sensors_show_panel
+[      80]TRACE[sensors-plugin.c:744] sensors_show_text_display(): enters sensors_show_text_display
+[      80]TRACE[sensors-plugin.c:710] count_number_checked_sensor_features(): enters count_number_checked_sensor_features (num_sensorchips=5)
+[      80]TRACE[sensors-plugin.c:732] count_number_checked_sensor_features(): leaves count_number_checked_sensor_features with 3 6
+[      80]TRACE[sensors-plugin.c:578] determine_number_of_cols(): enters determine_number_of_cols
+[      80]TRACE[sensors-plugin.c:589] determine_number_of_cols(): leaves determine_number_of_cols width cols=1
+[      80]TRACE[sensors-plugin.c:603] sensors_set_text_panel_label(): enters sensors_set_text_panel_label
+[      80]TRACE[sensors-plugin.c:699] sensors_set_text_panel_label(): leaves sensors_set_text_panel_label
+[      80]TRACE[sensors-plugin.c:762] sensors_show_text_display(): leaves sensors_show_text_display
+
+[      80]TRACE[sensors-plugin.c:782] sensors_create_tooltip(): enters sensors_create_tooltip
+[      80]TRACE[sensors-plugin.c:785] sensors_create_tooltip(): data!=NULL
+[      80]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      80]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      80]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      80]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      80]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      80]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      80]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+[      80]TRACE[sensors-plugin.c:814] sensors_create_tooltip(): freeing myToolTipText
+[      80]TRACE[acpi.c:568] refresh_acpi(): enters refresh_acpi
+[      80]TRACE[acpi.c:213] get_battery_zone_value(): enters get_battery_zone_value for BAT0
+DBG[acpi.c:223] get_battery_zone_value(): filename=/sys/class/power_supply/BAT0/energy_now
+
+[      80]TRACE[acpi.c:616] refresh_acpi(): leaves refresh_acpi
+[      80]TRACE[sensors-plugin.c:841] sensors_create_tooltip(): freeing myToolTipText
+[      80]TRACE[sensors-plugin.c:845] sensors_create_tooltip(): freeing chipfeature->formatted_value
+[      80]TRACE[sensors-plugin.c:850] sensors_create_tooltip(): freeing tmp
+DBG[sensors-plugin.c:857] sensors_create_tooltip(): tooltip text: <b>acpitz-0</b>
+  MOBO temp: 44 °C 
+<b>k10temp-c3</b>
+  CPU temp: 45 °C 
+<b>ACPI</b>
+  L09S6Y02: 33800 mWh.
+
+[      80]TRACE[sensors-plugin.c:861] sensors_create_tooltip(): freeing myToolTipText
+[      80]TRACE[sensors-plugin.c:864] sensors_create_tooltip(): leaves sensors_create_tooltip
+[      80]TRACE[sensors-plugin.c:896] sensors_show_panel(): leaves sensors_show_panel
+

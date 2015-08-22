@@ -1,0 +1,53 @@
+diff --git a/xfce4-session/xfsm-global.c b/xfce4-session/xfsm-global.c
+index 6368a9a..12d551f 100644
+--- a/xfce4-session/xfsm-global.c
++++ b/xfce4-session/xfsm-global.c
+@@ -79,6 +79,23 @@ xfsm_is_verbose_enabled (void)
+   return verbose;
+ }
+ 
++
++#include <sys/sysinfo.h>
++static long trace_get_uptime()
++{ //src: https://stackoverflow.com/questions/1540627/what-api-do-i-call-to-get-the-system-uptime
++  struct sysinfo s_info;
++  int error;
++  error = sysinfo(&s_info);
++  if(error != 0)
++  {
++    fprintf(stderr, "Error %d getting uptime.\n", error);                                                     
++    return -error;
++  }
++  return s_info.uptime;//long uptime; //%ld            /* Seconds since boot */
++//printk dmesg style aka uptime
++}
++
++
+ void
+ xfsm_verbose_real (const char *func,
+                    const char *file,
+@@ -92,7 +109,8 @@ xfsm_verbose_real (const char *func,
+ 
+   if (G_UNLIKELY (fp == NULL))
+     {
+-      logfile = xfce_get_homefile (".xfce4-session.verbose-log", NULL);
++//      logfile = xfce_get_homefile (".xfce4-session.verbose-log", NULL);
++      logfile = "/tmp/.xfce4-session.verbose-log"; //TODO: add pidof?
+ 
+       /* rename an existing log file to -log.last */
+       if (logfile && g_file_test (logfile, G_FILE_TEST_EXISTS))
+@@ -106,11 +124,11 @@ xfsm_verbose_real (const char *func,
+         }
+ 
+       fp = fopen (logfile, "w");
+-      g_free (logfile);
+-      fprintf(fp, "log file opened\n");
++//      g_free (logfile);
++      fprintf(fp, "log file opened: %s\n", logfile);
+     }
+ 
+-  fprintf (fp, "TRACE[%s:%d] %s(): ", file, line, func);
++  fprintf (fp, "[%8ld] TRACE[%s:%d] %s(): ", trace_get_uptime(), file, line, func);
+   va_start (valist, format);
+   vfprintf (fp, format, valist);
+   fflush (fp);

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+find . -type l -print0 | xargs -0 -I '{}' -n 1 sh -c 'if test ! -e "{}"; then echo "{}"; fi' | less
+
+

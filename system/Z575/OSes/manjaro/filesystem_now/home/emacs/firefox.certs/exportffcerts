@@ -1,0 +1,12 @@
+#!/bin/bash
+
+can't export all via certutil
+can only export those identified by their nickname
+but nickname can be the same... so...
+apparently it will export all with that nickname, so in my case two at the same time
+
+
+certutil -L -d "your firefox profile dir here"
+# ^ lists all certs
+#FIXME: can't see a way to dump this in a consistent way to capture all cert nicknames which then I could pass to certutil with the -n param and -a to dump as .pem
+so for now, you have to export all certs from firefox manually: select all, Export, and click Save for each file! put them in ./the_certs folder (create new!)

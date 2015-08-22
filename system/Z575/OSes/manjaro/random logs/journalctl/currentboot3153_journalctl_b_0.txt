@@ -1,0 +1,1492 @@
+-- Logs begin at Sat 2014-07-05 00:52:24 CEST, end at Sun 2014-07-06 09:18:10 CEST. --
+Jul 06 08:35:52 manji systemd-journal[222]: Runtime journal is using 8.0M (max allowed 723.7M, trying to leave 1.0G free of 7.0G available → current limit 723.7M).
+Jul 06 08:35:52 manji systemd-journal[222]: Runtime journal is using 8.0M (max allowed 723.7M, trying to leave 1.0G free of 7.0G available → current limit 723.7M).
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys cpuset
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys cpu
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys cpuacct
+Jul 06 08:35:52 manji kernel: Linux version 3.15.3-1-MANJARO (emacs@manji) (gcc version 4.9.0 20140604 (prerelease) (GCC) ) #17 SMP PREEMPT Sun Jul 6 08:24:01 CEST 2014
+Jul 06 08:35:52 manji kernel: Command line: BOOT_IMAGE=/vmlinuz-315-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=7 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y nofb mminit_loglevel=0
+Jul 06 08:35:52 manji kernel: e820: BIOS-provided physical RAM map:
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009d7ff] usable
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x000000000009d800-0x000000000009ffff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x0000000000100000-0x00000000bed9afff] usable
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000bed9b000-0x00000000bf39afff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000bf39b000-0x00000000bf49afff] ACPI NVS
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000bf49b000-0x00000000bf51afff] ACPI data
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000bf51b000-0x00000000bfdfffff] usable
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000bfe00000-0x00000000bfffffff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000fec00000-0x00000000fecfffff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000fed80000-0x00000000fed80fff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x00000000ffe00000-0x00000000ffffffff] reserved
+Jul 06 08:35:52 manji kernel: BIOS-e820: [mem 0x0000000100000000-0x000000041effffff] usable
+Jul 06 08:35:52 manji kernel: NX (Execute Disable) protection: active
+Jul 06 08:35:52 manji kernel: SMBIOS 2.6 present.
+Jul 06 08:35:52 manji kernel: DMI: LENOVO Sabine/Torpedo, BIOS 54CN18WW 07/20/2011
+Jul 06 08:35:52 manji kernel: e820: update [mem 0x00000000-0x00000fff] usable ==> reserved
+Jul 06 08:35:52 manji kernel: e820: remove [mem 0x000a0000-0x000fffff] usable
+Jul 06 08:35:52 manji kernel: e820: last_pfn = 0x41f000 max_arch_pfn = 0x400000000
+Jul 06 08:35:52 manji kernel: MTRR default type: uncachable
+Jul 06 08:35:52 manji kernel: MTRR fixed ranges enabled:
+Jul 06 08:35:52 manji kernel:   00000-9FFFF write-back
+Jul 06 08:35:52 manji kernel:   A0000-BFFFF uncachable
+Jul 06 08:35:52 manji kernel:   C0000-FFFFF write-protect
+Jul 06 08:35:52 manji kernel: MTRR variable ranges enabled:
+Jul 06 08:35:52 manji kernel:   0 base 0000000000 mask FF80000000 write-back
+Jul 06 08:35:52 manji kernel:   1 base 0080000000 mask FFC0000000 write-back
+Jul 06 08:35:52 manji kernel:   2 base 00FFF90000 mask FFFFFF0000 uncachable
+Jul 06 08:35:52 manji kernel:   3 base 00FED80000 mask 0FFFFFF000 uncachable
+Jul 06 08:35:52 manji kernel:   4 disabled
+Jul 06 08:35:52 manji kernel:   5 disabled
+Jul 06 08:35:52 manji kernel:   6 disabled
+Jul 06 08:35:52 manji kernel:   7 base 00FFE00000 mask FFFFE00000 write-protect
+Jul 06 08:35:52 manji kernel: TOM2: 000000041f000000 aka 16880M
+Jul 06 08:35:52 manji kernel: x86 PAT enabled: cpu 0, old 0x7040600070406, new 0x7010600070106
+Jul 06 08:35:52 manji kernel: mtrr: your BIOS has configured an incorrect mask, fixing it.
+Jul 06 08:35:52 manji kernel: e820: last_pfn = 0xbfe00 max_arch_pfn = 0x400000000
+Jul 06 08:35:52 manji kernel: Scanning 1 areas for low memory corruption
+Jul 06 08:35:52 manji kernel: Base memory trampoline at [ffff880000097000] 97000 size 24576
+Jul 06 08:35:52 manji kernel: Using GB pages for direct mapping
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0x00000000-0x000fffff]
+Jul 06 08:35:52 manji kernel:  [mem 0x00000000-0x000fffff] page 4k
+Jul 06 08:35:52 manji kernel: BRK [0x32baa000, 0x32baafff] PGTABLE
+Jul 06 08:35:52 manji kernel: BRK [0x32bab000, 0x32babfff] PGTABLE
+Jul 06 08:35:52 manji kernel: BRK [0x32bac000, 0x32bacfff] PGTABLE
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0x41ee00000-0x41effffff]
+Jul 06 08:35:52 manji kernel:  [mem 0x41ee00000-0x41effffff] page 2M
+Jul 06 08:35:52 manji kernel: BRK [0x32bad000, 0x32badfff] PGTABLE
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0x41c000000-0x41edfffff]
+Jul 06 08:35:52 manji kernel:  [mem 0x41c000000-0x41edfffff] page 2M
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0x400000000-0x41bffffff]
+Jul 06 08:35:52 manji kernel:  [mem 0x400000000-0x41bffffff] page 2M
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0x00100000-0xbed9afff]
+Jul 06 08:35:52 manji kernel:  [mem 0x00100000-0x001fffff] page 4k
+Jul 06 08:35:52 manji kernel:  [mem 0x00200000-0x3fffffff] page 2M
+Jul 06 08:35:52 manji kernel:  [mem 0x40000000-0x7fffffff] page 1G
+Jul 06 08:35:52 manji kernel:  [mem 0x80000000-0xbebfffff] page 2M
+Jul 06 08:35:52 manji kernel:  [mem 0xbec00000-0xbed9afff] page 4k
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0xbf51b000-0xbfdfffff]
+Jul 06 08:35:52 manji kernel:  [mem 0xbf51b000-0xbf5fffff] page 4k
+Jul 06 08:35:52 manji kernel:  [mem 0xbf600000-0xbfdfffff] page 2M
+Jul 06 08:35:52 manji kernel: BRK [0x32bae000, 0x32baefff] PGTABLE
+Jul 06 08:35:52 manji kernel: init_memory_mapping: [mem 0x100000000-0x3ffffffff]
+Jul 06 08:35:52 manji kernel:  [mem 0x100000000-0x3ffffffff] page 1G
+Jul 06 08:35:52 manji kernel: log_buf_len: 1073741824
+Jul 06 08:35:52 manji kernel: early log buf free: 2092552(99%)
+Jul 06 08:35:52 manji kernel: RAMDISK: [mem 0x376a4000-0x37b49fff]
+Jul 06 08:35:52 manji kernel: ACPI: RSDP 0x00000000000F0110 000024 (v02 LENOVO)
+Jul 06 08:35:52 manji kernel: ACPI: XSDT 0x00000000BF51A120 000074 (v01 LENOVO CB-01    00000001 LENO 00000001)
+Jul 06 08:35:52 manji kernel: ACPI: FACP 0x00000000BF508000 0000F4 (v04 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: DSDT 0x00000000BF50A000 00FD10 (v01 LENOVO CB-01    00001000 LENO 00000001)
+Jul 06 08:35:52 manji kernel: ACPI: FACS 0x00000000BF478000 000040
+Jul 06 08:35:52 manji kernel: ACPI: HPET 0x00000000BF507000 000038 (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: APIC 0x00000000BF506000 00007A (v02 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: MCFG 0x00000000BF505000 00003C (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: SLIC 0x00000000BF504000 000176 (v01 LENOVO CB-01    00000001 LENO 00000001)
+Jul 06 08:35:52 manji kernel: ACPI: UEFI 0x00000000BF503000 00003E (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: UEFI 0x00000000BF502000 000042 (v01 PTL    COMBUF   00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: SSDT 0x00000000BF501000 000E34 (v01 AMD    POWERNOW 00000001 AMD  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: SSDT 0x00000000BF4FF000 00193D (v02 AMD    ALIB     00000001 MSFT 04000000)
+Jul 06 08:35:52 manji kernel: ACPI: UEFI 0x00000000BF4FE000 00021A (v01 LENOVO CB-01    00000001 PTL  00000001)
+Jul 06 08:35:52 manji kernel: ACPI: Local APIC address 0xfee00000
+Jul 06 08:35:52 manji kernel:  [ffffea0000000000-ffffea00107fffff] PMD -> [ffff8803cee00000-ffff8803de5fffff] on node 0
+Jul 06 08:35:52 manji kernel: Zone ranges:
+Jul 06 08:35:52 manji kernel:   DMA      [mem 0x00001000-0x00ffffff]
+Jul 06 08:35:52 manji kernel:   DMA32    [mem 0x01000000-0xffffffff]
+Jul 06 08:35:52 manji kernel:   Normal   [mem 0x100000000-0x41effffff]
+Jul 06 08:35:52 manji kernel: Movable zone start for each node
+Jul 06 08:35:52 manji kernel: Early memory node ranges
+Jul 06 08:35:52 manji kernel:   node   0: [mem 0x00001000-0x0009cfff]
+Jul 06 08:35:52 manji kernel:   node   0: [mem 0x00100000-0xbed9afff]
+Jul 06 08:35:52 manji kernel:   node   0: [mem 0xbf51b000-0xbfdfffff]
+Jul 06 08:35:52 manji kernel:   node   0: [mem 0x100000000-0x41effffff]
+Jul 06 08:35:52 manji kernel: On node 0 totalpages: 4056604
+Jul 06 08:35:52 manji kernel:   DMA zone: 64 pages used for memmap
+Jul 06 08:35:52 manji kernel:   DMA zone: 156 pages reserved
+Jul 06 08:35:52 manji kernel:   DMA zone: 3996 pages, LIFO batch:0
+Jul 06 08:35:52 manji kernel:   DMA32 zone: 12186 pages used for memmap
+Jul 06 08:35:52 manji kernel:   DMA32 zone: 779904 pages, LIFO batch:31
+Jul 06 08:35:52 manji kernel:   Normal zone: 51136 pages used for memmap
+Jul 06 08:35:52 manji kernel:   Normal zone: 3272704 pages, LIFO batch:31
+Jul 06 08:35:52 manji kernel: ACPI: PM-Timer IO Port: 0x808
+Jul 06 08:35:52 manji kernel: ACPI: Local APIC address 0xfee00000
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC (acpi_id[0x00] lapic_id[0x00] enabled)
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC (acpi_id[0x01] lapic_id[0x01] enabled)
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC (acpi_id[0x02] lapic_id[0x02] enabled)
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC (acpi_id[0x03] lapic_id[0x03] enabled)
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x00] high edge lint[0x1])
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x01] high edge lint[0x1])
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x02] high edge lint[0x1])
+Jul 06 08:35:52 manji kernel: ACPI: LAPIC_NMI (acpi_id[0x03] high edge lint[0x1])
+Jul 06 08:35:52 manji kernel: ACPI: IOAPIC (id[0x02] address[0xfec00000] gsi_base[0])
+Jul 06 08:35:52 manji kernel: IOAPIC[0]: apic_id 2, version 33, address 0xfec00000, GSI 0-23
+Jul 06 08:35:52 manji kernel: ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+Jul 06 08:35:52 manji kernel: ACPI: IRQ0 used by override.
+Jul 06 08:35:52 manji kernel: ACPI: IRQ2 used by override.
+Jul 06 08:35:52 manji kernel: ACPI: IRQ9 used by override.
+Jul 06 08:35:52 manji kernel: Using ACPI (MADT) for SMP configuration information
+Jul 06 08:35:52 manji kernel: ACPI: HPET id: 0x43538210 base: 0xfed00000
+Jul 06 08:35:52 manji kernel: smpboot: Allowing 4 CPUs, 0 hotplug CPUs
+Jul 06 08:35:52 manji kernel: nr_irqs_gsi: 40
+Jul 06 08:35:52 manji kernel: e820: [mem 0xc0000000-0xfebfffff] available for PCI devices
+Jul 06 08:35:52 manji kernel: setup_percpu: NR_CPUS:32 nr_cpumask_bits:32 nr_cpu_ids:4 nr_node_ids:1
+Jul 06 08:35:52 manji kernel: PERCPU: Embedded 26 pages/cpu @ffff8803dec00000 s75584 r8192 d22720 u524288
+Jul 06 08:35:52 manji kernel: pcpu-alloc: s75584 r8192 d22720 u524288 alloc=1*2097152
+Jul 06 08:35:52 manji kernel: pcpu-alloc: [0] 0 1 2 3 
+Jul 06 08:35:52 manji kernel: Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 3993062
+Jul 06 08:35:52 manji kernel: Kernel command line: BOOT_IMAGE=/vmlinuz-315-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=7 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y nofb mminit_loglevel=0
+Jul 06 08:35:52 manji kernel: PID hash table entries: 4096 (order: 3, 32768 bytes)
+Jul 06 08:35:52 manji kernel: Dentry cache hash table entries: 2097152 (order: 12, 16777216 bytes)
+Jul 06 08:35:52 manji kernel: Inode-cache hash table entries: 1048576 (order: 11, 8388608 bytes)
+Jul 06 08:35:52 manji kernel: Memory: 14815228K/16226416K available (4467K kernel code, 491K rwdata, 1500K rodata, 804K init, 2432K bss, 1411188K reserved)
+Jul 06 08:35:52 manji kernel: SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+Jul 06 08:35:52 manji kernel: Preemptible hierarchical RCU implementation.
+Jul 06 08:35:52 manji kernel:         RCU dyntick-idle grace-period acceleration is enabled.
+Jul 06 08:35:52 manji kernel:         Dump stacks of tasks blocking RCU-preempt GP.
+Jul 06 08:35:52 manji kernel:         RCU restricting CPUs from NR_CPUS=32 to nr_cpu_ids=4.
+Jul 06 08:35:52 manji kernel: RCU: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+Jul 06 08:35:52 manji kernel: NR_IRQS:4352 nr_irqs:712 16
+Jul 06 08:35:52 manji kernel: spurious 8259A interrupt: IRQ7.
+Jul 06 08:35:52 manji kernel: Console: colour VGA+ 80x25
+Jul 06 08:35:52 manji kernel: console [tty0] enabled
+Jul 06 08:35:52 manji kernel: allocated 65011712 bytes of page_cgroup
+Jul 06 08:35:52 manji kernel: please try 'cgroup_disable=memory' option if you don't want memory cgroups
+Jul 06 08:35:52 manji kernel: hpet clockevent registered
+Jul 06 08:35:52 manji kernel: tsc: Fast TSC calibration using PIT
+Jul 06 08:35:52 manji kernel: tsc: Detected 1397.392 MHz processor
+Jul 06 08:35:52 manji kernel: Calibrating delay loop (skipped), value calculated using timer frequency.. 2795.23 BogoMIPS (lpj=4657973)
+Jul 06 08:35:52 manji kernel: pid_max: default: 32768 minimum: 301
+Jul 06 08:35:52 manji kernel: ACPI: Core revision 20140214
+Jul 06 08:35:52 manji kernel: ACPI: All ACPI Tables successfully acquired
+Jul 06 08:35:52 manji kernel: Security Framework initialized
+Jul 06 08:35:52 manji kernel: Yama: becoming mindful.
+Jul 06 08:35:52 manji kernel: Mount-cache hash table entries: 32768 (order: 6, 262144 bytes)
+Jul 06 08:35:52 manji kernel: Mountpoint-cache hash table entries: 32768 (order: 6, 262144 bytes)
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys memory
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys devices
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys freezer
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys net_cls
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys blkio
+Jul 06 08:35:52 manji kernel: Initializing cgroup subsys bfqio
+Jul 06 08:35:52 manji kernel: tseg: 00bfe00000
+Jul 06 08:35:52 manji kernel: CPU: Physical Processor ID: 0
+Jul 06 08:35:52 manji kernel: CPU: Processor Core ID: 0
+Jul 06 08:35:52 manji kernel: mce: CPU supports 6 MCE banks
+Jul 06 08:35:52 manji kernel: Last level iTLB entries: 4KB 512, 2MB 16, 4MB 8
+                              Last level dTLB entries: 4KB 1024, 2MB 128, 4MB 64, 1GB 0
+                              tlb_flushall_shift: 6
+Jul 06 08:35:52 manji kernel: Freeing SMP alternatives memory: 16K (ffffffffb2945000 - ffffffffb2949000)
+Jul 06 08:35:52 manji kernel: ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+Jul 06 08:35:52 manji kernel: smpboot: CPU0: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam: 12, model: 01, stepping: 00)
+Jul 06 08:35:52 manji kernel: Performance Events: AMD PMU driver.
+Jul 06 08:35:52 manji kernel: ... version:                0
+Jul 06 08:35:52 manji kernel: ... bit width:              48
+Jul 06 08:35:52 manji kernel: ... generic registers:      4
+Jul 06 08:35:52 manji kernel: ... value mask:             0000ffffffffffff
+Jul 06 08:35:52 manji kernel: ... max period:             00007fffffffffff
+Jul 06 08:35:52 manji kernel: ... fixed-purpose events:   0
+Jul 06 08:35:52 manji kernel: ... event mask:             000000000000000f
+Jul 06 08:35:52 manji kernel: MCE: In-kernel MCE decoding enabled.
+Jul 06 08:35:52 manji kernel: NMI watchdog: enabled on all CPUs, permanently consumes one hw-PMU counter.
+Jul 06 08:35:52 manji kernel: x86: Booting SMP configuration:
+Jul 06 08:35:52 manji kernel: .... node  #0, CPUs:      #1
+Jul 06 08:35:52 manji kernel: TSC synchronization [CPU#0 -> CPU#1]:
+Jul 06 08:35:52 manji kernel: Measured 133265920 cycles TSC warp between CPUs, turning off TSC clock.
+Jul 06 08:35:52 manji kernel: tsc: Marking TSC unstable due to check_tsc_sync_source failed
+Jul 06 08:35:52 manji kernel:  #2 #3
+Jul 06 08:35:52 manji kernel: x86: Booted up 1 node, 4 CPUs
+Jul 06 08:35:52 manji kernel: smpboot: Total of 4 processors activated (11183.93 BogoMIPS)
+Jul 06 08:35:52 manji kernel: devtmpfs: initialized
+Jul 06 08:35:52 manji kernel: evm: security.SMACK64
+Jul 06 08:35:52 manji kernel: evm: security.capability
+Jul 06 08:35:52 manji kernel: prandom: seed boundary self test passed
+Jul 06 08:35:52 manji kernel: prandom: 100 self tests passed
+Jul 06 08:35:52 manji kernel: regulator-dummy: no parameters
+Jul 06 08:35:52 manji kernel: NET: Registered protocol family 16
+Jul 06 08:35:52 manji kernel: cpuidle: using governor ladder
+Jul 06 08:35:52 manji kernel: cpuidle: using governor menu
+Jul 06 08:35:52 manji kernel: ACPI FADT declares the system doesn't support PCIe ASPM, so disable it
+Jul 06 08:35:52 manji kernel: ACPI: bus type PCI registered
+Jul 06 08:35:52 manji kernel: acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+Jul 06 08:35:52 manji kernel: PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
+Jul 06 08:35:52 manji kernel: PCI: not using MMCONFIG
+Jul 06 08:35:52 manji kernel: PCI: Using configuration type 1 for base access
+Jul 06 08:35:52 manji kernel: PCI: Using configuration type 1 for extended access
+Jul 06 08:35:52 manji kernel: ACPI: Added _OSI(Module Device)
+Jul 06 08:35:52 manji kernel: ACPI: Added _OSI(Processor Device)
+Jul 06 08:35:52 manji kernel: ACPI: Added _OSI(3.0 _SCP Extensions)
+Jul 06 08:35:52 manji kernel: ACPI: Added _OSI(Processor Aggregator Device)
+Jul 06 08:35:52 manji kernel: [Firmware Bug]: ACPI: BIOS _OSI(Linux) query ignored
+Jul 06 08:35:52 manji kernel: ACPI: Interpreter enabled
+Jul 06 08:35:52 manji kernel: ACPI: (supports S0 S5)
+Jul 06 08:35:52 manji kernel: ACPI: Using IOAPIC for interrupt routing
+Jul 06 08:35:52 manji kernel: PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
+Jul 06 08:35:52 manji kernel: PCI: MMCONFIG at [mem 0xf8000000-0xfbffffff] reserved in ACPI motherboard resources
+Jul 06 08:35:52 manji kernel: PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+Jul 06 08:35:52 manji kernel: ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+Jul 06 08:35:52 manji kernel: acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI]
+Jul 06 08:35:52 manji kernel: acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug PME AER PCIeCapability]
+Jul 06 08:35:52 manji kernel: acpi PNP0A08:00: host bridge window expanded to [mem 0xe0000000-0xffffffff]; [mem 0xe0000000-0xf7ffffff] ignored
+Jul 06 08:35:52 manji kernel: acpi PNP0A08:00: ignoring host bridge window [mem 0x000ce000-0x000cffff] (conflicts with Video ROM [mem 0x000c0000-0x000cefff])
+Jul 06 08:35:52 manji kernel: acpi PNP0A08:00: [Firmware Info]: MMCONFIG for domain 0000 [bus 00-3f] only partially covers this bridge
+Jul 06 08:35:52 manji kernel: PCI host bridge to bus 0000:00
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [bus 00-ff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c0000-0x000c1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c2000-0x000c3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c4000-0x000c5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c6000-0x000c7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000c8000-0x000c9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ca000-0x000cbfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000cc000-0x000cdfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d0000-0x000d1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d2000-0x000d3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d4000-0x000d5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d6000-0x000d7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000d8000-0x000d9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000da000-0x000dbfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000dc000-0x000ddfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000de000-0x000dffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e0000-0x000e1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e2000-0x000e3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e4000-0x000e5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e6000-0x000e7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000e8000-0x000e9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ea000-0x000ebfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ec000-0x000edfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0x000ee000-0x000effff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [mem 0xe0000000-0xffffffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: root bus resource [io  0x0d00-0xffff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:00.0: [1022:1705] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.0: [1002:9647] type 00 class 0x030000
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.0: reg 0x10: [mem 0xe0000000-0xefffffff pref]
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.0: reg 0x14: [io  0x2000-0x20ff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.0: reg 0x18: [mem 0xf0100000-0xf013ffff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.0: supports D1 D2
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.1: [1002:1714] type 00 class 0x040300
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.1: reg 0x10: [mem 0xf0144000-0xf0147fff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.1: supports D1 D2
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0: [1022:1709] type 01 class 0x060400
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0: PME# supported from D0 D3hot D3cold
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: [1022:7804] type 00 class 0x010601
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: reg 0x10: [io  0x2118-0x211f]
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: reg 0x14: [io  0x2124-0x2127]
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: reg 0x18: [io  0x2110-0x2117]
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: reg 0x1c: [io  0x2120-0x2123]
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: reg 0x20: [io  0x2100-0x210f]
+Jul 06 08:35:52 manji kernel: pci 0000:00:11.0: reg 0x24: [mem 0xf014a000-0xf014a7ff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:12.0: [1022:7807] type 00 class 0x0c0310
+Jul 06 08:35:52 manji kernel: pci 0000:00:12.0: reg 0x10: [mem 0xf0149000-0xf0149fff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:12.2: [1022:7808] type 00 class 0x0c0320
+Jul 06 08:35:52 manji kernel: pci 0000:00:12.2: reg 0x10: [mem 0xf014a900-0xf014a9ff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:12.2: supports D1 D2
+Jul 06 08:35:52 manji kernel: pci 0000:00:12.2: PME# supported from D0 D1 D2 D3hot
+Jul 06 08:35:52 manji kernel: pci 0000:00:13.0: [1022:7807] type 00 class 0x0c0310
+Jul 06 08:35:52 manji kernel: pci 0000:00:13.0: reg 0x10: [mem 0xf0148000-0xf0148fff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:13.2: [1022:7808] type 00 class 0x0c0320
+Jul 06 08:35:52 manji kernel: pci 0000:00:13.2: reg 0x10: [mem 0xf014a800-0xf014a8ff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:13.2: supports D1 D2
+Jul 06 08:35:52 manji kernel: pci 0000:00:13.2: PME# supported from D0 D1 D2 D3hot
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.0: [1022:780b] type 00 class 0x0c0500
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.2: [1022:780d] type 00 class 0x040300
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.2: reg 0x10: [mem 0xf0140000-0xf0143fff 64bit]
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.2: PME# supported from D0 D3hot D3cold
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.3: [1022:780e] type 00 class 0x060100
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4: [1022:780f] type 01 class 0x060401
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.0: [1022:1700] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.1: [1022:1701] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.2: [1022:1702] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.3: [1022:1703] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.4: [1022:1704] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.5: [1022:1718] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.6: [1022:1716] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:00:18.7: [1022:1719] type 00 class 0x060000
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: [10ec:8136] type 00 class 0x020000
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: reg 0x10: [io  0x1000-0x10ff]
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: reg 0x18: [mem 0xf0004000-0xf0004fff 64bit pref]
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: reg 0x20: [mem 0xf0000000-0xf0003fff 64bit pref]
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: supports D1 D2
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0: PCI bridge to [bus 01]
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0:   bridge window [io  0x1000-0x1fff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0:   bridge window [mem 0xf0000000-0xf00fffff 64bit pref]
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4: PCI bridge to [bus 02] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000a0000-0x000bffff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c0000-0x000c1fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c2000-0x000c3fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c4000-0x000c5fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c6000-0x000c7fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000c8000-0x000c9fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ca000-0x000cbfff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000cc000-0x000cdfff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d0000-0x000d1fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d2000-0x000d3fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d4000-0x000d5fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d6000-0x000d7fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000d8000-0x000d9fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000da000-0x000dbfff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000dc000-0x000ddfff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000de000-0x000dffff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e0000-0x000e1fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e2000-0x000e3fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e4000-0x000e5fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e6000-0x000e7fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000e8000-0x000e9fff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ea000-0x000ebfff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ec000-0x000edfff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0x000ee000-0x000effff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [mem 0xe0000000-0xffffffff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [io  0x0000-0x0cf7] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4:   bridge window [io  0x0d00-0xffff] (subtractive decode)
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: on NUMA node 0
+Jul 06 08:35:52 manji kernel: acpi PNP0A08:00: Disabling ASPM (FADT indicates it is unsupported)
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKA] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKB] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKC] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKD] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKE] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKF] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKG] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: PCI Interrupt Link [LNKH] (IRQs 10 11) *0
+Jul 06 08:35:52 manji kernel: ACPI: Enabled 2 GPEs in block 00 to 1F
+Jul 06 08:35:52 manji kernel: ACPI : EC: GPE = 0x3, I/O: command/status = 0x66, data = 0x62
+Jul 06 08:35:52 manji kernel: vgaarb: device added: PCI:0000:00:01.0,decodes=io+mem,owns=io+mem,locks=none
+Jul 06 08:35:52 manji kernel: vgaarb: loaded
+Jul 06 08:35:52 manji kernel: vgaarb: bridge control possible 0000:00:01.0
+Jul 06 08:35:52 manji kernel: SCSI subsystem initialized
+Jul 06 08:35:52 manji kernel: libata version 3.00 loaded.
+Jul 06 08:35:52 manji kernel: EDAC MC: Ver: 3.0.0
+Jul 06 08:35:52 manji kernel: PCI: Using ACPI for IRQ routing
+Jul 06 08:35:52 manji kernel: PCI: pci_cache_line_size set to 64 bytes
+Jul 06 08:35:52 manji kernel: e820: reserve RAM buffer [mem 0x0009d800-0x0009ffff]
+Jul 06 08:35:52 manji kernel: e820: reserve RAM buffer [mem 0xbed9b000-0xbfffffff]
+Jul 06 08:35:52 manji kernel: e820: reserve RAM buffer [mem 0xbfe00000-0xbfffffff]
+Jul 06 08:35:52 manji kernel: e820: reserve RAM buffer [mem 0x41f000000-0x41fffffff]
+Jul 06 08:35:52 manji kernel: NetLabel: Initializing
+Jul 06 08:35:52 manji kernel: NetLabel:  domain hash size = 128
+Jul 06 08:35:52 manji kernel: NetLabel:  protocols = UNLABELED CIPSOv4
+Jul 06 08:35:52 manji kernel: NetLabel:  unlabeled traffic allowed by default
+Jul 06 08:35:52 manji kernel: hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0
+Jul 06 08:35:52 manji kernel: hpet0: 3 comparators, 32-bit 14.318180 MHz counter
+Jul 06 08:35:52 manji kernel: Switched to clocksource hpet
+Jul 06 08:35:52 manji kernel: pnp: PnP ACPI init
+Jul 06 08:35:52 manji kernel: ACPI: bus type PNP registered
+Jul 06 08:35:52 manji kernel: pnp 00:00: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:00: PNP0c02: calling quirk_system_pci_resources+0x0/0x150
+Jul 06 08:35:52 manji kernel: pnp 00:00: PNP0c02: calling quirk_intel_mch+0x0/0x1a0
+Jul 06 08:35:52 manji kernel: system 00:00: [io  0x0f50-0x0f51] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:00: [mem 0xfec00000-0xfec00fff] could not be reserved
+Jul 06 08:35:52 manji kernel: system 00:00: [mem 0xfee00000-0xfee00fff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:00: [mem 0xf8000000-0xfbffffff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:00: Plug and Play ACPI device, IDs PNP0c02 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:01: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:01: [dma 4]
+Jul 06 08:35:52 manji kernel: pnp 00:01: Plug and Play ACPI device, IDs PNP0200 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:02: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:02: Plug and Play ACPI device, IDs PNP0c04 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:03: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:03: Plug and Play ACPI device, IDs PNP0b00 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:04: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:04: Plug and Play ACPI device, IDs PNP0800 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:05: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:05: PNP0c02: calling quirk_system_pci_resources+0x0/0x150
+Jul 06 08:35:52 manji kernel: pnp 00:05: disabling [io  0x1200-0x120f] because it overlaps 0000:00:04.0 BAR 13 [io  0x1000-0x1fff]
+Jul 06 08:35:52 manji kernel: pnp 00:05: PNP0c02: calling quirk_intel_mch+0x0/0x1a0
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x04d0-0x04d1] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0530-0x0537] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0800-0x0827] could not be reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0830] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0840-0x0847] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0b00-0x0b1f] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0b20-0x0b3f] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0c00-0x0c01] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0c14] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0c50-0x0c52] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0cd0-0x0cd1] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0cd2-0x0cd3] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0cd4-0x0cd5] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0cd6-0x0cd7] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0cd8-0x0cdf] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x0cf9] could not be reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x8100-0x81ff window] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [io  0x8200-0x82ff window] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [mem 0xff800000-0xff80ffff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: [mem 0xff810000-0xff81003f] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:05: Plug and Play ACPI device, IDs PNP0c02 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:06: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:06: PNP0c01: calling quirk_system_pci_resources+0x0/0x150
+Jul 06 08:35:52 manji kernel: pnp 00:06: PNP0c01: calling quirk_amd_mmconfig_area+0x0/0x110
+Jul 06 08:35:52 manji kernel: system 00:06: [mem 0x000e0000-0x000fffff] could not be reserved
+Jul 06 08:35:52 manji kernel: system 00:06: [mem 0xffe00000-0xffffffff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:06: [mem 0xfec10000-0xfec1001f] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:06: [mem 0xfed00000-0xfed003ff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:06: [mem 0xfed61000-0xfed613ff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:06: [mem 0xfed80000-0xfed80fff] has been reserved
+Jul 06 08:35:52 manji kernel: system 00:06: Plug and Play ACPI device, IDs PNP0c01 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:07: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:07: Plug and Play ACPI device, IDs PNP0303 (active)
+Jul 06 08:35:52 manji kernel: pnp 00:08: parse allocated resources
+Jul 06 08:35:52 manji kernel: pnp 00:08: Plug and Play ACPI device, IDs SYN0326 SYN0300 SYN0002 PNP0f13 (active)
+Jul 06 08:35:52 manji kernel: pnp: PnP ACPI: found 9 devices
+Jul 06 08:35:52 manji kernel: ACPI: bus type PNP unregistered
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0: PCI bridge to [bus 01]
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0:   bridge window [io  0x1000-0x1fff]
+Jul 06 08:35:52 manji kernel: pci 0000:00:04.0:   bridge window [mem 0xf0000000-0xf00fffff 64bit pref]
+Jul 06 08:35:52 manji kernel: pci 0000:00:14.4: PCI bridge to [bus 02]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 4 [mem 0x000a0000-0x000bffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 5 [mem 0x000c0000-0x000c1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 6 [mem 0x000c2000-0x000c3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 7 [mem 0x000c4000-0x000c5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 8 [mem 0x000c6000-0x000c7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 9 [mem 0x000c8000-0x000c9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 10 [mem 0x000ca000-0x000cbfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 11 [mem 0x000cc000-0x000cdfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 12 [mem 0x000d0000-0x000d1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 13 [mem 0x000d2000-0x000d3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 14 [mem 0x000d4000-0x000d5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 15 [mem 0x000d6000-0x000d7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 16 [mem 0x000d8000-0x000d9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 17 [mem 0x000da000-0x000dbfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 18 [mem 0x000dc000-0x000ddfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 19 [mem 0x000de000-0x000dffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 20 [mem 0x000e0000-0x000e1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 21 [mem 0x000e2000-0x000e3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 22 [mem 0x000e4000-0x000e5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 23 [mem 0x000e6000-0x000e7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 24 [mem 0x000e8000-0x000e9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 25 [mem 0x000ea000-0x000ebfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 26 [mem 0x000ec000-0x000edfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 27 [mem 0x000ee000-0x000effff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 28 [mem 0xe0000000-0xffffffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 29 [io  0x0000-0x0cf7]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:00: resource 30 [io  0x0d00-0xffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:01: resource 0 [io  0x1000-0x1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:01: resource 2 [mem 0xf0000000-0xf00fffff 64bit pref]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 4 [mem 0x000a0000-0x000bffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 5 [mem 0x000c0000-0x000c1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 6 [mem 0x000c2000-0x000c3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 7 [mem 0x000c4000-0x000c5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 8 [mem 0x000c6000-0x000c7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 9 [mem 0x000c8000-0x000c9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 10 [mem 0x000ca000-0x000cbfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 11 [mem 0x000cc000-0x000cdfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 12 [mem 0x000d0000-0x000d1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 13 [mem 0x000d2000-0x000d3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 14 [mem 0x000d4000-0x000d5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 15 [mem 0x000d6000-0x000d7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 16 [mem 0x000d8000-0x000d9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 17 [mem 0x000da000-0x000dbfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 18 [mem 0x000dc000-0x000ddfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 19 [mem 0x000de000-0x000dffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 20 [mem 0x000e0000-0x000e1fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 21 [mem 0x000e2000-0x000e3fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 22 [mem 0x000e4000-0x000e5fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 23 [mem 0x000e6000-0x000e7fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 24 [mem 0x000e8000-0x000e9fff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 25 [mem 0x000ea000-0x000ebfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 26 [mem 0x000ec000-0x000edfff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 27 [mem 0x000ee000-0x000effff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 28 [mem 0xe0000000-0xffffffff]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 29 [io  0x0000-0x0cf7]
+Jul 06 08:35:52 manji kernel: pci_bus 0000:02: resource 30 [io  0x0d00-0xffff]
+Jul 06 08:35:52 manji kernel: NET: Registered protocol family 2
+Jul 06 08:35:52 manji kernel: TCP established hash table entries: 131072 (order: 8, 1048576 bytes)
+Jul 06 08:35:52 manji kernel: TCP bind hash table entries: 65536 (order: 8, 1048576 bytes)
+Jul 06 08:35:52 manji kernel: TCP: Hash tables configured (established 131072 bind 65536)
+Jul 06 08:35:52 manji kernel: TCP: reno registered
+Jul 06 08:35:52 manji kernel: UDP hash table entries: 8192 (order: 6, 262144 bytes)
+Jul 06 08:35:52 manji kernel: UDP-Lite hash table entries: 8192 (order: 6, 262144 bytes)
+Jul 06 08:35:52 manji kernel: NET: Registered protocol family 1
+Jul 06 08:35:52 manji kernel: pci 0000:00:01.0: Boot video device
+Jul 06 08:35:52 manji kernel: PCI: CLS 32 bytes, default 64
+Jul 06 08:35:52 manji kernel: Unpacking initramfs...
+Jul 06 08:35:52 manji kernel: Freeing initrd memory: 4760K (ffff8800376a4000 - ffff880037b4a000)
+Jul 06 08:35:52 manji kernel: PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+Jul 06 08:35:52 manji kernel: software IO TLB [mem 0xbad9b000-0xbed9b000] (64MB) mapped at [ffff8800bad9b000-ffff8800bed9afff]
+Jul 06 08:35:52 manji kernel: microcode: CPU0: patch_level=0x03000014
+Jul 06 08:35:52 manji kernel: microcode: CPU1: patch_level=0x03000014
+Jul 06 08:35:52 manji kernel: microcode: CPU2: patch_level=0x03000014
+Jul 06 08:35:52 manji kernel: microcode: CPU3: patch_level=0x03000014
+Jul 06 08:35:52 manji kernel: microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+Jul 06 08:35:52 manji kernel: LVT offset 0 assigned for vector 0x400
+Jul 06 08:35:52 manji kernel: perf: AMD IBS detected (0x000000ff)
+Jul 06 08:35:52 manji kernel: Scanning for low memory corruption every 60 seconds
+Jul 06 08:35:52 manji kernel: futex hash table entries: 1024 (order: 4, 65536 bytes)
+Jul 06 08:35:52 manji kernel: Initialise system trusted keyring
+Jul 06 08:35:52 manji kernel: HugeTLB registered 2 MB page size, pre-allocated 0 pages
+Jul 06 08:35:52 manji kernel: msgmni has been set to 28945
+Jul 06 08:35:52 manji kernel: Key type big_key registered
+Jul 06 08:35:52 manji kernel: alg: No test for stdrng (krng)
+Jul 06 08:35:52 manji kernel: Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
+Jul 06 08:35:52 manji kernel: io scheduler noop registered (default)
+Jul 06 08:35:52 manji kernel: io scheduler cfq registered
+Jul 06 08:35:52 manji kernel: io scheduler bfq registered
+Jul 06 08:35:52 manji kernel: BFQ I/O-scheduler version: v7r5
+Jul 06 08:35:52 manji kernel: pcieport 0000:00:04.0: irq 40 for MSI/MSI-X
+Jul 06 08:35:52 manji kernel: pcieport 0000:00:04.0: Signaling PME through PCIe PME interrupt
+Jul 06 08:35:52 manji kernel: pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
+Jul 06 08:35:52 manji kernel: pcie_pme 0000:00:04.0:pcie01: service driver pcie_pme loaded
+Jul 06 08:35:52 manji kernel: pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+Jul 06 08:35:52 manji kernel: pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+Jul 06 08:35:52 manji kernel: ACPI: AC Adapter [ADP1] (on-line)
+Jul 06 08:35:52 manji kernel: input: Power Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input0
+Jul 06 08:35:52 manji kernel: ACPI: Power Button [PWRB]
+Jul 06 08:35:52 manji kernel: input: Lid Switch as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/input/input1
+Jul 06 08:35:52 manji kernel: ACPI: Lid Switch [LID0]
+Jul 06 08:35:52 manji kernel: input: Sleep Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0E:00/input/input2
+Jul 06 08:35:52 manji kernel: ACPI: Sleep Button [SLPB]
+Jul 06 08:35:52 manji kernel: input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input3
+Jul 06 08:35:52 manji kernel: ACPI: Power Button [PWRF]
+Jul 06 08:35:52 manji kernel: ACPI: acpi_idle registered with cpuidle
+Jul 06 08:35:52 manji kernel: thermal LNXTHERM:00: registered as thermal_zone0
+Jul 06 08:35:52 manji kernel: ACPI: Thermal Zone [TZS0] (52 C)
+Jul 06 08:35:52 manji kernel: thermal LNXTHERM:01: registered as thermal_zone1
+Jul 06 08:35:52 manji kernel: ACPI: Thermal Zone [TZS1] (44 C)
+Jul 06 08:35:52 manji kernel: GHES: HEST is not enabled!
+Jul 06 08:35:52 manji kernel: Hangcheck: starting hangcheck timer 0.9.1 (tick is 180 seconds, margin is 60 seconds).
+Jul 06 08:35:52 manji kernel: Hangcheck: Using getrawmonotonic().
+Jul 06 08:35:52 manji kernel: ahci 0000:00:11.0: version 3.0
+Jul 06 08:35:52 manji kernel: ahci 0000:00:11.0: irq 41 for MSI/MSI-X
+Jul 06 08:35:52 manji kernel: ahci 0000:00:11.0: AHCI 0001.0300 32 slots 3 ports 3 Gbps 0xe impl SATA mode
+Jul 06 08:35:52 manji kernel: ahci 0000:00:11.0: flags: 64bit ncq sntf ilck pm led clo pmp pio slum part ccc sxs 
+Jul 06 08:35:52 manji kernel: ACPI: Battery Slot [BAT0] (battery present)
+Jul 06 08:35:52 manji kernel: scsi0 : ahci
+Jul 06 08:35:52 manji kernel: scsi1 : ahci
+Jul 06 08:35:52 manji kernel: scsi2 : ahci
+Jul 06 08:35:52 manji kernel: scsi3 : ahci
+Jul 06 08:35:52 manji kernel: ata1: DUMMY
+Jul 06 08:35:52 manji kernel: ata2: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a180 irq 41
+Jul 06 08:35:52 manji kernel: ata3: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a200 irq 41
+Jul 06 08:35:52 manji kernel: ata4: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a280 irq 41
+Jul 06 08:35:52 manji kernel: r8169 Gigabit Ethernet driver 2.3LK-NAPI loaded
+Jul 06 08:35:52 manji kernel: r8169 0000:01:00.0: can't disable ASPM; OS doesn't have ASPM control
+Jul 06 08:35:52 manji kernel: r8169 0000:01:00.0: irq 42 for MSI/MSI-X
+Jul 06 08:35:52 manji kernel: r8169 0000:01:00.0 eth0: RTL8105e at 0xffffc90000042000, f0:de:f1:98:0f:7c, XID 00a00000 IRQ 42
+Jul 06 08:35:52 manji kernel: i8042: PNP: PS/2 Controller [PNP0303:KBD0,PNP0f13:PS2M] at 0x60,0x64 irq 1,12
+Jul 06 08:35:52 manji kernel: serio: i8042 KBD port at 0x60,0x64 irq 1
+Jul 06 08:35:52 manji kernel: serio: i8042 AUX port at 0x60,0x64 irq 12
+Jul 06 08:35:52 manji kernel: mousedev: PS/2 mouse device common for all mice
+Jul 06 08:35:52 manji kernel: rtc_cmos 00:03: RTC can wake from S4
+Jul 06 08:35:52 manji kernel: rtc_cmos 00:03: rtc core: registered rtc_cmos as rtc0
+Jul 06 08:35:52 manji kernel: rtc_cmos 00:03: alarms up to one month, 114 bytes nvram, hpet irqs
+Jul 06 08:35:52 manji kernel: device-mapper: uevent: version 1.0.3
+Jul 06 08:35:52 manji kernel: device-mapper: ioctl: 4.27.0-ioctl (2013-10-30) initialised: dm-devel@redhat.com
+Jul 06 08:35:52 manji kernel: AMD64 EDAC driver v3.4.0
+Jul 06 08:35:52 manji kernel: ledtrig-cpu: registered to indicate activity on CPUs
+Jul 06 08:35:52 manji kernel: TCP: cubic registered
+Jul 06 08:35:52 manji kernel: NET: Registered protocol family 17
+Jul 06 08:35:52 manji kernel: Loading compiled-in X.509 certificates
+Jul 06 08:35:52 manji kernel: registered taskstats version 1
+Jul 06 08:35:52 manji kernel: Key type encrypted registered
+Jul 06 08:35:52 manji kernel: ima: No TPM chip found, activating TPM-bypass!
+Jul 06 08:35:52 manji kernel: sha512_ssse3: Neither AVX nor SSSE3 is available/usable.
+Jul 06 08:35:52 manji kernel: input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input4
+Jul 06 08:35:52 manji kernel: rtc_cmos 00:03: setting system clock to 2014-07-06 06:35:44 UTC (1404628544)
+Jul 06 08:35:52 manji kernel: acpi-cpufreq: overriding BIOS provided _PSD data
+Jul 06 08:35:52 manji kernel: ata3: SATA link down (SStatus 0 SControl 300)
+Jul 06 08:35:52 manji kernel: ata2: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Jul 06 08:35:52 manji kernel: ata4: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Jul 06 08:35:52 manji kernel: ata2.00: ATA-7: INTEL SSDSA2M080G2GC, 2CV102M3, max UDMA/133
+Jul 06 08:35:52 manji kernel: ata2.00: 156301488 sectors, multi 16: LBA48 NCQ (depth 31/32)
+Jul 06 08:35:52 manji kernel: ata2.00: configured for UDMA/133
+Jul 06 08:35:52 manji kernel: ata4.00: supports DRM functions and may not be fully accessible
+Jul 06 08:35:52 manji kernel: ata4.00: failed to get NCQ Send/Recv Log Emask 0x1
+Jul 06 08:35:52 manji kernel: ata4.00: ATA-9: Samsung SSD 840 EVO 1TB, EXT0BB6Q, max UDMA/133
+Jul 06 08:35:52 manji kernel: ata4.00: 1953525168 sectors, multi 1: LBA48 NCQ (depth 31/32), AA
+Jul 06 08:35:52 manji kernel: scsi 1:0:0:0: Direct-Access     ATA      INTEL SSDSA2M080 2CV1 PQ: 0 ANSI: 5
+Jul 06 08:35:52 manji kernel: ata4.00: supports DRM functions and may not be fully accessible
+Jul 06 08:35:52 manji kernel: ata4.00: failed to get NCQ Send/Recv Log Emask 0x1
+Jul 06 08:35:52 manji kernel: ata4.00: configured for UDMA/133
+Jul 06 08:35:52 manji kernel: sd 1:0:0:0: [sda] 156301488 512-byte logical blocks: (80.0 GB/74.5 GiB)
+Jul 06 08:35:52 manji kernel: scsi 3:0:0:0: Direct-Access     ATA      Samsung SSD 840  EXT0 PQ: 0 ANSI: 5
+Jul 06 08:35:52 manji kernel: sd 1:0:0:0: [sda] Write Protect is off
+Jul 06 08:35:52 manji kernel: sd 1:0:0:0: [sda] Mode Sense: 00 3a 00 00
+Jul 06 08:35:52 manji kernel: sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Jul 06 08:35:52 manji kernel: sd 3:0:0:0: [sdb] 1953525168 512-byte logical blocks: (1.00 TB/931 GiB)
+Jul 06 08:35:52 manji kernel: sd 3:0:0:0: [sdb] Write Protect is off
+Jul 06 08:35:52 manji kernel: sd 3:0:0:0: [sdb] Mode Sense: 00 3a 00 00
+Jul 06 08:35:52 manji kernel: sd 3:0:0:0: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Jul 06 08:35:52 manji kernel:  sda: sda1 sda2
+Jul 06 08:35:52 manji kernel:  sdb: sdb1
+Jul 06 08:35:52 manji kernel: sd 1:0:0:0: [sda] Attached SCSI disk
+Jul 06 08:35:52 manji kernel: sd 3:0:0:0: [sdb] Attached SCSI disk
+Jul 06 08:35:52 manji kernel: Freeing unused kernel memory: 804K (ffffffffb287c000 - ffffffffb2945000)
+Jul 06 08:35:52 manji kernel: Write protecting the kernel read-only data: 8192k
+Jul 06 08:35:52 manji kernel: Freeing unused kernel memory: 1668K (ffff88003245f000 - ffff880032600000)
+Jul 06 08:35:52 manji kernel: Freeing unused kernel memory: 548K (ffff880032777000 - ffff880032800000)
+Jul 06 08:35:52 manji kernel: random: systemd-tmpfile urandom read with 21 bits of entropy available
+Jul 06 08:35:52 manji systemd-udevd[102]: starting version 214
+Jul 06 08:35:52 manji kernel: sha256_ssse3: Neither AVX nor SSSE3 is available/usable.
+Jul 06 08:35:52 manji kernel: sha512_ssse3: Neither AVX nor SSSE3 is available/usable.
+Jul 06 08:35:52 manji kernel: ACPI: bus type USB registered
+Jul 06 08:35:52 manji kernel: usbcore: registered new interface driver usbfs
+Jul 06 08:35:52 manji kernel: usbcore: registered new interface driver hub
+Jul 06 08:35:52 manji kernel: usbcore: registered new device driver usb
+Jul 06 08:35:52 manji kernel: ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+Jul 06 08:35:52 manji kernel: ehci-pci: EHCI PCI platform driver
+Jul 06 08:35:52 manji kernel: ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+Jul 06 08:35:52 manji kernel: ohci-pci: OHCI PCI platform driver
+Jul 06 08:35:52 manji kernel: QUIRK: Enable AMD PLL fix
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:12.2: EHCI Host Controller
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:12.2: new USB bus registered, assigned bus number 1
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:12.2: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:12.2: debug port 1
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:12.2: irq 17, io mem 0xf014a900
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:12.2: USB 2.0 started, EHCI 1.00
+Jul 06 08:35:52 manji kernel: usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+Jul 06 08:35:52 manji kernel: usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Jul 06 08:35:52 manji kernel: usb usb1: Product: EHCI Host Controller
+Jul 06 08:35:52 manji kernel: usb usb1: Manufacturer: Linux 3.15.3-1-MANJARO ehci_hcd
+Jul 06 08:35:52 manji kernel: usb usb1: SerialNumber: 0000:00:12.2
+Jul 06 08:35:52 manji kernel: hub 1-0:1.0: USB hub found
+Jul 06 08:35:52 manji kernel: hub 1-0:1.0: 5 ports detected
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:13.2: EHCI Host Controller
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:13.2: new USB bus registered, assigned bus number 2
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:13.2: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:13.2: debug port 1
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:13.2: irq 17, io mem 0xf014a800
+Jul 06 08:35:52 manji kernel: ehci-pci 0000:00:13.2: USB 2.0 started, EHCI 1.00
+Jul 06 08:35:52 manji kernel: usb usb2: New USB device found, idVendor=1d6b, idProduct=0002
+Jul 06 08:35:52 manji kernel: usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Jul 06 08:35:52 manji kernel: usb usb2: Product: EHCI Host Controller
+Jul 06 08:35:52 manji kernel: usb usb2: Manufacturer: Linux 3.15.3-1-MANJARO ehci_hcd
+Jul 06 08:35:52 manji kernel: usb usb2: SerialNumber: 0000:00:13.2
+Jul 06 08:35:52 manji kernel: hub 2-0:1.0: USB hub found
+Jul 06 08:35:52 manji kernel: hub 2-0:1.0: 5 ports detected
+Jul 06 08:35:52 manji kernel: ohci-pci 0000:00:12.0: OHCI PCI host controller
+Jul 06 08:35:52 manji kernel: ohci-pci 0000:00:12.0: new USB bus registered, assigned bus number 3
+Jul 06 08:35:52 manji kernel: ohci-pci 0000:00:12.0: irq 18, io mem 0xf0149000
+Jul 06 08:35:52 manji kernel: usb usb3: New USB device found, idVendor=1d6b, idProduct=0001
+Jul 06 08:35:52 manji kernel: usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Jul 06 08:35:52 manji kernel: usb usb3: Product: OHCI PCI host controller
+Jul 06 08:35:52 manji kernel: usb usb3: Manufacturer: Linux 3.15.3-1-MANJARO ohci_hcd
+Jul 06 08:35:52 manji kernel: usb usb3: SerialNumber: 0000:00:12.0
+Jul 06 08:35:52 manji kernel: hub 3-0:1.0: USB hub found
+Jul 06 08:35:52 manji kernel: hub 3-0:1.0: 5 ports detected
+Jul 06 08:35:52 manji kernel: ohci-pci 0000:00:13.0: OHCI PCI host controller
+Jul 06 08:35:52 manji kernel: ohci-pci 0000:00:13.0: new USB bus registered, assigned bus number 4
+Jul 06 08:35:52 manji kernel: ohci-pci 0000:00:13.0: irq 18, io mem 0xf0148000
+Jul 06 08:35:52 manji kernel: usb usb4: New USB device found, idVendor=1d6b, idProduct=0001
+Jul 06 08:35:52 manji kernel: usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Jul 06 08:35:52 manji kernel: usb usb4: Product: OHCI PCI host controller
+Jul 06 08:35:52 manji kernel: usb usb4: Manufacturer: Linux 3.15.3-1-MANJARO ohci_hcd
+Jul 06 08:35:52 manji kernel: usb usb4: SerialNumber: 0000:00:13.0
+Jul 06 08:35:52 manji kernel: hub 4-0:1.0: USB hub found
+Jul 06 08:35:52 manji kernel: hub 4-0:1.0: 5 ports detected
+Jul 06 08:35:52 manji kernel: psmouse serio1: synaptics: Touchpad model: 1, fw: 7.5, id: 0x1e0b1, caps: 0xd00073/0x240000/0xa0400, board id: 1695, fw id: 739436
+Jul 06 08:35:52 manji kernel: input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input6
+Jul 06 08:35:52 manji kernel: usb 2-1: new high-speed USB device number 2 using ehci-pci
+Jul 06 08:35:52 manji kernel: usb 2-1: New USB device found, idVendor=0bda, idProduct=0139
+Jul 06 08:35:52 manji kernel: usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Jul 06 08:35:52 manji kernel: usb 2-1: Product: USB2.0-CRW
+Jul 06 08:35:52 manji kernel: usb 2-1: Manufacturer: Generic
+Jul 06 08:35:52 manji kernel: usb 2-1: SerialNumber: 20100201396000000
+Jul 06 08:35:52 manji kernel: usb 2-3: new high-speed USB device number 3 using ehci-pci
+Jul 06 08:35:52 manji kernel: usb 2-3: New USB device found, idVendor=5986, idProduct=0364
+Jul 06 08:35:52 manji kernel: usb 2-3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+Jul 06 08:35:52 manji kernel: usb 2-3: Product: Lenovo EasyCamera
+Jul 06 08:35:52 manji kernel: usb 2-3: Manufacturer: Bison Electronics Inc.
+Jul 06 08:35:52 manji kernel: usb 3-3: new full-speed USB device number 2 using ohci-pci
+Jul 06 08:35:52 manji kernel: usb 3-3: New USB device found, idVendor=0458, idProduct=00f2
+Jul 06 08:35:52 manji kernel: usb 3-3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+Jul 06 08:35:52 manji kernel: usb 3-3: Product: 2.4G Wireless BlueEye Mouse
+Jul 06 08:35:52 manji kernel: usb 3-3: Manufacturer: Genius
+Jul 06 08:35:52 manji kernel: hidraw: raw HID events driver (C) Jiri Kosina
+Jul 06 08:35:52 manji kernel: usbcore: registered new interface driver usbhid
+Jul 06 08:35:52 manji kernel: usbhid: USB HID core driver
+Jul 06 08:35:52 manji kernel: input: Genius 2.4G Wireless BlueEye Mouse as /devices/pci0000:00/0000:00:12.0/usb3/3-3/3-3:1.0/0003:0458:00F2.0001/input/input7
+Jul 06 08:35:52 manji kernel: hid-generic 0003:0458:00F2.0001: input,hiddev0,hidraw0: USB HID v1.11 Mouse [Genius 2.4G Wireless BlueEye Mouse] on usb-0000:00:12.0-3/input0
+Jul 06 08:35:52 manji kernel: random: nonblocking pool is initialized
+Jul 06 08:35:52 manji kernel: EXT4-fs (dm-1): mounted filesystem with ordered data mode. Opts: (null)
+Jul 06 08:35:52 manji systemd[1]: systemd 214 running in system mode. (+PAM -AUDIT -SELINUX -IMA -SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP -APPARMOR)
+Jul 06 08:35:52 manji systemd[1]: Detected architecture 'x86-64'.
+Jul 06 08:35:52 manji systemd[1]: Failed to insert module 'autofs4'
+Jul 06 08:35:52 manji systemd[1]: Failed to insert module 'ipv6'
+Jul 06 08:35:52 manji systemd[1]: Set hostname to <manji>.
+Jul 06 08:35:52 manji systemd[1]: Starting Forward Password Requests to Wall Directory Watch.
+Jul 06 08:35:52 manji systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+Jul 06 08:35:52 manji systemd[1]: Starting Remote File Systems.
+Jul 06 08:35:52 manji systemd[1]: Reached target Remote File Systems.
+Jul 06 08:35:52 manji systemd[1]: Starting Dispatch Password Requests to Console Directory Watch.
+Jul 06 08:35:52 manji systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+Jul 06 08:35:52 manji systemd[1]: Starting Paths.
+Jul 06 08:35:52 manji systemd[1]: Reached target Paths.
+Jul 06 08:35:52 manji systemd[1]: Starting Encrypted Volumes.
+Jul 06 08:35:52 manji systemd[1]: Reached target Encrypted Volumes.
+Jul 06 08:35:52 manji systemd[1]: Starting Arbitrary Executable File Formats File System Automount Point.
+Jul 06 08:35:52 manji systemd[1]: Failed to open /dev/autofs: No such file or directory
+Jul 06 08:35:52 manji systemd[1]: Failed to initialize automounter: No such file or directory
+Jul 06 08:35:52 manji systemd[1]: Failed to set up automount Arbitrary Executable File Formats File System Automount Point.
+Jul 06 08:35:52 manji systemd[1]: Unit proc-sys-fs-binfmt_misc.automount entered failed state.
+Jul 06 08:35:52 manji systemd[1]: Starting Swap.
+Jul 06 08:35:52 manji systemd[1]: Reached target Swap.
+Jul 06 08:35:52 manji systemd[1]: Expecting device dev-disk-by\x2duuid-13750594\x2d5d0d\x2d41be\x2d9e21\x2d274609445286.device...
+Jul 06 08:35:52 manji systemd[1]: Expecting device dev-disk-by\x2duuid-0708e2ae\x2d32bf\x2d4e5b\x2dad0b\x2da140b5e9adf0.device...
+Jul 06 08:35:52 manji systemd[1]: Starting Root Slice.
+Jul 06 08:35:52 manji systemd[1]: Created slice Root Slice.
+Jul 06 08:35:52 manji systemd[1]: Starting Delayed Shutdown Socket.
+Jul 06 08:35:52 manji systemd[1]: Listening on Delayed Shutdown Socket.
+Jul 06 08:35:52 manji systemd[1]: Starting Device-mapper event daemon FIFOs.
+Jul 06 08:35:52 manji systemd[1]: Listening on Device-mapper event daemon FIFOs.
+Jul 06 08:35:52 manji systemd[1]: Starting /dev/initctl Compatibility Named Pipe.
+Jul 06 08:35:52 manji systemd[1]: Listening on /dev/initctl Compatibility Named Pipe.
+Jul 06 08:35:52 manji systemd[1]: Starting Journal Socket (/dev/log).
+Jul 06 08:35:52 manji systemd[1]: Listening on Journal Socket (/dev/log).
+Jul 06 08:35:52 manji systemd[1]: Starting Syslog Socket.
+Jul 06 08:35:52 manji systemd[1]: Listening on Syslog Socket.
+Jul 06 08:35:52 manji systemd[1]: Starting LVM2 metadata daemon socket.
+Jul 06 08:35:52 manji systemd[1]: Listening on LVM2 metadata daemon socket.
+Jul 06 08:35:52 manji systemd[1]: Starting udev Kernel Socket.
+Jul 06 08:35:52 manji systemd[1]: Listening on udev Kernel Socket.
+Jul 06 08:35:52 manji systemd[1]: Starting udev Control Socket.
+Jul 06 08:35:52 manji systemd[1]: Listening on udev Control Socket.
+Jul 06 08:35:52 manji systemd[1]: Starting User and Session Slice.
+Jul 06 08:35:52 manji systemd[1]: Created slice User and Session Slice.
+Jul 06 08:35:52 manji systemd[1]: Starting Journal Socket.
+Jul 06 08:35:52 manji systemd[1]: Listening on Journal Socket.
+Jul 06 08:35:52 manji systemd[1]: Starting System Slice.
+Jul 06 08:35:52 manji systemd[1]: Created slice System Slice.
+Jul 06 08:35:52 manji systemd[1]: Started File System Check on Root Device.
+Jul 06 08:35:52 manji systemd[1]: Starting system-systemd\x2dfsck.slice.
+Jul 06 08:35:52 manji systemd[1]: Created slice system-systemd\x2dfsck.slice.
+Jul 06 08:35:52 manji systemd[1]: Starting Remount Root and Kernel File Systems...
+Jul 06 08:35:52 manji systemd[1]: Mounting Temporary Directory...
+Jul 06 08:35:52 manji systemd[1]: Starting Set Up Additional Binary Formats...
+Jul 06 08:35:52 manji systemd[1]: Starting Setup Virtual Console...
+Jul 06 08:35:52 manji systemd[1]: Starting Apply Kernel Variables...
+Jul 06 08:35:52 manji systemd[1]: Mounting POSIX Message Queue File System...
+Jul 06 08:35:52 manji systemd[1]: Starting udev Coldplug all Devices...
+Jul 06 08:35:52 manji systemd[1]: Mounting Debug File System...
+Jul 06 08:35:52 manji systemd[1]: Starting Load Kernel Modules...
+Jul 06 08:35:52 manji systemd[1]: Starting Create list of required static device nodes for the current kernel...
+Jul 06 08:35:52 manji systemd[1]: Mounting Huge Pages File System...
+Jul 06 08:35:52 manji systemd[1]: Starting system-getty.slice.
+Jul 06 08:35:52 manji systemd[1]: Created slice system-getty.slice.
+Jul 06 08:35:52 manji systemd[1]: Starting Journal Service...
+Jul 06 08:35:52 manji systemd[1]: Started Journal Service.
+Jul 06 08:35:52 manji kernel: EXT4-fs (dm-1): re-mounted. Opts: data=ordered
+Jul 06 08:35:52 manji kernel: vboxdrv: Found 4 processor cores.
+Jul 06 08:35:52 manji kernel: vboxdrv: fAsync=1 offMin=0x7f16733 offMax=0x7f16733
+Jul 06 08:35:52 manji kernel: vboxdrv: TSC mode is 'asynchronous', kernel timer mode is 'normal'.
+Jul 06 08:35:52 manji kernel: vboxdrv: Successfully loaded version 4.3.12_OSE (interface 0x001a0007).
+Jul 06 08:35:52 manji systemd-journal[222]: Journal started
+Jul 06 08:35:52 manji systemd-binfmt[210]: Failed to add binary format: No such file or directory
+Jul 06 08:35:52 manji systemd[1]: Starting Slices.
+Jul 06 08:35:52 manji systemd[1]: Reached target Slices.
+Jul 06 08:35:52 manji systemd[1]: systemd-binfmt.service: main process exited, code=exited, status=1/FAILURE
+Jul 06 08:35:52 manji systemd[1]: Failed to start Set Up Additional Binary Formats.
+Jul 06 08:35:52 manji systemd[1]: Unit systemd-binfmt.service entered failed state.
+Jul 06 08:35:52 manji systemd[1]: Started Apply Kernel Variables.
+Jul 06 08:35:52 manji systemd[1]: Started Create list of required static device nodes for the current kernel.
+Jul 06 08:35:52 manji systemd[1]: Mounted Temporary Directory.
+Jul 06 08:35:52 manji systemd[1]: Mounted POSIX Message Queue File System.
+Jul 06 08:35:52 manji systemd[1]: Mounted Debug File System.
+Jul 06 08:35:52 manji systemd-modules-load[218]: Inserted module 'vboxdrv'
+Jul 06 08:35:52 manji systemd[1]: Starting Create Static Device Nodes in /dev...
+Jul 06 08:35:52 manji systemd-modules-load[218]: Inserted module 'vboxnetadp'
+Jul 06 08:35:52 manji systemd-modules-load[218]: Inserted module 'vboxnetflt'
+Jul 06 08:35:52 manji systemd[1]: Started Load/Save Random Seed.
+Jul 06 08:35:52 manji systemd-modules-load[218]: Inserted module 'vboxpci'
+Jul 06 08:35:52 manji kernel: vboxpci: IOMMU not found (not registered)
+Jul 06 08:35:52 manji systemd[1]: Started Create Static Device Nodes in /dev.
+Jul 06 08:35:52 manji systemd[1]: Starting udev Kernel Device Manager...
+Jul 06 08:35:52 manji systemd[1]: Starting Local File Systems (Pre).
+Jul 06 08:35:52 manji systemd[1]: Reached target Local File Systems (Pre).
+Jul 06 08:35:52 manji systemd[1]: Started udev Kernel Device Manager.
+Jul 06 08:35:53 manji systemd-udevd[243]: starting version 214
+Jul 06 08:35:53 manji systemd[1]: Started Setup Virtual Console.
+Jul 06 08:35:53 manji systemd[1]: Starting Setup keyboard layout...
+Jul 06 08:35:53 manji systemd[1]: Started Setup keyboard layout.
+Jul 06 08:35:53 manji kernel: fglrx: module license 'Proprietary. (C) 2002 - ATI Technologies, Starnberg, GERMANY' taints kernel.
+Jul 06 08:35:53 manji kernel: Disabling lock debugging due to kernel taint
+Jul 06 08:35:53 manji systemd-modules-load[218]: Inserted module 'fglrx'
+Jul 06 08:35:53 manji kernel: <6>[fglrx] Maximum main memory to use for locked dma buffers: 14128 MBytes.
+Jul 06 08:35:53 manji kernel: <6>[fglrx]   vendor: 1002 device: 9647 count: 1
+Jul 06 08:35:53 manji kernel: <6>[fglrx] ioport: bar 1, base 0x2000, size: 0x100
+Jul 06 08:35:53 manji kernel: <6>[fglrx] Kernel PAT support is enabled
+Jul 06 08:35:53 manji kernel: <6>[fglrx] module loaded - fglrx 14.10.2 [May  5 2014] with 1 minors
+Jul 06 08:35:53 manji systemd-modules-load[218]: Failed to find module 'nfs'
+Jul 06 08:35:53 manji systemd[1]: systemd-modules-load.service: main process exited, code=exited, status=1/FAILURE
+Jul 06 08:35:53 manji systemd[1]: Failed to start Load Kernel Modules.
+Jul 06 08:35:53 manji systemd[1]: Unit systemd-modules-load.service entered failed state.
+Jul 06 08:35:53 manji systemd[1]: Mounting Configuration File System...
+Jul 06 08:35:53 manji systemd[1]: Mounted FUSE Control File System.
+Jul 06 08:35:53 manji systemd[1]: Mounted Configuration File System.
+Jul 06 08:35:53 manji kernel: ACPI: Video Device [VGA1] (multi-head: yes  rom: no  post: no)
+Jul 06 08:35:53 manji kernel: shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+Jul 06 08:35:53 manji kernel: ACPI Warning: SystemIO range 0x0000000000000b00-0x0000000000000b07 conflicts with OpRegion 0x0000000000000b00-0x0000000000000b0f (\_SB_.PCI0.SMB_.SMB0) (20140214/utaddress-258)
+Jul 06 08:35:53 manji kernel: ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+Jul 06 08:35:53 manji kernel: wmi: Mapper loaded
+Jul 06 08:35:53 manji kernel: input: Ideapad extra buttons as /devices/platform/VPC2004:00/input/input8
+Jul 06 08:35:53 manji kernel: snd_hda_intel 0000:00:01.1: irq 43 for MSI/MSI-X
+Jul 06 08:35:53 manji systemd-udevd[254]: renamed network interface eth0 to enp1s0
+Jul 06 08:35:53 manji kernel: input: HD-Audio Generic HDMI/DP,pcm=3 as /devices/pci0000:00/0000:00:01.1/sound/card0/input9
+Jul 06 08:35:53 manji kernel: input: PC Speaker as /devices/platform/pcspkr/input/input10
+Jul 06 08:35:53 manji kernel: acpi device:3d: registered as cooling_device4
+Jul 06 08:35:53 manji kernel: input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:01/input/input11
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0: autoconfig: line_outs=1 (0x14/0x0/0x0/0x0/0x0) type:speaker
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0:    speaker_outs=0 (0x0/0x0/0x0/0x0/0x0)
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0:    hp_outs=1 (0x21/0x0/0x0/0x0/0x0)
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0:    mono: mono_out=0x0
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0:    inputs:
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0:      Internal Mic=0x19
+Jul 06 08:35:53 manji kernel: sound hdaudioC1D0:      Mic=0x18
+Jul 06 08:35:53 manji kernel: input: HDA Digital PCBeep as /devices/pci0000:00/0000:00:14.2/sound/card1/hdaudioC1D0/input12
+Jul 06 08:35:53 manji kernel: input: HD-Audio Generic Mic as /devices/pci0000:00/0000:00:14.2/sound/card1/input13
+Jul 06 08:35:53 manji kernel: input: HD-Audio Generic Headphone as /devices/pci0000:00/0000:00:14.2/sound/card1/input14
+Jul 06 08:35:53 manji kernel: kvm: Nested Virtualization enabled
+Jul 06 08:35:53 manji kernel: kvm: Nested Paging enabled
+Jul 06 08:35:53 manji systemd[1]: Starting Sound Card.
+Jul 06 08:35:53 manji systemd[1]: Reached target Sound Card.
+Jul 06 08:35:53 manji systemd[1]: Starting system-systemd\x2drfkill.slice.
+Jul 06 08:35:53 manji systemd[1]: Created slice system-systemd\x2drfkill.slice.
+Jul 06 08:35:53 manji systemd[1]: Starting Load/Save RF Kill Switch Status of rfkill0...
+Jul 06 08:35:53 manji systemd[1]: Starting system-systemd\x2dbacklight.slice.
+Jul 06 08:35:53 manji kernel: acer_wmi: Acer Laptop ACPI-WMI Extras
+Jul 06 08:35:53 manji systemd[1]: Created slice system-systemd\x2dbacklight.slice.
+Jul 06 08:35:53 manji systemd[1]: Starting Load/Save Screen Backlight Brightness of backlight:acpi_video0...
+Jul 06 08:35:53 manji kernel: acer_wmi: Brightness must be controlled by acpi video driver
+Jul 06 08:35:53 manji kernel: input: Acer BMA150 accelerometer as /devices/virtual/input/input15
+Jul 06 08:35:53 manji systemd[1]: Started Load/Save RF Kill Switch Status of rfkill0.
+Jul 06 08:35:53 manji systemd[1]: Started Load/Save Screen Backlight Brightness of backlight:acpi_video0.
+Jul 06 08:35:53 manji systemd[1]: Starting system-lvm2\x2dpvscan.slice.
+Jul 06 08:35:53 manji systemd[1]: Created slice system-lvm2\x2dpvscan.slice.
+Jul 06 08:35:53 manji systemd[1]: Starting LVM2 PV scan on device 254:0...
+Jul 06 08:35:53 manji systemd[1]: Found device INTEL_SSDSA2M080G2GC ManjaroBoot.
+Jul 06 08:35:53 manji systemd[1]: Mounting /boot...
+Jul 06 08:35:53 manji kernel: EXT4-fs (sda1): mounting ext2 file system using the ext4 subsystem
+Jul 06 08:35:53 manji systemd[1]: Mounted /boot.
+Jul 06 08:35:53 manji kernel: EXT4-fs (sda1): mounted filesystem without journal. Opts: (null)
+Jul 06 08:35:53 manji systemd[1]: Found device /dev/disk/by-uuid/0708e2ae-32bf-4e5b-ad0b-a140b5e9adf0.
+Jul 06 08:35:53 manji systemd[1]: Starting File System Check on /dev/disk/by-uuid/0708e2ae-32bf-4e5b-ad0b-a140b5e9adf0...
+Jul 06 08:35:53 manji systemd[1]: Starting LVM2 metadata daemon...
+Jul 06 08:35:53 manji systemd[1]: Started LVM2 metadata daemon.
+Jul 06 08:35:53 manji systemd-fsck[315]: ManjaroHome: clean, 166269/3506176 files, 4338617/14014464 blocks
+Jul 06 08:35:53 manji systemd[1]: Started File System Check on /dev/disk/by-uuid/0708e2ae-32bf-4e5b-ad0b-a140b5e9adf0.
+Jul 06 08:35:53 manji systemd[1]: Mounting /home...
+Jul 06 08:35:53 manji systemd[1]: Mounted /home.
+Jul 06 08:35:53 manji systemd[1]: Starting Local File Systems.
+Jul 06 08:35:53 manji systemd[1]: Reached target Local File Systems.
+Jul 06 08:35:53 manji systemd[1]: Starting Create Volatile Files and Directories...
+Jul 06 08:35:53 manji systemd[1]: Starting Trigger Flushing of Journal to Persistent Storage...
+Jul 06 08:35:53 manji kernel: EXT4-fs (dm-2): mounted filesystem with ordered data mode. Opts: (null)
+Jul 06 08:35:53 manji systemd[1]: Started Create Volatile Files and Directories.
+Jul 06 08:35:53 manji systemd[1]: Starting Update UTMP about System Boot/Shutdown...
+Jul 06 08:35:53 manji systemd-journal[222]: Permanent journal is using 2.0G (max allowed 2.0G, trying to leave 3.0G free of 9.7G available → current limit 2.0G).
+Jul 06 08:35:54 manji systemd-journal[222]: Time spent on flushing to /var is 1.151958s for 873 entries.
+Jul 06 08:35:53 manji crond[364]: (CRON) INFO (Syslog will be used instead of sendmail.)
+Jul 06 08:35:53 manji crond[364]: (CRON) INFO (RANDOM_DELAY will be scaled with factor 99% if used.)
+Jul 06 08:35:53 manji crond[364]: (CRON) INFO (running with inotify support)
+Jul 06 08:35:54 manji NetworkManager[372]: <info> NetworkManager (version 0.9.8.10) is starting...
+Jul 06 08:35:54 manji NetworkManager[372]: <info> Read config file /etc/NetworkManager/NetworkManager.conf
+Jul 06 08:35:54 manji NetworkManager[372]: <info> WEXT support is enabled
+Jul 06 08:35:54 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service'
+Jul 06 08:35:54 manji polkitd[653]: Started polkitd version 0.112
+Jul 06 08:35:54 manji polkitd[653]: Loading rules from directory /etc/polkit-1/rules.d
+Jul 06 08:35:54 manji polkitd[653]: Loading rules from directory /usr/share/polkit-1/rules.d
+Jul 06 08:35:54 manji polkitd[653]: Finished loading, compiling and executing 2 rules
+Jul 06 08:35:54 manji dbus[398]: [system] Successfully activated service 'org.freedesktop.PolicyKit1'
+Jul 06 08:35:54 manji mdm[552]: Starting mdm...
+Jul 06 08:35:54 manji polkitd[653]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+Jul 06 08:35:54 manji NetworkManager[372]: <info> Loaded plugin keyfile: (c) 2007 - 2010 Red Hat, Inc.  To report bugs please use the NetworkManager mailing list.
+Jul 06 08:35:54 manji NetworkManager[372]: keyfile: parsing Wired connection 1 ...
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Key file does not have key 'Welcome'
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading non-locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Key file does not have key 'Welcome'
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading non-locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Key file does not have key 'Welcome'
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading non-locale string: Welcome (null)
+Jul 06 08:35:54 manji NetworkManager[372]: keyfile: ipv4.address1: address 192.168.169.211/24 gateway 192.168.169.193
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: server group server-Standard already exists, skipping
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: server group server-Terminal already exists, skipping
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: server group server-Chooser already exists, skipping
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Processing server group <server-Standard>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Standard/name=Standard server <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Standard/command=/usr/bin/Xorg -audit 0 <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Standard/flexible=true <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Standard/choosable=false <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Standard/handled=true <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Standard/priority=0 <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Processing server group <server-Terminal>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Terminal/name=Terminal server <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Terminal/command=/usr/bin/Xorg -audit 0 -terminate <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Terminal/flexible=false <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Terminal/choosable=false <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Terminal/handled=false <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Terminal/priority=0 <built-in>
+Jul 06 08:35:54 manji NetworkManager[372]: keyfile:     read connection 'Wired connection 1'
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Processing server group <server-Chooser>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Chooser/name=Chooser server <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Chooser/command=/usr/bin/Xorg -audit 0 <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Chooser/flexible=false <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Chooser/choosable=false <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Chooser/handled=true <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config server-Chooser/priority=0 <built-in>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got config servers/0=Standard device=/dev/console <distro>
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Loading display for key '0'
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: mdm_main: Here we go...
+Jul 06 08:35:53 manji systemd[1]: Started Trigger Flushing of Journal to Persistent Storage.
+Jul 06 08:35:53 manji systemd[1]: Started Update UTMP about System Boot/Shutdown.
+Jul 06 08:35:53 manji systemd[1]: Starting System Initialization.
+Jul 06 08:35:53 manji systemd[1]: Reached target System Initialization.
+Jul 06 08:35:53 manji systemd[1]: Starting Daily locate database update.
+Jul 06 08:35:53 manji systemd[1]: Started Daily locate database update.
+Jul 06 08:35:53 manji systemd[1]: Starting Daily rotation of log files.
+Jul 06 08:35:53 manji systemd[1]: Started Daily rotation of log files.
+Jul 06 08:35:53 manji systemd[1]: Starting Daily man-db cache update.
+Jul 06 08:35:53 manji systemd[1]: Started Daily man-db cache update.
+Jul 06 08:35:53 manji systemd[1]: Starting Daily verification of password and group files.
+Jul 06 08:35:54 manji systemd-logind[472]: New seat seat0.
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: mdm_start_first_unborn_local: Starting :0
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: mdm_display_manage: Managing :0
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: loop check: last_start 0, last_loop 0, now: 1404628554, retry_count: 0
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Resetting counts for loop of death detection
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Forking slave process
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: mdm_display_manage: Forked slave: 775
+Jul 06 08:35:54 manji NetworkManager[372]: <info> monitoring kernel firmware directory '/lib/firmware'.
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_slave_start: Starting slave process for :0
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_slave_start: Loop Thingie
+Jul 06 08:35:54 manji systemd[1]: Started Dynamic Kernel Modules System.
+Jul 06 08:35:54 manji lvm[310]: 2 logical volume(s) in volume group "ManjaroVG" now active
+Jul 06 08:35:54 manji alsactl[336]: Found hardware: "HDA-Intel" "ATI R6xx HDMI" "HDA:1002aa01,00aa0100,00100200" "0x17aa" "0x397b"
+Jul 06 08:35:54 manji alsactl[336]: Hardware is initialized using a generic method
+Jul 06 08:35:54 manji alsactl[336]: /usr/bin/alsactl: set_control:1452: control.7.value.2 is not specified
+Jul 06 08:35:54 manji alsactl[336]: /usr/bin/alsactl: set_control:1452: control.7.value.3 is not specified
+Jul 06 08:35:54 manji alsactl[336]: /usr/bin/alsactl: set_control:1452: control.7.value.4 is not specified
+Jul 06 08:35:54 manji alsactl[336]: /usr/bin/alsactl: set_control:1452: control.7.value.5 is not specified
+Jul 06 08:35:54 manji alsactl[336]: /usr/bin/alsactl: set_control:1452: control.7.value.6 is not specified
+Jul 06 08:35:54 manji alsactl[336]: /usr/bin/alsactl: set_control:1452: control.7.value.7 is not specified
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_slave_child_handler: Handling children...
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: Sending VT_NUM == -1 for slave 775
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got VT_NUM == -1
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_server_start: :0
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_auth_secure_display: Setting up access for :0
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Loading locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Key file does not have key 'Welcome'
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Loading non-locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Loading locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Key file does not have key 'Welcome'
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Loading non-locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Loading locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Key file does not have key 'Welcome'
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Loading non-locale string: Welcome (null)
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: server group server-Standard already exists, skipping
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: server group server-Terminal already exists, skipping
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: server group server-Chooser already exists, skipping
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Processing server group <server-Standard>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Standard/name=Standard server <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Standard/command=/usr/bin/Xorg -audit 0 <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Standard/flexible=true <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Standard/choosable=false <built-in>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Standard/handled=true <built-in>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Standard/priority=0 <built-in>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Processing server group <server-Terminal>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Terminal/name=Terminal server <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Terminal/command=/usr/bin/Xorg -audit 0 -terminate <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Terminal/flexible=false <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Terminal/choosable=false <built-in>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Terminal/handled=false <distro>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Terminal/priority=0 <built-in>
+Jul 06 08:35:54 manji mdm[552]: mdm-binary[552]: DEBUG: Processing server group <server-Chooser>
+Jul 06 08:35:54 manji NetworkManager[372]: <info> WiFi hardware radio set enabled
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_auth_secure_display: Setting up access
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_auth_secure_display: Setting up access for :0 - 1 entries
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: Sending COOKIE == <secret> for slave 775
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Handling message: 'COOKIE 775 aeb...'
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got COOKIE == <secret>
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: Sending AUTHFILE == <secret> for slave 775
+Jul 06 08:35:54 manji NetworkManager[372]: <info> WiFi enabled by radio killswitch; enabled by state file
+Jul 06 08:35:54 manji mdm-binary[552]: DEBUG: Got AUTHFILE == /var/lib/mdm/:0.Xauth
+Jul 06 08:35:54 manji NetworkManager[372]: <info> WWAN enabled by radio killswitch; enabled by state file
+Jul 06 08:35:54 manji NetworkManager[372]: <info> WiMAX enabled by radio killswitch; enabled by state file
+Jul 06 08:35:54 manji NetworkManager[372]: <info> Networking is enabled by state file
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: Forking X server process
+Jul 06 08:35:54 manji NetworkManager[372]: <warn> failed to allocate link cache: (-26) Protocol mismatch
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: mdm_server_spawn: Forked server on pid 783
+Jul 06 08:35:54 manji mdm-binary[775]: DEBUG: do_server_wait: Before mainloop waiting for server
+Jul 06 08:35:54 manji NetworkManager[372]: <info> (enp1s0): carrier is OFF
+Jul 06 08:35:54 manji mdm-binary[783]: DEBUG: mdm_server_spawn: '/usr/bin/Xorg :0 -audit 0 -auth /var/lib/mdm/:0.Xauth -nolisten tcp vt7'
+Jul 06 08:35:54 manji NetworkManager[372]: <info> (enp1s0): new Ethernet device (driver: 'r8169' ifindex: 2)
+Jul 06 08:35:54 manji NetworkManager[372]: <info> (enp1s0): exported as /org/freedesktop/NetworkManager/Devices/0
+Jul 06 08:35:54 manji NetworkManager[372]: <info> (enp1s0): device state change: unmanaged -> unavailable (reason 'managed') [10 20 2]
+Jul 06 08:35:54 manji NetworkManager[372]: <info> (enp1s0): bringing up device.
+Jul 06 08:35:55 manji ntpd[782]: ntpd 4.2.7p441@1.2483-o Tue May  6 10:14:26 UTC 2014 (1): Starting
+Jul 06 08:35:55 manji ntpd[782]: Command line: /usr/bin/ntpd -g -u ntp:ntp -p /run/ntpd.pid
+Jul 06 08:35:54 manji systemd[1]: Started Network Manager.
+Jul 06 08:35:54 manji systemd[1]: Starting Network.
+Jul 06 08:35:54 manji systemd[1]: Reached target Network.
+Jul 06 08:35:54 manji systemd[1]: Starting Network Time Service...
+Jul 06 08:35:55 manji systemd[1]: PID file /run/ntpd.pid not readable (yet?) after start.
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Chooser/name=Chooser server <distro>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Chooser/command=/usr/bin/Xorg -audit 0 <distro>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Chooser/flexible=false <distro>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Chooser/choosable=false <built-in>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Chooser/handled=true <built-in>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config server-Chooser/priority=0 <built-in>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got config servers/0=Standard device=/dev/console <distro>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Loading display for key '0'
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: mdm_main: Here we go...
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: mdm_start_first_unborn_local: Starting :0
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: mdm_display_manage: Managing :0
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: loop check: last_start 0, last_loop 0, now: 1404628554, retry_count: 0
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Resetting counts for loop of death detection
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Forking slave process
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: mdm_display_manage: Forked slave: 775
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got VT_NUM == -1
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Handling message: 'COOKIE 775 aeb...'
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got COOKIE == <secret>
+Jul 06 08:35:55 manji mdm[552]: mdm-binary[552]: DEBUG: Got AUTHFILE == /var/lib/mdm/:0.Xauth
+Jul 06 08:35:55 manji ntpd[786]: proto: precision = 0.489 usec (-21)
+Jul 06 08:35:55 manji ntpd[786]: Listen and drop on 0 v4wildcard 0.0.0.0:123
+Jul 06 08:35:55 manji systemd[1]: Started Network Time Service.
+Jul 06 08:35:55 manji systemd[1]: Starting Multi-User System.
+Jul 06 08:35:55 manji systemd[1]: Reached target Multi-User System.
+Jul 06 08:35:55 manji systemd[1]: Starting TLP system startup/shutdown...
+Jul 06 08:35:55 manji systemd[1]: Starting Graphical Interface.
+Jul 06 08:35:55 manji systemd[1]: Reached target Graphical Interface.
+Jul 06 08:35:55 manji kernel: Non-volatile memory driver v1.3
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: ThinkPad ACPI Extras v0.25
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: http://ibm-acpi.sf.net/
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: ThinkPad BIOS 54CN18WW, EC unknown
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: Lenovo LENOVO, model Sabine
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: detected a 8-level brightness capable ThinkPad
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: Standard ACPI backlight interface available, not loading native one
+Jul 06 08:35:55 manji kernel: thinkpad_acpi: volume: disabled as there is no ALSA support in this kernel
+Jul 06 08:35:55 manji kernel: input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input16
+Jul 06 08:35:55 manji tlp[787]: Loading tp-smapi kernel module...done.
+Jul 06 08:35:55 manji tlp[787]: Disabling radios: bluetooth wifi wwan.
+Jul 06 08:35:55 manji tlp[787]: Setting battery charge thresholds...done.
+Jul 06 08:35:55 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 08:35:55 manji ntpd[786]: Listen normally on 1 lo 127.0.0.1:123
+Jul 06 08:35:55 manji ntpd[786]: Listening on routing socket on fd #18 for interface updates
+Jul 06 08:35:55 manji NetworkManager[372]: <info> (enp1s0): preparing device.
+Jul 06 08:35:55 manji NetworkManager[372]: <info> (enp1s0): deactivating device (reason 'managed') [2]
+Jul 06 08:35:55 manji NetworkManager[372]: <warn> /sys/devices/virtual/net/lo: couldn't determine device driver; ignoring...
+Jul 06 08:35:55 manji NetworkManager[372]: <warn> /sys/devices/virtual/net/lo: couldn't determine device driver; ignoring...
+Jul 06 08:35:55 manji NetworkManager[372]: <warn> Couldn't get managed objects: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by any .service files
+Jul 06 08:35:55 manji kernel: rts5139: module is from the staging directory, the quality is unknown, you have been warned.
+Jul 06 08:35:55 manji kernel: scsi4 : SCSI emulation for RTS5139 USB card reader
+Jul 06 08:35:55 manji kernel: usbcore: registered new interface driver rts5139
+Jul 06 08:35:55 manji kernel: scsi 4:0:0:0: Direct-Access     Generic- xD/SD/M.S.       1.00 PQ: 0 ANSI: 0 CCS
+Jul 06 08:35:55 manji tlp[787]: Applying power save settings...done.
+Jul 06 08:35:55 manji systemd[1]: Started TLP system startup/shutdown.
+Jul 06 08:35:55 manji systemd[1]: Startup finished in 8.673s (kernel) + 3.071s (userspace) = 11.744s.
+Jul 06 08:35:55 manji kernel: sd 4:0:0:0: [sdc] Attached SCSI removable disk
+Jul 06 08:35:55 manji kernel: pci 0000:00:01.0: irq 44 for MSI/MSI-X
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Firegl kernel thread PID: 911
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Firegl kernel thread PID: 912
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Firegl kernel thread PID: 913
+Jul 06 08:35:55 manji kernel: <6>[fglrx] IRQ 44 Enabled
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Reserved FB block: Shared offset:0, size:1000000 
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Reserved FB block: Unshared offset:fb38000, size:4000 
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Reserved FB block: Unshared offset:fb3c000, size:4c4000 
+Jul 06 08:35:55 manji kernel: <6>[fglrx] Reserved FB block: Unshared offset:1fff4000, size:c000 
+Jul 06 08:35:55 manji kernel: <6>[fglrx] ATIF platform detected with notification ID: 0x81
+Jul 06 08:35:56 manji kernel: mtrr: your BIOS has configured an incorrect mask, fixing it.
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_server_start: After mainloop waiting for server
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_server_start: Completed :0!
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Sending VT_NUM == 7 for slave 775
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Got VT_NUM == 7
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Sending XPID == 783 for slave 775
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Got XPID == 783
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_slave_run: Opening display :0
+Jul 06 08:35:58 manji mdm[552]: mdm-binary[552]: DEBUG: Got VT_NUM == 7
+Jul 06 08:35:58 manji mdm[552]: mdm-binary[552]: DEBUG: Got XPID == 783
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Sending LOGGED_IN == 1 for slave 775
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Got logged in == TRUE
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Sending LOGIN == <secret> for slave 775
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Got LOGIN == emacs
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: setup_automatic_session: Automatic login: emacs
+Jul 06 08:35:58 manji mdm[552]: mdm-binary[552]: DEBUG: Got logged in == TRUE
+Jul 06 08:35:58 manji mdm[552]: mdm-binary[552]: DEBUG: Got LOGIN == emacs
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Forking extra process: /etc/mdm/SuperInit/Default
+Jul 06 08:35:58 manji ag[919]: mdm-superinit Starting...
+Jul 06 08:35:58 manji ag[920]: mdm-superinit Finished
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_slave_child_handler: Handling children...
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Forking extra process: /etc/mdm/Init/Default
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_slave_child_handler: Handling children...
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: setup_automatic_session: DisplayInit script finished
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Looking up per display value for security/PamStack=mdm
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Requesting group=security key=PamStack locale=(null)
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_preselect_user: Automatic/Timed login detected, not presetting user.
+Jul 06 08:35:58 manji mdm-binary[775]: pam_unix(mdm-autologin:session): session opened for user emacs by (uid=0)
+Jul 06 08:35:58 manji systemd[1]: Starting user-1000.slice.
+Jul 06 08:35:58 manji systemd[1]: Created slice user-1000.slice.
+Jul 06 08:35:58 manji systemd[1]: Starting User Manager for UID 1000...
+Jul 06 08:35:58 manji systemd[1]: Starting Session c1 of user emacs.
+Jul 06 08:35:58 manji systemd-logind[472]: New session c1 of user emacs.
+Jul 06 08:35:58 manji systemd[1]: Started Session c1 of user emacs.
+Jul 06 08:35:58 manji systemd[923]: pam_unix(systemd-user:session): session opened for user emacs by (uid=0)
+Jul 06 08:35:58 manji systemd[923]: Starting Paths.
+Jul 06 08:35:58 manji systemd[923]: Reached target Paths.
+Jul 06 08:35:58 manji systemd[923]: Starting Timers.
+Jul 06 08:35:58 manji systemd[923]: Reached target Timers.
+Jul 06 08:35:58 manji systemd[923]: Starting Sockets.
+Jul 06 08:35:58 manji systemd[923]: Reached target Sockets.
+Jul 06 08:35:58 manji systemd[923]: Starting Basic System.
+Jul 06 08:35:58 manji systemd[923]: Reached target Basic System.
+Jul 06 08:35:58 manji systemd[923]: Starting Default.
+Jul 06 08:35:58 manji systemd[923]: Reached target Default.
+Jul 06 08:35:58 manji systemd[923]: Startup finished in 18ms.
+Jul 06 08:35:58 manji systemd[1]: Started User Manager for UID 1000.
+Jul 06 08:35:58 manji mdm-binary[775]: pam_unix(mdm-autologin:session): session opened for user emacs by (uid=0)
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: setup_automatic_session: Automatic login successful
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_slave_session_start: Attempting session for user 'emacs'
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Initial setting: session: 'xfce' language: 'en_US.UTF-8'
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: get_local_auths: Setting up socket access
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: get_local_auths: Setting up network access
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: get_local_auths: Setting up access for :0 - 2 entries
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_auth_user_add: Adding cookie for 1000
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_auth_user_add: Using /home/emacs/.Xauthority for cookies
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_auth_purge: :0
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: mdm_auth_user_add: Done
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Sending WRITE_X_SERVERS == 0 for slave 775
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Forking user session xfce
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Display device is /dev/tty7 for display :0
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Writing session utmp-wtmp record
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using username                            emacs
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using type USER_PROCESS
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using pid 926
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using time 1404628558
+Jul 06 08:35:58 manji mdm-binary[926]: DEBUG: Forking extra process: /etc/mdm/PreSession/Default
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using id   :0
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using line                             tty7
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: utmp-wtmp: Using hostname                                                                                                                                                                                                                                                               :0
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Login utmp/wtmp record
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Adding new utmp record
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: Sending SESSPID == 926 for slave 775
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Got SESSPID == 926
+Jul 06 08:35:58 manji mdm-binary[775]: DEBUG: slave_waitpid: waiting on 926
+Jul 06 08:35:58 manji mdm[552]: mdm-binary[552]: DEBUG: Got SESSPID == 926
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: mdm_socket_handler: Accepting new connection fd 8
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Handling user message: 'GET_CONFIG greeter/BackgroundType :0'
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Handling GET_CONFIG: greeter/BackgroundType for display :0
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Looking up per display value for greeter/BackgroundType
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Requesting group=greeter key=BackgroundType locale=(null)
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Looking up key: greeter/BackgroundType
+Jul 06 08:35:58 manji mdm-binary[552]: DEBUG: Handling user message: 'CLOSE'
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: mdm_socket_handler: Accepting new connection fd 8
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: Handling user message: 'GET_CONFIG greeter/BackgroundType :0'
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: Handling GET_CONFIG: greeter/BackgroundType for display :0
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: Looking up per display value for greeter/BackgroundType
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: Requesting group=greeter key=BackgroundType locale=(null)
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: Looking up key: greeter/BackgroundType
+Jul 06 08:35:59 manji mdm[552]: mdm-binary[552]: DEBUG: Handling user message: 'CLOSE'
+Jul 06 08:35:59 manji mdm-binary[926]: DEBUG: Running /etc/mdm/Xsession startxfce4 for emacs on :0
+Jul 06 08:35:59 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.RealtimeKit1' unit='rtkit-daemon.service'
+Jul 06 08:35:59 manji systemd[1]: Starting RealtimeKit Scheduling Policy Service...
+Jul 06 08:35:59 manji dbus[398]: [system] Successfully activated service 'org.freedesktop.RealtimeKit1'
+Jul 06 08:35:59 manji rtkit-daemon[966]: Successfully called chroot.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Successfully dropped privileges.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Successfully limited resources.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Running.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Canary thread running.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Watchdog thread running.
+Jul 06 08:35:59 manji systemd[1]: Started RealtimeKit Scheduling Policy Service.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Successfully made thread 965 of process 965 (/usr/bin/pulseaudio) owned by '1000' high priority at nice level -11.
+Jul 06 08:35:59 manji rtkit-daemon[966]: Supervising 1 threads of 1 processes of 1 users.
+Jul 06 08:36:00 manji pulseaudio[965]: [pulseaudio] bluez5-util.c: GetManagedObjects() failed: org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by any .service files
+Jul 06 08:36:00 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.UDisks2' unit='udisks2.service'
+Jul 06 08:36:00 manji systemd[1]: Starting Disk Manager...
+Jul 06 08:36:00 manji udisksd[983]: udisks daemon version 2.1.3 starting
+Jul 06 08:36:01 manji kernel: fuse init (API version 7.23)
+Jul 06 08:36:01 manji systemd[1]: Mounting FUSE Control File System...
+Jul 06 08:36:01 manji systemd[1]: Mounted FUSE Control File System.
+Jul 06 08:36:01 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.UPower' unit='upower.service'
+Jul 06 08:36:01 manji systemd[1]: Starting Daemon for power management...
+Jul 06 08:36:01 manji dbus[398]: [system] Successfully activated service 'org.freedesktop.UPower'
+Jul 06 08:36:01 manji systemd[1]: Started Daemon for power management.
+Jul 06 08:36:01 manji dbus[398]: [system] Successfully activated service 'org.freedesktop.UDisks2'
+Jul 06 08:36:01 manji systemd[1]: Started Disk Manager.
+Jul 06 08:36:01 manji udisksd[983]: Acquired the name org.freedesktop.UDisks2 on the system message bus
+Jul 06 08:36:02 manji rtkit-daemon[966]: Successfully made thread 1079 of process 1079 (/usr/bin/pulseaudio) owned by '1000' high priority at nice level -11.
+Jul 06 08:36:02 manji rtkit-daemon[966]: Supervising 2 threads of 2 processes of 1 users.
+Jul 06 08:36:02 manji pulseaudio[1079]: Daemon already running.
+Jul 06 08:36:02 manji polkitd[653]: Registered Authentication Agent for unix-session:c1 (system bus name :1.18 [/usr/lib/lxpolkit/lxpolkit], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8)
+Jul 06 08:36:02 manji org.a11y.Bus[939]: Activating service name='org.a11y.atspi.Registry'
+Jul 06 08:36:02 manji org.a11y.Bus[939]: Successfully activated service 'org.a11y.atspi.Registry'
+Jul 06 08:36:02 manji org.a11y.atspi.Registry[1094]: SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry
+Jul 06 08:36:02 manji org.a11y.atspi.Registry[1094]: ** (at-spi2-registryd:1097): WARNING **: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+Jul 06 08:36:02 manji org.a11y.atspi.Registry[1094]: ** (at-spi2-registryd:1097): WARNING **: Unable to register client with session manager
+Jul 06 08:36:02 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.ModemManager1' unit='dbus-org.freedesktop.ModemManager1.service'
+Jul 06 08:36:02 manji dbus[398]: [system] Activation via systemd failed for unit 'dbus-org.freedesktop.ModemManager1.service': Unit dbus-org.freedesktop.ModemManager1.service failed to load: No such file or directory.
+Jul 06 08:36:04 manji dbus[398]: [system] Activating via systemd: service name='org.manjaro.pamac' unit='pamac.service'
+Jul 06 08:36:04 manji systemd[1]: Starting Pamac...
+Jul 06 08:36:05 manji dbus[398]: [system] Successfully activated service 'org.manjaro.pamac'
+Jul 06 08:36:05 manji systemd[1]: Started Pamac.
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.dacentec.com : Could not resolve host: mirror.dacentec.com
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.mirror.ac.za : Could not resolve host: manjaro.mirror.ac.za
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.ventraip.net.au : Could not resolve host: mirror.ventraip.net.au
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.mirror.serversaustralia.com.au : Could not resolve host: manjaro.mirror.serversaustralia.com.au
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirrors.ispros.com.bd : Could not resolve host: mirrors.ispros.com.bd
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.belnet.be : Could not resolve host: ftp.belnet.be
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.cu.be : Could not resolve host: manjaro.cu.be
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.fis.unb.br : Could not resolve host: manjaro.fis.unb.br
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from www.las.ic.unicamp.br : Could not resolve host: www.las.ic.unicamp.br
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.dcc.uchile.cl : Could not resolve host: manjaro.dcc.uchile.cl
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.edatel.net.co : Could not resolve host: mirror.edatel.net.co
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirrors.ucr.ac.cr : Could not resolve host: mirrors.ucr.ac.cr
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirrors.dotsrc.org : Could not resolve host: mirrors.dotsrc.org
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjarolinux.polymorf.fr : Could not resolve host: manjarolinux.polymorf.fr
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.halifax.rwth-aachen.de : Could not resolve host: ftp.halifax.rwth-aachen.de
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.tu-chemnitz.de : Could not resolve host: ftp.tu-chemnitz.de
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.rz.tu-bs.de : Could not resolve host: ftp.rz.tu-bs.de
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror3.layerjet.com : Could not resolve host: mirror3.layerjet.com
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.netzspielplatz.de : Could not resolve host: mirror.netzspielplatz.de
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.cc.uoc.gr : Could not resolve host: ftp.cc.uoc.gr
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from kambing.ui.ac.id : Could not resolve host: kambing.ui.ac.id
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from kartolo.sby.datautama.net.id : Could not resolve host: kartolo.sby.datautama.net.id
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.heanet.ie : Could not resolve host: ftp.heanet.ie
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.mirror.garr.it : Could not resolve host: manjaro.mirror.garr.it
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.tsukuba.wide.ad.jp : Could not resolve host: ftp.tsukuba.wide.ad.jp
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.riken.jp : Could not resolve host: ftp.riken.jp
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.nluug.nl : Could not resolve host: ftp.nluug.nl
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.pregi.net : Could not resolve host: mirror.pregi.net
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.dei.uc.pt : Could not resolve host: ftp.dei.uc.pt
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirrors.xservers.ro : Could not resolve host: mirrors.xservers.ro
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirrors.serverhost.ro : Could not resolve host: mirrors.serverhost.ro
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.lug.ro : Could not resolve host: ftp.lug.ro
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.mirrors.linux.ro : Could not resolve host: manjaro.mirrors.linux.ro
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.yandex.ru : Could not resolve host: mirror.yandex.ru
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.premi.st : Could not resolve host: mirror.premi.st
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.lysator.liu.se : Could not resolve host: ftp.lysator.liu.se
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.zetup.net : Could not resolve host: mirror.zetup.net
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from free.nchc.org.tw : Could not resolve host: free.nchc.org.tw
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from free2.nchc.org.tw : Could not resolve host: free2.nchc.org.tw
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from ftp.linux.org.tr : Could not resolve host: ftp.linux.org.tr
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from repo.manjaro.org.uk : Could not resolve host: repo.manjaro.org.uk
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from www.mirrorservice.org : Could not resolve host: www.mirrorservice.org
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.catn.com : Could not resolve host: mirror.catn.com
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from manjaro.mirrors.uk2.net : Could not resolve host: manjaro.mirrors.uk2.net
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from www.gtlib.gatech.edu : Could not resolve host: www.gtlib.gatech.edu
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.jmu.edu : Could not resolve host: mirror.jmu.edu
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.solarvps.com : Could not resolve host: mirror.solarvps.com
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from mirror.nexcess.net : Could not resolve host: mirror.nexcess.net
+Jul 06 08:36:06 manji pamac-daemon[1120]: failed retrieving file 'core.db' from vm1.sorch.info : Could not resolve host: vm1.sorch.info
+Jul 06 08:36:06 manji pamac-daemon[1120]: unable to update database
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): carrier now ON (device state 20)
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): device state change: unavailable -> disconnected (reason 'carrier-changed') [20 30 40]
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Auto-activating connection 'Wired connection 1'.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) starting connection 'Wired connection 1'
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): device state change: disconnected -> prepare (reason 'none') [30 40 0]
+Jul 06 08:36:10 manji NetworkManager[372]: <info> NetworkManager state is now CONNECTING
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) scheduled...
+Jul 06 08:36:10 manji kernel: r8169 0000:01:00.0 enp1s0: link up
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) started...
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): taking down device.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): set MAC address to 00:01:02:03:04:05
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): bringing up device.
+Jul 06 08:36:10 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 08:36:10 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): carrier now OFF (device state 40, deferring action for 4 seconds)
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) scheduled...
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) complete.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) starting...
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): device state change: prepare -> config (reason 'none') [40 50 0]
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) successful.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) scheduled.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) complete.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) started...
+Jul 06 08:36:10 manji NetworkManager[372]: <info> (enp1s0): device state change: config -> ip-config (reason 'none') [50 70 0]
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Configure Commit) scheduled...
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) complete.
+Jul 06 08:36:10 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Commit) started...
+Jul 06 08:36:11 manji NetworkManager[372]: <info> (enp1s0): device state change: ip-config -> secondaries (reason 'none') [70 90 0]
+Jul 06 08:36:11 manji NetworkManager[372]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Commit) complete.
+Jul 06 08:36:11 manji NetworkManager[372]: <info> (enp1s0): device state change: secondaries -> activated (reason 'none') [90 100 0]
+Jul 06 08:36:11 manji NetworkManager[372]: <info> NetworkManager state is now CONNECTED_GLOBAL
+Jul 06 08:36:11 manji NetworkManager[372]: <info> Policy set 'Wired connection 1' (enp1s0) as default for IPv4 routing and DNS.
+Jul 06 08:36:11 manji NetworkManager[372]: <info> Writing DNS information to /usr/bin/resolvconf
+Jul 06 08:36:11 manji NetworkManager[372]: <info> Activation (enp1s0) successful, device activated.
+Jul 06 08:36:11 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+Jul 06 08:36:11 manji systemd[1]: Starting Network Manager Script Dispatcher Service...
+Jul 06 08:36:11 manji dbus[398]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+Jul 06 08:36:11 manji systemd[1]: Started Network Manager Script Dispatcher Service.
+Jul 06 08:36:11 manji systemd[1]: Started Network Time Service.
+Jul 06 08:36:11 manji sudo[1176]: emacs : TTY=pts/0 ; PWD=/home/emacs/build/amdmsrtweaker-lnx ; USER=root ; COMMAND=./go
+Jul 06 08:36:11 manji sudo[1176]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: error: XDG_RUNTIME_DIR not set in the environment.
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: Unable to init server: Could not connect: Connection refused
+Jul 06 08:36:11 manji NetworkManager[372]: <info> (enp1s0): carrier now ON (device state 100)
+Jul 06 08:36:11 manji kernel: r8169 0000:01:00.0 enp1s0: link up
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:11 manji nm-dispatcher.action[1209]: Script '/etc/NetworkManager/dispatcher.d/99_update_pamac_tray' exited with error status 134.
+Jul 06 08:36:11 manji NetworkManager[372]: <warn> Dispatcher script failed: Script '/etc/NetworkManager/dispatcher.d/99_update_pamac_tray' exited with error status 134.
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_style_provider_private_lookup: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_lookup_resolve: assertion 'GTK_IS_STYLE_PROVIDER_PRIVATE (provider)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_css_rgba_value_get_rgba: assertion 'rgba->class == &GTK_CSS_VALUE_RGBA' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: gtk_settings_get_for_screen: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gtk-CRITICAL **: _gtk_settings_get_style_cascade: assertion 'GTK_IS_SETTINGS (settings)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gdk-CRITICAL **: gdk_screen_get_display: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: (pamac-refresh:1214): Gdk-CRITICAL **: gdk_screen_get_rgba_visual: assertion 'GDK_IS_SCREEN (screen)' failed
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: **
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: Gtk:ERROR:gtkwindow.c:3652:gdk_window_enable_csd: assertion failed: (visual != NULL)
+Jul 06 08:36:12 manji nm-dispatcher.action[1209]: /etc/NetworkManager/dispatcher.d/99_update_pamac_tray: line 6:  1214 Aborted                 /usr/bin/pamac-refresh
+Jul 06 08:36:12 manji sudo[1176]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:36:13 manji ntpd[786]: Listen normally on 2 enp1s0 192.168.169.211:123
+Jul 06 08:36:13 manji ntpd[786]: new interface(s) found: waking up resolver
+Jul 06 08:36:15 manji systemd[923]: Time has been changed
+Jul 06 08:36:15 manji systemd[1]: Time has been changed
+Jul 06 08:36:16 manji kernel: input input7: event field not found
+Jul 06 08:36:30 manji sudo[1250]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/journalctl -b 0
+Jul 06 08:36:30 manji sudo[1250]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:38:22 manji sudo[1250]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:38:23 manji sudo[1253]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/journalctl -b 0
+Jul 06 08:38:23 manji sudo[1253]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:38:49 manji sudo[1253]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:41:01 manji sudo[1018]: pam_unix(sudo:auth): conversation failed
+Jul 06 08:41:01 manji sudo[1018]: pam_unix(sudo:auth): auth could not identify password for [emacs]
+Jul 06 08:44:44 manji sudo[1502]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/journalctl -b 0
+Jul 06 08:44:44 manji sudo[1502]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:45:22 manji sudo[1511]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/dmesg
+Jul 06 08:45:22 manji sudo[1511]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:45:22 manji sudo[1511]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:47:09 manji sudo[1522]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/modprobe -v acpi_power_meter
+Jul 06 08:47:09 manji sudo[1522]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:47:09 manji sudo[1522]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:47:14 manji sudo[1524]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/modprobe -v llm80
+Jul 06 08:47:14 manji sudo[1524]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:47:14 manji sudo[1524]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:47:16 manji sudo[1527]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/modprobe -v lm80
+Jul 06 08:47:16 manji sudo[1527]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:47:16 manji sudo[1527]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:47:19 manji sudo[1529]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/modprobe -v gpio
+Jul 06 08:47:19 manji sudo[1529]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:47:19 manji sudo[1529]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:48:07 manji sudo[1544]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/modprobe -v gpio-amd8111
+Jul 06 08:48:07 manji sudo[1544]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:48:07 manji sudo[1544]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:48:16 manji sudo[1502]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:48:21 manji sudo[1550]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/journalctl -b 0 --no-pager
+Jul 06 08:48:21 manji sudo[1550]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 08:48:21 manji sudo[1550]: pam_unix(sudo:session): session closed for user root
+Jul 06 08:49:58 manji NetworkManager[372]: <info> (enp1s0): carrier now OFF (device state 100, deferring action for 4 seconds)
+Jul 06 08:49:58 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 08:50:02 manji NetworkManager[372]: <info> (enp1s0): device state change: activated -> unavailable (reason 'carrier-changed') [100 20 40]
+Jul 06 08:50:02 manji NetworkManager[372]: <info> (enp1s0): deactivating device (reason 'carrier-changed') [40]
+Jul 06 08:50:02 manji NetworkManager[372]: <info> (enp1s0): taking down device.
+Jul 06 08:50:02 manji NetworkManager[372]: <info> (enp1s0): reset MAC address to F0:DE:F1:98:0F:7C
+Jul 06 08:50:02 manji NetworkManager[372]: <info> (enp1s0): bringing up device.
+Jul 06 08:50:02 manji kernel: r8169 0000:01:00.0 enp1s0: link down
+Jul 06 08:50:02 manji NetworkManager[372]: <info> Removing DNS information from /usr/bin/resolvconf
+Jul 06 08:50:02 manji NetworkManager[372]: <info> NetworkManager state is now DISCONNECTED
+Jul 06 08:50:02 manji dbus[398]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+Jul 06 08:50:02 manji systemd[1]: Starting Network Manager Script Dispatcher Service...
+Jul 06 08:50:02 manji dbus[398]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+Jul 06 08:50:02 manji systemd[1]: Started Network Manager Script Dispatcher Service.
+Jul 06 08:50:02 manji systemd[1]: Stopping Network Time Service...
+Jul 06 08:50:02 manji ntpd[786]: ntpd exiting on signal 15 (Terminated)
+Jul 06 08:50:02 manji systemd[1]: Stopped Network Time Service.
+Jul 06 08:50:44 manji systemd[1]: Starting Cleanup of Temporary Directories...
+Jul 06 08:50:44 manji systemd[1]: Started Cleanup of Temporary Directories.
+Jul 06 09:01:01 manji crond[1601]: pam_unix(crond:session): session opened for user root by (uid=0)
+Jul 06 09:01:01 manji CROND[1602]: (root) CMD (run-parts /etc/cron.hourly)
+Jul 06 09:01:01 manji CROND[1601]: pam_unix(crond:session): session closed for user root
+Jul 06 09:15:51 manji sudo[1614]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/modprobe -v gpio-cs5535
+Jul 06 09:15:51 manji sudo[1614]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 09:15:51 manji sudo[1614]: pam_unix(sudo:session): session closed for user root
+Jul 06 09:16:00 manji sudo[1618]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/journalctl -b 0 --no-pager
+Jul 06 09:16:00 manji sudo[1618]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 09:16:00 manji sudo[1618]: pam_unix(sudo:session): session closed for user root
+Jul 06 09:17:15 manji sudo[1641]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/fstrim -v --all
+Jul 06 09:17:15 manji sudo[1641]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)
+Jul 06 09:17:29 manji sudo[1641]: pam_unix(sudo:session): session closed for user root
+Jul 06 09:18:10 manji sudo[1643]: emacs : TTY=pts/0 ; PWD=/home/emacs ; USER=root ; COMMAND=/usr/bin/journalctl -b 0 --no-pager
+Jul 06 09:18:10 manji sudo[1643]: pam_unix(sudo:session): session opened for user root by emacs(uid=0)

@@ -1,0 +1,710 @@
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/cln syslinux-6.03-pre20/cln
+--- syslinux-6.03-pre20.orig/cln	1970-01-01 01:00:00.000000000 +0100
++++ syslinux-6.03-pre20/cln	2014-09-10 15:18:42.663126270 +0200
+@@ -0,0 +1,5 @@
++#!/bin/bash
++
++make clean #may fail
++make spotless
++
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/elflink/ldlinux/cli.c syslinux-6.03-pre20/com32/elflink/ldlinux/cli.c
+--- syslinux-6.03-pre20.orig/com32/elflink/ldlinux/cli.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/elflink/ldlinux/cli.c	2014-09-10 18:01:08.816311441 +0200
+@@ -422,10 +422,10 @@ const char *edit_cmdline(const char *inp
+ 	    }
+ 	case KEY_CTRL('V'):
+ 	    if (BIOSName)
+-		printf("%s%s%s", syslinux_banner,
++		printf("2%s%s%s", syslinux_banner,
+ 		       (char *)MK_PTR(0, BIOSName), copyright_str);
+ 	    else
+-		printf("%s%s", syslinux_banner, copyright_str);
++		printf("3%s%s", syslinux_banner, copyright_str);
+ 
+ 	    redraw = 1;
+ 	    break;
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/elflink/ldlinux/kernel.c syslinux-6.03-pre20/com32/elflink/ldlinux/kernel.c
+--- syslinux-6.03-pre20.orig/com32/elflink/ldlinux/kernel.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/elflink/ldlinux/kernel.c	2014-09-10 15:18:42.539793614 +0200
+@@ -60,11 +60,11 @@ int new_linux_kernel(char *okernel, char
+ 		opt_quiet = true;
+ 
+ 	if (!opt_quiet)
+-		printf("Loading %s... ", kernel_name);
++		printf("Loading7 %s... ", kernel_name);
+ 
+ 	if (loadfile(kernel_name, &kernel_data, &kernel_len)) {
+ 		if (opt_quiet)
+-			printf("Loading %s ", kernel_name);
++			printf("Loading8 %s ", kernel_name);
+ 		printf("failed: ");
+ 		goto bail;
+ 	}
+@@ -103,11 +103,11 @@ int new_linux_kernel(char *okernel, char
+ 		    temp += n;
+ 
+ 		    if (!opt_quiet)
+-			printf("Loading %s...", initrd_name);
++			printf("Loading9 %s...", initrd_name);
+ 
+ 		    if (initramfs_load_archive(initramfs, initrd_name)) {
+ 			if (opt_quiet)
+-			    printf("Loading %s ", initrd_name);
++			    printf("LoadingA %s ", initrd_name);
+ 			free(initrd_name);
+ 			printf("failed: ");
+ 			goto bail;
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/gfxboot/gfxboot.c syslinux-6.03-pre20/com32/gfxboot/gfxboot.c
+--- syslinux-6.03-pre20.orig/com32/gfxboot/gfxboot.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/gfxboot/gfxboot.c	2014-09-10 15:18:42.526460353 +0200
+@@ -541,7 +541,7 @@ int gfx_init(char *file)
+   memset(&r,0,sizeof(r));
+   progress_active = 0;
+ 
+-  printf("Loading %s...\n", file);
++  printf("Loading6 %s...\n", file);
+   if(loadfile(file, &archive, &archive_size)) return 1;
+ 
+   if(!archive_size) return 1;
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/lib/fread.c syslinux-6.03-pre20/com32/lib/fread.c
+--- syslinux-6.03-pre20.orig/com32/lib/fread.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/lib/fread.c	2014-09-10 15:18:42.503127148 +0200
+@@ -5,28 +5,96 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <stdio.h>
++//#include <time.h>
++#include <sys/times.h>
++
++
+ 
+ size_t _fread(void *buf, size_t count, FILE * f)
+ {
+-    size_t bytes = 0;
+-    ssize_t rv;
+-    char *p = buf;
+-
+-    while (count) {
+-	rv = read(fileno(f), p, count);
+-	if (rv == -1) {
+-	    if (errno == EINTR || errno == EAGAIN)
+-		continue;
+-	    else
+-		break;
+-	} else if (rv == 0) {
+-	    break;
+-	}
+-
+-	p += rv;
+-	bytes += rv;
+-	count -= rv;
++  size_t bytes = 0;
++  ssize_t rv;
++  char *p = buf;
++  /*  time_t rawtimeBeg,rawtimeEnd;
++      struct tm * timeinfo;*/
++  clock_t start,end;
++//  clock_t dur,sps;
++  uint32_t startsec,endsec,dursec,sps;
++
++  while (count) {
++    start = times(NULL);
++    startsec=start/CLK_TCK;
++/*    if (4 != sizeof(size_t) || 4!=sizeof(uint32_t) || 4 !=  sizeof(clock_t) || 4 != sizeof(startsec)) {
++      printf("unexpected type sizes\n");
++    }*/
++    if (count>1) {
++      /*      time ( &rawtimeBeg );
++              timeinfo = localtime ( &rawtimeBeg );*/
++      //printf("meh1 %d %d %d\n", sizeof(size_t), sizeof(uint32_t), sizeof(clock_t));
++      //printf("started reading %zu bytes, bytes thus far %zu, time: %s\n", count, bytes, asctime (timeinfo));
++
++/*      //this confirmed that int 1Ch timer is slowed down only during read(s)
++      //also int 8, same thing. tested!
++  printf("Start delay:\n");
++      clock_t delaystart = times(NULL);
++      clock_t delayend,oldleft=0,left=0;
++      const uint32_t DELAYMSEC=10*1000;
++      while ((left < DELAYMSEC) && (delaystart > 800)) {
++        //syslinux_idle(); //works with this also!
++        delayend=times(NULL);
++        left=delayend-delaystart;
++        if (left > oldleft + 1000) {
++          oldleft=left;
++          printf(" [%u / %u]", left, DELAYMSEC);
++        }
++      }
++      printf("End delay.\n");
++*/
++      printf("%u <-starttime(%u),started reading %u bytes\n", startsec, start, count);
++    }
++    rv = read(fileno(f), p, count);
++    end = times(NULL);
++    if (rv == -1) {
++      if (errno == EINTR || errno == EAGAIN) 
++      {
++        printf("Error! retrying\n");
++        continue; 
++      }
++      else 
++      {
++        break;
++      }
++    } else if (rv == 0) {
++      break;
+     }
+ 
+-    return bytes;
++    if (count>1) {
++
++    /*        time ( &rawtimeEnd );
++              timeinfo = localtime ( &rawtimeEnd );*/
++    //printf("finished reading %zu bytes, bytes thus far %zu, time: %s duration:%f seconds\n", count, bytes, asctime (timeinfo), difftime(rawtimeEnd, rawtimeBeg));
++
++      endsec=end/CLK_TCK;
++      dursec=(end-start)/CLK_TCK;
++//    dur=(end-start)/CLK_TCK;
++      if (dursec>0) {
++        sps=count/ dursec;
++      }else {
++        sps=0;
++      }
++      //printf("meh2\n");
++      //fflush(stdout);
++      //cout << "meh2 << '\n';
++    printf("%u <-endtime(%u),duration:%u sec,speed: %u bytes/sec, finished reading %u bytes\n", endsec, end, dursec, sps, count);
++    }
++    if (bytes != 0) {
++      printf("Unexpected non-zero `bytes` read thus far, currently: %u\n", bytes);
++    }
++
++    p += rv;
++    bytes += rv;
++    count -= rv;
++  }
++
++  return bytes;
+ }
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/lib/sys/fileread.c syslinux-6.03-pre20/com32/lib/sys/fileread.c
+--- syslinux-6.03-pre20.orig/com32/lib/sys/fileread.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/lib/sys/fileread.c	2014-09-10 15:18:42.499793833 +0200
+@@ -31,6 +31,7 @@
+  * Reading from a file
+  */
+ 
++#include <stdio.h>
+ #include <errno.h>
+ #include <string.h>
+ #include <com32.h>
+@@ -42,29 +43,39 @@
+ int __file_get_block(struct file_info *fp)
+ {
+     ssize_t bytes_read;
++  mpi();
+ 
+     bytes_read = pmapi_read_file(&fp->i.fd.handle, fp->i.buf,
+ 					  MAXBLOCK >> fp->i.fd.blocklg2);
+     if (!bytes_read) {
+ 	errno = EIO;
++  mp("exit, %d",-1);
+ 	return -1;
+     }
+     
+     fp->i.nbytes = bytes_read;
+     fp->i.datap  = fp->i.buf;
++  mp("exit %d , bytes_read %u",0, bytes_read);
+     return 0;
+ }
+ 
+ ssize_t __file_read(struct file_info * fp, void *buf, size_t count)
+ {
++  if (count > 1) {
++    mp("enter, count=%u",count);
++  }
+     char *bufp = buf;
+     ssize_t n = 0;
+     size_t ncopy;
++    ssize_t ret;
+ 
+     while (count) {
+ 	if (fp->i.nbytes == 0) {
+-	    if (fp->i.offset >= fp->i.fd.size || !fp->i.fd.handle)
+-		return n;	/* As good as it gets... */
++	    if (fp->i.offset >= fp->i.fd.size || !fp->i.fd.handle) {
++        ret=n;
++        goto end;
++//    		return n;	/* As good as it gets... */
++      }
+ 
+ 	    if (count > MAXBLOCK) {
+ 		/* Large transfer: copy directly, without buffering */
+@@ -72,13 +83,18 @@ ssize_t __file_read(struct file_info * f
+ 						 count >> fp->i.fd.blocklg2);
+ 		if (!ncopy) {
+ 		    errno = EIO;
+-		    return n ? n : -1;
++        ret=n ? n : -1;
++        goto end;
++		    //return n ? n : -1;
+ 		}
+ 
+ 		goto got_data;
+ 	    } else {
+-		if (__file_get_block(fp))
+-		    return n ? n : -1;
++		if (__file_get_block(fp)) {
++      ret= n ? n : -1;
++      goto end;
++		    //return n ? n : -1;
++      }
+ 	    }
+ 	}
+ 
+@@ -95,5 +111,11 @@ ssize_t __file_read(struct file_info * f
+ 	count -= ncopy;
+     }
+ 
+-    return n;
++//    return n;
++  ret=n;
++end:
++  if (ret !=1) {
++    mp("exit, ret=%u",ret);
++  }
++  return ret;
+ }
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/mboot/mboot.c syslinux-6.03-pre20/com32/mboot/mboot.c
+--- syslinux-6.03-pre20.orig/com32/mboot/mboot.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/mboot/mboot.c	2014-09-10 15:18:42.529793668 +0200
+@@ -112,7 +112,7 @@ static int get_modules(char **argv, stru
+     while (*argp) {
+ 	/* Note: it seems Grub transparently decompresses all compressed files,
+ 	   not just the primary kernel. */
+-	printf("Loading %s... ", *argp);
++	printf("LoadingB %s... ", *argp);
+ 	rv = zloadfile(*argp, &mp->data, &mp->len);
+ 
+ 	if (rv) {
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/com32/modules/linux.c syslinux-6.03-pre20/com32/modules/linux.c
+--- syslinux-6.03-pre20.orig/com32/modules/linux.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/com32/modules/linux.c	2014-09-10 15:18:42.496460518 +0200
+@@ -217,7 +217,7 @@ static int process_initramfs_args(char *
+ 	errno = 0;
+ 	if (ldinitramfs(initramfs, arg)) {
+ 	    if (opt_quiet)
+-		printf("Loading %s ", kernel_name);
++		printf("Loading1 %s ", kernel_name);
+ 	    printf("failed: ");
+ 	    return 1;
+ 	}
+@@ -236,11 +236,11 @@ static int setup_data_file(struct setup_
+ 			   bool opt_quiet)
+ {
+     if (!opt_quiet)
+-	printf("Loading %s... ", filename);
++	printf("Loading2 %s... ", filename);
+ 
+     if (setup_data_load(setup_data, type, filename)) {
+ 	if (opt_quiet)
+-	    printf("Loading %s ", filename);
++	    printf("Loading3 %s ", filename);
+ 	printf("failed\n");
+ 	return -1;
+     }
+@@ -303,11 +303,11 @@ int main(int argc, char *argv[])
+ 	opt_quiet = true;
+ 
+     if (!opt_quiet)
+-	printf("Loading %s... ", kernel_name);
++	printf("Loading4 %s... ", kernel_name);
+     errno = 0;
+     if (loadfile(kernel_name, &kernel_data, &kernel_len)) {
+ 	if (opt_quiet)
+-	    printf("Loading %s ", kernel_name);
++	    printf("Loading5 %s ", kernel_name);
+ 	printf("failed: ");
+ 	goto bail;
+     }
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/bios.c syslinux-6.03-pre20/core/bios.c
+--- syslinux-6.03-pre20.orig/core/bios.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/bios.c	2014-09-10 18:00:01.676679866 +0200
+@@ -502,12 +502,17 @@ extern uint32_t BIOS_timer_next;
+ extern uint32_t timer_irq;
+ static inline void bios_timer_init(void)
+ {
++  mpi();
++  //this is duplicated in core/timer.inc  so don't forget to change there too
+ 	unsigned long next;
+ 	uint32_t *hook = (uint32_t *)BIOS_timer_hook;
+ 
++  asm("cli;");
+ 	next = *hook;
+ 	BIOS_timer_next = next;
+ 	*hook = (uint32_t)&timer_irq;
++  asm("sti;");
++  mpo();
+ }
+ 
+ extern uint16_t *bios_free_mem;
+@@ -643,6 +648,8 @@ void bios_init(void)
+ {
+ 	int i;
+ 
++  mpi();
++
+ 	/* Initialize timer */
+ 	bios_timer_init();
+ 
+@@ -656,7 +663,7 @@ void bios_init(void)
+ 	syslinux_memscan_add(&bios_memscan);
+ 	mem_init();
+ 
+-	dprintf("%s%s", syslinux_banner, copyright_str);
++	printf("1%s%s", syslinux_banner, copyright_str);
+ 
+ 	/* CPU-dependent initialization and related checks. */
+ 	check_escapes();
+@@ -665,6 +672,8 @@ void bios_init(void)
+ 	 * Scan the DMI tables for interesting information.
+ 	 */
+ 	dmi_init();
++
++  mpo();
+ }
+ 
+ extern void bios_timer_cleanup(void);
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/diskstart.inc syslinux-6.03-pre20/core/diskstart.inc
+--- syslinux-6.03-pre20.orig/core/diskstart.inc	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/diskstart.inc	2014-09-10 18:54:55.775270342 +0200
+@@ -37,7 +37,8 @@ align_pad	zb 512
+ LDLINUX_SYS	equ ($-$$)+TEXT_START
+ ldlinux_sys:
+ 
+-early_banner	db CR, LF, MY_NAME, ' ', VERSION_STR, ' ', 0
++;this is in effect! for me, on desktopPC
++early_banner	db CR, LF, 'lemod',MY_NAME, ' ', VERSION_STR, ' ', 0
+ 		db CR, LF, 1Ah	; EOF if we "type" this in DOS
+ 
+ 		alignz 8
+@@ -111,6 +112,7 @@ ldlinux_ent:
+ ;
+ ; Tell the user we got this far
+ ;
++;this is in effect! for me, on desktopPC
+ 		mov si,early_banner
+ 		call writestr_early
+ 
+@@ -135,6 +137,8 @@ print_bios:
+ 		mov si,cbios_name
+ 		cmp byte [getonesec.jmp+1],(getonesec_ebios-(getonesec.jmp+2))
+ 		jne .cbios
++;force cbios here doesn't do anything other than displaying
++;    jmp .cbios
+ 		mov si,ebios_name
+ 		mov byte [getlinsec.jmp+1],(getlinsec_ebios-(getlinsec.jmp+2))
+ .cbios:
+@@ -516,7 +520,7 @@ SuperInfo	resq 16			; The first 16 bytes
+ ;
+ 		section .data16
+ 		global syslinux_banner
+-syslinux_banner	db CR, LF, MY_NAME, ' ', VERSION_STR
+-late_banner	db ' ', DATE_STR, 0
++syslinux_banner	db CR, LF, '4',MY_NAME, ' ', VERSION_STR
++late_banner	db ' lbnr6', DATE_STR, 0
+ 
+ 		section .text16
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/fs/diskio_bios.c syslinux-6.03-pre20/core/fs/diskio_bios.c
+--- syslinux-6.03-pre20.orig/core/fs/diskio_bios.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/fs/diskio_bios.c	2014-09-10 17:30:05.989866935 +0200
+@@ -3,6 +3,9 @@
+ #include <fs.h>
+ #include <ilog2.h>
+ 
++#include <timer.h>
++//#include <sys/io.h>
++
+ #define RETRY_COUNT 6
+ 
+ static inline sector_t chs_max(const struct disk *disk)
+@@ -58,6 +61,7 @@ static int chs_rdwr_sectors(struct disk
+     int retry;
+     uint32_t maxtransfer = disk->maxtransfer;
+ 
++    mpi();
+     if (lba + disk->part_start >= chs_max(disk))
+ 	return 0;		/* Impossible CHS request */
+ 
+@@ -108,7 +112,7 @@ static int chs_rdwr_sectors(struct disk
+ 
+         for (;;) {
+ 	    if (c < 1024) {
+-		dprintf("CHS[%02x]: %u @ %llu (%u/%u/%u) %04x:%04x %s %p\n",
++		printf("CHS[%02x]: %u @ %llu (%u/%u/%u) %04x:%04x %s %p\n",
+ 			ireg.edx.b[0], chunk, xlba, c, h, s+1,
+ 			ireg.es, ireg.ebx.w[0],
+ 			(ireg.eax.b[1] & 1) ? "<-" : "->",
+@@ -118,7 +122,7 @@ static int chs_rdwr_sectors(struct disk
+ 		if (!(oreg.eflags.l & EFLAGS_CF))
+ 		    break;
+ 
+-		dprintf("CHS: error AX = %04x\n", oreg.eax.w[0]);
++		printf("CHS: error AX = %04x\n", oreg.eax.w[0]);
+ 
+ 		if (retry--)
+ 		    continue;
+@@ -174,6 +178,8 @@ static int edd_rdwr_sectors(struct disk
+     int retry;
+     uint32_t maxtransfer = disk->maxtransfer;
+ 
++//    mp("enter, lba:%u count:%u", lba, count);
++
+     memset(&ireg, 0, sizeof ireg);
+ 
+     ireg.eax.b[1] = 0x42 + is_write;
+@@ -183,29 +189,56 @@ static int edd_rdwr_sectors(struct disk
+ 
+     memset(&reset, 0, sizeof reset);
+ 
++    uint32_t lastcount=count;
++    const uint32_t bumpinc=1000;
++    uint32_t EVERY_X_SECTORS = bumpinc;
++    uint32_t bpsjiffiesstart=jiffies();
+     lba += disk->part_start;
+-    while (count) {
++    while (count) {//decreasing
++      if (count > 1) {
++      uint32_t sectorsthusfar = lastcount-count;
++      if (sectorsthusfar >= EVERY_X_SECTORS) {
++        uint32_t jiffiespassed=jiffies() - bpsjiffiesstart;
++        uint32_t secspassed=jiffiespassed*10/182;
++        if (secspassed>=1) {
++          uint32_t bytespersec=512*sectorsthusfar/secspassed;
++          printf("%u b/s ss:%u sd:%u jd:%u", bytespersec, sectorsthusfar, secspassed, jiffiespassed);
++          lastcount=count;
++          bpsjiffiesstart = jiffies();
++        }else{
++          printf(".");
++          EVERY_X_SECTORS+=bumpinc;
++        }
++      }
++      printf("\n");
++      }
+ 	chunk = count;
+ 	if (chunk > maxtransfer)
+ 	    chunk = maxtransfer;
+ 
++//  mp("lba:%"PRIu64" count:%"PRIu32" maxtransfer:%"PRIu32"", lba, count, maxtransfer);
++
+ 	freeseg = (0x10000 - ((size_t)ptr & 0xffff)) >> sector_shift;
+ 
+ 	if ((size_t)ptr <= 0xf0000 && freeseg) {
++      printf("direct load ");
+ 	    /* Can do a direct load */
+ 	    tptr = ptr;
+ 	} else {
+ 	    /* Either accessing high memory or we're crossing a 64K line */
+ 	    tptr = core_xfer_buf;
+ 	    freeseg = (0x10000 - ((size_t)tptr & 0xffff)) >> sector_shift;
++      //printf("highmem load %u ", freeseg);//YEP this is the one for both laptop and desktopPC
+ 	}
+ 	if (chunk > freeseg)
+ 	    chunk = freeseg;
+ 
+ 	bytes = chunk << sector_shift;
+ 
+-	if (tptr != ptr && is_write)
++	if (tptr != ptr && is_write) {
++    printf("memcpy %u\n", bytes);
+ 	    memcpy(tptr, ptr, bytes);
++  }
+ 
+ 	retry = RETRY_COUNT;
+ 
+@@ -221,14 +254,28 @@ static int edd_rdwr_sectors(struct disk
+ 		    (ireg.eax.b[1] & 1) ? "<-" : "->",
+ 		    ptr);
+ 
++      
++      uint32_t jpre=jiffies();
++      uint32_t pre=ms_timer();
++      if (count>1) {
++        printf("b:%u %u ",pre, jpre);
++      }
+ 	    __intcall(0x13, &ireg, &oreg);
++      uint32_t jpost=jiffies();
++      uint32_t post=ms_timer();
++      uint32_t jdiff=jpost-jpre;
++      uint32_t diff=post-pre;
++      if (count>1) {
++        printf("e:%u %u d:%2u %2u s:%"PRIu64" c:%u ",post,jpost,diff,jdiff, lba, count);
++      }
+ 	    if (!(oreg.eflags.l & EFLAGS_CF))
+ 		break;
+ 
+-	    dprintf("EDD: error AX = %04x\n", oreg.eax.w[0]);
++	    printf("EDD: error AX = %04x\n", oreg.eax.w[0]);
+ 
+-	    if (retry--)
+-		continue;
++	    if (retry--) {
++        printf(" retrying\n");
++		continue;}
+ 
+ 	    /*
+ 	     * Some systems seem to get "stuck" in an error state when
+@@ -246,6 +293,7 @@ static int edd_rdwr_sectors(struct disk
+ 		continue;
+ 	    }
+ 
++      printf("total failure switching to CHS\n");
+ 	    /*
+ 	     * Total failure.  There are systems which identify as
+ 	     * EDD-capable but aren't; the known such systems return
+@@ -258,6 +306,7 @@ static int edd_rdwr_sectors(struct disk
+ 	    done = chs_rdwr_sectors(disk, buf, lba - disk->part_start,
+ 				    count, is_write);
+ 	    if (done == (count << sector_shift)) {
++        printf("CHSCHSCHSCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHCHSSSSSSSSSSSSSSSSSSSSSSSSSSSS\n");
+ 		/* Successful, assume this is a CHS disk */
+ 		disk->rdwr_sectors = chs_rdwr_sectors;
+ 		return done;
+@@ -305,6 +354,7 @@ struct disk *bios_disk_init(void *privat
+     memset(&ireg, 0, sizeof ireg);
+     ireg.edx.b[0] = devno;
+ 
++    printf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+     if (cdrom) {
+ 	/*
+ 	 * The query functions don't work right on some CD-ROM stacks.
+@@ -386,7 +436,7 @@ struct disk *bios_disk_init(void *privat
+ 
+     disk.maxtransfer   = MaxTransfer;
+ 
+-    dprintf("disk %02x cdrom %d type %d sector %u/%u offset %llu limit %u\n",
++    printf("disk %02x cdrom %d type %d sector %u/%u offset %llu limit %u\n",
+ 	    devno, cdrom, ebios, sector_size, disk.sector_shift,
+ 	    part_start, disk.maxtransfer);
+ 
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/fs/fs.c syslinux-6.03-pre20/core/fs/fs.c
+--- syslinux-6.03-pre20.orig/core/fs/fs.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/fs/fs.c	2014-09-10 15:18:42.716459311 +0200
+@@ -122,9 +122,11 @@ size_t pmapi_read_file(uint16_t *handle,
+     bool have_more;
+     size_t bytes_read;
+     struct file *file;
++    mp("enter, sectors=%u",sectors);
+ 
+     file = handle_to_file(*handle);
+     bytes_read = file->fs->fs_ops->getfssec(file, buf, sectors, &have_more);
++    mp("bytes read %u", bytes_read);
+ 
+     /*
+      * If we reach EOF, the filesystem driver will have already closed
+@@ -401,6 +403,7 @@ void fs_init(const struct fs_ops **ops,
+     int blk_shift = -1;
+     struct device *dev = NULL;
+ 
++    mpi();
+     /* Default name for the root directory */
+     fs.cwd_name[0] = '/';
+ 
+@@ -439,7 +442,7 @@ void fs_init(const struct fs_ops **ops,
+     if (fs.fs_ops->iget_root) {
+ 	fs.root = fs.fs_ops->iget_root(&fs);
+ 	fs.cwd = get_inode(fs.root);
+-	dprintf("init: root inode %p, cwd inode %p\n", fs.root, fs.cwd);
++	printf("init: root inode %p, cwd inode %p\n", fs.root, fs.cwd);
+     }
+ 
+     if (fs.fs_ops->chdir_start) {
+@@ -453,4 +456,5 @@ void fs_init(const struct fs_ops **ops,
+     /* Add FSUUID=... string to cmdline */
+     sysappend_set_fs_uuid();
+ 
++    mpo();
+ }
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/fs/getfssec.c syslinux-6.03-pre20/core/fs/getfssec.c
+--- syslinux-6.03-pre20.orig/core/fs/getfssec.c	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/fs/getfssec.c	2014-09-10 15:18:42.716459311 +0200
+@@ -97,14 +97,18 @@ uint32_t generic_getfssec(struct file *f
+ 	(bytes_left + SECTOR_SIZE(fs) - 1) >> SECTOR_SHIFT(fs);
+     uint32_t lsector;
+ 
++    mp("enter, sectors=%d",sectors);
++
+     if (sectors > sectors_left)
+ 	sectors = sectors_left;
+ 
+-    if (!sectors)
++    if (!sectors) {
++      mp("exit, %d",0);
+ 	return 0;
++    }
+ 
+     lsector = file->offset >> SECTOR_SHIFT(fs);
+-    dprintf("Offset: %u  lsector: %u\n", file->offset, lsector);
++    printf("Offset: %u  lsector: %u\n", file->offset, lsector);
+ 
+     if (lsector < inode->this_extent.lstart ||
+ 	lsector >= inode->this_extent.lstart + inode->this_extent.len) {
+@@ -190,5 +194,6 @@ uint32_t generic_getfssec(struct file *f
+     if (have_more)
+ 	*have_more = bytes_read < bytes_left;
+ 
++    mp("exit, bytes_read=%u, bytes_left=%u",bytes_read, bytes_left);
+     return bytes_read;
+ }
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/include/bios.h syslinux-6.03-pre20/core/include/bios.h
+--- syslinux-6.03-pre20.orig/core/include/bios.h	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/include/bios.h	2014-09-10 15:18:42.709792681 +0200
+@@ -26,6 +26,8 @@
+  * Interrupt vectors
+  */
+ #define BIOS_timer_hook	(4 * 0x1C)
++//#define BIOS_timer_hook	(4 * 0x08) // same thing, no diff in behaviour
++
+ #define fdctab		(4 * 0x1E)
+ #define fdctab1		fdctab
+ #define fdctab2		(fdctab + 2)
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/core/timer.inc syslinux-6.03-pre20/core/timer.inc
+--- syslinux-6.03-pre20.orig/core/timer.inc	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/core/timer.inc	2014-09-10 15:18:42.726459256 +0200
+@@ -48,6 +48,7 @@ timer_irq:
+ 		inc dword [cs:__jiffies]
+ 		add word  [cs:__ms_timer_adj],0xece8
+ 		adc dword [cs:__ms_timer],0x36
++;    iret
+ 		jmp 0:0
+ 		global BIOS_timer_next:data hidden
+ BIOS_timer_next	equ $-4
+Binary files syslinux-6.03-pre20.orig/gpxe/src/bin/undionly.kkpxe and syslinux-6.03-pre20/gpxe/src/bin/undionly.kkpxe differ
+Binary files syslinux-6.03-pre20.orig/gpxe/src/bin/undionly.kpxe and syslinux-6.03-pre20/gpxe/src/bin/undionly.kpxe differ
+Binary files syslinux-6.03-pre20.orig/gpxe/src/util/zbin and syslinux-6.03-pre20/gpxe/src/util/zbin differ
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/Makefile syslinux-6.03-pre20/Makefile
+--- syslinux-6.03-pre20.orig/Makefile	2014-08-27 03:07:19.000000000 +0200
++++ syslinux-6.03-pre20/Makefile	2014-09-10 15:18:42.709792681 +0200
+@@ -15,7 +15,8 @@
+ # Main Makefile for SYSLINUX
+ #
+ 
+-all_firmware := bios efi32 efi64
++all_firmware := bios
++#efi32 efi64
+ 
+ #
+ # topdir is only set when we are doing a recursive make. Do a bunch of
+diff -urpN -X ./dontdiff -- syslinux-6.03-pre20.orig/re syslinux-6.03-pre20/re
+--- syslinux-6.03-pre20.orig/re	1970-01-01 01:00:00.000000000 +0100
++++ syslinux-6.03-pre20/re	2014-09-10 15:18:42.663126270 +0200
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++pushd . 
++cd bios/linux
++sudo ./syslinux -i -d /Boot/Settings /dev/sdc1 && sync  
++#sudo eject /dev/sdc
++sudo mount /dev/sdc1 /home/emacs/here -o uid=1000,gid=100
++cp -vf "../memdisk/memdisk" "/home/emacs/here/Boot/Settings/memdisk"
++sudo umount "/home/emacs/here" && sync && sudo eject /dev/sdc
++popd
++

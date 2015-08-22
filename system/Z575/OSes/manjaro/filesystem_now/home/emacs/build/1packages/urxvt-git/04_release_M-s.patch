@@ -1,0 +1,54 @@
+urxvt allow the release of M-s
+which is tapped by searchable-scrollbar perl extension
+Author: EmanueL Czirai
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/perl/searchable-scrollback urxvt-git/src/perl/searchable-scrollback
+--- urxvt-git_orig/src/perl/searchable-scrollback	2015-03-24 19:10:03.623839516 +0100
++++ urxvt-git/src/perl/searchable-scrollback	2015-03-24 19:26:39.348375530 +0100
+@@ -1,10 +1,9 @@
+ #! perl
+ 
+ # this extension implements scrollback buffer search
+ 
+-#:META:RESOURCE:%:string:activation hotkey keysym
+ 
+ =head1 NAME
+ 
+ searchable-scrollback - incremental scrollback search (enabled by default)
+ 
+@@ -32,17 +31,10 @@ See L<perlre> for more info about perl r
+ =cut
+ 
+ sub on_init {
+    my ($self) = @_;
+ 
+-   # only for backwards compatibility
+-   my $hotkey = $self->{argv}[0]
+-                || $self->x_resource ("%")
+-                || "M-s";
+-
+-   $self->bind_action ($hotkey, "%:start")
+-      or warn "unable to register '$hotkey' as scrollback search start hotkey\n";
+ 
+    ()
+ }
+ 
+ sub on_user_command {
+Only in urxvt-git/src/perl: searchable-scrollback.orig
+Only in urxvt-git/src/perl: searchable-scrollback.rej
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/urxvt.pm urxvt-git/src/urxvt.pm
+--- urxvt-git_orig/src/urxvt.pm	2015-03-24 19:10:03.693839132 +0100
++++ urxvt-git/src/urxvt.pm	2015-03-24 19:23:19.226140357 +0100
+@@ -740,10 +740,12 @@ sub invoke {
+ 
+       for my $ext (sort keys %ext_arg) {
+          my @files = grep -f $_, map "$_/$ext", @dirs;
+ 
+          if (@files) {
++            #these still end up in ~/.xsession-errors even with print!
++            print "Registering perl extension '$ext'\n";
+             $TERM->register_package (extension_package $files[0], $ext_arg{$ext});
+          } else {
+             warn "perl extension '$ext' not found in perl library search path\n";
+          }
+       }
+Only in urxvt-git/src: urxvt.pm.orig

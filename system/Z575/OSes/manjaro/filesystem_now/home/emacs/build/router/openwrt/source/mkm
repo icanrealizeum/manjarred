@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pushd .
+cd openwrt
+echo "so, this changes the template kernel config from here: /home/emacs/build/router/openwrt/source/openwrt/target/linux/ramips/rt305x IF i don't specify CONFIG_TARGET !! which I did, so it changes ./env/kernel_config only but this is only a diff between the template kernel and the changes you've just made! which means, those things you didn't change can be modified with a new/updated openwrt pull of that kernel template"
+#or so this says: https://wiki.openwrt.org/doc/howto/build
+time make -j1 V=s MENUCONFIG_COLOR=classic kernel_menuconfig CONFIG_TARGET=env
+popd
+

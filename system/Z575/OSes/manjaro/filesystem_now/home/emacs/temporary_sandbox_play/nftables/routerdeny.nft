@@ -1,0 +1,105 @@
+
+#load like this:
+#sudo nft -f routerdeny.nft
+#see what you currently have like this:
+#sudo nft -ann list ruleset
+
+#If you prepend the flush table filter line at the very beginning of the filter-table file, you achieve atomic rule-set replacement equivalent to what iptables-restore provides. Note that the kernel handles the rule commands in the file in one single transaction, so basically the flushing and the load of the new rules happens in one single shot.
+#src: https://wiki.nftables.org/wiki-nftables/index.php/Atomic_rule_replacement
+flush ruleset
+#^ otherwise rules get appended to existing ones, instead of replaced (obviously!)
+
+table arp filterousa { #has only input and output
+  chain inputa1 {
+    type filter hook input priority 0;
+    counter
+  }
+  chain outputa1 {
+    type filter hook output priority 0;
+    counter
+  }
+}
+
+#table inet filterous6 {
+table ip6 filterous6 {
+#3 times:
+#Error: Could not process rule: Address family not supported by protocol
+#------------------------------
+  chain prerouting1 {
+    type filter hook prerouting priority 0;
+#    ip6 nexthdr tcp counter
+
+    iifname != lo ip6 daddr ::1/128 counter log prefix "ip6 incoming for localhost DROP " drop
+    #drop all icmp
+    ip6 nexthdr icmpv6 log prefix "ip6 icmp DROP " drop
+
+    counter log prefix "ip6 prerouting1 END DROP " drop
+  }
+
+  chain postrouting1 {
+    type filter hook postrouting priority 0;
+
+    counter log prefix "ip6 postrouting1 END DROP " drop
+  }
+#------------------------------
+}
+
+table ip filterous {
+#------------------------------
+	chain prerouting1 {
+		 type filter hook prerouting priority 0;
+     #meta nftrace set 1 #this will trace all packets... starting from here.
+
+     counter
+     #tcp flags == rst counter nftrace set 1
+#     ip id == 0 tcp flags == rst ct state invalid,new,related counter nftrace set 1 #to trace our "reject with tcp reset"
+     # bad tcp -> avoid network scanning:  src: https://wiki.archlinux.org/index.php/Nftables
+        tcp flags & (fin|syn) == (fin|syn)      counter log prefix "badtcp1 DROP " drop
+        tcp flags & (syn|rst) == (syn|rst)      counter log prefix "badtcp2 DROP " drop
+        tcp flags & (fin|syn|rst|psh|ack|urg) == 0  counter log prefix "badtcp3 DROP " drop
+        tcp flags & (fin|syn|rst|psh|ack|urg) == (fin|psh|urg)  counter log prefix "badtcp4 DROP " drop
+
+     counter
+
+#     counter log prefix "ip prerouting1 END REJECTw/rst " goto creject #drop
+  }
+
+#------------------------------
+	chain input1 {
+		 type filter hook input priority 0;
+     counter continue
+	}
+
+#------------------------------
+	chain output1 {
+		 type filter hook output priority 0;
+     counter continue
+     ip daddr 192.168.1.1 counter log prefix "ip out ROUTER access REJECTw/rst " reject with tcp reset
+     counter continue
+  }
+#------------------------------
+	chain postrouting1 {
+		 type filter hook postrouting priority 0;
+     counter continue
+     ip daddr 192.168.1.1 counter log prefix "ip postout ROUTER access REJECTw/rst " reject with tcp reset
+     counter continue
+	}
+
+#------------------------------
+  chain forward1 {
+    type filter hook forward priority 0;
+
+    counter log prefix "ip forward1 END DROP " drop
+  }
+
+
+
+#------------------------------
+}
+
+
+#iif and oif WARNING: 
+#src: https://home.regit.org/netfilter-en/nftables-quick-howto/
+#"Please note that oif is in reality a match on the integer which is the index of the interface inside of the kernel. Userspace is converting the given name to the interface index when the nft rule is evaluated (before being sent to kernel). A consequence of this is that the rule can not be added if the interface does not exist. An other consequence, is that if the interface is removed and created again, the match will not occur as the index of added interfaces in kernel is monotonically increasing. Thus, oif is a fast filter but it can lead to some issues when dynamic interfaces are used. It is possible to do a filter on interface name but it has a performance cost because a string match is done instead of an integer match. To do a filter on interface name, one has to use oifname"
+
+

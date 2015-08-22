@@ -1,0 +1,11 @@
+#!/bin/bash
+
+
+pushd .
+cd openwrt
+
+
+./scripts/env diff --no-color|grep -ve "^[+-]#"|grep -ve "^ "|grep -ve "^@@"|grep -ve "^+$"|colordiff|less
+
+popd
+

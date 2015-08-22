@@ -1,0 +1,20 @@
+found out that mousepad does in fact generate a beep, but it's inaudible if alsamixer Beep is on Mute, unmuting and raising the volume to 4/100 is good,
+however! the first time the soundcard is awoken, no beep is heard, if the card is awake when the second beep happens then this one is heard.
+Maybe this is a kernel bug? and I'm not sure if they could fix it, but regardless i should report it. TODO.
+
+=========
+so, even though sound card/codec are put to sleep via tlp and powertop
+while in mousepad program at the end of the file pressing down arrow(or right arrow), the sound turns on and then off again, as if it wanted to beep, but even system sounds and sound events are off and the former is muted and volume is 0
+
+
+
+need to investigate as to why the sound is awoken, maybe the beep is meant to play but not playing(even when sound is on and volume higher - but sound events were off somewhere in control panel)
+
+in manjaro xfce4 btw
+===========
+ok this seem to trigger the beep emulated in soundcard but only in old 3.12 kernel
+so need to find a way to put it back in 3.15.3 also!
+
+--
+ok, the beep works after a while (to be discovered when), but then after reboot, it doesn't work again, until (to be discovered when) something happens first
+playing a mpg123 mp3 doesn't seem to trigger it to work...

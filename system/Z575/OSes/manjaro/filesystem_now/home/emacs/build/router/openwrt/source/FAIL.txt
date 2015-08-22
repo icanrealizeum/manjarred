@@ -1,0 +1,390 @@
+-------------
+ok more info: https://dev.openwrt.org/changeset/46117
+https://github.com/openwrt/packages/issues/1457
+fortify-headers versions: http://dl.2f30.org/releases/
+
+NOPE, THIS IS NOT IT(below, the commented line)!! but maybe it's related to: fortify-headers-0.6.tar.gz
+//to avoid the following error, you must have installed gcc multilib instead of just plain 64bit gcc!
+$ sudo pacman -S gcc-multilib
+[sudo] password for emacs: 
+resolving dependencies...
+looking for conflicting packages...
+:: gcc-multilib and gcc are in conflict. Remove gcc? [y/N] y
+:: gcc-libs-multilib and gcc-libs are in conflict. Remove gcc-libs? [y/N] y
+
+warning: insufficient columns available for table display
+Packages (6) gcc(5.1.0-4) [removal]  gcc-libs(5.1.0-4) [removal]
+             gcc-libs-multilib(5.1.0-4)  lib32-gcc-libs(5.1.0-4)
+             lib32-glibc(2.21-4)  gcc-multilib(5.1.0-4)
+
+Total Download Size:    40.77 MiB
+Total Installed Size:  180.66 MiB
+Net Upgrade Size:       43.57 MiB
+
+:: Proceed with installation? [Y/n] 
+:: Retrieving packages ...
+ lib32-glibc-2.21-4-...     2.7 MiB  2.18M/s 00:01 [######################] 100%
+ lib32-gcc-libs-5.1....     5.1 MiB  2.15M/s 00:02 [######################] 100%
+ gcc-libs-multilib-5...     6.8 MiB  2.16M/s 00:03 [######################] 100%
+ gcc-multilib-5.1.0-...    26.1 MiB  2.79M/s 00:09 [######################] 100%
+(4/4) checking keys in keyring                     [######################] 100%
+(4/4) checking package integrity                   [######################] 100%
+(4/4) loading package files                        [######################] 100%
+(4/4) checking for file conflicts                  [######################] 100%
+(6/6) checking available disk space                [######################] 100%
+(1/2) removing gcc                                 [######################] 100%
+(2/2) removing gcc-libs                            [######################] 100%
+(1/4) installing lib32-glibc                       [######################] 100%
+(2/4) installing lib32-gcc-libs                    [######################] 100%
+(3/4) installing gcc-libs-multilib                 [######################] 100%
+(4/4) installing gcc-multilib                      [######################] 100%
+
+as per this: http://forums.fedoraforum.org/showthread.php?t=240591
+
+this error:
+
+...
+make[5]: Entering directory '/home/emacs/build/router/openwrt/source/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/libncurses/ncurses-5.9/c++'
+ccache_cxx -I../c++ -I../include -I. -DHAVE_CONFIG_H -I/home/emacs/build/router/openwrt/source/openwrt/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/usr/include -I/home/emacs/build/router/openwrt/source/openwrt/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/include -I/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/usr/include -I/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/include/fortify -I/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/include  -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64  -DNDEBUG -I. -I../include -Os -pipe -mno-branch-likely -mips32r2 -mtune=24kec -mdsp -fno-caller-saves -fhonour-copts -Wno-error=unused-but-set-variable -msoft-float -D_FORTIFY_SOURCE=2 -Wl,-z,now -Wl,-z,relro -fpic   -fPIC -c ../c++/cursesmain.cc -o ../obj_s/cursesmain.o
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iosfwd:40,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:64:11: error: '::mbstate_t' has not been declared
+   using ::mbstate_t;
+           ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iosfwd:40,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:141:11: error: '::btowc' has not been declared
+   using ::btowc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:142:11: error: '::fgetwc' has not been declared
+   using ::fgetwc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:143:11: error: '::fgetws' has not been declared
+   using ::fgetws;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:144:11: error: '::fputwc' has not been declared
+   using ::fputwc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:145:11: error: '::fputws' has not been declared
+   using ::fputws;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:146:11: error: '::fwide' has not been declared
+   using ::fwide;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:147:11: error: '::fwprintf' has not been declared
+   using ::fwprintf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:148:11: error: '::fwscanf' has not been declared
+   using ::fwscanf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:149:11: error: '::getwc' has not been declared
+   using ::getwc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:150:11: error: '::getwchar' has not been declared
+   using ::getwchar;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:151:11: error: '::mbrlen' has not been declared
+   using ::mbrlen;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:152:11: error: '::mbrtowc' has not been declared
+   using ::mbrtowc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:153:11: error: '::mbsinit' has not been declared
+   using ::mbsinit;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:154:11: error: '::mbsrtowcs' has not been declared
+   using ::mbsrtowcs;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:155:11: error: '::putwc' has not been declared
+   using ::putwc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:156:11: error: '::putwchar' has not been declared
+   using ::putwchar;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:158:11: error: '::swprintf' has not been declared
+   using ::swprintf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:160:11: error: '::swscanf' has not been declared
+   using ::swscanf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:161:11: error: '::ungetwc' has not been declared
+   using ::ungetwc;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:162:11: error: '::vfwprintf' has not been declared
+   using ::vfwprintf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:164:11: error: '::vfwscanf' has not been declared
+   using ::vfwscanf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:167:11: error: '::vswprintf' has not been declared
+   using ::vswprintf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:170:11: error: '::vswscanf' has not been declared
+   using ::vswscanf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:172:11: error: '::vwprintf' has not been declared
+   using ::vwprintf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:174:11: error: '::vwscanf' has not been declared
+   using ::vwscanf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:176:11: error: '::wcrtomb' has not been declared
+   using ::wcrtomb;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:177:11: error: '::wcscat' has not been declared
+   using ::wcscat;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:178:11: error: '::wcscmp' has not been declared
+   using ::wcscmp;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:179:11: error: '::wcscoll' has not been declared
+   using ::wcscoll;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:180:11: error: '::wcscpy' has not been declared
+   using ::wcscpy;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:181:11: error: '::wcscspn' has not been declared
+   using ::wcscspn;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:182:11: error: '::wcsftime' has not been declared
+   using ::wcsftime;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:183:11: error: '::wcslen' has not been declared
+   using ::wcslen;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:184:11: error: '::wcsncat' has not been declared
+   using ::wcsncat;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:185:11: error: '::wcsncmp' has not been declared
+   using ::wcsncmp;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:186:11: error: '::wcsncpy' has not been declared
+   using ::wcsncpy;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:187:11: error: '::wcsrtombs' has not been declared
+   using ::wcsrtombs;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:188:11: error: '::wcsspn' has not been declared
+   using ::wcsspn;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:189:11: error: '::wcstod' has not been declared
+   using ::wcstod;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:191:11: error: '::wcstof' has not been declared
+   using ::wcstof;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:193:11: error: '::wcstok' has not been declared
+   using ::wcstok;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:194:11: error: '::wcstol' has not been declared
+   using ::wcstol;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:195:11: error: '::wcstoul' has not been declared
+   using ::wcstoul;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:196:11: error: '::wcsxfrm' has not been declared
+   using ::wcsxfrm;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:197:11: error: '::wctob' has not been declared
+   using ::wctob;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:198:11: error: '::wmemcmp' has not been declared
+   using ::wmemcmp;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:199:11: error: '::wmemcpy' has not been declared
+   using ::wmemcpy;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:200:11: error: '::wmemmove' has not been declared
+   using ::wmemmove;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:201:11: error: '::wmemset' has not been declared
+   using ::wmemset;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:202:11: error: '::wprintf' has not been declared
+   using ::wprintf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:203:11: error: '::wscanf' has not been declared
+   using ::wscanf;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:204:11: error: '::wcschr' has not been declared
+   using ::wcschr;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:205:11: error: '::wcspbrk' has not been declared
+   using ::wcspbrk;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:206:11: error: '::wcsrchr' has not been declared
+   using ::wcsrchr;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:207:11: error: '::wcsstr' has not been declared
+   using ::wcsstr;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:208:11: error: '::wmemchr' has not been declared
+   using ::wmemchr;
+           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar: In function 'wchar_t* std::wcschr(wchar_t*, wchar_t)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:213:55: error: invalid conversion from 'const wchar_t*' to 'wchar_t*' [-fpermissive]
+   { return wcschr(const_cast<const wchar_t*>(__p), __c); }
+                                                       ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:212:3: error:   initializing argument 1 of 'wchar_t* std::wcschr(wchar_t*, wchar_t)' [-fpermissive]
+   wcschr(wchar_t* __p, wchar_t __c)
+   ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar: In function 'wchar_t* std::wcspbrk(wchar_t*, const wchar_t*)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:217:58: error: invalid conversion from 'const wchar_t*' to 'wchar_t*' [-fpermissive]
+   { return wcspbrk(const_cast<const wchar_t*>(__s1), __s2); }
+                                                          ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:216:3: error:   initializing argument 1 of 'wchar_t* std::wcspbrk(wchar_t*, const wchar_t*)' [-fpermissive]
+   wcspbrk(wchar_t* __s1, const wchar_t* __s2)
+   ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar: In function 'wchar_t* std::wcsrchr(wchar_t*, wchar_t)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:221:56: error: invalid conversion from 'const wchar_t*' to 'wchar_t*' [-fpermissive]
+   { return wcsrchr(const_cast<const wchar_t*>(__p), __c); }
+                                                        ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:220:3: error:   initializing argument 1 of 'wchar_t* std::wcsrchr(wchar_t*, wchar_t)' [-fpermissive]
+   wcsrchr(wchar_t* __p, wchar_t __c)
+   ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar: In function 'wchar_t* std::wcsstr(wchar_t*, const wchar_t*)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:225:57: error: invalid conversion from 'const wchar_t*' to 'wchar_t*' [-fpermissive]
+   { return wcsstr(const_cast<const wchar_t*>(__s1), __s2); }
+                                                         ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:224:3: error:   initializing argument 1 of 'wchar_t* std::wcsstr(wchar_t*, const wchar_t*)' [-fpermissive]
+   wcsstr(wchar_t* __s1, const wchar_t* __s2)
+   ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar: In function 'wchar_t* std::wmemchr(wchar_t*, wchar_t, std::size_t)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:229:61: error: invalid conversion from 'const wchar_t*' to 'wchar_t*' [-fpermissive]
+   { return wmemchr(const_cast<const wchar_t*>(__p), __c, __n); }
+                                                             ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:228:3: error:   initializing argument 1 of 'wchar_t* std::wmemchr(wchar_t*, wchar_t, std::size_t)' [-fpermissive]
+   wmemchr(wchar_t* __p, wchar_t __c, size_t __n)
+   ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iosfwd:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h: At global scope:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:228:16: error: 'mbstate_t' was not declared in this scope
+   typedef fpos<mbstate_t> streampos;
+                ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:228:25: error: template argument 1 is invalid
+   typedef fpos<mbstate_t> streampos;
+                         ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:228:36: error: invalid type in declaration before ';' token
+   typedef fpos<mbstate_t> streampos;
+                                    ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:230:16: error: 'mbstate_t' was not declared in this scope
+   typedef fpos<mbstate_t> wstreampos;
+                ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:230:25: error: template argument 1 is invalid
+   typedef fpos<mbstate_t> wstreampos;
+                         ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:230:37: error: invalid type in declaration before ';' token
+   typedef fpos<mbstate_t> wstreampos;
+                                     ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:63:15: error: 'mbstate_t' in namespace 'std' does not name a type
+       typedef std::mbstate_t  state_type;
+               ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:239:15: error: 'mbstate_t' does not name a type
+       typedef mbstate_t         state_type;
+               ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:310:15: error: 'mbstate_t' does not name a type
+       typedef mbstate_t         state_type;
+               ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static int std::char_traits<wchar_t>::compare(const char_type*, const char_type*, std::size_t)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:326:39: error: 'wmemcmp' was not declared in this scope
+       { return wmemcmp(__s1, __s2, __n); }
+                                       ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static std::size_t std::char_traits<wchar_t>::length(const char_type*)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:330:26: error: 'wcslen' was not declared in this scope
+       { return wcslen(__s); }
+                          ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static const char_type* std::char_traits<wchar_t>::find(const char_type*, std::size_t, const char_type&)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:334:37: error: invalid conversion from 'const char_type* {aka const wchar_t*}' to 'wchar_t*' [-fpermissive]
+       { return wmemchr(__s, __a, __n); }
+                                     ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/postypes.h:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iosfwd:40,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/cwchar:228:3: error:   initializing argument 1 of 'wchar_t* std::wmemchr(wchar_t*, wchar_t, std::size_t)' [-fpermissive]
+   wmemchr(wchar_t* __p, wchar_t __c, size_t __n)
+   ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:40:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static std::char_traits<wchar_t>::char_type* std::char_traits<wchar_t>::move(std::char_traits<wchar_t>::char_type*, const char_type*, std::size_t)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:338:40: error: 'wmemmove' was not declared in this scope
+       { return wmemmove(__s1, __s2, __n); }
+                                        ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static std::char_traits<wchar_t>::char_type* std::char_traits<wchar_t>::copy(std::char_traits<wchar_t>::char_type*, const char_type*, std::size_t)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:342:39: error: 'wmemcpy' was not declared in this scope
+       { return wmemcpy(__s1, __s2, __n); }
+                                       ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static std::char_traits<wchar_t>::char_type* std::char_traits<wchar_t>::assign(std::char_traits<wchar_t>::char_type*, std::size_t, std::char_traits<wchar_t>::char_type)':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:346:37: error: 'wmemset' was not declared in this scope
+       { return wmemset(__s, __a, __n); }
+                                     ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h: In static member function 'static std::char_traits<wchar_t>::int_type std::char_traits<wchar_t>::eof()':
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/char_traits.h:362:38: error: 'WEOF' was not declared in this scope
+       { return static_cast<int_type>(WEOF); }
+                                      ^
+In file included from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ios:41:0,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/ostream:38,
+                 from /home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/iostream:39,
+                 from ../c++/cursesmain.cc:38:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/localefwd.h: At global scope:
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/localefwd.h:133:40: error: 'mbstate_t' was not declared in this scope
+   template<> class codecvt<char, char, mbstate_t>;
+                                        ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/localefwd.h:133:49: error: template argument 3 is invalid
+   template<> class codecvt<char, char, mbstate_t>;
+                                                 ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/localefwd.h:135:43: error: 'mbstate_t' was not declared in this scope
+   template<> class codecvt<wchar_t, char, mbstate_t>;
+                                           ^
+/home/emacs/build/router/openwrt/source/openwrt/staging_dir/toolchain-mipsel_24kec+dsp_gcc-4.8-linaro_uClibc-0.9.33.2/mipsel-openwrt-linux-uclibc/include/c++/4.8.3/bits/localefwd.h:135:52: error: template argument 3 is invalid
+   template<> class codecvt<wchar_t, char, mbstate_t>;
+                                                    ^
+Makefile:359: recipe for target '../obj_s/cursesmain.o' failed
+make[5]: *** [../obj_s/cursesmain.o] Error 1
+make[5]: Leaving directory '/home/emacs/build/router/openwrt/source/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/libncurses/ncurses-5.9/c++'
+Makefile:174: recipe for target 'libs' failed
+make[4]: *** [libs] Error 2
+make[4]: Leaving directory '/home/emacs/build/router/openwrt/source/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/libncurses/ncurses-5.9'
+Makefile:179: recipe for target '/home/emacs/build/router/openwrt/source/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/libncurses/ncurses-5.9/.built' failed
+make[3]: *** [/home/emacs/build/router/openwrt/source/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/libncurses/ncurses-5.9/.built] Error 2
+make[3]: Leaving directory '/home/emacs/build/router/openwrt/source/openwrt/package/libs/ncurses'
+package/Makefile:191: recipe for target 'package/libs/ncurses/compile' failed
+make[2]: *** [package/libs/ncurses/compile] Error 2
+make[2]: Leaving directory '/home/emacs/build/router/openwrt/source/openwrt'
+package/Makefile:188: recipe for target '/home/emacs/build/router/openwrt/source/openwrt/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/stamp/.package_compile' failed
+make[1]: *** [/home/emacs/build/router/openwrt/source/openwrt/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/stamp/.package_compile] Error 2
+make[1]: Leaving directory '/home/emacs/build/router/openwrt/source/openwrt'
+/home/emacs/build/router/openwrt/source/openwrt/include/toplevel.mk:181: recipe for target 'world' failed
+make: *** [world] Error 2
+
+real  1m41.959s
+user  0m50.440s
+sys 0m45.143s
+!! failed!
+
+=============================
+

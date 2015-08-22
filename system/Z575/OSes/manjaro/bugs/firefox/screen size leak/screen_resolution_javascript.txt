@@ -1,0 +1,32 @@
+RDW is Tools->Web Developer->[] Responsive Design View
+
+When Responsive Design View is turned on (Ctrl+Shift+M) and thus the viewport size is changed to be smaller (than when it's off), then here's what's happening:
+
+1. refreshing this page:
+http://www.w3schools.com/js/js_window_screen.asp
+shows correct screen sizes (eg. width) say 641
+2. refreshing this page however:
+http://www.w3schools.com/js/tryit.asp?filename=tryjs_screen_width
+shows the wrong width, of 1366 but should be 641, right?
+using screen.width
+
+so maybe it's because of the way the script is done?
+
+in 1.
+<script>
+document.write("Screen Width: " + screen.width);
+</script>
+
+and in 2.
+<p id="demo"></p>
+<script>
+document.getElementById("demo").innerHTML = 
+"Screen width is " + screen.width;
+</script>
+
+
+So, this is an interesting way(or bug) to detect if we're running inside Responsive Design View
+
+this with firefox 34.0.5 on linux
+
+

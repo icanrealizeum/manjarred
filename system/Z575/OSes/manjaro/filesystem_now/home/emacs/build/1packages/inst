@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#1. IF pkg file doesn't exist then:
+  #a) it recompiles (build), using existing srcdir
+  #b) recreates pkg file, using existing srcdir (but recreates pkgdir)
+#2. installs from existing pkg file
+
+source ./commonscripts.bash
+
+./gopreplinks || exit 1
+
+#--nobuild (added to below command) makes it always fail to compile/do anything whether the pkg exists or not, so it's useless to add in this case.
+#but without --nobuild it will build if the pkg doesn't exist, but it should just try --repackage instead and only if this one fails then it should try rebuild
+#so we leave it without --nobuild for now, which means it will rebuild if pkg file doesn't exist, but will use existing folder because of --noextract and --noprepare prevents reaplying patches(since the srcdir folder is kept)
+time makepkg -s --install --noprepare "${useincremental[@]}" "$@"
+

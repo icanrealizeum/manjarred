@@ -1,0 +1,77 @@
+//SOLVED by adding automounter v4 in kernel config
+--- .config#8	2014-07-08 19:23:45.677294018 +0200
++++ .config	2014-07-08 21:00:15.643731569 +0200
+@@ -3143,7 +3143,7 @@ CONFIG_FANOTIFY=y
+ CONFIG_FANOTIFY_ACCESS_PERMISSIONS=y
+ # CONFIG_QUOTA is not set
+ # CONFIG_QUOTACTL is not set
+-# CONFIG_AUTOFS4_FS is not set
++CONFIG_AUTOFS4_FS=m
+ CONFIG_FUSE_FS=m
+ # CONFIG_CUSE is not set
+
+============== old:
+
+Jul 08 19:10:41 manji systemd[1]: Reloading.
+Jul 08 19:10:41 manji systemd[1]: Failed to open /dev/autofs: No such file or directory
+Jul 08 19:10:41 manji systemd[1]: Failed to reload: No such file or directory
+
+
+so, looks like "/dev/autofs" is hardcoded in the systemd binary, does systemd depend on kernel automounter being build inside the kernel?
+
+Linux manji 3.15.4-1-MANJARO #8 SMP PREEMPT Tue Jul 8 18:41:32 CEST 2014 x86_64 GNU/Linux
+
+https://www.kernel.org/doc/Documentation/filesystems/autofs4-mount-control.txt
+
+made gist here: (nolonger exists online)
+============== from gist:
+$ sudo systemctl daemon-reload
+ 
+somewhere in
+$ sudo journalctl -b 0
+...
+Jul 08 19:10:41 manji systemd[1]: Reloading.
+Jul 08 19:10:41 manji systemd[1]: Failed to open /dev/autofs: No such file or directory
+Jul 08 19:10:41 manji systemd[1]: Failed to reload: No such file or directory
+...
+ 
+hmm but then later on (don't know what I did in between):
+...
+Jul 08 19:40:30 manji systemd[1]: Reloading.
+...
+ 
+and no more fails
+ 
+I wonder why it failed in the first place
+ 
+Linux manji 3.15.4-1-MANJARO #8 SMP PREEMPT Tue Jul 8 18:41:32 CEST 2014 x86_64 GNU/Linux
+ 
+well, found more info in dmesg (shouldn't this already be in journalctl? it isn't:
+$ sudo journalctl -b 0 |grep -i autofs
+[sudo] password for emacs:
+Jul 08 19:10:41 manji systemd[1]: Failed to open /dev/autofs: No such file or directory
+) :
+so dmesg:
+...
+[ 9.905814] systemd[1]: systemd 214 running in system mode. (+PAM -AUDIT -SEL
+INUX -IMA -SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP -APPARMOR)
+[ 9.909567] systemd[1]: Detected architecture 'x86-64'.
+[ 9.953329] systemd[1]: Failed to insert module 'autofs4'
+[ 9.956734] systemd[1]: Failed to insert module 'ipv6'
+[ 9.961039] systemd[1]: Set hostname to <manji>.
+[ 10.158689] systemd[1]: Found ordering cycle on basic.target/start
+...
+[ 10.242825] systemd[1]: Reached target Encrypted Volumes.
+[ 10.244971] systemd[1]: Starting Arbitrary Executable File Formats File Syste
+m Automount Point.
+[ 10.247092] systemd[1]: Failed to open /dev/autofs: No such file or directory
+[ 10.249199] systemd[1]: Failed to initialize automounter: No such file or directory
+[ 10.255956] systemd[1]: Failed to set up automount Arbitrary Executable File Formats File System Automount Point.
+[ 10.258117] systemd[1]: Unit proc-sys-fs-binfmt_misc.automount entered failed state.
+[ 10.260282] systemd[1]: Starting Swap.
+...and then finally my reload cmd:
+[ 374.894642] sudo[3575]: emacs : TTY=pts/1 ; PWD=/home/emacs ; USER=root ; COM
+MAND=/usr/bin/systemctl daemon-reload
+[ 374.941721] systemd[1]: Failed to open /dev/autofs: No such file or directory
+[ 374.943067] systemd[1]: Failed to reload: No such file or directory
+,,,

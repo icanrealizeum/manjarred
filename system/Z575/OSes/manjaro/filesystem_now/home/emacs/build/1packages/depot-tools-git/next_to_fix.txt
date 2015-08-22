@@ -1,0 +1,60 @@
+NOTE: to fix this, first delete that file:
+/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/binutils.tar.bz2
+because otherwise on next run, it will not fail again
+
+actual error:
+________ running '/usr/bin/python2 src/third_party/binutils/download.py' in '/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root'
+Copying gs://chromium-binutils/05497e34b29c01dd82df76d2fbdf017d4a2c4214...
+Downloading: 4.48 MB/4.48 MB    
+0> Downloading /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/binutils.tar.bz2...
+0> Copying gs://chromium-binutils/05497e34b29c01dd82df76d2fbdf017d4a2c4214...
+Downloading: 4.48 MB/4.48 MB    
+Downloading /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/binutils.tar.bz2
+Traceback (most recent call last):
+  File "src/third_party/binutils/download.py", line 118, in <module>
+    sys.exit(main(sys.argv))
+  File "src/third_party/binutils/download.py", line 106, in main
+    return FetchAndExtract(arch)
+  File "src/third_party/binutils/download.py", line 81, in FetchAndExtract
+    '-s', sha1file])
+  File "/usr/lib/python2.7/subprocess.py", line 540, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['download_from_google_storage', '--no_resume', '--no_auth', '--bucket', 'chromium-binutils', '-s', '/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/binutils.tar.bz2.sha1']' returned non-zero exit status 1
+Error: Command /usr/bin/python2 src/third_party/binutils/download.py returned non-zero exit status 1 in /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root
+
+
+
+
+another one that happens only once:
+
+
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-eu-strip -s src/build/linux/bin/eu-strip.sha1' in '/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root'
+Copying gs://chromium-eu-strip/0a9b8f68615ce388b65201e6d22da7a9cf2e729c...
+
+
+0> Downloading src/build/linux/bin/eu-strip...
+Copying gs://chromium-eu-strip/0a9b8f68615ce388b65201e6d22da7a9cf2e729c...
+
+CommandException: Invalid command "stat".
+
+0> Copying gs://chromium-eu-strip/0a9b8f68615ce388b65201e6d22da7a9cf2e729c...
+
+Error: Command download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-eu-strip -s src/build/linux/bin/eu-strip.sha1 returned non-zero exit status 1 in /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root
+
+
+----- well first time:
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux32/gn.sha1' in '/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root'
+Copying gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec...
+
+
+0> Downloading src/buildtools/linux32/gn...
+Copying gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec...
+
+CommandException: Invalid command "stat".
+
+0> Copying gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec...
+
+Error: Command download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux32/gn.sha1 returned non-zero exit status 1 in /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root
+
+------------
+

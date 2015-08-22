@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#$ git remote -v show
+#...
+#...
+#upstream  https://github.com/rust-lang/rust.git (fetch)
+#upstream  https://github.com/rust-lang/rust.git (push)
+
+git pull upstream master
+
+#git submodule update
+git submodule update --init --recursive
+#src: https://stackoverflow.com/questions/1030169/easy-way-pull-latest-of-all-submodules

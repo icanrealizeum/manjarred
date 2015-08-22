@@ -1,0 +1,14 @@
+this folder contains files downloaded by make into ../openwrt/dl/ folder
+and once they are put here in this mirror folder and ../openwrt/.config has something like:
+CONFIG_LOCALMIRROR="file:///home/emacs/build/router/openwrt/mirror"
+then you don't need the internet anymore to build
+
+
+NOTE: don't do: make distclean  because according to this: https://wiki.openwrt.org/doc/howto/build
+make distclean
+nukes everything you have compiled or configured and also deletes all downloaded feeds contents and package sources.
+
+CAUTION: In addition to all else, this will erase your build configuration (<buildroot_dir>/.config), your toolchain and all other sources. Use with care!
+
+WELL, MAYBE I READ THIS WRONG! and the mirror and dl folder (this folder to which both point at! from .config) will not be touched!
+

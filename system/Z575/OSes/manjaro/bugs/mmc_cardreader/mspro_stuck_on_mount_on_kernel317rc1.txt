@@ -1,0 +1,70 @@
+sudo mount /dev/mspblk0 here/
+is stuck spewing debug info on dmesg continously until C-c
+
+this is the block that seems to repeat:
+
+[14815.823821] mspro_block memstick0: trying again
+[14815.823832] rtsx_usb_ms rtsx_usb_ms.2: --> rtsx_usb_ms_request
+[14815.823946] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14816.531658] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14816.531675] rtsx_usb_ms rtsx_usb_ms.2: ms_write_bytes: tpc = 0x0b
+[14816.734030] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14816.734048] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14816.936414] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14816.936431] rtsx_usb_ms rtsx_usb_ms.2: ms_write_bytes: tpc = 0x0e
+[14817.138751] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14817.138775] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14817.138783] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14817.341130] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14817.341148] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14817.644402] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14817.644426] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14817.644434] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14817.846626] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14817.846644] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14818.150090] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14818.150114] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14818.150122] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14818.352410] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14818.352427] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14818.655970] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14818.655993] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14818.656002] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14818.858440] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14818.858458] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14819.161845] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14819.161967] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14819.161976] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14819.364182] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14819.364200] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14819.667509] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14819.667533] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14819.667541] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14819.869848] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14819.869866] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14820.173274] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14820.173297] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14820.173305] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14820.375699] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14820.375716] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14820.679050] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14820.679074] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14820.679082] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14820.881427] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14820.881445] rtsx_usb_ms rtsx_usb_ms.2: ms_transfer_data: tpc = 0x02, data_dir = READ, length = 512
+[14821.184933] rtsx_usb_ms rtsx_usb_ms.2: int_reg: 0x20
+[14821.184957] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14821.184965] rtsx_usb_ms rtsx_usb_ms.2: next req 0
+[14821.387308] rtsx_usb_ms rtsx_usb_ms.2: rtsx_usb_ms_issue_cmd
+[14821.387325] rtsx_usb_ms rtsx_usb_ms.2: ms_read_bytes: tpc = 0x07
+[14821.589656] rtsx_usb_ms rtsx_usb_ms.2: req result 0
+[14821.589672] mspro_block memstick0: wait for ced: value 80
+[14821.589679] mspro_block memstick0: complete 1, 0
+[14821.589685] mspro_block memstick0: transferred 1000 (0)
+[14821.589721] mspro_block memstick0: blk_fetch
+[14821.589726] mspro_block memstick0: issue end
+[14821.589732] rtsx_usb_ms rtsx_usb_ms.2: next req -11
+[14821.589915] mspro_block memstick0: blk_fetch
+[14821.589933] mspro_block memstick0: trying again
+
+

@@ -1,0 +1,337 @@
+this got fixed either because I'm not using NetworkManager anymore (most likely!)
+OR because of kernel 3.17-rc1 vs. whatever I used before 3.16-rcSomething(the last time i tested that, dno which -rc though)
+
+-------------
+so, when the LAN cable was never plugged in, in this freshly booted session(ie. reboot with cable unplugged), then setting pm to 'auto' and then plugging the cable, RX (maybe also TX) of packets won't work. To make it work, need to do the following only once(per boot session): setting pm to 'on' then pluggin in the cable(replug after 5 seconds, if was already plugged in)(must replug the cable otherwise it has no effect); now it works; Now, you can set pm to 'auto' only while cable is plugged in and then it will continue to work this way, until rebooted. But if you unplug first, then set to auto, then plug in, the issue remains: won't RX/TX.
+Note that replugging the cable, makes no difference unless you wait abou 5 seconds for NetworkManager to reinitialize the network card.
+So this may not be a kernel driver bug(?) but rather a NetworkManager one? or maybe the combination of two is always needed, and it is in fact a driver bug.
+I think this worked on a different kernel, like 3.12.22
+---------
+seems that what i said below doesn't work, so let's try this:
+- disable PM for the network device(as seen below with powertop or echo)
+echo 'on' > '/sys/bus/pci/devices/0000:01:00.0/power/control'
+ie. disallow the device driver to power manage the device at run time via the /sys/devices/.../power/control
+- unplug lan cable
+- wait 5 sec
+- replug
+- ping should work now
+- enable PM again
+echo 'auto' > '/sys/bus/pci/devices/0000:01:00.0/power/control'
+(thing is, cable must be plugged in when enabling PM with auto)
+
+//tested now again to work;
+
+the following dmesg logs from:
+Linux manji 3.16.0-1rc6-MANJARO #2 SMP Fri Jul 25 07:54:24 CEST 2014 x86_64 GNU/Linux
+
+
+this is dmesg when it already works, when disconnecting LAN cable:
+[ 1069.571189] r8169 0000:01:00.0 enp1s0: link down
+[ 1069.572275] NetworkManager[2474]: <info> (enp1s0): carrier now OFF (device st
+ate 100, deferring action for 4 seconds)
+[ 1074.005418] NetworkManager[2474]: <info> (enp1s0): device state change: activ
+ated -> unavailable (reason 'carrier-changed') [100 20 40]
+[ 1074.006474] NetworkManager[2474]: <info> (enp1s0): deactivating device (reason 'carrier-changed') [40]
+[ 1074.007208] NetworkManager[2474]: <info> (enp1s0): taking down device.
+[ 1074.019768] r8169 0000:01:00.0: PME# enabled
+[ 1074.031170] NetworkManager[2474]: <info> (enp1s0): reset MAC address to F0:DE:F1:98:0F:7C
+[ 1074.032209] NetworkManager[2474]: <info> (enp1s0): bringing up device.
+[ 1074.043553] r8169 0000:01:00.0: PME# disabled
+[ 1074.229686] r8169 0000:01:00.0 enp1s0: link down
+[ 1074.231998] NetworkManager[2474]: <info> Removing DNS information from /usr/bin/resolvconf
+[ 1074.345551] NetworkManager[2474]: <info> NetworkManager state is now DISCONNECTED
+[ 1074.347821] dbus[2494]: [system] Activating via systemd: service name='org.fr
+eedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+[ 1074.349764] systemd[1]: Starting Network Manager Script Dispatcher Service...
+[ 1074.363017] dbus[2494]: [system] Successfully activated service 'org.freedesk
+top.nm_dispatcher'
+[ 1074.365213] systemd[1]: Started Network Manager Script Dispatcher Service.
+[ 1074.379827] systemd[1]: Stopping Network Time Service...
+[ 1074.380850] ntpd[2880]: ntpd exiting on signal 15 (Terminated)
+[ 1074.472122] systemd[1]: Stopped Network Time Service.
+--
+and this is dmesg when it works, and reconnecting LAN cable:
+[ 1121.908953] r8169 0000:01:00.0 enp1s0: link up
+[ 1121.909680] NetworkManager[2474]: <info> (enp1s0): carrier now ON (device sta
+te 20)
+[ 1121.911118] NetworkManager[2474]: <info> (enp1s0): device state change: unava
+ilable -> disconnected (reason 'carrier-changed') [20 30 40]
+[ 1121.911712] NetworkManager[2474]: <info> Auto-activating connection 'Wired co
+nnection 1'.
+[ 1121.912270] NetworkManager[2474]: <info> Activation (enp1s0) starting connection 'Wired connection 1'
+[ 1121.913878] NetworkManager[2474]: <info> (enp1s0): device state change: disconnected -> prepare (reason 'none') [30 40 0]
+[ 1121.914490] NetworkManager[2474]: <info> NetworkManager state is now CONNECTING
+[ 1121.915071] NetworkManager[2474]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) scheduled...
+[ 1121.915654] NetworkManager[2474]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) started...
+[ 1121.916238] NetworkManager[2474]: <info> (enp1s0): taking down device.
+[ 1121.943120] r8169 0000:01:00.0: PME# enabled
+[ 1121.954582] NetworkManager[2474]: <info> (enp1s0): set MAC address to 00:01:02:03:04:05
+[ 1121.955560] NetworkManager[2474]: <info> (enp1s0): bringing up device.
+[ 1121.966830] r8169 0000:01:00.0: PME# disabled
+[ 1122.146364] r8169 0000:01:00.0 enp1s0: link down
+[ 1122.146524] r8169 0000:01:00.0 enp1s0: link down
+[ 1122.147842] NetworkManager[2474]: <info> (enp1s0): carrier now OFF (device state 40, deferring action for 4 seconds)
+[ 1122.148761] NetworkManager[2474]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) scheduled...
+[ 1122.149444] NetworkManager[2474]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) complete.
+[ 1122.154930] NetworkManager[2474]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) starting...
+[ 1122.155911] NetworkManager[2474]: <info> (enp1s0): device state change: prepare -> config (reason 'none') [40 50 0]
+[ 1122.156534] NetworkManager[2474]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) successful.
+[ 1122.157256] NetworkManager[2474]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) scheduled.
+[ 1122.157943] NetworkManager[2474]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) complete.
+[ 1122.158576] NetworkManager[2474]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) started...
+[ 1122.159195] NetworkManager[2474]: <info> (enp1s0): device state change: config -> ip-config (reason 'none') [50 70 0]
+[ 1122.159800] NetworkManager[2474]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Configure Commit) scheduled...
+[ 1122.160433] NetworkManager[2474]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) complete.
+[ 1122.161085] NetworkManager[2474]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Commit) started...
+[ 1123.157786] NetworkManager[2474]: <info> (enp1s0): device state change: ip-config -> secondaries (reason 'none') [70 90 0]
+[ 1123.158785] NetworkManager[2474]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Commit) complete.
+[ 1123.159386] NetworkManager[2474]: <info> (enp1s0): device state change: secondaries -> activated (reason 'none') [90 100 0]
+[ 1123.164728] NetworkManager[2474]: <info> NetworkManager state is now CONNECTED_GLOBAL
+[ 1123.165710] NetworkManager[2474]: <info> Policy set 'Wired connection 1' (enp1s0) as default for IPv4 routing and DNS.
+[ 1123.166793] NetworkManager[2474]: <info> Writing DNS information to /usr/bin/resolvconf
+[ 1123.291852] NetworkManager[2474]: <info> Activation (enp1s0) successful, device activated.
+[ 1123.294233] dbus[2494]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+[ 1123.296384] systemd[1]: Starting Network Manager Script Dispatcher Service...
+[ 1123.310082] dbus[2494]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+[ 1123.313082] systemd[1]: Started Network Manager Script Dispatcher Service.
+[ 1123.324392] systemd[1]: Starting Network Time Service...
+[ 1123.342041] ntpd[6570]: ntpd 4.2.7p446@1.2483-o Sun Jun 29 16:42:19 UTC 2014 (1): Starting
+[ 1123.343081] ntpd[6570]: Command line: /usr/bin/ntpd -g -u ntp:ntp -p /run/ntpd.pid
+[ 1123.354011] systemd[1]: PID file /run/ntpd.pid not readable (yet?) after start.
+[ 1123.359812] ntpd[6573]: proto: precision = 0.978 usec (-20)
+[ 1123.360849] ntpd[6573]: Listen and drop on 0 v4wildcard 0.0.0.0:123
+[ 1123.363373] ntpd[6573]: Listen normally on 1 lo 127.0.0.1:123
+[ 1123.365836] ntpd[6573]: Listen normally on 2 enp1s0 192.168.169.211:123
+[ 1123.366373] ntpd[6573]: Listening on routing socket on fd #19 for interface updates
+[ 1123.366998] systemd[1]: Started Network Time Service.
+[ 1123.842494] r8169 0000:01:00.0 enp1s0: link up
+[ 1123.843135] NetworkManager[2474]: <info> (enp1s0): carrier now ON (device state 100)
+
+
+here's # lspci -vvvv
+when it works
+
+01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8101E/RTL8102E PCI Express Fast Ethernet controller (rev 05)
+        Subsystem: Lenovo Device 3975
+        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 32 bytes
+        Interrupt: pin A routed to IRQ 43
+        Region 0: I/O ports at 1000 [size=256]
+        Region 2: Memory at f0004000 (64-bit, prefetchable) [size=4K]
+        Region 4: Memory at f0000000 (64-bit, prefetchable) [size=16K]
+        Capabilities: [40] Power Management version 3
+                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=375mA PME(D0+,D1+,D2+,D3hot+,D3cold+)
+                Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit+
+                Address: 00000000fee0f00c  Data: 41b1
+        Capabilities: [70] Express (v2) Endpoint, MSI 01
+                DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s <512ns, L1 <64us
+                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset-
+                DevCtl: Report errors: Correctable- Non-Fatal- Fatal- Unsupported-
+                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop-
+                        MaxPayload 128 bytes, MaxReadReq 512 bytes
+                DevSta: CorrErr+ UncorrErr+ FatalErr- UnsuppReq+ AuxPwr+ TransPend-
+                LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s unlimited, L1 <64us
+                        ClockPM+ Surprise- LLActRep- BwNot-
+                LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk+
+                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                LnkSta: Speed 2.5GT/s, Width x1, TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+                DevCap2: Completion Timeout: Not Supported, TimeoutDis+, LTR-, OBFF Not Supported
+                DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR-, OBFF Disabled
+                LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
+                         Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+                         Compliance De-emphasis: -6dB
+                LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete-, EqualizationPhase1-
+                         EqualizationPhase2-, EqualizationPhase3-, LinkEqualizationRequest-
+        Capabilities: [b0] MSI-X: Enable- Count=4 Masked-
+                Vector table: BAR=4 offset=00000000
+                PBA: BAR=4 offset=00000800
+        Capabilities: [d0] Vital Product Data
+                Unknown small resource type 00, will not decode more.
+        Capabilities: [100 v1] Advanced Error Reporting
+                UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq+ ACSViol-
+                UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+                CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+                CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+                AERCap: First Error Pointer: 14, GenCap+ CGenEn- ChkCap+ ChkEn-
+        Capabilities: [140 v1] Virtual Channel
+                Caps:   LPEVC=0 RefClk=100ns PATEntryBits=1
+                Arb:    Fixed- WRR32- WRR64- WRR128-
+                Ctrl:   ArbSelect=Fixed
+                Status: InProgress-
+                VC0:    Caps:   PATOffset=00 MaxTimeSlots=1 RejSnoopTrans-
+                        Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR256-
+                        Ctrl:   Enable+ ID=0 ArbSelect=Fixed TC/VC=ff
+                        Status: NegoPending- InProgress-
+        Capabilities: [160 v1] Device Serial Number 01-00-00-00-36-4c-e0-00
+        Kernel driver in use: r8169
+
+---
+ok, now when it doesn't work, this is dmesg when connecting LAN cable:
+(this means, I had to reboot, with cable unplugged, and make sure `auto` was set before cable was plugged in - to cause this issue of seemingly being unable to wake up this card)
+[   41.290018] r8169 0000:01:00.0 enp1s0: link up
+[   41.290534] NetworkManager[2454]: <info> (enp1s0): carrier now ON (device state 20)
+[   41.291842] NetworkManager[2454]: <info> (enp1s0): device state change: unavailable -> disconnected (reason 'carrier-changed') [20 
+30 40]
+[   41.293153] NetworkManager[2454]: <info> Auto-activating connection 'Wired connection 1'.
+[   41.293834] NetworkManager[2454]: <info> Activation (enp1s0) starting connection 'Wired connection 1'
+[   41.294466] NetworkManager[2454]: <info> (enp1s0): device state change: disconnected -> prepare (reason 'none') [30 40 0]
+[   41.295124] NetworkManager[2454]: <info> NetworkManager state is now CONNECTING
+[   41.295733] NetworkManager[2454]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) scheduled...
+[   41.296401] NetworkManager[2454]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) started...
+[   41.297146] NetworkManager[2454]: <info> (enp1s0): taking down device.
+[   41.326481] r8169 0000:01:00.0: PME# enabled
+[   41.337905] NetworkManager[2454]: <info> (enp1s0): set MAC address to 00:01:02:03:04:05
+[   41.338469] NetworkManager[2454]: <info> (enp1s0): bringing up device.
+[   41.350304] r8169 0000:01:00.0: PME# disabled
+[   41.536457] r8169 0000:01:00.0 enp1s0: link down
+[   41.536602] r8169 0000:01:00.0 enp1s0: link down
+[   41.537374] NetworkManager[2454]: <info> (enp1s0): carrier now OFF (device state 40, deferring action for 4 seconds)
+[   41.537822] NetworkManager[2454]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) scheduled...
+[   41.538112] NetworkManager[2454]: <info> Activation (enp1s0) Stage 1 of 5 (Device Prepare) complete.
+[   41.543948] NetworkManager[2454]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) starting...
+[   41.544504] NetworkManager[2454]: <info> (enp1s0): device state change: prepare -> config (reason 'none') [40 50 0]
+[   41.544826] NetworkManager[2454]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) successful.
+[   41.545096] NetworkManager[2454]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) scheduled.
+[   41.545318] NetworkManager[2454]: <info> Activation (enp1s0) Stage 2 of 5 (Device Configure) complete.
+[   41.545578] NetworkManager[2454]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) started...
+[   41.545841] NetworkManager[2454]: <info> (enp1s0): device state change: config -> ip-config (reason 'none') [50 70 0]
+[   41.546098] NetworkManager[2454]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Configure Commit) scheduled...
+[   41.546319] NetworkManager[2454]: <info> Activation (enp1s0) Stage 3 of 5 (IP Configure Start) complete.
+[   41.546591] NetworkManager[2454]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Commit) started...
+[   42.547142] NetworkManager[2454]: <info> (enp1s0): device state change: ip-config -> secondaries (reason 'none') [70 90 0]
+[   42.547939] NetworkManager[2454]: <info> Activation (enp1s0) Stage 5 of 5 (IPv4 Commit) complete.
+[   42.551279] NetworkManager[2454]: <info> (enp1s0): device state change: secondaries -> activated (reason 'none') [90 100 0]
+[   42.556025] NetworkManager[2454]: <info> NetworkManager state is now CONNECTED_GLOBAL
+[   42.557366] NetworkManager[2454]: <info> Policy set 'Wired connection 1' (enp1s0) as default for IPv4 routing and DNS.
+[   42.557684] NetworkManager[2454]: <info> Writing DNS information to /usr/bin/resolvconf
+[   42.671410] NetworkManager[2454]: <info> Activation (enp1s0) successful, device activated.
+[   42.678383] dbus[2465]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+[   42.683596] systemd[1]: Starting Network Manager Script Dispatcher Service...
+[   42.694842] dbus[2465]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+[   42.697605] systemd[1]: Started Network Manager Script Dispatcher Service.
+[   42.709952] systemd[1]: Started Network Time Service.
+[   43.207856] r8169 0000:01:00.0 enp1s0: link up
+[   43.208479] NetworkManager[2454]: <info> (enp1s0): carrier now ON (device state 100)
+[   44.371713] ntpd[2889]: Listen normally on 2 enp1s0 192.168.169.211:123
+[   44.372217] ntpd[2889]: new interface(s) found: waking up resolver
+
+
+--
+and this is dmesg when it doesn't work, and unplugging LAN cable:
+[  145.655866] r8169 0000:01:00.0 enp1s0: link down
+[  145.656872] NetworkManager[2454]: <info> (enp1s0): carrier now OFF (device state 100, deferring action for 4 seconds)
+[  150.003981] NetworkManager[2454]: <info> (enp1s0): device state change: activated -> unavailable (reason 'carrier-changed') [100 20 40]
+[  150.004523] NetworkManager[2454]: <info> (enp1s0): deactivating device (reason 'carrier-changed') [40]
+[  150.004801] NetworkManager[2454]: <info> (enp1s0): taking down device.
+[  150.023201] r8169 0000:01:00.0: PME# enabled
+[  150.034609] NetworkManager[2454]: <info> (enp1s0): reset MAC address to F0:DE:F1:98:0F:7C
+[  150.035648] NetworkManager[2454]: <info> (enp1s0): bringing up device.
+[  150.047081] r8169 0000:01:00.0: PME# disabled
+[  150.233148] r8169 0000:01:00.0 enp1s0: link down
+[  150.235286] NetworkManager[2454]: <info> Removing DNS information from /usr/bin/resolvconf
+[  150.335331] NetworkManager[2454]: <info> NetworkManager state is now DISCONNECTED
+[  150.337562] dbus[2465]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+[  150.339547] systemd[1]: Starting Network Manager Script Dispatcher Service...
+[  150.350303] dbus[2465]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+[  150.351953] systemd[1]: Started Network Manager Script Dispatcher Service.
+[  150.363616] systemd[1]: Stopping Network Time Service...
+[  150.370196] ntpd[2889]: ntpd exiting on signal 15 (Terminated)
+[  150.435487] systemd[1]: Stopped Network Time Service.
+
+--
+here's # lspci -vvv
+when it doesn't work
+01:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8101E/RTL8102E PCI Express Fast Ethernet controller (rev 05)
+        Subsystem: Lenovo Device 3975
+        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 32 bytes
+        Interrupt: pin A routed to IRQ 43
+        Region 0: I/O ports at 1000 [size=256]
+        Region 2: Memory at f0004000 (64-bit, prefetchable) [size=4K]
+        Region 4: Memory at f0000000 (64-bit, prefetchable) [size=16K]
+        Capabilities: [40] Power Management version 3
+                Flags: PMEClk- DSI- D1+ D2+ AuxCurrent=375mA PME(D0+,D1+,D2+,D3hot+,D3cold+)
+                Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit+
+                Address: 00000000fee0f00c  Data: 41b1
+        Capabilities: [70] Express (v2) Endpoint, MSI 01
+                DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s <512ns, L1 <64us
+                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset-
+                DevCtl: Report errors: Correctable- Non-Fatal- Fatal- Unsupported-
+                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop-
+                        MaxPayload 128 bytes, MaxReadReq 512 bytes
+                DevSta: CorrErr+ UncorrErr+ FatalErr- UnsuppReq+ AuxPwr+ TransPend-
+                LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1, Exit Latency L0s unlimited, L1 <64us
+                        ClockPM+ Surprise- LLActRep- BwNot-
+                LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- CommClk+
+                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                LnkSta: Speed 2.5GT/s, Width x1, TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+                DevCap2: Completion Timeout: Not Supported, TimeoutDis+, LTR-, OBFF Not Supported
+                DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-, LTR-, OBFF Disabled
+                LnkCtl2: Target Link Speed: 2.5GT/s, EnterCompliance- SpeedDis-
+                         Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+                         Compliance De-emphasis: -6dB
+                LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete-, EqualizationPhase1-
+                         EqualizationPhase2-, EqualizationPhase3-, LinkEqualizationRequest-
+        Capabilities: [b0] MSI-X: Enable- Count=4 Masked-
+                Vector table: BAR=4 offset=00000000
+                PBA: BAR=4 offset=00000800
+        Capabilities: [d0] Vital Product Data
+                Unknown small resource type 00, will not decode more.
+        Capabilities: [100 v1] Advanced Error Reporting
+                UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq+ ACSViol-
+                UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UESvrt: DLP+ SDES+ TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+                CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+                CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+                AERCap: First Error Pointer: 14, GenCap+ CGenEn- ChkCap+ ChkEn-
+        Capabilities: [140 v1] Virtual Channel
+                Caps:   LPEVC=0 RefClk=100ns PATEntryBits=1
+                Arb:    Fixed- WRR32- WRR64- WRR128-
+                Ctrl:   ArbSelect=Fixed
+                Status: InProgress-
+                VC0:    Caps:   PATOffset=00 MaxTimeSlots=1 RejSnoopTrans-
+                        Arb:    Fixed- WRR32- WRR64- WRR128- TWRR128- WRR256-
+                        Ctrl:   Enable+ ID=0 ArbSelect=Fixed TC/VC=ff
+                        Status: NegoPending- InProgress-
+        Capabilities: [160 v1] Device Serial Number 01-00-00-00-36-4c-e0-00
+        Kernel driver in use: r8169
+
+---
+when it doesn't work then ifconfig reports 0 RX packets and 0 RX bytes, TX still increases and netstat reports a higher than 0 Send-Q
+$ ifconfig
+enp1s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.169.211  netmask 255.255.255.0  broadcast 192.168.169.255
+        ether 00:01:02:03:04:05  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 12  bytes 504 (504.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+-----------
+with tlp running at startup(somehow automatically)
+the network interface will not send/receive (tho sends are counted, received bytes is 0)
+unless it was already plugged in...
+
+well to fix this without reboot or gimmicks:
+plug in the LAN cable
+disable PM with powertop in Tunables from Good to Bad:
+>> Good          Runtime PM for PCI Device Realtek Semiconductor Co., Ltd. RTL8101E/RTL8102E PCI Express Fast Ethernet controller
+or exec this:
+echo 'on' > '/sys/bus/pci/devices/0000:01:00.0/power/control'
+
+execute this:
+sudo systemctl start sys-subsystem-net-devices-enp1s0.device
+try to ping 8.8.8.8
+should work now
+and you can reenable PM now, from Bad to Good:
+echo 'auto' > '/sys/bus/pci/devices/0000:01:00.0/power/control'
+
+seems that if the cable is unplugged and tlp manages to put it in PM mode(Good)
+then whatever I do (plug in the cable later) it will still not work, so the above workaround works so far.
+
+

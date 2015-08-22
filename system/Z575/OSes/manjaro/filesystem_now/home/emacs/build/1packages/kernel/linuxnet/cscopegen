@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo "regen cscope database"
+
+destdir="/home/emacs/cscope"
+if [ ! -L "$destdir" ]; then
+  echo "fail"
+  exit 2
+fi
+mkdir -p "$(realpath "$destdir")"
+LNX="/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git"
+#cd /
+#find  $LNX                                                              \
+#  -path "$LNX/arch/*" ! -path "$LNX/arch/i386*" -prune -o               \
+#  -path "$LNX/include/asm-*" ! -path "$LNX/include/asm-i386*" -prune -o \
+#  -path "$LNX/tmp*" -prune -o                                           \
+#  -path "$LNX/Documentation*" -prune -o                                 \
+#  -path "$LNX/scripts*" -prune -o                                       \
+#  -path "$LNX/drivers*" -prune -o                                       \
+#  -name "*.[chxsS]" -print > "${destdir}/cscope.files"
+
+#cd "$LNX"
+#cscope -R
+
+#TODO: exclude some arch-es
+
+cd "$destdir"
+time cscope -b -q -k -R -s"$LNX"
+# http://cscope.sourceforge.net/large_projects.html
+# go gui: cscope -d   (to not regen database)
+echo "all done"
+

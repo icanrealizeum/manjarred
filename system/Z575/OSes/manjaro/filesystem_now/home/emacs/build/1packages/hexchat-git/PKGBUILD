@@ -1,0 +1,46 @@
+#Maintainer: TingPing tingping@tingping.se
+pkgname=hexchat-git
+pkgver=2.10.0.191.g296fbaf
+pkgrel=1
+pkgdesc='A GTK+ based IRC client'
+arch=('i686' 'x86_64' 'armv6h')
+url='http://hexchat.github.io'
+license=('GPL')
+options=('!libtool')
+depends=('gtk2' 'openssl' 'dbus-glib'
+         'libcanberra' 'libnotify' 'libproxy' 
+         'hicolor-icon-theme' 'desktop-file-utils' 'sound-theme-freedesktop' 'iso-codes')
+makedepends=('gnome-common-git' 'intltool' 'git' 'perl' 'python')
+optdepends=('enchant: for spell check'
+            'perl: for perl plugin'
+            'python: for python plugin')
+install='hexchat.install'
+provides=('hexchat')
+conflicts=('hexchat')
+_gitname='hexchat'
+source=("$_gitname::git+https://github.com/hexchat/hexchat.git")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$_gitname"
+  _ver=`git describe --tags | sed 's/-/./g'`
+  echo ${_ver:1}
+}
+
+build() {
+  cd "$srcdir/$_gitname"
+
+  ./autogen.sh
+  ./configure --prefix=/usr --enable-textfe --enable-python=python3 --enable-option-checking --enable-libtool-lock --disable-nls --enable-textfe --enable-gtkfe --disable-python --disable-perl --disable-plugin --disable-dbus --enable-libcanberra --enable-libnotify --disable-libproxy --disable-isocodes --without-theme-manager
+  make -j4
+}
+
+package() {
+  cd "$srcdir/$_gitname"
+  make DESTDIR="$pkgdir" install
+
+  # Fix opening irc:// links
+  desktop-file-edit \
+    --set-key=Exec --set-value="hexchat %U" \
+    "$pkgdir/usr/share/applications/hexchat.desktop"
+}

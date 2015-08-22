@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#1. repackage unconditionally (recreates pkg file), using existing srcdir(or fails) but removes(as it should) existing pkgdir before running package() - this doesn't rebuild!
+
+source ./commonscripts.bash
+
+
+./gopreplinks || exit 1
+time makepkg --repackage --force --noextract --noprepare "$@"
+

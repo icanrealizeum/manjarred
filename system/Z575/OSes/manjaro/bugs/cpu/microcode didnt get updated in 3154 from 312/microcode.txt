@@ -1,0 +1,50 @@
+right this is doable, when Early load microcode is Y in .config then it expects .bin microcode to be in front of eg. initramfs-315-x86_64.img and then it will work!
+make a patch for this... to add this in PKGBUILD and have it put the code in linux315.install which creates the linux315.install.pkg which gets copied as .INSTALL inside the package
+the install will run this cpio prepend stuff
+and every time the repackaging happens this .INSTALL gets updated from linux315.install which means we can read .config at that time from within PKGBUILD ! so no need to copy .config into package
+but i kinda wanna make a copy of it anyway, even tho /proc/config.gz exists (if that kernel option isn't changed)
+
+----
+ok the problem is, that microcode is not at beginning of initrd image when Early load is selected
+or microcode is not a module;
+but when microcode is module it can load the firmware correctly from /lib/firmware/amd-ucode/*.bin
+so: find a way to put microcode in cpio format at beginning of initrd - that's all
+more info: https://www.kernel.org/doc/Documentation/x86/early-microcode.txt
+
+============
+reported here: https://github.com/manjaro/packages-core/issues/2
+===============
+processor	: 3
+vendor_id	: AuthenticAMD
+cpu family	: 18
+model		: 1
+model name	: AMD A6-3400M APU with Radeon(tm) HD Graphics
+stepping	: 0
+microcode	: 0x3000014
+
+
+in kernel 3.15.4
+
+but in kernel 3.12 
+microcode is 0x3000027
+=========
+in 3.12.24-1
+[    8.541068] microcode: CPU0: patch_level=0x03000014
+[    8.637140] microcode: CPU0: new patch_level=0x03000027
+[    8.642110] microcode: CPU1: patch_level=0x03000014
+[    8.646894] microcode: CPU1: new patch_level=0x03000027
+[    8.652352] microcode: CPU2: patch_level=0x03000014
+[    8.655745] microcode: CPU2: new patch_level=0x03000027
+[    8.659119] microcode: CPU3: patch_level=0x03000014
+[    8.661920] microcode: CPU3: new patch_level=0x03000027
+[    8.668698] microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+
+but there seem to be some patches applied in 3.12.22(yes, not 24 this time), which weren't in 3.15.4
+these:
+  # AMD fixes
+        '1-4-ramdisk-Export_relocated_ramdisk_VA.patch::https://lkml.org/lkml/diff/2013/12/5/621/1'
+        '2-4-microcode-Share_native_MSR_accessing_variants.patch::https://lkml.org/lkml/diff/2013/12/5/620/1'
+        '3-4-microcode-AMD-Fix_early_ucode_loading.patch::https://lkml.org/lkml/diff/2013/12/5/626/1'
+        '4-4-microcode-Move_to_a_proper_location.patch::https://lkml.org/lkml/diff/2013/12/5/698/1'
+
+

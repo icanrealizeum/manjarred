@@ -1,0 +1,74 @@
+----------------
+* dnsmasq doesn't know how to understand the otherwise GOOD reply to code.google.com OR code.l.google.com
+OK, LOOKS LIKE IT'S BECAUSE: dnscrypt-proxy prevents dnssec request to google.com which dnsmasq wants to check BEFORE it allows those answers to be accurate! SO, blocking google.com in dnscrypt-proxy, with current dnsmasq config, ALSO blocks any and all subdomains of *.google.com ! but it takes a while - until timeout, to get the block!
+
+this is what dnscrypt-proxy returns:
+$ dig @127.0.0.24 -p1053 code.google.com 
+
+; <<>> DiG 9.9.2-P2 <<>> @127.0.0.24 -p1053 code.google.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 41437
+;; flags: qr rd ra; QUERY: 1, ANSWER: 12, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;code.google.com.   IN  A
+
+;; ANSWER SECTION:
+code.google.com.  561932  IN  CNAME code.l.google.com.
+code.l.google.com.  63  IN  A 173.194.45.68
+code.l.google.com.  63  IN  A 173.194.45.78
+code.l.google.com.  63  IN  A 173.194.45.71
+code.l.google.com.  63  IN  A 173.194.45.67
+code.l.google.com.  63  IN  A 173.194.45.64
+code.l.google.com.  63  IN  A 173.194.45.72
+code.l.google.com.  63  IN  A 173.194.45.70
+code.l.google.com.  63  IN  A 173.194.45.65
+code.l.google.com.  63  IN  A 173.194.45.73
+code.l.google.com.  63  IN  A 173.194.45.66
+code.l.google.com.  63  IN  A 173.194.45.69
+
+;; Query time: 56 msec
+;; SERVER: 127.0.0.24#1053(127.0.0.24)
+;; WHEN: Tue Jun  2 18:38:05 2015
+;; MSG SIZE  rcvd: 241
+
+$ dig @127.0.0.24 -p1053 code.l.google.com 
+
+; <<>> DiG 9.9.2-P2 <<>> @127.0.0.24 -p1053 code.l.google.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40478
+;; flags: qr rd ra; QUERY: 1, ANSWER: 11, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;code.l.google.com.   IN  A
+
+;; ANSWER SECTION:
+code.l.google.com.  19  IN  A 173.194.45.68
+code.l.google.com.  19  IN  A 173.194.45.78
+code.l.google.com.  19  IN  A 173.194.45.71
+code.l.google.com.  19  IN  A 173.194.45.67
+code.l.google.com.  19  IN  A 173.194.45.64
+code.l.google.com.  19  IN  A 173.194.45.72
+code.l.google.com.  19  IN  A 173.194.45.70
+code.l.google.com.  19  IN  A 173.194.45.65
+code.l.google.com.  19  IN  A 173.194.45.73
+code.l.google.com.  19  IN  A 173.194.45.66
+code.l.google.com.  19  IN  A 173.194.45.69
+
+;; Query time: 61 msec
+;; SERVER: 127.0.0.24#1053(127.0.0.24)
+;; WHEN: Tue Jun  2 18:38:49 2015
+;; MSG SIZE  rcvd: 222
+
+and the retarded dnsmasq keeps re-asking... (5 times in total)
+
+----------------
+

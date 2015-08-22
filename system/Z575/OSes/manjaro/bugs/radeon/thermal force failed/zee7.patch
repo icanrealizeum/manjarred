@@ -1,0 +1,97 @@
+diff-ing dirs that supposedly reside in two different kernel tree sources
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/Documentation/dontdiff linux-3.16-rc7/Documentation/dontdiff
+--- linux-3.16-rc7.orig/Documentation/dontdiff	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc7/Documentation/dontdiff	2014-07-28 13:21:20.497629649 +0200
+@@ -258,3 +258,24 @@ wakeup.lds
+ zImage*
+ zconf.hash.c
+ zoffset.h
++vdso-image-32-int80.c
++vdso-image-32-syscall.c
++vdso-image-32-sysenter.c
++vdso-image-64.c
++devicetable-offsets.h
++asn1_compiler
++sortextable
++pasyms.h
++realmode.lds
++x509-asn1.c
++x509-asn1.h
++x509_rsakey-asn1.c
++x509_rsakey-asn1.h
++oid_registry_data.c
++cayman_reg_safe.h
++mkpiggy
++realmode.relocs
++vdso2c
++
++
++
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/acpi/utils.c linux-3.16-rc7/drivers/acpi/utils.c
+--- linux-3.16-rc7.orig/drivers/acpi/utils.c	2014-07-28 22:09:20.000000000 +0200
++++ linux-3.16-rc7/drivers/acpi/utils.c	2014-07-28 13:21:20.494296337 +0200
+@@ -288,7 +288,7 @@ acpi_evaluate_integer(acpi_handle handle
+ 
+ 	*data = element.integer.value;
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Return value [%llu]\n", *data));
++	ACPI_DEBUG_PRINT((ACPI_DB_DEBUG_OBJECT, "Return value [%llu]\n", *data));
+ 
+ 	return AE_OK;
+ }
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/gpu/drm/radeon/radeon_pm.c linux-3.16-rc7/drivers/gpu/drm/radeon/radeon_pm.c
+--- linux-3.16-rc7.orig/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 22:09:20.000000000 +0200
++++ linux-3.16-rc7/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 23:12:12.881405653 +0200
+@@ -466,7 +466,9 @@ static ssize_t radeon_get_dpm_state(stru
+ 
+ 	return snprintf(buf, PAGE_SIZE, "%s\n",
+ 			(pm == POWER_STATE_TYPE_BATTERY) ? "battery" :
+-			(pm == POWER_STATE_TYPE_BALANCED) ? "balanced" : "performance");
++			(pm == POWER_STATE_TYPE_BALANCED) ? "balanced" :
++			(pm == POWER_STATE_TYPE_PERFORMANCE) ? "performance" :
++			(pm == POWER_STATE_TYPE_INTERNAL_THERMAL) ? "thermal" : "unknown" );
+ }
+ 
+ static ssize_t radeon_set_dpm_state(struct device *dev,
+@@ -489,6 +491,8 @@ static ssize_t radeon_set_dpm_state(stru
+ 		rdev->pm.dpm.user_state = POWER_STATE_TYPE_BALANCED;
+ 	else if (strncmp("performance", buf, strlen("performance")) == 0)
+ 		rdev->pm.dpm.user_state = POWER_STATE_TYPE_PERFORMANCE;
++	else if (strncmp("thermal", buf, strlen("thermal")) == 0)
++		rdev->pm.dpm.user_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	else {
+ 		mutex_unlock(&rdev->pm.mutex);
+ 		count = -EINVAL;
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/platform/x86/thinkpad_acpi.c linux-3.16-rc7/drivers/platform/x86/thinkpad_acpi.c
+--- linux-3.16-rc7.orig/drivers/platform/x86/thinkpad_acpi.c	2014-07-28 22:09:21.000000000 +0200
++++ linux-3.16-rc7/drivers/platform/x86/thinkpad_acpi.c	2014-07-28 13:21:20.494296337 +0200
+@@ -5157,8 +5157,10 @@ static const char * const tpacpi_led_nam
+ 	"tpacpi::unknown_led2",
+ 	"tpacpi::unknown_led3",
+ 	"tpacpi::thinkvantage",
++	"tpacpi::unknown_led4",
++	"tpacpi::micmute",
+ };
+-#define TPACPI_SAFE_LEDS	0x1081U
++#define TPACPI_SAFE_LEDS	0x5081U
+ 
+ static inline bool tpacpi_is_led_restricted(const unsigned int led)
+ {
+@@ -5381,7 +5383,7 @@ static const struct tpacpi_quirk led_use
+ 	{ /* Lenovo */
+ 	  .vendor = PCI_VENDOR_ID_LENOVO,
+ 	  .bios = TPACPI_MATCH_ANY, .ec = TPACPI_MATCH_ANY,
+-	  .quirks = 0x1fffU,
++	  .quirks = 0x5fffU,
+ 	},
+ 	{ /* IBM ThinkPads with no EC version string */
+ 	  .vendor = PCI_VENDOR_ID_IBM,
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/scripts/depmod.sh linux-3.16-rc7/scripts/depmod.sh
+--- linux-3.16-rc7.orig/scripts/depmod.sh	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc7/scripts/depmod.sh	2014-07-28 13:21:22.127619210 +0200
+@@ -1,4 +1,5 @@
+ #!/bin/sh
++exit 0
+ #
+ # A depmod wrapper used by the toplevel Makefile
+ 

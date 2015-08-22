@@ -1,0 +1,400 @@
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index ada2e2d..c65c267 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -18,6 +18,9 @@ endif
+ 
+ CFLAGS_irq.o := -I$(src)/../include/asm/trace
+ 
++#https://www.kernel.org/doc/local/pr_debug.txt
++CFLAGS_smpboot.o := -DDEBUG
++
+ obj-y			:= process_$(BITS).o signal.o entry_$(BITS).o
+ obj-y			+= traps.o irq.o irq_$(BITS).o dumpstack_$(BITS).o
+ obj-y			+= time.o ioport.o ldt.o dumpstack.o nmi.o
+diff --git a/drivers/usb/early/Makefile b/drivers/usb/early/Makefile
+index 24bbe51..947f7e6 100644
+--- a/drivers/usb/early/Makefile
++++ b/drivers/usb/early/Makefile
+@@ -2,4 +2,6 @@
+ # Makefile for early USB devices
+ #
+ 
++KBUILD_CFLAGS += -DDBGP_DEBUG
++
+ obj-$(CONFIG_EARLY_PRINTK_DBGP) += ehci-dbgp.o
+diff --git a/arch/x86/include/asm/fixmap.h b/arch/x86/include/asm/fixmap.h
+index b0910f9..8411da9 100644
+--- a/arch/x86/include/asm/fixmap.h
++++ b/arch/x86/include/asm/fixmap.h
+@@ -76,6 +76,7 @@ enum fixed_addresses {
+ #endif
+ #endif
+ 	FIX_DBGP_BASE,
++	FIX_SMPEHCI_BASE,
+ 	FIX_EARLYCON_MEM_BASE,
+ #ifdef CONFIG_PROVIDE_OHCI1394_DMA_INIT
+ 	FIX_OHCI1394_BASE,
+diff --git a/kernel/Makefile b/kernel/Makefile
+index dc5c775..1c0de13 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -20,6 +20,8 @@ endif
+ # cond_syscall is currently not LTO compatible
+ CFLAGS_sys_ni.o = $(DISABLE_LTO)
+ 
++CFLAGS_smp.o := -DDEBUG
++
+ obj-y += sched/
+ obj-y += locking/
+ obj-y += power/
+diff --git a/kernel/smp.c b/kernel/smp.c
+index aff8aa1..369a5a0 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -16,6 +16,14 @@
+ 
+ #include "smpboot.h"
+ 
++//---------------------------
++#include <linux/pci_regs.h> //PCI_CLASS_REVISION
++#include <linux/pci_ids.h> //PCI_CLASS_SERIAL_USB_EHCI
++#include <linux/usb/ehci_def.h> //CMD_LRESET
++#include <linux/delay.h> //mdelay
++#include <asm/pci-direct.h> //read_pci_config
++//---------------------------
++
+ enum {
+ 	CSD_FLAG_LOCK		= 0x01,
+ 	CSD_FLAG_WAIT		= 0x02,
+@@ -544,6 +552,314 @@ void __weak smp_announce(void)
+ 	printk(KERN_INFO "Brought up %d CPUs\n", num_online_cpus());
+ }
+ 
++//-------------------------------
++
++#define _prik(fmt, a...) printk(fmt " {%s %s:%i}\n", ##a, __func__, __FILE__, __LINE__ )
++//KERN_* from: include/linux/kern_levels.h
++#define prika(fmt, a...) _prik(KERN_ALERT fmt, ##a)
++#define prikw(fmt, a...) _prik(KERN_WARNING fmt, ##a)
++#define prikn(fmt, a...) _prik(KERN_NOTICE fmt, ##a)
++#define priki(fmt, a...) _prik(KERN_INFO fmt, ##a)
++#define prikd(fmt, a...) _prik(KERN_DEBUG fmt, ##a)
++//#define priknoln(fmt, a...) printk(fmt " {%s %s:%i}", ##a, __func__, __FILE__, __LINE__ )
++
++/* Local version of HC_LENGTH macro as ehci struct is not available here */
++#define EARLY_HC_LENGTH(p)  (0x00ff & (p)) /* bits 7 : 0 */                                                   
++
++
++static struct ehci_caps __iomem *ehci_caps;
++static struct ehci_regs __iomem *ehci_regs; // include/linux/usb/ehci_def.h
++static u32 n_ports=0;
++
++static void ehci_status(char *str) {
++  u32 portsc;
++  int i;
++
++  if ((NULL == str) || (str[0] != '\0')) {
++    prikd("%s",str);
++  }
++  prikd("  ehci cmd     : %08X", readl(&ehci_regs->command));
++  prikd("  ehci conf flg: %08X", readl(&ehci_regs->configured_flag));
++  prikd("  ehci status  : %08X", readl(&ehci_regs->status));
++  for (i = 1; i <= n_ports; i++) {
++    portsc = readl(&ehci_regs->port_status[i-1]);
++    prikd("port %d status %08X", i, portsc);
++  }
++}
++
++/* The code in early_ehci_bios_handoff() is derived from the usb pci
++ * quirk initialization, but altered so as to use the early PCI
++ * routines. */
++#define EHCI_USBLEGSUP_BIOS (1 << 16) /* BIOS semaphore */
++#define EHCI_USBLEGCTLSTS 4   /* legacy control/status */
++static int __init early_ehci_bios_handoff(u32 bus, u32 slot, u32 func)
++{
++  u32 hcc_params = readl(&ehci_caps->hcc_params);
++  int offset = (hcc_params >> 8) & 0xff;
++  u32 cap;
++  int msec;
++
++  prikd("start");
++
++  if (!offset) {
++    prika("offset is 0");
++    return 0;
++  } else {
++    prikd("offset is %i", offset);
++  }
++
++  cap = read_pci_config(bus, slot, func, offset);
++  prikd("EHCI BIOS state (hex~dec) %08X~%u", cap, cap);
++
++  if ((cap & 0xff) == 1 && (cap & EHCI_USBLEGSUP_BIOS)) {
++    prikn("BIOS handoff");//not reached now, but was reached with dbgp
++    write_pci_config_byte(bus, slot, func, offset + 3, 1);
++  }
++
++  /* if boot firmware now owns EHCI, spin till it hands it over. */
++  msec = 1000;
++  while ((cap & EHCI_USBLEGSUP_BIOS) && (msec > 0)) {
++    mdelay(10);
++    msec -= 10;
++    cap = read_pci_config(bus, slot,
++        func, offset);
++    //%08X is 8 (hex)nibbles = 32bits
++    prikd("EHCI BIOS state (hex~dec) %08X~%u", cap, cap);
++  }
++
++  if (cap & EHCI_USBLEGSUP_BIOS) {
++    /* well, possibly buggy BIOS... try to shut it down, 
++     * and hope nothing goes too wrong */
++    prika("BIOS handoff failed: %08X~%u", cap, cap);
++    write_pci_config_byte(bus, slot, func, offset + 2, 0);
++  }
++
++  /* just in case, always disable EHCI SMIs */
++  //this doesn't seem to have any effect, in my test case
++  write_pci_config_byte(bus, slot, func,
++      offset + EHCI_USBLEGCTLSTS, 0);
++  prikd("disabled EHCI SMIs");
++
++  prikd("stop");
++  return 1; //good
++}
++
++
++static int ehci_startup(void)
++{
++  u32 cmd, status;
++  int loop;
++
++  ehci_status("EHCI startup");
++  //each port has only (PORT_OWNER | PORT_POWER) aka 0x00003000  for my case
++  //controller is 00001000 aka STS_HALT
++  //command is 0x00080B00 aka CMD_PARK | CMD_PARK_CNT(3) | r/w intr rate in microframes, equal to the default:(1<<19 == 8 ~ aka 1/msec)
++
++  /* Start the ehci running */
++  cmd = readl(&ehci_regs->command);
++  cmd &= ~(CMD_LRESET | CMD_IAAD | CMD_PSE | CMD_ASE | CMD_RESET);
++//  cmd |= CMD_RUN; //looks like this is optional
++  cmd &= ~CMD_RUN; //thus it works with this too (tested!)
++  writel(cmd, &ehci_regs->command);
++
++  /* Ensure everything is routed to the EHCI */
++  writel(FLAG_CF, &ehci_regs->configured_flag);//this is the ONLY needed thing!
++
++  /* Wait until the controller is no longer halted */
++  loop = 1000;
++  do {
++    status = readl(&ehci_regs->status);
++    if (!(status & STS_HALT))
++      break;
++    udelay(1);
++  } while (--loop > 0);
++
++  if (!loop) {
++    prika("EHCI can not be started");
++    return 0;//bad
++  }
++  ehci_status("EHCI started");
++  //for my case:
++  //by now, each port that has nothing connected to it has only (PORT_POWER) aka 0x00001000
++  //except the ports (port 3) that have something connected to it, those are:
++  // 0x00001803 aka PORT_POWER | USB2.0(?) | PORT_CSC | PORT_CONNECT
++  // EHCI controller status is 00000000 (not nolonger STS_HALT )
++  // command is now: 00080B01 the extra CMD_RUN is set
++  return 1;//good
++}
++
++static int dbgp_ehci_controller_reset(void)
++{
++  int loop = 250 * 1000;
++  u32 cmd;
++
++  /* Reset the EHCI controller */
++  cmd = readl(&ehci_regs->command);
++  cmd |= CMD_RESET;
++  writel(cmd, &ehci_regs->command);
++  do {
++    cmd = readl(&ehci_regs->command);
++  } while ((cmd & CMD_RESET) && (--loop > 0));
++
++  if (!loop) {
++    prika("can not reset ehci");
++    return 0;
++  }
++  ehci_status("ehci reset done");
++  return 1;
++}
++
++static int __init ehci_setup222(void)
++{
++  prikd("started");
++
++  /* Only reset the controller if it is not already in the
++   * configured state */
++  if (!(readl(&ehci_regs->configured_flag) & FLAG_CF)) {
++    prikd("controller reset is next:");
++    if (!dbgp_ehci_controller_reset()) {//OPTIONAL apparently
++      prika("failed EHCI controller reset (shouldn't happen!)");
++      return 0;
++    }
++  } else {
++    ehci_status("ehci skip - already configured");
++  }
++
++  ehci_status("before setting FLAG_CF");
++  /* Ensure everything is routed to the EHCI */
++  writel(FLAG_CF, &ehci_regs->configured_flag);
++  //ehci_startup(); // NEEDED! because FLAG_CF was inside it, now is out ^ above
++  ehci_status("after setting FLAG_CF");
++
++  prikd("ended");
++  return 1;
++}
++
++static u32 __init isEHCI(u32 bus, u32 slot, u32 func)
++{
++  u32 class;
++
++  class = read_pci_config(bus, slot, func, PCI_CLASS_REVISION);
++  if ((class >> 8) != PCI_CLASS_SERIAL_USB_EHCI) {
++    return 0; //not usb ehci
++  } else {
++    return 1; //good
++  }
++}
++
++
++int __init kline(u32 bus, u32 slot, u32 func) 
++{
++  void __iomem *ehci_bar;
++  u32 bar_val;
++  u8 byte;
++  u32 hcs_params;
++
++  if (!isEHCI(bus, slot, func)) {
++    prika("There is no EHCI controller at passed params: %02x:%02x.%1x", bus, slot, func);
++    return 0;//bad
++  }
++
++  prikd("Found EHCI on %02x:%02x.%1x", bus, slot, func);
++
++  bar_val = read_pci_config(bus, slot, func, PCI_BASE_ADDRESS_0);
++  prikd("bar_val: %02x", bar_val);
++  if (bar_val & ~PCI_BASE_ADDRESS_MEM_MASK) {
++    prika("only simple 32bit mmio bars supported");
++    return 0;//bad
++  }
++
++  /* double check if the mem space is enabled */
++  byte = read_pci_config_byte(bus, slot, func, 0x04);
++  if (!(byte & 0x2)) {
++    byte  |= 0x02;
++    write_pci_config_byte(bus, slot, func, 0x04, byte);
++    prikw("mmio for ehci enabled");
++  }
++
++  /*
++   * FIXME I don't have the bar size so just guess that
++   * PAGE_SIZE (aka 4096 for me: sudo getconf PAGE_SIZE)
++   * is more than enough.  1K is the biggest I have seen.
++   */
++  set_fixmap_nocache(FIX_SMPEHCI_BASE, bar_val & PAGE_MASK);
++  ehci_bar = (void __iomem *)__fix_to_virt(FIX_SMPEHCI_BASE);
++  ehci_bar += bar_val & ~PAGE_MASK;
++  prikd("ehci_bar: %p", ehci_bar);
++
++  ehci_caps  = ehci_bar;
++  ehci_regs  = ehci_bar + EARLY_HC_LENGTH(readl(&ehci_caps->hc_capbase));
++
++  hcs_params = readl(&ehci_caps->hcs_params);
++  n_ports    = HCS_N_PORTS(hcs_params);
++  prikd("n_ports:    %d", n_ports);
++
++  //ehci_status("before bios_handoff");
++
++  //early_ehci_bios_handoff(bus, slot, func);//looks like not needed
++
++  //ehci_status("before ehci_setup");
++
++
++//when BIOS USB Legacy is Disabled then ehci status is STS_PCD | STS_FLR | STS_HALT
++//and remains this way because FLAG_CF was already set when USB Legacy is Disabled.
++//otherwise, when USB Legacy is Enabled, it's only STS_HALT, and FLAG_CF isn't set
++//and it will also crash APs after INIT is sent if mouse is moved.
++
++  if (! (readl(&ehci_regs->configured_flag) & FLAG_CF) ) { //if FLAG_CF not set
++    prikd("BIOS USB Legacy is likely Enabled.");
++    ehci_status("before setting FLAG_CF");
++    //apply the workaround which prevents mouse movements from getting APs stuck when INIT
++    /* Ensure everything is routed to the EHCI */
++    writel(FLAG_CF, &ehci_regs->configured_flag);
++    ehci_status("after setting FLAG_CF");
++  } else {
++    ehci_status("FLAG_CF was already set which likely means BIOS USB Legacy is Disabled.");
++  }
++
++  //ehci_setup222();//part of this is needed; only the FLAG_CF part was needed!
++
++//  ehci_status("after ehci_setup");
++
++  ehci_regs = NULL;
++  ehci_caps = NULL;
++  n_ports = 0;
++
++  prikd("ended");
++  return 1; //good
++}
++
++int __init early_reset_EHCIs(void)
++{ //all this code is ripped from: drivers/usb/early/ehci-dbgp.c
++  u32 bus, slot, func;
++  u32 failed=0;
++
++  prikd("started");
++
++  if (!early_pci_allowed()) {
++    prika("early_pci_ not allowed!");
++    return 0;//bad
++  } else {
++    prikd("early_pci_allowed");
++  }
++
++  //find all (2)EHCI controllers and reset the bejesus out of them and their (5)usb ports(each)
++  for (bus = 0; bus < 256; bus++) {
++    for (slot = 0; slot < 32; slot++) {
++      for (func = 0; func < 8; func++) {
++        if (isEHCI(bus,slot,func) && !kline(bus,slot,func)) {
++          failed++;
++        }
++      }
++    }
++  }
++  prikd("ended, failed %u times", failed);
++  return 1;//good
++}
++
++
++//-------------------------------
++
+ /* Called by boot processor to activate the rest. */
+ void __init smp_init(void)
+ {
+@@ -551,6 +867,15 @@ void __init smp_init(void)
+ 
+ 	idle_threads_init();
+ 
++//-------------------------------
++  //reset EHCI controllers and their USB ports before bringing up the rest of the CPUs (APs) to avoid "Not responding" when there's USB activity, such as moving the mouse, right after sending INIT to the AP
++  if (!early_reset_EHCIs()) {
++    prika("failed to reset EHCIs, you may get CPUx Not responding when e.g. you're moving your mouse, under certain BIOSes. The other workaround is to disable USB Legacy in BIOS.");
++  }else{
++    priki("All EHCI controllers were reset.");
++  }
++//-------------------------------
++
+ 	/* FIXME: This should be done in userspace --RR */
+ 	for_each_present_cpu(cpu) {
+ 		if (num_online_cpus() >= setup_max_cpus)

@@ -1,0 +1,38 @@
+
+here it is the bug reported by someone and now I added to it:
+https://bugzilla.kernel.org/show_bug.cgi?id=72701#c15
+
+====so that's not the commit:
+NOPE:apparently this commit, added the patch which makes my system hang:
+https://github.com/torvalds/linux/commit/f2bc561610962693be61425cf913778586d8f9c1
+also bug is here:
+https://bugs.freedesktop.org/show_bug.cgi?id=75917
+
+trying to see if commenting those 2 lines of the patch will fix it: -> nope, it didn't fix it! must not be this! looks like this was added after 3.15.4 so... crap
+then trying without commenting(edit:actually with them commented) those 2 lines(so leaving the patch in) but with radeon.runpm=0
+kernel command line: -> yes it does work with this kernel command line!
+
+
+
+====
+ok found it, it's because of vgaswitcheroo ! if this setting is enabled in 3.15.4 it will lockup
+but if it's enabled in 3.12.23 it won't!
+so something must've changed in this switcheroo code between 3.12 and 3.15 also 3.16-rc4 has it!
+
+===========
+with the .config#22*
+included in current folder, and when both graphics cards are enabled in bios
+it will lock up after a certain time when booting up
+
+even tho i disabled tlp (powersaving features)
+
+and even when radeon is built into kernel, then only when I add the firmware:
+radeon/BTC_rlc.bin
+only then it locks up! without it, it works, but ofc, the card is not seen
+but in kernel 3.12 stock manjaro 3.12.24-1-MANJARO 
+with this one works, and i can even see the temperature with sensors of the discrete card
+
+the internal(APU) gfx card works by itself, alone.
+
+-------------
+i don't get it :) why would it just work with 3.12 but not 3.15.4

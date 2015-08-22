@@ -1,0 +1,36 @@
+diff --git a/src/client.c b/src/client.c
+index 74dc65f..91a324f 100644
+--- a/src/client.c
++++ b/src/client.c
+@@ -644,7 +644,7 @@ clientSendConfigureNotify (Client *c)
+     g_return_if_fail (c != NULL);
+     g_return_if_fail (c->window != None);
+ 
+-    DBG ("Sending ConfigureNotify");
++//    DBG ("Sending ConfigureNotify");
+     ce.type = ConfigureNotify;
+     ce.display = clientGetXDisplay (c);
+     ce.send_event = TRUE;
+diff --git a/src/main.c b/src/main.c
+index c041ade..f92b0c3 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -107,7 +107,7 @@ setupLog (void)
+     str = g_getenv ("XFWM4_LOG_FILE");
+     if (str)
+     {
+-        logfile = g_strdup (str);
++        logfile = g_strdup_printf (str, (int) getpid ());
+     }
+     else
+     {
+@@ -690,7 +690,9 @@ main (int argc, char **argv)
+ #endif /* !HAVE_DAEMON */
+             }
+             /* enter GTK main loop */
++    DBG ("before gtk_main");
+             gtk_main ();
++    DBG ("after gtk_main");
+             break;
+         default:
+             g_warning ("Unknown error occured");

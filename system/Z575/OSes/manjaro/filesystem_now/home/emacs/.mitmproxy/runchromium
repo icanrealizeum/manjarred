@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#runs chromium through mitmproxy
+#you should've already stated: mitmproxy  in another terminal
+ip=127.0.0.8
+port=8111
+export http_proxy="${ip}:${port}"
+export https_proxy="${ip}:${port}"
+#strace chromium 2>&1 | grep -i access
+chromium
+

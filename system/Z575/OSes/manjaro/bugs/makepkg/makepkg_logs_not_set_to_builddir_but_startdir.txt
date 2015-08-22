@@ -1,0 +1,18 @@
+from man:
+-L, --log
+           Enable makepkg build logging. This will use the tee program to send
+           output of the build() function to both the console and to a text
+           file in the build directory named pkgname-pkgver-pkgrel-arch.log.
+           As mentioned above, the build log will be localized so you may want
+           to set your locale accordingly if sharing the log output with
+           others.
+
+
+in /etc/makepkg.conf
+
+#-- Specify a directory for package building.
+BUILDDIR=/tmp/makepkg
+
+
+but the log is put in ${startdir} instead
+

@@ -1,0 +1,11 @@
+
+reproduce anywhere:
+for i in $(seq $(tput cols)); do echo -n a;done|grep --color=always a
+
+reproduce on my comp:
+ip addr|grep -i net0|grep -i UP 
+2: net0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc htb state DOWN grou  default qlen 1000
+
+notice "group" at the end has a missing "p"
+resizing or copy pasting that has no effect, that p is definitely gone!
+

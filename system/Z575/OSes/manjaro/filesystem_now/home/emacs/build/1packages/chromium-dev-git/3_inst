@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ ! -L "/tmp/makepkg" ]; then
+        echo run ./recompile
+	exit 1
+else
+	#ok this fails, treats as if build was requested:
+	#time makepkg --install --noextract --nobuild
+	#without --nobuild will just overwrite the source folder
+
+	#and this, overwrites the sourcefolder and then installs(assuming it was already built from before ofc!)
+	#time makepkg --install
+
+  #--nobuild makes it not build and also NOT INSTALL either!
+	#time makepkg --install --nobuild --noprepare "$@"
+  echo "run ./justreinst if you don't wanna also rebuild"
+	time makepkg --incremental --install --noprepare "$@"
+fi

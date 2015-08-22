@@ -1,0 +1,29 @@
+at when grub menu shows (linux 3.12 manjaro) toggle the wireless mouse button from off to on then press Enter in the menu to go ahead
+it will always CPU1 not responding, probably while the mouse initializes...
+the wireless receiver was plugged in the usb port at all times
+
+3.16-rc6
+
+CPU1 Not Responding if wireless mouse is turned on, before boot
+
+While at the GRUB menu before boot, I turn on my wireless mouse(*1) then press Enter immediately to boot. The kernel waits for about 5 seconds at the message "Loading ramdisk..." then continues booting. However only 3 cores are up, and CPU1 is not. The dmesg looks like this:
+
+[    0.174715] x86: Booting SMP configuration:
+[    0.174719] .... node  #0, CPUs:      #1
+[    5.518201] smpboot: CPU1: Not responding
+[    5.518253] smpboot: do_boot_cpu failed(1) to wakeup CPU#1
+[    5.518356]  #2
+[    5.531572] TSC synchronization [CPU#0 -> CPU#2]:
+[    5.531578] Measured 180907384 cycles TSC warp between CPUs, turning off TSC clock.
+[    5.531586] tsc: Marking TSC unstable due to check_tsc_sync_source failed
+[    5.531752]  #3
+[    5.542950] x86: Booted up 1 node, 3 CPUs
+[    5.542956] smpboot: Total of 3 processors activated (8387.88 BogoMIPS)
+
+(*1) the wireless mouse is a Genius 2.4G Wireless BlueEye Mouse (Genius DX-ECO and it seems to take about 3 seconds to initialize when turning it on by the switch underneath it: when turned on, the led on top of it shines red for about 2-3 seconds, however when testing this on the desktop, the mouse pointer will move right from the start (no need to wait 2-3 seconds until the light from the led stops)
+[    8.440514] device: 'input8': device_add
+[    8.443948] input: Genius 2.4G Wireless BlueEye Mouse as /devices/pci0000:00/0000:00:12.0/usb3/3-3/3-3:1.0/0003:0458:00F2.0001/input/input8
+[   30.063526] input input8: event field not found
+The last line always happens first time (and only once) when moving the mouse. And if I wait until desktop is ready and move it then, it causes the equivalent of a right click on the desktop which brings up that specific menu. This may be irrelevant here.
+
+

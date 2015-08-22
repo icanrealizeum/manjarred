@@ -1,0 +1,89 @@
+diff --git a/drivers/usb/early/Makefile b/drivers/usb/early/Makefile
+index 24bbe51..947f7e6 100644
+--- a/drivers/usb/early/Makefile
++++ b/drivers/usb/early/Makefile
+@@ -2,4 +2,6 @@
+ # Makefile for early USB devices
+ #
+ 
++KBUILD_CFLAGS += -DDBGP_DEBUG
++
+ obj-$(CONFIG_EARLY_PRINTK_DBGP) += ehci-dbgp.o
+diff --git a/drivers/usb/early/ehci-dbgp.c b/drivers/usb/early/ehci-dbgp.c
+index 8cfc319..106fd7d 100644
+--- a/drivers/usb/early/ehci-dbgp.c
++++ b/drivers/usb/early/ehci-dbgp.c
+@@ -752,6 +752,7 @@ static void __init early_ehci_bios_handoff(void)
+ 	/* just in case, always disable EHCI SMIs */
+ 	write_pci_config_byte(ehci_dev.bus, ehci_dev.slot, ehci_dev.func,
+ 			      offset + EHCI_USBLEGCTLSTS, 0);
++  printk("disabled EHCI SMI via usb\n");
+ }
+ 
+ static int __init ehci_setup(void)
+@@ -839,8 +840,12 @@ int __init early_dbgp_init(char *s)
+ 	int ret;
+ 	u8 byte;
+ 
+-	if (!early_pci_allowed())
++	if (!early_pci_allowed()) {
++    printk("early_pci_ not allowed!\n");
+ 		return -1;
++  }else{
++    printk("early_pci_allowed\n");
++  }
+ 
+ 	dbgp_num = 0;
+ 	if (*s)
+@@ -976,12 +981,15 @@ int dbgp_reset_prep(struct usb_hcd *hcd)
+ 	int ret = xen_dbgp_reset_prep(hcd);
+ 	u32 ctrl;
+ 
++  printk("mmmmmmmmmmmmm1\n");
+ 	if (ret)
+ 		return ret;
+ 
++  printk("mmmmmmmmmmmmm2\n");
+ 	dbgp_not_safe = 1;
+ 	if (!ehci_debug)
+ 		return 0;
++  printk("mmmmmmmmmmmmm3\n");
+ 
+ 	if ((early_dbgp_console.index != -1 &&
+ 	     !(early_dbgp_console.flags & CON_BOOT)) ||
+@@ -1001,6 +1009,7 @@ EXPORT_SYMBOL_GPL(dbgp_reset_prep);
+ 
+ int dbgp_external_startup(struct usb_hcd *hcd)
+ {
++  printk("mmmmmmmmmmmmm4\n");
+ 	return xen_dbgp_external_startup(hcd) ?: _dbgp_external_startup();
+ }
+ EXPORT_SYMBOL_GPL(dbgp_external_startup);
+@@ -1049,6 +1058,7 @@ static int __init kgdbdbgp_parse_config(char *str)
+ {
+ 	char *ptr;
+ 
++  printk("mmmmmmmmmmmmmmmmmmmmmmm\n");
+ 	if (!ehci_debug) {
+ 		if (early_dbgp_init(str))
+ 			return -1;
+diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+index 2f3aceb..e164007 100644
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -732,6 +732,7 @@ static void ehci_bios_handoff(struct pci_dev *pdev,
+ 
+ 	/* just in case, always disable EHCI SMIs */
+ 	pci_write_config_dword(pdev, offset + EHCI_USBLEGCTLSTS, 0);
++  printk("disabled EHCI SMI via pci\n");
+ 
+ 	/* If the BIOS ever owned the controller then we can't expect
+ 	 * any power sessions to remain intact.
+@@ -1015,6 +1016,7 @@ static void quirk_usb_handoff_xhci(struct pci_dev *pdev)
+ 	val |= XHCI_LEGACY_SMI_EVENTS;
+ 	/* Disable any BIOS SMIs and clear all SMI events*/
+ 	writel(val, base + ext_cap_offset + XHCI_LEGACY_CONTROL_OFFSET);
++  printk("disabled SMIs via pci somewhere else\n");
+ 
+ hc_init:
+ 	if (pdev->vendor == PCI_VENDOR_ID_INTEL)

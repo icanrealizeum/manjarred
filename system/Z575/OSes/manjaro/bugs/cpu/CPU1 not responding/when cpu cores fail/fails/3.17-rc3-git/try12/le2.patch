@@ -1,0 +1,486 @@
+diff --git a/kernel/Makefile b/kernel/Makefile
+index dc5c775..1c0de13 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -20,6 +20,8 @@ endif
+ # cond_syscall is currently not LTO compatible
+ CFLAGS_sys_ni.o = $(DISABLE_LTO)
+ 
++CFLAGS_smp.o := -DDEBUG
++
+ obj-y += sched/
+ obj-y += locking/
+ obj-y += power/
+diff --git a/kernel/smp.c b/kernel/smp.c
+index aff8aa1..593fca1 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -14,6 +14,8 @@
+ #include <linux/smp.h>
+ #include <linux/cpu.h>
+ 
++#include <linux/sched.h> //for schedule()
++#include <asm/delay.h>  //for udelay(..)
+ #include "smpboot.h"
+ 
+ enum {
+@@ -388,14 +390,18 @@ void smp_call_function_many(const struct cpumask *mask,
+ 			    smp_call_func_t func, void *info, bool wait)
+ {
+ 	struct call_function_data *cfd;
+-	int cpu, next_cpu, this_cpu = smp_processor_id();
++	int cpu, next_cpu, this_cpu;
+ 
++//  pr_debug("smp_call_function_many BEGINs:\n");
++  this_cpu = smp_processor_id();
+ 	/*
+ 	 * Can deadlock when called with interrupts disabled.
+ 	 * We allow cpu's that are not yet online though, as no one else can
+ 	 * send smp call function interrupt to this cpu and as such deadlocks
+ 	 * can't happen.
+ 	 */
++//	pr_debug("CPU %d online? %d\n", this_cpu, cpu_online(this_cpu));
++
+ 	WARN_ON_ONCE(cpu_online(this_cpu) && irqs_disabled()
+ 		     && !oops_in_progress && !early_boot_irqs_disabled);
+ 
+@@ -406,7 +412,7 @@ void smp_call_function_many(const struct cpumask *mask,
+ 
+ 	/* No online cpus?  We're done. */
+ 	if (cpu >= nr_cpu_ids)
+-		return;
++    goto out;
+ 
+ 	/* Do we have another CPU which isn't us? */
+ 	next_cpu = cpumask_next_and(cpu, mask, cpu_online_mask);
+@@ -416,7 +422,7 @@ void smp_call_function_many(const struct cpumask *mask,
+ 	/* Fastpath: do that cpu by itself. */
+ 	if (next_cpu >= nr_cpu_ids) {
+ 		smp_call_function_single(cpu, func, info, wait);
+-		return;
++    goto out;
+ 	}
+ 
+ 	cfd = &__get_cpu_var(cfd_data);
+@@ -426,7 +432,7 @@ void smp_call_function_many(const struct cpumask *mask,
+ 
+ 	/* Some callers race with other cpus changing the passed mask */
+ 	if (unlikely(!cpumask_weight(cfd->cpumask)))
+-		return;
++    goto out;
+ 
+ 	for_each_cpu(cpu, cfd->cpumask) {
+ 		struct call_single_data *csd = per_cpu_ptr(cfd->csd, cpu);
+@@ -448,6 +454,10 @@ void smp_call_function_many(const struct cpumask *mask,
+ 			csd_lock_wait(csd);
+ 		}
+ 	}
++
++out:
++//  pr_debug("smp_call_function_many END.\n");
++  return;
+ }
+ EXPORT_SYMBOL(smp_call_function_many);
+ 
+@@ -548,16 +558,44 @@ void __weak smp_announce(void)
+ void __init smp_init(void)
+ {
+ 	unsigned int cpu;
++	unsigned long timeout;
++  bool failed=false;
++  const int maxcount=2;
++  int count=1;
++	unsigned long flags;
+ 
+ 	idle_threads_init();
+ 
+ 	/* FIXME: This should be done in userspace --RR */
++  do {
++    if (count>=1) {
++      local_irq_save(flags);
++    }
+ 	for_each_present_cpu(cpu) {
+ 		if (num_online_cpus() >= setup_max_cpus)
+ 			break;
+-		if (!cpu_online(cpu))
+-			cpu_up(cpu);
++		if (!cpu_online(cpu)) {
++      /*pr_debug("waiting 5 seconds before trying cpu_up");
++      for (timeout = 0; timeout < 50000; timeout++) {
++        udelay(100);
++        schedule();
++      }
++      pr_debug("done waiting, trying cpu_up:");*/
++      pr_debug("trying cpu_up:");
++			if (cpu_up(cpu)) {
++        failed=true;
++        //do it one more time:
++       // pr_debug("doing it one more time: cpu_up !!!!!!!!!!!!");
++       // cpu_up(cpu);
++      }
++      pr_debug("after cpu_up !!!!!!!!!!!!");
++    }
+ 	}
++    if (count>=1) {
++      local_irq_restore(flags);
++    }
++  count++;
++  } while ((failed) && (count<=maxcount));
+ 
+ 	/* Any cleanup work */
+ 	smp_announce();
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index ada2e2d..c65c267 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -18,6 +18,9 @@ endif
+ 
+ CFLAGS_irq.o := -I$(src)/../include/asm/trace
+ 
++#https://www.kernel.org/doc/local/pr_debug.txt
++CFLAGS_smpboot.o := -DDEBUG
++
+ obj-y			:= process_$(BITS).o signal.o entry_$(BITS).o
+ obj-y			+= traps.o irq.o irq_$(BITS).o dumpstack_$(BITS).o
+ obj-y			+= time.o ioport.o ldt.o dumpstack.o nmi.o
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 2d872e0..b5bee7f 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -144,10 +144,11 @@ static void smp_callin(void)
+ 	 * by a factor of two. This should be enough.
+ 	 */
+ 
++  pr_debug("Waiting max 15 sec for callout\n");
+ 	/*
+ 	 * Waiting 2s total for startup (udelay is not yet working)
+ 	 */
+-	timeout = jiffies + 2*HZ;
++	timeout = jiffies + 15*HZ;
+ 	while (time_before(jiffies, timeout)) {
+ 		/*
+ 		 * Has the boot CPU finished it's STARTUP sequence?
+@@ -156,6 +157,7 @@ static void smp_callin(void)
+ 			break;
+ 		cpu_relax();
+ 	}
++  pr_debug("done waiting max 15 sec for callout\n");
+ 
+ 	if (!time_before(jiffies, timeout)) {
+ 		panic("%s: CPU%d started up but did not get a callout!\n",
+@@ -520,18 +522,49 @@ wakeup_secondary_cpu_via_init(int phys_apicid, unsigned long start_eip)
+ {
+ 	unsigned long send_status, accept_status = 0;
+ 	int maxlvt, num_starts, j;
++  unsigned long timeout;
++	unsigned long flags;
++  unsigned int value,oldvalue;
++  unsigned int allirq;
++  bool once=true;
+ 
+ 	maxlvt = lapic_get_maxlvt();
+ 
++//emacs: addon:
++  if (maxlvt > 3)   /* Due to the Pentium erratum 3AP. */
++    apic_write(APIC_ESR, 0);
++  oldvalue = apic_read(APIC_ESR);
++
++
++  /* enables sending errors */
++  value = ERROR_APIC_VECTOR;
++  apic_write(APIC_LVTERR, value);
++//emacs: end addon
+ 	/*
+ 	 * Be paranoid about clearing APIC errors.
+ 	 */
+ 	if (APIC_INTEGRATED(apic_version[phys_apicid])) {
+ 		if (maxlvt > 3)		/* Due to the Pentium erratum 3AP.  */
+ 			apic_write(APIC_ESR, 0);
+-		apic_read(APIC_ESR);
++//emacs: addon		
++    value=apic_read(APIC_ESR);
++    if (value != oldvalue)
++      apic_printk(APIC_VERBOSE, "ESR value before enabling "
++      "vector: 0x%08x  after: 0x%08x\n",
++      oldvalue, value);
++//emacs: end addon
++
+ 	}
+ 
++
++/*  pr_debug("waiting 5 sec before INIT");
++  for (timeout = 0; timeout < 50000; timeout++) {                               
++  //moving mouse here DOES NOT cause Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting");
++*/
+ 	pr_debug("Asserting INIT\n");
+ 
+ 	/*
+@@ -540,26 +573,91 @@ wakeup_secondary_cpu_via_init(int phys_apicid, unsigned long start_eip)
+ 	/*
+ 	 * Send IPI
+ 	 */
++  pr_debug("disabling irqs:\n");
++	local_irq_save(flags);
++  for (allirq=0; allirq<256; allirq++) {
++    disable_irq(allirq);
++  }
++  pr_debug("done disabling irqs\n");
+ 	apic_icr_write(APIC_INT_LEVELTRIG | APIC_INT_ASSERT | APIC_DM_INIT,
+ 		       phys_apicid);
+-
+-	pr_debug("Waiting for send to finish...\n");
++//FROM HERE:[  if you move mouse....
++
++//moo
++  pr_debug("waiting 3 sec for mouse movements to 'crash' this cpu\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++
++	pr_debug("Waiting for INIT send to finish...\n");
+ 	send_status = safe_apic_wait_icr_idle();
+ 
+ 	mdelay(10);
+ 
++	pr_debug("status for above ^ is: %lu\n", send_status);
++
++//moo
++/*  pr_debug("waiting 5 sec");
++  for (timeout = 0; timeout < 50000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting");
++*/
+ 	pr_debug("Deasserting INIT\n");
+ 
+ 	/* Target chip */
+ 	/* Send IPI */
+ 	apic_icr_write(APIC_INT_LEVELTRIG | APIC_DM_INIT, phys_apicid);
+ 
+-	pr_debug("Waiting for send to finish...\n");
++//moo
++/*  pr_debug("waiting 5 sec");
++  for (timeout = 0; timeout < 50000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting");
++*/
++	pr_debug("Waiting for above send to finish...\n");
+ 	send_status = safe_apic_wait_icr_idle();
+ 
++/*
++//moo
++  pr_debug("waiting 3 sec");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting");
++*/
+ 	mb();
+-	atomic_set(&init_deasserted, 1);
+ 
++//moo
++/*  pr_debug("waiting 3 sec");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting");
++*/
++	atomic_set(&init_deasserted, 1);
++/*
++//moo
++  pr_debug("waiting 3 sec\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++*/
+ 	/*
+ 	 * Should we send STARTUP IPIs ?
+ 	 *
+@@ -571,6 +669,16 @@ wakeup_secondary_cpu_via_init(int phys_apicid, unsigned long start_eip)
+ 	else
+ 		num_starts = 0;
+ 
++//moo
++/*  pr_debug("waiting 3 sec\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++*/
++
+ 	/*
+ 	 * Paravirt / VMI wants a startup IPI hook here to set up the
+ 	 * target processor state.
+@@ -578,6 +686,16 @@ wakeup_secondary_cpu_via_init(int phys_apicid, unsigned long start_eip)
+ 	startup_ipi_hook(phys_apicid, (unsigned long) start_secondary,
+ 			 stack_start);
+ 
++
++//moo
++/*  pr_debug("waiting 3 sec\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here causes Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++*/
+ 	/*
+ 	 * Run STARTUP IPI loop.
+ 	 */
+@@ -589,17 +707,47 @@ wakeup_secondary_cpu_via_init(int phys_apicid, unsigned long start_eip)
+ 			apic_write(APIC_ESR, 0);
+ 		apic_read(APIC_ESR);
+ 		pr_debug("After apic_write\n");
++//moo
++/*  pr_debug("waiting 3 sec\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //this causes Not responding only when j=1 and moving mouse during this interval only (that is, start moving when the interval started and stop moving it before the interval is over)
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++*/
+ 
+ 		/*
+ 		 * STARTUP IPI
+ 		 */
+ 
++//UNTIL HERE:]  if you move mouse.... it will cause CPU to never wake up until cold/warm boot!
+ 		/* Target chip */
+ 		/* Boot on the stack */
+ 		/* Kick the second */
+ 		apic_icr_write(APIC_DM_STARTUP | (start_eip >> 12),
+ 			       phys_apicid);
+ 
++    if (once) {
++      once=false;
++  pr_debug("enabling irqs:\n");
++	local_irq_restore(flags);
++  for (allirq=0; allirq<256; allirq++) {
++    enable_irq(allirq);
++  }
++
++  pr_debug("done enabling irqs\n");
++    }
++
++/*  pr_debug("after icr_write, waiting 3 sec\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //this doesn't cause Not responding regardless of j value
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++*/
++
+ 		/*
+ 		 * Give the other CPU some time to accept the IPI.
+ 		 */
+@@ -622,11 +770,22 @@ wakeup_secondary_cpu_via_init(int phys_apicid, unsigned long start_eip)
+ 	}
+ 	pr_debug("After Startup\n");
+ 
++
++
+ 	if (send_status)
+ 		pr_err("APIC never delivered???\n");
+ 	if (accept_status)
+ 		pr_err("APIC delivery error (%lx)\n", accept_status);
+ 
++//moo
++/*  pr_debug("waiting 3 sec\n");
++  for (timeout = 0; timeout < 30000; timeout++) {                               
++    //moving mouse here DOES NOT cause Not responding
++    udelay(100);
++    //schedule();
++  }
++  pr_debug("done waiting\n");
++*/
+ 	return (send_status | accept_status);
+ }
+ 
+@@ -747,6 +906,7 @@ out:
+  */
+ static int do_boot_cpu(int apicid, int cpu, struct task_struct *idle)
+ {
++
+ 	volatile u32 *trampoline_status =
+ 		(volatile u32 *) __va(real_mode_header->trampoline_status);
+ 	/* start_ip had better be page-aligned! */
+@@ -824,6 +984,8 @@ static int do_boot_cpu(int apicid, int cpu, struct task_struct *idle)
+ 		/*
+ 		 * Wait 5s total for a response
+ 		 */
++//moo2
++    pr_debug("start waiting 5sec for response");
+ 		for (timeout = 0; timeout < 50000; timeout++) {
+ 			if (cpumask_test_cpu(cpu, cpu_callin_mask))
+ 				break;	/* It has booted */
+@@ -836,6 +998,10 @@ static int do_boot_cpu(int apicid, int cpu, struct task_struct *idle)
+ 			 */
+ 			schedule();
+ 		}
++    pr_debug("done waiting 5sec for response");
++		pr_debug("cpumask_test_cpu result: %d", cpumask_test_cpu(cpu, cpu_callin_mask));
++		pr_debug("cpu_callin_mask: %016lx", cpumask_bits(cpu_callin_mask)[0]);
++		pr_debug("cpu_callout_mask: %016lx", cpumask_bits(cpu_callout_mask)[0] );
+ 
+ 		if (cpumask_test_cpu(cpu, cpu_callin_mask)) {
+ 			print_cpu_msr(&cpu_data(cpu));
+@@ -888,6 +1054,7 @@ int native_cpu_up(unsigned int cpu, struct task_struct *tidle)
+ 	int apicid = apic->cpu_present_to_apicid(cpu);
+ 	unsigned long flags;
+ 	int err;
++//  unsigned long timeout;
+ 
+ 	WARN_ON(irqs_disabled());
+ 
+@@ -919,9 +1086,17 @@ int native_cpu_up(unsigned int cpu, struct task_struct *tidle)
+ 	/* the FPU context is blank, nobody can own it */
+ 	__cpu_disable_lazy_restore(cpu);
+ 
++  //redo:
++  /*pr_debug("before calling do_boot_cpu: waiting 5 sec before continuing");
++  for (timeout = 0; timeout < 50000; timeout++) {
++    udelay(100);
++    schedule();
++  }*/
+ 	err = do_boot_cpu(apicid, cpu, tidle);
+ 	if (err) {
+ 		pr_err("do_boot_cpu failed(%d) to wakeup CPU#%u\n", err, cpu);
++    //pr_err("retrying forever!");
++    //goto redo;
+ 		return -EIO;
+ 	}
+ 
+@@ -930,6 +1105,9 @@ int native_cpu_up(unsigned int cpu, struct task_struct *tidle)
+ 	 * while doing so):
+ 	 */
+ 	local_irq_save(flags);
++//  pr_debug("------------- before WARN_ON:\n");
++//  WARN_ON(irqs_disabled());
++//  pr_debug("------------- after WARN_ON\n");
+ 	check_tsc_sync_source(cpu);
+ 	local_irq_restore(flags);
+ 

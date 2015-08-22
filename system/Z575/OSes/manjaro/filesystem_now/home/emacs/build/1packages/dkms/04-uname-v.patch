@@ -1,0 +1,126 @@
+--- "archlinux version!_dkms-2.2.0.3-15-any/dkms"	2014-11-05 09:41:25.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/dkms"	2014-11-05 11:38:24.601960711 +0100
+@@ -686,21 +686,36 @@ check_version_sanity()
+ 	# use obsolete checksum info
+ 	dkms_info[1]=${dkms_info[2]}
+ 	kernels_info[1]=${kernels_info[2]}
+     fi
+ 
++    if ! diff -q "$dkms_module" "$kernels_module" >/dev/null 2>&1 ; then
++        diffcontents=1
++    else
++        diffcontents=
++    fi
++
++
+     if [[ ${kernels_info[1]} && ${dkms_info[1]} && \
+ 	${kernels_info[1]} = ${dkms_info[1]} && ! $force ]]; then
+-	echo $"" >&2
+-	echo $"Good news! Module version $dkms_info for ${4}$module_suffix" >&2
+-	echo $"exactly matches what is already found in kernel $1." >&2
+-	echo $"DKMS will not replace this module." >&2
+-	echo $"You may override by specifying --force." >&2
+-	return 1
++	if [ $diffcontents ] ; then
++	    echo $"Bad news! Module version $dkms_info for ${4}$module_suffix" >&2
++	    echo $"matches, but the files have different content:" >&2
++	    echo $"src: $dkms_module" >&2
++	    echo $"dest: $kernels_module" >&2
++	    echo $"updating dest contents to match src ..." >&2
++	else
++	    echo $"" >&2
++	    echo $"Good news! Module version $dkms_info for ${4}$module_suffix" >&2
++	    echo $"exactly matches what is already found in kernel $1." >&2
++	    echo $"DKMS will not replace this module." >&2
++	    echo $"You may override by specifying --force." >&2
++	    return 1
++	fi
+     fi
+ 
+-    if [[ $kernels_info && $dkms_info && \
++    if [[ ! $diffcontents && $kernels_info && $dkms_info && \
+ 	! ( $(VER $dkms_info) > $(VER $kernels_info) ) && ! $force ]]; then
+ 	error $"Module version $dkms_info for ${4}$module_suffix" \
+ 	    $"is not newer than what is already found in kernel $1 ($kernels_info)." \
+ 	    $"You may override by specifying --force."
+ 	return 1
+@@ -1151,16 +1166,10 @@ prepare_build()
+     local base_dir="$dkms_tree/$module/$module_version/$kernelver/$arch"
+ 
+     # Check that the right arguments were passed
+     check_module_args build
+ 
+-    # Check that the module has not already been built for this kernel
+-    [[ -d $base_dir ]] && die 3 \
+-	$"This module/version has already been built on: $kernelver" \
+-	$"Directory: $base_dir" \
+-	$"already exists.  Use the dkms remove function before trying to build again."
+-
+     # Read the conf file
+     set_module_suffix "$kernelver"
+     read_conf_or_die "$kernelver" "$arch"
+ 
+     # Error out if build_exclude is set
+@@ -1226,10 +1235,14 @@ do_build()
+     # Build success, so create DKMS structure for a built module
+     mkdir -p "$base_dir/log"
+     [[ $kernel_config ]] && cp -f "$kernel_config" "$base_dir/log/"
+     mv -f "$dkms_tree/$module/$module_version/build/make.log" "$base_dir/log/make.log" 2>/dev/null
+ 
++    cp -vT --remove-destination "$kernel_source_dir/include/generated/compile.h" "$base_dir/compile.h" >>"$base_dir/log/make.log"
++    cat "$base_dir/compile.h" >>"$base_dir/log/make.log"
++
++
+     # Save a copy of the new module
+     mkdir "$base_dir/module" >/dev/null
+     for ((count=0; count < ${#built_module_name[@]}; count++)); do
+ 	[[ ${strip[$count]} != no ]] && strip -g "$dkms_tree/$module/$module_version/build/${built_module_location[$count]}${built_module_name[$count]}$module_suffix"
+ 	cp -f "$dkms_tree/$module/$module_version/build/${built_module_location[$count]}${built_module_name[$count]}$module_suffix" "$base_dir/module/${dest_module_name[$count]}$module_suffix" >/dev/null
+@@ -1445,21 +1458,46 @@ is_module_added() {
+ is_module_built() {
+     [[ $1 && $2 && $3 && $4 ]] || return 1
+     local d="$dkms_tree/$1/$2/$3/$4" m=''
+     [[ -d $d/module ]] || return 1
+     read_conf_or_die "$3" "$4" "$dkms_tree/$1/$2/source/dkms.conf"
++
++diff -q "${kernel_source_dir}/include/generated/compile.h" "$d/compile.h" >/dev/null 2>&1 || return 1
++
+     for m in "${dest_module_name[@]}"; do
+ 	[[ -f $d/module/$m.ko || -f $d/module/$m.o ]] || return 1
+     done
++
+ }
+ 
++files_already_up_to_date() (
++    [[ $1 && $2 && $3 && $4 ]] || return 1
++    is_module_built $1 $2 $3 $4 || return 1
++    set_module_suffix "$3"
++    read_conf "$3" "$4" "$dkms_tree/$1/$2/source/dkms.conf"
++    for ((count=0; count < ${#dest_module_name[@]}; count++)); do
++        tree_mod="$dkms_tree/$1/$2/$3/$4/module/${dest_module_name[$count]}$module_suffix"
++        if ! [[ -e $tree_mod ]]; then
++		return 1
++        else
++            real_dest="$(find_actual_dest_module_location "$1" $count "$3" "$4")"
++            if ! diff -q "$tree_mod" "$install_tree/$3${real_dest}/${dest_module_name[$count]}$module_suffix" >/dev/null 2>&1; then
++		return 1
++            fi
++        fi
++    done
++
++    return 0
++)
++
++
+ # This assumes we have already checked to see if the module has been built.
+ _is_module_installed() {
+     [[ $1 && $2 && $3 && $4 ]] || return 1
+     local d="$dkms_tree/$1/$2/$3/$4"
+     local k="$dkms_tree/$1/kernel-$3-$4"
+-    [[ -L $k && $(readlink -f $k) = $d ]]
++    [[ -L $k && $(readlink -f $k) = $d ]] && files_already_up_to_date $1 $2 $3 $4
+ }
+ 
+ # This does not.
+ is_module_installed() { is_module_built "$@" && _is_module_installed "$@"; }
+ 

@@ -1,0 +1,6 @@
+#!/bin/bash
+fn="pacman_warnings_arent_errors.patch"
+echo "Patch for pacman to not err on warnings" >"${fn}"
+diff -upr5 a b >>"${fn}"
+sha512sum "${fn}"
+

@@ -1,0 +1,14 @@
+#TODO: report this bug:
+# iasl -e ssdt*.dat -d *.dat > corrupted_double_linked_list.output.log 2>&1
+# *** Error in `iasl': corrupted double-linked list: 0x00000000013bccb0 ***
+# the above message is shown unredirected on the terminal
+# not sure which part does it, maybe C/C++ related
+
+maybe check this:
+http://www.hackintoshosx.com/files/file/4117-iasl-intel-acpi-tools-x64/
+the version that I used was older:
+community/iasl 20140424-1 [installed]
+    Intel ACPI Source Language compiler
+
+actually look here for newer version:
+https://acpica.org/downloads

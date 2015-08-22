@@ -1,0 +1,421 @@
+
+#load like this:
+#sudo nft -f backup.nft
+#see what you currently have like this:
+#sudo nft -ann list ruleset
+
+#If you prepend the flush table filter line at the very beginning of the filter-table file, you achieve atomic rule-set replacement equivalent to what iptables-restore provides. Note that the kernel handles the rule commands in the file in one single transaction, so basically the flushing and the load of the new rules happens in one single shot.
+#src: https://wiki.nftables.org/wiki-nftables/index.php/Atomic_rule_replacement
+flush ruleset
+#^ otherwise rules get appended to existing ones, instead of replaced (obviously!)
+
+#XXX: for inspiration for ppp0 firewall, see: https://wiki.gentoo.org/wiki/Nftables/Examples
+
+define gw_ip=192.168.219.235
+define self_ip=192.168.219.8
+define localhost_ip=127.0.0.1
+define localhost_net=127.0.0.1/8
+define localproxy_ip=127.0.0.8
+define dns_ips = { 208.67.222.222, 208.67.220.220 }
+#$ sudo nft list sets
+#lists 2 sets... one is with elements order swapped
+define dns_port = 53
+#define vmap verdict_map = { 
+#  type ipv4_address: verdict;
+#  1.2.3.4 : drop
+#  1.2.3.5 : accept
+#}
+define ourRejectRST = 0x00000397 #919
+#FIXME: how teh!
+#XXX: reject with tcp reset  from the output hook, will go through output's ct related, then postrouting hook ; and in case of hostBlocked it has src 127.0.0.3 to dst:$localhost_ip replying with ack|rst  probably to the initial unseen rst packaet(unseen because I didn't track it yet) OUT=lo; then it goes to prerouting (btw it has ID=0 SEQ=0 all the time) in a ct state related. then it goes to input hook, on the iif lo rule; so either the rst packet isn't matched at all OR I didn't yet trace it properly? but i had the rst(only) trace rules which didn't trigger! so it's probably the former(NOPE: it's traceable, see below).
+#XXX: Oh wait we got a rst(only) trace: from the output hook(reject with tcp reset happening) then, gets into output hook again(from the beginning) takes ct state related, gets into postrouting takes  rule  oif lo accept even though it looks like this IN= OUT=lo SRC=23.53.172.92 DST=192.168.1.3 THEN it goes to prerouting (yes really, same non-zero SEQ and ID=0 and flags only rst; as from the beginning) and takes rule ct state related accept; and THEN it takes input hook, rule  iif lo accept ; that's it!
+#XXX: now it goes through ESTABLISHED (not related!) rules! (the rst only packet I mean) - either I didn't see it right, or this is something else: actually it is, for 127.0.0.8 IP which is the proxy!!! so makes sense it's established not related!
+#in output1 chain:
+#[23250.272545] output non-syn new ct REJECTw/rst IN= OUT=net0 SRC=192.168.1.3 DST=37.0.89.20 LEN=83 TOS=0x00 PREC=0x00 TTL=64 ID=24077 DF PROTO=TCP SPT=54162 DPT=443 WINDOW=1394 RES=0x00 ACK PSH URGP=0 
+#in output1 chain, from the beginning
+#[23250.272588] TRACE: filterous:common_out1:rule:2 IN= OUT=lo SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 
+#[23250.272611] TRACE: filterous:common_out1:rule:9 IN= OUT=lo SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 
+#[23250.272627] TRACE: filterous:caccept:rule:1 IN= OUT=lo SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#in postrouting chain, from the beginning:
+#[23250.272644] TRACE: filterous:postrouting1:rule:1 IN= OUT=lo SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#[23250.272659] TRACE: filterous:postrouting1:rule:2 IN= OUT=lo SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#in prerouting charin, from the beginning:
+#[23250.272698] TRACE: filterous:prerouting1:rule:1 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#[23250.272720] TRACE: filterous:prerouting1:rule:2 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#[23250.272740] TRACE: filterous:prerouting1:rule:7 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#[23250.272762] TRACE: filterous:prerouting1:rule:10 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#in input1 chain, from the beginning:
+#[23250.272782] TRACE: filterous:input1:rule:1 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#[23250.272805] TRACE: filterous:input1:rule:2 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#[23250.272827] TRACE: filterous:input1:rule:9 IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=37.0.89.20 DST=192.168.1.3 LEN=40 TOS=0x00 PREC=0x00 TTL=64 ID=0 DF PROTO=TCP SPT=443 DPT=54162 SEQ=3787649550 ACK=0 WINDOW=0 RES=0x00 RST URGP=0 MARK=0xcacce97 
+#
+define mark_caccept=0xACCE97
+#"Note that the MARK is not really a change to the packet, but a mark value for the packet is set in kernel space. "
+#src: http://www.linuxtopia.org/Linux_Firewall_iptables/x1921.html
+
+#table ip filterous {
+#	chain input {
+#		 type filter hook input priority 0;
+#		 tcp dport http drop
+#	}
+#}
+
+table arp filterousa { #has only input and output
+  chain inputa1 {
+    type filter hook input priority 0;
+    counter
+  }
+  chain outputa1 {
+    type filter hook output priority 0;
+    counter
+  }
+}
+
+#table bridge filterousb {
+##Error: Could not process rule: Address family not supported by protocol
+#  chain prerouting1 {
+#    type filter hook input priority 0;
+#    counter drop
+#  }
+#}
+
+#table inet filterous6 {
+table ip6 filterous6 {
+#3 times:
+#Error: Could not process rule: Address family not supported by protocol
+#------------------------------
+  chain prerouting1 {
+    type filter hook prerouting priority 0;
+#    ip6 nexthdr tcp counter
+
+    iifname != lo ip6 daddr ::1/128 counter log prefix "ip6 incoming for localhost DROP " goto cdrop
+    #drop all icmp
+    ip6 nexthdr icmpv6 log prefix "ip6 icmp DROP " goto cdrop
+
+    counter log prefix "ip6 prerouting1 END DROP " goto cdrop
+  }
+  chain postrouting1 {
+    type filter hook postrouting priority 0;
+
+    counter log prefix "ip6 postrouting1 END DROP " goto cdrop
+  }
+
+
+  chain input1{
+    type filter hook input priority 0;
+    counter
+    iifname != lo ip6 daddr ::1/128 counter log prefix "ip6 non lo input to localhost_net DROP" goto cdrop
+    counter
+    counter log prefix "ip6 input1 END DROP " goto cdrop
+  }
+#------------------------------
+  chain cdrop { #should:  goto cdrop
+    counter drop
+    counter log prefix "SHOULD NOT HAPPEN ip6 cdrop DROP " drop
+  }
+ # FIXME: reject for ipv6 is different ! see: http://wiki.nftables.org/wiki-nftables/index.php/Rejecting_traffic
+ # the icmp part at least!
+#------------------------------
+  chain creject { #use as: goto creject
+    #counter log prefix "OK REJ " reject with tcp reset
+    #^ that transforms into:
+    #ip protocol tcp counter packets 0 bytes 0 log prefix "OK REJ " reject with tcp reset
+    counter reject with tcp reset #ip only
+    #for non-ip eg. icmp:
+    counter reject with icmpv6 type admin-prohibited #no-route admin-prohibited addr-unreachable port-unreachable
+    #more info: http://wiki.nftables.org/wiki-nftables/index.php/Rejecting_traffic
+    counter log prefix "SHOULD NOT HAPPEN " goto cdrop
+  }
+#------------------------------
+}
+
+#table ip filterous2 {
+##Error: Could not process rule: Operation not supported
+##Error: Could not process rule: No such file or directory
+#	chain prerouting1 {
+#    type nat hook prerouting priority 0;
+#    counter drop
+#  }
+#	chain prerouting2 {
+#    type route hook prerouting priority 0;
+#    counter drop
+#  }
+#}
+
+table ip filterous {
+#------------------------------
+	chain prerouting1 {
+		 type filter hook prerouting priority 0;
+     #meta nftrace set 1 #this will trace all packets... starting from here.
+
+     counter
+     #tcp flags == rst counter nftrace set 1
+#     ip id == 0 tcp flags == rst ct state invalid,new,related counter nftrace set 1 #to trace our "reject with tcp reset"
+     # bad tcp -> avoid network scanning:  src: https://wiki.archlinux.org/index.php/Nftables
+        tcp flags & (fin|syn) == (fin|syn)      counter log prefix "badtcp1 DROP " goto cdrop
+        tcp flags & (syn|rst) == (syn|rst)      counter log prefix "badtcp2 DROP " goto cdrop
+        tcp flags & (fin|syn|rst|psh|ack|urg) == 0  counter log prefix "badtcp3 DROP " goto cdrop
+        tcp flags & (fin|syn|rst|psh|ack|urg) == (fin|psh|urg)  counter log prefix "badtcp4 DROP " goto cdrop
+
+    iifname != lo ip daddr $localhost_net counter log prefix "ip incoming for localhost DROP " goto cdrop
+
+
+     counter
+
+#    ip saddr $localhost_ip ip daddr $localhost_ip tcp dport 9050 iif lo counter drop #this keeps 1 SYN_SENT in 'netstat -pantu'  and also one in 'conntrack -L'  (test this by starting firefox )
+
+#this won't be caught anymore:
+    ip saddr $localhost_ip ip daddr $localhost_ip tcp dport 9050 iif lo counter log prefix "ip prerouting firefox_startup REJECTw/rst " goto creject #firefox does this on startup (tor service port? 9050)  this tcp reset seems to be working, but conntrack -L still lists it as SYN_SENT twice!! but netstat not anymore!
+#    ip saddr $localhost_ip ip daddr $localhost_ip tcp dport 9050 iif lo counter reject with icmp type port-unreachable #firefox does this on startup (tor service port? 9050) this lists 3 in conntrack and none in netstat
+
+    mark $mark_caccept counter accept
+     counter
+
+
+#wtw: this won't work because I don't know how to mark our "reject with reset" packets!!! those are matched on related above.
+#     ct mark $ourRejectRST counter log prefix "ip prerouting our RST packets" accept
+     ip id == 0 tcp flags == rst ct state invalid iif lo counter log prefix "prerouting invalid ct that RST, ACCEPT" goto caccept
+     ct state invalid counter log prefix "prerouting invalid ct DROP " goto cdrop
+
+#     icmp type echo-request iif == lo counter accept
+     icmp type echo-request meta iif == lo limit rate 2/second counter goto caccept
+     icmp type echo-request meta iif == lo counter log prefix "ip prerouting ping request rate exceeded DROP " goto cdrop
+     icmp type echo-request counter log prefix "ip prerouting ping echo-request DROP " goto cdrop
+     #can't use the name destination-unreachable  but see: nft describe icmp type  ; actually now makes sense because it's the subitems of d-u that should be used: https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html#ICMPDESTUNREACH
+     #done: how to drop all icmp? eg. without having to specify type
+     #this just won't work(unexpected accept):
+#     iif lo ip protocol icmp type 0x03 accept # counter accept
+     #but this works:
+     icmp type 0x03 iif lo counter log prefix "icmp destination-unreachable ACCEPT " goto caccept #destination-unreachable == 0x03  see: nft describe icmp type
+#     iif lo ip protocol icmp counter accept
+     icmp type echo-reply limit rate 2/second counter goto caccept
+     ip protocol icmp counter log prefix "ip prerouting icmp rate exceeded DROP " goto cdrop
+     ip protocol icmp counter log prefix "ip prerouting icmp DROP " goto cdrop
+#     icmp counter log prefix "icmp DROP " drop won't work
+#     doesn't work(syntax):
+#     icmp counter drop
+
+     #done: who makes these new ones? it's localhost to proxy [14671.318979] IN=lo OUT= MAC=00:00:00:00:00:00:00:00:00:00:00:00:08:00 SRC=$localhost_ip DST=127.0.0.8 LEN=60 TOS=0x00 PREC=0x00 TTL=64 ID=4234 DF PROTO=TCP SPT=55754 DPT=8111 WINDOW=43690 RES=0x00 SYN URGP=0 
+     iif lo ct state new ip saddr $localhost_ip ip daddr $localproxy_ip tcp dport 8111 tcp flags != syn counter log prefix "prerouting non-syn new to proxy DROP " goto cdrop
+     iif lo ct state new ip saddr $localhost_ip ip daddr $localproxy_ip tcp dport 8111 counter goto caccept
+     # ^ allows SYN from localhost to proxy  so chromium will work through mitmproxy
+
+
+#     ct state established,related counter accept
+#     split in two because I want counters separately:
+     ct state established counter goto caccept
+     ct state related counter goto caccept
+
+#     udp sport 33445 udp dport 33445 counter goto caccept
+
+     counter log prefix "ip prerouting1 END REJECTw/rst " goto creject #drop
+  }
+
+#------------------------------
+	chain input1 {
+		 type filter hook input priority 0;
+#     ip6 counter
+     counter continue
+#     ip id == 0 tcp flags == rst ct state invalid,new,related counter nftrace set 1 #to trace our "reject with tcp reset"
+
+#    ip saddr $localhost_ip ip daddr $localhost_ip tcp dport 9050 iif lo counter accept
+
+     icmp type echo-request meta iif == lo limit rate 2/second counter goto caccept
+     icmp type echo-request meta iif == lo counter log prefix "ip input ping request rate exceeded DROP " goto cdrop
+     icmp type echo-request counter log prefix "ip input ping echo-request DROP " goto cdrop
+
+    mark $mark_caccept counter accept
+     # avoid brute force on ssh:  src: https://wiki.archlinux.org/index.php/Nftables
+#     tcp dport ssh limit rate 15/minute accept
+
+     tcp dport 1-1024 counter log prefix "ip priv ports DROP " goto cdrop
+
+
+     ct state invalid counter log prefix "invalid ct DROP " goto cdrop
+     #new non-syn? 
+     tcp flags != syn ct state new counter log prefix "input non-syn new ct DROP " goto cdrop
+     iifname != lo ip daddr $localhost_net counter log prefix "from non lo to localhost_net DROP" goto cdrop
+     #left, new syns:
+     tcp dport 8111 iif lo ip saddr $localhost_ip ip daddr $localproxy_ip ct state new counter goto caccept
+#     udp sport 33445 udp dport 33445 counter goto caccept
+     ct state new counter log prefix "syn new ct DROP " goto cdrop
+     #TODO: change kernel nf_log_* nft_log modules to also log the handle number of the rule! so I know which blocked it!! to tackle it if needed!
+     # accept traffic originated from us
+     #Error: Could not process rule: Protocol wrong type for socket
+     ct state established counter goto caccept
+     ct state related counter goto caccept
+
+     # accept any localhost traffic
+     iif lo counter goto caccept
+
+#		 tcp dport http drop
+#		 tcp dport 22 drop
+
+     counter log prefix "ip input1 END DROP " goto cdrop
+	}
+
+#------------------------------
+	chain output1 {
+		 type filter hook output priority 0;
+
+     counter continue
+    mark $mark_caccept counter accept
+     counter jump common_out1
+     counter continue
+
+
+     counter log prefix "ip output1 END DROP " goto cdrop
+  }
+#------------------------------
+	chain postrouting1 {
+		 type filter hook postrouting priority 0;
+
+     counter continue
+#     counter jump common_out1
+    mark $mark_caccept counter accept
+     counter continue
+
+
+
+     counter log prefix "ip postrouting1 END DROP " goto cdrop
+	}
+
+#------------------------------
+  chain forward1 {
+    type filter hook forward priority 0;
+
+    counter log prefix "ip forward1 END DROP " goto cdrop
+  }
+
+
+#------------------------------
+  chain cdrop { #should:  goto cdrop
+    counter drop
+#    counter log prefix "ip chain:cdrop END DROP " drop
+    counter log prefix "SHOULD NOT HAPPEN cdrop DROP " drop
+  }
+
+#------------------------------
+  chain caccept {
+    counter meta mark set $mark_caccept accept
+  }
+
+#------------------------------
+  chain creject { #use as: goto creject
+    #counter log prefix "OK REJ " reject with tcp reset
+    #^ that transforms into:
+    #ip protocol tcp counter packets 0 bytes 0 log prefix "OK REJ " reject with tcp reset
+    counter reject with tcp reset #ip only
+    #for non-ip eg. icmp:
+    counter reject with icmp type admin-prohibited #host-unreachable #port-unreachable #won't work this: destination-unreachable besides this is the father of port-unreachable
+    #more info: http://wiki.nftables.org/wiki-nftables/index.php/Rejecting_traffic
+    counter log prefix "SHOULD NOT HAPPEN " goto cdrop
+  }
+#------------------------------
+  chain common_out1 { #jump common_out1
+    counter continue
+
+#     ip id == 0 tcp flags == rst ct state invalid,new,related counter nftrace set 1 #to trace our "reject with tcp reset"
+    mark $mark_caccept counter accept
+#     tcp flags == rst counter nftrace set 1
+#     tcp flags & rst == rst counter nftrace set 1
+#     ct mark $ourRejectRST counter log prefix "ip postrouting our RST packets" accept
+
+#     meta skuid emacs counter continue
+#     meta skgid users counter continue
+     meta skuid == root oif lo ip saddr == 127.0.0.22 ip daddr == 127.0.0.1 udp sport == $dns_port counter goto caccept
+#     meta skuid == root oif lo ip saddr == 127.0.0.24 ip daddr == 127.0.0.1 udp sport == 1053 counter goto caccept
+#     meta skuid == root oif net0 ip saddr == 192.168.178.113 ip daddr == 178.216.201.222 udp dport == 2053 counter goto caccept
+     #log prefix "root user out on lo ACCEPT " #goto caccept
+     meta skuid == root counter log prefix "root user out DROP " goto cdrop
+     meta skuid != emacs  meta skuid != dnsmasq  counter log prefix "different user out DROP " goto cdrop
+
+     #meta skuid == dnsmasq oif != lo counter log prefix "dnsmasq tried out on non-lo DROP " goto cdrop
+     #^ yes that one triggers
+     meta skuid == dnsmasq oif != lo ip daddr != 8.8.4.4 udp dport != $dns_port counter log prefix "dnsmasq tried out on non-lo non-8.8.4.4:53 DROP " goto cdrop
+     #FIXME: ^ this isn't triggering, but the above one is.
+     #the above triggers with this: [ 4130.528364] dnsmasq tried out on non-lo DROP IN= OUT=net0 SRC=192.168.219.8 DST=8.8.8.8 LEN=64 TOS=0x00 PREC=0x00 TTL=64 ID=5211 DF PROTO=UDP SPT=17998 DPT=53 LEN=44 
+     #
+     
+#     meta skuid != emacs counter log prefix "different user out DROP1 " goto cdrop
+#     meta skuid != dnscrypt-proxy counter log prefix "different user out DROP2 " goto cdrop
+#     ip6 counter
+
+#TODO: deduplicate these by using jump or goto(read man) to another chain, so output and postrouting both call it! also use return(instead of accept) in this new non-base chain! so that processing continues after the jump/goto call  (yep it's jump for this; not goto!!)
+     ip daddr hostBlocked counter goto creject #hostBlocked=127.0.0.3  this instantly rejects (eg. links google.com  where it resolves to 127.0.0.3 will reject instantly!! but with the below icmp port-unreachable it does so in like 2-3 seconds! btw, you put this in /etc/hosts  as: 127.0.0.3 hostBlocked  and then lines like 127.0.0.3 google.com   if you wanna block google
+#     ip daddr hostBlocked counter log prefix "output hostBlocked REJECT " reject with icmp type port-unreachable #hostBlocked=127.0.0.3; this works but it's much slower to reject than tcp reset!!
+#----
+#FIXME: uncomment the 2 lines below, to hate conntrack:
+     ip id == 0 tcp flags == rst ct state invalid oif lo counter log prefix "output invalid ct that RST, ACCEPT " goto caccept
+     ct state invalid counter log prefix "output invalid ct REJECTw/rst " goto creject #drop # this gets hit a lot for example when i quit mitmproxy while having established connections: [22015.198010] output invalid ct DROP IN= OUT=net0 SRC=192.168.1.3 DST=199.96.57.7 LEN=52 TOS=0x00 PREC=0x00 TTL=64 ID=56007 DF PROTO=TCP SPT=37064 DPT=443 WINDOW=386 RES=0x00 ACK PSH FIN URGP=0  SO i'm saying ct sux :)) and here's one more: [31544.906689] output invalid ct REJECTw/rst IN= OUT=net0 SRC=192.168.1.3 DST=150.214.188.127 LEN=52 TOS=0x00 PREC=0x00 TTL=64 ID=47749 DF PROTO=TCP SPT=59323 DPT=80 WINDOW=296 RES=0x00 ACK FIN URGP=0 
+#----
+
+    # NEW state doesn't mean it's SYN; src: https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html#NEWNOTSYN
+    # the following 'accepted' ones happen only after a while and they would've gotten dropped because they are new non-syn:  FIXME: OR maybe they are caused by reloading (nft -f thisfile) the firewall and thus existing connections are forgotten? if so, we don't need these 2 accepts: nope, apparently this still happens without reloading firewall inbetween; 
+#     tcp flags != syn tcp flags == (ack|psh) ct state new counter log prefix "output non-syn LAST_ACK new ct ACCEPT " accept
+#     tcp flags != syn tcp flags == (ack|fin) ct state new counter log prefix "output non-syn TIME_WAIT new ct ACCEPT " accept
+#     tcp flags != syn tcp flags == (ack|psh|fin) ct state new counter log prefix "output non-syn apf new ct ACCEPT " accept
+
+#FIXME: enable the following if u're crazy:
+#     tcp flags != syn ct state new counter log prefix "output non-syn new ct DROP " drop
+#thiswaslast#     tcp flags != syn ct state new counter log prefix "output non-syn new ct REJECTw/rst " reject with tcp reset
+     #conntrack sux because of this: [30248.611319] output non-syn new ct REJECTw/rst IN= OUT=net0 SRC=192.168.1.3 DST=199.96.57.7 LEN=83 TOS=0x00 PREC=0x00 TTL=64 ID=52459 DF PROTO=TCP SPT=60032 DPT=443 WINDOW=363 RES=0x00 ACK PSH URGP=0   these are meant to gracefully close the connection, and they are seen as ct state new! I mean really, am I missing something?
+#     tcp flags != syn ct state new counter continue
+
+    #deny access to router by eg. browser/javascript sites that guess my router IP for example.
+    ip daddr $gw_ip counter log prefix "ip out ROUTER access REJECTw/rst " goto creject
+
+    ip saddr $localhost_ip ip daddr $localhost_ip tcp dport 9050 oif lo counter log prefix "ip out firefox_startup REJECTw/rst " goto creject #firefox does this on startup (tor service port? 9050)  this tcp reset seems to be working, but conntrack -L still lists it as SYN_SENT twice!! but netstat not anymore!
+
+#     ip protocol tcp flags & syn != syn ct state new counter log drop
+#     ct state new limit rate 15/minute counter log drop #need the opposite of this: aka continue if rate is below 15/minute; I mean, drop if rate is above 15/minute :) ofc, I may have to increase that!
+     ct state new limit rate 115/second counter goto caccept #30/second is not enough for instagram at least; ok 70 is not good enough, but 170 is :) so somewhere in between!
+     ct state new counter log prefix "ip out rate exceeded ct state new DROP " goto cdrop
+
+     ip saddr $localhost_ip ip daddr $localproxy_ip tcp dport 8111 counter goto caccept
+#----------
+#     tcp dport http counter packets 0 bytes 0 accept
+#     these 2 lines are equivalent to the third:
+#     tcp dport http counter packets 0 bytes 0
+#		 tcp dport http drop
+#		 tcp dport http counter drop
+#----------
+
+     #done: maybe mark those accepted here, so that in postrouting we can also allow them! (because in postrouting we may not want to allow any others, like from forward)
+#     ip daddr $dns_ips udp dport $dns_port counter goto caccept #XXX:
+     udp dport $dns_port counter log prefix "unapproved DNS out DROP " goto cdrop
+#     tcp dport http ip daddr {198.252.206.16, 144.76.72.180} counter goto caccept
+#     tcp dport http counter log prefix "http out DROP " goto cdrop
+     tcp dport https counter goto caccept
+     tcp dport ssh counter goto caccept
+#     udp sport 33445 udp dport 33445 counter goto caccept
+#     tcp dport {https, http, ssh} counter accept
+
+     oif lo ip saddr $localhost_ip ip daddr $localproxy_ip tcp dport 8111 counter goto caccept
+
+#     done: temporarily commented out(2 lines):
+     icmp type echo-request limit rate 2/second counter goto caccept
+     icmp type echo-request counter log prefix "ip out ping request rate exceeded DROP " goto cdrop
+
+    
+     ct state established counter goto caccept
+     ct state related counter goto caccept
+
+     #FIXME:
+     #oif lo counter goto caccept
+     oif lo meta skuid == dnsmasq counter goto caccept
+
+    #last line:
+    counter return
+#    counter drop #unreached
+  }
+
+#------------------------------
+}
+
+
+#iif and oif WARNING: 
+#src: https://home.regit.org/netfilter-en/nftables-quick-howto/
+#"Please note that oif is in reality a match on the integer which is the index of the interface inside of the kernel. Userspace is converting the given name to the interface index when the nft rule is evaluated (before being sent to kernel). A consequence of this is that the rule can not be added if the interface does not exist. An other consequence, is that if the interface is removed and created again, the match will not occur as the index of added interfaces in kernel is monotonically increasing. Thus, oif is a fast filter but it can lead to some issues when dynamic interfaces are used. It is possible to do a filter on interface name but it has a performance cost because a string match is done instead of an integer match. To do a filter on interface name, one has to use oifname"
+
+

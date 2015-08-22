@@ -1,0 +1,337 @@
+diff --git a/Makefile b/Makefile
+index fb387c5..11d35ff 100644
+--- a/Makefile
++++ b/Makefile
+@@ -162,8 +162,8 @@ BOBJECTS = $(BTARGET) \
+ 	mbr/*.bin \
+ 	core/pxelinux.0 core/lpxelinux.0 \
+ 	core/isolinux.bin core/isolinux-debug.bin \
+-	gpxe/gpxelinux.0 dos/syslinux.com \
+-	win32/syslinux.exe win64/syslinux64.exe \
++	gpxe/gpxelinux.0  \
++	 \
+ 	dosutil/*.com dosutil/*.sys \
+ 	$(MODULES)
+ 
+@@ -186,7 +186,7 @@ NETINSTALLABLE = efi/syslinux.efi $(INSTALLABLE_MODULES)
+ else
+ 
+ BSUBDIRS = codepage com32 lzo core memdisk mbr gpxe sample \
+-	   diag libinstaller dos win32 win64 dosutil txt
++	   libinstaller txt
+ 
+ ITARGET  =
+ IOBJECTS = $(ITARGET) \
+@@ -201,14 +201,14 @@ INSTALL_SBIN  = extlinux/extlinux
+ # Things to install in /usr/lib/syslinux
+ INSTALL_AUX   =	core/pxelinux.0 gpxe/gpxelinux.0 gpxe/gpxelinuxk.0 \
+ 		core/isolinux.bin core/isolinux-debug.bin \
+-		dos/syslinux.com core/lpxelinux.0 \
++		 core/lpxelinux.0 \
+ 		mbr/*.bin $(INSTALLABLE_MODULES)
+-INSTALL_AUX_OPT = win32/syslinux.exe win64/syslinux64.exe
++INSTALL_AUX_OPT = 
+ INSTALL_DIAG  =	diag/mbr/handoff.bin \
+ 		diag/geodsp/geodsp1s.img.xz diag/geodsp/geodspms.img.xz
+ 
+ # These directories manage their own installables
+-INSTALLSUBDIRS = com32 utils dosutil
++INSTALLSUBDIRS = com32 utils
+ 
+ # Things to install in /boot/extlinux
+ EXTBOOTINSTALL = $(INSTALLABLE_MODULES)
+@@ -335,7 +335,7 @@ local-install: installer
+ 	install -m 644 -c $(INSTALL_AUX) $(INSTALLROOT)$(AUXDIR)
+ 	-install -m 644 -c $(INSTALL_AUX_OPT) $(INSTALLROOT)$(AUXDIR)
+ 	mkdir -m 755 -p $(INSTALLROOT)$(DIAGDIR)
+-	install -m 644 -c $(INSTALL_DIAG) $(INSTALLROOT)$(DIAGDIR)
++	# install -m 644 -c $(INSTALL_DIAG) $(INSTALLROOT)$(DIAGDIR)
+ 	mkdir -m 755 -p $(INSTALLROOT)$(MANDIR)/man1
+ 	install -m 644 -c $(topdir)/man/*.1 $(INSTALLROOT)$(MANDIR)/man1
+ 	: mkdir -m 755 -p $(INSTALLROOT)$(MANDIR)/man8
+diff --git a/com32/elflink/ldlinux/kernel.c b/com32/elflink/ldlinux/kernel.c
+index f3ba37f..e19dfb0 100644
+--- a/com32/elflink/ldlinux/kernel.c
++++ b/com32/elflink/ldlinux/kernel.c
+@@ -60,11 +60,11 @@ int new_linux_kernel(char *okernel, char *ocmdline)
+ 		opt_quiet = true;
+ 
+ 	if (!opt_quiet)
+-		printf("Loading %s... ", kernel_name);
++		printf("Loading7 %s... ", kernel_name);
+ 
+ 	if (loadfile(kernel_name, &kernel_data, &kernel_len)) {
+ 		if (opt_quiet)
+-			printf("Loading %s ", kernel_name);
++			printf("Loading8 %s ", kernel_name);
+ 		printf("failed: ");
+ 		goto bail;
+ 	}
+@@ -103,11 +103,11 @@ int new_linux_kernel(char *okernel, char *ocmdline)
+ 		    temp += n;
+ 
+ 		    if (!opt_quiet)
+-			printf("Loading %s...", initrd_name);
++			printf("Loading9 %s...", initrd_name);
+ 
+ 		    if (initramfs_load_archive(initramfs, initrd_name)) {
+ 			if (opt_quiet)
+-			    printf("Loading %s ", initrd_name);
++			    printf("LoadingA %s ", initrd_name);
+ 			free(initrd_name);
+ 			printf("failed: ");
+ 			goto bail;
+diff --git a/com32/gfxboot/gfxboot.c b/com32/gfxboot/gfxboot.c
+index f67132c..ef60a56 100644
+--- a/com32/gfxboot/gfxboot.c
++++ b/com32/gfxboot/gfxboot.c
+@@ -541,7 +541,7 @@ int gfx_init(char *file)
+   memset(&r,0,sizeof(r));
+   progress_active = 0;
+ 
+-  printf("Loading %s...\n", file);
++  printf("Loading6 %s...\n", file);
+   if(loadfile(file, &archive, &archive_size)) return 1;
+ 
+   if(!archive_size) return 1;
+diff --git a/com32/lib/fread.c b/com32/lib/fread.c
+index 94e9cff..0d62033 100644
+--- a/com32/lib/fread.c
++++ b/com32/lib/fread.c
+@@ -5,28 +5,68 @@
+ #include <errno.h>
+ #include <unistd.h>
+ #include <stdio.h>
++//#include <time.h>
++#include <sys/times.h>
++
++
+ 
+ size_t _fread(void *buf, size_t count, FILE * f)
+ {
+-    size_t bytes = 0;
+-    ssize_t rv;
+-    char *p = buf;
+-
+-    while (count) {
+-	rv = read(fileno(f), p, count);
+-	if (rv == -1) {
+-	    if (errno == EINTR || errno == EAGAIN)
+-		continue;
+-	    else
+-		break;
+-	} else if (rv == 0) {
+-	    break;
+-	}
+-
+-	p += rv;
+-	bytes += rv;
+-	count -= rv;
++  size_t bytes = 0;
++  ssize_t rv;
++  char *p = buf;
++  /*  time_t rawtimeBeg,rawtimeEnd;
++      struct tm * timeinfo;*/
++  clock_t start,end;
++//  clock_t dur,sps;
++  uintmax_t startsec,endsec,dursec,sps;
++
++  while (count) {
++    if (count>1) {
++      /*      time ( &rawtimeBeg );
++              timeinfo = localtime ( &rawtimeBeg );*/
++      start = times(NULL);
++      startsec=start/CLK_TCK;
++      printf("meh1\n");
++      fflush(stdout);
++      //printf("started reading %zu bytes, bytes thus far %zu, time: %s\n", count, bytes, asctime (timeinfo));
++      printf("%ju <-starttime(%ju),started reading %zu bytes, bytes thus far %zu.\n", startsec, (uintmax_t)(clock_t)start, count, bytes);
+     }
++    rv = read(fileno(f), p, count);
++    end = times(NULL);
++    if (rv == -1) {
++      if (errno == EINTR || errno == EAGAIN) 
++      {
++        printf("Error! retrying\n");
++        continue; 
++      }
++      else 
++      {
++        break;
++      }
++    } else if (rv == 0) {
++      break;
++    }
++
++    if (count>1) {
++
++    /*        time ( &rawtimeEnd );
++              timeinfo = localtime ( &rawtimeEnd );*/
++    //printf("finished reading %zu bytes, bytes thus far %zu, time: %s duration:%f seconds\n", count, bytes, asctime (timeinfo), difftime(rawtimeEnd, rawtimeBeg));
++
++      endsec=end/CLK_TCK;
++      dursec=(end-start)/CLK_TCK;
++//    dur=(end-start)/CLK_TCK;
++    sps=count/ dursec;
++      printf("meh2\n");
++      fflush(stdout);
++    printf("%ju <-endtime(%ju),duration:%ju sec,speed: %ju bytes/sec, finished reading %zu bytes, bytes thus far %zu.\n", endsec, (uintmax_t)(clock_t)end, dursec, sps, count, bytes);
++    }
++
++    p += rv;
++    bytes += rv;
++    count -= rv;
++  }
+ 
+-    return bytes;
++  return bytes;
+ }
+diff --git a/com32/lib/syslinux/floadfile.c b/com32/lib/syslinux/floadfile.c
+index ece460d..2b40805 100644
+--- a/com32/lib/syslinux/floadfile.c
++++ b/com32/lib/syslinux/floadfile.c
+@@ -40,7 +40,7 @@
+ 
+ #include <syslinux/loadfile.h>
+ 
+-#define INCREMENTAL_CHUNK 1024*1024
++#define INCREMENTAL_CHUNK 1024*1024*12
+ 
+ int floadfile(FILE * f, void **ptr, size_t * len, const void *prefix,
+ 	      size_t prefix_len)
+@@ -49,13 +49,15 @@ int floadfile(FILE * f, void **ptr, size_t * len, const void *prefix,
+     void *data, *dp;
+     size_t alen, clen, rlen, xlen;
+ 
++    printf("in freakin floadfile:\n");
+     clen = alen = 0;
+     data = NULL;
+ 
+     if (fstat(fileno(f), &st))
+ 	goto err;
+ 
+-    if (!S_ISREG(st.st_mode)) {
++    if (S_ISREG(st.st_mode)) {
++      printf("not a regular file\n");
+ 	/* Not a regular file, we can't assume we know the file size */
+ 	if (prefix_len) {
+ 	    clen = alen = prefix_len;
+@@ -74,6 +76,9 @@ int floadfile(FILE * f, void **ptr, size_t * len, const void *prefix,
+ 	    data = dp;
+ 
+ 	    rlen = fread((char *)data + clen, 1, alen - clen, f);
++	    //rlen = (alen-clen) * fread((char *)data + clen, alen-clen, 1, f);
++      printf("rlen: %zu alen: %zu clen: %zu  alen-clen: %zu\n", rlen, alen, clen, alen - clen);
++      fflush(stdout);
+ 	    clen += rlen;
+ 	} while (clen == alen);
+ 
+@@ -83,7 +88,9 @@ int floadfile(FILE * f, void **ptr, size_t * len, const void *prefix,
+ 	if (dp)
+ 	    data = dp;
+ 	*ptr = data;
++
+     } else {
++      printf("Regular file\n");
+ 	*len = clen = st.st_size + prefix_len - ftell(f);
+ 	xlen = (clen + LOADFILE_ZERO_PAD - 1) & ~(LOADFILE_ZERO_PAD - 1);
+ 
+@@ -93,15 +100,22 @@ int floadfile(FILE * f, void **ptr, size_t * len, const void *prefix,
+ 
+ 	memcpy(data, prefix, prefix_len);
+ 
++  //read 1 byte sized blocks, (clen - prefix_len) times; yep smart!
++  printf("Before long fread,  prefix_len: %zu clen: %zu  difference: %zd \n", prefix_len, clen, clen - prefix_len);
+ 	if ((off_t) fread((char *)data + prefix_len, 1, clen - prefix_len, f)
+ 	    != clen - prefix_len)
+ 	    goto err;
++
++  printf("After long fread\n");
+     }
+ 
++  //pad with zeroes
++    printf("padding with zeroes\n");
+     memset((char *)data + clen, 0, xlen - clen);
+     return 0;
+ 
+ err:
++    printf("oout of floadfile:\n");
+     if (data)
+ 	free(data);
+     return -1;
+diff --git a/com32/mboot/mboot.c b/com32/mboot/mboot.c
+index 10e6701..1110cd0 100644
+--- a/com32/mboot/mboot.c
++++ b/com32/mboot/mboot.c
+@@ -112,7 +112,7 @@ static int get_modules(char **argv, struct module_data **mdp)
+     while (*argp) {
+ 	/* Note: it seems Grub transparently decompresses all compressed files,
+ 	   not just the primary kernel. */
+-	printf("Loading %s... ", *argp);
++	printf("LoadingB %s... ", *argp);
+ 	rv = zloadfile(*argp, &mp->data, &mp->len);
+ 
+ 	if (rv) {
+diff --git a/com32/modules/linux.c b/com32/modules/linux.c
+index f657eab..3a01e5d 100644
+--- a/com32/modules/linux.c
++++ b/com32/modules/linux.c
+@@ -217,7 +217,7 @@ static int process_initramfs_args(char *arg, struct initramfs *initramfs,
+ 	errno = 0;
+ 	if (ldinitramfs(initramfs, arg)) {
+ 	    if (opt_quiet)
+-		printf("Loading %s ", kernel_name);
++		printf("Loading1 %s ", kernel_name);
+ 	    printf("failed: ");
+ 	    return 1;
+ 	}
+@@ -236,11 +236,11 @@ static int setup_data_file(struct setup_data *setup_data,
+ 			   bool opt_quiet)
+ {
+     if (!opt_quiet)
+-	printf("Loading %s... ", filename);
++	printf("Loading2 %s... ", filename);
+ 
+     if (setup_data_load(setup_data, type, filename)) {
+ 	if (opt_quiet)
+-	    printf("Loading %s ", filename);
++	    printf("Loading3 %s ", filename);
+ 	printf("failed\n");
+ 	return -1;
+     }
+@@ -303,11 +303,11 @@ int main(int argc, char *argv[])
+ 	opt_quiet = true;
+ 
+     if (!opt_quiet)
+-	printf("Loading %s... ", kernel_name);
++	printf("Loading4 %s... ", kernel_name);
+     errno = 0;
+     if (loadfile(kernel_name, &kernel_data, &kernel_len)) {
+ 	if (opt_quiet)
+-	    printf("Loading %s ", kernel_name);
++	    printf("Loading5 %s ", kernel_name);
+ 	printf("failed: ");
+ 	goto bail;
+     }
+diff --git a/mk/syslinux.mk b/mk/syslinux.mk
+index 337560b..b42da2e 100644
+--- a/mk/syslinux.mk
++++ b/mk/syslinux.mk
+@@ -24,7 +24,7 @@ LIBDIR   = /usr/lib
+ DATADIR  = /usr/share
+ AUXDIR   = $(DATADIR)/syslinux
+ DIAGDIR  = $(AUXDIR)/diag
+-MANDIR	 = /usr/man
++MANDIR	 = /usr/share/man
+ INCDIR   = /usr/include
+ TFTPBOOT = /tftpboot
+ COM32DIR = $(AUXDIR)/com32
+@@ -90,7 +90,7 @@ UMAKEDEPS = -Wp,-MT,$@,-MMD,$(dir $@).$(notdir $@).d
+ 
+ # Items that are only appropriate during development; this file is
+ # removed when tarballs are generated.
+--include $(MAKEDIR)/devel.mk
++
+ 
+ # Local additions, like -DDEBUG can go here
+ -include $(MAKEDIR)/local.mk

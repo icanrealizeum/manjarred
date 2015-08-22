@@ -1,0 +1,31 @@
+binary firmwares: http://www.belkin.com/us/support-article?articleNum=4854
+open source firmwares: http://www.belkin.com/us/support-article?articleNum=51238
+the obsolete url was: https://www.belkin.com/support/opensource/  but now it's the one above ^
+
+openwrt links (to v1 though! different cpu): http://wiki.openwrt.org/toh/belkin/f5d8235-4
+
+openwrt list of belkin routers: http://wiki.openwrt.org/oldwiki/hardware/belkin
+openwrt forum: https://forum.openwrt.org/viewtopic.php?id=21998
+openwrt how to build: http://wiki.openwrt.org/doc/howto/buildroot.exigence
+
+https://dev.openwrt.org/wiki/platforms
+ramips  Ralink RT28xx/RT305X  MIPS  big Endianness
+
+all good https://dev.openwrt.org/
+
+/more info for v1 though: https://wikidevi.com/wiki/Belkin_F5D8235-4_v1
+more info for v2 (current): https://wikidevi.com/wiki/Belkin_F5D8235-4_v2_%28v20xx%29
+/more info for v21: https://wikidevi.com/wiki/Belkin_F5D8235-4_v2_%28v21xx%29
+
+ddwrt info:
+forum: http://www.dd-wrt.com/phpBB2/viewtopic.php?t=53235
+
+supported table: http://www.dd-wrt.com/wiki/index.php/Supported_Devices#Belkin
+look for: F5D8235-4   v20xx
+"WARNING: Always use TFTP to flash Belkin routers if at all possible! Upgrading dd-wrt from the web interface can lead to a bricked (nonfunctional) unit!"
+best to keep this in mind
+
+Also, if for some reason you're getting timeouts when using tftp, then powercycle the router and get TFTP on first try! (don't just software reboot! - reboot does work if running only openwrt though)
+link of this is somewhere on the forum
+
+

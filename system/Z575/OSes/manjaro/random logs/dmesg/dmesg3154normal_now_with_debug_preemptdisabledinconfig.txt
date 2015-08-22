@@ -1,0 +1,2355 @@
+[    0.000000] Initializing cgroup subsys cpuset
+[    0.000000] Initializing cgroup subsys cpu
+[    0.000000] Initializing cgroup subsys cpuacct
+[    0.000000] Linux version 3.15.4-1-MANJARO (emacs@manji) (gcc version 4.9.0 20140604 (prerelease) (GCC) ) #4 SMP PREEMPT Tue Jul 8 04:55:42 CEST 2014
+[    0.000000] Command line: BOOT_IMAGE=/vmlinuz-315-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0
+[    0.000000] e820: BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009d7ff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009d800-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x00000000bed9afff] usable
+[    0.000000] BIOS-e820: [mem 0x00000000bed9b000-0x00000000bf39afff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000bf39b000-0x00000000bf49afff] ACPI NVS
+[    0.000000] BIOS-e820: [mem 0x00000000bf49b000-0x00000000bf51afff] ACPI data
+[    0.000000] BIOS-e820: [mem 0x00000000bf51b000-0x00000000bfdfffff] usable
+[    0.000000] BIOS-e820: [mem 0x00000000bfe00000-0x00000000bfffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fec00000-0x00000000fecfffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000fed80000-0x00000000fed80fff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000ffe00000-0x00000000ffffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000041effffff] usable
+[    0.000000] NX (Execute Disable) protection: active
+[    0.000000] SMBIOS 2.6 present.
+[    0.000000] DMI: LENOVO Sabine/Torpedo, BIOS 54CN18WW 07/20/2011
+[    0.000000] e820: update [mem 0x00000000-0x00000fff] usable ==> reserved
+[    0.000000] e820: remove [mem 0x000a0000-0x000fffff] usable
+[    0.000000] e820: last_pfn = 0x41f000 max_arch_pfn = 0x400000000
+[    0.000000] MTRR default type: uncachable
+[    0.000000] MTRR fixed ranges enabled:
+[    0.000000]   00000-9FFFF write-back
+[    0.000000]   A0000-BFFFF uncachable
+[    0.000000]   C0000-FFFFF write-protect
+[    0.000000] MTRR variable ranges enabled:
+[    0.000000]   0 base 0000000000 mask FF80000000 write-back
+[    0.000000]   1 base 0080000000 mask FFC0000000 write-back
+[    0.000000]   2 base 00FFF90000 mask FFFFFF0000 uncachable
+[    0.000000]   3 base 00FED80000 mask 0FFFFFF000 uncachable
+[    0.000000]   4 disabled
+[    0.000000]   5 disabled
+[    0.000000]   6 disabled
+[    0.000000]   7 base 00FFE00000 mask FFFFE00000 write-protect
+[    0.000000] TOM2: 000000041f000000 aka 16880M
+[    0.000000] x86 PAT enabled: cpu 0, old 0x7040600070406, new 0x7010600070106
+[    0.000000] mtrr: your BIOS has configured an incorrect mask, fixing it.
+[    0.000000] e820: last_pfn = 0xbfe00 max_arch_pfn = 0x400000000
+[    0.000000] found SMP MP-table at [mem 0x000fa8b0-0x000fa8bf] mapped at [ffff8800000fa8b0]
+[    0.000000] Scanning 1 areas for low memory corruption
+[    0.000000] Base memory trampoline at [ffff880000097000] 97000 size 24576
+[    0.000000] Using GB pages for direct mapping
+[    0.000000] init_memory_mapping: [mem 0x00000000-0x000fffff]
+[    0.000000]  [mem 0x00000000-0x000fffff] page 4k
+[    0.000000] BRK [0x16456000, 0x16456fff] PGTABLE
+[    0.000000] BRK [0x16457000, 0x16457fff] PGTABLE
+[    0.000000] BRK [0x16458000, 0x16458fff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x41ee00000-0x41effffff]
+[    0.000000]  [mem 0x41ee00000-0x41effffff] page 2M
+[    0.000000] BRK [0x16459000, 0x16459fff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x41c000000-0x41edfffff]
+[    0.000000]  [mem 0x41c000000-0x41edfffff] page 2M
+[    0.000000] init_memory_mapping: [mem 0x400000000-0x41bffffff]
+[    0.000000]  [mem 0x400000000-0x41bffffff] page 2M
+[    0.000000] init_memory_mapping: [mem 0x00100000-0xbed9afff]
+[    0.000000]  [mem 0x00100000-0x001fffff] page 4k
+[    0.000000]  [mem 0x00200000-0x3fffffff] page 2M
+[    0.000000]  [mem 0x40000000-0x7fffffff] page 1G
+[    0.000000]  [mem 0x80000000-0xbebfffff] page 2M
+[    0.000000]  [mem 0xbec00000-0xbed9afff] page 4k
+[    0.000000] init_memory_mapping: [mem 0xbf51b000-0xbfdfffff]
+[    0.000000]  [mem 0xbf51b000-0xbf5fffff] page 4k
+[    0.000000]  [mem 0xbf600000-0xbfdfffff] page 2M
+[    0.000000] BRK [0x1645a000, 0x1645afff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x100000000-0x3ffffffff]
+[    0.000000]  [mem 0x100000000-0x3ffffffff] page 1G
+[    0.000000] log_buf_len: 1073741824
+[    0.000000] early log buf free: 2092460(99%)
+[    0.000000] RAMDISK: [mem 0x37882000-0x37c38fff]
+[    0.000000] ACPI: RSDP 0x00000000000F0110 000024 (v02 LENOVO)
+[    0.000000] ACPI: XSDT 0x00000000BF51A120 000074 (v01 LENOVO CB-01    00000001 LENO 00000001)
+[    0.000000] ACPI: FACP 0x00000000BF508000 0000F4 (v04 LENOVO CB-01    00000001 PTL  00000001)
+[    0.000000] ACPI: DSDT 0x00000000BF50A000 00FD10 (v01 LENOVO CB-01    00001000 LENO 00000001)
+[    0.000000] ACPI: FACS 0x00000000BF478000 000040
+[    0.000000] ACPI: HPET 0x00000000BF507000 000038 (v01 LENOVO CB-01    00000001 PTL  00000001)
+[    0.000000] ACPI: APIC 0x00000000BF506000 00007A (v02 LENOVO CB-01    00000001 PTL  00000001)
+[    0.000000] ACPI: MCFG 0x00000000BF505000 00003C (v01 LENOVO CB-01    00000001 PTL  00000001)
+[    0.000000] ACPI: SLIC 0x00000000BF504000 000176 (v01 LENOVO CB-01    00000001 LENO 00000001)
+[    0.000000] ACPI: UEFI 0x00000000BF503000 00003E (v01 LENOVO CB-01    00000001 PTL  00000001)
+[    0.000000] ACPI: UEFI 0x00000000BF502000 000042 (v01 PTL    COMBUF   00000001 PTL  00000001)
+[    0.000000] ACPI: SSDT 0x00000000BF501000 000E34 (v01 AMD    POWERNOW 00000001 AMD  00000001)
+[    0.000000] ACPI: SSDT 0x00000000BF4FF000 00193D (v02 AMD    ALIB     00000001 MSFT 04000000)
+[    0.000000] ACPI: UEFI 0x00000000BF4FE000 00021A (v01 LENOVO CB-01    00000001 PTL  00000001)
+[    0.000000] ACPI: Local APIC address 0xfee00000
+[    0.000000] No NUMA configuration found
+[    0.000000] Faking a node at [mem 0x0000000000000000-0x000000041effffff]
+[    0.000000] Initmem setup node 0 [mem 0x00000000-0x41effffff]
+[    0.000000]   NODE_DATA [mem 0x3deffa000-0x3deffdfff]
+[    0.000000]  [ffffea0000000000-ffffea00107fffff] PMD -> [ffff8803cee00000-ffff8803de5fffff] on node 0
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x00001000-0x00ffffff]
+[    0.000000]   DMA32    [mem 0x01000000-0xffffffff]
+[    0.000000]   Normal   [mem 0x100000000-0x41effffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x00001000-0x0009cfff]
+[    0.000000]   node   0: [mem 0x00100000-0xbed9afff]
+[    0.000000]   node   0: [mem 0xbf51b000-0xbfdfffff]
+[    0.000000]   node   0: [mem 0x100000000-0x41effffff]
+[    0.000000] On node 0 totalpages: 4056604
+[    0.000000]   DMA zone: 64 pages used for memmap
+[    0.000000]   DMA zone: 21 pages reserved
+[    0.000000]   DMA zone: 3996 pages, LIFO batch:0
+[    0.000000]   DMA32 zone: 12186 pages used for memmap
+[    0.000000]   DMA32 zone: 779904 pages, LIFO batch:31
+[    0.000000]   Normal zone: 51136 pages used for memmap
+[    0.000000]   Normal zone: 3272704 pages, LIFO batch:31
+[    0.000000] ACPI: PM-Timer IO Port: 0x808
+[    0.000000] ACPI: Local APIC address 0xfee00000
+[    0.000000] ACPI: LAPIC (acpi_id[0x00] lapic_id[0x00] enabled)
+[    0.000000] ACPI: LAPIC (acpi_id[0x01] lapic_id[0x01] enabled)
+[    0.000000] ACPI: LAPIC (acpi_id[0x02] lapic_id[0x02] enabled)
+[    0.000000] ACPI: LAPIC (acpi_id[0x03] lapic_id[0x03] enabled)
+[    0.000000] ACPI: LAPIC_NMI (acpi_id[0x00] high edge lint[0x1])
+[    0.000000] ACPI: LAPIC_NMI (acpi_id[0x01] high edge lint[0x1])
+[    0.000000] ACPI: LAPIC_NMI (acpi_id[0x02] high edge lint[0x1])
+[    0.000000] ACPI: LAPIC_NMI (acpi_id[0x03] high edge lint[0x1])
+[    0.000000] ACPI: IOAPIC (id[0x02] address[0xfec00000] gsi_base[0])
+[    0.000000] IOAPIC[0]: apic_id 2, version 33, address 0xfec00000, GSI 0-23
+[    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+[    0.000000] ACPI: IRQ0 used by override.
+[    0.000000] ACPI: IRQ2 used by override.
+[    0.000000] ACPI: IRQ9 used by override.
+[    0.000000] Using ACPI (MADT) for SMP configuration information
+[    0.000000] ACPI: HPET id: 0x43538210 base: 0xfed00000
+[    0.000000] smpboot: Allowing 4 CPUs, 0 hotplug CPUs
+[    0.000000] nr_irqs_gsi: 40
+[    0.000000] e820: [mem 0xc0000000-0xfebfffff] available for PCI devices
+[    0.000000] setup_percpu: NR_CPUS:64 nr_cpumask_bits:64 nr_cpu_ids:4 nr_node_ids:1
+[    0.000000] PERCPU: Embedded 27 pages/cpu @ffff8803dec00000 s80896 r8192 d21504 u524288
+[    0.000000] pcpu-alloc: s80896 r8192 d21504 u524288 alloc=1*2097152
+[    0.000000] pcpu-alloc: [0] 0 1 2 3 
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 3993197
+[    0.000000] Policy zone: Normal
+[    0.000000] Kernel command line: BOOT_IMAGE=/vmlinuz-315-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0
+[    0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
+[    0.000000] Memory: 14838632K/16226416K available (5814K kernel code, 770K rwdata, 2072K rodata, 900K init, 2740K bss, 1387784K reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] Preemptible hierarchical RCU implementation.
+[    0.000000] 	RCU dyntick-idle grace-period acceleration is enabled.
+[    0.000000] 	Additional per-CPU info printed with stalls.
+[    0.000000] 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=4.
+[    0.000000] RCU: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[    0.000000] NR_IRQS:4352 nr_irqs:712 16
+[    0.000000] spurious 8259A interrupt: IRQ7.
+[    0.000000] Console: colour dummy device 80x25
+[    0.000000] console [tty0] enabled
+[    0.000000] allocated 65011712 bytes of page_cgroup
+[    0.000000] please try 'cgroup_disable=memory' option if you don't want memory cgroups
+[    0.000000] hpet clockevent registered
+[    0.000000] tsc: Fast TSC calibration using PIT
+[    0.000000] tsc: Detected 1397.462 MHz processor
+[    0.000040] Calibrating delay loop (skipped), value calculated using timer frequency.. 2794.92 BogoMIPS (lpj=1397462)
+[    0.000046] pid_max: default: 32768 minimum: 301
+[    0.000055] ACPI: Core revision 20140214
+[    0.014118] ACPI: All ACPI Tables successfully acquired
+[    0.016374] Security Framework initialized
+[    0.016383] Smack:  Initializing.
+[    0.016388] Yama: becoming mindful.
+[    0.017491] Dentry cache hash table entries: 2097152 (order: 12, 16777216 bytes)
+[    0.508581] Inode-cache hash table entries: 1048576 (order: 11, 8388608 bytes)
+[    0.511462] Mount-cache hash table entries: 32768 (order: 6, 262144 bytes)
+[    0.511497] Mountpoint-cache hash table entries: 32768 (order: 6, 262144 bytes)
+[    0.511960] Initializing cgroup subsys memory
+[    0.511971] Initializing cgroup subsys devices
+[    0.511976] Initializing cgroup subsys freezer
+[    0.511981] Initializing cgroup subsys net_cls
+[    0.511986] Initializing cgroup subsys blkio
+[    0.512015] tseg: 00bfe00000
+[    0.512020] CPU: Physical Processor ID: 0
+[    0.512024] CPU: Processor Core ID: 0
+[    0.512029] mce: CPU supports 6 MCE banks
+[    0.512043] Last level iTLB entries: 4KB 512, 2MB 16, 4MB 8
+Last level dTLB entries: 4KB 1024, 2MB 128, 4MB 64, 1GB 0
+tlb_flushall_shift: 6
+[    0.512253] Freeing SMP alternatives memory: 20K (ffffffff961a3000 - ffffffff961a8000)
+[    0.512800] ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+[    0.522812] smpboot: CPU0: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam: 12, model: 01, stepping: 00)
+[    0.623916] Performance Events: AMD PMU driver.
+[    0.623924] ... version:                0
+[    0.623929] ... bit width:              48
+[    0.623932] ... generic registers:      4
+[    0.623936] ... value mask:             0000ffffffffffff
+[    0.623940] ... max period:             00007fffffffffff
+[    0.623944] ... fixed-purpose events:   0
+[    0.623948] ... event mask:             000000000000000f
+[    0.630054] MCE: In-kernel MCE decoding enabled.
+[    0.632081] NMI watchdog: enabled on all CPUs, permanently consumes one hw-PMU counter.
+[    0.634073] x86: Booting SMP configuration:
+[    0.634080] .... node  #0, CPUs:      #1
+[    0.647304] TSC synchronization [CPU#0 -> CPU#1]:
+[    0.647310] Measured 134853381 cycles TSC warp between CPUs, turning off TSC clock.
+[    0.647322] tsc: Marking TSC unstable due to check_tsc_sync_source failed
+[    0.062148]  #2 #3
+[    0.086441] x86: Booted up 1 node, 4 CPUs
+[    0.086451] ----------------
+[    0.086455] | NMI testsuite:
+[    0.086458] --------------------
+[    0.086461]   remote IPI:  ok  |
+[    0.089042]    local IPI:  ok  |
+[    0.095013] --------------------
+[    0.095026] Good, all   2 testcases passed! |
+[    0.095033] ---------------------------------
+[    0.095044] smpboot: Total of 4 processors activated (11179.69 BogoMIPS)
+[    0.096139] devtmpfs: initialized
+[    0.096139] device: 'platform': device_add
+[    0.096139] bus: 'platform': registered
+[    0.096139] bus: 'cpu': registered
+[    0.096139] device: 'cpu': device_add
+[    0.096139] bus: 'container': registered
+[    0.096139] device: 'container': device_add
+[    0.097010] evm: security.SMACK64
+[    0.097014] evm: security.capability
+[    0.097102] bus: 'workqueue': registered
+[    0.097108] device: 'workqueue': device_add
+[    0.097194] kworker/u8:0 (37) used greatest stack depth: 14056 bytes left
+[    0.097327] prandom: seed boundary self test passed
+[    0.098502] prandom: 100 self tests passed
+[    0.098509] atomic64 test passed for x86-64 platform with CX8 and with SSE
+[    0.098514] device class 'regulator': registering
+[    0.098551] Registering platform device 'reg-dummy'. Parent at platform
+[    0.098556] device: 'reg-dummy': device_add
+[    0.098563] bus: 'platform': add device reg-dummy
+[    0.098590] bus: 'platform': add driver reg-dummy
+[    0.098599] bus: 'platform': driver_probe_device: matched device reg-dummy with driver reg-dummy
+[    0.098607] bus: 'platform': really_probe: probing driver reg-dummy with device reg-dummy
+[    0.098619] device: 'regulator.0': device_add
+[    0.098653] regulator-dummy: no parameters
+[    0.098670] driver: 'reg-dummy': driver_bound: bound to device 'reg-dummy'
+[    0.098676] bus: 'platform': really_probe: bound device reg-dummy to driver reg-dummy
+[    0.098742] NET: Registered protocol family 16
+[    0.098837] device class 'bdi': registering
+[    0.098855] bus: 'platform': add driver ramoops
+[    0.098877] device class 'pci_bus': registering
+[    0.098905] bus: 'pci': registered
+[    0.098912] device class 'backlight': registering
+[    0.098923] device class 'tty': registering
+[    0.098938] device class 'vtconsole': registering
+[    0.098955] device: 'vtcon0': device_add
+[    0.098993] bus: 'node': registered
+[    0.099005] device: 'node': device_add
+[    0.099043] bus: 'i2c': registered
+[    0.099051] bus: 'i2c': add driver dummy
+[    0.099067] i2c-core: driver [dummy] registered
+[    0.099073] cpuidle: using governor ladder
+[    0.099078] cpuidle: using governor menu
+[    0.099328] ACPI FADT declares the system doesn't support PCIe ASPM, so disable it
+[    0.099335] ACPI: bus type PCI registered
+[    0.099339] acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+[    0.099345] device class 'dmi': registering
+[    0.099358] device: 'id': device_add
+[    0.099483] PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
+[    0.099492] PCI: not using MMCONFIG
+[    0.099496] PCI: Using configuration type 1 for base access
+[    0.099500] PCI: Using configuration type 1 for extended access
+[    0.099588] device: 'node0': device_add
+[    0.099595] bus: 'node': add device node0
+[    0.099625] device: 'cpu0': device_add
+[    0.099631] bus: 'cpu': add device cpu0
+[    0.099675] device: 'cpu1': device_add
+[    0.099685] bus: 'cpu': add device cpu1
+[    0.099732] device: 'cpu2': device_add
+[    0.099739] bus: 'cpu': add device cpu2
+[    0.099781] device: 'cpu3': device_add
+[    0.099788] bus: 'cpu': add device cpu3
+[    0.099831] mtrr: your CPUs had inconsistent variable MTRR settings
+[    0.099835] mtrr: probably your BIOS does not setup all CPUs.
+[    0.099840] mtrr: corrected configuration.
+[    0.102635] device: 'writeback': device_add
+[    0.102635] bus: 'workqueue': add device writeback
+[    0.102635] device: 'default': device_add
+[    0.103039] device class 'block': registering
+[    0.103109] device class 'graphics': registering
+[    0.103109] ACPI: Added _OSI(Module Device)
+[    0.103109] ACPI: Added _OSI(Processor Device)
+[    0.103109] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    0.103109] ACPI: Added _OSI(Processor Aggregator Device)
+[    0.117772] [Firmware Bug]: ACPI: BIOS _OSI(Linux) query ignored
+[    0.146102] ACPI: Interpreter enabled
+[    0.146125] ACPI: (supports S0 S5)
+[    0.146131] ACPI: Using IOAPIC for interrupt routing
+[    0.146409] PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf8000000-0xfbffffff] (base 0xf8000000)
+[    0.147232] PCI: MMCONFIG at [mem 0xf8000000-0xfbffffff] reserved in ACPI motherboard resources
+[    0.151952] bus: 'acpi': registered
+[    0.151962] PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+[    0.152005] device: 'LNXSYSTM:00': device_add
+[    0.152015] bus: 'acpi': add device LNXSYSTM:00
+[    0.152080] device: 'LNXCPU:00': device_add
+[    0.152088] bus: 'acpi': add device LNXCPU:00
+[    0.152135] device: 'LNXCPU:01': device_add
+[    0.152142] bus: 'acpi': add device LNXCPU:01
+[    0.152191] device: 'LNXCPU:02': device_add
+[    0.152198] bus: 'acpi': add device LNXCPU:02
+[    0.152242] device: 'LNXCPU:03': device_add
+[    0.152249] bus: 'acpi': add device LNXCPU:03
+[    0.152329] device: 'LNXSYBUS:00': device_add
+[    0.152339] bus: 'acpi': add device LNXSYBUS:00
+[    0.152408] device: 'PNP0C0C:00': device_add
+[    0.152415] bus: 'acpi': add device PNP0C0C:00
+[    0.152492] device: 'PNP0A08:00': device_add
+[    0.152500] bus: 'acpi': add device PNP0A08:00
+[    0.152609] device: 'PNP0C02:00': device_add
+[    0.152616] bus: 'acpi': add device PNP0C02:00
+[    0.152754] device: 'device:00': device_add
+[    0.152762] bus: 'acpi': add device device:00
+[    0.153016] device: 'device:01': device_add
+[    0.153016] bus: 'acpi': add device device:01
+[    0.153031] device: 'device:02': device_add
+[    0.153031] bus: 'acpi': add device device:02
+[    0.153082] device: 'device:03': device_add
+[    0.153090] bus: 'acpi': add device device:03
+[    0.153180] device: 'LNXVIDEO:00': device_add
+[    0.153188] bus: 'acpi': add device LNXVIDEO:00
+[    0.153294] device: 'device:04': device_add
+[    0.153302] bus: 'acpi': add device device:04
+[    0.153378] device: 'device:05': device_add
+[    0.153386] bus: 'acpi': add device device:05
+[    0.153451] device: 'device:06': device_add
+[    0.153459] bus: 'acpi': add device device:06
+[    0.153533] device: 'device:07': device_add
+[    0.153541] bus: 'acpi': add device device:07
+[    0.153604] device: 'device:08': device_add
+[    0.153611] bus: 'acpi': add device device:08
+[    0.154003] device: 'device:09': device_add
+[    0.154003] bus: 'acpi': add device device:09
+[    0.154018] device: 'device:0a': device_add
+[    0.154018] bus: 'acpi': add device device:0a
+[    0.154025] device: 'device:0b': device_add
+[    0.154025] bus: 'acpi': add device device:0b
+[    0.154059] device: 'device:0c': device_add
+[    0.154066] bus: 'acpi': add device device:0c
+[    0.154161] device: 'device:0d': device_add
+[    0.154169] bus: 'acpi': add device device:0d
+[    0.154251] device: 'device:0e': device_add
+[    0.154258] bus: 'acpi': add device device:0e
+[    0.154385] device: 'device:0f': device_add
+[    0.154393] bus: 'acpi': add device device:0f
+[    0.154478] device: 'device:10': device_add
+[    0.154485] bus: 'acpi': add device device:10
+[    0.154608] device: 'device:11': device_add
+[    0.154616] bus: 'acpi': add device device:11
+[    0.154676] device: 'device:12': device_add
+[    0.154684] bus: 'acpi': add device device:12
+[    0.155020] device: 'device:13': device_add
+[    0.155020] bus: 'acpi': add device device:13
+[    0.155070] device: 'device:14': device_add
+[    0.155070] bus: 'acpi': add device device:14
+[    0.155070] device: 'device:15': device_add
+[    0.155070] bus: 'acpi': add device device:15
+[    0.155070] device: 'device:16': device_add
+[    0.155070] bus: 'acpi': add device device:16
+[    0.155090] device: 'device:17': device_add
+[    0.155097] bus: 'acpi': add device device:17
+[    0.155159] device: 'device:18': device_add
+[    0.155167] bus: 'acpi': add device device:18
+[    0.155291] device: 'device:19': device_add
+[    0.155299] bus: 'acpi': add device device:19
+[    0.155361] device: 'device:1a': device_add
+[    0.155368] bus: 'acpi': add device device:1a
+[    0.155429] device: 'device:1b': device_add
+[    0.155436] bus: 'acpi': add device device:1b
+[    0.155561] device: 'device:1c': device_add
+[    0.155568] bus: 'acpi': add device device:1c
+[    0.155629] device: 'device:1d': device_add
+[    0.155636] bus: 'acpi': add device device:1d
+[    0.156017] device: 'device:1e': device_add
+[    0.156017] bus: 'acpi': add device device:1e
+[    0.156024] device: 'device:1f': device_add
+[    0.156024] bus: 'acpi': add device device:1f
+[    0.156024] device: 'device:20': device_add
+[    0.156024] bus: 'acpi': add device device:20
+[    0.156024] device: 'device:21': device_add
+[    0.156024] bus: 'acpi': add device device:21
+[    0.156086] device: 'device:22': device_add
+[    0.156094] bus: 'acpi': add device device:22
+[    0.156165] device: 'device:23': device_add
+[    0.156173] bus: 'acpi': add device device:23
+[    0.156292] device: 'device:24': device_add
+[    0.156300] bus: 'acpi': add device device:24
+[    0.156439] device: 'device:25': device_add
+[    0.156447] bus: 'acpi': add device device:25
+[    0.156521] device: 'device:26': device_add
+[    0.156528] bus: 'acpi': add device device:26
+[    0.156631] device: 'device:27': device_add
+[    0.156638] bus: 'acpi': add device device:27
+[    0.157041] device: 'device:28': device_add
+[    0.157041] bus: 'acpi': add device device:28
+[    0.157309] device: 'device:29': device_add
+[    0.157318] bus: 'acpi': add device device:29
+[    0.157397] device: 'device:2a': device_add
+[    0.157407] bus: 'acpi': add device device:2a
+[    0.157733] device: 'device:2b': device_add
+[    0.157741] bus: 'acpi': add device device:2b
+[    0.158080] device: 'device:2c': device_add
+[    0.158089] bus: 'acpi': add device device:2c
+[    0.158212] device: 'device:2d': device_add
+[    0.158220] bus: 'acpi': add device device:2d
+[    0.158284] device: 'device:2e': device_add
+[    0.158292] bus: 'acpi': add device device:2e
+[    0.158409] device: 'device:2f': device_add
+[    0.158418] bus: 'acpi': add device device:2f
+[    0.158488] device: 'device:30': device_add
+[    0.158496] bus: 'acpi': add device device:30
+[    0.158608] device: 'device:31': device_add
+[    0.158622] bus: 'acpi': add device device:31
+[    0.158944] device: 'device:32': device_add
+[    0.158951] bus: 'acpi': add device device:32
+[    0.159142] device: 'PNP0C0F:00': device_add
+[    0.159151] bus: 'acpi': add device PNP0C0F:00
+[    0.159267] device: 'PNP0C0F:01': device_add
+[    0.159275] bus: 'acpi': add device PNP0C0F:01
+[    0.159444] device: 'PNP0C0F:02': device_add
+[    0.159452] bus: 'acpi': add device PNP0C0F:02
+[    0.159613] device: 'PNP0C0F:03': device_add
+[    0.159622] bus: 'acpi': add device PNP0C0F:03
+[    0.160029] device: 'PNP0C0F:04': device_add
+[    0.160029] bus: 'acpi': add device PNP0C0F:04
+[    0.160082] device: 'PNP0C0F:05': device_add
+[    0.160082] bus: 'acpi': add device PNP0C0F:05
+[    0.160134] device: 'PNP0C0F:06': device_add
+[    0.160143] bus: 'acpi': add device PNP0C0F:06
+[    0.160259] device: 'PNP0C0F:07': device_add
+[    0.160268] bus: 'acpi': add device PNP0C0F:07
+[    0.160350] device: 'PNP0200:00': device_add
+[    0.160358] bus: 'acpi': add device PNP0200:00
+[    0.160421] device: 'PNP0C04:00': device_add
+[    0.160428] bus: 'acpi': add device PNP0C04:00
+[    0.160496] device: 'PNP0000:00': device_add
+[    0.160503] bus: 'acpi': add device PNP0000:00
+[    0.160567] device: 'PNP0B00:00': device_add
+[    0.160574] bus: 'acpi': add device PNP0B00:00
+[    0.160638] device: 'PNP0800:00': device_add
+[    0.160648] bus: 'acpi': add device PNP0800:00
+[    0.160724] device: 'PNP0100:00': device_add
+[    0.160732] bus: 'acpi': add device PNP0100:00
+[    0.161102] device: 'PNP0C02:01': device_add
+[    0.161102] bus: 'acpi': add device PNP0C02:01
+[    0.161102] device: 'PNP0C01:00': device_add
+[    0.161102] bus: 'acpi': add device PNP0C01:00
+[    0.161102] device: 'PNP0C09:00': device_add
+[    0.161102] bus: 'acpi': add device PNP0C09:00
+[    0.161210] device: 'ACPI0003:00': device_add
+[    0.161219] bus: 'acpi': add device ACPI0003:00
+[    0.161510] device: 'PNP0C0A:00': device_add
+[    0.161519] bus: 'acpi': add device PNP0C0A:00
+[    0.161674] device: 'VPC2004:00': device_add
+[    0.161683] bus: 'acpi': add device VPC2004:00
+[    0.161779] device: 'PNP0303:00': device_add
+[    0.161787] bus: 'acpi': add device PNP0303:00
+[    0.162019] device: 'SYN0326:00': device_add
+[    0.162019] bus: 'acpi': add device SYN0326:00
+[    0.162118] device: 'device:33': device_add
+[    0.162126] bus: 'acpi': add device device:33
+[    0.162221] device: 'device:34': device_add
+[    0.162229] bus: 'acpi': add device device:34
+[    0.162304] device: 'device:35': device_add
+[    0.162311] bus: 'acpi': add device device:35
+[    0.162435] device: 'device:36': device_add
+[    0.162443] bus: 'acpi': add device device:36
+[    0.162522] device: 'device:37': device_add
+[    0.162529] bus: 'acpi': add device device:37
+[    0.162653] device: 'device:38': device_add
+[    0.162661] bus: 'acpi': add device device:38
+[    0.162735] device: 'device:39': device_add
+[    0.162742] bus: 'acpi': add device device:39
+[    0.163058] device: 'device:3a': device_add
+[    0.163058] bus: 'acpi': add device device:3a
+[    0.163058] device: 'device:3b': device_add
+[    0.163058] bus: 'acpi': add device device:3b
+[    0.163058] device: 'LNXVIDEO:01': device_add
+[    0.163065] bus: 'acpi': add device LNXVIDEO:01
+[    0.163194] device: 'device:3c': device_add
+[    0.163202] bus: 'acpi': add device device:3c
+[    0.163274] device: 'device:3d': device_add
+[    0.163282] bus: 'acpi': add device device:3d
+[    0.163350] device: 'device:3e': device_add
+[    0.163358] bus: 'acpi': add device device:3e
+[    0.163431] device: 'device:3f': device_add
+[    0.163439] bus: 'acpi': add device device:3f
+[    0.163551] device: 'AFD0001:00': device_add
+[    0.163560] bus: 'acpi': add device AFD0001:00
+[    0.168057] device: 'PNP0C0D:00': device_add
+[    0.168083] bus: 'acpi': add device PNP0C0D:00
+[    0.168212] device: 'PNP0C0E:00': device_add
+[    0.168221] bus: 'acpi': add device PNP0C0E:00
+[    0.168291] device: 'PNP0C14:00': device_add
+[    0.168299] bus: 'acpi': add device PNP0C14:00
+[    0.168442] device: 'LNXSYBUS:01': device_add
+[    0.168450] bus: 'acpi': add device LNXSYBUS:01
+[    0.168492] device: 'LNXTHERM:00': device_add
+[    0.168499] bus: 'acpi': add device LNXTHERM:00
+[    0.169016] device: 'LNXTHERM:01': device_add
+[    0.169016] bus: 'acpi': add device LNXTHERM:01
+[    0.170107] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+[    0.170122] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI]
+[    0.170947] acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug PME AER PCIeCapability]
+[    0.173450] acpi PNP0A08:00: host bridge window expanded to [mem 0xe0000000-0xffffffff]; [mem 0xe0000000-0xf7ffffff] ignored
+[    0.173465] acpi PNP0A08:00: ignoring host bridge window [mem 0x000ce000-0x000cffff] (conflicts with Video ROM [mem 0x000c0000-0x000cefff])
+[    0.173479] acpi PNP0A08:00: [Firmware Info]: MMCONFIG for domain 0000 [bus 00-3f] only partially covers this bridge
+[    0.173489] device: 'pci0000:00': device_add
+[    0.173509] device: '0000:00': device_add
+[    0.173907] PCI host bridge to bus 0000:00
+[    0.173914] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    0.173920] pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff]
+[    0.173926] pci_bus 0000:00: root bus resource [mem 0x000c0000-0x000c1fff]
+[    0.173932] pci_bus 0000:00: root bus resource [mem 0x000c2000-0x000c3fff]
+[    0.173938] pci_bus 0000:00: root bus resource [mem 0x000c4000-0x000c5fff]
+[    0.173944] pci_bus 0000:00: root bus resource [mem 0x000c6000-0x000c7fff]
+[    0.173950] pci_bus 0000:00: root bus resource [mem 0x000c8000-0x000c9fff]
+[    0.173956] pci_bus 0000:00: root bus resource [mem 0x000ca000-0x000cbfff]
+[    0.173961] pci_bus 0000:00: root bus resource [mem 0x000cc000-0x000cdfff]
+[    0.173967] pci_bus 0000:00: root bus resource [mem 0x000d0000-0x000d1fff]
+[    0.173973] pci_bus 0000:00: root bus resource [mem 0x000d2000-0x000d3fff]
+[    0.173979] pci_bus 0000:00: root bus resource [mem 0x000d4000-0x000d5fff]
+[    0.173985] pci_bus 0000:00: root bus resource [mem 0x000d6000-0x000d7fff]
+[    0.173991] pci_bus 0000:00: root bus resource [mem 0x000d8000-0x000d9fff]
+[    0.173997] pci_bus 0000:00: root bus resource [mem 0x000da000-0x000dbfff]
+[    0.174004] pci_bus 0000:00: root bus resource [mem 0x000dc000-0x000ddfff]
+[    0.174010] pci_bus 0000:00: root bus resource [mem 0x000de000-0x000dffff]
+[    0.174016] pci_bus 0000:00: root bus resource [mem 0x000e0000-0x000e1fff]
+[    0.174022] pci_bus 0000:00: root bus resource [mem 0x000e2000-0x000e3fff]
+[    0.174028] pci_bus 0000:00: root bus resource [mem 0x000e4000-0x000e5fff]
+[    0.174034] pci_bus 0000:00: root bus resource [mem 0x000e6000-0x000e7fff]
+[    0.174040] pci_bus 0000:00: root bus resource [mem 0x000e8000-0x000e9fff]
+[    0.174046] pci_bus 0000:00: root bus resource [mem 0x000ea000-0x000ebfff]
+[    0.174052] pci_bus 0000:00: root bus resource [mem 0x000ec000-0x000edfff]
+[    0.174057] pci_bus 0000:00: root bus resource [mem 0x000ee000-0x000effff]
+[    0.174063] pci_bus 0000:00: root bus resource [mem 0xe0000000-0xffffffff]
+[    0.174070] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7]
+[    0.174076] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff]
+[    0.174081] pci_bus 0000:00: scanning bus
+[    0.174096] pci 0000:00:00.0: [1022:1705] type 00 class 0x060000
+[    0.174110] pci 0000:00:00.0: calling quirk_mmio_always_on+0x0/0x10
+[    0.174150] device: '0000:00:00.0': device_add
+[    0.174222] bus: 'pci': add device 0000:00:00.0
+[    0.174279] pci 0000:00:01.0: [1002:9647] type 00 class 0x030000
+[    0.174297] pci 0000:00:01.0: reg 0x10: [mem 0xe0000000-0xefffffff pref]
+[    0.174309] pci 0000:00:01.0: reg 0x14: [io  0x2000-0x20ff]
+[    0.174320] pci 0000:00:01.0: reg 0x18: [mem 0xf0100000-0xf013ffff]
+[    0.174378] pci 0000:00:01.0: supports D1 D2
+[    0.174390] device: '0000:00:01.0': device_add
+[    0.174470] bus: 'pci': add device 0000:00:01.0
+[    0.174522] pci 0000:00:01.1: [1002:1714] type 00 class 0x040300
+[    0.174538] pci 0000:00:01.1: reg 0x10: [mem 0xf0144000-0xf0147fff]
+[    0.174606] pci 0000:00:01.1: supports D1 D2
+[    0.174617] device: '0000:00:01.1': device_add
+[    0.174688] bus: 'pci': add device 0000:00:01.1
+[    0.174796] pci 0000:00:04.0: [1022:1709] type 01 class 0x060400
+[    0.174869] pci 0000:00:04.0: PME# supported from D0 D3hot D3cold
+[    0.174877] pci 0000:00:04.0: PME# disabled
+[    0.174892] device: '0000:00:04.0': device_add
+[    0.174967] bus: 'pci': add device 0000:00:04.0
+[    0.175100] pci 0000:00:11.0: [1022:7804] type 00 class 0x010601
+[    0.175129] pci 0000:00:11.0: reg 0x10: [io  0x2118-0x211f]
+[    0.175144] pci 0000:00:11.0: reg 0x14: [io  0x2124-0x2127]
+[    0.175159] pci 0000:00:11.0: reg 0x18: [io  0x2110-0x2117]
+[    0.175174] pci 0000:00:11.0: reg 0x1c: [io  0x2120-0x2123]
+[    0.175189] pci 0000:00:11.0: reg 0x20: [io  0x2100-0x210f]
+[    0.175205] pci 0000:00:11.0: reg 0x24: [mem 0xf014a000-0xf014a7ff]
+[    0.175270] device: '0000:00:11.0': device_add
+[    0.175343] bus: 'pci': add device 0000:00:11.0
+[    0.175395] pci 0000:00:12.0: [1022:7807] type 00 class 0x0c0310
+[    0.175417] pci 0000:00:12.0: reg 0x10: [mem 0xf0149000-0xf0149fff]
+[    0.175491] device: '0000:00:12.0': device_add
+[    0.175564] bus: 'pci': add device 0000:00:12.0
+[    0.175670] pci 0000:00:12.2: [1022:7808] type 00 class 0x0c0320
+[    0.175699] pci 0000:00:12.2: reg 0x10: [mem 0xf014a900-0xf014a9ff]
+[    0.175802] pci 0000:00:12.2: supports D1 D2
+[    0.175808] pci 0000:00:12.2: PME# supported from D0 D1 D2 D3hot
+[    0.175816] pci 0000:00:12.2: PME# disabled
+[    0.175829] device: '0000:00:12.2': device_add
+[    0.175901] bus: 'pci': add device 0000:00:12.2
+[    0.176017] pci 0000:00:13.0: [1022:7807] type 00 class 0x0c0310
+[    0.176033] pci 0000:00:13.0: reg 0x10: [mem 0xf0148000-0xf0148fff]
+[    0.176107] device: '0000:00:13.0': device_add
+[    0.176183] bus: 'pci': add device 0000:00:13.0
+[    0.176242] pci 0000:00:13.2: [1022:7808] type 00 class 0x0c0320
+[    0.176271] pci 0000:00:13.2: reg 0x10: [mem 0xf014a800-0xf014a8ff]
+[    0.176374] pci 0000:00:13.2: supports D1 D2
+[    0.176380] pci 0000:00:13.2: PME# supported from D0 D1 D2 D3hot
+[    0.176388] pci 0000:00:13.2: PME# disabled
+[    0.176401] device: '0000:00:13.2': device_add
+[    0.176477] bus: 'pci': add device 0000:00:13.2
+[    0.176580] pci 0000:00:14.0: [1022:780b] type 00 class 0x0c0500
+[    0.176647] device: '0000:00:14.0': device_add
+[    0.176720] bus: 'pci': add device 0000:00:14.0
+[    0.176822] pci 0000:00:14.2: [1022:780d] type 00 class 0x040300
+[    0.176854] pci 0000:00:14.2: reg 0x10: [mem 0xf0140000-0xf0143fff 64bit]
+[    0.176938] pci 0000:00:14.2: PME# supported from D0 D3hot D3cold
+[    0.176947] pci 0000:00:14.2: PME# disabled
+[    0.176957] device: '0000:00:14.2': device_add
+[    0.177042] bus: 'pci': add device 0000:00:14.2
+[    0.177139] pci 0000:00:14.3: [1022:780e] type 00 class 0x060100
+[    0.177227] device: '0000:00:14.3': device_add
+[    0.177300] bus: 'pci': add device 0000:00:14.3
+[    0.177398] pci 0000:00:14.4: [1022:780f] type 01 class 0x060401
+[    0.177446] device: '0000:00:14.4': device_add
+[    0.177519] bus: 'pci': add device 0000:00:14.4
+[    0.177624] pci 0000:00:18.0: [1022:1700] type 00 class 0x060000
+[    0.177633] pci 0000:00:18.0: calling quirk_mmio_always_on+0x0/0x10
+[    0.177673] device: '0000:00:18.0': device_add
+[    0.177743] bus: 'pci': add device 0000:00:18.0
+[    0.178041] pci 0000:00:18.1: [1022:1701] type 00 class 0x060000
+[    0.178041] pci 0000:00:18.1: calling quirk_mmio_always_on+0x0/0x10
+[    0.178041] device: '0000:00:18.1': device_add
+[    0.178041] bus: 'pci': add device 0000:00:18.1
+[    0.178086] pci 0000:00:18.2: [1022:1702] type 00 class 0x060000
+[    0.178086] pci 0000:00:18.2: calling quirk_mmio_always_on+0x0/0x10
+[    0.178086] device: '0000:00:18.2': device_add
+[    0.178086] bus: 'pci': add device 0000:00:18.2
+[    0.178118] pci 0000:00:18.3: [1022:1703] type 00 class 0x060000
+[    0.178127] pci 0000:00:18.3: calling quirk_mmio_always_on+0x0/0x10
+[    0.178175] device: '0000:00:18.3': device_add
+[    0.178244] bus: 'pci': add device 0000:00:18.3
+[    0.178294] pci 0000:00:18.4: [1022:1704] type 00 class 0x060000
+[    0.178303] pci 0000:00:18.4: calling quirk_mmio_always_on+0x0/0x10
+[    0.178338] device: '0000:00:18.4': device_add
+[    0.178407] bus: 'pci': add device 0000:00:18.4
+[    0.178454] pci 0000:00:18.5: [1022:1718] type 00 class 0x060000
+[    0.178463] pci 0000:00:18.5: calling quirk_mmio_always_on+0x0/0x10
+[    0.178498] device: '0000:00:18.5': device_add
+[    0.178567] bus: 'pci': add device 0000:00:18.5
+[    0.178613] pci 0000:00:18.6: [1022:1716] type 00 class 0x060000
+[    0.178621] pci 0000:00:18.6: calling quirk_mmio_always_on+0x0/0x10
+[    0.178656] device: '0000:00:18.6': device_add
+[    0.178726] bus: 'pci': add device 0000:00:18.6
+[    0.179032] pci 0000:00:18.7: [1022:1719] type 00 class 0x060000
+[    0.179032] pci 0000:00:18.7: calling quirk_mmio_always_on+0x0/0x10
+[    0.179032] device: '0000:00:18.7': device_add
+[    0.179032] bus: 'pci': add device 0000:00:18.7
+[    0.179056] pci_bus 0000:00: fixups for bus
+[    0.179056] pci 0000:00:04.0: scanning [bus 01-01] behind bridge, pass 0
+[    0.179056] device: '0000:01': device_add
+[    0.179091] pci_bus 0000:01: scanning bus
+[    0.179117] pci 0000:01:00.0: [10ec:8136] type 00 class 0x020000
+[    0.179138] pci 0000:01:00.0: reg 0x10: [io  0x1000-0x10ff]
+[    0.179170] pci 0000:01:00.0: reg 0x18: [mem 0xf0004000-0xf0004fff 64bit pref]
+[    0.179192] pci 0000:01:00.0: reg 0x20: [mem 0xf0000000-0xf0003fff 64bit pref]
+[    0.179282] pci 0000:01:00.0: supports D1 D2
+[    0.179288] pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+[    0.179296] pci 0000:01:00.0: PME# disabled
+[    0.179320] device: '0000:01:00.0': device_add
+[    0.179337] bus: 'pci': add device 0000:01:00.0
+[    0.181031] pci_bus 0000:01: fixups for bus
+[    0.181043] pci 0000:00:04.0: PCI bridge to [bus 01]
+[    0.181059] pci 0000:00:04.0:   bridge window [io  0x1000-0x1fff]
+[    0.181076] pci 0000:00:04.0:   bridge window [mem 0xf0000000-0xf00fffff 64bit pref]
+[    0.181088] pci_bus 0000:01: bus scan returning with max=01
+[    0.181141] pci 0000:00:14.4: scanning [bus 02-02] behind bridge, pass 0
+[    0.181156] device: '0000:02': device_add
+[    0.181194] pci_bus 0000:02: scanning bus
+[    0.181254] pci_bus 0000:02: fixups for bus
+[    0.181260] pci 0000:00:14.4: PCI bridge to [bus 02] (subtractive decode)
+[    0.181275] pci 0000:00:14.4:   bridge window [mem 0x000a0000-0x000bffff] (subtractive decode)
+[    0.181283] pci 0000:00:14.4:   bridge window [mem 0x000c0000-0x000c1fff] (subtractive decode)
+[    0.181290] pci 0000:00:14.4:   bridge window [mem 0x000c2000-0x000c3fff] (subtractive decode)
+[    0.181298] pci 0000:00:14.4:   bridge window [mem 0x000c4000-0x000c5fff] (subtractive decode)
+[    0.181305] pci 0000:00:14.4:   bridge window [mem 0x000c6000-0x000c7fff] (subtractive decode)
+[    0.181312] pci 0000:00:14.4:   bridge window [mem 0x000c8000-0x000c9fff] (subtractive decode)
+[    0.181320] pci 0000:00:14.4:   bridge window [mem 0x000ca000-0x000cbfff] (subtractive decode)
+[    0.181327] pci 0000:00:14.4:   bridge window [mem 0x000cc000-0x000cdfff] (subtractive decode)
+[    0.181334] pci 0000:00:14.4:   bridge window [mem 0x000d0000-0x000d1fff] (subtractive decode)
+[    0.181342] pci 0000:00:14.4:   bridge window [mem 0x000d2000-0x000d3fff] (subtractive decode)
+[    0.181349] pci 0000:00:14.4:   bridge window [mem 0x000d4000-0x000d5fff] (subtractive decode)
+[    0.181356] pci 0000:00:14.4:   bridge window [mem 0x000d6000-0x000d7fff] (subtractive decode)
+[    0.181364] pci 0000:00:14.4:   bridge window [mem 0x000d8000-0x000d9fff] (subtractive decode)
+[    0.181371] pci 0000:00:14.4:   bridge window [mem 0x000da000-0x000dbfff] (subtractive decode)
+[    0.181378] pci 0000:00:14.4:   bridge window [mem 0x000dc000-0x000ddfff] (subtractive decode)
+[    0.181385] pci 0000:00:14.4:   bridge window [mem 0x000de000-0x000dffff] (subtractive decode)
+[    0.181393] pci 0000:00:14.4:   bridge window [mem 0x000e0000-0x000e1fff] (subtractive decode)
+[    0.181400] pci 0000:00:14.4:   bridge window [mem 0x000e2000-0x000e3fff] (subtractive decode)
+[    0.181412] pci 0000:00:14.4:   bridge window [mem 0x000e4000-0x000e5fff] (subtractive decode)
+[    0.181419] pci 0000:00:14.4:   bridge window [mem 0x000e6000-0x000e7fff] (subtractive decode)
+[    0.181427] pci 0000:00:14.4:   bridge window [mem 0x000e8000-0x000e9fff] (subtractive decode)
+[    0.181434] pci 0000:00:14.4:   bridge window [mem 0x000ea000-0x000ebfff] (subtractive decode)
+[    0.181441] pci 0000:00:14.4:   bridge window [mem 0x000ec000-0x000edfff] (subtractive decode)
+[    0.181449] pci 0000:00:14.4:   bridge window [mem 0x000ee000-0x000effff] (subtractive decode)
+[    0.181456] pci 0000:00:14.4:   bridge window [mem 0xe0000000-0xffffffff] (subtractive decode)
+[    0.181464] pci 0000:00:14.4:   bridge window [io  0x0000-0x0cf7] (subtractive decode)
+[    0.181471] pci 0000:00:14.4:   bridge window [io  0x0d00-0xffff] (subtractive decode)
+[    0.181478] pci_bus 0000:02: bus scan returning with max=02
+[    0.181533] pci 0000:00:04.0: scanning [bus 01-01] behind bridge, pass 1
+[    0.181543] pci 0000:00:14.4: scanning [bus 02-02] behind bridge, pass 1
+[    0.181554] pci_bus 0000:00: bus scan returning with max=02
+[    0.181562] acpi PNP0A08:00: Disabling ASPM (FADT indicates it is unsupported)
+[    0.182454] ACPI: PCI Interrupt Link [LNKA] (IRQs 10 11) *0
+[    0.182701] ACPI: PCI Interrupt Link [LNKB] (IRQs 10 11) *0
+[    0.182960] ACPI: PCI Interrupt Link [LNKC] (IRQs 10 11) *0
+[    0.183234] ACPI: PCI Interrupt Link [LNKD] (IRQs 10 11) *0
+[    0.183418] ACPI: PCI Interrupt Link [LNKE] (IRQs 10 11) *0
+[    0.183576] ACPI: PCI Interrupt Link [LNKF] (IRQs 10 11) *0
+[    0.183733] ACPI: PCI Interrupt Link [LNKG] (IRQs 10 11) *0
+[    0.183891] ACPI: PCI Interrupt Link [LNKH] (IRQs 10 11) *0
+[    0.184122] Registering platform device 'VPC2004:00'. Parent at platform
+[    0.184128] device: 'VPC2004:00': device_add
+[    0.184140] bus: 'platform': add device VPC2004:00
+[    0.184268] device: 'LNXPWRBN:00': device_add
+[    0.184278] bus: 'acpi': add device LNXPWRBN:00
+[    0.184361] ACPI: Enabled 2 GPEs in block 00 to 1F
+[    0.184370] bus: 'acpi': add driver ec
+[    0.184394] bus: 'acpi': driver_probe_device: matched device PNP0C09:00 with driver ec
+[    0.184401] bus: 'acpi': really_probe: probing driver ec with device PNP0C09:00
+[    0.184478] ACPI : EC: GPE = 0x3, I/O: command/status = 0x66, data = 0x62
+[    0.184485] driver: 'ec': driver_bound: bound to device 'PNP0C09:00'
+[    0.184491] bus: 'acpi': really_probe: bound device PNP0C09:00 to driver ec
+[    0.184593] bus: 'pnp': registered
+[    0.184599] bus: 'platform': add driver reg-fixed-voltage
+[    0.184623] bus: 'i2c': add driver lp3972
+[    0.184637] i2c-core: driver [lp3972] registered
+[    0.184642] bus: 'i2c': add driver lp8755-regulator
+[    0.184654] i2c-core: driver [lp8755-regulator] registered
+[    0.184664] device class 'misc': registering
+[    0.185020] device: 'vga_arbiter': device_add
+[    0.185087] vgaarb: device added: PCI:0000:00:01.0,decodes=io+mem,owns=io+mem,locks=none
+[    0.185090] vgaarb: loaded
+[    0.185094] vgaarb: bridge control possible 0000:00:01.0
+[    0.185192] device class 'scsi_host': registering
+[    0.185206] bus: 'scsi': registered
+[    0.185206] device class 'scsi_device': registering
+[    0.185206] SCSI subsystem initialized
+[    0.185206] device class 'ata_link': registering
+[    0.185206] device class 'ata_port': registering
+[    0.185206] device class 'ata_device': registering
+[    0.185206] libata version 3.00 loaded.
+[    0.185206] device class 'mdio_bus': registering
+[    0.185206] bus: 'mdio_bus': registered
+[    0.185206] bus: 'mdio_bus': add driver Generic PHY
+[    0.185206] bus: 'mdio_bus': add driver Generic 10G PHY
+[    0.185206] ACPI: bus type USB registered
+[    0.185206] bus: 'usb': registered
+[    0.185210] bus: 'usb': add driver usbfs
+[    0.185238] usbcore: registered new interface driver usbfs
+[    0.185245] bus: 'usb': add driver hub
+[    0.185264] usbcore: registered new interface driver hub
+[    0.185275] bus: 'usb': add driver usb
+[    0.185275] usbcore: registered new device driver usb
+[    0.185275] bus: 'serio': registered
+[    0.185275] device class 'input': registering
+[    0.185275] device class 'rtc': registering
+[    0.185275] device class 'power_supply': registering
+[    0.185275] device class 'hwmon': registering
+[    0.185275] device class 'watchdog': registering
+[    0.185275] EDAC MC: Ver: 3.0.0
+[    0.186002] bus: 'edac': registered
+[    0.186002] device: 'edac': device_add
+[    0.186002] device: 'mc': device_add
+[    0.186002] bus: 'edac': add device mc
+[    0.186026] EDAC DEBUG: edac_mc_sysfs_init: device mc created
+[    0.186053] device class 'wmi': registering
+[    0.186064] bus: 'acpi': add driver wmi
+[    0.186094] bus: 'acpi': driver_probe_device: matched device PNP0C14:00 with driver wmi
+[    0.186102] bus: 'acpi': really_probe: probing driver wmi with device PNP0C14:00
+[    0.186102] device: 'D9F41781-F633-4400-9355-601770BEC510': device_add
+[    0.186102] device: '67C3371D-95A3-4C37-BB61-DD47B491DAAB': device_add
+[    0.186115] device: '431F16ED-0C2B-444C-B267-27DEB140CF9C': device_add
+[    0.186148] device: '40D1BF71-A82D-4E59-A168-3985E03B2E87': device_add
+[    0.186178] device: '05901221-D566-11D1-B2F0-00A0C9062910': device_add
+[    0.186211] driver: 'wmi': driver_bound: bound to device 'PNP0C14:00'
+[    0.186217] bus: 'acpi': really_probe: bound device PNP0C14:00 to driver wmi
+[    0.186235] wmi: Mapper loaded
+[    0.186240] device class 'devfreq': registering
+[    0.186267] PCI: Using ACPI for IRQ routing
+[    0.188997] PCI: pci_cache_line_size set to 64 bytes
+[    0.189035] pci 0000:00:01.0: BAR 0: reserving [mem 0xe0000000-0xefffffff flags 0x42208] (d=0, p=0)
+[    0.189035] pci 0000:00:01.0: BAR 1: reserving [io  0x2000-0x20ff flags 0x40101] (d=0, p=0)
+[    0.189043] pci 0000:00:01.0: BAR 2: reserving [mem 0xf0100000-0xf013ffff flags 0x40200] (d=0, p=0)
+[    0.189054] pci 0000:00:01.1: BAR 0: reserving [mem 0xf0144000-0xf0147fff flags 0x40200] (d=0, p=0)
+[    0.189066] pci 0000:01:00.0: BAR 0: reserving [io  0x1000-0x10ff flags 0x40101] (d=0, p=0)
+[    0.189075] pci 0000:01:00.0: BAR 2: reserving [mem 0xf0004000-0xf0004fff flags 0x14220c] (d=0, p=0)
+[    0.189083] pci 0000:01:00.0: BAR 4: reserving [mem 0xf0000000-0xf0003fff flags 0x14220c] (d=0, p=0)
+[    0.189093] pci 0000:00:11.0: BAR 0: reserving [io  0x2118-0x211f flags 0x40101] (d=0, p=0)
+[    0.189102] pci 0000:00:11.0: BAR 1: reserving [io  0x2124-0x2127 flags 0x40101] (d=0, p=0)
+[    0.189111] pci 0000:00:11.0: BAR 2: reserving [io  0x2110-0x2117 flags 0x40101] (d=0, p=0)
+[    0.189121] pci 0000:00:11.0: BAR 3: reserving [io  0x2120-0x2123 flags 0x40101] (d=0, p=0)
+[    0.189130] pci 0000:00:11.0: BAR 4: reserving [io  0x2100-0x210f flags 0x40101] (d=0, p=0)
+[    0.189139] pci 0000:00:11.0: BAR 5: reserving [mem 0xf014a000-0xf014a7ff flags 0x40200] (d=0, p=0)
+[    0.189197] pci 0000:00:12.0: BAR 0: reserving [mem 0xf0149000-0xf0149fff flags 0x40200] (d=0, p=0)
+[    0.189209] pci 0000:00:12.2: BAR 0: reserving [mem 0xf014a900-0xf014a9ff flags 0x40200] (d=0, p=0)
+[    0.189220] pci 0000:00:13.0: BAR 0: reserving [mem 0xf0148000-0xf0148fff flags 0x40200] (d=0, p=0)
+[    0.189232] pci 0000:00:13.2: BAR 0: reserving [mem 0xf014a800-0xf014a8ff flags 0x40200] (d=0, p=0)
+[    0.189245] pci 0000:00:14.2: BAR 0: reserving [mem 0xf0140000-0xf0143fff flags 0x140204] (d=0, p=0)
+[    0.189294] e820: reserve RAM buffer [mem 0x0009d800-0x0009ffff]
+[    0.189301] e820: reserve RAM buffer [mem 0xbed9b000-0xbfffffff]
+[    0.189306] e820: reserve RAM buffer [mem 0xbfe00000-0xbfffffff]
+[    0.189311] e820: reserve RAM buffer [mem 0x41f000000-0x41fffffff]
+[    0.189331] device class 'net': registering
+[    0.189373] device: 'lo': device_add
+[    0.189543] NetLabel: Initializing
+[    0.189548] NetLabel:  domain hash size = 128
+[    0.189552] NetLabel:  protocols = UNLABELED CIPSOv4
+[    0.189574] NetLabel:  unlabeled traffic allowed by default
+[    0.189723] hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0
+[    0.189733] hpet0: 3 comparators, 32-bit 14.318180 MHz counter
+[    0.192040] Switched to clocksource hpet
+[    0.196609] bus: 'pnp': add driver system
+[    0.196653] pnp: PnP ACPI init
+[    0.196660] device: 'pnp0': device_add
+[    0.196682] ACPI: bus type PNP registered
+[    0.196724] pnp 00:00: parse allocated resources
+[    0.196889] pnp 00:00: PNP0c02: calling quirk_system_pci_resources+0x0/0x150
+[    0.196921] pnp 00:00: PNP0c02: calling quirk_intel_mch+0x0/0x1a0
+[    0.196932] device: '00:00': device_add
+[    0.196947] bus: 'pnp': add device 00:00
+[    0.196974] bus: 'pnp': driver_probe_device: matched device 00:00 with driver system
+[    0.196982] bus: 'pnp': really_probe: probing driver system with device 00:00
+[    0.196995] system 00:00: [io  0x0f50-0x0f51] has been reserved
+[    0.197046] system 00:00: [mem 0xfec00000-0xfec00fff] could not be reserved
+[    0.197054] system 00:00: [mem 0xfee00000-0xfee00fff] has been reserved
+[    0.197061] system 00:00: [mem 0xf8000000-0xfbffffff] has been reserved
+[    0.197066] driver: 'system': driver_bound: bound to device '00:00'
+[    0.197072] bus: 'pnp': really_probe: bound device 00:00 to driver system
+[    0.197080] system 00:00: Plug and Play ACPI device, IDs PNP0c02 (active)
+[    0.197954] pnp 00:01: parse allocated resources
+[    0.197972] pnp 00:01: [dma 4]
+[    0.197978] device: '00:01': device_add
+[    0.198000] bus: 'pnp': add device 00:01
+[    0.198088] pnp 00:01: Plug and Play ACPI device, IDs PNP0200 (active)
+[    0.198101] pnp 00:02: parse allocated resources
+[    0.198168] device: '00:02': device_add
+[    0.198187] bus: 'pnp': add device 00:02
+[    0.198214] pnp 00:02: Plug and Play ACPI device, IDs PNP0c04 (active)
+[    0.198229] pnp 00:03: parse allocated resources
+[    0.198248] device: '00:03': device_add
+[    0.198266] bus: 'pnp': add device 00:03
+[    0.198291] pnp 00:03: Plug and Play ACPI device, IDs PNP0b00 (active)
+[    0.198303] pnp 00:04: parse allocated resources
+[    0.198314] device: '00:04': device_add
+[    0.198332] bus: 'pnp': add device 00:04
+[    0.198360] pnp 00:04: Plug and Play ACPI device, IDs PNP0800 (active)
+[    0.198376] pnp 00:05: parse allocated resources
+[    0.198414] pnp 00:05: PNP0c02: calling quirk_system_pci_resources+0x0/0x150
+[    0.198431] pnp 00:05: disabling [io  0x1200-0x120f] because it overlaps 0000:00:04.0 BAR 13 [io  0x1000-0x1fff]
+[    0.198466] pnp 00:05: PNP0c02: calling quirk_intel_mch+0x0/0x1a0
+[    0.198476] device: '00:05': device_add
+[    0.198494] bus: 'pnp': add device 00:05
+[    0.198519] bus: 'pnp': driver_probe_device: matched device 00:05 with driver system
+[    0.198526] bus: 'pnp': really_probe: probing driver system with device 00:05
+[    0.198537] system 00:05: [io  0x04d0-0x04d1] has been reserved
+[    0.198544] system 00:05: [io  0x0530-0x0537] has been reserved
+[    0.198551] system 00:05: [io  0x0800-0x0827] could not be reserved
+[    0.198557] system 00:05: [io  0x0830] has been reserved
+[    0.198563] system 00:05: [io  0x0840-0x0847] has been reserved
+[    0.198570] system 00:05: [io  0x0b00-0x0b1f] has been reserved
+[    0.198576] system 00:05: [io  0x0b20-0x0b3f] has been reserved
+[    0.198582] system 00:05: [io  0x0c00-0x0c01] has been reserved
+[    0.198589] system 00:05: [io  0x0c14] has been reserved
+[    0.198595] system 00:05: [io  0x0c50-0x0c52] has been reserved
+[    0.198601] system 00:05: [io  0x0cd0-0x0cd1] has been reserved
+[    0.198608] system 00:05: [io  0x0cd2-0x0cd3] has been reserved
+[    0.198614] system 00:05: [io  0x0cd4-0x0cd5] has been reserved
+[    0.198620] system 00:05: [io  0x0cd6-0x0cd7] has been reserved
+[    0.198627] system 00:05: [io  0x0cd8-0x0cdf] has been reserved
+[    0.198633] system 00:05: [io  0x0cf9] could not be reserved
+[    0.198641] system 00:05: [io  0x8100-0x81ff window] has been reserved
+[    0.198648] system 00:05: [io  0x8200-0x82ff window] has been reserved
+[    0.198656] system 00:05: [mem 0xff800000-0xff80ffff] has been reserved
+[    0.198663] system 00:05: [mem 0xff810000-0xff81003f] has been reserved
+[    0.198669] driver: 'system': driver_bound: bound to device '00:05'
+[    0.198674] bus: 'pnp': really_probe: bound device 00:05 to driver system
+[    0.198681] system 00:05: Plug and Play ACPI device, IDs PNP0c02 (active)
+[    0.198707] pnp 00:06: parse allocated resources
+[    0.198828] pnp 00:06: PNP0c01: calling quirk_system_pci_resources+0x0/0x150
+[    0.198849] pnp 00:06: PNP0c01: calling quirk_amd_mmconfig_area+0x0/0x110
+[    0.198856] device: '00:06': device_add
+[    0.198878] bus: 'pnp': add device 00:06
+[    0.198904] bus: 'pnp': driver_probe_device: matched device 00:06 with driver system
+[    0.198910] bus: 'pnp': really_probe: probing driver system with device 00:06
+[    0.198921] system 00:06: [mem 0x000e0000-0x000fffff] could not be reserved
+[    0.198929] system 00:06: [mem 0xffe00000-0xffffffff] has been reserved
+[    0.198936] system 00:06: [mem 0xfec10000-0xfec1001f] has been reserved
+[    0.198943] system 00:06: [mem 0xfed00000-0xfed003ff] has been reserved
+[    0.198950] system 00:06: [mem 0xfed61000-0xfed613ff] has been reserved
+[    0.198957] system 00:06: [mem 0xfed80000-0xfed80fff] has been reserved
+[    0.198962] driver: 'system': driver_bound: bound to device '00:06'
+[    0.198967] bus: 'pnp': really_probe: bound device 00:06 to driver system
+[    0.198974] system 00:06: Plug and Play ACPI device, IDs PNP0c01 (active)
+[    0.199109] pnp 00:07: parse allocated resources
+[    0.199175] device: '00:07': device_add
+[    0.199194] bus: 'pnp': add device 00:07
+[    0.199220] pnp 00:07: Plug and Play ACPI device, IDs PNP0303 (active)
+[    0.199233] pnp 00:08: parse allocated resources
+[    0.199273] device: '00:08': device_add
+[    0.199293] bus: 'pnp': add device 00:08
+[    0.199324] pnp 00:08: Plug and Play ACPI device, IDs SYN0326 SYN0300 SYN0002 PNP0f13 (active)
+[    0.199432] pnp: PnP ACPI: found 9 devices
+[    0.199437] ACPI: bus type PNP unregistered
+[    0.199448] device class 'mem': registering
+[    0.199464] device: 'mem': device_add
+[    0.199578] device: 'null': device_add
+[    0.199708] device: 'port': device_add
+[    0.199782] device: 'zero': device_add
+[    0.199845] device: 'full': device_add
+[    0.199911] device: 'random': device_add
+[    0.199980] device: 'urandom': device_add
+[    0.200063] device: 'kmsg': device_add
+[    0.200123] device: 'tty': device_add
+[    0.200207] device: 'console': device_add
+[    0.200262] device: 'tty0': device_add
+[    0.200317] device class 'vc': registering
+[    0.200336] device: 'vcs': device_add
+[    0.200392] device: 'vcsa': device_add
+[    0.200445] device: 'vcs1': device_add
+[    0.200507] device: 'vcsa1': device_add
+[    0.200614] device: 'tty1': device_add
+[    0.200673] device: 'tty2': device_add
+[    0.200738] device: 'tty3': device_add
+[    0.200793] device: 'tty4': device_add
+[    0.200870] device: 'tty5': device_add
+[    0.200932] device: 'tty6': device_add
+[    0.200993] device: 'tty7': device_add
+[    0.201074] device: 'tty8': device_add
+[    0.201132] device: 'tty9': device_add
+[    0.201188] device: 'tty10': device_add
+[    0.201250] device: 'tty11': device_add
+[    0.201303] device: 'tty12': device_add
+[    0.201354] device: 'tty13': device_add
+[    0.201408] device: 'tty14': device_add
+[    0.201460] device: 'tty15': device_add
+[    0.201514] device: 'tty16': device_add
+[    0.201568] device: 'tty17': device_add
+[    0.201623] device: 'tty18': device_add
+[    0.201675] device: 'tty19': device_add
+[    0.201786] device: 'tty20': device_add
+[    0.201962] device: 'tty21': device_add
+[    0.202085] device: 'tty22': device_add
+[    0.202182] device: 'tty23': device_add
+[    0.202237] device: 'tty24': device_add
+[    0.202296] device: 'tty25': device_add
+[    0.202349] device: 'tty26': device_add
+[    0.202401] device: 'tty27': device_add
+[    0.202459] device: 'tty28': device_add
+[    0.202511] device: 'tty29': device_add
+[    0.202564] device: 'tty30': device_add
+[    0.202620] device: 'tty31': device_add
+[    0.202677] device: 'tty32': device_add
+[    0.202733] device: 'tty33': device_add
+[    0.202810] device: 'tty34': device_add
+[    0.202863] device: 'tty35': device_add
+[    0.202916] device: 'tty36': device_add
+[    0.203111] device: 'tty37': device_add
+[    0.203201] device: 'tty38': device_add
+[    0.203255] device: 'tty39': device_add
+[    0.203317] device: 'tty40': device_add
+[    0.203369] device: 'tty41': device_add
+[    0.203421] device: 'tty42': device_add
+[    0.203479] device: 'tty43': device_add
+[    0.203534] device: 'tty44': device_add
+[    0.203585] device: 'tty45': device_add
+[    0.203640] device: 'tty46': device_add
+[    0.203691] device: 'tty47': device_add
+[    0.203745] device: 'tty48': device_add
+[    0.203800] device: 'tty49': device_add
+[    0.203853] device: 'tty50': device_add
+[    0.203913] device: 'tty51': device_add
+[    0.203967] device: 'tty52': device_add
+[    0.204033] device: 'tty53': device_add
+[    0.204084] device: 'tty54': device_add
+[    0.204268] device: 'tty55': device_add
+[    0.204382] device: 'tty56': device_add
+[    0.204431] device: 'tty57': device_add
+[    0.204534] device: 'tty58': device_add
+[    0.204601] device: 'tty59': device_add
+[    0.204668] device: 'tty60': device_add
+[    0.204719] device: 'tty61': device_add
+[    0.204773] device: 'tty62': device_add
+[    0.204827] device: 'tty63': device_add
+[    0.204941] device class 'thermal': registering
+[    0.209888] pci 0000:00:04.0: PCI bridge to [bus 01]
+[    0.209897] pci 0000:00:04.0:   bridge window [io  0x1000-0x1fff]
+[    0.209909] pci 0000:00:04.0:   bridge window [mem 0xf0000000-0xf00fffff 64bit pref]
+[    0.209920] pci 0000:00:14.4: PCI bridge to [bus 02]
+[    0.209985] pci_bus 0000:00: resource 4 [mem 0x000a0000-0x000bffff]
+[    0.209991] pci_bus 0000:00: resource 5 [mem 0x000c0000-0x000c1fff]
+[    0.209997] pci_bus 0000:00: resource 6 [mem 0x000c2000-0x000c3fff]
+[    0.210010] pci_bus 0000:00: resource 7 [mem 0x000c4000-0x000c5fff]
+[    0.210016] pci_bus 0000:00: resource 8 [mem 0x000c6000-0x000c7fff]
+[    0.210022] pci_bus 0000:00: resource 9 [mem 0x000c8000-0x000c9fff]
+[    0.210027] pci_bus 0000:00: resource 10 [mem 0x000ca000-0x000cbfff]
+[    0.210033] pci_bus 0000:00: resource 11 [mem 0x000cc000-0x000cdfff]
+[    0.210038] pci_bus 0000:00: resource 12 [mem 0x000d0000-0x000d1fff]
+[    0.210044] pci_bus 0000:00: resource 13 [mem 0x000d2000-0x000d3fff]
+[    0.210049] pci_bus 0000:00: resource 14 [mem 0x000d4000-0x000d5fff]
+[    0.210055] pci_bus 0000:00: resource 15 [mem 0x000d6000-0x000d7fff]
+[    0.210061] pci_bus 0000:00: resource 16 [mem 0x000d8000-0x000d9fff]
+[    0.210066] pci_bus 0000:00: resource 17 [mem 0x000da000-0x000dbfff]
+[    0.210072] pci_bus 0000:00: resource 18 [mem 0x000dc000-0x000ddfff]
+[    0.210077] pci_bus 0000:00: resource 19 [mem 0x000de000-0x000dffff]
+[    0.210083] pci_bus 0000:00: resource 20 [mem 0x000e0000-0x000e1fff]
+[    0.210088] pci_bus 0000:00: resource 21 [mem 0x000e2000-0x000e3fff]
+[    0.210094] pci_bus 0000:00: resource 22 [mem 0x000e4000-0x000e5fff]
+[    0.210099] pci_bus 0000:00: resource 23 [mem 0x000e6000-0x000e7fff]
+[    0.210105] pci_bus 0000:00: resource 24 [mem 0x000e8000-0x000e9fff]
+[    0.210110] pci_bus 0000:00: resource 25 [mem 0x000ea000-0x000ebfff]
+[    0.210116] pci_bus 0000:00: resource 26 [mem 0x000ec000-0x000edfff]
+[    0.210121] pci_bus 0000:00: resource 27 [mem 0x000ee000-0x000effff]
+[    0.210127] pci_bus 0000:00: resource 28 [mem 0xe0000000-0xffffffff]
+[    0.210133] pci_bus 0000:00: resource 29 [io  0x0000-0x0cf7]
+[    0.210138] pci_bus 0000:00: resource 30 [io  0x0d00-0xffff]
+[    0.210144] pci_bus 0000:01: resource 0 [io  0x1000-0x1fff]
+[    0.210150] pci_bus 0000:01: resource 2 [mem 0xf0000000-0xf00fffff 64bit pref]
+[    0.210157] pci_bus 0000:02: resource 4 [mem 0x000a0000-0x000bffff]
+[    0.210163] pci_bus 0000:02: resource 5 [mem 0x000c0000-0x000c1fff]
+[    0.210169] pci_bus 0000:02: resource 6 [mem 0x000c2000-0x000c3fff]
+[    0.210174] pci_bus 0000:02: resource 7 [mem 0x000c4000-0x000c5fff]
+[    0.210180] pci_bus 0000:02: resource 8 [mem 0x000c6000-0x000c7fff]
+[    0.210185] pci_bus 0000:02: resource 9 [mem 0x000c8000-0x000c9fff]
+[    0.210191] pci_bus 0000:02: resource 10 [mem 0x000ca000-0x000cbfff]
+[    0.210196] pci_bus 0000:02: resource 11 [mem 0x000cc000-0x000cdfff]
+[    0.210202] pci_bus 0000:02: resource 12 [mem 0x000d0000-0x000d1fff]
+[    0.210207] pci_bus 0000:02: resource 13 [mem 0x000d2000-0x000d3fff]
+[    0.210213] pci_bus 0000:02: resource 14 [mem 0x000d4000-0x000d5fff]
+[    0.210218] pci_bus 0000:02: resource 15 [mem 0x000d6000-0x000d7fff]
+[    0.210224] pci_bus 0000:02: resource 16 [mem 0x000d8000-0x000d9fff]
+[    0.210229] pci_bus 0000:02: resource 17 [mem 0x000da000-0x000dbfff]
+[    0.210235] pci_bus 0000:02: resource 18 [mem 0x000dc000-0x000ddfff]
+[    0.210240] pci_bus 0000:02: resource 19 [mem 0x000de000-0x000dffff]
+[    0.210246] pci_bus 0000:02: resource 20 [mem 0x000e0000-0x000e1fff]
+[    0.210251] pci_bus 0000:02: resource 21 [mem 0x000e2000-0x000e3fff]
+[    0.210257] pci_bus 0000:02: resource 22 [mem 0x000e4000-0x000e5fff]
+[    0.210262] pci_bus 0000:02: resource 23 [mem 0x000e6000-0x000e7fff]
+[    0.210268] pci_bus 0000:02: resource 24 [mem 0x000e8000-0x000e9fff]
+[    0.210274] pci_bus 0000:02: resource 25 [mem 0x000ea000-0x000ebfff]
+[    0.210279] pci_bus 0000:02: resource 26 [mem 0x000ec000-0x000edfff]
+[    0.210285] pci_bus 0000:02: resource 27 [mem 0x000ee000-0x000effff]
+[    0.210290] pci_bus 0000:02: resource 28 [mem 0xe0000000-0xffffffff]
+[    0.210296] pci_bus 0000:02: resource 29 [io  0x0000-0x0cf7]
+[    0.210301] pci_bus 0000:02: resource 30 [io  0x0d00-0xffff]
+[    0.210354] NET: Registered protocol family 2
+[    0.210629] TCP established hash table entries: 131072 (order: 8, 1048576 bytes)
+[    0.211306] TCP bind hash table entries: 65536 (order: 8, 1048576 bytes)
+[    0.211742] TCP: Hash tables configured (established 131072 bind 65536)
+[    0.211806] TCP: reno registered
+[    0.211841] UDP hash table entries: 8192 (order: 6, 262144 bytes)
+[    0.212103] UDP-Lite hash table entries: 8192 (order: 6, 262144 bytes)
+[    0.212323] NET: Registered protocol family 1
+[    0.212353] pci 0000:00:01.0: calling pci_fixup_video+0x0/0x100
+[    0.212361] pci 0000:00:01.0: Boot video device
+[    0.212416] pci 0000:00:12.0: calling quirk_usb_early_handoff+0x0/0x6e0
+[    0.275620] pci 0000:00:12.2: calling quirk_usb_early_handoff+0x0/0x6e0
+[    0.276310] pci 0000:00:13.0: calling quirk_usb_early_handoff+0x0/0x6e0
+[    0.338619] pci 0000:00:13.2: calling quirk_usb_early_handoff+0x0/0x6e0
+[    0.339323] PCI: CLS 32 bytes, default 64
+[    0.339388] Unpacking initramfs...
+[    0.440272] Freeing initrd memory: 3804K (ffff880037882000 - ffff880037c39000)
+[    0.440289] PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+[    0.440297] software IO TLB [mem 0xbad9b000-0xbed9b000] (64MB) mapped at [ffff8800bad9b000-ffff8800bed9afff]
+[    0.440700] Registering platform device 'microcode'. Parent at platform
+[    0.440707] device: 'microcode': device_add
+[    0.440718] bus: 'platform': add device microcode
+[    0.440820] microcode: CPU0: patch_level=0x03000014
+[    0.440875] microcode: CPU1: patch_level=0x03000014
+[    0.440894] microcode: CPU2: patch_level=0x03000014
+[    0.440916] microcode: CPU3: patch_level=0x03000014
+[    0.440935] device: 'microcode': device_add
+[    0.441191] microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+[    0.441202] LVT offset 0 assigned for vector 0x400
+[    0.441279] perf: AMD IBS detected (0x000000ff)
+[    0.441285] Registering platform device 'pcspkr'. Parent at platform
+[    0.441289] device: 'pcspkr': device_add
+[    0.441295] bus: 'platform': add device pcspkr
+[    0.441321] Scanning for low memory corruption every 60 seconds
+[    0.441357] Registering platform device 'vesa-framebuffer.0'. Parent at platform
+[    0.441360] device: 'vesa-framebuffer.0': device_add
+[    0.441365] bus: 'platform': add device vesa-framebuffer.0
+[    0.441582] sha1_ssse3: Neither AVX nor AVX2 nor SSSE3 is available/usable.
+[    0.441652] bus: 'clocksource': registered
+[    0.441658] device: 'clocksource': device_add
+[    0.441674] device: 'clocksource0': device_add
+[    0.441678] bus: 'clocksource': add device clocksource0
+[    0.441699] bus: 'platform': add driver alarmtimer
+[    0.441716] Registering platform device 'alarmtimer'. Parent at platform
+[    0.441719] device: 'alarmtimer': device_add
+[    0.441724] bus: 'platform': add device alarmtimer
+[    0.441745] bus: 'platform': driver_probe_device: matched device alarmtimer with driver alarmtimer
+[    0.441751] bus: 'platform': really_probe: probing driver alarmtimer with device alarmtimer
+[    0.441759] driver: 'alarmtimer': driver_bound: bound to device 'alarmtimer'
+[    0.441764] bus: 'platform': really_probe: bound device alarmtimer to driver alarmtimer
+[    0.441780] bus: 'clockevents': registered
+[    0.441784] device: 'clockevents': device_add
+[    0.441792] device: 'clockevent0': device_add
+[    0.441796] bus: 'clockevents': add device clockevent0
+[    0.441814] device: 'clockevent1': device_add
+[    0.441818] bus: 'clockevents': add device clockevent1
+[    0.441841] device: 'clockevent2': device_add
+[    0.441845] bus: 'clockevents': add device clockevent2
+[    0.441862] device: 'clockevent3': device_add
+[    0.441866] bus: 'clockevents': add device clockevent3
+[    0.441883] device: 'broadcast': device_add
+[    0.441887] bus: 'clockevents': add device broadcast
+[    0.441921] futex hash table entries: 1024 (order: 4, 65536 bytes)
+[    0.441944] Initialise system trusted keyring
+[    0.463727] bus: 'event_source': registered
+[    0.463734] device: 'ibs_op': device_add
+[    0.463743] bus: 'event_source': add device ibs_op
+[    0.463764] device: 'ibs_fetch': device_add
+[    0.463773] bus: 'event_source': add device ibs_fetch
+[    0.463793] device: 'cpu': device_add
+[    0.463817] bus: 'event_source': add device cpu
+[    0.463839] device: 'breakpoint': device_add
+[    0.463846] bus: 'event_source': add device breakpoint
+[    0.463868] device: 'tracepoint': device_add
+[    0.463875] bus: 'event_source': add device tracepoint
+[    0.463901] device: 'software': device_add
+[    0.463908] bus: 'event_source': add device software
+[    0.464196] HugeTLB registered 2 MB page size, pre-allocated 0 pages
+[    0.467432] msgmni has been set to 28989
+[    0.469689] alg: No test for stdrng (krng)
+[    0.469775] device class 'bsg': registering
+[    0.469792] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
+[    0.469797] io scheduler noop registered (default)
+[    0.469800] list_sort_test: start testing list_sort()
+[    0.469969] test_string_helpers: Running tests...
+[    0.470103] xz_dec_test: module loaded
+[    0.470106] xz_dec_test: Create a device node with 'mknod xz_dec_test c 251 0' and write .xz files to it.
+[    0.470112] device class 'phy': registering
+[    0.470164] bus: 'pci_express': registered
+[    0.470167] bus: 'pci': add driver pcieport
+[    0.470174] bus: 'pci': driver_probe_device: matched device 0000:00:04.0 with driver pcieport
+[    0.470178] bus: 'pci': really_probe: probing driver pcieport with device 0000:00:04.0
+[    0.470584] pcieport 0000:00:04.0: irq 40 for MSI/MSI-X
+[    0.470602] device: '0000:00:04.0:pcie01': device_add
+[    0.470612] bus: 'pci_express': add device 0000:00:04.0:pcie01
+[    0.470724] driver: 'pcieport': driver_bound: bound to device '0000:00:04.0'
+[    0.470731] bus: 'pci': really_probe: bound device 0000:00:04.0 to driver pcieport
+[    0.470761] bus: 'pci_express': add driver aer
+[    0.470778] bus: 'pci_express': add driver pcie_pme
+[    0.470786] bus: 'pci_express': driver_probe_device: matched device 0000:00:04.0:pcie01 with driver pcie_pme
+[    0.470793] bus: 'pci_express': really_probe: probing driver pcie_pme with device 0000:00:04.0:pcie01
+[    0.470828] pcieport 0000:00:04.0: Signaling PME through PCIe PME interrupt
+[    0.470834] pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
+[    0.470842] pcie_pme 0000:00:04.0:pcie01: service driver pcie_pme loaded
+[    0.470847] driver: 'pcie_pme': driver_bound: bound to device '0000:00:04.0:pcie01'
+[    0.470853] bus: 'pci_express': really_probe: bound device 0000:00:04.0:pcie01 to driver pcie_pme
+[    0.470873] bus: 'pci': add driver ioapic
+[    0.470888] pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+[    0.470892] bus: 'pci_express': add driver pciehp_dummy
+[    0.470910] bus: 'pci_express': remove driver pciehp_dummy
+[    0.470920] driver: 'pciehp_dummy': driver_release
+[    0.470924] bus: 'pci_express': add driver pciehp
+[    0.470936] pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+[    0.470943] device: 'fbcon': device_add
+[    0.470969] bus: 'platform': add driver vesa-framebuffer
+[    0.470976] bus: 'platform': driver_probe_device: matched device vesa-framebuffer.0 with driver vesa-framebuffer
+[    0.470981] bus: 'platform': really_probe: probing driver vesa-framebuffer with device vesa-framebuffer.0
+[    0.470991] vesafb: mode is 1024x768x32, linelength=4096, pages=0
+[    0.470994] vesafb: scrolling: redraw
+[    0.470997] vesafb: Truecolor: size=0:8:8:8, shift=0:16:8:0
+[    0.471174] vesafb: framebuffer at 0xe0000000, mapped to 0xffffc90005d00000, using 3072k, total 3072k
+[    0.471182] device: 'fb0': device_add
+[    0.471293] device: 'vtcon1': device_add
+[    0.478319] Console: switching to colour frame buffer device 128x48
+[    0.485293] fb0: VESA VGA frame buffer device
+[    0.485348] driver: 'vesa-framebuffer': driver_bound: bound to device 'vesa-framebuffer.0'
+[    0.485454] bus: 'platform': really_probe: bound device vesa-framebuffer.0 to driver vesa-framebuffer
+[    0.485585] bus: 'platform': add driver ipmi
+[    0.485652] ipmi message handler version 39.2
+[    0.485715] ipmi device interface
+[    0.485760] device class 'ipmi': registering
+[    0.485830] bus: 'platform': add driver ipmi_si
+[    0.485905] IPMI System Interface driver.
+[    0.485962] bus: 'pci': add driver ipmi_si
+[    0.486041] bus: 'pnp': add driver ipmi_si
+[    0.486111] ipmi_si: Adding default-specified kcs state machine
+[    0.486191] ipmi_si: Trying default-specified kcs state machine at i/o address 0xca2, slave address 0x0, irq 0
+[    0.486367] ipmi_si: Interface detection failed
+[    0.495318] ipmi_si: Adding default-specified smic state machine
+[    0.495490] ipmi_si: Trying default-specified smic state machine at i/o address 0xca9, slave address 0x0, irq 0
+[    0.495666] ipmi_si: Interface detection failed
+[    0.507321] ipmi_si: Adding default-specified bt state machine
+[    0.507485] ipmi_si: Trying default-specified bt state machine at i/o address 0xe4, slave address 0x0, irq 0
+[    0.507659] ipmi_si: Interface detection failed
+[    0.519268] bus: 'pci': remove driver ipmi_si
+[    0.519407] driver: 'ipmi_si': driver_release
+[    0.522137] bus: 'pnp': remove driver ipmi_si
+[    0.524900] driver: 'ipmi_si': driver_release
+[    0.527617] bus: 'platform': remove driver ipmi_si
+[    0.530317] driver: 'ipmi_si': driver_release
+[    0.532964] ipmi_si: Unable to find any System Interface(s)
+[    0.535637] IPMI Watchdog: driver initialized
+[    0.538285] Copyright (C) 2004 MontaVista Software - IPMI Powerdown via sys_reboot.
+[    0.541020] bus: 'acpi': add driver ac
+[    0.543774] bus: 'acpi': driver_probe_device: matched device ACPI0003:00 with driver ac
+[    0.546553] bus: 'acpi': really_probe: probing driver ac with device ACPI0003:00
+[    0.563476] device: 'ADP1': device_add
+[    0.566378] ACPI: AC Adapter [ADP1] (on-line)
+[    0.569152] driver: 'ac': driver_bound: bound to device 'ACPI0003:00'
+[    0.572218] bus: 'acpi': really_probe: bound device ACPI0003:00 to driver ac
+[    0.575054] bus: 'acpi': add driver button
+[    0.577823] bus: 'acpi': driver_probe_device: matched device PNP0C0C:00 with driver button
+[    0.580626] bus: 'acpi': really_probe: probing driver button with device PNP0C0C:00
+[    0.583418] device: 'input0': device_add
+[    0.586200] input: Power Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input0
+[    0.589044] ACPI: Power Button [PWRB]
+[    0.591870] driver: 'button': driver_bound: bound to device 'PNP0C0C:00'
+[    0.594740] bus: 'acpi': really_probe: bound device PNP0C0C:00 to driver button
+[    0.597626] bus: 'acpi': driver_probe_device: matched device PNP0C0D:00 with driver button
+[    0.600526] bus: 'acpi': really_probe: probing driver button with device PNP0C0D:00
+[    0.603475] device: 'input1': device_add
+[    0.606428] input: Lid Switch as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/input/input1
+[    0.609476] ACPI: Lid Switch [LID0]
+[    0.612516] driver: 'button': driver_bound: bound to device 'PNP0C0D:00'
+[    0.615450] bus: 'acpi': really_probe: bound device PNP0C0D:00 to driver button
+[    0.618401] bus: 'acpi': driver_probe_device: matched device PNP0C0E:00 with driver button
+[    0.621386] bus: 'acpi': really_probe: probing driver button with device PNP0C0E:00
+[    0.624407] device: 'input2': device_add
+[    0.627449] input: Sleep Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0E:00/input/input2
+[    0.630558] ACPI: Sleep Button [SLPB]
+[    0.633653] driver: 'button': driver_bound: bound to device 'PNP0C0E:00'
+[    0.636819] bus: 'acpi': really_probe: bound device PNP0C0E:00 to driver button
+[    0.640055] bus: 'acpi': driver_probe_device: matched device LNXPWRBN:00 with driver button
+[    0.643314] bus: 'acpi': really_probe: probing driver button with device LNXPWRBN:00
+[    0.646600] device: 'input3': device_add
+[    0.649852] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input3
+[    0.653146] ACPI: Power Button [PWRF]
+[    0.656408] driver: 'button': driver_bound: bound to device 'LNXPWRBN:00'
+[    0.659679] bus: 'acpi': really_probe: bound device LNXPWRBN:00 to driver button
+[    0.662997] bus: 'acpi': add driver fan
+[    0.666306] bus: 'acpi': add driver video
+[    0.669520] bus: 'acpi': driver_probe_device: matched device LNXVIDEO:00 with driver video
+[    0.672976] bus: 'acpi': really_probe: probing driver video with device LNXVIDEO:00
+[    0.676314] video: probe of LNXVIDEO:00 rejects match -19
+[    0.679651] bus: 'acpi': driver_probe_device: matched device LNXVIDEO:01 with driver video
+[    0.683069] bus: 'acpi': really_probe: probing driver video with device LNXVIDEO:01
+[    0.686567] ACPI: Video Device [VGA1] (multi-head: yes  rom: no  post: no)
+[    0.732844] device: 'acpi_video0': device_add
+[    0.740529] device: 'cooling_device0': device_add
+[    0.744104] acpi device:3d: registered as cooling_device0
+[    0.747541] device: 'input4': device_add
+[    0.750936] input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:01/input/input4
+[    0.754403] driver: 'video': driver_bound: bound to device 'LNXVIDEO:01'
+[    0.757862] bus: 'acpi': really_probe: bound device LNXVIDEO:01 to driver video
+[    0.761359] bus: 'cpu': add driver processor
+[    0.764830] bus: 'cpu': driver_probe_device: matched device cpu0 with driver processor
+[    0.768332] bus: 'cpu': really_probe: probing driver processor with device cpu0
+[    0.771834] ACPI: acpi_idle registered with cpuidle
+[    0.775336] device: 'cooling_device1': device_add
+[    0.778814] driver: 'processor': driver_bound: bound to device 'cpu0'
+[    0.782283] bus: 'cpu': really_probe: bound device cpu0 to driver processor
+[    0.785758] bus: 'cpu': driver_probe_device: matched device cpu1 with driver processor
+[    0.789169] bus: 'cpu': really_probe: probing driver processor with device cpu1
+[    0.792709] device: 'cooling_device2': device_add
+[    0.796127] driver: 'processor': driver_bound: bound to device 'cpu1'
+[    0.799540] bus: 'cpu': really_probe: bound device cpu1 to driver processor
+[    0.802953] bus: 'cpu': driver_probe_device: matched device cpu2 with driver processor
+[    0.806376] bus: 'cpu': really_probe: probing driver processor with device cpu2
+[    0.809840] device: 'cooling_device3': device_add
+[    0.813214] driver: 'processor': driver_bound: bound to device 'cpu2'
+[    0.816568] bus: 'cpu': really_probe: bound device cpu2 to driver processor
+[    0.819931] bus: 'cpu': driver_probe_device: matched device cpu3 with driver processor
+[    0.823299] bus: 'cpu': really_probe: probing driver processor with device cpu3
+[    0.826720] device: 'cooling_device4': device_add
+[    0.830079] driver: 'processor': driver_bound: bound to device 'cpu3'
+[    0.833420] bus: 'cpu': really_probe: bound device cpu3 to driver processor
+[    0.836943] bus: 'acpi': add driver thermal
+[    0.840337] bus: 'acpi': driver_probe_device: matched device LNXTHERM:00 with driver thermal
+[    0.843664] bus: 'acpi': really_probe: probing driver thermal with device LNXTHERM:00
+[    0.860273] device: 'thermal_zone0': device_add
+[    0.863702] device: 'hwmon0': device_add
+[    0.871653] thermal LNXTHERM:00: registered as thermal_zone0
+[    0.874973] ACPI: Thermal Zone [TZS0] (53 C)
+[    0.878124] driver: 'thermal': driver_bound: bound to device 'LNXTHERM:00'
+[    0.881348] bus: 'acpi': really_probe: bound device LNXTHERM:00 to driver thermal
+[    0.884591] bus: 'acpi': driver_probe_device: matched device LNXTHERM:01 with driver thermal
+[    0.887834] bus: 'acpi': really_probe: probing driver thermal with device LNXTHERM:01
+[    0.891522] device: 'thermal_zone1': device_add
+[    0.894875] thermal LNXTHERM:01: registered as thermal_zone1
+[    0.898117] ACPI: Thermal Zone [TZS1] (44 C)
+[    0.901363] driver: 'thermal': driver_bound: bound to device 'LNXTHERM:01'
+[    0.904628] bus: 'acpi': really_probe: bound device LNXTHERM:01 to driver thermal
+[    0.907919] bus: 'acpi': add driver hardware_error_device
+[    0.908091] bus: 'acpi': add driver battery
+[    0.908121] bus: 'acpi': driver_probe_device: matched device PNP0C0A:00 with driver battery
+[    0.908123] bus: 'acpi': really_probe: probing driver battery with device PNP0C0A:00
+[    0.909177] device: 'BAT0': device_add
+[    0.909645] ACPI: Battery Slot [BAT0] (battery present)
+[    0.909647] driver: 'battery': driver_bound: bound to device 'PNP0C0A:00'
+[    0.909649] bus: 'acpi': really_probe: bound device PNP0C0A:00 to driver battery
+[    0.933418] bus: 'acpi': add driver processor_aggregator
+[    0.936622] GHES: HEST is not enabled!
+[    0.939773] bus: 'platform': add driver reg-virt-consumer
+[    0.942942] bus: 'i2c': add driver LP3971
+[    0.946084] i2c-core: driver [LP3971] registered
+[    0.949147] bus: 'i2c': add driver lp872x
+[    0.952199] i2c-core: driver [lp872x] registered
+[    0.955288] device: 'ptmx': device_add
+[    0.958523] device: 'hpet': device_add
+[    0.961758] bus: 'acpi': add driver hpet
+[    0.964781] device: 'hw_random': device_add
+[    0.967838] Hangcheck: starting hangcheck timer 0.9.1 (tick is 180 seconds, margin is 60 seconds).
+[    0.970866] Hangcheck: Using getrawmonotonic().
+[    0.973832] bus: 'pnp': add driver tpm_tis
+[    0.976815] bus: 'i2c': add driver tpm_i2c_infineon
+[    0.979729] i2c-core: driver [tpm_i2c_infineon] registered
+[    0.982645] bus: 'pnp': add driver tpm_inf_pnp
+[    0.985539] device class 'drm': registering
+[    0.988421] [drm] Initialized drm 1.1.0 20060810
+[    0.991296] device class 'spi_transport': registering
+[    0.994136] device class 'spi_host': registering
+[    0.996929] device class 'scsi_disk': registering
+[    0.999693] bus: 'scsi': add driver sd
+[    1.002431] bus: 'scsi': add driver sr
+[    1.005092] device class 'scsi_generic': registering
+[    1.007756] bus: 'pci': add driver ahci
+[    1.010375] bus: 'pci': driver_probe_device: matched device 0000:00:11.0 with driver ahci
+[    1.013026] bus: 'pci': really_probe: probing driver ahci with device 0000:00:11.0
+[    1.015722] ahci 0000:00:11.0: version 3.0
+[    1.018813] ahci 0000:00:11.0: irq 41 for MSI/MSI-X
+[    1.021534] ahci 0000:00:11.0: AHCI 0001.0300 32 slots 3 ports 3 Gbps 0xe impl SATA mode
+[    1.024220] ahci 0000:00:11.0: flags: 64bit ncq sntf ilck pm led clo pmp pio slum part ccc sxs 
+[    1.027060] device: 'ata1': device_add
+[    1.029692] device: 'ata1': device_add
+[    1.032287] device: 'link1': device_add
+[    1.034809] device: 'link1': device_add
+[    1.037300] device: 'dev1.0': device_add
+[    1.039744] device: 'dev1.0': device_add
+[    1.042138] device: 'ata2': device_add
+[    1.044454] device: 'ata2': device_add
+[    1.046733] device: 'link2': device_add
+[    1.049014] device: 'link2': device_add
+[    1.051202] device: 'dev2.0': device_add
+[    1.053369] device: 'dev2.0': device_add
+[    1.055489] device: 'ata3': device_add
+[    1.057556] device: 'ata3': device_add
+[    1.059583] device: 'link3': device_add
+[    1.061543] device: 'link3': device_add
+[    1.063485] device: 'dev3.0': device_add
+[    1.065369] device: 'dev3.0': device_add
+[    1.067172] device: 'ata4': device_add
+[    1.068985] device: 'ata4': device_add
+[    1.070769] device: 'link4': device_add
+[    1.072543] device: 'link4': device_add
+[    1.074301] device: 'dev4.0': device_add
+[    1.076021] device: 'dev4.0': device_add
+[    1.078099] scsi0 : ahci
+[    1.079816] device: 'host0': device_add
+[    1.081504] bus: 'scsi': add device host0
+[    1.083105] device: 'host0': device_add
+[    1.085060] scsi1 : ahci
+[    1.086603] device: 'host1': device_add
+[    1.088199] bus: 'scsi': add device host1
+[    1.089764] device: 'host1': device_add
+[    1.091690] scsi2 : ahci
+[    1.093171] device: 'host2': device_add
+[    1.094616] bus: 'scsi': add device host2
+[    1.096133] device: 'host2': device_add
+[    1.097917] scsi3 : ahci
+[    1.099381] device: 'host3': device_add
+[    1.100857] bus: 'scsi': add device host3
+[    1.102368] device: 'host3': device_add
+[    1.103886] ata1: DUMMY
+[    1.105356] ata2: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a180 irq 41
+[    1.106862] ata3: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a200 irq 41
+[    1.108311] ata4: SATA max UDMA/133 abar m2048@0xf014a000 port 0xf014a280 irq 41
+[    1.109694] driver: 'ahci': driver_bound: bound to device '0000:00:11.0'
+[    1.111103] bus: 'pci': really_probe: bound device 0000:00:11.0 to driver ahci
+[    1.112595] bus: 'pci': add driver ata_piix
+[    1.114031] bus: 'pci': add driver pata_amd
+[    1.115381] bus: 'pci': add driver pata_oldpiix
+[    1.116759] bus: 'mdio_bus': add driver RTL8201CP Ethernet
+[    1.118144] bus: 'mdio_bus': add driver RTL8211B Gigabit Ethernet
+[    1.119548] bus: 'mdio_bus': add driver RTL8211E Gigabit Ethernet
+[    1.120955] bus: 'pci': add driver r8169
+[    1.122364] bus: 'pci': driver_probe_device: matched device 0000:01:00.0 with driver r8169
+[    1.123857] bus: 'pci': really_probe: probing driver r8169 with device 0000:01:00.0
+[    1.125408] r8169 Gigabit Ethernet driver 2.3LK-NAPI loaded
+[    1.126999] r8169 0000:01:00.0: can't disable ASPM; OS doesn't have ASPM control
+[    1.128844] r8169 0000:01:00.0: enabling Mem-Wr-Inval
+[    1.130659] r8169 0000:01:00.0: irq 42 for MSI/MSI-X
+[    1.132365] device: 'eth0': device_add
+[    1.134153] r8169 0000:01:00.0 eth0: RTL8105e at 0xffffc900018ee000, f0:de:f1:98:0f:7c, XID 00a00000 IRQ 42
+[    1.136029] driver: 'r8169': driver_bound: bound to device '0000:01:00.0'
+[    1.137940] bus: 'pci': really_probe: bound device 0000:01:00.0 to driver r8169
+[    1.139933] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    1.141936] ehci-pci: EHCI PCI platform driver
+[    1.143982] bus: 'pci': add driver ehci-pci
+[    1.146021] bus: 'pci': driver_probe_device: matched device 0000:00:12.2 with driver ehci-pci
+[    1.148150] bus: 'pci': really_probe: probing driver ehci-pci with device 0000:00:12.2
+[    1.150786] QUIRK: Enable AMD PLL fix
+[    1.153026] ehci-pci 0000:00:12.2: enabling bus mastering
+[    1.155300] ehci-pci 0000:00:12.2: EHCI Host Controller
+[    1.157596] ehci-pci 0000:00:12.2: new USB bus registered, assigned bus number 1
+[    1.159933] ehci-pci 0000:00:12.2: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+[    1.162339] ehci-pci 0000:00:12.2: debug port 1
+[    1.164752] ehci-pci 0000:00:12.2: irq 17, io mem 0xf014a900
+[    1.173261] ehci-pci 0000:00:12.2: USB 2.0 started, EHCI 1.00
+[    1.175720] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+[    1.178140] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.180605] usb usb1: Product: EHCI Host Controller
+[    1.183075] usb usb1: Manufacturer: Linux 3.15.4-1-MANJARO ehci_hcd
+[    1.185579] usb usb1: SerialNumber: 0000:00:12.2
+[    1.188090] device: 'usb1': device_add
+[    1.190871] bus: 'usb': add device usb1
+[    1.193399] bus: 'usb': driver_probe_device: matched device usb1 with driver usb
+[    1.195981] bus: 'usb': really_probe: probing driver usb with device usb1
+[    1.198588] device: '1-0:1.0': device_add
+[    1.201193] bus: 'usb': add device 1-0:1.0
+[    1.203817] bus: 'usb': driver_probe_device: matched device 1-0:1.0 with driver hub
+[    1.206510] bus: 'usb': really_probe: probing driver hub with device 1-0:1.0
+[    1.209187] hub 1-0:1.0: USB hub found
+[    1.211876] hub 1-0:1.0: 5 ports detected
+[    1.214582] device: 'port1': device_add
+[    1.217274] device: 'port2': device_add
+[    1.219898] device: 'port3': device_add
+[    1.222462] device: 'port4': device_add
+[    1.225035] device: 'port5': device_add
+[    1.227617] driver: 'hub': driver_bound: bound to device '1-0:1.0'
+[    1.230190] bus: 'usb': really_probe: bound device 1-0:1.0 to driver hub
+[    1.232808] device: 'ep_81': device_add
+[    1.235467] driver: 'usb': driver_bound: bound to device 'usb1'
+[    1.238144] bus: 'usb': really_probe: bound device usb1 to driver usb
+[    1.240813] device: 'ep_00': device_add
+[    1.243477] driver: 'ehci-pci': driver_bound: bound to device '0000:00:12.2'
+[    1.246139] bus: 'pci': really_probe: bound device 0000:00:12.2 to driver ehci-pci
+[    1.248814] bus: 'pci': driver_probe_device: matched device 0000:00:13.2 with driver ehci-pci
+[    1.251522] bus: 'pci': really_probe: probing driver ehci-pci with device 0000:00:13.2
+[    1.254645] ehci-pci 0000:00:13.2: enabling bus mastering
+[    1.257402] ehci-pci 0000:00:13.2: EHCI Host Controller
+[    1.260078] ehci-pci 0000:00:13.2: new USB bus registered, assigned bus number 2
+[    1.262720] ehci-pci 0000:00:13.2: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+[    1.265379] ehci-pci 0000:00:13.2: debug port 1
+[    1.268013] ehci-pci 0000:00:13.2: irq 17, io mem 0xf014a800
+[    1.276080] ehci-pci 0000:00:13.2: USB 2.0 started, EHCI 1.00
+[    1.278737] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002
+[    1.281327] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.283892] usb usb2: Product: EHCI Host Controller
+[    1.286398] usb usb2: Manufacturer: Linux 3.15.4-1-MANJARO ehci_hcd
+[    1.288843] usb usb2: SerialNumber: 0000:00:13.2
+[    1.291288] device: 'usb2': device_add
+[    1.293939] bus: 'usb': add device usb2
+[    1.296350] bus: 'usb': driver_probe_device: matched device usb2 with driver usb
+[    1.298781] bus: 'usb': really_probe: probing driver usb with device usb2
+[    1.301234] device: '2-0:1.0': device_add
+[    1.303690] bus: 'usb': add device 2-0:1.0
+[    1.306086] bus: 'usb': driver_probe_device: matched device 2-0:1.0 with driver hub
+[    1.308563] bus: 'usb': really_probe: probing driver hub with device 2-0:1.0
+[    1.311030] hub 2-0:1.0: USB hub found
+[    1.313489] hub 2-0:1.0: 5 ports detected
+[    1.316021] device: 'port1': device_add
+[    1.318480] device: 'port2': device_add
+[    1.320942] device: 'port3': device_add
+[    1.323420] device: 'port4': device_add
+[    1.325835] device: 'port5': device_add
+[    1.328249] driver: 'hub': driver_bound: bound to device '2-0:1.0'
+[    1.330617] bus: 'usb': really_probe: bound device 2-0:1.0 to driver hub
+[    1.332988] device: 'ep_81': device_add
+[    1.335351] driver: 'usb': driver_bound: bound to device 'usb2'
+[    1.337712] bus: 'usb': really_probe: bound device usb2 to driver usb
+[    1.340131] device: 'ep_00': device_add
+[    1.342558] driver: 'ehci-pci': driver_bound: bound to device '0000:00:13.2'
+[    1.345064] bus: 'pci': really_probe: bound device 0000:00:13.2 to driver ehci-pci
+[    1.347663] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[    1.350311] bus: 'pci': add driver xhci_hcd
+[    1.353010] bus: 'usb': add driver usb-storage
+[    1.355681] usbcore: registered new interface driver usb-storage
+[    1.358322] bus: 'usb': add driver ums-realtek
+[    1.360942] usbcore: registered new interface driver ums-realtek
+[    1.363584] bus: 'pnp': add driver i8042 kbd
+[    1.366161] bus: 'pnp': driver_probe_device: matched device 00:07 with driver i8042 kbd
+[    1.368821] bus: 'pnp': really_probe: probing driver i8042 kbd with device 00:07
+[    1.371487] driver: 'i8042 kbd': driver_bound: bound to device '00:07'
+[    1.374135] bus: 'pnp': really_probe: bound device 00:07 to driver i8042 kbd
+[    1.376789] bus: 'pnp': add driver i8042 aux
+[    1.379398] bus: 'pnp': driver_probe_device: matched device 00:08 with driver i8042 aux
+[    1.382033] bus: 'pnp': really_probe: probing driver i8042 aux with device 00:08
+[    1.384702] driver: 'i8042 aux': driver_bound: bound to device '00:08'
+[    1.387371] bus: 'pnp': really_probe: bound device 00:08 to driver i8042 aux
+[    1.390052] i8042: PNP: PS/2 Controller [PNP0303:KBD0,PNP0f13:PS2M] at 0x60,0x64 irq 1,12
+[    1.393673] Registering platform device 'i8042'. Parent at platform
+[    1.396405] device: 'i8042': device_add
+[    1.399103] bus: 'platform': add device i8042
+[    1.401836] bus: 'platform': add driver i8042
+[    1.404519] bus: 'platform': driver_probe_device: matched device i8042 with driver i8042
+[    1.407229] bus: 'platform': really_probe: probing driver i8042 with device i8042
+[    1.416157] ata3: SATA link down (SStatus 0 SControl 300)
+[    1.430465] serio: i8042 KBD port at 0x60,0x64 irq 1
+[    1.433315] device: 'serio0': device_add
+[    1.436049] bus: 'serio': add device serio0
+[    1.436118] serio: i8042 AUX port at 0x60,0x64 irq 12
+[    1.436129] driver: 'i8042': driver_bound: bound to device 'i8042'
+[    1.436132] bus: 'platform': really_probe: bound device i8042 to driver i8042
+[    1.436184] device: 'mice': device_add
+[    1.436422] device: 'psaux': device_add
+[    1.436571] mousedev: PS/2 mouse device common for all mice
+[    1.436585] device: 'event0': device_add
+[    1.436830] device: 'event1': device_add
+[    1.437112] device: 'event2': device_add
+[    1.437294] device: 'event3': device_add
+[    1.437447] device: 'event4': device_add
+[    1.437521] bus: 'serio': add driver atkbd
+[    1.437606] bus: 'serio': add driver psmouse
+[    1.437634] bus: 'pnp': add driver rtc_cmos
+[    1.437642] bus: 'pnp': driver_probe_device: matched device 00:03 with driver rtc_cmos
+[    1.437643] bus: 'pnp': really_probe: probing driver rtc_cmos with device 00:03
+[    1.437664] rtc_cmos 00:03: RTC can wake from S4
+[    1.437746] device: 'rtc0': device_add
+[    1.437853] rtc rtc0: rtc_cmos: dev (254:0)
+[    1.437865] rtc_cmos 00:03: rtc core: registered rtc_cmos as rtc0
+[    1.437934] rtc_cmos 00:03: alarms up to one month, 114 bytes nvram, hpet irqs
+[    1.437936] driver: 'rtc_cmos': driver_bound: bound to device '00:03'
+[    1.437938] bus: 'pnp': really_probe: bound device 00:03 to driver rtc_cmos
+[    1.437958] bus: 'i2c': add driver smbus_alert
+[    1.437979] i2c-core: driver [smbus_alert] registered
+[    1.437984] bus: 'pci': add driver piix4_smbus
+[    1.437994] bus: 'pci': driver_probe_device: matched device 0000:00:14.0 with driver piix4_smbus
+[    1.437995] bus: 'pci': really_probe: probing driver piix4_smbus with device 0000:00:14.0
+[    1.438052] ACPI Warning: SystemIO range 0x0000000000000b00-0x0000000000000b07 conflicts with OpRegion 0x0000000000000b00-0x0000000000000b0f (\_SB_.PCI0.SMB_.SMB0) (20140214/utaddress-258)
+[    1.438054] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+[    1.438060] piix4_smbus: probe of 0000:00:14.0 rejects match -19
+[    1.438084] bus: 'pci': add driver k10temp
+[    1.438091] bus: 'pci': driver_probe_device: matched device 0000:00:18.3 with driver k10temp
+[    1.438092] bus: 'pci': really_probe: probing driver k10temp with device 0000:00:18.3
+[    1.438112] device: 'hwmon1': device_add
+[    1.438138] driver: 'k10temp': driver_bound: bound to device '0000:00:18.3'
+[    1.438139] bus: 'pci': really_probe: bound device 0000:00:18.3 to driver k10temp
+[    1.438289] device: 'device-mapper': device_add
+[    1.438371] device-mapper: ioctl: 4.27.0-ioctl (2013-10-30) initialised: dm-devel@redhat.com
+[    1.438386] AMD64 EDAC driver v3.4.0
+[    1.438403] bus: 'pci': add driver amd64_edac
+[    1.438438] bus: 'pci': remove driver amd64_edac
+[    1.438444] driver: 'amd64_edac': driver_release
+[    1.438461] bus: 'hid': registered
+[    1.438463] device class 'hidraw': registering
+[    1.438470] hidraw: raw HID events driver (C) Jiri Kosina
+[    1.438479] bus: 'hid': add driver a4tech
+[    1.438488] bus: 'hid': add driver apple
+[    1.438498] bus: 'hid': add driver belkin
+[    1.438505] bus: 'hid': add driver cherry
+[    1.438516] bus: 'hid': add driver chicony
+[    1.438522] bus: 'hid': add driver cypress
+[    1.438529] bus: 'hid': add driver ezkey
+[    1.438536] bus: 'hid': add driver kensington
+[    1.438545] bus: 'hid': add driver logitech
+[    1.438552] bus: 'hid': add driver microsoft
+[    1.438560] bus: 'hid': add driver monterey
+[    1.438607] device class 'powercap': registering
+[    1.438628] Netfilter messages via NETLINK v0.30.
+[    1.438705] TCP: cubic registered
+[    1.438709] NET: Registered protocol family 17
+[    1.438732] bus: 'machinecheck': registered
+[    1.438734] device: 'machinecheck': device_add
+[    1.438747] device: 'machinecheck0': device_add
+[    1.438750] bus: 'machinecheck': add device machinecheck0
+[    1.438782] device: 'machinecheck1': device_add
+[    1.438785] bus: 'machinecheck': add device machinecheck1
+[    1.438812] device: 'machinecheck2': device_add
+[    1.438815] bus: 'machinecheck': add device machinecheck2
+[    1.438843] device: 'machinecheck3': device_add
+[    1.438846] bus: 'machinecheck': add device machinecheck3
+[    1.438877] device: 'mcelog': device_add
+[    1.439102] device: 'cpu_dma_latency': device_add
+[    1.439206] device: 'network_latency': device_add
+[    1.439255] device: 'network_throughput': device_add
+[    1.439359] Loading compiled-in X.509 certificates
+[    1.439384] registered taskstats version 1
+[    1.442869] Key type encrypted registered
+[    1.445272] ima: No TPM chip found, activating TPM-bypass!
+[    1.572129] ata2: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+[    1.572487] ata2.00: ATA-7: INTEL SSDSA2M080G2GC, 2CV102M3, max UDMA/133
+[    1.572489] ata2.00: 156301488 sectors, multi 16: LBA48 NCQ (depth 31/32)
+[    1.573071] ata2.00: configured for UDMA/133
+[    1.573504] scsi 1:0:0:0: Direct-Access     ATA      INTEL SSDSA2M080 2CV1 PQ: 0 ANSI: 5
+[    1.573733] device: 'target1:0:0': device_add
+[    1.573749] bus: 'scsi': add device target1:0:0
+[    1.573789] device: '1:0:0:0': device_add
+[    1.573827] bus: 'scsi': add device 1:0:0:0
+[    1.573838] bus: 'scsi': driver_probe_device: matched device 1:0:0:0 with driver sd
+[    1.573839] bus: 'scsi': really_probe: probing driver sd with device 1:0:0:0
+[    1.573857] device: '1:0:0:0': device_add
+[    1.573885] driver: 'sd': driver_bound: bound to device '1:0:0:0'
+[    1.573887] bus: 'scsi': really_probe: bound device 1:0:0:0 to driver sd
+[    1.573888] device: '1:0:0:0': device_add
+[    1.573910] device: 'sg0': device_add
+[    1.573963] sd 1:0:0:0: Attached scsi generic sg0 type 0
+[    1.573965] device: '1:0:0:0': device_add
+[    1.574143] sd 1:0:0:0: [sda] 156301488 512-byte logical blocks: (80.0 GB/74.5 GiB)
+[    1.574328] sd 1:0:0:0: [sda] Write Protect is off
+[    1.574331] sd 1:0:0:0: [sda] Mode Sense: 00 3a 00 00
+[    1.574387] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    1.574395] device: '8:0': device_add
+[    1.574432] device: 'sda': device_add
+[    1.575247]  sda: sda1 sda2
+[    1.575253] device: 'sda1': device_add
+[    1.575334] device: 'sda2': device_add
+[    1.575705] sd 1:0:0:0: [sda] Attached SCSI disk
+[    1.579133] ata4: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+[    1.581143] ata4.00: supports DRM functions and may not be fully accessible
+[    1.581212] ata4.00: failed to get NCQ Send/Recv Log Emask 0x1
+[    1.581213] ata4.00: ATA-9: Samsung SSD 840 EVO 1TB, EXT0BB6Q, max UDMA/133
+[    1.581215] ata4.00: 1953525168 sectors, multi 1: LBA48 NCQ (depth 31/32), AA
+[    1.581540] ata4.00: supports DRM functions and may not be fully accessible
+[    1.581610] ata4.00: failed to get NCQ Send/Recv Log Emask 0x1
+[    1.581616] ata4.00: configured for UDMA/133
+[    1.581935] scsi 3:0:0:0: Direct-Access     ATA      Samsung SSD 840  EXT0 PQ: 0 ANSI: 5
+[    1.582120] device: 'target3:0:0': device_add
+[    1.582135] bus: 'scsi': add device target3:0:0
+[    1.582172] device: '3:0:0:0': device_add
+[    1.582196] bus: 'scsi': add device 3:0:0:0
+[    1.582207] bus: 'scsi': driver_probe_device: matched device 3:0:0:0 with driver sd
+[    1.582208] bus: 'scsi': really_probe: probing driver sd with device 3:0:0:0
+[    1.582223] device: '3:0:0:0': device_add
+[    1.582255] driver: 'sd': driver_bound: bound to device '3:0:0:0'
+[    1.582257] bus: 'scsi': really_probe: bound device 3:0:0:0 to driver sd
+[    1.582258] device: '3:0:0:0': device_add
+[    1.582280] device: 'sg1': device_add
+[    1.582362] sd 3:0:0:0: Attached scsi generic sg1 type 0
+[    1.582370] device: '3:0:0:0': device_add
+[    1.582485] sd 3:0:0:0: [sdb] 1953525168 512-byte logical blocks: (1.00 TB/931 GiB)
+[    1.582655] sd 3:0:0:0: [sdb] Write Protect is off
+[    1.582658] sd 3:0:0:0: [sdb] Mode Sense: 00 3a 00 00
+[    1.582717] sd 3:0:0:0: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[    1.582723] device: '8:16': device_add
+[    1.582763] device: 'sdb': device_add
+[    1.583568]  sdb: sdb1
+[    1.583587] device: 'sdb1': device_add
+[    1.583951] sd 3:0:0:0: [sdb] Attached SCSI disk
+[    1.777091] bus: 'serio': driver_probe_device: matched device serio0 with driver atkbd
+[    1.779735] bus: 'serio': really_probe: probing driver atkbd with device serio0
+[    1.779862] acpi-cpufreq: overriding BIOS provided _PSD data
+[    1.786809] Freeing unused kernel memory: 900K (ffffffff960c2000 - ffffffff961a3000)
+[    1.789555] Write protecting the kernel read-only data: 10240k
+[    1.792464] Testing CPA: undo ffffffff95600000-ffffffff96000000
+[    1.795327] Testing CPA: again
+[    1.799684] Freeing unused kernel memory: 316K (ffff880015bb1000 - ffff880015c00000)
+[    1.810976] Freeing unused kernel memory: 2024K (ffff880015e06000 - ffff880016000000)
+[    1.816460] device: 'input5': device_add
+[    1.820631] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input5
+[    1.824675] device: 'event5': device_add
+[    1.828799] driver: 'atkbd': driver_bound: bound to device 'serio0'
+[    1.832876] bus: 'serio': really_probe: bound device serio0 to driver atkbd
+[    1.832883] device: 'serio1': device_add
+[    1.832916] bus: 'serio': add device serio1
+[    1.832952] bus: 'serio': driver_probe_device: matched device serio1 with driver atkbd
+[    1.832955] bus: 'serio': really_probe: probing driver atkbd with device serio1
+[    1.842516] atkbd: probe of serio1 rejects match -19
+[    1.842521] bus: 'serio': driver_probe_device: matched device serio1 with driver psmouse
+[    1.842523] bus: 'serio': really_probe: probing driver psmouse with device serio1
+[    1.868083] random: systemd-tmpfile urandom read with 29 bits of entropy available
+[    1.876331] systemd-udevd[898]: starting version 214
+[    1.887229] usb 2-1: new high-speed USB device number 2 using ehci-pci
+[    1.895893] lvmetad (900) used greatest stack depth: 13560 bytes left
+[    1.900774] sha256_ssse3: Neither AVX nor SSSE3 is available/usable.
+[    1.924403] sha512_ssse3: Neither AVX nor SSSE3 is available/usable.
+[    2.004803] ata_id (1222) used greatest stack depth: 13528 bytes left
+[    2.006793] usb 2-1: New USB device found, idVendor=0bda, idProduct=0139
+[    2.006798] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[    2.006801] usb 2-1: Product: USB2.0-CRW
+[    2.006804] usb 2-1: Manufacturer: Generic
+[    2.006807] usb 2-1: SerialNumber: 20100201396000000
+[    2.006817] device: '2-1': device_add
+[    2.006988] bus: 'usb': add device 2-1
+[    2.007119] bus: 'usb': driver_probe_device: matched device 2-1 with driver usb
+[    2.007121] bus: 'usb': really_probe: probing driver usb with device 2-1
+[    2.008148] device: '2-1:1.0': device_add
+[    2.008175] bus: 'usb': add device 2-1:1.0
+[    2.008339] device: 'ep_01': device_add
+[    2.008372] device: 'ep_82': device_add
+[    2.008407] device: 'ep_83': device_add
+[    2.008436] driver: 'usb': driver_bound: bound to device '2-1'
+[    2.008444] bus: 'usb': really_probe: bound device 2-1 to driver usb
+[    2.008455] device: 'ep_00': device_add
+[    2.072204] ohci-pci: OHCI PCI platform driver
+[    2.075175] bus: 'pci': add driver ohci-pci
+[    2.078048] bus: 'pci': driver_probe_device: matched device 0000:00:12.0 with driver ohci-pci
+[    2.081022] bus: 'pci': really_probe: probing driver ohci-pci with device 0000:00:12.0
+[    2.085754] ohci-pci 0000:00:12.0: enabling bus mastering
+[    2.089347] ohci-pci 0000:00:12.0: OHCI PCI host controller
+[    2.092948] ohci-pci 0000:00:12.0: new USB bus registered, assigned bus number 3
+[    2.096576] ohci-pci 0000:00:12.0: irq 18, io mem 0xf0149000
+[    2.110273] usb 2-3: new high-speed USB device number 3 using ehci-pci
+[    2.154462] usb usb3: New USB device found, idVendor=1d6b, idProduct=0001
+[    2.158618] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    2.162634] usb usb3: Product: OHCI PCI host controller
+[    2.166566] usb usb3: Manufacturer: Linux 3.15.4-1-MANJARO ohci_hcd
+[    2.169167] usb usb3: SerialNumber: 0000:00:12.0
+[    2.171830] device: 'usb3': device_add
+[    2.174771] bus: 'usb': add device usb3
+[    2.177391] bus: 'usb': driver_probe_device: matched device usb3 with driver usb
+[    2.180044] bus: 'usb': really_probe: probing driver usb with device usb3
+[    2.182669] device: '3-0:1.0': device_add
+[    2.185277] bus: 'usb': add device 3-0:1.0
+[    2.187847] bus: 'usb': driver_probe_device: matched device 3-0:1.0 with driver hub
+[    2.190434] bus: 'usb': really_probe: probing driver hub with device 3-0:1.0
+[    2.192993] hub 3-0:1.0: USB hub found
+[    2.195534] hub 3-0:1.0: 5 ports detected
+[    2.198024] device: 'port1': device_add
+[    2.200494] device: 'port2': device_add
+[    2.202905] device: 'port3': device_add
+[    2.205307] device: 'port4': device_add
+[    2.207677] device: 'port5': device_add
+[    2.210050] driver: 'hub': driver_bound: bound to device '3-0:1.0'
+[    2.212327] bus: 'usb': really_probe: bound device 3-0:1.0 to driver hub
+[    2.214647] device: 'ep_81': device_add
+[    2.216974] driver: 'usb': driver_bound: bound to device 'usb3'
+[    2.219261] bus: 'usb': really_probe: bound device usb3 to driver usb
+[    2.221628] device: 'ep_00': device_add
+[    2.224047] driver: 'ohci-pci': driver_bound: bound to device '0000:00:12.0'
+[    2.226475] bus: 'pci': really_probe: bound device 0000:00:12.0 to driver ohci-pci
+[    2.228953] bus: 'pci': driver_probe_device: matched device 0000:00:13.0 with driver ohci-pci
+[    2.231453] bus: 'pci': really_probe: probing driver ohci-pci with device 0000:00:13.0
+[    2.234281] ohci-pci 0000:00:13.0: enabling bus mastering
+[    2.236745] ohci-pci 0000:00:13.0: OHCI PCI host controller
+[    2.239203] ohci-pci 0000:00:13.0: new USB bus registered, assigned bus number 4
+[    2.241720] ohci-pci 0000:00:13.0: irq 18, io mem 0xf0148000
+[    2.299423] usb usb4: New USB device found, idVendor=1d6b, idProduct=0001
+[    2.303255] usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    2.305777] usb usb4: Product: OHCI PCI host controller
+[    2.308346] usb usb4: Manufacturer: Linux 3.15.4-1-MANJARO ohci_hcd
+[    2.310922] usb usb4: SerialNumber: 0000:00:13.0
+[    2.313496] device: 'usb4': device_add
+[    2.316299] bus: 'usb': add device usb4
+[    2.318855] bus: 'usb': driver_probe_device: matched device usb4 with driver usb
+[    2.321400] bus: 'usb': really_probe: probing driver usb with device usb4
+[    2.323923] device: '4-0:1.0': device_add
+[    2.326438] bus: 'usb': add device 4-0:1.0
+[    2.328957] bus: 'usb': driver_probe_device: matched device 4-0:1.0 with driver hub
+[    2.331520] bus: 'usb': really_probe: probing driver hub with device 4-0:1.0
+[    2.334079] hub 4-0:1.0: USB hub found
+[    2.336602] hub 4-0:1.0: 5 ports detected
+[    2.339097] device: 'port1': device_add
+[    2.341568] device: 'port2': device_add
+[    2.342702] usb 2-3: New USB device found, idVendor=5986, idProduct=0364
+[    2.342708] usb 2-3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    2.342712] usb 2-3: Product: Lenovo EasyCamera
+[    2.342715] usb 2-3: Manufacturer: Bison Electronics Inc.
+[    2.342724] device: '2-3': device_add
+[    2.343113] bus: 'usb': add device 2-3
+[    2.343225] bus: 'usb': driver_probe_device: matched device 2-3 with driver usb
+[    2.343227] bus: 'usb': really_probe: probing driver usb with device 2-3
+[    2.343943] device: '2-3:1.0': device_add
+[    2.343994] bus: 'usb': add device 2-3:1.0
+[    2.368336] device: 'port3': device_add
+[    2.370756] device: 'port4': device_add
+[    2.373160] device: 'port5': device_add
+[    2.375596] driver: 'hub': driver_bound: bound to device '4-0:1.0'
+[    2.378042] bus: 'usb': really_probe: bound device 4-0:1.0 to driver hub
+[    2.380559] device: 'ep_81': device_add
+[    2.383120] driver: 'usb': driver_bound: bound to device 'usb4'
+[    2.385681] bus: 'usb': really_probe: bound device usb4 to driver usb
+[    2.388251] device: 'ep_00': device_add
+[    2.390803] driver: 'ohci-pci': driver_bound: bound to device '0000:00:13.0'
+[    2.393390] bus: 'pci': really_probe: bound device 0000:00:13.0 to driver ohci-pci
+[    2.515389] device: 'ep_87': device_add
+[    2.519273] device: '2-3:1.1': device_add
+[    2.523082] bus: 'usb': add device 2-3:1.1
+[    2.525580] driver: 'usb': driver_bound: bound to device '2-3'
+[    2.528089] bus: 'usb': really_probe: bound device 2-3 to driver usb
+[    2.530603] device: 'ep_00': device_add
+[    2.635443] usb 2-4: new high-speed USB device number 4 using ehci-pci
+[    2.755078] usb 2-4: New USB device found, idVendor=1a40, idProduct=0101
+[    2.758890] usb 2-4: New USB device strings: Mfr=0, Product=1, SerialNumber=0
+[    2.762600] usb 2-4: Product: USB 2.0 Hub
+[    2.766235] device: '2-4': device_add
+[    2.768914] bus: 'usb': add device 2-4
+[    2.771420] bus: 'usb': driver_probe_device: matched device 2-4 with driver usb
+[    2.773966] bus: 'usb': really_probe: probing driver usb with device 2-4
+[    2.777255] device: '2-4:1.0': device_add
+[    2.779756] bus: 'usb': add device 2-4:1.0
+[    2.782306] bus: 'usb': driver_probe_device: matched device 2-4:1.0 with driver hub
+[    2.784858] bus: 'usb': really_probe: probing driver hub with device 2-4:1.0
+[    2.787441] hub 2-4:1.0: USB hub found
+[    2.790493] hub 2-4:1.0: 4 ports detected
+[    2.794083] device: 'port1': device_add
+[    2.796595] device: 'port2': device_add
+[    2.799040] device: 'port3': device_add
+[    2.801382] device: 'port4': device_add
+[    2.804750] driver: 'hub': driver_bound: bound to device '2-4:1.0'
+[    2.807595] bus: 'usb': really_probe: bound device 2-4:1.0 to driver hub
+[    2.810487] device: 'ep_81': device_add
+[    2.813362] driver: 'usb': driver_bound: bound to device '2-4'
+[    2.816196] bus: 'usb': really_probe: bound device 2-4 to driver usb
+[    2.819093] device: 'ep_00': device_add
+[    2.884902] psmouse serio1: synaptics: Touchpad model: 1, fw: 7.5, id: 0x1e0b1, caps: 0xd00073/0x240000/0xa0400, board id: 1695, fw id: 739436
+[    2.951915] device: 'input7': device_add
+[    2.956100] input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input7
+[    2.960144] device: 'mouse0': device_add
+[    2.964391] device: 'event6': device_add
+[    2.971810] driver: 'psmouse': driver_bound: bound to device 'serio1'
+[    2.975644] bus: 'serio': really_probe: bound device serio1 to driver psmouse
+[    3.302390] usb 3-3: new full-speed USB device number 2 using ohci-pci
+[    3.461377] usb 3-3: New USB device found, idVendor=0458, idProduct=00f2
+[    3.465479] usb 3-3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    3.469440] usb 3-3: Product: 2.4G Wireless BlueEye Mouse
+[    3.473324] usb 3-3: Manufacturer: Genius
+[    3.475907] device: '3-3': device_add
+[    3.478704] bus: 'usb': add device 3-3
+[    3.481296] bus: 'usb': driver_probe_device: matched device 3-3 with driver usb
+[    3.483908] bus: 'usb': really_probe: probing driver usb with device 3-3
+[    3.487368] device: '3-3:1.0': device_add
+[    3.489974] bus: 'usb': add device 3-3:1.0
+[    3.492529] device: 'ep_82': device_add
+[    3.495079] driver: 'usb': driver_bound: bound to device '3-3'
+[    3.498143] bus: 'usb': really_probe: bound device 3-3 to driver usb
+[    3.501239] device: 'ep_00': device_add
+[    3.504561] bus: 'usb': add driver usbhid
+[    3.508492] bus: 'usb': driver_probe_device: matched device 3-3:1.0 with driver usbhid
+[    3.512394] bus: 'usb': really_probe: probing driver usbhid with device 3-3:1.0
+[    3.520594] device: '0003:0458:00F2.0001': device_add
+[    3.524648] bus: 'hid': add device 0003:0458:00F2.0001
+[    3.527949] driver: 'usbhid': driver_bound: bound to device '3-3:1.0'
+[    3.531182] bus: 'usb': really_probe: bound device 3-3:1.0 to driver usbhid
+[    3.534455] usbcore: registered new interface driver usbhid
+[    3.537083] usbhid: USB HID core driver
+[    3.540806] bus: 'hid': add driver hid-generic
+[    3.543413] bus: 'hid': driver_probe_device: matched device 0003:0458:00F2.0001 with driver hid-generic
+[    3.546130] bus: 'hid': really_probe: probing driver hid-generic with device 0003:0458:00F2.0001
+[    3.549368] device: 'input8': device_add
+[    3.552244] input: Genius 2.4G Wireless BlueEye Mouse as /devices/pci0000:00/0000:00:12.0/usb3/3-3/3-3:1.0/0003:0458:00F2.0001/input/input8
+[    3.558111] device: 'mouse1': device_add
+[    3.561275] device: 'event7': device_add
+[    3.564398] device class 'usbmisc': registering
+[    3.567275] device: 'hiddev0': device_add
+[    3.570325] device: 'hidraw0': device_add
+[    3.573331] hid-generic 0003:0458:00F2.0001: input,hiddev0,hidraw0: USB HID v1.11 Mouse [Genius 2.4G Wireless BlueEye Mouse] on usb-0000:00:12.0-3/input0
+[    3.579255] driver: 'hid-generic': driver_bound: bound to device '0003:0458:00F2.0001'
+[    3.582372] bus: 'hid': really_probe: bound device 0003:0458:00F2.0001 to driver hid-generic
+[    6.046108] device: '254:0': device_add
+[    6.049319] device: 'dm-0': device_add
+[    6.080050] device: '254:0': device_unregister
+[    6.084593] device: '254:0': device_create_release
+[    8.257203] device: '254:0': device_add
+[    8.259477] random: nonblocking pool is initialized
+[    8.262996] device: 'dm-0': device_add
+[    8.282084] device: '254:0': device_unregister
+[    8.286400] device: '254:0': device_create_release
+[    8.585647] device: '254:0': device_add
+[    8.588581] device: 'dm-0': device_add
+[    8.621725] cryptsetup (1452) used greatest stack depth: 13464 bytes left
+[    9.064616] device: '254:1': device_add
+[    9.067597] device: 'dm-1': device_add
+[    9.071668] device: '254:2': device_add
+[    9.074403] device: 'dm-2': device_add
+[    9.481746] EXT4-fs (dm-1): mounted filesystem with ordered data mode. Opts: (null)
+[    9.486462] mount (1556) used greatest stack depth: 13320 bytes left
+[    9.506893] systemd-udevd (918) used greatest stack depth: 12264 bytes left
+[    9.704796] systemd[1]: systemd 214 running in system mode. (+PAM -AUDIT -SELINUX -IMA -SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP -APPARMOR)
+[    9.714104] systemd[1]: Detected architecture 'x86-64'.
+[    9.763244] systemd[1]: Failed to insert module 'autofs4'
+[    9.767714] systemd[1]: Failed to insert module 'ipv6'
+[    9.772876] systemd[1]: Set hostname to <manji>.
+[    9.984447] systemd[1]: Starting Forward Password Requests to Wall Directory Watch.
+[    9.988697] systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+[    9.992627] systemd[1]: Starting Remote File Systems.
+[    9.999238] systemd[1]: Reached target Remote File Systems.
+[   10.002055] systemd[1]: Starting Dispatch Password Requests to Console Directory Watch.
+[   10.004998] systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+[   10.007895] systemd[1]: Starting Paths.
+[   10.013789] systemd[1]: Reached target Paths.
+[   10.016543] systemd[1]: Starting Encrypted Volumes.
+[   10.021991] systemd[1]: Reached target Encrypted Volumes.
+[   10.024657] systemd[1]: Starting Arbitrary Executable File Formats File System Automount Point.
+[   10.027356] systemd[1]: Failed to open /dev/autofs: No such file or directory
+[   10.030090] systemd[1]: Failed to initialize automounter: No such file or directory
+[   10.038975] systemd[1]: Failed to set up automount Arbitrary Executable File Formats File System Automount Point.
+[   10.042028] systemd[1]: Unit proc-sys-fs-binfmt_misc.automount entered failed state.
+[   10.045095] systemd[1]: Starting Swap.
+[   10.051317] systemd[1]: Reached target Swap.
+[   10.054386] systemd[1]: Expecting device dev-disk-by\x2duuid-13750594\x2d5d0d\x2d41be\x2d9e21\x2d274609445286.device...
+[   10.061194] systemd[1]: Expecting device dev-disk-by\x2duuid-0708e2ae\x2d32bf\x2d4e5b\x2dad0b\x2da140b5e9adf0.device...
+[   10.068098] systemd[1]: Starting Root Slice.
+[   10.086603] systemd[1]: Created slice Root Slice.
+[   10.090054] systemd[1]: Starting Delayed Shutdown Socket.
+[   10.097138] systemd[1]: Listening on Delayed Shutdown Socket.
+[   10.100509] systemd[1]: Starting Device-mapper event daemon FIFOs.
+[   10.107412] systemd[1]: Listening on Device-mapper event daemon FIFOs.
+[   10.110752] systemd[1]: Starting /dev/initctl Compatibility Named Pipe.
+[   10.117772] systemd[1]: Listening on /dev/initctl Compatibility Named Pipe.
+[   10.121120] systemd[1]: Starting Journal Socket (/dev/log).
+[   10.127806] systemd[1]: Listening on Journal Socket (/dev/log).
+[   10.131094] systemd[1]: Starting Syslog Socket.
+[   10.137842] systemd[1]: Listening on Syslog Socket.
+[   10.141178] systemd[1]: Starting LVM2 metadata daemon socket.
+[   10.148153] systemd[1]: Listening on LVM2 metadata daemon socket.
+[   10.151570] systemd[1]: Starting udev Kernel Socket.
+[   10.158537] systemd[1]: Listening on udev Kernel Socket.
+[   10.161931] systemd[1]: Starting udev Control Socket.
+[   10.168795] systemd[1]: Listening on udev Control Socket.
+[   10.172138] systemd[1]: Starting User and Session Slice.
+[   10.179182] systemd[1]: Created slice User and Session Slice.
+[   10.182553] systemd[1]: Starting Journal Socket.
+[   10.189500] systemd[1]: Listening on Journal Socket.
+[   10.192892] systemd[1]: Starting System Slice.
+[   10.199803] systemd[1]: Created slice System Slice.
+[   10.203102] systemd[1]: Started File System Check on Root Device.
+[   10.206325] systemd[1]: Starting system-systemd\x2dfsck.slice.
+[   10.213096] systemd[1]: Created slice system-systemd\x2dfsck.slice.
+[   10.216243] systemd[1]: Starting Remount Root and Kernel File Systems...
+[   10.223342] systemd[1]: Mounting Temporary Directory...
+[   10.232185] systemd[1]: Starting Set Up Additional Binary Formats...
+[   10.239728] systemd[1]: Starting Setup Virtual Console...
+[   10.250681] systemd[1]: Starting Apply Kernel Variables...
+[   10.258749] systemd[1]: Mounting POSIX Message Queue File System...
+[   10.265503] EXT4-fs (dm-1): re-mounted. Opts: data=ordered
+[   10.270418] systemd[1]: Starting udev Coldplug all Devices...
+[   10.279818] systemd[1]: Mounting Debug File System...
+[   10.290262] systemd[1]: Starting Load Kernel Modules...
+[   10.299478] systemd[1]: Starting Create list of required static device nodes for the current kernel...
+[   10.307328] systemd[1]: Mounting Huge Pages File System...
+[   10.314062] systemd[1]: Starting system-getty.slice.
+[   10.320541] systemd[1]: Created slice system-getty.slice.
+[   10.323659] systemd[1]: Starting Journal Service...
+[   10.335183] systemd[1]: Started Journal Service.
+[   10.406081] systemd[1]: Unit systemd-binfmt.service entered failed state.
+[   10.489626] fglrx: module license 'Proprietary. (C) 2002 - ATI Technologies, Starnberg, GERMANY' taints kernel.
+[   10.492809] Disabling lock debugging due to kernel taint
+[   10.495402] systemd-binfmt[1577]: Failed to add binary format: No such file or directory
+[   10.498974] device: 'vcs12': device_add
+[   10.499122] device: 'vcsa12': device_add
+[   10.518787] <6>[fglrx] Maximum main memory to use for locked dma buffers: 14150 MBytes.
+[   10.518923] <6>[fglrx]   vendor: 1002 device: 9647 count: 1
+[   10.519540] <6>[fglrx] ioport: bar 1, base 0x2000, size: 0x100
+[   10.520541] <6>[fglrx] Kernel PAT support is enabled
+[   10.520569] <6>[fglrx] module loaded - fglrx 14.10.2 [May  5 2014] with 1 minors
+[   10.557814] systemd-modules-load[1594]: Failed to find module 'nfs'
+[   10.566951] systemd[1]: systemd-modules-load.service: main process exited, code=exited, status=1/FAILURE
+[   10.572160] systemd[1]: Failed to start Load Kernel Modules.
+[   10.577213] systemd[1]: Unit systemd-modules-load.service entered failed state.
+[   10.597757] systemd-udevd[2156]: starting version 214
+[   10.744112] bus: 'pci': add driver shpchp
+[   10.747725] shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+[   10.755828] device class 'rfkill': registering
+[   10.760867] device class 'sound': registering
+[   10.763654] device: 'rfkill': device_add
+[   10.776188] net eth0: renaming to enp1s0
+[   10.782488] bus: 'serio': add driver serio_raw
+[   10.786890] bus: 'platform': add driver pcspkr
+[   10.788348] systemd-udevd[2161]: renamed network interface eth0 to enp1s0
+[   10.800987] device: 'timer': device_add
+[   10.807722] bus: 'platform': add driver ideapad_acpi
+[   10.807737] bus: 'platform': driver_probe_device: matched device VPC2004:00 with driver ideapad_acpi
+[   10.807739] bus: 'platform': really_probe: probing driver ideapad_acpi with device VPC2004:00
+[   10.813366] device: 'input9': device_add
+[   10.813459] input: Ideapad extra buttons as /devices/platform/VPC2004:00/input/input9
+[   10.813469] device: 'event8': device_add
+[   10.822772] device: 'rfkill0': device_add
+[   10.830068] driver: 'ideapad_acpi': driver_bound: bound to device 'VPC2004:00'
+[   10.830107] bus: 'platform': really_probe: bound device VPC2004:00 to driver ideapad_acpi
+[   10.841572] bus: 'platform': driver_probe_device: matched device pcspkr with driver pcspkr
+[   10.841575] bus: 'platform': really_probe: probing driver pcspkr with device pcspkr
+[   10.841586] device: 'input10': device_add
+[   10.841674] input: PC Speaker as /devices/platform/pcspkr/input/input10
+[   10.841685] device: 'event9': device_add
+[   10.842193] driver: 'pcspkr': driver_bound: bound to device 'pcspkr'
+[   10.842201] bus: 'platform': really_probe: bound device pcspkr to driver pcspkr
+[   10.875186] kvm: Nested Virtualization enabled
+[   10.878727] kvm: Nested Paging enabled
+[   10.882136] bus: 'pci': add driver snd_hda_intel
+[   10.882214] device: 'kvm': device_add
+[   10.888638] bus: 'pci': driver_probe_device: matched device 0000:00:01.1 with driver snd_hda_intel
+[   10.891927] bus: 'pci': really_probe: probing driver snd_hda_intel with device 0000:00:01.1
+[   10.895889] driver: 'snd_hda_intel': driver_bound: bound to device '0000:00:01.1'
+[   10.899167] snd_hda_intel 0000:00:01.1: irq 43 for MSI/MSI-X
+[   10.903657] bus: 'pci': really_probe: bound device 0000:00:01.1 to driver snd_hda_intel
+[   10.903667] bus: 'pci': driver_probe_device: matched device 0000:00:14.2 with driver snd_hda_intel
+[   10.903669] bus: 'pci': really_probe: probing driver snd_hda_intel with device 0000:00:14.2
+[   10.904307] driver: 'snd_hda_intel': driver_bound: bound to device '0000:00:14.2'
+[   10.904933] bus: 'pci': really_probe: bound device 0000:00:14.2 to driver snd_hda_intel
+[   10.933333] device: 'card0': device_add
+[   10.933413] device: 'controlC0': device_add
+[   10.933714] device: 'hdaudioC0D0': device_add
+[   10.933762] device: 'pcmC0D3p': device_add
+[   10.933883] device: 'hwC0D0': device_add
+[   10.933988] device: 'input11': device_add
+[   10.934146] input: HD-Audio Generic HDMI/DP,pcm=3 as /devices/pci0000:00/0000:00:01.1/sound/card0/input11
+[   10.934156] device: 'event10': device_add
+[   10.935363] sound hdaudioC1D0: autoconfig: line_outs=1 (0x14/0x0/0x0/0x0/0x0) type:speaker
+[   10.935366] sound hdaudioC1D0:    speaker_outs=0 (0x0/0x0/0x0/0x0/0x0)
+[   10.935369] sound hdaudioC1D0:    hp_outs=1 (0x21/0x0/0x0/0x0/0x0)
+[   10.935371] sound hdaudioC1D0:    mono: mono_out=0x0
+[   10.935373] sound hdaudioC1D0:    inputs:
+[   10.935376] sound hdaudioC1D0:      Internal Mic=0x19
+[   10.935378] sound hdaudioC1D0:      Mic=0x18
+[   10.945723] device: 'card1': device_add
+[   10.945794] device: 'controlC1': device_add
+[   10.946065] device: 'hdaudioC1D0': device_add
+[   10.946108] device: 'input12': device_add
+[   10.946178] input: HDA Digital PCBeep as /devices/pci0000:00/0000:00:14.2/sound/card1/hdaudioC1D0/input12
+[   10.946188] device: 'event11': device_add
+[   10.946306] device: 'pcmC1D0p': device_add
+[   10.946416] device: 'pcmC1D0c': device_add
+[   10.946523] device: 'hwC1D0': device_add
+[   10.946639] device: 'input13': device_add
+[   10.946699] input: HD-Audio Generic Mic as /devices/pci0000:00/0000:00:14.2/sound/card1/input13
+[   10.946703] device: 'event12': device_add
+[   10.946805] device: 'input14': device_add
+[   10.946864] input: HD-Audio Generic Headphone as /devices/pci0000:00/0000:00:14.2/sound/card1/input14
+[   10.946868] device: 'event13': device_add
+[   11.077219] EXT4-fs (sda1): mounting ext2 file system using the ext4 subsystem
+[   11.078322] EXT4-fs (sda1): warning: mounting unchecked fs, running e2fsck is recommended
+[   11.078928] EXT4-fs (sda1): mounted filesystem without journal. Opts: (null)
+[   11.188689] EXT4-fs (dm-2): mounted filesystem with ordered data mode. Opts: (null)
+[   11.234613] systemd-journald[1764]: Received request to flush runtime journal from PID 1
+[   12.117935] device: 'vcs2': device_add
+[   12.118130] device: 'vcsa2': device_add
+[   12.123422] device: 'vcs3': device_add
+[   12.123592] device: 'vcsa3': device_add
+[   12.132637] device: 'vcs4': device_add
+[   12.132733] device: 'vcsa4': device_add
+[   12.138323] device: 'vcs5': device_add
+[   12.138498] device: 'vcsa5': device_add
+[   12.143261] device: 'vcs6': device_add
+[   12.143350] device: 'vcsa6': device_add
+[   12.532089] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service'
+[   12.693504] polkitd[2665]: Loading rules from directory /etc/polkit-1/rules.d
+[   12.697891] polkitd[2665]: Loading rules from directory /usr/share/polkit-1/rules.d
+[   12.702118] polkitd[2665]: Finished loading, compiling and executing 2 rules
+[   12.710070] dbus[2362]: [system] Successfully activated service 'org.freedesktop.PolicyKit1'
+[   12.713382] polkitd[2665]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+[   12.717133] NetworkManager[2353]: keyfile: parsing Wired connection 1 ...
+[   12.738577] NetworkManager[2353]: keyfile:     read connection 'Wired connection 1'
+[   12.786678] __allocate_fw_buf: fw-rtl_nic/rtl8105e-1.fw buf=ffff8800bfa06080
+[   12.792177] r8169 0000:01:00.0: firmware: direct-loading firmware rtl_nic/rtl8105e-1.fw
+[   12.795732] fw_set_page_data: fw-rtl_nic/rtl8105e-1.fw buf=ffff8800bfa06080 data=ffffc900018fe000 size=2076
+[   12.800643] NetworkManager[2353]: <warn> failed to allocate link cache: (-26) Protocol mismatch
+[   12.812609] mdm-binary[2566]: DEBUG: Loading locale string: Welcome (null)
+[   12.819922] mdm-binary[2566]: DEBUG: Key file does not have key 'Welcome'
+[   12.823930] mdm-binary[2566]: DEBUG: Loading non-locale string: Welcome (null)
+[   12.828162] mdm-binary[2566]: DEBUG: Loading locale string: Welcome (null)
+[   12.832332] mdm-binary[2566]: DEBUG: Key file does not have key 'Welcome'
+[   12.836159] mdm-binary[2566]: DEBUG: Loading non-locale string: Welcome (null)
+[   12.839183] mdm-binary[2566]: DEBUG: Loading locale string: Welcome (null)
+[   12.842228] mdm-binary[2566]: DEBUG: Key file does not have key 'Welcome'
+[   12.845314] mdm-binary[2566]: DEBUG: Loading non-locale string: Welcome (null)
+[   12.848395] mdm-binary[2566]: DEBUG: server group server-Standard already exists, skipping
+[   12.851472] mdm-binary[2566]: DEBUG: server group server-Terminal already exists, skipping
+[   12.854500] mdm-binary[2566]: DEBUG: server group server-Chooser already exists, skipping
+[   12.861622] mdm-binary[2566]: DEBUG: Processing server group <server-Standard>
+[   12.864956] mdm-binary[2566]: DEBUG: Got config server-Standard/name=Standard server <distro>
+[   12.872978] mdm-binary[2566]: DEBUG: Got config server-Standard/command=/usr/bin/Xorg -audit 0 <distro>
+[   12.881798] mdm-binary[2566]: DEBUG: Got config server-Standard/flexible=true <distro>
+[   12.888862] mdm-binary[2566]: DEBUG: Got config server-Standard/choosable=false <built-in>
+[   12.898503] ntpd[2747]: ntpd 4.2.7p441@1.2483-o Tue May  6 10:14:26 UTC 2014 (1): Starting
+[   12.902789] mdm-binary[2566]: DEBUG: Got config server-Standard/handled=true <built-in>
+[   12.907701] mdm-binary[2566]: DEBUG: Got config server-Standard/priority=0 <built-in>
+[   12.912214] mdm-binary[2566]: DEBUG: Processing server group <server-Terminal>
+[   12.916615] mdm-binary[2566]: DEBUG: Got config server-Terminal/name=Terminal server <distro>
+[   12.920317] mdm-binary[2566]: DEBUG: Got config server-Terminal/command=/usr/bin/Xorg -audit 0 -terminate <distro>
+[   12.924647] mdm-binary[2566]: DEBUG: Got config server-Terminal/flexible=false <distro>
+[   12.928828] mdm-binary[2566]: DEBUG: Got config server-Terminal/choosable=false <built-in>
+[   12.932588] mdm-binary[2566]: DEBUG: Got config server-Terminal/handled=false <distro>
+[   12.936324] mdm-binary[2566]: DEBUG: Got config server-Terminal/priority=0 <built-in>
+[   12.939938] mdm-binary[2566]: DEBUG: Processing server group <server-Chooser>
+[   12.943477] mdm-binary[2566]: DEBUG: Got config server-Chooser/name=Chooser server <distro>
+[   12.947161] mdm-binary[2566]: DEBUG: Got config server-Chooser/command=/usr/bin/Xorg -audit 0 <distro>
+[   12.950738] mdm-binary[2566]: DEBUG: Got config server-Chooser/flexible=false <distro>
+[   12.954374] mdm-binary[2566]: DEBUG: Got config server-Chooser/choosable=false <built-in>
+[   12.957885] mdm-binary[2566]: DEBUG: Got config server-Chooser/handled=true <built-in>
+[   12.961325] mdm-binary[2566]: DEBUG: Got config server-Chooser/priority=0 <built-in>
+[   12.964683] mdm-binary[2566]: DEBUG: Got config servers/0=Standard device=/dev/console <distro>
+[   12.968124] mdm-binary[2566]: DEBUG: Loading display for key '0'
+[   12.971352] mdm-binary[2566]: DEBUG: mdm_main: Here we go...
+[   12.974398] r8169 0000:01:00.0 enp1s0: link down
+[   12.974663] mdm-binary[2566]: DEBUG: mdm_start_first_unborn_local: Starting :0
+[   12.981132] device class 'leds': registering
+[   12.984958] mdm-binary[2566]: DEBUG: mdm_display_manage: Managing :0
+[   12.989131] device: 'nvram': device_add
+[   12.992237] Non-volatile memory driver v1.3
+[   12.992759] mdm-binary[2566]: DEBUG: loop check: last_start 0, last_loop 0, now: 1404788498, retry_count: 0
+[   12.998915] mdm-binary[2566]: DEBUG: Resetting counts for loop of death detection
+[   13.003515] thinkpad_acpi: ThinkPad ACPI Extras v0.25
+[   13.003527] mdm-binary[2566]: DEBUG: Forking slave process
+[   13.010256] thinkpad_acpi: http://ibm-acpi.sf.net/
+[   13.013679] thinkpad_acpi: ThinkPad BIOS 54CN18WW, EC unknown
+[   13.013680] thinkpad_acpi: Lenovo LENOVO, model Sabine
+[   13.013920] bus: 'platform': add driver thinkpad_acpi
+[   13.013950] bus: 'platform': add driver thinkpad_hwmon
+[   13.013967] Registering platform device 'thinkpad_acpi'. Parent at platform
+[   13.013968] device: 'thinkpad_acpi': device_add
+[   13.013974] bus: 'platform': add device thinkpad_acpi
+[   13.013997] bus: 'platform': driver_probe_device: matched device thinkpad_acpi with driver thinkpad_acpi
+[   13.013999] bus: 'platform': really_probe: probing driver thinkpad_acpi with device thinkpad_acpi
+[   13.014013] driver: 'thinkpad_acpi': driver_bound: bound to device 'thinkpad_acpi'
+[   13.014015] bus: 'platform': really_probe: bound device thinkpad_acpi to driver thinkpad_acpi
+[   13.014019] Registering platform device 'thinkpad_hwmon'. Parent at platform
+[   13.014019] device: 'thinkpad_hwmon': device_add
+[   13.014022] bus: 'platform': add device thinkpad_hwmon
+[   13.014037] bus: 'platform': driver_probe_device: matched device thinkpad_hwmon with driver thinkpad_hwmon
+[   13.014038] bus: 'platform': really_probe: probing driver thinkpad_hwmon with device thinkpad_hwmon
+[   13.014041] driver: 'thinkpad_hwmon': driver_bound: bound to device 'thinkpad_hwmon'
+[   13.014042] bus: 'platform': really_probe: bound device thinkpad_hwmon to driver thinkpad_hwmon
+[   13.014046] device: 'hwmon2': device_add
+[   13.014114] thinkpad_acpi: detected a 8-level brightness capable ThinkPad
+[   13.014141] thinkpad_acpi: Standard ACPI backlight interface available, not loading native one
+[   13.014141] thinkpad_acpi: volume: disabled as there is no ALSA support in this kernel
+[   13.017199] device: 'input15': device_add
+[   13.017375] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input15
+[   13.017390] device: 'event14': device_add
+[   13.092704] mdm-binary[2566]: DEBUG: mdm_display_manage: Forked slave: 2775
+[   13.096398] mdm-binary[2775]: DEBUG: mdm_slave_start: Starting slave process for :0
+[   13.100080] mdm-binary[2775]: DEBUG: mdm_slave_start: Loop Thingie
+[   13.103673] mdm-binary[2775]: DEBUG: mdm_slave_child_handler: Handling children...
+[   13.107282] mdm-binary[2775]: DEBUG: Sending VT_NUM == -1 for slave 2775
+[   13.110905] mdm-binary[2566]: DEBUG: Got VT_NUM == -1
+[   13.113876] rts5139: module is from the staging directory, the quality is unknown, you have been warned.
+[   13.117639] mdm-binary[2775]: DEBUG: mdm_server_start: :0
+[   13.121077] bus: 'usb': add driver rts5139
+[   13.121434] mdm-binary[2775]: DEBUG: mdm_auth_secure_display: Setting up access for :0
+[   13.129092] bus: 'usb': driver_probe_device: matched device 2-1:1.0 with driver rts5139
+[   13.129238] mdm-binary[2775]: DEBUG: mdm_auth_secure_display: Setting up access
+[   13.137386] device: 'vcs7': device_add
+[   13.137534] device: 'vcsa7': device_add
+[   13.137724] bus: 'usb': really_probe: probing driver rts5139 with device 2-1:1.0
+[   13.149974] mdm-binary[2775]: DEBUG: mdm_auth_secure_display: Setting up access for :0 - 1 entries
+[   13.155449] NetworkManager[2353]: <warn> /sys/devices/virtual/net/lo: couldn't determine device driver; ignoring...
+[   13.159364] mdm-binary[2775]: DEBUG: Sending COOKIE == <secret> for slave 2775
+[   13.163502] NetworkManager[2353]: <warn> /sys/devices/virtual/net/lo: couldn't determine device driver; ignoring...
+[   13.167459] mdm-binary[2566]: DEBUG: Handling message: 'COOKIE 2775 8c...'
+[   13.172959] mdm-binary[2566]: DEBUG: Got COOKIE == <secret>
+[   13.174327] rts51x: rts5139 detected
+[   13.174464] rts51x: Vendor: 0x0bda, Product: 0x0139, Revision: 0x3960
+[   13.174465] rts51x: Interface Subclass: 0x06, Protocol: 0x50
+[   13.174471] device: 'rts51x0': device_add
+[   13.176077] rts51x: HW_VERSION: 0x2
+[   13.176079] rts51x: ASIC!
+[   13.176082] rts51x: sd_speed_prior = 0x01020403
+[   13.176281] rts51x: Package: LQFP48
+[   13.176529] rts51x: USB High Speed
+[   13.179407] rts51x: option enable UHS50&MMC44,sd_ctl:0x4a
+[   13.179410] rts51x: Write 0x7c to phy register 0xc2
+[   13.179778] rts51x: Enable OCP detect!
+[   13.179897] scsi4 : SCSI emulation for RTS5139 USB card reader
+[   13.179903] device: 'host4': device_add
+[   13.179923] bus: 'scsi': add device host4
+[   13.179978] device: 'host4': device_add
+[   13.180246] rts51x: Command INQUIRY (6 bytes)
+[   13.180349] scsi 4:0:0:0: Direct-Access     Generic- xD/SD/M.S.       1.00 PQ: 0 ANSI: 0 CCS
+[   13.180432] rts51x: Bad target number (1:0)
+[   13.180504] rts51x: Bad target number (2:0)
+[   13.180560] rts51x: Bad target number (3:0)
+[   13.180620] rts51x: Bad target number (4:0)
+[   13.180679] rts51x: Bad target number (5:0)
+[   13.180737] rts51x: Bad target number (6:0)
+[   13.180797] rts51x: Bad target number (7:0)
+[   13.180826] device: 'target4:0:0': device_add
+[   13.180832] bus: 'scsi': add device target4:0:0
+[   13.180866] device: '4:0:0:0': device_add
+[   13.180902] bus: 'scsi': add device 4:0:0:0
+[   13.180922] bus: 'scsi': driver_probe_device: matched device 4:0:0:0 with driver sd
+[   13.180924] bus: 'scsi': really_probe: probing driver sd with device 4:0:0:0
+[   13.180935] device: '4:0:0:0': device_add
+[   13.180975] driver: 'sd': driver_bound: bound to device '4:0:0:0'
+[   13.180978] bus: 'scsi': really_probe: bound device 4:0:0:0 to driver sd
+[   13.180980] device: '4:0:0:0': device_add
+[   13.181036] device: 'sg2': device_add
+[   13.181226] sd 4:0:0:0: Attached scsi generic sg2 type 0
+[   13.181230] device: '4:0:0:0': device_add
+[   13.201487] driver: 'rts5139': driver_bound: bound to device '2-1:1.0'
+[   13.201501] bus: 'usb': really_probe: bound device 2-1:1.0 to driver rts5139
+[   13.201588] usbcore: registered new interface driver rts5139
+[   13.239648] device: '8:32': device_add
+[   13.239787] device: 'sdc': device_add
+[   13.301388] mdm-binary[2775]: DEBUG: Sending AUTHFILE == <secret> for slave 2775
+[   13.303821] sd 4:0:0:0: [sdc] Attached SCSI removable disk
+[   13.308637] NetworkManager[2353]: <warn> Couldn't get managed objects: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by any .service files
+[   13.315454] mdm-binary[2566]: DEBUG: Got AUTHFILE == /var/lib/mdm/:0.Xauth
+[   13.318275] mdm-binary[2775]: DEBUG: Forking X server process
+[   13.320996] mdm-binary[2775]: DEBUG: mdm_server_spawn: Forked server on pid 2830
+[   13.323712] mdm-binary[2775]: DEBUG: do_server_wait: Before mainloop waiting for server
+[   13.326429] mdm-binary[2830]: DEBUG: mdm_server_spawn: '/usr/bin/Xorg :0 -audit 0 -auth /var/lib/mdm/:0.Xauth -nolisten tcp vt7'
+[   13.520825] ehci-pci 0000:00:12.2: PME# enabled
+[   13.751477] rts51x: Command ALLOW_MEDIUM_REMOVAL (6 bytes)
+[   13.751493] rts51x: [rts51x_scsi.c][allow_medium_removal]:[564]
+[   13.904763] pci 0000:00:01.0: irq 44 for MSI/MSI-X
+[   13.906345] <6>[fglrx] Firegl kernel thread PID: 2921
+[   13.906623] <6>[fglrx] Firegl kernel thread PID: 2922
+[   13.906959] <6>[fglrx] Firegl kernel thread PID: 2923
+[   13.907101] <6>[fglrx] IRQ 44 Enabled
+[   13.913310] <6>[fglrx] Reserved FB block: Shared offset:0, size:1000000 
+[   13.913312] <6>[fglrx] Reserved FB block: Unshared offset:fb38000, size:4000 
+[   13.913314] <6>[fglrx] Reserved FB block: Unshared offset:fb3c000, size:4c4000 
+[   13.913316] <6>[fglrx] Reserved FB block: Unshared offset:1fff4000, size:c000 
+[   13.975301] <6>[fglrx] ATIF platform detected with notification ID: 0x81
+[   14.228193] mtrr: your BIOS has configured an incorrect mask, fixing it.
+[   14.647391] rts51x: Idle state!
+[   14.647411] rts51x: rts51x_ctrl_transfer: rq=00 rqtype=40 value=56fd index=303 len=0
+[   14.647877] rts51x: Close SSC clock power!
+[   16.494777] mdm-binary[2775]: DEBUG: mdm_server_start: After mainloop waiting for server
+[   16.496081] mdm-binary[2775]: DEBUG: mdm_server_start: Completed :0!
+[   16.496720] mdm-binary[2775]: DEBUG: Sending VT_NUM == 7 for slave 2775
+[   16.497374] mdm-binary[2566]: DEBUG: Got VT_NUM == 7
+[   16.498097] mdm-binary[2775]: DEBUG: Sending XPID == 2830 for slave 2775
+[   16.498722] mdm-binary[2566]: DEBUG: Got XPID == 2830
+[   16.499308] mdm-binary[2775]: DEBUG: mdm_slave_run: Opening display :0
+[   16.533665] mdm-binary[2775]: DEBUG: Sending LOGGED_IN == 1 for slave 2775
+[   16.534872] mdm-binary[2566]: DEBUG: Got logged in == TRUE
+[   16.535694] mdm-binary[2775]: DEBUG: Sending LOGIN == <secret> for slave 2775
+[   16.536386] mdm-binary[2566]: DEBUG: Got LOGIN == emacs
+[   16.537095] mdm-binary[2775]: DEBUG: setup_automatic_session: Automatic login: emacs
+[   16.539904] mdm-binary[2775]: DEBUG: Forking extra process: /etc/mdm/SuperInit/Default
+[   16.560983] ag[2930]: mdm-superinit Starting...
+[   16.564520] ag[2931]: mdm-superinit Finished
+[   16.565744] mdm-binary[2775]: DEBUG: mdm_slave_child_handler: Handling children...
+[   16.566762] mdm-binary[2775]: DEBUG: Forking extra process: /etc/mdm/Init/Default
+[   16.583565] mdm-binary[2775]: DEBUG: mdm_slave_child_handler: Handling children...
+[   16.584555] mdm-binary[2775]: DEBUG: setup_automatic_session: DisplayInit script finished
+[   16.585213] mdm-binary[2775]: DEBUG: Looking up per display value for security/PamStack=mdm
+[   16.585768] mdm-binary[2775]: DEBUG: Requesting group=security key=PamStack locale=(null)
+[   16.656949] mdm-binary[2775]: DEBUG: mdm_preselect_user: Automatic/Timed login detected, not presetting user.
+[   16.899323] mdm-binary[2775]: DEBUG: setup_automatic_session: Automatic login successful
+[   16.900326] mdm-binary[2775]: DEBUG: mdm_slave_session_start: Attempting session for user 'emacs'
+[   16.901001] mdm-binary[2775]: DEBUG: Initial setting: session: 'xfce' language: 'en_US.UTF-8'
+[   16.901589] mdm-binary[2775]: DEBUG: get_local_auths: Setting up socket access
+[   16.903651] mdm-binary[2775]: DEBUG: get_local_auths: Setting up network access
+[   16.904318] mdm-binary[2775]: DEBUG: get_local_auths: Setting up access for :0 - 2 entries
+[   16.904849] mdm-binary[2775]: DEBUG: mdm_auth_user_add: Adding cookie for 1000
+[   16.905461] mdm-binary[2775]: DEBUG: mdm_auth_user_add: Using /home/emacs/.Xauthority for cookies
+[   16.906102] mdm-binary[2775]: DEBUG: mdm_auth_purge: :0
+[   16.906684] mdm-binary[2775]: DEBUG: mdm_auth_user_add: Done
+[   16.907264] mdm-binary[2775]: DEBUG: Sending WRITE_X_SERVERS == 0 for slave 2775
+[   16.907857] mdm-binary[2775]: DEBUG: Forking user session xfce
+[   16.908427] mdm-binary[2775]: DEBUG: Display device is /dev/tty7 for display :0
+[   16.908969] mdm-binary[2775]: DEBUG: Writing session utmp-wtmp record
+[   16.909551] mdm-binary[2775]: DEBUG: utmp-wtmp: Using username                            emacs
+[   16.910226] mdm-binary[2775]: DEBUG: utmp-wtmp: Using type USER_PROCESS
+[   16.910819] mdm-binary[2775]: DEBUG: utmp-wtmp: Using pid 2937
+[   16.911476] mdm-binary[2775]: DEBUG: utmp-wtmp: Using time 1404788502
+[   16.912179] mdm-binary[2937]: DEBUG: Forking extra process: /etc/mdm/PreSession/Default
+[   16.912861] mdm-binary[2775]: DEBUG: utmp-wtmp: Using id   :0
+[   16.913254] mdm-binary[2775]: DEBUG: utmp-wtmp: Using line                             tty7
+[   16.913531] mdm-binary[2775]: DEBUG: utmp-wtmp: Using hostname                                                                                                                                                                                                                                                               :0
+[   16.913840] mdm-binary[2775]: DEBUG: Login utmp/wtmp record
+[   16.914153] mdm-binary[2775]: DEBUG: Adding new utmp record
+[   16.914430] mdm-binary[2775]: DEBUG: Sending SESSPID == 2937 for slave 2775
+[   16.914686] mdm-binary[2566]: DEBUG: Got SESSPID == 2937
+[   16.914911] mdm-binary[2775]: DEBUG: slave_waitpid: waiting on 2937
+[   16.983094] mdm-binary[2566]: DEBUG: mdm_socket_handler: Accepting new connection fd 8
+[   16.983790] mdm-binary[2566]: DEBUG: Handling user message: 'GET_CONFIG greeter/BackgroundType :0'
+[   16.984346] mdm-binary[2566]: DEBUG: Handling GET_CONFIG: greeter/BackgroundType for display :0
+[   16.984779] mdm-binary[2566]: DEBUG: Looking up per display value for greeter/BackgroundType
+[   16.985229] mdm-binary[2566]: DEBUG: Requesting group=greeter key=BackgroundType locale=(null)
+[   16.985699] mdm-binary[2566]: DEBUG: Looking up key: greeter/BackgroundType
+[   16.986218] mdm-binary[2566]: DEBUG: Handling user message: 'CLOSE'
+[   17.021432] mdm-binary[2937]: DEBUG: Running /etc/mdm/Xsession startxfce4 for emacs on :0
+[   17.817765] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.RealtimeKit1' unit='rtkit-daemon.service'
+[   17.823659] device: 'lo': device_add
+[   17.833993] dbus[2362]: [system] Successfully activated service 'org.freedesktop.RealtimeKit1'
+[   18.347127] pulseaudio[2976]: [pulseaudio] bluez5-util.c: GetManagedObjects() failed: org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by any .service files
+[   18.876568] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.UDisks2' unit='udisks2.service'
+[   18.902702] udisksd[2999]: udisks daemon version 2.1.3 starting
+[   19.131859] fuse init (API version 7.23)
+[   19.132396] device: 'fuse': device_add
+[   19.148976] device: '0:34': device_add
+[   19.308568] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.UPower' unit='upower.service'
+[   19.340537] dbus[2362]: [system] Successfully activated service 'org.freedesktop.UPower'
+[   19.449571] dbus[2362]: [system] Successfully activated service 'org.freedesktop.UDisks2'
+[   19.451780] udisksd[2999]: Acquired the name org.freedesktop.UDisks2 on the system message bus
+[   19.759131] pulseaudio[3096]: Daemon already running.
+[   19.931411] org.a11y.Bus[2950]: Activating service name='org.a11y.atspi.Registry'
+[   19.944991] org.a11y.Bus[2950]: Successfully activated service 'org.a11y.atspi.Registry'
+[   19.965337] org.a11y.atspi.Registry[3110]: ** (at-spi2-registryd:3114): WARNING **: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+[   19.965899] org.a11y.atspi.Registry[3110]: ** (at-spi2-registryd:3114): WARNING **: Unable to register client with session manager
+[   20.026598] polkitd[2665]: Registered Authentication Agent for unix-session:c1 (system bus name :1.18 [/usr/lib/lxpolkit/lxpolkit], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8)
+[   20.564894] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.ModemManager1' unit='dbus-org.freedesktop.ModemManager1.service'
+[   20.566176] dbus[2362]: [system] Activation via systemd failed for unit 'dbus-org.freedesktop.ModemManager1.service': Unit dbus-org.freedesktop.ModemManager1.service failed to load: No such file or directory.
+[   23.122106] dbus[2362]: [system] Activating via systemd: service name='org.manjaro.pamac' unit='pamac.service'
+[   23.654248] dbus[2362]: [system] Successfully activated service 'org.manjaro.pamac'
+[   24.326146] r8169 0000:01:00.0 enp1s0: link up
+[   24.526220] r8169 0000:01:00.0 enp1s0: link down
+[   24.526232] r8169 0000:01:00.0 enp1s0: link down
+[   25.663782] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+[   25.681623] dbus[2362]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+[   26.319390] nm-dispatcher.action[3229]: Script '/etc/NetworkManager/dispatcher.d/99_update_pamac_tray' exited with error status 134.
+[   26.319746] NetworkManager[2353]: <warn> Dispatcher script failed: Script '/etc/NetworkManager/dispatcher.d/99_update_pamac_tray' exited with error status 134.
+[   26.797152] r8169 0000:01:00.0 enp1s0: link up
+[   30.441341] CPA self-test:
+[   30.449870]  4k 24064 large 2245 gb 11 x 385[ffff880000098000-ffff8800bf51a000] miss 264192
+[   30.509394]  4k 226304 large 7482 gb 0 x 385[ffff880000098000-ffff8800bf51a000] miss 264192
+[   30.527707]  4k 226304 large 7482 gb 0 x 385[ffff880000098000-ffff8800bf51a000] miss 264192
+[   30.527714] ok.
+[   57.756585] input input8: event field not found
+[   64.256443] sudo[3268]: emacs : TTY=pts/0 ; PWD=/home/emacs/build/amdmsrtweaker-lnx ; USER=root ; COMMAND=./go
+[   64.293088] device class 'msr': registering
+[   64.293126] device: 'msr0': device_add
+[   64.293303] device: 'msr1': device_add
+[   64.293398] device: 'msr2': device_add
+[   64.293483] device: 'msr3': device_add
+[   64.298857] device class 'cpuid': registering
+[   64.298905] device: 'cpu0': device_add
+[   64.299448] device: 'cpu1': device_add
+[   64.299519] device: 'cpu2': device_add
+[   64.299579] device: 'cpu3': device_add
+[   65.388145] device: 'msr0': device_unregister
+[   65.388381] device: 'msr0': device_create_release
+[   65.388387] device: 'msr1': device_unregister
+[   65.388597] device: 'msr1': device_create_release
+[   65.388609] device: 'msr2': device_unregister
+[   65.388671] device: 'msr2': device_create_release
+[   65.388676] device: 'msr3': device_unregister
+[   65.388726] device: 'msr3': device_create_release
+[   65.388729] device class 'msr': unregistering
+[   65.388746] class 'msr': release.
+[   65.388749] class_create_release called for msr
+[   65.391035] device: 'cpu0': device_unregister
+[   65.391183] device: 'cpu0': device_create_release
+[   65.391188] device: 'cpu1': device_unregister
+[   65.391289] device: 'cpu1': device_create_release
+[   65.391293] device: 'cpu2': device_unregister
+[   65.391398] device: 'cpu2': device_create_release
+[   65.391404] device: 'cpu3': device_unregister
+[   65.391565] device: 'cpu3': device_create_release
+[   65.391571] device class 'cpuid': unregistering
+[   65.391585] class 'cpuid': release.
+[   65.391587] class_create_release called for cpuid
+[   72.717148] device: 'lo': device_add
+[   81.839762] gnome-keyring-daemon[4243]: couldn't access control socket: /run/user/1000/keyring/control: No such file or directory
+[   81.842344] org.freedesktop.secrets[2950]: ** Message: couldn't access control socket: /run/user/1000/keyring/control: No such file or directory
+[  261.502171] sudo[4491]: pam_unix(sudo:auth): authentication failure; logname=emacs uid=1000 euid=0 tty=/dev/pts/0 ruser=emacs rhost=  user=emacs
+[  264.882089] sudo[4491]: emacs : TTY=pts/0 ; PWD=/home/emacs/build/amdmsrtweaker-lnx ; USER=root ; COMMAND=./show
+[  264.905782] device class 'msr': registering
+[  264.905836] device: 'msr0': device_add
+[  264.906086] device: 'msr1': device_add
+[  264.906207] device: 'msr2': device_add
+[  264.906295] device: 'msr3': device_add
+[  264.913489] device class 'cpuid': registering
+[  264.913521] device: 'cpu0': device_add
+[  264.913604] device: 'cpu1': device_add
+[  264.913640] device: 'cpu2': device_add
+[  264.913680] device: 'cpu3': device_add
+[  264.923524] device: 'msr0': device_unregister
+[  264.923671] device: 'msr0': device_create_release
+[  264.923680] device: 'msr1': device_unregister
+[  264.924425] device: 'msr1': device_create_release
+[  264.924434] device: 'msr2': device_unregister
+[  264.924650] device: 'msr2': device_create_release
+[  264.924670] device: 'msr3': device_unregister
+[  264.924745] device: 'msr3': device_create_release
+[  264.924751] device class 'msr': unregistering
+[  264.924771] class 'msr': release.
+[  264.924774] class_create_release called for msr
+[  264.927616] device: 'cpu0': device_unregister
+[  264.927878] device: 'cpu0': device_create_release
+[  264.927896] device: 'cpu1': device_unregister
+[  264.928504] device: 'cpu1': device_create_release
+[  264.928511] device: 'cpu2': device_unregister
+[  264.928670] device: 'cpu2': device_create_release
+[  264.928675] device: 'cpu3': device_unregister
+[  264.929218] device: 'cpu3': device_create_release
+[  264.929222] device class 'cpuid': unregistering
+[  264.929241] class 'cpuid': release.
+[  264.929244] class_create_release called for cpuid
+[  319.209293] sudo[3023]: pam_unix(sudo:auth): conversation failed
+[  319.212166] sudo[3023]: pam_unix(sudo:auth): auth could not identify password for [emacs]
+[ 3093.146944] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.UDisks' unit='udisks.service'
+[ 3093.158404] r8169 0000:01:00.0 enp1s0: link down
+[ 3093.168494] dbus[2362]: [system] Successfully activated service 'org.freedesktop.UDisks'
+[ 3097.023264] r8169 0000:01:00.0: PME# enabled
+[ 3097.046428] r8169 0000:01:00.0: PME# disabled
+[ 3097.229395] r8169 0000:01:00.0 enp1s0: link down
+[ 3097.345879] dbus[2362]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service'
+[ 3097.361758] dbus[2362]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+[ 3097.371159] ntpd[2762]: ntpd exiting on signal 15 (Terminated)

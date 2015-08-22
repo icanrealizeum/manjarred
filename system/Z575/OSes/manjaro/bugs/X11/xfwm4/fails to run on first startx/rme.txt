@@ -1,0 +1,6 @@
+sometimes after booting, when running startx  what appears to be too soon in the boot process or something,
+xfwm4 (the window manager) doesn't seem to be running, as it lacks window decorations and urxvt will lack focus, also focus follows mouse but still urxvt won't detect that it's focused(borders are always blue, never red)
+
+so to fix this, Logout, and startx again, this time will work, probably because some things get started(according to dmesg) which weren't started on the first startx run.
+
+

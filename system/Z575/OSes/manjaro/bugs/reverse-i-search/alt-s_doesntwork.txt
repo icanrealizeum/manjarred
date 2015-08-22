@@ -1,0 +1,22 @@
+Done reported on the talk page
+=====
+as specified here: 
+https://wiki.archlinux.org/index.php/Readline#History
+
+using Alt+S
+"\es":forward-search-history
+instead of Ctrl+S or a manual Ctrl+Y for example
+
+doesn't work the same
+the Alt+S variant clears the searched string, so it's useless to go forward
+
+
+I use Ctrl+Y  in /etc/inputrc
+"\C-y": forward-search-history
+
+in case you were wondering Ctrl+Alt+R exits search instead of acting like an Alt+R for reverse-i-search would do if it were bound to Alt+R instead of Ctrl+R
+
+
+but of course some upgrade overwrote /etc/inputrc !!!
+must use ~/.inputrc
+

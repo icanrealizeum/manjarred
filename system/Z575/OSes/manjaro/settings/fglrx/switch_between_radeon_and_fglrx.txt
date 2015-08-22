@@ -1,0 +1,19 @@
+to switch between radeon and fglrx
+
+A. from fglrx to radeon:
+1. mhwd-gpu --set mesa
+2. blacklist fglrx
+3. restore the right xorg.conf.d/ file
+4. put radeon radeonfb fbcon in mkinitcpio.conf and rebuild it with -p linux316
+   if you want to have console prior to luks password
+
+B. from radeon to fglrx:
+1. mhwd-gpu --set catalyst
+2. blacklist radeon
+3. load fglrx module in modules.conf or somewhere
+4. restore the right xorg.conf.d/ file
+
+
+use catalyst-hook package to recompile fglrx when new kernel is added or recompiled by running
+# catalyst_build_module
+

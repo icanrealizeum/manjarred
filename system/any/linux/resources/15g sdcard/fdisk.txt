@@ -1,0 +1,32 @@
+this is as formatted by FZ100
+---
+sudo fdisk -l /dev/sde
+
+Disk /dev/sde: 14.7 GiB, 15803088896 bytes, 30865408 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start      End  Sectors  Size Id Type
+/dev/sde1        8192 30865407 30857216 14.7G  c W95 FAT32 (LBA)
+
+-----------
+emacs@manji 2015/03/12 19:04:14 bash4.3.33 t:0 j:0 d:3 pp:24095 p:24096
+!105946 19 0 3.19.0-gbfa76d49 #51 SMP Tue Mar 10 22:47:43 CET 2015 $
+cd /home/emacs && sudo fdisk -l /dev/sde --units=cylinders
+
+Disk /dev/sde: 14.7 GiB, 15803088896 bytes, 30865408 sectors
+Geometry: 255 heads, 63 sectors/track, 15071 cylinders
+Units: cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start   End Cylinders  Size Id Type
+/dev/sde1           1  1922      1921 14.7G  c W95 FAT32 (LBA)
+
+
+

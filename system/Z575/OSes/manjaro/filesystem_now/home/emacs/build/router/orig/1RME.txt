@@ -1,0 +1,121 @@
+for this 2.01.07 firmware,
+modified sumversion.c  added a missing include
+      /linux/scripts/mod/sumversion.c
+      10a11
+      > #include <limits.h>
+
+changed HOSTCFLAGS  and CFLAGS in the linux/Makefile   allowed warning messages on compile
+
+      197c197
+      < HOSTCFLAGS = -Werror -Wstrict-prototypes -O2 -fomit-frame-pointer
+      > HOSTCFLAGS = -Wall -O2 -fomit-frame-pointer
+      312c312
+      < CFLAGS := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+      > CFLAGS := -Wall -Wundef -Wno-trigraphs \
+
+
+to solve some more compilation errors:
+from: https://forum.openwrt.org/viewtopic.php?pid=102123#p102123
+
+ok, the -e thing may not affect me because /bin/sh points to bash already, so the below may not be needed!
+
+herbswanson wrote:
+
+    An extraneous "-e" was added to the bb_config.h file. Deleted these characters from line 1.
+
+This only appears after an attempted make, the real culprit is the busybox Makefile.
+
+user/busybox/Makefile
+
+# line 321
+@echo -e "#ifndef BB_CONFIG_H\n#define BB_CONFIG_H" > $@
+# change to
+@echo "#ifndef BB_CONFIG_H\n#define BB_CONFIG_H" > $@
+
+Another Makefile with problems is user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/Makefile
+
+# line 98
+ACLOCAL = ${SHELL} /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/missing --run aclocal-1.9
+# can be changed to
+ACLOCAL = ${SHELL} $(srcdir)/config.aux/missing --run aclocal-1.9
+
+# line 101
+AMTAR = ${SHELL} /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/missing --run tar
+# to
+AMTAR = ${SHELL} $(srcdir)/config.aux/missing --run tar
+
+# line 103
+AUTOCONF = ${SHELL} /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/missing --run autoconf
+# to
+AUTOCONF = ${SHELL} $(srcdir)/config.aux/missing --run autoconf
+
+# line 104
+AUTOHEADER = ${SHELL} /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/missing --run autoheader
+# to
+AUTOHEADER = ${SHELL} $(srcdir)/config.aux/missing --run autoheader
+
+# line 105
+AUTOMAKE = ${SHELL} /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/missing --run automake-1.9
+# to
+AUTOMAKE = ${SHELL} $(srcdir)/config.aux/missing --run automake-1.9
+
+# line 150
+MAKEINFO = ${SHELL} /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/missing --run makeinfo
+# to
+MAKEINFO = ${SHELL} $(srcdir)/config.aux/missing --run makeinfo
+
+# line 199
+install_sh = /home/terence/Belkin_F5D8235-4_v2000_20081113_SDK3200/Belkin_F5D8235-4_v2000_20081112_SDK3200/user/rt2880_wsc_upnp_SDK3000/libupnp-1.3.1/config.aux/install-sh
+# to
+install_sh = $(srcdir)/config.aux/install-sh
+
+--------------
+missing `` in Makefile under uboot folder(which is: Belkin_F5D8235-4_v2000_v2.01.07/Uboot_SDK_3200/ )
+
+KAIKER_LIBS := $(shell dirname $(CC) $(CFLAGS) -lgcc -print-libgcc-file-name)
+becomes:
+KAIKER_LIBS := $(shell dirname `$(CC) $(CFLAGS) -lgcc -print-libgcc-file-name`)
+
+----------------
+can't find the solution to this error in uboot folder with make:
+
+/bin/sh: line 0: [: : integer expression expected
+
+it's the first thing that happens!
+-=-------------
+
+uboot folder's state seems to be at commit f4733a0764741966a5e842968166b40fb062d577
+if you get the uboot sources from git://git.denx.de/u-boot.git
+
+=============
+
+can't test uboot (in RAM) without flashing it first!
+http://www.denx.de/wiki/view/DULG/CanUBootBeConfiguredSuchThatItCanBeStartedInRAM
+So, remember this! Also makes sense.
+
+-------------
+http://lists.denx.de/pipermail/u-boot/2011-May/092255.html
+uboot/board/ has rt2880 code which doesn't exist in uboot from git and I can't seem to find ralink sdk (only some kind of wireless drivers which are not the same thing)
+
+rt288x ralink sdk is contained at least in this file:
+http://www.trendnet.com/asp/download_manager/inc_downloading_gpl.asp?iFile=18737&os=linux
+which is from this list: http://www.trendnet.com/support/gpl.asp
+(maybe try to find a newer more up to date one?)
+
+-----------
+so, don't try to compile or update uboot - it has to remain as it is.
+
+------------
+Also note that when uboot config changes (like when you enter different tftp IPs or filename) these changes are detected and saved anew, which means flash erase/write happens on 1 block (64K, or 0x10000) even though the (env)data is only like 800-900 bytes.
+----
+
+also you need to set this IP for the tftp server
+sudo ip addr add 192.168.2.123/24 brd 192.168.2.255 dev net0
+
+----------
+
+
+some .bin info:
+The firmware.bin file is a trx file. The F5D8235v2_WW_2.01.06.bin is the same as the firmware.bin but has 19 bytes of additional identifier information prepended to the start of the file. 
+from: https://forum.openwrt.org/viewtopic.php?pid=95919#p95919
+

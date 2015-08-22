@@ -1,0 +1,28 @@
+
+xfconf-query -c xfwm4 -p /general/sync_to_vblank
+
+when that setting is set(~ true)
+then the system is like locked up, inside virtualbox
+probably because there's no vsync to time to, so it waits forever
+
+enable vsync:
+xfconf-query -c xfwm4 -p /general/sync_to_vblank -s true
+disable vsync aka sync to vblank:
+xfconf-query -c xfwm4 -p /general/sync_to_vblank -s false
+
+but you can only run these in X or with a $DISPLAY
+
+to be able to disable it, note that you can't switch to text console ('cause host will trap ctrl+alt+f1) so must boot into text mode by adding GRUB param before boot (key e):
+systemd.unit=multi-user
+this doesn't seem to be working on manjaro, maybe works on arch
+src: https://wiki.archlinux.org/index.php/kernel_parameters
+or
+systemd.unit=multi-user
+
+just get to this xml file:
+/home/emacs/.config/xfce4/xfconf/xfce-perchannel-xml/
+vim xfwm4.conf
+set that sync_to_vblank property from true to false
+
+and there, fixed!
+

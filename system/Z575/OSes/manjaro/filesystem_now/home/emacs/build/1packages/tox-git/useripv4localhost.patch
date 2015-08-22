@@ -1,0 +1,74 @@
+Index: tox-9999/other/DHT_bootstrap.c
+===================================================================
+--- tox-9999.orig/other/DHT_bootstrap.c
++++ tox-9999/other/DHT_bootstrap.c
+@@ -55,7 +55,7 @@
+ #define c_sleep(x) usleep(1000*x)
+ #endif
+ 
+-#define PORT 33445
++#define PORT 18920
+ 
+ 
+ void manage_keys(DHT *dht)
+@@ -118,8 +118,10 @@ int main(int argc, char *argv[])
+        Bind to ip 0.0.0.0 / [::] : PORT */
+     IP ip;
+     ip_init(&ip, ipv6enabled);
++    addr_parse_ip("192.168.244.2", &ip);//FIXME: actually parse the arg! probably argvoffset+1 ?; note: not using this IP here; but rather the other PC will listen on .1 and our utox connects to that!
+ 
+-    DHT *dht = new_DHT(new_networking(ip, PORT));
++    int thePort=PORT;
++    DHT *dht = new_DHT(new_networking(ip, thePort));//PORT  //FIXME: actually parse the port arg!
+     Onion *onion = new_onion(dht);
+     Onion_Announce *onion_a = new_onion_announce(dht);
+ 
+@@ -140,7 +142,7 @@ int main(int argc, char *argv[])
+ 
+ #ifdef TCP_RELAY_ENABLED
+ #define NUM_PORTS 3
+-    uint16_t ports[NUM_PORTS] = {443, 3389, PORT};
++    uint16_t ports[NUM_PORTS] = {443, 3389, thePort};
+     TCP_Server *tcp_s = new_TCP_server(ipv6enabled, NUM_PORTS, ports, dht->self_public_key, dht->self_secret_key, onion);
+ 
+     if (tcp_s == NULL) {
+@@ -190,17 +192,17 @@ int main(int argc, char *argv[])
+ 
+         do_DHT(dht);
+ 
+-        if (is_timeout(last_LANdiscovery, is_waiting_for_dht_connection ? 5 : LAN_DISCOVERY_INTERVAL)) {
+-            send_LANdiscovery(htons(PORT), dht);
++/*        if (is_timeout(last_LANdiscovery, is_waiting_for_dht_connection ? 5 : LAN_DISCOVERY_INTERVAL)) {
++            send_LANdiscovery(htons(thePort), dht);
+             last_LANdiscovery = unix_time();
+-        }
++        }*/
+ 
+ #ifdef TCP_RELAY_ENABLED
+         do_TCP_server(tcp_s);
+ #endif
+         networking_poll(dht->net);
+ 
+-        c_sleep(1);
++        c_sleep(1);
+     }
+ 
+     return 0;
+
+Index: tox-9999/toxcore/friend_connection.c
+===================================================================
+--- tox-9999.orig/toxcore/friend_connection.c
++++ tox-9999/toxcore/friend_connection.c
+@@ -781,10 +781,10 @@ Friend_Connections *new_friend_connectio
+ /* Send a LAN discovery packet every LAN_DISCOVERY_INTERVAL seconds. */
+ static void LANdiscovery(Friend_Connections *fr_c)
+ {
+-    if (fr_c->last_LANdiscovery + LAN_DISCOVERY_INTERVAL < unix_time()) {
++/*    if (fr_c->last_LANdiscovery + LAN_DISCOVERY_INTERVAL < unix_time()) {
+         send_LANdiscovery(htons(TOX_PORT_DEFAULT), fr_c->dht);
+         fr_c->last_LANdiscovery = unix_time();
+-    }
++    }*/
+ }
+ 
+ /* main friend_connections loop. */

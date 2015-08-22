@@ -1,0 +1,163 @@
+diff-ing dirs that supposedly reside in two different kernel tree sources
+Binary files linux-3.16-rc6.orig/arch/x86/boot/compressed/mkpiggy and linux-3.16-rc6/arch/x86/boot/compressed/mkpiggy differ
+Binary files linux-3.16-rc6.orig/arch/x86/realmode/rm/realmode.relocs and linux-3.16-rc6/arch/x86/realmode/rm/realmode.relocs differ
+Binary files linux-3.16-rc6.orig/arch/x86/vdso/vdso2c and linux-3.16-rc6/arch/x86/vdso/vdso2c differ
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/Documentation/dontdiff linux-3.16-rc6/Documentation/dontdiff
+--- linux-3.16-rc6.orig/Documentation/dontdiff	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/Documentation/dontdiff	2014-07-28 01:18:48.414416846 +0200
+@@ -258,3 +258,21 @@ wakeup.lds
+ zImage*
+ zconf.hash.c
+ zoffset.h
++vdso-image-32-int80.c
++vdso-image-32-syscall.c
++vdso-image-32-sysenter.c
++vdso-image-64.c
++devicetable-offsets.h
++asn1_compiler
++sortextable
++pasyms.h
++realmode.lds
++x509-asn1.c
++x509-asn1.h
++x509_rsakey-asn1.c
++x509_rsakey-asn1.h
++oid_registry_data.c
++cayman_reg_safe.h
++
++
++
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/acpi/blacklist.c linux-3.16-rc6/drivers/acpi/blacklist.c
+--- linux-3.16-rc6.orig/drivers/acpi/blacklist.c	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/drivers/acpi/blacklist.c	2014-07-25 07:16:22.000000000 +0200
+@@ -324,6 +324,61 @@ static struct dmi_system_id acpi_osi_dmi
+ 	},
+ 
+ 	/*
++	 * The following Lenovo models have a broken workaround in the
++	 * acpi_video backlight implementation to meet the Windows 8
++	 * requirement of 101 backlight levels. Reverting to pre-Win8
++	 * behavior fixes the problem.
++	 */
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad L430",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad L430"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad T430s",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T430s"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad T530",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad T530"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad W530",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad W530"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad X1 Carbon",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X1 Carbon"),
++		},
++	},
++	{
++	.callback = dmi_disable_osi_win8,
++	.ident = "Lenovo ThinkPad X230",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		     DMI_MATCH(DMI_PRODUCT_VERSION, "ThinkPad X230"),
++		},
++	},
++
++	/*
+ 	 * BIOS invocation of _OSI(Linux) is almost always a BIOS bug.
+ 	 * Linux ignores it, except for the machines enumerated below.
+ 	 */
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/acpi/utils.c linux-3.16-rc6/drivers/acpi/utils.c
+--- linux-3.16-rc6.orig/drivers/acpi/utils.c	2014-07-28 00:13:24.000000000 +0200
++++ linux-3.16-rc6/drivers/acpi/utils.c	2014-07-25 07:53:54.040767429 +0200
+@@ -288,7 +288,7 @@ acpi_evaluate_integer(acpi_handle handle
+ 
+ 	*data = element.integer.value;
+ 
+-	ACPI_DEBUG_PRINT((ACPI_DB_INFO, "Return value [%llu]\n", *data));
++	ACPI_DEBUG_PRINT((ACPI_DB_DEBUG_OBJECT, "Return value [%llu]\n", *data));
+ 
+ 	return AE_OK;
+ }
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/gpu/drm/radeon/radeon_pm.c linux-3.16-rc6/drivers/gpu/drm/radeon/radeon_pm.c
+--- linux-3.16-rc6.orig/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 00:13:24.000000000 +0200
++++ linux-3.16-rc6/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 11:24:09.190554255 +0200
+@@ -489,6 +489,8 @@ static ssize_t radeon_set_dpm_state(stru
+ 		rdev->pm.dpm.user_state = POWER_STATE_TYPE_BALANCED;
+ 	else if (strncmp("performance", buf, strlen("performance")) == 0)
+ 		rdev->pm.dpm.user_state = POWER_STATE_TYPE_PERFORMANCE;
++	else if (strncmp("thermal", buf, strlen("thermal")) == 0)
++		rdev->pm.dpm.user_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	else {
+ 		mutex_unlock(&rdev->pm.mutex);
+ 		count = -EINVAL;
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/drivers/platform/x86/thinkpad_acpi.c linux-3.16-rc6/drivers/platform/x86/thinkpad_acpi.c
+--- linux-3.16-rc6.orig/drivers/platform/x86/thinkpad_acpi.c	2014-07-28 00:13:25.000000000 +0200
++++ linux-3.16-rc6/drivers/platform/x86/thinkpad_acpi.c	2014-07-25 07:16:22.000000000 +0200
+@@ -5157,8 +5157,10 @@ static const char * const tpacpi_led_nam
+ 	"tpacpi::unknown_led2",
+ 	"tpacpi::unknown_led3",
+ 	"tpacpi::thinkvantage",
++	"tpacpi::unknown_led4",
++	"tpacpi::micmute",
+ };
+-#define TPACPI_SAFE_LEDS	0x1081U
++#define TPACPI_SAFE_LEDS	0x5081U
+ 
+ static inline bool tpacpi_is_led_restricted(const unsigned int led)
+ {
+@@ -5381,7 +5383,7 @@ static const struct tpacpi_quirk led_use
+ 	{ /* Lenovo */
+ 	  .vendor = PCI_VENDOR_ID_LENOVO,
+ 	  .bios = TPACPI_MATCH_ANY, .ec = TPACPI_MATCH_ANY,
+-	  .quirks = 0x1fffU,
++	  .quirks = 0x5fffU,
+ 	},
+ 	{ /* IBM ThinkPads with no EC version string */
+ 	  .vendor = PCI_VENDOR_ID_IBM,
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/Makefile linux-3.16-rc6/Makefile
+--- linux-3.16-rc6.orig/Makefile	2014-07-28 00:13:23.000000000 +0200
++++ linux-3.16-rc6/Makefile	2014-07-25 07:16:33.000000000 +0200
+@@ -1,7 +1,7 @@
+ VERSION = 3
+ PATCHLEVEL = 16
+ SUBLEVEL = 0
+-EXTRAVERSION = -rc6
++EXTRAVERSION = -1
+ NAME = Shuffling Zombie Juror
+ 
+ # *DOCUMENTATION*
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/scripts/depmod.sh linux-3.16-rc6/scripts/depmod.sh
+--- linux-3.16-rc6.orig/scripts/depmod.sh	2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/scripts/depmod.sh	2014-07-25 07:16:33.000000000 +0200
+@@ -1,4 +1,5 @@
+ #!/bin/sh
++exit 0
+ #
+ # A depmod wrapper used by the toplevel Makefile
+ 

@@ -1,0 +1,60 @@
+#!/bin/sh
+# This script will forward port from inet addr to local ip(same port on both) when ran 
+# on Belkin F5D8235-4 v2 (2.01.07 firmware version) router, if you have telnet access or serial console access  already.
+#because using http access to router to set the port in virtual servers probably costs 1 flash block erase and write, better to do it with this script even though it's temporary(until next reboot or the refreshing of the Virtual Servers list).
+# some long lines are split by \ to facilitate copy/pasting in vi without issues
+
+# you basically go:
+# sudo picocom --logfile /tmp/picocom.log -b 57600 /dev/ttyUSB0 # aka /home/emacs/bin/router
+# #now you're seeing router root prompt
+# cd /tmp
+# vi go
+# i
+# copy paste
+# :wq
+# chmod +x go
+# ./go
+# Ctrl+a,q
+
+#copy paste from here(in 3 stages to avoid truncation at the end if you do it in two stages!) via serial console:
+
+#!/bin/sh
+localip="192.168.1.3"
+localnet="192.168.1.0/24"
+port=20000  #change this
+#auto get internet IP, from PPPoE interface:
+inetip="`ifconfig|grep ppp0 -A1|awk '
+BEGIN { FS=":";} /inet addr/ { print $2 }'|awk '{print $1}'`"
+# ifconfig|grep ppp0 -A1
+#inetip="180.170.160.150" #or set it manually like this.
+if [ -z "$inetip" ]; then
+  echo "couldn't get inet ip, for unknown reasons"
+  exit 2
+fi #stage 2:
+iptables -t filter -I PORT_FW 1 -p tcp -d $localip --dport $port -j ACCEPT
+
+iptables -t nat -I PORT_FW 1 -p tcp -j DNAT \
+  -d $inetip --dport $port --to ${localip}:$port
+
+iptables -t nat -I nat_redirect 1 -p tcp -s $localnet \
+  -j SNAT -d $localip --dport $port --to $inetip
+
+#check if the paste finished correctly ^ because it seems it likes to truncate things at the end!
+
+#To delete a Rule, you must know its position in the chain.
+#see if it's there:
+#iptables -t filter -v --list PORT_FW
+#delete it(the first one(at the top) will be deleted):
+#iptables -t filter -D PORT_FW 1
+#
+#see if it's there:
+#iptables -t nat -v --list PORT_FW
+#delete it:
+#iptables -t nat -D PORT_FW 1
+#
+#see if it's there:
+#iptables -t nat -v --list nat_redirect
+#delete it:
+#iptables -t nat -D nat_redirect 1
+
+

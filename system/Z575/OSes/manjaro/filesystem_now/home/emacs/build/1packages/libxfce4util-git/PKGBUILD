@@ -1,0 +1,57 @@
+# Maintainer: Limao Luo <luolimao+AUR@gmail.com>
+#
+# (Added from libxfce4util package)
+# Contributor: Evangelos Foutras <evangelos@foutrelis.com>
+# Contributor: tobias <tobias@archlinux.org>
+
+pkgname=libxfce4util-git
+pkgver=4.12.1.r6.g53b713c
+pkgrel=1
+pkgdesc="Basic utility non-GUI functions for Xfce"
+arch=(i686 x86_64)
+url=http://git.xfce.org/xfce/${pkgname%-*}/tree/README
+license=(GPL2)
+groups=(xfce4-git)
+depends=(glib2)
+makedepends=(git xfce4-dev-tools)
+provides=(${pkgname%-*}=$pkgver)
+conflicts=(${pkgname%-*})
+options=(!libtool)
+patch1="0100_printk_uptime_style_timecode_in_TRACE.patch"
+source=($pkgname::git://git.xfce.org/xfce/${pkgname%-*}
+"$patch1")
+sha256sums=('SKIP'
+            '693b27d2e4a0038dd962326afbf523721193c5e367989a2ccc61b8f8db1d90fe')
+sha512sums=('SKIP'
+            'e5bd769cebec03fd1cd90d0578f8f8693bd49ba924e501205471d0775aeee2af0881b4e08dec1722dad6d51302522e39c73b8f0fee8877b47392180cd0960b04')
+
+pkgver() {
+    cd $pkgname/
+    git describe | sed 's/^libxfce4util-//;s/-/.r/;s/-/./g'
+}
+
+
+prepare() {
+  cd "$pkgname"
+  patch -Np1 -i "../${patch1}"
+}
+
+build() {
+    cd "$pkgname"
+    ./autogen.sh \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --sbindir=/usr/bin \
+        --libexecdir=/usr/lib \
+        --localstatedir=/var \
+        --disable-static \
+        --enable-gtk-doc \
+        --disable-debug
+    make
+}
+
+package() {
+    make -C $pkgname DESTDIR="$pkgdir" install
+    rm -rf "${pkgdir}/usr/share/gtk-doc/"
+}
+

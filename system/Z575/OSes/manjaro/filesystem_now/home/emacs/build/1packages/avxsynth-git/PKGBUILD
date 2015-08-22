@@ -1,0 +1,49 @@
+# Maintainer: Gustavo Alvarez <sl1pkn07@gmail.com>
+
+pkgname=avxsynth-git
+pkgver=20150406.193702b
+pkgrel=1
+pkgdesc="Linux Port of AviSynth. (Git version)"
+arch=('i686' 'x86_64')
+url="http://www.avxsynth.org"
+license=('GPL2')
+depends=('qt4' 'mplayer' 'log4cpp' 'pango' 'ffms2')
+makedepends=('git' 'yasm' 'subversion' 'python2')
+provides=('avxsynth')
+conflicts=('avxsynth')
+patch2="0200_jcopy_short.patch"
+patch3="0300_moc.patch"
+source=('git+https://github.com/avxsynth/avxsynth.git'
+"$patch2"
+"$patch3"
+)
+sha512sums=('SKIP'
+            '08be46d66aaf2843fcf4f51b336539bbecd2c32215722f53dd55a96e387ab5a808ed7a176aeeaaf15f541120e22f0cba5523edb709b1cf0695752b5d85d03196'
+            '79d97f84b1c6ea8337f62fc56af4e2f124d35789b0a8d79cfaf4dd7cbb7638f423c0eb6d03c0ba63a508e26d3f6a9c72da67d5fb2305c4e71f045ab4fa4aa588')
+
+_gitname="avxsynth"
+
+pkgver() {
+  cd "${_gitname}"
+  echo "$(git log -1 --format="%cd" --date=short | tr -d '-').$(git log -1 --format="%h")"
+}
+
+prepare() {
+  cd "${_gitname}"
+
+  patch -Np1 -i "../$patch2"
+  patch -Np1 -i "../$patch3"
+#  unset LDFLAGS
+  autoreconf -if
+  ./configure --prefix=/usr --disable-silent-rules
+}
+
+build() {
+  cd "${_gitname}"
+  make
+}
+
+package() {
+  cd "${_gitname}"
+  make DESTDIR="${pkgdir}" install
+}

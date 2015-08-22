@@ -1,0 +1,4 @@
+
+FIXED: - tlp start   needs to be run manually, but worked auto on 3.12 kernel
+maybe something about udev is missing? like sensing that AC exists?
+looks like fix is: systemctl status tlp    if u see it disabled, set it to enabled by running: systemctl enable tlp

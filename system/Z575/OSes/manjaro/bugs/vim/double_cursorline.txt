@@ -1,0 +1,53 @@
+with 
+:set cursorline
+in .vimrc (basically current .vimrc)
+
+execute
+vim a
+then shift+o
+now there's two lines (seen as underlined in xfce4-terminal)
+this doesn't seem to happen editing .vimrc, but does in a .txt file, maybe syntax being on has something to do with it
+
+
+$ vim --version
+VIM - Vi IMproved 7.4 (2013 Aug 10, compiled Jun 21 2014 13:01:02)
+Included patches: 1-335
+Compiled by Arch Linux
+Huge version without GUI.  Features included (+) or not (-):
++acl             +farsi           +mouse_netterm   +syntax
++arabic          +file_in_path    +mouse_sgr       +tag_binary
++autocmd         +find_in_path    -mouse_sysmouse  +tag_old_static
+-balloon_eval    +float           +mouse_urxvt     -tag_any_white
+-browse          +folding         +mouse_xterm     -tcl
+++builtin_terms  -footer          +multi_byte      +terminfo
++byte_offset     +fork()          +multi_lang      +termresponse
++cindent         +gettext         -mzscheme        +textobjects
+-clientserver    -hangul_input    -netbeans_intg   +title
+-clipboard       +iconv           +path_extra      -toolbar
++cmdline_compl   +insert_expand   +perl            +user_commands
++cmdline_hist    +jumplist        +persistent_undo +vertsplit
++cmdline_info    +keymap          +postscript      +virtualedit
++comments        +langmap         +printer         +visual
++conceal         +libcall         +profile         +visualextra
++cryptv          +linebreak       -python          +viminfo
++cscope          +lispindent      -python3         +vreplace
++cursorbind      +listcmds        +quickfix        +wildignore
++cursorshape     +localmap        +reltime         +wildmenu
++dialog_con      -lua             +rightleft       +windows
++diff            +menu            -ruby            +writebackup
++digraphs        +mksession       +scrollbind      -X11
+-dnd             +modify_fname    +signs           -xfontset
+-ebcdic          +mouse           +smartindent     -xim
++emacs_tags      -mouseshape      -sniff           -xsmp
++eval            +mouse_dec       +startuptime     -xterm_clipboard
++ex_extra        +mouse_gpm       +statusline      -xterm_save
++extra_search    -mouse_jsbterm   -sun_workshop    -xpm
+   system vimrc file: "/etc/vimrc"
+        user vimrc file: "$HOME/.vimrc"
+         2nd user vimrc file: "~/.vim/vimrc"
+               user exrc file: "$HOME/.exrc"
+                 fall-back for $VIM: "/usr/share/vim"
+                 Compilation: gcc -c -I. -Iproto -DHAVE_CONFIG_H   -D_FORTIFY_SOURCE=2  -march=x86-64 -mtune=generic -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=1      
+                 Linking: gcc   -Wl,-E -Wl,-rpath,/usr/lib/perl5/core_perl/CORE  -Wl,-O1,--sort-common,--as-needed,-z,relro -L/usr/local/lib -Wl,--as-needed -o vim        -lm -lncurses -lelf  -lacl -lattr -lgpm -ldl   -Wl,-E -Wl,-rpath,/usr/lib/perl5/core_perl/CORE -Wl,-O1,--sort-common,--as-needed,-z,relro -fstack-protector -L/usr/local/lib  -L/usr/lib/perl5/core_perl/CORE -lperl -lnsl -ldl -lm -lcrypt -lutil -lpthread -lc       
+
+

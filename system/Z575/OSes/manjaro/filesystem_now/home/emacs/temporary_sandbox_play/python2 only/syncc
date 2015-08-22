@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ ! -f ".gclient" ]; then
+  echo ".gclient must exist in current folder"
+  exit 1
+fi
+
+
+./pythonic gclient sync --jobs 16
+

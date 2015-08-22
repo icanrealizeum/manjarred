@@ -1,0 +1,14 @@
+diff --git a/syntax_checkers/rust/rustc.vim b/syntax_checkers/rust/rustc.vim
+index 5d19608..ca62308 100644
+--- a/syntax_checkers/rust/rustc.vim
++++ b/syntax_checkers/rust/rustc.vim
+@@ -24,7 +24,8 @@ function! SyntaxCheckers_rust_rustc_GetLocList() dict
+ 
+     return SyntasticMake({
+         \ 'makeprg': makeprg,
+-        \ 'errorformat': errorformat })
++        \ 'errorformat': errorformat,
++        \ 'returns': [0,101] })
+ endfunction
+ 
+ call g:SyntasticRegistry.CreateAndRegisterChecker({

@@ -1,0 +1,33 @@
+make package names more easily selectable via mouse double click
+when printed on screen before the Y/N install prompt
+
+diff --git a/src/pacman/util.c b/src/pacman/util.c
+index 36f4414..6bc0d4b 100644
+--- a/src/pacman/util.c
++++ b/src/pacman/util.c
+@@ -842,7 +842,7 @@ static alpm_list_t *create_verbose_row(pm_target_t *target)
+ 	if(target->install) {
+ 		const alpm_db_t *db = alpm_pkg_get_db(target->install);
+ 		if(db) {
+-			pm_asprintf(&str, "%s/%s", alpm_db_get_name(db), alpm_pkg_get_name(target->install));
++			pm_asprintf(&str, "%s/ %s", alpm_db_get_name(db), alpm_pkg_get_name(target->install));
+ 		} else {
+ 			pm_asprintf(&str, "%s", alpm_pkg_get_name(target->install));
+ 		}
+@@ -914,13 +914,13 @@ static void _display_targets(alpm_list_t *targets, int verbose)
+ 		}
+ 
+ 		if(target->install) {
+-			pm_asprintf(&str, "%s-%s", alpm_pkg_get_name(target->install),
++			pm_asprintf(&str, "%s(%s)", alpm_pkg_get_name(target->install),
+ 					alpm_pkg_get_version(target->install));
+ 		} else if(isize == 0) {
+-			pm_asprintf(&str, "%s-%s", alpm_pkg_get_name(target->remove),
++			pm_asprintf(&str, "%s(%s)", alpm_pkg_get_name(target->remove),
+ 					alpm_pkg_get_version(target->remove));
+ 		} else {
+-			pm_asprintf(&str, "%s-%s [%s]", alpm_pkg_get_name(target->remove),
++			pm_asprintf(&str, "%s(%s) [%s]", alpm_pkg_get_name(target->remove),
+ 					alpm_pkg_get_version(target->remove), _("removal"));
+ 		}
+ 		names = alpm_list_add(names, str);

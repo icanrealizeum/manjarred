@@ -1,0 +1,37 @@
+Module                  Size  Used by
+fuse                   83310  3 
+pci_stub               12429  1 
+vboxpci                18996  0 
+vboxnetflt             23316  0 
+vboxnetadp             25443  0 
+vboxdrv               269990  3 vboxnetadp,vboxnetflt,vboxpci
+kvm_amd                54995  0 
+kvm                   378724  1 kvm_amd
+serio_raw              12849  0 
+pcspkr                 12595  0 
+snd_hda_codec_realtek    58935  1 
+i2c_piix4              16761  0 
+snd_hda_codec_generic    58997  1 snd_hda_codec_realtek
+snd_hda_codec_hdmi     45117  1 
+ideapad_laptop         17403  0 
+snd_hda_intel          26057  4 
+sparse_keymap          12818  1 ideapad_laptop
+snd_hda_controller     26457  1 snd_hda_intel
+snd_hda_codec          94886  5 snd_hda_codec_realtek,snd_hda_codec_hdmi,snd_hda_codec_generic,snd_hda_intel,snd_hda_controller
+rfkill                 18121  1 ideapad_laptop
+snd_hwdep              13148  1 snd_hda_codec
+snd_pcm                84507  4 snd_hda_codec_hdmi,snd_hda_codec,snd_hda_intel,snd_hda_controller
+snd_timer              26614  1 snd_pcm
+rtsx_usb_sdmmc         21228  0 
+snd                    61148  16 snd_hda_codec_realtek,snd_hwdep,snd_timer,snd_hda_codec_hdmi,snd_pcm,snd_hda_codec_generic,snd_hda_codec,snd_hda_intel
+mmc_core               98738  1 rtsx_usb_sdmmc
+shpchp                 35210  0 
+soundcore              13031  2 snd,snd_hda_codec
+led_class              12859  1 rtsx_usb_sdmmc
+rtsx_usb_ms            16856  0 
+memstick               13696  1 rtsx_usb_ms
+rtsx_usb               17487  2 rtsx_usb_sdmmc,rtsx_usb_ms
+mfd_core               12601  1 rtsx_usb
+autofs4                27337  2 
+hid_generic            12393  0 
+ohci_pci               12808  0 

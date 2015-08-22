@@ -1,0 +1,37 @@
+found hardware:
+
+AMD Family 12h and 14h thermal sensors...                   Success!
+    (driver `k10temp')
+
+
+Trying family `National Semiconductor/ITE'...               Yes
+Found unknown chip with ID 0xfc11
+
+
+Do you want to probe the I2C/SMBus adapters now? (YES/no): 
+Using driver `i2c-piix4' for device 0000:00:14.0: AMD Hudson-2 SMBus
+Module i2c-piix4 loaded successfully.
+Module i2c-dev loaded successfully.
+
+
+so this happened on dmesg while the above:
+[ 4740.951297] ACPI Warning: 0x0000000000000b00-0x0000000000000b07 SystemIO conflicts with Region \_SB_.PCI0.SMB_.SMB0 1 (20130725/utaddress-251)
+[ 4740.951317] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+[ 4740.958020] i2c /dev entries driver
+
+ok looks like the above is caused by:
+sudo modprobe i2c-piix4
+
+
+$ sensors
+acpitz-virtual-0
+Adapter: Virtual device
+temp1:        +44.0°C  (crit = +98.0°C)
+temp2:        +45.0°C  (crit = +126.0°C)
+
+k10temp-pci-00c3
+Adapter: PCI adapter
+temp1:        +43.6°C  (high = +70.0°C)
+                       (crit = +100.0°C, hyst = +99.0°C)
+on kernel 3.12 only! not on 3.15.3, but here only the k10temp exists.
+

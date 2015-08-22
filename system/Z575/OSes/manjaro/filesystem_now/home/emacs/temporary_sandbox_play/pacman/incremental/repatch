@@ -1,0 +1,11 @@
+#!/bin/bash
+fn="pacman_incremental.patch"
+echo "Patch for pacman to not clear git folder before rebuilding" >"${fn}"
+echo "source: https://mailman.archlinux.org/pipermail/pacman-dev/2013-September/017874.html" >>"${fn}"
+diff -upr5 a b >>"${fn}"
+grep "\`" -- "${fn}"
+if [[ $? -eq 0 ]]; then
+	echo "you must not include \` in your code, or else makepkg will fail to be built properly and err like crazy"
+	exit 2
+fi
+sha512sum "${fn}"

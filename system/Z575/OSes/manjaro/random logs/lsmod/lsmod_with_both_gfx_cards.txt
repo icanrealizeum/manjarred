@@ -1,0 +1,76 @@
+Module                  Size  Used by
+fuse                   75296  2 
+pci_stub                1389  1 
+vboxpci                14803  0 
+vboxnetflt             17508  0 
+vboxnetadp             18547  0 
+vboxdrv               274222  3 vboxnetadp,vboxnetflt,vboxpci
+rts5139               309161  0 
+snd_hda_codec_realtek    42856  1 
+r8169                  58943  0 
+snd_hda_codec_hdmi     31425  1 
+mii                     4259  1 r8169
+thinkpad_acpi          62029  0 
+nvram                   6042  1 thinkpad_acpi
+joydev                 10311  0 
+acer_wmi               24038  0 
+snd_hda_intel          37896  4 
+kvm_amd                52895  0 
+snd_hda_codec         151235  3 snd_hda_codec_realtek,snd_hda_codec_hdmi,snd_hda_intel
+snd_hwdep               6340  1 snd_hda_codec
+kvm                   395075  1 kvm_amd
+ideapad_laptop         10065  0 
+sparse_keymap           3186  2 acer_wmi,ideapad_laptop
+rfkill                 15907  3 acer_wmi,ideapad_laptop,thinkpad_acpi
+k10temp                 3186  0 
+snd_pcm                77869  3 snd_hda_codec_hdmi,snd_hda_codec,snd_hda_intel
+psmouse                88310  0 
+microcode              16965  0 
+evdev                  12112  10 
+serio_raw               5017  0 
+pcspkr                  2067  0 
+snd_page_alloc          7242  2 snd_pcm,snd_hda_intel
+ac                      3428  0 
+snd_timer              18726  1 snd_pcm
+snd                    60149  16 snd_hda_codec_realtek,snd_hwdep,snd_timer,snd_hda_codec_hdmi,snd_pcm,snd_hda_codec,snd_hda_intel,thinkpad_acpi
+battery                 7765  0 
+shpchp                 25586  0 
+wmi                     8483  1 acer_wmi
+radeon               1297614  4 
+ttm                    64460  1 radeon
+drm_kms_helper         36306  1 radeon
+drm                   239373  6 ttm,drm_kms_helper,radeon
+i2c_algo_bit            5488  1 radeon
+soundcore               5615  1 snd
+i2c_piix4              10873  0 
+video                  11109  1 acer_wmi
+i2c_core               25016  5 drm,i2c_piix4,drm_kms_helper,i2c_algo_bit,radeon
+thermal                 8628  0 
+button                  4837  0 
+acpi_cpufreq           10971  0 
+processor              25212  5 acpi_cpufreq
+xts                     3111  1 
+gf128mul                5898  1 xts
+hid_generic             1225  0 
+usbhid                 40833  0 
+hid                    91734  2 hid_generic,usbhid
+sd_mod                 30885  3 
+ohci_pci                4200  0 
+ehci_pci                4160  0 
+ohci_hcd               24097  1 ohci_pci
+ehci_hcd               60820  1 ehci_pci
+ahci                   23472  2 
+libahci                21610  1 ahci
+libata                171452  2 ahci,libahci
+usbcore               182869  6 rts5139,ohci_hcd,ohci_pci,ehci_hcd,ehci_pci,usbhid
+scsi_mod              132525  3 rts5139,libata,sd_mod
+usb_common              1720  1 usbcore
+sha512_generic          5304  0 
+sha256_generic         10052  0 
+aes_x86_64              7471  2 
+ext4                  486146  3 
+crc16                   1367  1 ext4
+mbcache                 6146  1 ext4
+jbd2                   86167  1 ext4
+dm_crypt               15055  1 
+dm_mod                 83121  10 dm_crypt

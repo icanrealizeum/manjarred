@@ -1,0 +1,63 @@
+# Maintainer: Samuel Pitoiset <samuel.pitoiset at gmail.com>
+# Arch libdrm Contributors:
+#       Chirantan Ekbote
+#	Jan de Groot
+#	Andreas Radke
+
+pkgname=libdrm-git
+pkgver=2.4.61.13.g97be70b
+pkgrel=1
+pkgdesc="Userspace interface to kernel DRM services"
+url="http://dri.freedesktop.org/"
+arch=('i686' 'x86_64')
+license=('MIT')
+depends=('glibc' 'libpciaccess')
+provides=('libdrm=$pkgver')
+conflicts=('libdrm')
+makedepends=('git' 'udev' 'libsystemd-git')
+options=('!libtool')
+changelog=CHANGELOG
+patch1='le.patch'
+source=('git://git.freedesktop.org/git/mesa/drm'
+"$patch1"
+)
+md5sums=('SKIP'
+         '6c6514f31ae5c52faf8ffc98bf3efa7a')
+
+pkgver() {
+  cd 'drm'
+  git describe --always | sed 's|libdrm.||g;s|-|.|g'
+}
+
+prepare() {
+  cd drm
+  sed -i 's/PKG_CHECK_MODULES(PTHREADSTUBS, pthread-stubs)//' configure.ac
+
+  patch -Np1 -i "../$patch1"
+}
+
+build() {
+  cd drm
+
+#  --enable-intel and --enable-nouveau  needed by mesa-dri-git to compile(at least)
+
+  ./autogen.sh
+		#--disable-udev \#
+  ./configure --prefix=/usr \
+    --disable-udev \
+		--disable-intel \
+		--enable-radeon \
+		--disable-nouveau \
+		--disable-vmwgfx
+  make V=1
+}
+
+check() {
+  cd drm
+  make -k check
+}
+
+package() {
+  cd drm
+  make DESTDIR="$pkgdir" install
+}

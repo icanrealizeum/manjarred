@@ -1,0 +1,306 @@
+diff --git a/drivers/usb/early/Makefile b/drivers/usb/early/Makefile
+index 24bbe51..947f7e6 100644
+--- a/drivers/usb/early/Makefile
++++ b/drivers/usb/early/Makefile
+@@ -2,4 +2,6 @@
+ # Makefile for early USB devices
+ #
+ 
++KBUILD_CFLAGS += -DDBGP_DEBUG
++
+ obj-$(CONFIG_EARLY_PRINTK_DBGP) += ehci-dbgp.o
+diff --git a/drivers/usb/early/ehci-dbgp.c b/drivers/usb/early/ehci-dbgp.c
+index 8cfc319..5ddffb8 100644
+--- a/drivers/usb/early/ehci-dbgp.c
++++ b/drivers/usb/early/ehci-dbgp.c
+@@ -428,18 +428,51 @@ static u32 __init find_dbgp(int ehci_num, u32 *rbus, u32 *rslot, u32 *rfunc)
+ 	return 0;
+ }
+ 
++static u32 __init isEHCI(u32 bus, u32 slot, u32 func)
++{
++	u32 class;
++
++	class = read_pci_config(bus, slot, func, PCI_CLASS_REVISION);
++	if ((class >> 8) != PCI_CLASS_SERIAL_USB_EHCI)
++		return 0; //not usb ehci
++
++	return 1; //good
++}
++
++static u32 __init got_next_ehci(u32 *rbus, u32 *rslot, u32 *rfunc)
++{
++	u32 bus, slot, func;
++
++	for (bus = *rbus; bus < 256; bus++) {
++		for (slot = *rslot; slot < 32; slot++) {
++			for (func = *rfunc; func < 8; func++) {
++        if (((bus != *rbus) || (slot != *rslot) || (func != *rfunc)) && (isEHCI(bus, slot, func)) ){
++          printk("bus: %02x slot: %02x func: %02x ", bus, slot, func);
++          printk("is EHCI\n");
++          *rbus = bus;
++          *rslot = slot;
++          *rfunc = func;
++          return 1; //good!
++//        }else{
++//          printk("is not ehci\n");
++        }
++			}
++		}
++	}
++	return 0;
++}
+ static int dbgp_ehci_startup(void)
+ {
+-	u32 ctrl, cmd, status;
++	u32 cmd, status;
+ 	int loop;
+ 
+ 	/* Claim ownership, but do not enable yet */
+-	ctrl = readl(&ehci_debug->control);
++/*	ctrl = readl(&ehci_debug->control);
+ 	ctrl |= DBGP_OWNER;
+ 	ctrl &= ~(DBGP_ENABLED | DBGP_INUSE);
+ 	writel(ctrl, &ehci_debug->control);
+ 	udelay(1);
+-
++*/
+ 	dbgp_ehci_status("EHCI startup");
+ 	/* Start the ehci running */
+ 	cmd = readl(&ehci_regs->command);
+@@ -719,12 +752,17 @@ static void __init early_ehci_bios_handoff(void)
+ 	u32 cap;
+ 	int msec;
+ 
+-	if (!offset)
++	if (!offset) {
++    printk("0 offset\n");
+ 		return;
++  }
+ 
+ 	cap = read_pci_config(ehci_dev.bus, ehci_dev.slot,
+ 			      ehci_dev.func, offset);
+ 	dbgp_printk("dbgp: ehci BIOS state %08x\n", cap);
++	dbgp_printk("dbgp: ehci BIOS state %x\n", cap);
++	dbgp_printk("dbgp: ehci BIOS state %032x\n", cap);
++	dbgp_printk("dbgp: ehci BIOS state %u\n", cap);
+ 
+ 	if ((cap & 0xff) == 1 && (cap & EHCI_USBLEGSUP_BIOS)) {
+ 		dbgp_printk("dbgp: BIOS handoff\n");
+@@ -739,6 +777,10 @@ static void __init early_ehci_bios_handoff(void)
+ 		msec -= 10;
+ 		cap = read_pci_config(ehci_dev.bus, ehci_dev.slot,
+ 				      ehci_dev.func, offset);
++	  dbgp_printk("dbgp: ehci BIOS state while: %08x\n", cap);
++    dbgp_printk("dbgp: ehci BIOS state %x\n", cap);
++    dbgp_printk("dbgp: ehci BIOS state %032x\n", cap);
++    dbgp_printk("dbgp: ehci BIOS state %u\n", cap);
+ 	}
+ 
+ 	if (cap & EHCI_USBLEGSUP_BIOS) {
+@@ -752,6 +794,7 @@ static void __init early_ehci_bios_handoff(void)
+ 	/* just in case, always disable EHCI SMIs */
+ 	write_pci_config_byte(ehci_dev.bus, ehci_dev.slot, ehci_dev.func,
+ 			      offset + EHCI_USBLEGCTLSTS, 0);
++  printk("disabled EHCI SMI via usb\n");
+ }
+ 
+ static int __init ehci_setup(void)
+@@ -828,6 +871,136 @@ next_debug_port:
+ 	return -1;
+ }
+ 
++
++static int __init ehci_setup222(void)
++{
++	u32 portsc, hcs_params;
++	u32 n_ports;
++	int i;
++
++	hcs_params = readl(&ehci_caps->hcs_params);
++	n_ports    = HCS_N_PORTS(hcs_params);
++
++	dbgp_printk("n_ports:    %d\n", n_ports);
++	dbgp_printk("dbgp: \n");
++	dbgp_printk("  ehci cmd     : %08x", readl(&ehci_regs->command));
++	dbgp_printk("  ehci conf flg: %08x\n",
++		    readl(&ehci_regs->configured_flag));
++	dbgp_printk("  ehci status  : %08x\n", readl(&ehci_regs->status));
++
++	for (i = 1; i <= n_ports; i++) {
++		portsc = readl(&ehci_regs->port_status[i-1]);
++		dbgp_printk("portstatus%d: %08x\n", i, portsc);
++	}
++
++	/* Only reset the controller if it is not already in the
++	 * configured state */
++	if (!(readl(&ehci_regs->configured_flag) & FLAG_CF)) {
++    printk("controller reset is skipped\n");
++		if (dbgp_ehci_controller_reset() != 0) {//OPTIONAL apparently
++      printk("failed controller reset (shouldn't happen!)\n");
++			return -1;
++    }
++	} else {
++		printk("ehci skip - already configured");
++    dbgp_printk("dbgp: \n");
++    dbgp_printk("  ehci cmd     : %08x", readl(&ehci_regs->command));
++    dbgp_printk("  ehci conf flg: %08x\n",
++          readl(&ehci_regs->configured_flag));
++    dbgp_printk("  ehci status  : %08x\n", readl(&ehci_regs->status));
++	}
++
++	dbgp_ehci_startup(); // NEEDED!
++
++	for (i = 1; i <= n_ports; i++) {
++		portsc = readl(&ehci_regs->port_status[i-1]);
++		dbgp_printk("portstatus%d: %08x\n", i, portsc);
++	}
++
++  printk("was here2, end, returning -1\n");
++	return -1;
++}
++
++int __init epicsimple(void)
++{ //all this code is ripped from: drivers/usb/early/ehci-dbgp.c
++	u32 bus, slot, func;
++	void __iomem *ehci_bar;
++	u32 bar_val, count;
++	u8 byte;
++
++  printk("epic started\n");
++
++	if (!early_pci_allowed()) {
++    printk("early_pci_ not allowed!\n");
++		return -1;
++  }else{
++    printk("early_pci_allowed\n");
++  }
++
++  bus=0;
++  slot=0;
++  func=0;
++while (true) {
++  if (!got_next_ehci(&bus, &slot, &func)) {
++    printk("no more EHCIs\n");
++    goto exit;
++  }
++
++	dbgp_printk("Found EHCI on %02x:%02x.%1x\n", bus, slot, func);
++
++	bar_val = read_pci_config(bus, slot, func, PCI_BASE_ADDRESS_0);
++	dbgp_printk("bar_val: %02x\n", bar_val);
++	if (bar_val & ~PCI_BASE_ADDRESS_MEM_MASK) {
++		dbgp_printk("only simple 32bit mmio bars supported\n");
++		return -1;
++	}
++
++	/* double check if the mem space is enabled */
++	byte = read_pci_config_byte(bus, slot, func, 0x04);
++	if (!(byte & 0x2)) {
++		byte  |= 0x02;
++		write_pci_config_byte(bus, slot, func, 0x04, byte);
++		dbgp_printk("mmio for ehci enabled\n");
++	}
++
++	/*
++	 * FIXME I don't have the bar size so just guess PAGE_SIZE is more
++	 * than enough.  1K is the biggest I have seen.
++	 */
++	set_fixmap_nocache(FIX_DBGP_BASE, bar_val & PAGE_MASK);
++	ehci_bar = (void __iomem *)__fix_to_virt(FIX_DBGP_BASE);
++	ehci_bar += bar_val & ~PAGE_MASK;
++	dbgp_printk("ehci_bar: %p\n", ehci_bar);
++
++	ehci_caps  = ehci_bar;
++	ehci_regs  = ehci_bar + EARLY_HC_LENGTH(readl(&ehci_caps->hc_capbase));
++	ehci_dev.bus = bus;
++	ehci_dev.slot = slot;
++	ehci_dev.func = func;
++
++  dbgp_printk("early_ehci_bios_handoff:\n");
++  early_ehci_bios_handoff();
++
++	ehci_setup222();
++  dbgp_printk("ehci_setup222 failed\n");
++
++	dbgp_printk("dbgp: \n");
++	dbgp_printk("  ehci cmd     : %08x", readl(&ehci_regs->command));
++	dbgp_printk("  ehci conf flg: %08x\n",
++		    readl(&ehci_regs->configured_flag));
++	dbgp_printk("  ehci status  : %08x\n", readl(&ehci_regs->status));
++//	dbgp_printk("  ehci portsc  : %08x\n",
++//		    readl(&ehci_regs->port_status[dbgp_phys_port - 1]));
++}
++
++exit:
++  printk("epic ended\n");
++	ehci_debug = NULL;
++	return 0;
++}
++
++
++
+ int __init early_dbgp_init(char *s)
+ {
+ 	u32 debug_port, bar, offset;
+@@ -839,8 +1012,12 @@ int __init early_dbgp_init(char *s)
+ 	int ret;
+ 	u8 byte;
+ 
+-	if (!early_pci_allowed())
++	if (!early_pci_allowed()) {
++    printk("early_pci_ not allowed!\n");
+ 		return -1;
++  }else{
++    printk("early_pci_allowed\n");
++  }
+ 
+ 	dbgp_num = 0;
+ 	if (*s)
+@@ -976,12 +1153,15 @@ int dbgp_reset_prep(struct usb_hcd *hcd)
+ 	int ret = xen_dbgp_reset_prep(hcd);
+ 	u32 ctrl;
+ 
++  printk("mmmmmmmmmmmmm1\n");
+ 	if (ret)
+ 		return ret;
+ 
++  printk("mmmmmmmmmmmmm2\n");
+ 	dbgp_not_safe = 1;
+ 	if (!ehci_debug)
+ 		return 0;
++  printk("mmmmmmmmmmmmm3\n");
+ 
+ 	if ((early_dbgp_console.index != -1 &&
+ 	     !(early_dbgp_console.flags & CON_BOOT)) ||
+@@ -1001,6 +1181,7 @@ EXPORT_SYMBOL_GPL(dbgp_reset_prep);
+ 
+ int dbgp_external_startup(struct usb_hcd *hcd)
+ {
++  printk("mmmmmmmmmmmmm4\n");
+ 	return xen_dbgp_external_startup(hcd) ?: _dbgp_external_startup();
+ }
+ EXPORT_SYMBOL_GPL(dbgp_external_startup);
+@@ -1049,6 +1230,7 @@ static int __init kgdbdbgp_parse_config(char *str)
+ {
+ 	char *ptr;
+ 
++  printk("mmmmmmmmmmmmmmmmmmmmmmm\n");
+ 	if (!ehci_debug) {
+ 		if (early_dbgp_init(str))
+ 			return -1;
+diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
+index 01d1c18..eba9f83 100644
+--- a/arch/x86/kernel/early_printk.c
++++ b/arch/x86/kernel/early_printk.c
+@@ -217,6 +217,10 @@ static int __init setup_early_printk(char *buf)
+ 			current_ypos = boot_params.screen_info.orig_y;
+ 			early_console_register(&early_vga_console, keep);
+ 		}
++		if (!strncmp(buf, "cookies", 4)) {
++      epicsimple();
++    }
++
+ #ifdef CONFIG_EARLY_PRINTK_DBGP
+ 		if (!strncmp(buf, "dbgp", 4) && !early_dbgp_init(buf + 4))
+ 			early_console_register(&early_dbgp_console, keep);

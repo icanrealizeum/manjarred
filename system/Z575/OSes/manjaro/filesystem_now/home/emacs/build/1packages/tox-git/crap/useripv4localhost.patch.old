@@ -1,0 +1,45 @@
+Index: tox-9999/other/DHT_bootstrap.c
+===================================================================
+--- tox-9999.orig/other/DHT_bootstrap.c
++++ tox-9999/other/DHT_bootstrap.c
+@@ -118,8 +118,9 @@ int main(int argc, char *argv[])
+        Bind to ip 0.0.0.0 / [::] : PORT */
+     IP ip;
+     ip_init(&ip, ipv6enabled);
++    addr_parse_ip("127.0.0.1", &ip);//FIXME: actually parse the arg! probably argvoffset+1 ?
+ 
+-    DHT *dht = new_DHT(new_networking(ip, PORT));
++    DHT *dht = new_DHT(new_networking(ip, 12980));//PORT  //FIXME: actually parse the port arg!
+     Onion *onion = new_onion(dht);
+     Onion_Announce *onion_a = new_onion_announce(dht);
+ 
+@@ -190,10 +191,10 @@ int main(int argc, char *argv[])
+ 
+         do_DHT(dht);
+ 
+-        if (is_timeout(last_LANdiscovery, is_waiting_for_dht_connection ? 5 : LAN_DISCOVERY_INTERVAL)) {
++/*        if (is_timeout(last_LANdiscovery, is_waiting_for_dht_connection ? 5 : LAN_DISCOVERY_INTERVAL)) {
+             send_LANdiscovery(htons(PORT), dht);
+             last_LANdiscovery = unix_time();
+-        }
++        }*/
+ 
+ #ifdef TCP_RELAY_ENABLED
+         do_TCP_server(tcp_s);
+Index: tox-9999/toxcore/friend_connection.c
+===================================================================
+--- tox-9999.orig/toxcore/friend_connection.c
++++ tox-9999/toxcore/friend_connection.c
+@@ -781,10 +781,10 @@ Friend_Connections *new_friend_connectio
+ /* Send a LAN discovery packet every LAN_DISCOVERY_INTERVAL seconds. */
+ static void LANdiscovery(Friend_Connections *fr_c)
+ {
+-    if (fr_c->last_LANdiscovery + LAN_DISCOVERY_INTERVAL < unix_time()) {
++    if (fr_c->last_LANdiscovery + LAN_DISCOVERY_INTERVAL < unix_time()) {
+         send_LANdiscovery(htons(TOX_PORT_DEFAULT), fr_c->dht);
+         fr_c->last_LANdiscovery = unix_time();
+-    }
++    }
+ }
+ 
+ /* main friend_connections loop. */

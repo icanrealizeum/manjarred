@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -x
+
+x="a b c"
+
+"./$x" 1 2 3
+"./${x}" 1 2 3
+"$x" 4 5 6
+$x 7 8 9
+
+#problem when $x is empty or unset:
+x=
+"$x" echo made it1
+$x echo made it2
+
+# so there's no simple way like using "$x" to handle both cases: 1. when $x contains spaces in path, and 2. the case when $x may be empty such as with x=sudo
+
+x=
+${x:+"$x"} echo made it3
+x=echo
+${x:+"$x"} echo made it3
+
+#well, ^ I guess there is one after all
+# ${parameter:+word}
+# Use Alternate Value.  If parameter is null or unset, nothing  is
+# substituted, otherwise the expansion of word is substituted.
+

@@ -1,0 +1,35 @@
+read -n 1 -s -t 0.00001
+
+will sometimes just hang around as if no timeout was specified
+clearly the case where the timeout expires too soon wasn't handled
+
+bash --version
+GNU bash, version 4.3.18(1)-release (x86_64-unknown-linux-gnu)
+
+
+also:
+$ promptkey 0.00001 dadas
+/home/emacs/bin/promptkey: line 15: read: error setting terminal attributes: Interrupted system call
+
+it's the same thing but from a script.
+
+
+
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ read -n 1 -s -t 0.00001 -p "sdasd"
+sdasd[emacs@manji bin]$ 
+

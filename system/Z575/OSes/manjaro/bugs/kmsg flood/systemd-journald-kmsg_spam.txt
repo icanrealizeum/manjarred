@@ -1,0 +1,21 @@
+systemd-journald will spam dmesg logs that /dev/kmsg is buffer is overrun...
+and while framebuffer is on this will make the system unresponsive due to slow scrolling up
+
+
+looks like this happens even without framebuffer, however it seems to me that i am able to ctrl+alt+del from this
+
+
+the spam/flood happens only when:
+Device Drivers  --->  
+	-*- Power supply class support  ---> 
+		[*]   Power supply debug
+is set
+aka CONFIG_POWER_SUPPLY_DEBUG
+
+and I'm using this kernel cmdline:
+in grub:
+GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 pnp.debug=1 loglevel=7 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y nofb mminit_loglevel=0"
+
+
+$ cat /proc/cmdline 
+BOOT_IMAGE=/vmlinuz-315-x86_64 root=UUID=bfa4ab6e-19a3-4601-ba2b-267c55841c73 rw cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards ipv6.disable=1 pnp.debug=1 loglevel=7 log_buf_len=5110M printk.always_kmsg_dump=y printk.time=y nofb mminit_loglevel=0

@@ -1,0 +1,10 @@
+#!/bin/bash
+#^ for syntax
+
+#time ./configure --local-rust-root="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2"
+
+#use cargo's own recommended rustc nightly:
+time ./configure --local-rust-root="`pwd`/rustc"
+
+#use whatever rustc you have in PATH
+#time ./configure

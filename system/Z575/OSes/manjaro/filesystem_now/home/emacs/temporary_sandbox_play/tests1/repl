@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#set -e -x
+
+linestoremove='
+#include "base/metrics/histogram.h"
+'
+
+#echo ".${IFS[@]}."
+#echo ".${linestoremove}."
+#exit 1
+
+#declare -a ar
+#pushd src
+
+#ar=(`find . -name \*.h -or -name \*.cc`)
+
+#cp "${ar[1]}" /tmp
+#  sedeasy "${linestoremove}" "//${linestoremove}" "${ar[1]}"
+#echo "${ar[1]}"
+#colordiff -up "/tmp/${ar[1]}" "${ar[1]}"
+#exit 1
+
+#for eachfile in ${ar[@]}; do
+#  echo $eachfile
+#  echo "$linestoremove" | read eachline
+#  echo "$eachline $?"
+#  exit 2
+  echo "$linestoremove" | while read eachline; do
+    echo ".${eachline}."
+    sedeasy "$eachline" "//$eachline" "$eachfile"
+  done
+#done
+
+#popd
+

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#rustpath="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2"
+#rustpath="`pwd`/rustc"
+
+#export PATH="$rustpath/bin:$PATH" 
+#export LD_LIBRARY_PATH="$rustpath/lib"
+#echo $PATH
+#rustc -V
+
+#target/snapshot/bin/cargo build --target x86_64-unknown-linux-gnu --verbose
+time make -j4 VERBOSE=1
+#unset PATH
+#unset LD_LIBRARY_PATH
+
+#RUST_BACKTRACE=1
+
+

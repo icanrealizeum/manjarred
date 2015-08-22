@@ -1,0 +1,55 @@
+# Maintainer: alucryd <alucryd at gmail dot com>
+# Contributor: L42y <423300 at gmail dot com>
+# Contributor: teddy_beer_maniac <teddy_beer_maniac at wp dot pl>
+
+#gnome-common is an extension to autoconf, automake and libtool for the GNOME environment and GNOME using applications. Included are gnome-autogen.sh and several macros to help in both GNOME and GNOME 2.0 source trees.
+
+pkgname=gnome-common-git
+pkgver=3.12.0.r23.2bffd7e
+pkgrel=1
+pkgdesc="Common development macros for GNOME"
+arch=('any')
+url="http://www.gnome.org"
+license=('GPL')
+makedepends=('git autoconf-archive')
+provides=("${pkgname%-*}")
+conflicts=("${pkgname%-*}") #conflicts with 2 files from: autoconf-archive (working around that)
+_gitname="${pkgname%-*}"
+source=("git://git.gnome.org/${_gitname}")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$_gitname"
+
+  printf "%s" "$(git describe --tags | sed 's/-/.r/; s/-g/./')"
+}
+
+prepare() {
+  cd "${_gitname}/macros2"
+  pwd
+  rm -v -- ax_code_coverage.m4
+  rm -v -- ax_check_enable_debug.m4
+  cp -v -- /usr/share/aclocal/ax_code_coverage.m4 .
+  cp -v -- /usr/share/aclocal/ax_check_enable_debug.m4 .
+}
+
+build() {
+  cd "$_gitname"
+
+  ./autogen.sh --prefix='/usr'
+  make
+}
+
+package() {
+  cd "${_gitname}"
+
+  make DESTDIR="${pkgdir}" install
+
+  #delete these two because autoconf-archive already has them and thus avoid conflict when installing
+  cd "${pkgdir}/usr/share/aclocal/"
+  pwd
+  rm -v -- ax_code_coverage.m4
+  rm -v -- ax_check_enable_debug.m4
+}
+
+# vim: ts=2 sw=2 et:

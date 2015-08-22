@@ -1,0 +1,61 @@
+this patch must be applied to both clients, or else when this clients connects to the unpatched client it received a list of node IPs to which it will TCP connect to
+
+
+diff --git a/other/bootstrap_daemon/tox-bootstrapd.c b/other/bootstrap_daemon/tox-bootstrapd.c
+index 8b5e6a4..c20f8fa 100644
+--- a/other/bootstrap_daemon/tox-bootstrapd.c
++++ b/other/bootstrap_daemon/tox-bootstrapd.c
+@@ -61,10 +61,10 @@
+ #define DEFAULT_PID_FILE_PATH         "tox-bootstrapd.pid"
+ #define DEFAULT_KEYS_FILE_PATH        "tox-bootstrapd.keys"
+ #define DEFAULT_PORT                  33445
+-#define DEFAULT_ENABLE_IPV6           1 // 1 - true, 0 - false
++#define DEFAULT_ENABLE_IPV6           0 // 1 - true, 0 - false
+ #define DEFAULT_ENABLE_IPV4_FALLBACK  1 // 1 - true, 0 - false
+ #define DEFAULT_ENABLE_LAN_DISCOVERY  1 // 1 - true, 0 - false
+-#define DEFAULT_ENABLE_TCP_RELAY      1 // 1 - true, 0 - false
++#define DEFAULT_ENABLE_TCP_RELAY      0 // 1 - true, 0 - false
+ #define DEFAULT_TCP_RELAY_PORTS       443, 3389, 33445 // comma-separated list of ports. make sure to adjust DEFAULT_TCP_RELAY_PORTS_COUNT accordingly
+ #define DEFAULT_TCP_RELAY_PORTS_COUNT 3
+ #define DEFAULT_ENABLE_MOTD           1 // 1 - true, 0 - false
+@@ -317,12 +317,13 @@ int get_general_config(const char *cfg_file_path, char **pid_file_path, char **k
+     }
+ 
+     // Get TCP relay option
+-    if (config_lookup_bool(&cfg, NAME_ENABLE_TCP_RELAY, enable_tcp_relay) == CONFIG_FALSE) {
++        *enable_tcp_relay = DEFAULT_ENABLE_TCP_RELAY;
++/*    if (config_lookup_bool(&cfg, NAME_ENABLE_TCP_RELAY, enable_tcp_relay) == CONFIG_FALSE) {
+         syslog(LOG_WARNING, "No '%s' setting in configuration file.\n", NAME_ENABLE_TCP_RELAY);
+         syslog(LOG_WARNING, "Using default '%s': %s\n", NAME_ENABLE_TCP_RELAY,
+                DEFAULT_ENABLE_TCP_RELAY ? "true" : "false");
+         *enable_tcp_relay = DEFAULT_ENABLE_TCP_RELAY;
+-    }
++    }*/
+ 
+     if (*enable_tcp_relay) {
+         parse_tcp_relay_ports_config(&cfg, tcp_relay_ports, tcp_relay_port_count);
+@@ -713,9 +714,9 @@ int main(int argc, char *argv[])
+             last_LANdiscovery = unix_time();
+         }
+ 
+-        if (enable_tcp_relay) {
++/*        if (enable_tcp_relay) {
+             do_TCP_server(tcp_server);
+-        }
++        }*/
+ 
+         networking_poll(dht->net);
+ 
+diff --git a/toxcore/net_crypto.c b/toxcore/net_crypto.c
+index 5aed104..7a981de 100644
+--- a/toxcore/net_crypto.c
++++ b/toxcore/net_crypto.c
+@@ -2467,7 +2467,7 @@ void do_net_crypto(Net_Crypto *c)
+ {
+     unix_time_update();
+     kill_timedout(c);
+-    do_tcp(c);
++//    do_tcp(c);
+     send_crypto_packets(c);
+ }
+ 

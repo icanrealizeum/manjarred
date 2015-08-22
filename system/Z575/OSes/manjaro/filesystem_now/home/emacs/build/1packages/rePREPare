@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source ./commonscripts.bash
+
+echo "runs prepare, build, then install"
+
+#if [ ! -L "/tmp/makepkg" ]; then
+	./gopreplinks || exit 1
+#fi
+echo "this doesn't remove existing folder before prepare"
+	time makepkg -s --install --incremental --force
+

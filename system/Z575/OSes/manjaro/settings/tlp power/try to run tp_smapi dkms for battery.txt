@@ -1,0 +1,16 @@
+no good!
+
+"The ThinkPad SL series and IdeaPad series have firmware that is completely different from other ThinkPad models. Neither tp_smapi nor thinkpad-acpi support these models."
+source: http://www.thinkwiki.org/wiki/Tp_smapi#Model-specific_status
+
+[  377.261017] thinkpad_ec: no ThinkPad embedded controller!
+
+======================
+yaourt -Ss tp_smapi-dkms
+
+see if we can use that! but check to see it's safe!
+
+and see
+sudo tlp-stat|less
+search for smapi
+see if it loaded or something

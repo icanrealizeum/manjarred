@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e -u
+
+echo "fixes your 'files' file from each of your pacman packages that are affected"
+echo "more info here: https://lists.archlinux.org/pipermail/pacman-dev/2014-October/019422.html"
+echo "It actually makes a fixed copy into /tmp/fullpathhere"
+echo "so it doesn't affect the original files! It's up to you to move/overwrite them"
+echo "the fixed files have preserved timestamps/attributes/owner etc."
+
+#this issue happened after I upgraded from commit d9cf14ff1d69ac8834b84015c7971f55ce77645b
+#to commit(latest currently): 7ee01c86669327b2af63c8ed9390bcbf071cdac5
+#and was asked to run pacman-db-upgrade
+#now to fix all that, I use(d) this script.
+
+
+files=($(grep -xA1 %BACKUP% /var/lib/pacman/local/*/files | grep "%FILES%" | sed -e 's/-%FILES%$//g'))
+
+if [ -z "${files:+something}" ]; then
+  echo "-- found no packages affected --"
+  exit 0
+fi
+
+#echo "${files[@]}"
+for each in "${files[@]}"; do
+  echo "$each"
+#  backup=($(cat "$each" | cut -s -f1-2))
+  anew="$(cat "$each" | ./fix_pacman_files.awk)"
+  # ^ this eats the \n at the end
+
+  ec="$?"
+  if [ "$ec" != 0 ]; then
+    echo "Bailing! awk failed with exit code: $ec"
+    echo "rest of the files weren't processed!"
+    exit $ec
+  fi
+  newtempfile="/tmp/$each"
+  mkdir -p "$(dirname "${newtempfile}")"
+  echo "$anew" > "$newtempfile"
+  echo >> "$newtempfile"
+  # ^ readding that \n at the end
+  cp --attributes-only --preserve=mode,ownership,timestamps -- "$each" "$newtempfile"
+done
+

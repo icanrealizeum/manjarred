@@ -1,0 +1,59 @@
+# Maintainer: Anatol Pomozov <anatol.pomozov@gmail.com>
+# Contibutor: Steven Allen <steven@stebalien.com>
+
+DEBUG=1
+
+pkgname=nftables-git
+pkgver=nftables.r0.4.115.g0abfb2b
+pkgrel=1
+pkgdesc='Netfilter nf_tables infrastructure library'
+arch=(i686 x86_64)
+url='http://netfilter.org/projects/nftables/'
+license=(GPL2)
+depends=(libmnl gmp libnftnl-git ncurses)
+makedepends=(git docbook2x perl-xml-libxml bison flex)
+conflicts=(nftables)
+patch1='nftrace_rule_number.patch'
+# systemd support is stolen from https://github.com/devkid/nftables-systemd
+source=(git+https://git.netfilter.org/nftables
+        nftables.service
+        nftables-ctl
+        "$patch1")
+sha1sums=('SKIP'
+          'efbc57f8ea6c37baaa8dac7bab026e9babf5aa97'
+          '384642dd1b9490870a92b5d6fca62c3e942be109'
+          'a1d3be5b35c5b4557ec68231904a8aefaf94cd97')
+
+if [ -n "$DEBUG" ] && [ "$DEBUG" == "1" ]; then                                 
+  options+=('!strip')
+  export CFLAGS+=" -g3 -O1 -DDEBUG"
+  export CPPFLAGS+=" -g3 -O1 -DDEBUG"
+  export CXXFLAGS+=" -g3 -O1 -DDEBUG"
+  export extra=("--enable-debug")
+fi
+
+pkgver() {
+  cd nftables
+  git describe | sed 's/^v//; s/-/.r/; s/-/./; s/-/./'
+}
+
+prepare() {
+  cd nftables
+#  sed 's/docbook2x-man/docbook2man/g' -i Makefile.rules.in -i configure.ac
+  sed 's/docbook2x-man/docbook2man/g' -i configure.ac
+  patch -Np1 -i "../${patch1}"
+  ./autogen.sh
+  ./configure --prefix=/usr --sbindir=/usr/bin --sysconfdir=/etc "${extra[@]}"
+}
+
+build() {
+  cd nftables
+  make
+}
+
+package() {
+  cd nftables
+  make DESTDIR="$pkgdir" install
+  install -D -m644 "$srcdir/nftables.service" "$pkgdir/usr/lib/systemd/system/nftables.service"
+  install -D -m755 "$srcdir/nftables-ctl" "$pkgdir/usr/bin/nftables-ctl"
+}

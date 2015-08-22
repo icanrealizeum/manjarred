@@ -1,0 +1,341 @@
+this is for playing on INSANE difficulty (esp. the shield pickups)
+limits are incresead, such as, picking up stuff like ammo/shields
+
+diff --git a/main/powerup.h b/main/powerup.h
+index c7dd69a..56a1fe5 100644
+--- a/main/powerup.h
++++ b/main/powerup.h
+@@ -84,7 +84,7 @@ enum powerup_type_t
+ 	POW_HOARD_ORB = 7,       // use unused slot
+ };
+ 
+-#define VULCAN_AMMO_MAX             (392*4)
++#define VULCAN_AMMO_MAX             (40*392*4)
+ #define VULCAN_WEAPON_AMMO_AMOUNT   196
+ #define VULCAN_AMMO_AMOUNT          (49*2)
+ 
+diff --git a/main/weapon.c b/main/weapon.c
+index bb0b8cd..7487308 100644
+--- a/main/weapon.c
++++ b/main/weapon.c
+@@ -53,7 +53,7 @@ const ubyte Secondary_weapon_to_weapon_info[MAX_SECONDARY_WEAPONS] = {CONCUSSION
+ const ubyte Secondary_weapon_to_gun_num[MAX_SECONDARY_WEAPONS] = {4,4,7,7,7,4,4,7,4,7};
+ 
+ const int Primary_ammo_max[MAX_PRIMARY_WEAPONS] = {0, VULCAN_AMMO_MAX, 0, 0, 0, 0, VULCAN_AMMO_MAX, 0, 0, 0};
+-const ubyte Secondary_ammo_max[MAX_SECONDARY_WEAPONS] = {20, 10, 10, 5, 5, 20, 20, 15, 10, 10};
++const ushort Secondary_ammo_max[MAX_SECONDARY_WEAPONS] = {16383, 16383, 16383, 16383, 16383, 16383, 16383, 16383, 16383, 16383};
+ 
+ //for each primary weapon, what kind of powerup gives weapon
+ const ubyte Primary_weapon_to_powerup[MAX_PRIMARY_WEAPONS] = {POW_LASER,POW_VULCAN_WEAPON,POW_SPREADFIRE_WEAPON,POW_PLASMA_WEAPON,POW_FUSION_WEAPON,POW_LASER,POW_GAUSS_WEAPON,POW_HELIX_WEAPON,POW_PHOENIX_WEAPON,POW_OMEGA_WEAPON};
+diff --git a/main/weapon.h b/main/weapon.h
+index 4ea182f..7b22a03 100644
+--- a/main/weapon.h
++++ b/main/weapon.h
+@@ -186,7 +186,7 @@ extern const char *const Secondary_weapon_names_short[];
+ extern const char *const Primary_weapon_names[];
+ extern const char *const Secondary_weapon_names[];
+ extern const int  Primary_ammo_max[MAX_PRIMARY_WEAPONS];
+-extern const ubyte    Secondary_ammo_max[MAX_SECONDARY_WEAPONS];
++extern const ushort    Secondary_ammo_max[MAX_SECONDARY_WEAPONS];
+ extern const sbyte    Weapon_is_energy[MAX_WEAPON_TYPES];
+ 
+ #define HAS_WEAPON_FLAG 1
+diff --git a/main/player.h b/main/player.h
+index ece9742..2355003 100644
+--- a/main/player.h
++++ b/main/player.h
+@@ -30,11 +30,11 @@ COPYRIGHT 1993-1999 PARALLAX SOFTWARE CORPORATION.  ALL RIGHTS RESERVED.
+ #define MAX_MULTI_PLAYERS MAX_PLAYERS+3
+ 
+ // Initial player stat values
+-#define INITIAL_ENERGY  i2f(100)    // 100% energy to start
+-#define INITIAL_SHIELDS i2f(100)    // 100% shields to start
++#define INITIAL_ENERGY  i2f(200)    // 100% energy to start
++#define INITIAL_SHIELDS i2f(200)    // 100% shields to start
+ 
+-#define MAX_ENERGY      i2f(200)    // go up to 200
+-#define MAX_SHIELDS     i2f(200)
++#define MAX_ENERGY      i2f(16383)    // go up to 200
++#define MAX_SHIELDS     i2f(16383) //16383 so that converter works!
+ 
+ #define INITIAL_LIVES               3   // start off with 3 lives
+ 
+@@ -55,7 +55,7 @@ COPYRIGHT 1993-1999 PARALLAX SOFTWARE CORPORATION.  ALL RIGHTS RESERVED.
+ #define PLAYER_FLAGS_HEADLIGHT      8192    // Player has headlight boost
+ #define PLAYER_FLAGS_HEADLIGHT_ON   16384   // is headlight on or off?
+ 
+-#define AFTERBURNER_MAX_TIME    (F1_0*5)    // Max time afterburner can be on.
++#define AFTERBURNER_MAX_TIME    (F1_0*15)    // Max time afterburner can be on.
+ #define CALLSIGN_LEN                8       // so can use as filename (was: 12)
+ 
+ // Amount of time player is cloaked.
+diff --git a/main/powerup.c b/main/powerup.c
+index 213a564..ec993ff 100644
+--- a/main/powerup.c
++++ b/main/powerup.c
+@@ -184,7 +184,7 @@ int pick_up_energy(void)
+ 
+ 	if (Players[Player_num].energy < MAX_ENERGY) {
+ 		fix boost;
+-		boost = 3*F1_0 + 3*F1_0*(NDL - Difficulty_level);
++		boost = 3*F1_0*10;//3*F1_0 + 3*F1_0*(NDL - 1);
+ 		if (Difficulty_level == 0)
+ 			boost += boost/2;
+ 		Players[Player_num].energy += boost;
+@@ -269,7 +269,7 @@ int do_powerup(object *obj)
+ 			break;
+ 		case POW_SHIELD_BOOST:
+ 			if (Players[Player_num].shields < MAX_SHIELDS) {
+-				fix boost = 3*F1_0 + 3*F1_0*(NDL - Difficulty_level);
++				fix boost = 3*F1_0*20;//3*F1_0 + 3*F1_0*(NDL - 1); //aka rookie difficulty = +15 shield pickup
+ 				if (Difficulty_level == 0)
+ 					boost += boost/2;
+ 				Players[Player_num].shields += boost;
+diff --git a/main/gamecntl.c b/main/gamecntl.c
+index f83819d..da5cdf2 100644
+--- a/main/gamecntl.c
++++ b/main/gamecntl.c
+@@ -170,12 +170,15 @@ void transfer_energy_to_shield()
+ 
+ 	if (e <= 0) {
+ 
+-		if (Players[Player_num].energy <= INITIAL_ENERGY) {
++		if (Players[Player_num].energy <= INITIAL_ENERGY/2) {
+ 			HUD_init_message(HM_DEFAULT, "Need more than %i energy to enable transfer", f2i(INITIAL_ENERGY));
++      return;
+ 		}
+ 		else if (Players[Player_num].shields >= MAX_SHIELDS) {
+ 			HUD_init_message_literal(HM_DEFAULT, "No transfer: Shields already at max");
++      return;
+ 		}
++   	HUD_init_message(HM_DEFAULT, "Negative e = %i %i", f2i(e), e);
+ 		return;
+ 	}
+ 
+diff --git a/main/cntrlcen.c b/main/cntrlcen.c
+index 0a028d2..0128cd7 100644
+--- a/main/cntrlcen.c
++++ b/main/cntrlcen.c
+@@ -128,7 +128,7 @@ int Control_center_destroyed = 0;
+ fix Countdown_timer=0;
+ int Countdown_seconds_left=0, Total_countdown_time=0;		//in whole seconds
+ 
+-static const int	Alan_pavlish_reactor_times[NDL] = {90, 60, 45, 35, 30};
++static const int	Alan_pavlish_reactor_times[NDL] = {320, 320, 320, 320, 320};
+ 
+ //	-----------------------------------------------------------------------------
+ //	Called every frame.  If control center been destroyed, then actually do something.
+diff --git a/main/cntrlcen.h b/main/cntrlcen.h
+index 3cd084f..81f0d65 100644
+--- a/main/cntrlcen.h
++++ b/main/cntrlcen.h
+@@ -88,7 +88,7 @@ extern void calc_controlcen_gun_point(reactor *reactor, object *obj,int gun_num)
+ extern void do_controlcen_destroyed_stuff(object *objp);
+ extern void do_controlcen_dead_frame(void);
+ 
+-#define DEFAULT_CONTROL_CENTER_EXPLOSION_TIME 30    // Note: Usually uses Alan_pavlish_reactor_times, but can be overridden in editor.
++#define DEFAULT_CONTROL_CENTER_EXPLOSION_TIME 320    // Note: Usually uses Alan_pavlish_reactor_times, but can be overridden in editor.
+ 
+ extern fix Countdown_timer;
+ extern int Control_center_destroyed, Countdown_seconds_left, Total_countdown_time;
+diff --git a/main/gamesave.c b/main/gamesave.c
+index ffa0b8b..8e22be1 100644
+--- a/main/gamesave.c
++++ b/main/gamesave.c
+@@ -1275,7 +1275,7 @@ int load_level(const char * filename_passed)
+ 
+ 	if (Gamesave_current_version >= 3)
+ 		Base_control_center_explosion_time = PHYSFSX_readInt(LoadFile);
+-	else
++//	else //aka don't use reactor countdown time from savefile!
+ 		Base_control_center_explosion_time = DEFAULT_CONTROL_CENTER_EXPLOSION_TIME;
+ 
+ 	if (Gamesave_current_version >= 4)
+diff --git a/main/weapon.c b/main/weapon.c
+index 4ff7b9d..47927f9 100644
+--- a/main/weapon.c
++++ b/main/weapon.c
+@@ -733,7 +733,7 @@ int pick_up_ammo(int class_flag,int weapon_index,int ammo_count)
+ 	if (Players[Player_num].flags & PLAYER_FLAGS_AMMO_RACK)
+ 		max *= 2;
+ 
+-	if (Players[Player_num].primary_ammo[weapon_index] == max)
++	if (Players[Player_num].primary_ammo[weapon_index] >= max)
+ 		return 0;
+ 
+ 	old_ammo = Players[Player_num].primary_ammo[weapon_index];
+diff --git a/main/powerup.c b/main/powerup.c
+index aad2faf..1a187b8 100644
+--- a/main/powerup.c
++++ b/main/powerup.c
+@@ -205,7 +205,7 @@ int pick_up_vulcan_ammo(void)
+ 	int	pwsave = Primary_weapon;		// Ugh, save selected primary weapon around the picking up of the ammo.  I apologize for this code.  Matthew A. Toschlog
+ 	if (pick_up_ammo(CLASS_PRIMARY, VULCAN_INDEX, VULCAN_AMMO_AMOUNT)) {
+ 		powerup_basic(7, 14, 21, VULCAN_AMMO_SCORE, "%s!", TXT_VULCAN_AMMO);
+-		used = 1;
++		used = 0;
+ 	} else {
+ 		max = Primary_ammo_max[VULCAN_INDEX];
+ 		if (Players[Player_num].flags & PLAYER_FLAGS_AMMO_RACK)
+diff --git a/main/weapon.c b/main/weapon.c
+index 47927f9..f485a7e 100644
+--- a/main/weapon.c
++++ b/main/weapon.c
+@@ -730,8 +730,8 @@ int pick_up_ammo(int class_flag,int weapon_index,int ammo_count)
+ 	Assert(class_flag==CLASS_PRIMARY && weapon_index==VULCAN_INDEX);
+ 
+ 	max = Primary_ammo_max[weapon_index];
+-	if (Players[Player_num].flags & PLAYER_FLAGS_AMMO_RACK)
+-		max *= 2;
++//	if (Players[Player_num].flags & PLAYER_FLAGS_AMMO_RACK)
++//		max *= 2;
+ 
+ 	if (Players[Player_num].primary_ammo[weapon_index] >= max)
+ 		return 0;
+diff --git a/main/powerup.c b/main/powerup.c
+index 1a187b8..066fbf2 100644
+--- a/main/powerup.c
++++ b/main/powerup.c
+@@ -208,8 +208,8 @@ int pick_up_vulcan_ammo(void)
+ 		used = 0;
+ 	} else {
+ 		max = Primary_ammo_max[VULCAN_INDEX];
+-		if (Players[Player_num].flags & PLAYER_FLAGS_AMMO_RACK)
+-			max *= 2;
++//		if (Players[Player_num].flags & PLAYER_FLAGS_AMMO_RACK)
++//			max *= 2;
+ 		HUD_init_message(HM_DEFAULT|HM_REDUNDANT|HM_MAYDUPL, "%s %d %s!",TXT_ALREADY_HAVE,f2i((unsigned) VULCAN_AMMO_SCALE * (unsigned) max),TXT_VULCAN_ROUNDS);
+ 		used = 0;
+ 	}
+diff --git a/main/powerup.c b/main/powerup.c
+index 066fbf2..b9cd3f9 100644
+--- a/main/powerup.c
++++ b/main/powerup.c
+@@ -191,7 +191,7 @@ int pick_up_energy(void)
+ 		if (Players[Player_num].energy > MAX_ENERGY)
+ 			Players[Player_num].energy = MAX_ENERGY;
+ 		powerup_basic(15,15,7, ENERGY_SCORE, "%s %s %d",TXT_ENERGY,TXT_BOOSTED_TO,f2ir(Players[Player_num].energy));
+-		used=1;
++		used=0;
+ 	} else
+ 		HUD_init_message(HM_DEFAULT|HM_REDUNDANT|HM_MAYDUPL, TXT_MAXED_OUT,TXT_ENERGY);
+ 
+@@ -266,6 +266,7 @@ int do_powerup(object *obj)
+ 			break;
+ 		case POW_ENERGY:
+ 			used = pick_up_energy();
++      used=0;
+ 			break;
+ 		case POW_SHIELD_BOOST:
+ 			if (Players[Player_num].shields < MAX_SHIELDS) {
+@@ -276,7 +277,7 @@ int do_powerup(object *obj)
+ 				if (Players[Player_num].shields > MAX_SHIELDS)
+ 					Players[Player_num].shields = MAX_SHIELDS;
+ 				powerup_basic(0, 0, 15, SHIELD_SCORE, "%s %s %d",TXT_SHIELD,TXT_BOOSTED_TO,f2ir(Players[Player_num].shields));
+-				used=1;
++				used=0;
+ 			} else
+ 				HUD_init_message(HM_DEFAULT|HM_REDUNDANT|HM_MAYDUPL, TXT_MAXED_OUT,TXT_SHIELD);
+ 			break;
+@@ -298,9 +299,11 @@ int do_powerup(object *obj)
+ 			break;
+ 		case POW_MISSILE_1:
+ 			used=pick_up_secondary(CONCUSSION_INDEX,1);
++      used=0;
+ 			break;
+ 		case POW_MISSILE_4:
+ 			used=pick_up_secondary(CONCUSSION_INDEX,4);
++      used=0;
+ 			break;
+ 
+ 		case POW_KEY_BLUE:
+@@ -428,45 +431,58 @@ int do_powerup(object *obj)
+ 
+ 		case	POW_PROXIMITY_WEAPON:
+ 			used=pick_up_secondary(PROXIMITY_INDEX,4);
++      used=0;
+ 			break;
+ 		case	POW_SMARTBOMB_WEAPON:
+ 			used=pick_up_secondary(SMART_INDEX,1);
++      used=0;
+ 			break;
+ 		case	POW_MEGA_WEAPON:
+ 			used=pick_up_secondary(MEGA_INDEX,1);
++      used=0;
+ 			break;
+ 		case	POW_SMISSILE1_1:
+ 			used=pick_up_secondary(SMISSILE1_INDEX,1);
++      used=0;
+ 			break;
+ 		case	POW_SMISSILE1_4:
+ 			used=pick_up_secondary(SMISSILE1_INDEX,4);
++      used=0;
+ 			break;
+ 		case	POW_GUIDED_MISSILE_1:
+ 			used=pick_up_secondary(GUIDED_INDEX,1);
+ 			break;
+ 		case	POW_GUIDED_MISSILE_4:
+ 			used=pick_up_secondary(GUIDED_INDEX,4);
++      used=0;
+ 			break;
+ 		case	POW_SMART_MINE:
+ 			used=pick_up_secondary(SMART_MINE_INDEX,4);
++      used=0;
+ 			break;
+ 		case	POW_MERCURY_MISSILE_1:
+ 			used=pick_up_secondary(SMISSILE4_INDEX,1);
++      used=0;
+ 			break;
+ 		case	POW_MERCURY_MISSILE_4:
+ 			used=pick_up_secondary(SMISSILE4_INDEX,4);
++      used=0;
+ 			break;
+ 		case	POW_EARTHSHAKER_MISSILE:
+ 			used=pick_up_secondary(SMISSILE5_INDEX,1);
++      used=0;
+ 			break;
+ 		case	POW_VULCAN_AMMO:
+ 			used = pick_up_vulcan_ammo();
++      used=0;
+ 			break;
+ 		case	POW_HOMING_AMMO_1:
+ 			used=pick_up_secondary(HOMING_INDEX,1);
++      used=0;
+ 			break;
+ 		case	POW_HOMING_AMMO_4:
+ 			used=pick_up_secondary(HOMING_INDEX,4);
++      used=0;
+ 			break;
+ 		case	POW_CLOAK:
+ 			if (Players[Player_num].flags & PLAYER_FLAGS_CLOAKED) {
+@@ -481,7 +497,7 @@ int do_powerup(object *obj)
+ 					multi_send_cloak();
+ 				#endif
+ 				powerup_basic(-10,-10,-10, CLOAK_SCORE, "%s!",TXT_CLOAKING_DEVICE);
+-				used = 1;
++				used = 0;
+ 				break;
+ 			}
+ 		case	POW_INVULNERABILITY:
+@@ -492,7 +508,7 @@ int do_powerup(object *obj)
+ 				Players[Player_num].invulnerable_time = GameTime64;
+ 				Players[Player_num].flags |= PLAYER_FLAGS_INVULNERABLE;
+ 				powerup_basic(7, 14, 21, INVULNERABILITY_SCORE, "%s!",TXT_INVULNERABILITY);
+-				used = 1;
++				used = 0;
+ 				break;
+ 			}
+ 	#ifndef RELEASE
+diff --git a/main/controls.c b/main/controls.c
+index 8d31773..722d1c6 100644
+--- a/main/controls.c
++++ b/main/controls.c
+@@ -48,7 +48,7 @@ COPYRIGHT 1993-1999 PARALLAX SOFTWARE CORPORATION.  ALL RIGHTS RESERVED.
+ 
+ fix Afterburner_charge=f1_0;
+ 
+-#define AFTERBURNER_USE_SECS	3				//use up in 3 seconds
++#define AFTERBURNER_USE_SECS	15				//use up in 3 seconds
+ #define DROP_DELTA_TIME			(f1_0/15)	//drop 3 per second
+ 
+ extern int Drop_afterburner_blob_flag;		//ugly hack

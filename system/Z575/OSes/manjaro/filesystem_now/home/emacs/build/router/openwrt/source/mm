@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pushd .
+cd openwrt
+#echo "if you remove(maybe also add?) any packages YOU HAVE TO ./mclean after this, or it won't sense the remove on the next ./go  FIXME: no, this isn't why that fwknop package that fails to build keeps building even though I deselected it!"
+#echo "dno how to fix that but I deleted the offending package folder from /home/emacs/build/router/openwrt/source/openwrt/build_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2 ; - THAT didn't work"
+#echo "so I tried this: deleted fwknop.default.install.clean  fwknop.default.install.flags from folder /home/emacs/build/router/openwrt/source/openwrt/staging_dir/target-mipsel_24kec+dsp_uClibc-0.9.33.2/pkginfo"
+#XXX: echo "nevermind, i had libfko=y and maybe that's why... testing..."
+time make MENUCONFIG_COLOR=classic menuconfig
+popd
+

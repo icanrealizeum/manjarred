@@ -1,0 +1,14 @@
+apparently both left and right clicks act as if they're being held down
+because the menu appears(due to right click)
+and then left click seems held due to moving mouse causes selection in the filemanager (now pcmanfm)
+
+---------
+
+moving mouse Genius Wireless BlueEye on the desktop first time after boot
+causes a right click (the menu just appears)
+also this on dmesg:
+$ dmesg|grep -i input8
+[    2.966636] device: 'input8': device_add
+[    2.970343] input: Genius 2.4G Wireless BlueEye Mouse as /devices/pci0000:00/0000:00:12.0/usb3/3-3/3-3:1.0/0003:0458:00F2.0001/input/input8
+[   98.055600] input input8: event field not found
+

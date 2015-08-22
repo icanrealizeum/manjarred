@@ -1,0 +1,41 @@
+# Maintainer: Lukas Fleischer <archlinux at cryptocrack dot de>
+
+pkgname=cmospwd
+pkgver=5.0
+pkgrel=1
+pkgdesc='Decrypts password stored in CMOS used to access BIOS setup.'
+arch=('i686' 'x86_64')
+url='http://www.cgsecurity.org/wiki/CmosPwd'
+license=('GPL')
+depends=('glibc')
+award6patch="award6.patch"
+source=("http://www.cgsecurity.org/${pkgname}-${pkgver}.tar.bz2"
+"${award6patch}"
+)
+md5sums=('24c8caf61ff244dc2aae0ebfde47dd45'
+         '40ae1ec8d1a3fb817eb3e2a85b611789')
+sha512sums=('97a7748ff4c578ef601167a93fa7529b63c0d32828ef0e20faccf3aaf407f8eb55c4b42b45ca1c21797dd17ec723753760d15bdc613581f156297d25bee12711'
+            '5fe5eb12a8064e1db590f6a6c2b1dc7c8a3436d31499c1def7821a0470138c9ec95d1f015729a83980ba045810a03a9517a88aab43863d2e492f0ebe5b04de5a')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+
+  echo `pwd`
+  patch -p1 -i "${srcdir}/${award6patch}"
+
+  cd "./src"
+  #compile ok on x86_64 for i686
+  sed '/^CFLAGS/ d' -i Makefile
+}
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}/src"
+
+  make -B
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}/src"
+  install -Dm0755 cmospwd "${pkgdir}/usr/bin/cmospwd"
+}
+

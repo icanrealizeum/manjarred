@@ -1,0 +1,122 @@
+# powertop --calibrate
+Loaded 0 prior measurements
+Cannot load from file /var/cache/powertop/saved_parameters.powertop
+RAPL device for cpu 0
+RAPL device for cpu 0
+Cannot load from file /var/cache/powertop/saved_parameters.powertop
+Starting PowerTOP power estimate calibration 
+Calibrating idle
+System is not available
+  unknown op '{'
+Invalid P state finalize 1400000 
+Invalid P state finalize 1300000 
+Invalid P state finalize 1200000 
+Invalid P state finalize 1100000 
+Invalid P state finalize 1000000 
+Invalid P state finalize 900000 
+Invalid P state finalize 800000 
+Invalid P state finalize 1400000 
+Invalid P state finalize 1300000 
+Invalid P state finalize 1200000 
+Invalid P state finalize 1100000 
+Invalid P state finalize 1000000 
+Invalid P state finalize 900000 
+Invalid P state finalize 800000 
+Invalid P state finalize 1400000 
+Invalid P state finalize 1300000 
+Invalid P state finalize 1200000 
+Invalid P state finalize 1100000 
+Invalid P state finalize 1000000 
+Invalid P state finalize 900000 
+Invalid P state finalize 800000 
+Invalid P state finalize 1400000 
+Invalid P state finalize 1300000 
+Invalid P state finalize 1200000 
+Invalid P state finalize 1100000 
+Invalid P state finalize 1000000 
+Invalid P state finalize 900000 
+Invalid P state finalize 800000 
+System is not available
+Calibrating: disk usage 
+Calibrating backlight
+.... device /sys/class/backlight/acpi_video0/brightness 
+Calibrating idle
+System is not available
+System is not available
+Calibrating: CPU usage on 1 threads
+Calibrating: CPU usage on 4 threads
+Calibrating: CPU wakeup power consumption
+Calibrating: CPU wakeup power consumption
+Calibrating: CPU wakeup power consumption
+Calibrating USB devices
+.... device /sys/bus/usb/devices/2-1/power/control 
+.... device /sys/bus/usb/devices/2-3/power/control 
+.... device /sys/bus/usb/devices/3-3/power/control 
+.... device /sys/bus/usb/devices/usb1/power/control 
+.... device /sys/bus/usb/devices/usb2/power/control 
+.... device /sys/bus/usb/devices/usb3/power/control 
+.... device /sys/bus/usb/devices/usb4/power/control 
+Calibrating radio devices
+.... device /sys/class/rfkill/rfkill0/soft 
+.... device /sys/class/rfkill/rfkill0/soft 
+Finishing PowerTOP power estimate calibration 
+Parameters after calibration:
+
+
+Parameter state 
+----------------------------------
+Value		Name
+ 0.50		alsa-codec-power (14)
+ 0.00		backlight (4)
+ 0.00		backlight-boost-100 (8)
+ 0.00		backlight-boost-40 (6)
+ 0.00		backlight-boost-80 (7)
+ 0.00		backlight-power (5)
+ 0.76		base power (44)
+ 1.56		cpu-consumption (3)
+39.50		cpu-wakeups (2)
+ 0.00		disk-operations (47)
+ 0.20		disk-operations-hard (46)
+ 0.00		enp1s0-link-100 (18)
+ 0.00		enp1s0-link-1000 (19)
+ 0.00		enp1s0-link-high (20)
+ 0.00		enp1s0-packets (21)
+ 0.00		enp1s0-powerunsave (17)
+ 0.00		enp1s0-up (16)
+ 0.56		gpu-operations (45)
+ 0.00		radio:ideapad_bluetooth (15)
+ 0.00		runtime-0000:00:00.0 (22)
+ 0.00		runtime-0000:00:01.0 (23)
+ 0.00		runtime-0000:00:01.1 (24)
+ 0.00		runtime-0000:00:04.0 (25)
+ 0.00		runtime-0000:00:11.0 (26)
+ 0.00		runtime-0000:00:12.0 (27)
+ 0.00		runtime-0000:00:12.2 (28)
+ 0.00		runtime-0000:00:13.0 (29)
+ 0.00		runtime-0000:00:13.2 (30)
+ 0.00		runtime-0000:00:14.0 (31)
+ 0.00		runtime-0000:00:14.2 (32)
+ 0.00		runtime-0000:00:14.3 (33)
+ 0.00		runtime-0000:00:14.4 (34)
+ 0.00		runtime-0000:00:18.0 (35)
+ 0.00		runtime-0000:00:18.1 (36)
+ 0.00		runtime-0000:00:18.2 (37)
+ 0.00		runtime-0000:00:18.3 (38)
+ 0.00		runtime-0000:00:18.4 (39)
+ 0.00		runtime-0000:00:18.5 (40)
+ 0.00		runtime-0000:00:18.6 (41)
+ 0.00		runtime-0000:00:18.7 (42)
+ 0.00		runtime-0000:01:00.0 (43)
+ 0.10		usb-device-0458-00f2 (11)
+ 0.10		usb-device-0bda-0139 (9)
+ 0.10		usb-device-1d6b-0001 (13)
+ 0.10		usb-device-1d6b-0002 (12)
+ 0.10		usb-device-5986-0364 (10)
+ 0.10		xwakes (48)
+
+Score:   10.0  (18299.7)
+Guess:    0.8
+Actual:   5.2
+----------------------------------
+Leaving PowerTOP
+

@@ -1,0 +1,128 @@
+git config --global user.name "emanueLczirai"
+
+#if I want my email hidden but still recognizable by github
+git config --global user.email "emanueLczirai@users.noreply.github.com"
+
+#otherwise use real email (that github knows):
+//git config --global user.email "...@."
+#haven't decided yet
+
+
+#list all global config:
+git config  --global -l
+
+#set default editor, more info from here: http://git-scm.com/book/en/Customizing-Git-Git-Configuration
+git config --global core.editor vim
+#this probably ignores the $EDITOR env var once set!
+
+git config --global color.ui true
+
+
+#these should not be set
+echo $GIT_COMMITTER_EMAIL
+echo $GIT_AUTHOR_NAME
+#more info at: https://help.github.com/articles/keeping-your-email-address-private#new-commits-arent-using-the-right-email
+
+
+
+Git can handle this by auto-converting CRLF line endings into LF when you commit, and vice versa when it checks out code onto your filesystem. You can turn on this functionality with the core.autocrlf setting. If you’re on a Windows machine, set it to true — this converts LF endings into CRLF when you check out code:
+
+#we don't want this: //$ git config --global core.autocrlf true
+
+If you’re on a Linux or Mac system that uses LF line endings, then you don’t want Git to automatically convert them when you check out files; however, if a file with CRLF endings accidentally gets introduced, then you may want Git to fix it. You can tell Git to convert CRLF to LF on commit but not the other way around by setting core.autocrlf to input:
+
+#we want this:
+git config --global core.autocrlf input
+
+This setup should leave you with CRLF endings in Windows checkouts but LF endings on Mac and Linux systems and in the repository.
+
+#also set it on --local
+git config core.autocrlf input
+
+#check if set on local:
+git config --local -l
+
+
+sudo git config --system receive.fsckObjects true
+git config --global receive.fsckObjects true
+git config receive.fsckObjects true
+
+sudo git config --system receive.denyNonFastForwards true
+git config --global receive.denyNonFastForwards true
+git config receive.denyNonFastForwards true
+
+sudo git config --system receive.denyDeletes true
+git config --global receive.denyDeletes true
+git config receive.denyDeletes true
+
+warning: push.default is unset; its implicit value has changed in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the traditional behavior, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+When push.default is set to 'matching', git will push local branches
+to the remote branches that already exist with the same name.
+
+Since Git 2.0, Git defaults to the more conservative 'simple'
+behavior, which only pushes the current branch to the corresponding
+remote branch that 'git pull' uses to update the current branch.
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+
+git config --global push.default matching
+
+
+# make less behave nicely for scrollwheel in urxvt by making sure -X option is not used!
+git config --global core.pager "less -+X -R -+S -+F -+E"
+# if already set:
+git config --global --replace-all core.pager "less -+X -R -+S -+F -+E"
+
+
+
+# ---------------
+# easily get pull requests from github (needs more scrutiny)
+https://gist.github.com/piscisaureus/3342247
+
+git config --global --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+
+# just once ^
+
+# side-effect. See http://stackoverflow.com/questions/13572191/cannot-remove-remote-origin/
+
+
+# ---------------
+
+# from here: https://gist.github.com/gnarf/5406589
+sudo vim /etc/gitconfig
+
+#paste this:
+
+[alias]
+  pr = "!f() { git fetch -fu ${2:-upstream} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done" 
+
+# ---------------
+
+#Usage
+#Easily checkout local copies of pull requests from GitHub remotes:
+#    git pr 4 - creates local branch pr/4 from the upstream remote and checks it out
+#    git pr 4 origin - creates local branch pr/4 from origin remote and checks it out
+#    git pr-clean - removes all pr/* branches from your local repo
+
+----------
+
+#words diff
+
+git config --global alias.wdiff "diff --color-words"
+
+#usage: git wdiff file
+#usage(outside/inside of repo): git wdiff file1 file2
+

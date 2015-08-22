@@ -1,0 +1,284 @@
+-----------
+caveat: something is causing the router to crash after a while, apparently due to traffic that goes thru it (eg. watching videos)
+EDIT: ok, so it's obviously! because the switch modules are binary and compiled with a specific kernel config, and I am using a different config!!
+
+BUT IT'S NOT THE NETCONSOLE=m from below! because I did remove that and it still happens!!
+don't enable CONFIG_NETCONSOLE=m
+which also enables CONFIG_NET_POLL_CONTROLLER=y CONFIG_NETPOLL=y
+so DON'T enable! because that will cause router to crash badly (needs replug) while downloading eg. a 1 gig youtube video (it will oops like 2-3 times)
+
+the actuall oops is as follows:
+[  966.816000] Oops[#1]:
+[  966.816000] Cpu 0
+[  966.816000] $ 0   : 00000000 1100fc01 80001708 80320000
+[  966.816000] $ 4   : 00000000 802d8000 1100fc00 ffff00fe
+[  966.816000] $ 8   : 802d7fe0 0000fc00 00000000 81846000
+[  966.816000] $12   : b2e45fdc 00000038 00000000 0000000a
+[  966.816000] $16   : 80310000 80310000 80310000 80310000
+[  966.816000] $20   : 80310000 00000000 00000000 00000000
+[  966.816000] $24   : 00000000 2abbfab0                  
+[  966.816000] $28   : 802d6000 802d7f80 00000000 8000384c
+[  966.816000] Hi    : 00000000
+[  966.816000] Lo    : 00000000
+[  966.816000] epc   : 7026a1d8 0x7026a1d8     Tainted: P      
+[  966.816000] ra    : 8000384c cpu_idle+0x2c/0x58
+[  966.816000] Status: 1100fc03    KERNEL EXL IE 
+[  966.816000] Cause : 10800008
+[  966.816000] BadVA : 7026a1d8
+[  966.816000] PrId  : 0001964c
+[  966.816000] Modules linked in: dwc_otg lm rtl8366RB rtl8366_smi(P)
+[  966.816000] Process swapper (pid: 0, threadinfo=802d6000, task=802d8000)
+[  966.816000] Stack : 80310000 0000003c 802dbcb0 00000000 80320000 802f5a2c 802a1fa4 000000ff
+[  966.816000]         00000030 0007cc00 802f5200 00000000 803149fc 00000000 00000000 00000000
+[  966.816000]         00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[  966.816000]         00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[  966.816000] Call Trace:
+[  966.816000] [<802f5a2c>] start_kernel+0x338/0x52c
+[  966.816000] [<802f5200>] unknown_bootoption+0x0/0x31c
+[  966.816000] 
+[  966.816000] 
+[  966.816000] Code: (Bad address in epc)
+[  966.816000] 
+[  966.820000] Fatal exception: panic in 5 seconds
+[  966.824000] bad: scheduling from the idle thread!
+[  966.828000] Call Trace:
+[  966.832000] [<8000780c>] dump_stack+0x8/0x34
+[  966.840000] [<8026ab90>] schedule+0x9b8/0xbd4
+[  966.848000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  966.856000] [<8003390c>] msleep+0x24/0x34
+[  966.864000] [<80008034>] die+0xc0/0xe0
+[  966.872000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  966.880000] [<80001b60>] ret_from_exception+0x0/0x20
+[  966.888000] 
+[  966.888000] CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 8001f4f0, ra == 8001f910
+[  966.888000] Oops[#2]:
+[  966.888000] Cpu 0
+[  966.888000] $ 0   : 00000000 1100fc00 00000001 00000080
+[  966.888000] $ 4   : 802d8000 00000000 00000080 00000000
+[  966.888000] $ 8   : 802d9d50 802d9d40 80320000 80320000
+[  966.888000] $12   : 80320000 fffffffe ffffffff 0000000a
+[  966.888000] $16   : 802d8000 802d8000 1f040a00 000000e1
+[  966.888000] $20   : 00000000 802d7ed0 8031ab48 0d970100
+[  966.888000] $24   : 00000005 802d7af6                  
+[  966.888000] $28   : 802d6000 802d7d40 802d8110 8001f910
+[  966.888000] Hi    : 00000000
+[  966.888000] Lo    : 00000000
+[  966.888000] epc   : 8001f4f0 dequeue_task+0x0/0x8c     Tainted: P      
+[  966.888000] ra    : 8001f910 deactivate_task+0x34/0x48
+[  966.888000] Status: 1100fc02    KERNEL EXL 
+[  966.888000] Cause : 00800008
+[  966.888000] BadVA : 00000000
+[  966.888000] PrId  : 0001964c
+[  966.888000] Modules linked in: dwc_otg lm rtl8366RB rtl8366_smi(P)
+[  966.888000] Process swapper (pid: 0, threadinfo=802d6000, task=802d8000)
+[  966.888000] Stack : 4080a000 80027188 7026a1cc 8000780c 8026bc48 8026a970 000c8320 8026bc48
+[  966.888000]         00000000 0003b02b 0003b50d 000004e3 802d7da0 802e0000 00000000 802d7ed0
+[  966.888000]         00030000 00000000 00000000 8026bc48 802a2b28 802d7ed0 00000000 7026a1d8
+[  966.888000]         803209e8 803209e8 0003b50d 80033684 802d8000 80320038 802a2b28 802d7ed0
+[  966.888000]         00000000 7026a1d8 8003390c 800272a8 1100fc03 0000007f be782800 802d7ed0
+[  966.888000]         ...
+[  966.888000] Call Trace:
+[  966.888000] [<8001f4f0>] dequeue_task+0x0/0x8c
+[  966.888000] [<8001f910>] deactivate_task+0x34/0x48
+[  966.888000] [<8026a970>] schedule+0x798/0xbd4
+[  966.888000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  966.888000] [<8003390c>] msleep+0x24/0x34
+[  966.888000] [<80008034>] die+0xc0/0xe0
+[  966.888000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  966.888000] [<80001b60>] ret_from_exception+0x0/0x20
+[  966.888000] 
+[  966.888000] 
+[  966.888000] Code: 3c028032  03e00008  2442ab48 <8ca20000> 24880028  2442ffff  aca20000  8d060004  8c830028 
+[  966.892000] Fatal exception: panic in 5 seconds
+[  966.896000] bad: scheduling from the idle thread!
+[  966.900000] Call Trace:
+[  966.904000] [<8000780c>] dump_stack+0x8/0x34
+[  966.912000] [<8026ab90>] schedule+0x9b8/0xbd4
+[  966.920000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  966.928000] [<8003390c>] msleep+0x24/0x34
+[  966.936000] [<80008034>] die+0xc0/0xe0
+[  966.944000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  966.956000] [<80001b60>] ret_from_exception+0x0/0x20
+[  966.964000] [<8001f4f0>] dequeue_task+0x0/0x8c
+[  966.972000] [<8001f910>] deactivate_task+0x34/0x48
+[  966.980000] [<8026a970>] schedule+0x798/0xbd4
+[  966.988000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  966.996000] [<8003390c>] msleep+0x24/0x34
+[  967.004000] [<80008034>] die+0xc0/0xe0
+[  967.012000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  967.020000] [<80001b60>] ret_from_exception+0x0/0x20
+[  967.028000] 
+[  967.032000] CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 8001f4f0, ra == 8001f910
+
+and more stuff that apparently gets repeated (but different from above)
+
+it might be because of the extra CONFIG_CMDLINE arg that I added "ipv6.disable=1"  which I now removed to(set to original) and now... testing...
+
+
+well shiet, still happens:
+
+# [  262.992000] Oops[#1]:
+[  262.992000] Cpu 0
+[  262.992000] $ 0   : 00000000 1100fc01 80001708 80320000
+[  262.992000] $ 4   : 00000000 802d8000 1100fc00 ffff00fe
+[  262.992000] $ 8   : 802d7fe0 0000fc00 00000000 81e92000
+[  262.992000] $12   : 3a108aef 00000019 00000000 0000000a
+[  262.992000] $16   : 80310000 80310000 80310000 80310000
+[  262.992000] $20   : 80310000 00000000 00000000 00000000
+[  262.992000] $24   : 00000000 2abbfab0                  
+[  262.992000] $28   : 802d6000 802d7f80 00000000 8000384c
+[  262.992000] Hi    : 00000000
+[  262.992000] Lo    : 00000000
+[  262.992000] epc   : 7026a1d8 0x7026a1d8     Tainted: P      
+[  262.992000] ra    : 8000384c cpu_idle+0x2c/0x58
+[  262.992000] Status: 1100fc03    KERNEL EXL IE 
+[  262.992000] Cause : 10800008
+[  262.992000] BadVA : 7026a1d8
+[  262.992000] PrId  : 0001964c
+[  262.992000] Modules linked in: dwc_otg lm rtl8366RB rtl8366_smi(P)
+[  262.992000] Process swapper (pid: 0, threadinfo=802d6000, task=802d8000)
+[  262.992000] Stack : 80310000 0000003c 802dbcb0 00000000 80320000 802f5a2c 802a1f64 000000ff
+[  262.992000]         00000030 0007cc00 802f5200 00000000 803149fc 00000000 00000000 00000000
+[  262.992000]         00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[  262.992000]         00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[  262.992000] Call Trace:
+[  262.992000] [<802f5a2c>] start_kernel+0x338/0x52c
+[  262.992000] [<802f5200>] unknown_bootoption+0x0/0x31c
+[  262.992000] 
+[  262.992000] 
+[  262.992000] Code: (Bad address in epc)
+[  262.992000] 
+[  262.996000] Fatal exception: panic in 5 seconds
+[  263.000000] bad: scheduling from the idle thread!
+[  263.004000] Call Trace:
+[  263.008000] [<8000780c>] dump_stack+0x8/0x34
+[  263.016000] [<8026ab90>] schedule+0x9b8/0xbd4
+[  263.028000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  263.036000] [<8003390c>] msleep+0x24/0x34
+[  263.044000] [<80008034>] die+0xc0/0xe0
+[  263.048000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  263.056000] [<80001b60>] ret_from_exception+0x0/0x20
+[  263.064000] 
+[  263.064000] CPU 0 Unable to handle kernel paging request at virtual address 00000000, epc == 8001f4f0, ra == 8001f910
+[  263.064000] Oops[#2]:
+[  263.064000] Cpu 0
+[  263.064000] $ 0   : 00000000 1100fc00 00000002 00000080
+[  263.064000] $ 4   : 802d8000 00000000 00000300 00000000
+[  263.064000] $ 8   : 802d9d50 802d9d40 80320000 80320000
+[  263.064000] $12   : 80320000 fffffffe ffffffff 0000000a
+[  263.064000] $16   : 802d8000 802d8000 3fd61600 0000003d
+[  263.064000] $20   : 00000000 802d7ed0 8031ab48 188e9f00
+[  263.064000] $24   : 00000004 802d7af5                  
+[  263.064000] $28   : 802d6000 802d7d40 802d8110 8001f910
+[  263.064000] Hi    : 00000000
+[  263.064000] Lo    : 00000000
+[  263.064000] epc   : 8001f4f0 dequeue_task+0x0/0x8c     Tainted: P      
+[  263.064000] ra    : 8001f910 deactivate_task+0x34/0x48
+[  263.064000] Status: 1100fc02    KERNEL EXL 
+[  263.064000] Cause : 00800008
+[  263.064000] BadVA : 00000000
+[  263.064000] PrId  : 0001964c
+[  263.064000] Modules linked in: dwc_otg lm rtl8366RB rtl8366_smi(P)
+[  263.064000] Process swapper (pid: 0, threadinfo=802d6000, task=802d8000)
+[  263.064000] Stack : 4080a000 80027188 7026a1cc 8000780c 8026bc48 8026a970 000f32a0 8026bc48
+[  263.064000]         00000000 000100d7 000105b9 000004e3 802d7da0 802e0000 00000000 802d7ed0
+[  263.064000]         00030000 00000000 00000000 8026bc48 802a2ae8 802d7ed0 00000000 7026a1d8
+[  263.064000]         80320868 80320868 000105b9 80033684 802d8000 80320038 802a2ae8 802d7ed0
+[  263.064000]         00000000 7026a1d8 8003390c 800272a8 1100fc03 0000007f be782800 802d7ed0
+[  263.064000]         ...
+[  263.064000] Call Trace:
+[  263.064000] [<8001f4f0>] dequeue_task+0x0/0x8c
+[  263.064000] [<8001f910>] deactivate_task+0x34/0x48
+[  263.064000] [<8026a970>] schedule+0x798/0xbd4
+[  263.064000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  263.064000] [<8003390c>] msleep+0x24/0x34
+[  263.064000] [<80008034>] die+0xc0/0xe0
+[  263.064000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  263.064000] [<80001b60>] ret_from_exception+0x0/0x20
+[  263.064000] 
+[  263.064000] 
+[  263.064000] Code: 3c028032  03e00008  2442ab48 <8ca20000> 24880028  2442ffff  aca20000  8d060004  8c830028 
+[  263.068000] Fatal exception: panic in 5 seconds
+[  263.072000] bad: scheduling from the idle thread!
+[  263.076000] Call Trace:
+[  263.080000] [<8000780c>] dump_stack+0x8/0x34
+[  263.088000] [<8026ab90>] schedule+0x9b8/0xbd4
+[  263.096000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  263.108000] [<8003390c>] msleep+0x24/0x34
+[  263.116000] [<80008034>] die+0xc0/0xe0
+[  263.124000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  263.132000] [<80001b60>] ret_from_exception+0x0/0x20
+[  263.140000] [<8001f4f0>] dequeue_task+0x0/0x8c
+[  263.148000] [<8001f910>] deactivate_task+0x34/0x48
+[  263.156000] [<8026a970>] schedule+0x798/0xbd4
+[  263.164000] [<8026bc48>] schedule_timeout+0x70/0xdc
+[  263.172000] [<8003390c>] msleep+0x24/0x34
+[  263.176000] [<80008034>] die+0xc0/0xe0
+[  263.180000] [<8000ce00>] do_page_fault+0x210/0x3d0
+[  263.188000] [<80001b60>] ret_from_exception+0x0/0x20
+[  263.196000] 
+
+
+-----------
+caveat: recompiling kernel with some different options will cause the wireless driver rt2860v2_ap.ko to not load:
+[17179584.220000] rt2860v2_ap: disagrees about version of symbol skb_under_panic
+[17179584.224000] rt2860v2_ap: Unknown symbol skb_under_panic
+[17179584.228000] rt2860v2_ap: disagrees about version of symbol __alloc_skb
+[17179584.232000] rt2860v2_ap: Unknown symbol __alloc_skb
+[17179584.236000] rt2860v2_ap: disagrees about version of symbol skb_copy_expand
+[17179584.240000] rt2860v2_ap: Unknown symbol skb_copy_expand
+[17179584.244000] rt2860v2_ap: disagrees about version of symbol skb_over_panic
+[17179584.248000] rt2860v2_ap: Unknown symbol skb_over_panic
+[17179584.252000] rt2860v2_ap: disagrees about version of symbol skb_clone
+[17179584.256000] rt2860v2_ap: Unknown symbol skb_clone
+insmod: cannot insert `/lib/modules/2.6.21/kernel/drivers/net/wireless/rt2860v2_ap/rt2860v2_ap.ko': Invalid parameters (2): Invalid argument
+SIOCGIFFLAGS: No such device
+ra0       no private ioctls.
+
+---------
+can't run make menuconfig in ./lib !!
+
+root@emacs-laptop:~/2/Belkin_F5D8235-4_v2000_v2.01.07/lib# make menuconfig
+rm -f -r include/bits
+install -d include/bits
+./extra/config/mconf: error while loading shared libraries: libtinfo.so.5: cannot open shared object file: No such file or directory
+make: *** [menuconfig] Error 127
+
+FIX:
+cd /lib
+ln -s libncurses.so.5 libtinfo.so.5
+
+src: https://forums.opensuse.org/showthread.php/446927-missing-library-libtinfo-so-5
+
+----------------
+restoring uclibc config to original:
+root@emacs-laptop:~/2/Belkin_F5D8235-4_v2000_v2.01.07/lib# diff -up /root/2/backup/lib/.config .config
+--- /root/2/backup/lib/.config  2015-06-03 00:21:49.000000000 +0200
++++ .config 2015-06-03 09:30:33.698458719 +0200
+@@ -87,8 +87,9 @@ UCLIBC_TZ_FILE_PATH="/etc/TZ"
+ #
+ # Networking Support
+ #
+-# UCLIBC_HAS_IPV6 is not set
+-# UCLIBC_HAS_RPC is not set
++UCLIBC_HAS_IPV6=y
++UCLIBC_HAS_RPC=y
++UCLIBC_HAS_FULL_RPC=y
+ 
+ #
+ # String and Stdio Support
+Press any key to continue...
+
+because, to see if sysinit will not SIGSEGV this way.
+
+
+
+------------
+don't forget to enable CONFIG_LOGIN in busybox or else telenetd will allow login without password!
+maybe also: CONFIG_GETTY:
+CONFIG_FEATURE_WTMP:
+CONFIG_FEATURE_SECURETTY:
+
+(which is what I used now)
+----------
+

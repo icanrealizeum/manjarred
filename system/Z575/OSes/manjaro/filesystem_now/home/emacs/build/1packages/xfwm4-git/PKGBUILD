@@ -1,0 +1,82 @@
+# Maintainer: Christian Hesse <mail@eworm.de>
+# Contributor: Lex Black <autumn-wind at web dot de>
+# Contributor: cute.tec@gmail.com
+
+pkgname=xfwm4-git
+pkgver=4.12.0.r35.g634b660
+pkgrel=1
+pkgdesc="Xfce window manager - git checkout"
+arch=('i686' 'x86_64')
+license=('GPL2')
+url="http://git.xfce.org/xfce/xfwm4"
+groups=('xfce4')
+depends=('libxfce4ui-git' 'hicolor-icon-theme' 'libwnck')
+makedepends=('git' 'xfce4-dev-tools')
+provides=('xfwm4')
+conflicts=('xfwm4')
+_gitname="xfwm4"
+patch1="0100_less_debug_spam.patch"
+patch2="0200_allow_pid_in_userdefined_logfile.patch"
+#patch3='0300_avoid_SIGSEGV_due_to_null_cursor.patch'
+source=("${_gitname}::git://git.xfce.org/xfce/xfwm4"
+"$patch1"
+"$patch2"
+#"$patch3"
+)
+sha256sums=('SKIP'
+            'aaf00533d761101e2a266660a7873c5c778c8ff59b73fc3ae10ea9c8608ead29'
+            '7a1e92e678bc160b5c129c352f56e935f64978a232e687fcac7c55a746dc5bb4')
+sha512sums=('SKIP'
+            '31ec148f2023d46943416224428abfedab799746f46754ca7358d889f5cfd5df2091a279c84bc61521cb3f3baaa61ff85629774fc47ada80a7ae4262f1b83d8c'
+            '5ed32f528f1b8d9a37c8d6572c1781811a1afcd1dc8fcaeb1e4caacafdc4ba63cc98eccbfc513a2882663b206bc6c1bf2477bba9806ae082adcb4e6035390124')
+          options=('!strip')
+
+pkgver() {
+	cd "${_gitname}/"
+
+	if GITTAG="$(git describe --abbrev=0 --tags 2>/dev/null)"; then
+		echo "$(sed -e "s/^${pkgname%%-git}//" -e 's/^[-_/a-zA-Z]\+//' -e 's/[_-+]/./g' <<< ${GITTAG}).r$(git rev-list --count ${GITTAG}..).g$(git log -1 --format="%h")"
+	else
+		echo "0.r$(git rev-list --count master).g$(git log -1 --format="%h")"
+	fi
+}
+
+prepare() {
+	cd "${_gitname}/"
+#XXX: to avoid black screen layered on top of what should otherwise be the desktop
+  git checkout 634b660
+
+
+  patch -Np1 -i "../${patch1}"
+  patch -Np1 -i "../${patch2}"
+#  patch -Np1 -i "../${patch3}"
+
+}
+
+build() {
+	cd "${_gitname}/"
+
+
+  export CFLAGS+=" -g3 -O1 -DDEBUG"
+  export CPPFLAGS+=" -g3 -O1 -DDEBUG"
+  export CXXFLAGS+=" -g3 -O1 -DDEBUG"
+	./autogen.sh
+	./configure \
+		--enable-maintainer-mode \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib \
+		--localstatedir=/var \
+		--disable-static \
+		--enable-compositor \
+		--enable-xsync \
+		--enable-debug
+	make
+}
+
+package() {
+	cd "${_gitname}/"
+
+	make DESTDIR="${pkgdir}" install
+}
+

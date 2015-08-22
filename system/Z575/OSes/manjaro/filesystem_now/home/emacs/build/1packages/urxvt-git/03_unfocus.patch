@@ -1,0 +1,475 @@
+urxvt unfocus patch
+alternate colors when window lost focus
+Author: EmanueL Czirai
+whatever
+I needed different border and scrollbar colors (plain scrollbar only)
+while window was unfocused (or focused, depending on your p.o.v.)
+and this is it.
+diff -pru5 -X dontdiff -- urxvt-git_orig/configure.ac urxvt-git/configure.ac
+--- urxvt-git_orig/configure.ac	2015-03-24 19:10:03.603839626 +0100
++++ urxvt-git/configure.ac	2015-03-24 19:30:25.890465726 +0100
+@@ -76,10 +76,11 @@ AC_SEARCH_LIBS(gethostbyname, nsl)
+ AC_SEARCH_LIBS(socket,        socket)
+ 
+ support_frills=yes
+ support_inheritpixmap=yes
+ support_fading=yes
++support_unfocus=yes
+ support_keepscrolling=yes
+ support_selectionscrolling=yes
+ support_mousewheel=yes
+ support_mouseslipwheel=yes
+ support_text_blink=yes
+@@ -109,10 +110,11 @@ AC_ARG_ENABLE(everything,
+   [
+     if test x$enableval = xno; then
+        support_frills=no
+        support_inheritpixmap=no
+        support_fading=no
++       support_unfocus=no
+        support_keepscrolling=no
+        support_selectionscrolling=no
+        support_lastlog=no
+        support_mousewheel=no
+        support_mouseslipwheel=no
+@@ -137,10 +139,11 @@ AC_ARG_ENABLE(everything,
+     fi
+     if test x$enableval = xyes; then
+        support_frills=yes
+        support_inheritpixmap=yes
+        support_fading=yes
++       support_unfocus=yes
+        support_keepscrolling=yes
+        support_selectionscrolling=yes
+        support_lastlog=yes
+        support_mousewheel=yes
+        support_mouseslipwheel=yes
+@@ -247,10 +250,16 @@ AC_ARG_ENABLE(fading,
+   [  --enable-fading         enable colors fading when off focus],
+   [if test x$enableval = xyes -o x$enableval = xno; then
+     support_fading=$enableval
+   fi])
+ 
++AC_ARG_ENABLE(unfocus,
++  [  --enable-unfocus         enable alternate colors when window focus is lost],
++  [if test x$enableval = xyes -o x$enableval = xno; then
++    support_unfocus=$enableval
++  fi])
++
+ AC_ARG_ENABLE(rxvt-scroll,
+   [  --enable-rxvt-scroll    enable rxvt style scrollbar],
+   [if test x$enableval = xyes -o x$enableval = xno; then
+     support_scroll_rxvt=$enableval
+   fi])
+@@ -667,10 +676,13 @@ if test x$support_8bitctrls = xyes; then
+   AC_DEFINE(EIGHT_BIT_CONTROLS, 1, Define if you want 8 bit control sequences)
+ fi
+ if test x$support_fading = xyes; then
+   AC_DEFINE(OFF_FOCUS_FADING, 1, Define if you want faded colors when focus is lost)
+ fi
++if test x$support_unfocus = xyes; then
++  AC_DEFINE(UNFOCUS_COLORS, 1, Define if you want alternate colors when focus is lost)
++fi
+ if test x$support_keepscrolling = xno; then
+   AC_DEFINE(NO_SCROLLBAR_BUTTON_CONTINUAL_SCROLLING, 1, Define for continual scrolling when you keep the scrollbar button pressed)
+ fi
+ if test x$support_selectionscrolling = xyes; then
+   AC_DEFINE(SELECTION_SCROLLING, 1, Define to allow scrolling when the selection moves to the top or bottom of the screen)
+Only in urxvt-git: configure.ac.orig
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/command.C urxvt-git/src/command.C
+--- urxvt-git_orig/src/command.C	2015-03-24 19:10:03.617172886 +0100
++++ urxvt-git/src/command.C	2015-03-24 19:33:06.396251626 +0100
+@@ -1775,10 +1775,16 @@ rxvt_term::focus_in ()
+ #endif
+ #if CURSOR_BLINK
+       if (option (Opt_cursorBlink))
+         cursor_blink_ev.again ();
+ #endif
++#if UNFOCUS_COLORS
++      if (rs[Rs_unfocus]) {
++          pix_colors = pix_colors_focused;
++          scr_recolor ();
++      }
++#endif
+ #if OFF_FOCUS_FADING
+       if (rs[Rs_fade])
+         {
+           pix_colors = pix_colors_focused;
+           scr_recolor ();
+@@ -1822,10 +1828,23 @@ rxvt_term::focus_out ()
+       if (option (Opt_cursorBlink))
+         cursor_blink_ev.stop ();
+ 
+       hidden_cursor = 0;
+ #endif
++#if UNFOCUS_COLORS
++      if (rs[Rs_unfocus]) {
++        rgba c;
++        pix_colors[Color_unfocusedScrollColor].get(c);
++        pix_colors_unfocused[Color_scroll].set(this,c);
++
++        pix_colors[Color_unfocusedBorderColor].get(c);
++        pix_colors_unfocused[Color_border].set(this, c);
++
++        pix_colors = pix_colors_unfocused;
++        scr_recolor ();
++      }
++#endif
+ #if OFF_FOCUS_FADING
+       if (rs[Rs_fade])
+         {
+           pix_colors = pix_colors_unfocused;
+           scr_recolor ();
+@@ -1834,25 +1853,25 @@ rxvt_term::focus_out ()
+ 
+       HOOK_INVOKE ((this, HOOK_FOCUS_OUT, DT_END));
+     }
+ }
+ 
++#if OFF_FOCUS_FADING
+ void ecb_cold
+ rxvt_term::update_fade_color (unsigned int idx, bool first_time)
+ {
+-#if OFF_FOCUS_FADING
+   if (rs[Rs_fade])
+     {
+       if (!first_time)
+         pix_colors_focused [idx].free (this);
+ 
+       rgba c;
+       pix_colors [Color_fade].get (c);
+       pix_colors_focused [idx].fade (this, atoi (rs[Rs_fade]), pix_colors_unfocused [idx], c);
+     }
+-#endif
+ }
++#endif
+ 
+ #if BG_IMAGE_FROM_ROOT || ENABLE_PERL
+ void ecb_hot
+ rxvt_term::rootwin_cb (XEvent &ev)
+ {
+Only in urxvt-git/src: command.C.orig
+Only in urxvt-git/src: command.C.rej
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/init.C urxvt-git/src/init.C
+--- urxvt-git_orig/src/init.C	2015-03-24 19:10:03.620506201 +0100
++++ urxvt-git/src/init.C	2015-03-24 19:30:25.990465177 +0100
+@@ -522,10 +522,14 @@ static const char *const def_colorName[]
+     COLOR_SCROLLTROUGH,
+ #endif
+ #if BG_IMAGE_FROM_ROOT
+     NULL,
+ #endif
++#if UNFOCUS_COLORS
++    NULL,
++    NULL,
++#endif
+ #if OFF_FOCUS_FADING
+     "rgb:00/00/00",
+ #endif
+   };
+ 
+@@ -559,10 +563,11 @@ rxvt_term::init_vars ()
+   set_option (Opt_pastableTabs);
+   set_option (Opt_intensityStyles);
+   set_option (Opt_iso14755);
+   set_option (Opt_iso14755_52);
+   set_option (Opt_buffered);
++  set_option (Opt_unfocus);
+ }
+ 
+ /*----------------------------------------------------------------------*/
+ const char **
+ rxvt_term::init_resources (int argc, const char *const *argv)
+@@ -1060,11 +1065,11 @@ rxvt_term::init_command (const char *con
+ void
+ rxvt_term::get_colors ()
+ {
+   int i;
+ 
+-#ifdef OFF_FOCUS_FADING
++#if OFF_FOCUS_FADING || UNFOCUS_COLORS
+   pix_colors = pix_colors_focused;
+ #endif
+ 
+   for (i = 0; i < NRS_COLORS; i++)
+     if (const char *name = rs[Rs_color + i])
+@@ -1091,10 +1096,17 @@ rxvt_term::get_colors ()
+                      cscroll.a)
+                    ))
+     alias_color (Color_topShadow, Color_White);
+ #endif
+ 
++#ifdef UNFOCUS_COLORS
++  for (i = 0; i < NRS_COLORS; i++) {
++    rgba c;
++    pix_colors[i].get(c);
++    pix_colors_unfocused[i].set(this, c);
++  }
++#endif
+ #ifdef OFF_FOCUS_FADING
+   for (i = 0; i < NRS_COLORS; i++)
+     update_fade_color (i, true);
+ #endif
+ }
+@@ -1438,10 +1450,23 @@ rxvt_term::create_windows (int argc, con
+                   GCForeground | GCBackground | GCGraphicsExposures,
+                   &gcvalue);
+ 
+   drawable = new rxvt_drawable (this, vt);
+ 
++#ifdef UNFOCUS_COLORS
++  // initially we are in unfocused state
++  if (rs[Rs_unfocus]) {
++        rgba c;
++        pix_colors[Color_unfocusedScrollColor].get(c);
++        pix_colors_unfocused[Color_scroll].set(this,c); 
++
++        pix_colors[Color_unfocusedBorderColor].get(c);
++        pix_colors_unfocused[Color_border].set(this, c);
++
++    pix_colors = pix_colors_unfocused;
++  }
++#endif
+ #ifdef OFF_FOCUS_FADING
+   // initially we are in unfocused state
+   if (rs[Rs_fade])
+     pix_colors = pix_colors_unfocused;
+ #endif
+Only in urxvt-git/src: init.C.orig
+Only in urxvt-git/src: init.C.rej
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/main.C urxvt-git/src/main.C
+--- urxvt-git_orig/src/main.C	2015-03-24 19:10:03.620506201 +0100
++++ urxvt-git/src/main.C	2015-03-24 19:31:52.396657695 +0100
+@@ -254,13 +254,18 @@ rxvt_term::~rxvt_term ()
+       for (int i = 0; i < TOTAL_COLORS; i++)
+         if (ISSET_PIXCOLOR (i))
+           {
+             pix_colors_focused   [i].free (this);
+ #if OFF_FOCUS_FADING
+-            if (rs[Rs_fade])
++            if (rs[Rs_fade]) {
++#endif
++#if OFF_FOCUS_FADING || UNFOCUS_COLORS
+               pix_colors_unfocused [i].free (this);
+ #endif
++#if OFF_FOCUS_FADING
++            }
++#endif
+           }
+ 
+       clear ();
+ 
+       display->flush (); /* ideally .put should do this */
+@@ -975,11 +980,18 @@ rxvt_term::set_window_color (int idx, co
+   set_color (pix_colors_focused[idx], color);
+ 
+ done:
+   /*TODO: handle Color_BD, scrollbar background, etc. */
+ 
++#ifdef UNFOCUS_COLORS
++  rgba c;
++  pix_colors[idx].get(c);                                                 
++  pix_colors_unfocused[idx].set(this, c);
++#endif
++#ifdef OFF_FOCUS_FADING
+   update_fade_color (idx);
++#endif
+   recolor_cursor ();
+   scr_recolor ();
+ #endif /* XTERM_COLOR_CHANGE */
+ }
+ 
+Only in urxvt-git/src: main.C.orig
+Only in urxvt-git/src: main.C.rej
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/optinc.h urxvt-git/src/optinc.h
+--- urxvt-git_orig/src/optinc.h	2015-03-24 19:10:03.620506201 +0100
++++ urxvt-git/src/optinc.h	2015-03-24 19:30:25.990465177 +0100
+@@ -14,10 +14,13 @@
+  def(scrollTtyOutput)
+  def(scrollTtyKeypress)
+  def(transparent)
+  def(tripleclickwords)
+  def(scrollWithBuffer)
++#if UNFOCUS_COLORS
++ def (unfocus)
++#endif
+  def(jumpScroll)
+  def(skipScroll)
+  def(mouseWheelScrollPage)
+ #if POINTER_BLANK
+  def(pointerBlank)
+diff --git a/src/rsinc.h b/src/rsinc.h
+index 86d0dfe..28e5550 100644
+--- a/src/rsinc.h
++++ b/src/rsinc.h
+@@ -118,6 +118,9 @@
+   def (iso14755)
+   def (iso14755_52)
+ #endif
++#if UNFOCUS_COLORS
++  def (unfocus)
++#endif
+ #if ENABLE_EWMH
+   def (iconfile)
+ #endif
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/rxvt.h urxvt-git/src/rxvt.h
+--- urxvt-git_orig/src/rxvt.h	2015-03-24 19:10:03.627172831 +0100
++++ urxvt-git/src/rxvt.h	2015-03-24 19:30:25.990465177 +0100
+@@ -586,10 +586,14 @@ enum colour_list {
+   Color_trough,
+ #endif
+ #if BG_IMAGE_FROM_ROOT
+   Color_tint,
+ #endif
++#if UNFOCUS_COLORS
++  Color_unfocusedBorderColor,
++  Color_unfocusedScrollColor,
++#endif
+ #if OFF_FOCUS_FADING
+   Color_fade,
+ #endif
+   NRS_COLORS,                 /* */
+ #ifdef RXVT_SCROLLBAR
+@@ -1070,11 +1074,11 @@ struct rxvt_vars : TermWin_t
+   char           *tabs;         /* per location: 1 == tab-stop               */
+   screen_t        screen;
+   screen_t        swap;
+   selection_t     selection;
+   rxvt_color      pix_colors_focused[TOTAL_COLORS];
+-#ifdef OFF_FOCUS_FADING
++#if OFF_FOCUS_FADING || UNFOCUS_COLORS
+   rxvt_color      pix_colors_unfocused[TOTAL_COLORS];
+ #endif
+ };
+ 
+ struct rxvt_term : zero_initialized, rxvt_vars, rxvt_screen
+@@ -1371,11 +1375,13 @@ struct rxvt_term : zero_initialized, rxv
+ #if ENABLE_FRILLS
+   void set_urgency (bool enable);
+ #else
+   void set_urgency (bool enable) { }
+ #endif
++#ifdef OFF_FOCUS_FADING
+   void update_fade_color (unsigned int idx, bool first_time = false);
++#endif
+ #ifdef PRINTPIPE
+   FILE *popen_printer ();
+   int pclose_printer (FILE *stream);
+ #endif
+   void process_print_pipe ();
+Only in urxvt-git/src: rxvt.h.orig
+Only in urxvt-git/src: rxvt.h.rej
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/rxvtperl.xs urxvt-git/src/rxvtperl.xs
+--- urxvt-git_orig/src/rxvtperl.xs	2015-03-24 19:10:03.630506146 +0100
++++ urxvt-git/src/rxvtperl.xs	2015-03-24 19:30:25.990465177 +0100
+@@ -839,10 +839,14 @@ BOOT:
+     const_iv (RS_Uline),
+ 
+     // TODO: should support all colour constants, create colorinc.h &c
+     const_iv (Color_fg),
+     const_iv (Color_bg),
++#if UNFOCUS_COLORS
++    const_iv (Color_unfocusedBorderColor),
++    const_iv (Color_unfocusedScrollColor),
++#endif
+ #if OFF_FOCUS_FADING
+     const_iv (Color_fade),
+ #endif
+     const_iv (Color_pointer_fg),
+     const_iv (Color_pointer_bg),
+Only in urxvt-git/src: rxvtperl.xs.orig
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/scrollbar-plain.C urxvt-git/src/scrollbar-plain.C
+--- urxvt-git_orig/src/scrollbar-plain.C	2015-03-24 19:10:03.637172776 +0100
++++ urxvt-git/src/scrollbar-plain.C	2015-03-24 19:30:25.990465177 +0100
+@@ -21,34 +21,39 @@
+  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+  *----------------------------------------------------------------------*/
+ 
+ #include "../config.h"		/* NECESSARY */
+ #include "rxvt.h"		/* NECESSARY */
++//#include <stdio.h>
++//#include <stdlib.h>
+ 
+ /*----------------------------------------------------------------------*/
+ #if defined(PLAIN_SCROLLBAR)
+ 
+ int
+ scrollBar_t::show_plain (int update)
+ {
+   int xsb = 0;
+   int sbwidth = width - 1;
+ 
++      XGCValues gcvalue;
++      gcvalue.foreground = term->pix_colors[Color_scroll];
++
+   if ((init & SB_STYLE_PLAIN) == 0)
+     {
+-      XGCValues gcvalue;
+ 
+       init |= SB_STYLE_PLAIN;
+-      gcvalue.foreground = term->pix_colors_focused[Color_scroll];
+ 
+       pscrollbarGC = XCreateGC (term->dpy, win, GCForeground, &gcvalue);
+     }
+ 
+   xsb = term->option (Opt_scrollBar_right) ? 1 : 0;
+ 
++
+   if (update)
+     {
++
+       if (last_top < top)
+         XClearArea (term->dpy, win,
+                     0, last_top,
+                     sbwidth + 1, top - last_top, False);
+ 
+@@ -58,10 +63,14 @@ scrollBar_t::show_plain (int update)
+                     sbwidth + 1, last_bot - bot, False);
+     }
+   else
+     XClearWindow (term->dpy, win);
+ 
++  //printf("%d\n", gcvalue.foreground);
++  //doc for this from: http://tronche.com/gui/x/xlib/GC/XChangeGC.html (thx!)
++  XChangeGC(term->dpy, pscrollbarGC, GCForeground, &gcvalue);
++
+   /* scrollbar slider */
+   XFillRectangle (term->dpy, win, pscrollbarGC,
+                   1 - xsb, top, sbwidth, bot - top);
+ 
+   return 1;
+diff -pru5 -X dontdiff -- urxvt-git_orig/src/xdefaults.C urxvt-git/src/xdefaults.C
+--- urxvt-git_orig/src/xdefaults.C	2015-03-24 19:10:03.693839132 +0100
++++ urxvt-git/src/xdefaults.C	2015-03-24 19:30:25.990465177 +0100
+@@ -120,10 +120,16 @@ optList[] = {
+               BOOL (Rs_transparent, "transparent", "tr", Opt_transparent, 0, "inherit parent pixmap"),
+               STRG (Rs_color + Color_tint, "tintColor", "tint", "color", "tint color"),
+               STRG (Rs_shade, "shading", "sh", "number", "shade background by number %."),
+               STRG (Rs_blurradius, "blurRadius", "blr", "HxV", "gaussian blur radii to apply to the root background"),
+ #endif
++#if UNFOCUS_COLORS
++              BOOL (Rs_unfocus, "unfocus", "uf", Opt_unfocus, 0, "alternate colors when window focus is lost"),
++              STRG (Rs_color + Color_unfocusedBorderColor, "unfocusedBorderColor", "ubd", "color", "border color when window lost focus"),
++//              STRG (Rs_color + Color_unfocusedScrollColor, "unfocusedScrollColor", "unfocusedscrollcolor", "color", "scrollColor when window lost focus"),
++              RSTRG (Rs_color + Color_unfocusedScrollColor, "unfocusedScrollColor", "color"),
++#endif
+ #if OFF_FOCUS_FADING
+               STRG (Rs_fade, "fading", "fade", "number", "fade colors by number % when losing focus"),
+               STRG (Rs_color + Color_fade, "fadeColor", "fadecolor", "color", "target color for off-focus fading"),
+ #endif
+               BOOL (Rs_utmpInhibit, "utmpInhibit", "ut", Opt_utmpInhibit, 0, "utmp inhibit"),
+@@ -329,10 +335,13 @@ static const char optionsstring[] = "opt
+ #endif
+ #if ENCODING_ZH_EXT
+                                     "+zh-ext"
+ #endif
+                                     ","
++#if UNFOCUS_COLORS
++                                    "uf,"
++#endif
+ #if OFF_FOCUS_FADING
+                                     "fade,"
+ #endif
+ #if defined(ENABLE_TRANSPARENCY)
+                                     "transparent,"
+Only in urxvt-git/src: xdefaults.C.orig

@@ -1,0 +1,24 @@
+I'm already using radeon FOSS driver (instead of fglrx)
+
+==========old:
+from:
+http://askubuntu.com/questions/324733/how-to-enable-the-radeon-dynamic-power-management-feature
+
+cat /sys/kernel/debug/dri/64/radeon_pm_info
+You should see something like this:
+
+uvd    vclk: 0 dclk: 0
+power level 0    sclk: 22000 mclk: 25000 vddc: 900
+
+You can further configure DPM by opening /etc/rc.local and adding the following line:
+
+echo parameter > /sys/class/drm/card0/device/power_dpm_state
+
+Where "parameter" can be:
+
+    battery (a set of performance levels targeted for optimal operation on battery)
+    balanced (a set of performance levels targeted for optimal every day use)
+    performance (a set of performance levels targeted for the highest GPU performance)
+=============
+http://linrunner.de/en/tlp/docs/tlp-configuration.html
+change some radeon settings in tlp !

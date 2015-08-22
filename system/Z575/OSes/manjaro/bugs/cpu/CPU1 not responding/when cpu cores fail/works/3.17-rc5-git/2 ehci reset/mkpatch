@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#go easy on the git diff by not printing time
+dmesg -t | awk '{print $0;} /Starting mdm.../ { exit; }'  >dmesg_now.txt
+
+current="`pwd`"
+fname="${current}/le.patch"
+cd "/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git"
+echo -n "" > "${fname}"
+git diff arch/x86/kernel/ >> "${fname}"
+git diff drivers/usb/early/ >> "${fname}"
+git diff arch/x86/include/asm/fixmap.h >> "${fname}"
+git diff kernel/ >> "${fname}"
+

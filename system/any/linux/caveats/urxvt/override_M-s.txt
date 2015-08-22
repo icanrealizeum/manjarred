@@ -1,0 +1,47 @@
+to override searchable-scrollback 's M-s key
+one must edit this file:
+https://github.com/exg/rxvt-unicode/blob/0d541d78770b5d95e566d56616db060e4308569f/src/perl/searchable-scrollback#L6
+that line which seems to be inside a comment
+#:META:BINDING:M-s:start
+
+has effect even if the filename is changed
+as long as it's not negated in URxvt*perl-ext-common:
+like: -searchable-scrollback
+(notice the - )
+
+if it's not negated, and it's say renamed to a random file, it will still have effect!!! so M-s or whatever you put there will work! even though it's not explicitly loaded in URxvt*perl-ext-common
+
+solution: actually remove that line
+then just override it(set the hotkey) through 
+URxvt*keysym.M-d: searchable-scrollback:start
+
+this ^ still gives a warning:
+urxvt: perl extension 'searchable_scrollback' not found in perl library search path
+but it is loaded and works!!
+
+also remove these lines:
+https://github.com/exg/rxvt-unicode/blob/master/src/perl/searchable-scrollback#L39-L44
+
+
+----
+xrdb ~/.Xresources && urxvt
+Registering perl extension 'clipboard'
+Registering perl extension 'keyboard-select'
+Registering perl extension 'option-popup'
+Registering perl extension 'readline'
+Registering perl extension 'searchable-scrollback'
+urxvt: perl extension 'searchable_scrollback' not found in perl library search path
+Registering perl extension 'selection'
+Registering perl extension 'selection-popup'
+Registering perl extension 'url-select'
+
+with this code in urxvt.pm
+around line 724 +-
+         if (@files) {
+            #these still end up in ~/.xsession-errors even with print!
+            print "Registering perl extension '$ext'\n";
+            $TERM->register_package (extension_package $files[0], $ext_arg{$ext});                                                                              
+         } else {
+            warn "perl extension '$ext' not found in perl library search path\n";
+         }
+

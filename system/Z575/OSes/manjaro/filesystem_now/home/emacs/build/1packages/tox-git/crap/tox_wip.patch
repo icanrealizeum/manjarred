@@ -1,0 +1,332 @@
+diff --git a/other/DHT_bootstrap.c b/other/DHT_bootstrap.c
+index 29aa5bc..90ad2b5 100644
+--- a/other/DHT_bootstrap.c
++++ b/other/DHT_bootstrap.c
+@@ -31,7 +31,7 @@
+ #include "../toxcore/friend_requests.h"
+ #include "../toxcore/util.h"
+ 
+-#define TCP_RELAY_ENABLED
++#undef TCP_RELAY_ENABLED
+ 
+ #ifdef TCP_RELAY_ENABLED
+ #include "../toxcore/TCP_server.h"
+@@ -55,7 +55,7 @@
+ #define c_sleep(x) usleep(1000*x)
+ #endif
+ 
+-#define PORT 33445
++#define PORT 18920
+ 
+ 
+ void manage_keys(DHT *dht)
+@@ -118,8 +118,10 @@ int main(int argc, char *argv[])
+        Bind to ip 0.0.0.0 / [::] : PORT */
+     IP ip;
+     ip_init(&ip, ipv6enabled);
++    addr_parse_ip("192.168.1.3", &ip);//FIXME: actually parse the arg! probably argvoffset+1 ?
+ 
+-    DHT *dht = new_DHT(new_networking(ip, PORT));
++    int thePort=PORT;
++    DHT *dht = new_DHT(new_networking(ip, thePort));//PORT  //FIXME: actually parse the port arg!
+     Onion *onion = new_onion(dht);
+     Onion_Announce *onion_a = new_onion_announce(dht);
+ 
+@@ -140,7 +142,7 @@ int main(int argc, char *argv[])
+ 
+ #ifdef TCP_RELAY_ENABLED
+ #define NUM_PORTS 3
+-    uint16_t ports[NUM_PORTS] = {443, 3389, PORT};
++    uint16_t ports[NUM_PORTS] = {443, 3389, thePort};
+     TCP_Server *tcp_s = new_TCP_server(ipv6enabled, NUM_PORTS, ports, dht->self_public_key, dht->self_secret_key, onion);
+ 
+     if (tcp_s == NULL) {
+@@ -190,10 +192,10 @@ int main(int argc, char *argv[])
+ 
+         do_DHT(dht);
+ 
+-        if (is_timeout(last_LANdiscovery, is_waiting_for_dht_connection ? 5 : LAN_DISCOVERY_INTERVAL)) {
+-            send_LANdiscovery(htons(PORT), dht);
++/*        if (is_timeout(last_LANdiscovery, is_waiting_for_dht_connection ? 5 : LAN_DISCOVERY_INTERVAL)) {
++            send_LANdiscovery(htons(thePort), dht);
+             last_LANdiscovery = unix_time();
+-        }
++        }*/
+ 
+ #ifdef TCP_RELAY_ENABLED
+         do_TCP_server(tcp_s);
+diff --git a/toxav/rtp.c b/toxav/rtp.c
+index ccac756..f7700f1 100644
+--- a/toxav/rtp.c
++++ b/toxav/rtp.c
+@@ -433,6 +433,7 @@ int rtp_send_msg ( RTPSession *session, Messenger *messenger, const uint8_t *dat
+     if ( 0 !=  ret) {
+         LOGGER_WARNING("Failed to send full packet (len: %d)! error: %i", length, ret);
+         rtp_free_msg ( session, msg );
++        fprintf(stderr,"!! meh\n");
+         return rtp_ErrorSending;
+     }
+ 
+diff --git a/toxav/toxav.c b/toxav/toxav.c
+index a51ec5e..36bc9be 100644
+--- a/toxav/toxav.c
++++ b/toxav/toxav.c
+@@ -434,8 +434,10 @@ static int toxav_send_rtp_payload(ToxAv *av,
+         for (i = 0; i < parts; i++) {
+             iter = cs_get_split_video_frame(call->cs, &part_size);
+ 
+-            if (rtp_send_msg(call->crtps[video_index], av->messenger, iter, part_size) < 0)
++            if (rtp_send_msg(call->crtps[video_index], av->messenger, iter, part_size) < 0) {
++                fprintf(stderr,"!! meh11111\n");
+                 return av_ErrorSendingPayload;
++            }
+         }
+ 
+         return av_ErrorNone;
+diff --git a/toxcore/friend_connection.c b/toxcore/friend_connection.c
+index 1656def..cebb890 100644
+--- a/toxcore/friend_connection.c
++++ b/toxcore/friend_connection.c
+@@ -781,10 +781,10 @@ Friend_Connections *new_friend_connections(Onion_Client *onion_c)
+ /* Send a LAN discovery packet every LAN_DISCOVERY_INTERVAL seconds. */
+ static void LANdiscovery(Friend_Connections *fr_c)
+ {
+-    if (fr_c->last_LANdiscovery + LAN_DISCOVERY_INTERVAL < unix_time()) {
++/*    if (fr_c->last_LANdiscovery + LAN_DISCOVERY_INTERVAL < unix_time()) {
+         send_LANdiscovery(htons(TOX_PORT_DEFAULT), fr_c->dht);
+         fr_c->last_LANdiscovery = unix_time();
+-    }
++    }*/
+ }
+ 
+ /* main friend_connections loop. */
+diff --git a/toxcore/net_crypto.c b/toxcore/net_crypto.c
+index 6d4f6a9..47a58f9 100644
+--- a/toxcore/net_crypto.c
++++ b/toxcore/net_crypto.c
+@@ -395,8 +395,10 @@ static int send_packet_to(Net_Crypto *c, int crypt_connection_id, const uint8_t
+ //TODO TCP, etc...
+     Crypto_Connection *conn = get_crypto_connection(c, crypt_connection_id);
+ 
+-    if (conn == 0)
++    if (conn == 0) {
++        LOGGER_ERROR("!!! oem4\n");
+         return -1;
++    }
+ 
+     int direct_send_attempt = 0;
+ 
+@@ -410,11 +412,15 @@ static int send_packet_to(Net_Crypto *c, int crypt_connection_id, const uint8_t
+         if (direct_connected) {
+             if ((uint32_t)sendpacket(c->dht->net, conn->ip_port, data, length) == length) {
+                 pthread_mutex_unlock(&conn->mutex);
++                LOGGER_ERROR("!!! good!\n");
+                 return 0;
+             } else {
+                 pthread_mutex_unlock(&conn->mutex);
++                LOGGER_ERROR("!!! oem5\n");
+                 return -1;
+             }
++        }else{
++                LOGGER_ERROR("!!! not direct_connected\n");
+         }
+ 
+         //TODO: a better way of sending packets directly to confirm the others ip.
+@@ -429,10 +435,12 @@ static int send_packet_to(Net_Crypto *c, int crypt_connection_id, const uint8_t
+     int ret = send_packet_tcp_connection(c->tcp_c, conn->connection_number_tcp, data, length);
+     pthread_mutex_unlock(&c->tcp_mutex);
+ 
+-    if (ret == 0 || direct_send_attempt) {
++    if (direct_send_attempt) {
++                LOGGER_ERROR("!!! good2222\n");
+         return 0;
+     }
+ 
++    LOGGER_ERROR("!!! oem6 dsa:%u\n", direct_send_attempt);
+     return -1;
+ }
+ 
+@@ -729,13 +737,17 @@ static int handle_request_packet(Packets_Array *send_array, const uint8_t *data,
+  */
+ static int send_data_packet(Net_Crypto *c, int crypt_connection_id, const uint8_t *data, uint16_t length)
+ {
+-    if (length == 0 || length + (1 + sizeof(uint16_t) + crypto_box_MACBYTES) > MAX_CRYPTO_PACKET_SIZE)
++    if (length == 0 || length + (1 + sizeof(uint16_t) + crypto_box_MACBYTES) > MAX_CRYPTO_PACKET_SIZE) {
++        LOGGER_ERROR("!!! oem1 %u\n",length);
+         return -1;
++    }
+ 
+     Crypto_Connection *conn = get_crypto_connection(c, crypt_connection_id);
+ 
+-    if (conn == 0)
++    if (conn == 0) {
++        LOGGER_ERROR("!!! oem2\n");
+         return -1;
++    }
+ 
+     pthread_mutex_lock(&conn->mutex);
+     uint8_t packet[1 + sizeof(uint16_t) + length + crypto_box_MACBYTES];
+@@ -745,6 +757,7 @@ static int send_data_packet(Net_Crypto *c, int crypt_connection_id, const uint8_
+ 
+     if (len + 1 + sizeof(uint16_t) != sizeof(packet)) {
+         pthread_mutex_unlock(&conn->mutex);
++        LOGGER_ERROR("!!! oem3\n");
+         return -1;
+     }
+ 
+@@ -762,8 +775,10 @@ static int send_data_packet(Net_Crypto *c, int crypt_connection_id, const uint8_
+ static int send_data_packet_helper(Net_Crypto *c, int crypt_connection_id, uint32_t buffer_start, uint32_t num,
+                                    const uint8_t *data, uint16_t length)
+ {
+-    if (length == 0 || length > MAX_CRYPTO_DATA_SIZE)
++    if (length == 0 || length > MAX_CRYPTO_DATA_SIZE) {
++        LOGGER_ERROR("no len %u\n",length);
+         return -1;
++    }
+ 
+     num = htonl(num);
+     buffer_start = htonl(buffer_start);
+@@ -1447,6 +1462,7 @@ static int crypto_connection_add_source(Net_Crypto *c, int crypt_connection_id,
+     if (source.ip.family == AF_INET || source.ip.family == AF_INET6) {
+         if (!ipport_equal(&source, &conn->ip_port)) {
+             if (!bs_list_add(&c->ip_port_list, (uint8_t *)&source, crypt_connection_id))
++        LOGGER_ERROR("! shiet1\n");
+                 return -1;
+ 
+             bs_list_remove(&c->ip_port_list, (uint8_t *)&conn->ip_port, crypt_connection_id);
+@@ -1658,6 +1674,7 @@ int set_direct_ip_port(Net_Crypto *c, int crypt_connection_id, IP_Port ip_port,
+ 
+     if (!ipport_equal(&ip_port, &conn->ip_port)) {
+         if ((UDP_DIRECT_TIMEOUT + conn->direct_lastrecv_time) > unix_time()) {
++          LOGGER_ERROR("! shiet2\n");
+             /* We already know a LAN ip, no need to switch. */
+             if (LAN_ip(conn->ip_port.ip) == 0)
+                 return -1;
+@@ -1963,29 +1980,39 @@ static int crypto_id_ip_port(const Net_Crypto *c, IP_Port ip_port)
+  */
+ static int udp_handle_packet(void *object, IP_Port source, const uint8_t *packet, uint16_t length)
+ {
+-    if (length <= CRYPTO_MIN_PACKET_SIZE || length > MAX_CRYPTO_PACKET_SIZE)
++    if (length <= CRYPTO_MIN_PACKET_SIZE || length > MAX_CRYPTO_PACKET_SIZE) {
++          LOGGER_ERROR("! shiet3\n");
+         return 1;
++    }
+ 
+     Net_Crypto *c = object;
+     int crypt_connection_id = crypto_id_ip_port(c, source);
+ 
+     if (crypt_connection_id == -1) {
+-        if (packet[0] != NET_PACKET_CRYPTO_HS)
++        if (packet[0] != NET_PACKET_CRYPTO_HS) {
++          LOGGER_ERROR("! shiet4 srcport:%u\n", source.port);
+             return 1;
++        }
+ 
+-        if (handle_new_connection_handshake(c, source, packet, length) != 0)
++        if (handle_new_connection_handshake(c, source, packet, length) != 0) {
++          LOGGER_ERROR("! shiet5\n");
+             return 1;
++        }
+ 
+         return 0;
+     }
+ 
+-    if (handle_packet_connection(c, crypt_connection_id, packet, length) != 0)
++    if (handle_packet_connection(c, crypt_connection_id, packet, length) != 0) {
++          LOGGER_ERROR("! shiet6\n");
+         return 1;
++    }
+ 
+     Crypto_Connection *conn = get_crypto_connection(c, crypt_connection_id);
+ 
+-    if (conn == 0)
++    if (conn == 0) {
++          LOGGER_ERROR("! shiet7\n");
+         return -1;
++    }
+ 
+     pthread_mutex_lock(&conn->mutex);
+     conn->direct_lastrecv_time = unix_time();
+@@ -2252,14 +2279,20 @@ int cryptpacket_received(Net_Crypto *c, int crypt_connection_id, uint32_t packet
+  */
+ int send_lossy_cryptpacket(Net_Crypto *c, int crypt_connection_id, const uint8_t *data, uint16_t length)
+ {
+-    if (length == 0 || length > MAX_CRYPTO_DATA_SIZE)
++    if (length == 0 || length > MAX_CRYPTO_DATA_SIZE) {
++        LOGGER_ERROR("no len %u\n",length);
+         return -1;
++    }
+ 
+-    if (data[0] < PACKET_ID_LOSSY_RANGE_START)
++    if (data[0] < PACKET_ID_LOSSY_RANGE_START) {
++        LOGGER_ERROR("data less than: %u < %u\n", data[0], PACKET_ID_LOSSY_RANGE_START);
+         return -1;
++    }
+ 
+-    if (data[0] >= (PACKET_ID_LOSSY_RANGE_START + PACKET_ID_LOSSY_RANGE_SIZE))
++    if (data[0] >= (PACKET_ID_LOSSY_RANGE_START + PACKET_ID_LOSSY_RANGE_SIZE)) {
++        LOGGER_ERROR("data2 %u >= %u\n", data[0], (PACKET_ID_LOSSY_RANGE_START + PACKET_ID_LOSSY_RANGE_SIZE));
+         return -1;
++    }
+ 
+     pthread_mutex_lock(&c->connections_mutex);
+     ++c->connection_use_counter;
+@@ -2275,6 +2308,9 @@ int send_lossy_cryptpacket(Net_Crypto *c, int crypt_connection_id, const uint8_t
+         uint32_t buffer_end = conn->send_array.buffer_end;
+         pthread_mutex_unlock(&conn->mutex);
+         ret = send_data_packet_helper(c, crypt_connection_id, buffer_start, buffer_end, data, length);
++        LOGGER_ERROR("send_data_packet_helper failed ret:%d\n",ret);
++    }else{
++        LOGGER_ERROR("no conn\n");
+     }
+ 
+     pthread_mutex_lock(&c->connections_mutex);
+@@ -2335,14 +2371,22 @@ unsigned int crypto_connection_status(const Net_Crypto *c, int crypt_connection_
+ {
+     Crypto_Connection *conn = get_crypto_connection(c, crypt_connection_id);
+ 
+-    if (conn == 0)
++//    LOGGER_ERROR("!!! passed direct_connected:%d\n", *direct_connected);
++    if (conn == 0) {
++                LOGGER_ERROR("!!! CRYPTO_CONN_NO_CONNECTION\n");
+         return CRYPTO_CONN_NO_CONNECTION;
++    }
+ 
+     if (direct_connected) {
+         *direct_connected = 0;
+ 
+-        if ((UDP_DIRECT_TIMEOUT + conn->direct_lastrecv_time) > unix_time())
++        LOGGER_ERROR("!!! direct_connected, UDP_DIRECT_TIMEOUT:%d lastrcv:%llu unix_time:%llu\n", UDP_DIRECT_TIMEOUT, conn->direct_lastrecv_time, unix_time());
++        if ((UDP_DIRECT_TIMEOUT + conn->direct_lastrecv_time) > unix_time()) {
+             *direct_connected = 1;
++            LOGGER_ERROR("!!! YES direct_connected:%d\n", *direct_connected);
++        }else{
++            LOGGER_ERROR("!!! FAIL direct_connected:%d\n", *direct_connected);
++        }
+     }
+ 
+     if (online_tcp_relays) {
+diff --git a/toxcore/network.h b/toxcore/network.h
+index 5649456..a55d6de 100644
+--- a/toxcore/network.h
++++ b/toxcore/network.h
+@@ -123,8 +123,8 @@ typedef int sock_t;
+ #define BOOTSTRAP_INFO_PACKET_ID 240
+ 
+ 
+-#define TOX_PORTRANGE_FROM 33445
+-#define TOX_PORTRANGE_TO   33545
++#define TOX_PORTRANGE_FROM 18920
++#define TOX_PORTRANGE_TO   19020
+ #define TOX_PORT_DEFAULT   TOX_PORTRANGE_FROM
+ 
+ /* TCP related */
+@@ -174,7 +174,7 @@ IP_Port;
+ #define SIZE_PORT 2
+ #define SIZE_IPPORT (SIZE_IP + SIZE_PORT)
+ 
+-#define TOX_ENABLE_IPV6_DEFAULT 1
++#define TOX_ENABLE_IPV6_DEFAULT 0
+ 
+ /* ip_ntoa
+  *   converts ip into a string

@@ -1,0 +1,35 @@
+reported here: https://github.com/manjaro/packages-community/issues/1
+
+=========old:
+$ sudo pacman -S acpi_call
+[sudo] password for emacs: 
+resolving dependencies...
+looking for inter-conflicts...
+
+Packages (1): acpi_call-1.1.0-8
+
+Total Installed Size:   0.02 MiB
+
+:: Proceed with installation? [Y/n] 
+(1/1) checking keys in keyring                     [######################] 100%
+(1/1) checking package integrity                   [######################] 100%
+(1/1) loading package files                        [######################] 100%
+(1/1) checking for file conflicts                  [######################] 100%
+(1/1) checking available disk space                [######################] 100%
+(1/1) installing acpi_call                         [######################] 100%
+cat: /usr/lib/modules/extramodules-3.15-ARCH/version: No such file or directory
+[emacs@manji ~]$ ls -la /usr/lib/modules/extramodules-3.15-ARCH/
+total 12
+drwxr-xr-x 2 root root 4096 01.07.2014 08:37 ./
+drwxr-xr-x 9 root root 4096 11.07.2014 02:16 ../
+-rw-r--r-- 1 root root 3992 01.07.2014 08:37 acpi_call.ko.gz
+[emacs@manji ~]$ 
+
+
+so since this kernel I'm on is built by me, instead of mhwd-kernel or downloaded binaries, I'm guessing this is why? this folder doesn't have a "version" file?
+oh wait, nevermind it's supposed to be MANJARO not ARCH there
+$ pwd
+/usr/lib/modules/extramodules-3.15-MANJARO
+[emacs@manji extramodules-3.15-MANJARO]$ ls
+fglrx.ko.gz  ndiswrapper.ko.gz  version
+

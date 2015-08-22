@@ -1,0 +1,25 @@
+diff --git a/.travis.install.deps.sh b/.travis.install.deps.sh
+index d75a71c..8b29481 100755
+--- a/.travis.install.deps.sh
++++ b/.travis.install.deps.sh
+@@ -26,7 +26,8 @@ url=https://static-rust-lang-org.s3.amazonaws.com/dist/`cat src/rustversion.txt`
+ # just install the right ones? This should enable cross compilation in the
+ # future anyway.
+ if [ -z "${windows}" ]; then
+-    rm -rf rustc *.tar.gz
++    rm -rf rustc
++#    rm -rf rustc *.tar.gz
+     curl -O $url/rust-nightly-i686-$target.tar.gz
+     curl -O $url/rust-nightly-x86_64-$target.tar.gz
+     tar xfz rust-nightly-i686-$target.tar.gz
+@@ -48,8 +49,8 @@ if [ -z "${windows}" ]; then
+     ./rust-nightly-$dst-$target/install.sh --prefix=rustc
+     rm -rf rust-nightly-$src-$target
+     rm -rf rust-nightly-$dst-$target
+-    rm -f rust-nightly-i686-$target.tar.gz
+-    rm -f rust-nightly-x86_64-$target.tar.gz
++#    rm -f rust-nightly-i686-$target.tar.gz
++#    rm -f rust-nightly-x86_64-$target.tar.gz
+ else
+     rm -rf rustc *.exe
+     if [ "${BITS}" = "64" ]; then

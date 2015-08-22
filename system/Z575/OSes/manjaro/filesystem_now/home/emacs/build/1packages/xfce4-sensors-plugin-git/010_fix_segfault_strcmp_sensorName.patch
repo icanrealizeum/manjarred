@@ -1,0 +1,36 @@
+attempt to fix:
+Program terminated with signal SIGSEGV, Segmentation fault.
+in manjaro/arch linux package:
+extra/xfce4-sensors-plugin               1.2.5-2        0.75 MiB
+
+#0  0x00007effca2667d6 in __strcmp_sse2 () from /usr/lib/libc.so.6
+#1  0x00007effcc6e54bf in sensors_read_config () from /usr/lib/xfce4/modules/libxfce4sensors.so.1
+#2  0x0000000000406504 in _start ()
+
+
+diff --git a/lib/configuration.c b/lib/configuration.c
+index 00c1ce5..decb03a 100644
+--- a/lib/configuration.c
++++ b/lib/configuration.c
+@@ -345,9 +345,9 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+                   break;
+               //DBG("k=%d, chip=%p, name=.\n", k, chip);
+               }
+-            while (chip!=NULL && strcmp(chip->sensorId, sensorName) != 0 );
++            while (chip!=NULL && sensorName!=NULL && strcmp(chip->sensorId, sensorName) != 0 );
+             //DBG("Found a chip.\n");
+-            if ( chip!=NULL && strcmp(chip->sensorId, sensorName)==0 ) {
++            if ( chip!=NULL && sensorName!=NULL && strcmp(chip->sensorId, sensorName)==0 ) {
+ 
+                 for (j=0; j<chip->num_features; j++) {
+                     chipfeature = (t_chipfeature *) g_ptr_array_index (
+@@ -421,7 +421,8 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+ 
+             } /* end if chip && strcmp */
+ 
+-            g_free (sensorName);
++            if (NULL != sensorName)
++                g_free (sensorName);
+ 
+         } /* end if xfce_rc_has_group (rc, rc_chip) */
+ 

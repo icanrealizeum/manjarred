@@ -1,0 +1,20 @@
+diff --git a/xf86drm.c b/xf86drm.c
+index 49da9c7..553883c 100644
+--- a/xf86drm.c
++++ b/xf86drm.c
+@@ -2829,6 +2829,9 @@ char *drmGetRenderDeviceNameFromFd(int fd)
+ */
+ int drmGetPciDevices(drmPciDevicePtr devSet, uint16_t vendorId)
+ {
++#ifndef UDEV
++		return -EINVAL;
++#else
+ 	struct udev *udev = NULL;
+ 	struct udev_enumerate *udev_enumerate;
+ 	struct udev_list_entry *list_entry;
+@@ -2914,4 +2917,5 @@ int drmGetPciDevices(drmPciDevicePtr devSet, uint16_t vendorId)
+ 	udev_unref(udev);
+ 
+ 	return drmDevCount;
++#endif
+ }

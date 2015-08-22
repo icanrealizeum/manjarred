@@ -1,0 +1,8 @@
+#!/bin/bash
+#^ for syntax in vim
+#XXX: just go to mitm.it  while proxy settings are on, to can install it directly from that running mitmproxy instance!
+#OR, do the following:
+
+#src: https://code.google.com/p/chromium/wiki/LinuxCertManagement
+certutil -d sql:$HOME/.pki/nssdb -A -t "C,," -n mitmnick -i mitmproxy-ca.pem ||  echo "failed, you have to run chromium once to generate the db; because the db is in /tmp tmpfs and gets wiped after reboot"
+

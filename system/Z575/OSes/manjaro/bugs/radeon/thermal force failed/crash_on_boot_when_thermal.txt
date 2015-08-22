@@ -1,0 +1,24 @@
+when forced thermal state with radeon.dpm=1
+with these changes:
+XXX: gist doesn't exist online anymore 7dec98c4c961806550a9#file-zee-patch-L95-L167
+then, the system will crash on boot after "Loading initial ramdisk..."
+and must power down from the button (4 sec)
+
+this might mean that when card was already overheating, booting kernel will crash
+
+ok, apparently it's working now (with zee2.patch although yesterday I didn't think so) however the voltage is 988 instead of 888
+like so:
+sclk: 20000 vddc: 988
+
+but when adding the ability to set to thermal via 
+ echo '1' > /sys/class/drm/card0/device/power_dpm_state
+(zee3.patch)
+and turning off that always thermal mode (which sets 988 vddc)
+then it works correctly after echoing 1
+sclk: 20000 vddc: 888
+
+ok, zee4.patch  allows
+ echo 'thermal' > /sys/class/drm/card0/device/power_dpm_state
+but cat-ing it still reports 'performance'
+maybe it would report thermal if that bool were set: rdev->pm.dpm.thermal_active
+

@@ -1,0 +1,25 @@
+diff --git a/xfce4-session/xfsm-global.c b/xfce4-session/xfsm-global.c
+index 6368a9a..0b29158 100644
+--- a/xfce4-session/xfsm-global.c
++++ b/xfce4-session/xfsm-global.c
+@@ -92,7 +92,8 @@ xfsm_verbose_real (const char *func,
+ 
+   if (G_UNLIKELY (fp == NULL))
+     {
+-      logfile = xfce_get_homefile (".xfce4-session.verbose-log", NULL);
++//      logfile = xfce_get_homefile (".xfce4-session.verbose-log", NULL);
++      logfile = "/tmp/.xfce4-session.verbose-log"; //TODO: add pidof?
+ 
+       /* rename an existing log file to -log.last */
+       if (logfile && g_file_test (logfile, G_FILE_TEST_EXISTS))
+@@ -106,8 +107,8 @@ xfsm_verbose_real (const char *func,
+         }
+ 
+       fp = fopen (logfile, "w");
+-      g_free (logfile);
+-      fprintf(fp, "log file opened\n");
++//      g_free (logfile);
++      fprintf(fp, "log file opened: %s\n", logfile);
+     }
+ 
+   fprintf (fp, "TRACE[%s:%d] %s(): ", file, line, func);

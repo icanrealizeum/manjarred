@@ -1,0 +1,196 @@
+smartctl 6.3 2014-07-26 r3976 [x86_64-linux-3.19.0-rc6-g26bc420b] (local build)
+Copyright (C) 2002-14, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Intel X18-M/X25-M/X25-V G2 SSDs
+Device Model:     INTEL SSDSA2M080G2GC
+Serial Number:    CVPO0364044X080JGN
+LU WWN Device Id: 5 001517 9593e8e28
+Firmware Version: 2CV102M3
+User Capacity:    80,026,361,856 bytes [80.0 GB]
+Sector Size:      512 bytes logical/physical
+Rotation Rate:    Solid State Device
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ATA/ATAPI-7 T13/1532D revision 1
+SATA Version is:  SATA 2.6, 3.0 Gb/s
+Local Time is:    Tue Jan 27 08:09:49 2015 CET
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+
+General SMART Values:
+Offline data collection status:  (0x00)	Offline data collection activity
+					was never started.
+					Auto Offline Data Collection: Disabled.
+Self-test execution status:      (   0)	The previous self-test routine completed
+					without error or no self-test has ever 
+					been run.
+Total time to complete Offline 
+data collection: 		(    1) seconds.
+Offline data collection
+capabilities: 			 (0x71) SMART execute Offline immediate.
+					No Auto Offline data collection support.
+					Suspend Offline collection upon new
+					command.
+					No Offline surface scan supported.
+					Self-test supported.
+					Conveyance Self-test supported.
+					Selective Self-test supported.
+SMART capabilities:            (0x0003)	Saves SMART data before entering
+					power-saving mode.
+					Supports SMART auto save timer.
+Error logging capability:        (0x01)	Error logging supported.
+					General Purpose Logging supported.
+Short self-test routine 
+recommended polling time: 	 (   1) minutes.
+Extended self-test routine
+recommended polling time: 	 (   1) minutes.
+Conveyance self-test routine
+recommended polling time: 	 (   1) minutes.
+
+SMART Attributes Data Structure revision number: 5
+Vendor Specific SMART Attributes with Thresholds:
+ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
+  3 Spin_Up_Time            0x0020   100   100   000    Old_age   Offline      -       0
+  4 Start_Stop_Count        0x0030   100   100   000    Old_age   Offline      -       0
+  5 Reallocated_Sector_Ct   0x0032   100   100   000    Old_age   Always       -       22
+  9 Power_On_Hours          0x0032   100   100   000    Old_age   Always       -       22755
+ 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       4200
+192 Unsafe_Shutdown_Count   0x0032   100   100   000    Old_age   Always       -       1726
+225 Host_Writes_32MiB       0x0030   100   100   000    Old_age   Offline      -       301612
+226 Workld_Media_Wear_Indic 0x0032   100   100   000    Old_age   Always       -       65535
+227 Workld_Host_Reads_Perc  0x0032   100   100   000    Old_age   Always       -       65535
+228 Workload_Minutes        0x0032   100   100   000    Old_age   Always       -       65535
+232 Available_Reservd_Space 0x0033   100   100   010    Pre-fail  Always       -       0
+233 Media_Wearout_Indicator 0x0032   097   097   000    Old_age   Always       -       0
+184 End-to-End_Error        0x0033   100   100   090    Pre-fail  Always       -       0
+
+SMART Error Log Version: 1
+Warning: ATA error count 26 inconsistent with error log pointer 4
+
+ATA Error Count: 26 (device log contains only the most recent five errors)
+	CR = Command Register [HEX]
+	FR = Features Register [HEX]
+	SC = Sector Count Register [HEX]
+	SN = Sector Number Register [HEX]
+	CL = Cylinder Low Register [HEX]
+	CH = Cylinder High Register [HEX]
+	DH = Device/Head Register [HEX]
+	DC = Device Command Register [HEX]
+	ER = Error register [HEX]
+	ST = Status register [HEX]
+Powered_Up_Time is measured from power on, and printed as
+DDd+hh:mm:SS.sss where DD=days, hh=hours, mm=minutes,
+SS=sec, and sss=millisec. It "wraps" after 49.710 days.
+
+Error 26 occurred at disk power-on lifetime: 22755 hours (948 days + 3 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 c3 10 b8 a3 f1 08
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  08 00 10 b8 a3 f1 08 00      00:00:24.759  DEVICE RESET
+  08 00 10 b0 a3 f1 08 00      00:00:24.759  DEVICE RESET
+  08 00 10 a8 a3 f1 08 00      00:00:24.758  DEVICE RESET
+  08 00 10 a0 a3 f1 08 00      00:00:24.758  DEVICE RESET
+  08 00 10 98 a3 f1 08 00      00:00:24.757  DEVICE RESET
+
+Error 25 occurred at disk power-on lifetime: 22755 hours (948 days + 3 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 c3 80 40 96 f1 08
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  c0 0f 80 40 96 f1 08 00      00:00:21.935  CFA ERASE SECTORS [VS IF NO CFA]
+  c0 0f 80 80 86 f1 08 00      00:00:21.925  CFA ERASE SECTORS [VS IF NO CFA]
+  c0 0f 80 c0 76 f1 08 00      00:00:21.917  CFA ERASE SECTORS [VS IF NO CFA]
+  c0 0f 80 00 67 f1 08 00      00:00:21.913  CFA ERASE SECTORS [VS IF NO CFA]
+  c0 0f 80 40 57 f1 08 00      00:00:21.906  CFA ERASE SECTORS [VS IF NO CFA]
+
+Error 24 occurred at disk power-on lifetime: 22755 hours (948 days + 3 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 c3 10 b8 a3 f1 08
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  08 00 10 b8 a3 f1 08 00      00:00:15.688  DEVICE RESET
+  08 00 10 b0 a3 f1 08 00      00:00:15.687  DEVICE RESET
+  08 00 10 a8 a3 f1 08 00      00:00:15.686  DEVICE RESET
+  08 00 10 a0 a3 f1 08 00      00:00:15.686  DEVICE RESET
+  08 00 10 98 a3 f1 08 00      00:00:15.685  DEVICE RESET
+
+Error 23 occurred at disk power-on lifetime: 22755 hours (948 days + 3 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 c3 80 c0 a0 f1 08  Error: UNC at LBA = 0x08f1a0c0 = 150053056
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  40 05 80 c0 a0 f1 08 00      00:00:12.673  READ VERIFY SECTOR(S)
+  40 05 80 80 9b f1 08 00      00:00:12.670  READ VERIFY SECTOR(S)
+  40 05 80 40 96 f1 08 00      00:00:12.668  READ VERIFY SECTOR(S)
+  80 0a 00 c0 8b f1 08 00      00:00:12.663  [VENDOR SPECIFIC]
+  80 0a 00 40 81 f1 08 00      00:00:12.658  [VENDOR SPECIFIC]
+
+Error 22 occurred at disk power-on lifetime: 22755 hours (948 days + 3 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER ST SC SN CL CH DH
+  -- -- -- -- -- -- --
+  40 c3 10 b8 a3 f1 08
+
+  Commands leading to the command that caused the error were:
+  CR FR SC SN CL CH DH DC   Powered_Up_Time  Command/Feature_Name
+  -- -- -- -- -- -- -- --  ----------------  --------------------
+  08 00 10 b8 a3 f1 08 00      00:00:29.186  DEVICE RESET
+  08 00 10 b0 a3 f1 08 00      00:00:29.185  DEVICE RESET
+  08 00 10 a8 a3 f1 08 00      00:00:29.185  DEVICE RESET
+  08 00 10 a0 a3 f1 08 00      00:00:29.185  DEVICE RESET
+  08 00 10 98 a3 f1 08 00      00:00:29.184  DEVICE RESET
+
+SMART Self-test log structure revision number 1
+Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA_of_first_error
+# 1  Vendor (0xc8)       Completed without error       00%     22755         -
+# 2  Vendor (0x40)       Completed without error       00%     22755         -
+# 3  Vendor (0x40)       Completed without error       00%     22755         -
+# 4  Vendor (0xb0)       Completed without error       70%     22755         -
+# 5  Reserved (0x38)     Completed without error       70%     22755         -
+# 6  Vendor (0x90)       Completed without error       70%     22755         -
+# 7  Vendor (0xc0)       Completed without error       70%     22755         -
+# 8  Offline             Completed without error       70%     22755         -
+# 9  Vendor (0xe0)       Completed without error       00%     22371         -
+#10  Vendor (0x90)       Completed without error       00%     22371         -
+
+SMART Selective self-test log data structure revision number 1
+ SPAN   MIN_LBA   MAX_LBA  CURRENT_TEST_STATUS
+    1  66167000  66167999  Not_testing
+    2         0         0  Not_testing
+    3         0         0  Not_testing
+    4         0         0  Not_testing
+    5         0         0  Completed [00% left] (0-65535)
+Selective self-test flags (0x0):
+  After scanning selected spans, do NOT read-scan remainder of disk.
+If Selective self-test is pending on power-up, resume after 0 minute delay.
+

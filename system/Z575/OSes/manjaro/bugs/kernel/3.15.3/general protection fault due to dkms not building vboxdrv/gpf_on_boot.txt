@@ -1,0 +1,30 @@
+with the included .config
+
+it will cause a general protection fault (see picture)
+-----
+if I disable vboxdrv and co. to load, by systemctl disable dkms
+then the error is a panic dump or something, can't scroll up or use sysrq key in either case
+---
+
+looks like, I have to either disable dkms  (systemctl status dkms    ; use disable instead of status here)
+
+or just remove the vbox drivers i mean modules from dkms with:
+sudo dkms remove vboxhost/4.3.12 --all
+
+--all means do it for all kernels, though, I should probably use -k and specify only the kernel that's oopsing aka 4.3.15
+
+but if I don't wanna use --all then i can use uninstall instead of remove and just pass the relevant -k for the kernel i want to uninstall them from
+---------
+
+wtf it didn't fail again hmmm... i think the dkms stuff doesn't know when to recompile the module?
+and maybe it used the old version? even tho i updated the kernel slightly
+---
+soooooo
+looks like the problem is leftover modules from fglrx and more importantly vboxhost aka vboxdrv and co.
+basically dkms isn't doing its job of triggering the build for vboxhost which rebuild vboxdrv and co. modules for the current(or specified) kernel
+
+so need to find a way to tell dkms to compile vboxdrv (& co.) whenever I've updated the kernel, the same kernel version,which doesn't change, maybe that's the problem.
+---
+so, i'm modifying dkms to consider when kernel version(not release) gets changed
+version is uname -v
+release is uname -r

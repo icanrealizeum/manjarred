@@ -1,0 +1,158 @@
+[PATCH] vgacon: remember scrollback buffer on console switch
+From: Marcin Slusarz 
+Date: Sat Oct 25 2008 - 15:58:55 EST
+source from: http://lkml.iu.edu//hypermail/linux/kernel/0810.3/0593.html
+"
+Add support for persistent console history, surviving
+console switches. It allocates new scrollback buffer only when
+user switches console for the first time.
+"
+
+adapted for kernel 3.16-rc7  and  modified/fixed by EmanueL Czirai
+
+added kernel parameter: nopersistentscrollback
+which acts as if this patch wasn't applied
+
+diff '--exclude=Kconfig' -u1pr -- a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+--- a/drivers/video/console/vgacon.c	2014-07-28 13:21:18.000000000 +0200
++++ b/drivers/video/console/vgacon.c	2014-08-01 03:39:14.764323148 +0200
+@@ -145,2 +145,3 @@ __setup("no-scroll", no_scroll);
+ 
++
+ /*
+@@ -193,5 +194,7 @@ static int vgacon_scrollback_restore;
+ 
++#define SCROLLBACK_SIZE_BYTES (CONFIG_VGACON_SOFT_SCROLLBACK_SIZE * 1024)
++
+ static void vgacon_scrollback_init(int pitch)
+ {
+-	int rows = CONFIG_VGACON_SOFT_SCROLLBACK_SIZE * 1024/pitch;
++	int rows = SCROLLBACK_SIZE_BYTES / pitch;
+ 
+@@ -206,2 +209,88 @@ static void vgacon_scrollback_init(int p
+ 
++#ifdef CONFIG_VGACON_REMEMBER_SCROLLBACK
++static int persistent_scrollback=1;
++
++bool is_persistent_scrollback(void)
++{
++	return persistent_scrollback ? true : false;
++}
++//unneeded: EXPORT_SYMBOL(is_persistent_scrollback);
++
++static int __init disable_persistent_scrollback(char *str)
++{
++	persistent_scrollback = 0;
++	printk(KERN_INFO "vgacon: disabled persistent scrollback history\n");
++	return 0;
++}
++
++/* kernel paramater to disable persistent scrollback: when switching consoles scrollback is cleared - this is normal kernel behaviour before the patch*/
++__setup("nopersistentscrollback", disable_persistent_scrollback);
++
++static struct vgacon_scrollback_info {
++	void *data;
++	int cnt;
++	int tail;
++	int cur;
++	int rows;
++	int size;
++} vgacon_scrollbacks[MAX_NR_CONSOLES];
++static int vgacon_last_vc_num;
++
++static void vgacon_switch_scrollback(struct vc_data *c)
++{
++	int num = c->vc_num;
++	struct vgacon_scrollback_info *old_scrollback =
++		&vgacon_scrollbacks[vgacon_last_vc_num];
++	struct vgacon_scrollback_info *new_scrollback =
++		&vgacon_scrollbacks[num];
++
++	if (!vgacon_scrollback) { 
++		return; //avoid crash when couldn't allocate the initial scrollback buffer
++	}
++
++	if (!is_persistent_scrollback()) {
++		vgacon_scrollback_init(c->vc_size_row);
++		return;
++	}
++
++	old_scrollback->cnt = vgacon_scrollback_cnt;
++	old_scrollback->tail = vgacon_scrollback_tail;
++	old_scrollback->cur = vgacon_scrollback_cur;
++	old_scrollback->rows = vgacon_scrollback_rows;
++	old_scrollback->size = vgacon_scrollback_size;
++
++	if (!new_scrollback->data) {
++		int rows = SCROLLBACK_SIZE_BYTES / c->vc_size_row;
++
++		new_scrollback->data = kmalloc(SCROLLBACK_SIZE_BYTES, GFP_KERNEL);
++		new_scrollback->cnt = 0;
++		new_scrollback->tail = 0;
++		new_scrollback->cur = 0;
++		new_scrollback->rows = rows - 1;
++		new_scrollback->size = rows * c->vc_size_row;
++
++		if (!new_scrollback->data) {
++			printk(KERN_WARNING "vgacon: failed to allocate %d bytes of memory for scrollback of console %d, using scrollback of console %d.\n",
++					SCROLLBACK_SIZE_BYTES, num, vgacon_last_vc_num);
++		new_scrollback->data = old_scrollback->data;
++		old_scrollback->data = NULL;
++		}
++	}
++
++	vgacon_scrollback = new_scrollback->data;
++	vgacon_scrollback_cnt = new_scrollback->cnt;
++	vgacon_scrollback_tail = new_scrollback->tail;
++	vgacon_scrollback_cur = new_scrollback->cur;
++	vgacon_scrollback_rows = new_scrollback->rows;
++	vgacon_scrollback_size = new_scrollback->size;
++
++	vgacon_last_vc_num = num;
++}
++#else
++static inline void vgacon_switch_scrollback(struct vc_data *c)
++{
++	vgacon_scrollback_init(c->vc_size_row);
++}
++#endif
++
+ static void vgacon_scrollback_startup(void)
+@@ -210,2 +299,6 @@ static void vgacon_scrollback_startup(vo
+ 	vgacon_scrollback_init(vga_video_num_columns * 2);
++#ifdef CONFIG_VGACON_REMEMBER_SCROLLBACK
++	vgacon_scrollbacks[0].data = vgacon_scrollback;
++	vgacon_last_vc_num = 0;
++#endif
+ }
+@@ -330,2 +423,4 @@ static int vgacon_scrolldelta(struct vc_
+ #define vgacon_scrollback_update(...)  do { } while (0)
++#define vgacon_switch_scrollback(...)  do { } while (0)
++
+ 
+@@ -845,3 +940,3 @@ static int vgacon_switch(struct vc_data
+ 
+-	vgacon_scrollback_init(c->vc_size_row);
++	vgacon_switch_scrollback(c);
+ 	return 0;		/* Redrawing not needed */
+diff '--exclude=*.c' -u3pr -- a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+--- a/drivers/video/console/Kconfig	2014-06-08 20:19:54.000000000 +0200
++++ b/drivers/video/console/Kconfig	2014-08-01 01:02:28.547293869 +0200
+@@ -47,6 +47,17 @@ config VGACON_SOFT_SCROLLBACK_SIZE
+ 	 buffer.  Each 64KB will give you approximately 16 80x25
+ 	 screenfuls of scrollback buffer
+ 
++config VGACON_REMEMBER_SCROLLBACK
++	bool "Remember scrollback buffer on console switch"
++	depends on VGACON_SOFT_SCROLLBACK
++	default y
++	help
++	Say 'Y' here if you want the scrollback buffer to be remembered
++	on console switch and restored when you switch back.
++
++	Note: every VGA console will use its own buffer, but it will be
++	allocated only when you switch to this console for the first time.
++
+ config MDA_CONSOLE
+ 	depends on !M68K && !PARISC && ISA
+ 	tristate "MDA text console (dual-headed)"

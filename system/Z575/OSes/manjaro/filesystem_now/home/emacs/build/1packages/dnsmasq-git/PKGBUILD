@@ -1,0 +1,65 @@
+# Maintainer: Evan Callicoat <apsu@propter.net>
+# Contributor: Paul Mattal <paul@archlinux.org>
+# Contributor: Tom Newsom <Jeepster@gmx.co.uk>
+
+pkgname=dnsmasq-git
+_gitname=dnsmasq
+
+pkgver=v2.74rc3
+pkgrel=1
+pkgdesc="Lightweight, easy to configure DNS forwarder and DHCP server"
+url="http://www.thekelleys.org.uk/dnsmasq/doc.html"
+arch=('i686' 'x86_64')
+license=('GPL')
+provides=('dnsmasq')
+conflicts=('dnsmasq')
+depends=('glibc' 'libdbus' 'gmp' 'nettle')
+makedepends=('git' 'perl')
+install="${_gitname}.install"
+backup=('etc/dnsmasq.conf')
+
+source=("${_gitname}::git://thekelleys.org.uk/${_gitname}.git"
+  "${_gitname}.service"
+  "${_gitname}.install"
+)
+md5sums=('SKIP'
+         'b87f68013c3e8b4bb37117de968d4603'
+         'f96eae9b35b4c648c3e9c40b7412e357')
+sha512sums=('SKIP'
+            '997845e48547918dfb9173764dddadf82f2e8f8b4b921bc54633c5089a6b7579b25c7772130dafc2ff742ed2e18d0719bce240155273e37b466019c90aaac731'
+            'c0d7ad700f8eacc8cffe5b08723564356ec84d1f7f54662349df36a7cbeaba77a96e19a53a58f25a988bb01ebac15a0b16ae1013bcc61607e92399af88cf0dfd')
+
+
+pkgver() {
+  cd "$_gitname"
+  # Use the tag of the last commit
+  git describe --always | sed 's|-|.|g'
+}
+
+build() {
+  cd "$_gitname"
+
+  # link against dbus. this ugliness is needed to ensure that the
+  # compile time opts report properly on startup. yuck.
+#  sed -i '/^#ifdef DNSMASQ_COMPILE_OPTS/ i#define HAVE_DBUS' src/config.h
+
+  make CFLAGS="$CPPFLAGS $CFLAGS" \
+    LDFLAGS="$LDFLAGS" \
+    COPTS="-DHAVE_DNSSEC -DHAVE_DBUS -DHAVE_CONNTRACK"
+}
+
+package() {
+  cd "$_gitname"
+
+  make BINDIR=/usr/bin PREFIX=/usr DESTDIR="$pkgdir" install
+
+  install -Dm644 "dbus/dnsmasq.conf" "$pkgdir"/etc/dbus-1/system.d/dnsmasq.conf
+  install -Dm644 "dnsmasq.conf.example" "$pkgdir"/etc/dnsmasq.conf
+  install -Dm644 "$srcdir/dnsmasq.service" "$pkgdir"/usr/lib/systemd/system/dnsmasq.service
+
+  # DNSSEC setup
+  sed -i 's,%%PREFIX%%,/usr,' "$pkgdir"/etc/dnsmasq.conf
+  install -Dm644 "trust-anchors.conf" "$pkgdir"/usr/share/dnsmasq/trust-anchors.conf
+}
+
+# vim: ts=2 sw=2 et ft=sh

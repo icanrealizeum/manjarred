@@ -1,0 +1,24 @@
+updated to match new scan.mk contents on 4 june 2015
+adds --text to grep in order to fix this:
+
+make: *** No rule to make target 'feeds/oldpackages/Binary', needed by '/home/emacs/build/router/openwrt/source/openwrt/feeds/oldpackages.tmp/info/.packageinfo-Binary'.  Stop.
+
+full error: http://dpaste.com/0XA93BN.txt
+
+thanks to plntyk on #openwrt-devel on freenode IRC for help on tracking down the scan.mk file
+
+they already fixed one occurrence (that -a  which is --text as seen as gren -aHE)
+
+diff --git a/include/scan.mk b/include/scan.mk
+index 5af0359..fcab1fa 100644
+--- a/include/scan.mk
++++ b/include/scan.mk
+@@ -59,7 +59,7 @@ $(FILELIST): $(OVERRIDELIST)
+ 
+ $(TMP_DIR)/info/.files-$(SCAN_TARGET).mk: $(FILELIST)
+ 	( \
+-		cat $< | awk '{print "$(SCAN_DIR)/" $$0 "/Makefile" }' | xargs grep -HE '^ *SCAN_DEPS *= *' | awk -F: '{ gsub(/^.*DEPS *= */, "", $$2); print "DEPS_" $$1 "=" $$2 }'; \
++		cat $< | awk '{print "$(SCAN_DIR)/" $$0 "/Makefile" }' | xargs grep --text -HE '^ *SCAN_DEPS *= *' | awk -F: '{ gsub(/^.*DEPS *= */, "", $$2); print "DEPS_" $$1 "=" $$2 }'; \
+ 		awk -F/ -v deps="$$DEPS" -v of="$(OVERRIDELIST)" ' \
+ 		BEGIN { \
+ 			while (getline < (of)) \

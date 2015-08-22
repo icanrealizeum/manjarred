@@ -1,0 +1,30 @@
+TODO: report all errors when these warnings(treated as errors)happen
+
+diff --git a/build/config/clang/BUILD.gn b/build/config/clang/BUILD.gn
+index 39fe251..1c5c76b 100644
+--- a/build/config/clang/BUILD.gn
++++ b/build/config/clang/BUILD.gn
+@@ -39,5 +39,9 @@ config("extra_warnings") {
+ 
+     # Warns when a const char[] is converted to bool.
+     "-Wstring-conversion",
++    "-Wno-empty-body",
++    "-Wno-parentheses-equality",
++    "-Wno-undefined-bool-conversion",
++    "-Wno-error", #this has no effect!
+   ]
+ }
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 42dc584..6a7a390 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -807,7 +807,8 @@ config("default_warnings") {
+     cflags = [
+       # Enables.
+       "-Wendif-labels",  # Weird old-style text after an #endif.
+-      "-Werror",  # Warnings as errors.
++      "-Wno-undefined-bool-conversion",
++      "-Wno-error",  # Warnings as errors.
+ 
+       # Disables.
+       "-Wno-missing-field-initializers",  # "struct foo f = {0};"

@@ -1,0 +1,17 @@
+.swp files have mode 0600 because when :set dir=/tmp they must be protected from others
+diff -pru5N -- vim-repo.orig/src/fileio.c vim-repo/src/fileio.c
+--- vim-repo.orig/src/fileio.c	2014-11-30 10:33:09.042507359 +0100
++++ vim-repo/src/fileio.c	2014-11-30 10:34:21.898774231 +0100
+@@ -490,11 +490,11 @@ readfile(fname, sfname, from, lines_to_s
+ 	     * (they must not write the swapfile).
+ 	     * Add the "read" and "write" bits for the user, otherwise we may
+ 	     * not be able to write to the file ourselves.
+ 	     * Setting the bits is done below, after creating the swap file.
+ 	     */
+-	    swap_mode = (st.st_mode & 0644) | 0600;
++	    swap_mode = (st.st_mode & 0600) | 0600;
+ #endif
+ #ifdef FEAT_CW_EDITOR
+ 	    /* Get the FSSpec on MacOS
+ 	     * TODO: Update it properly when the buffer name changes
+ 	     */

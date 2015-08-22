@@ -1,0 +1,31 @@
+SUBSYSTEM!="net", GOTO="macspoof_end"
+
+IMPORT{builtin}="path_id"
+
+ACTION=="move", IMPORT{db}="ID_NET_DRIVER"
+
+ACTION!="add", GOTO="macspoof_end"
+
+IMPORT{builtin}="net_setup_link"
+# test this ^ with: udevadm test-builtin net_setup_link /sys/class/net/net0
+# it only shows ID_NET_DRIVER=r8169 whereas this:
+# udevadm info -p $(udevadm info -q path `realpath /sys/class/net/net0`)
+# ^ shows lots more, like: ID_MODEL_ID=0x8136 which we can't seem to be able to match on!
+
+#rename enp1s0 (actually eth0 since this runs before 80-net-setup-link.rules) to net0
+ENV{ID_NET_DRIVER}=="r8169", RUN+="/usr/bin/ip link set dev %k address 28:05:9c:52:bf:a9"
+#the following won't match[unless I typoed something when testing] (and can't find built-in which provides them):
+#ENV{ID_MODEL_ID}==0x8136, NAME="net0"
+#ENV{ID_MODEL_ID}=="0x8136", NAME="net0"
+
+LABEL="macspoof_end"
+# ^ no idea if these labels should be unique globally or just unique within each .rules file
+
+#none of the following work (alone, without the above^):
+#SUBSYSTEM=="net", ACTION=="add", ID_MODEL_ID=="0x8136", NAME="net0"
+#SUBSYSTEM=="net", ACTION=="add", ENV{ID_MODEL_ID}==0x8136, NAME="net0"
+# SUBSYSTEM=="net", ACTION=="add", ID_MODEL_ID==0x8136, NAME="net0"
+# SUBSYSTEM=="net", ACTION=="add", ENV{ID_MODEL_ID}=="0x8136", NAME="net0"
+# SUBSYSTEM=="net", ACTION=="add", ENV{ID_NET_DRIVER}=="r8169", NAME="net0"
+
+

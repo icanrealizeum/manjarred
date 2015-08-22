@@ -1,0 +1,50 @@
+# Contributor: Sean Bartell <wingedtachikoma@gmail.com>
+
+pkgname=schismtracker-hg
+pkgver=r2916.ca833ea31733
+pkgrel=1
+pkgdesc="A music editor based on Impulse Tracker."
+arch=('i686' 'x86_64')
+url="http://schismtracker.org/"
+license=('GPL')
+makedepends=(mercurial)
+depends=(sdl gcc-libs libxv)
+conflicts=(schismtracker schismtracker-cvs)
+provides=(schismtracker schismtracker-cvs)
+
+_hgroot="http://schismtracker.org/"
+_hgrepo="hg"
+
+source=("${_hgrepo}::hg+${_hgroot}/${_hgrepo}")
+sha512sums=("SKIP")
+
+pkgver() {
+	cd "$srcdir/${_hgrepo}"
+  printf "r%s.%s" "$(hg identify -n)" "$(hg identify -i)"
+}
+
+prepare() {
+	cd "$srcdir/${_hgrepo}"
+  autoreconf -i
+}
+
+build() {
+	cd "$srcdir/${_hgrepo}"
+	LDFLAGS="-lm" ./configure --prefix=/usr --enable-mercurial --with-x
+	make || return 1
+}
+
+package() {
+	cd "$srcdir/${_hgrepo}"
+    make DESTDIR="$pkgdir/" install
+    install -Dm644 icons/schism-icon-128.png \
+        "$pkgdir/usr/share/icons/schism-icon-128.png"
+    install -Dm644 icons/schism-itf-icon-128.png \
+        "$pkgdir/usr/share/icons/schism-itf-icon-128.png"
+    install -Dm644 sys/fd.org/schism.desktop \
+        "$pkgdir/usr/share/applications/schism.desktop"
+    install -Dm644 sys/fd.org/itf.desktop \
+        "$pkgdir/usr/share/applications/itf.desktop"
+    install -Dm644 README \
+        "$pkgdir/usr/share/doc/schismtracker/README"
+}

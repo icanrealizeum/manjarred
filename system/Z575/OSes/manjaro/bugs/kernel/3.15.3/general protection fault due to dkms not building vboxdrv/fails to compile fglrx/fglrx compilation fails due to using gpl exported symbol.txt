@@ -1,0 +1,64 @@
+when it doesn't work:
+--------
+2014-07-06 20:53:22
+Building fglrx module for 3.15.3-1-MANJARO kernel ...
+--------
+OsVersion says: SMP=1
+file /proc/kallsyms says: SMP=1
+file /usr/lib/modules/3.15.3-1-MANJARO/build/include/generated/autoconf.h says: SMP=1
+file /usr/lib/modules/3.15.3-1-MANJARO/build/include/generated/autoconf.h says: MODVERSIONS=
+file /usr/lib/modules/3.15.3-1-MANJARO/build/arch/x86/include/asm/compat.h says: COMPAT_ALLOC_USER_SPACE=arch_compat_alloc_user_space
+make: Entering directory '/usr/lib/modules/3.15.3-1-MANJARO/build'
+  CC [M]  /tmp/catalyst.WT8l93/firegl_public.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_acpi.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_agp.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_debug.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_ioctl.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_io.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_pci.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_str.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_iommu.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl.o
+  CC [M]  /tmp/catalyst.WT8l93/kcl_wait.o
+  LD [M]  /tmp/catalyst.WT8l93/fglrx.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+FATAL: modpost: GPL-incompatible module fglrx.ko uses GPL-only symbol 'lockdep_init_map'
+/usr/lib/modules/3.15.3-1-MANJARO/build/scripts/Makefile.modpost:90: recipe for target '__modpost' failed
+make[1]: *** [__modpost] Error 1
+Makefile:1313: recipe for target 'modules' failed
+make: *** [modules] Error 2
+make: Leaving directory '/usr/lib/modules/3.15.3-1-MANJARO/build'
+
+
+
+==============
+this is when it works(with the other .config):
+--------
+2014-07-06 20:57:41
+Building fglrx module for 3.15.3-1-MANJARO kernel ...
+--------
+OsVersion says: SMP=1
+file /proc/kallsyms says: SMP=1
+file /usr/lib/modules/3.15.3-1-MANJARO/build/include/generated/autoconf.h says: SMP=1
+file /usr/lib/modules/3.15.3-1-MANJARO/build/include/generated/autoconf.h says: MODVERSIONS=
+file /usr/lib/modules/3.15.3-1-MANJARO/build/arch/x86/include/asm/compat.h says: COMPAT_ALLOC_USER_SPACE=arch_compat_alloc_user_space
+make: Entering directory '/usr/lib/modules/3.15.3-1-MANJARO/build'
+  CC [M]  /tmp/catalyst.6eR5HW/firegl_public.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_acpi.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_agp.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_debug.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_ioctl.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_io.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_pci.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_str.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_iommu.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl.o
+  CC [M]  /tmp/catalyst.6eR5HW/kcl_wait.o
+  LD [M]  /tmp/catalyst.6eR5HW/fglrx.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      /tmp/catalyst.6eR5HW/fglrx.mod.o
+  LD [M]  /tmp/catalyst.6eR5HW/fglrx.ko
+make: Leaving directory '/usr/lib/modules/3.15.3-1-MANJARO/build'
+ok.

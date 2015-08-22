@@ -1,0 +1,33 @@
+diff --git a/scripts/makepkg.sh.in b/scripts/makepkg.sh.in
+index 8a67d94..456a990 100644
+--- a/scripts/makepkg.sh.in
++++ b/scripts/makepkg.sh.in
+@@ -1030,6 +1065,20 @@ source_has_signatures() {
+ 	return 1
+ }
+ 
++ensure_no_sudo_timeout() {
++  # ask for sudo password before using it
++  # also makes sure it doesn't timeout and thus fail the script!
++	echo "will execute:"
++	echo "$@"
++	#will execute that, just not here and now!
++  while ! sudo -v ; do
++    echo "freaking timeout, amirite?! $(date)"
++    echo "waiting 3 sec... C-c if you really wanna"
++    sleep 3
++  done
++}
++
++
+ run_pacman() {
+ 	local cmd
+ 	if [[ $1 != -@(T|Qq) ]]; then
+@@ -1040,6 +1089,7 @@ run_pacman() {
+ 	if [[ $1 != -@(T|Qq) ]]; then
+ 		if type -p sudo >/dev/null; then
+ 			cmd=(sudo "${cmd[@]}")
++			ensure_no_sudo_timeout "${cmd[@]}"
+ 		else
+ 			cmd=(su root -c "$(printf '%q ' "${cmd[@]}")")
+ 		fi

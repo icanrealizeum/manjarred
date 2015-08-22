@@ -1,0 +1,18 @@
+#!/bin/bash
+
+fil="release_M-s.patch"
+cat >"$fil" <<EOF
+urxvt allow the release of M-s
+which is tapped by searchable-scrollbar perl extension
+Author: EmanueL Czirai
+EOF
+./godiff >>"$fil"
+
+sha512sum "$fil"
+
+# test.me.here
+#this isn't doing it (although tabstop is indeed set to 9) with or w/o modeline:
+#looks like i was using securemodelines https://github.com/ciaranm/securemodelines/blob/master/plugin/securemodelines.vim
+#and modeline was off (do ":set modeline?")
+#so to make that work, I'd have to add isk to a list in securemodelines g:secure_modelines_allowed_items (done, see ~/.vimrc)
+# vim: set isk-=. ts=9 sts=2 sw=2 et:

@@ -1,0 +1,13 @@
+Index: tox-9999/toxcore/network.h
+===================================================================
+--- tox-9999.orig/toxcore/network.h
++++ tox-9999/toxcore/network.h
+@@ -174,7 +174,7 @@ IP_Port;
+ #define SIZE_PORT 2
+ #define SIZE_IPPORT (SIZE_IP + SIZE_PORT)
+ 
+-#define TOX_ENABLE_IPV6_DEFAULT 1
++#define TOX_ENABLE_IPV6_DEFAULT 0
+ 
+ /* ip_ntoa
+  *   converts ip into a string

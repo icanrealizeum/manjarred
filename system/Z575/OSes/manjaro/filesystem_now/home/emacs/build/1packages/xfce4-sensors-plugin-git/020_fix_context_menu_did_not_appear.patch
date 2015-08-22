@@ -1,0 +1,13 @@
+diff --git a/panel-plugin/sensors-plugin.c b/panel-plugin/sensors-plugin.c
+index fd64c06..9659516 100644
+--- a/panel-plugin/sensors-plugin.c
++++ b/panel-plugin/sensors-plugin.c
+@@ -1029,7 +1029,7 @@ execute_command (GtkWidget *widget, GdkEventButton *event, gpointer data)
+     }
+     else {
+         TRACE ("leaves execute_command with FALSE");
+-        return TRUE;
++        return FALSE;
+     }
+ }
+ 

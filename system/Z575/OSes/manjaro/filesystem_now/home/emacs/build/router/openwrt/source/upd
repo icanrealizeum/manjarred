@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pushd .
+cd openwrt
+
+git pull && ./scripts/feeds update -a && ./scripts/feeds install -a
+ec=$?
+
+popd
+
+exit $ec

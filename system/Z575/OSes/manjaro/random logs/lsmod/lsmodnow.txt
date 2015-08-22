@@ -1,0 +1,95 @@
+Module                  Size  Used by
+nls_iso8859_1           4485  0 
+nls_cp437               6017  0 
+vfat                   10631  0 
+fat                    53688  1 vfat
+loop                   19986  0 
+cpufreq_conservative     7232  4 
+fuse                   84337  5 
+rts5139               313272  0 
+snd_hda_codec_realtek    54547  1 
+mousedev               10912  0 
+snd_hda_codec_generic    56366  1 snd_hda_codec_realtek
+snd_hda_codec_hdmi     40208  1 
+snd_hda_intel          22270  4 
+thinkpad_acpi          65930  0 
+nvram                   6034  1 thinkpad_acpi
+snd_hda_controller     22911  1 snd_hda_intel
+joydev                 10367  0 
+snd_hda_codec         104665  5 snd_hda_codec_realtek,snd_hda_codec_hdmi,snd_hda_codec_generic,snd_hda_intel,snd_hda_controller
+snd_hwdep               6652  1 snd_hda_codec
+snd_pcm                83207  4 snd_hda_codec_hdmi,snd_hda_codec,snd_hda_intel,snd_hda_controller
+snd_timer              19294  1 snd_pcm
+snd                    60780  17 snd_hda_codec_realtek,snd_hwdep,snd_timer,snd_hda_codec_hdmi,snd_pcm,snd_hda_codec_generic,snd_hda_codec,snd_hda_intel,thinkpad_acpi
+acer_wmi               24550  0 
+ideapad_laptop         10439  0 
+led_class               3611  2 acer_wmi,thinkpad_acpi
+soundcore               5551  2 snd,snd_hda_codec
+sparse_keymap           3242  2 acer_wmi,ideapad_laptop
+rfkill                 15971  3 acer_wmi,ideapad_laptop,thinkpad_acpi
+r8169                  59191  0 
+mii                     4251  1 r8169
+shpchp                 25706  0 
+psmouse                94790  0 
+kvm_amd                52987  0 
+evdev                  11784  9 
+mac_hid                 3273  0 
+serio_raw               5073  0 
+wmi                     8539  1 acer_wmi
+kvm                   408519  1 kvm_amd
+microcode              17157  0 
+pcspkr                  2059  0 
+k10temp                 3242  0 
+hwmon                   3346  2 k10temp,thinkpad_acpi
+thermal                 9103  0 
+ac                      3595  0 
+battery                 7885  0 
+i2c_piix4              10801  0 
+i2c_core               41648  1 i2c_piix4
+video                  12057  1 acer_wmi
+acpi_cpufreq           10170  0 
+processor              25153  5 acpi_cpufreq
+nfs                   199891  0 
+lockd                  78926  1 nfs
+sunrpc                241674  2 nfs,lockd
+fscache                48725  1 nfs
+fglrx                8673600  125 
+amd_iommu_v2            7302  1 fglrx
+button                  4765  1 fglrx
+pci_stub                1381  1 
+vboxpci                15123  0 
+vboxnetflt             17828  0 
+vboxnetadp             18547  0 
+vboxdrv               279406  3 vboxnetadp,vboxnetflt,vboxpci
+xts                     3231  1 
+gf128mul                6018  1 xts
+hid_generic             1217  0 
+usbhid                 41250  0 
+hid                    93052  2 hid_generic,usbhid
+sd_mod                 37426  5 
+crct10dif_generic       1533  1 
+crc_t10dif              1135  1 sd_mod
+crct10dif_common        1436  2 crct10dif_generic,crc_t10dif
+atkbd                  17006  0 
+libps2                  4571  2 atkbd,psmouse
+ahci                   24299  3 
+libahci                21772  1 ahci
+ohci_pci                4192  0 
+ohci_hcd               35780  1 ohci_pci
+ehci_pci                4152  0 
+ehci_hcd               64747  1 ehci_pci
+libata                174089  2 ahci,libahci
+usbcore               189640  6 rts5139,ohci_hcd,ohci_pci,ehci_hcd,ehci_pci,usbhid
+usb_common              1712  1 usbcore
+scsi_mod              138333  3 rts5139,libata,sd_mod
+i8042                  13666  3 acer_wmi,libps2,ideapad_laptop
+serio                  11018  6 serio_raw,atkbd,i8042,psmouse
+sha512_generic          5360  0 
+sha256_generic         10108  0 
+aes_x86_64              7463  2 
+ext4                  494228  3 
+crc16                   1359  1 ext4
+mbcache                 9155  1 ext4
+jbd2                   82948  1 ext4
+dm_crypt               17527  1 
+dm_mod                 85322  10 dm_crypt

@@ -1,0 +1,19 @@
+#example on how to use/see pr_debug
+#put one of the following lines in eg. drivers/acpi/Makefile
+
+#enable DEBUG only in ec.c file
+CFLAGS_ec.o := -DDEBUG
+#or to enable DEBUG for the entire folder/subfolders of drivers/acpi/
+KBUILD_CFLAGS += -DDEBUG
+
+#less info here: https://www.kernel.org/doc/local/pr_debug.txt
+#more info: Documentation/dynamic-debug-howto.txt
+#even if CONFIG_DYNAMIC_DEBUG  that doesn't mean DEBUG will be set, see ec.c file line 170, without DEBUG set  it will use "UNDEF" there for acpi_ec_cmd_string, even with CONFIG_DYNAMIC_DEBUG and pr_debug all set
+#more info on how to enable pr_debug dynamically https://bugzilla.kernel.org/show_bug.cgi?id=91191#c9  well I mean examples.
+# or remember this:
+# echo 'file drivers/acpi/* +pflmt' > /sys/kernel/debug/dynamic_debug/control
+# echo 'file drivers/video/* +pflmt' > /sys/kernel/debug/dynamic_debug/control
+
+#also set as kernel cmdline params, in /etc/default/grub :
+#GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug earlyprintk=vga dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/acpi/* +pflmt\""
+

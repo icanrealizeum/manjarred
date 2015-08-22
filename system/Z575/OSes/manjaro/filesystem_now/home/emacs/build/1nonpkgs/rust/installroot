@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#pkgdir="`pwd`/moo"
+
+#make DESTDIR="$pkgdir" install
+pkgdir=""
+
+#mkdir -p "$dir/usr/share/vim"
+sudo install --directory "$pkgdir/usr/share/vim/"
+sudo cp -r -T "src/etc/vim" "$pkgdir/usr/share/vim/vimfiles" 
+

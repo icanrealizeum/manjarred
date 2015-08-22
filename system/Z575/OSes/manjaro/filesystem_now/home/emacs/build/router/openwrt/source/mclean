@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo this takes 1m59s  or 27s  or 17s
+pushd .
+cd openwrt
+time make V=s -j4 clean
+popd
+

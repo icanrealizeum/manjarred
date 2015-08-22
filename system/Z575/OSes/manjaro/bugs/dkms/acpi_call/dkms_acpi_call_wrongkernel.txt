@@ -1,0 +1,49 @@
+see why dkms(or acpi_call?) tries to build for the wrong kernel?
+ie. running this:
+sudo dkms install -m acpi_call -v 1.1.0 -k 3.17.0-rc2-g81bbadc
+OR this:
+sudo dkms autoinstall -k 3.17.0-rc2-g81bbadc
+
+gives something like this:
+Kernel preparation unnecessary for this kernel.  Skipping...
+
+Building module:
+make clean
+make clean
+make -C /lib/modules/3.17.0-rc2-gfd5984d/build M=/var/lib/dkms/acpi_call/1.1.0/build clean
+make[1]: *** /lib/modules/3.17.0-rc2-gfd5984d/build: No such file or directory.  Stop.
+Makefile:11: recipe for target 'clean' failed
+make: *** [clean] Error 2
+(bad exit status: 2)
+{ make KERNELRELEASE=3.17.0-rc2-g81bbadc KVER=3.17.0-rc2-g81bbadc; } >> /var/lib/dkms/acpi_call/1.1.0/build/make.log 2>&1
+(bad exit status: 2)
+Error! Bad return status for module build on kernel: 3.17.0-rc2-g81bbadc (x86_64)
+Consult /var/lib/dkms/acpi_call/1.1.0/build/make.log for more information.
+
+
+-------
+ok it's clearly acpi_call
+because it's using uname -r of current kernel to get the kernel folder:
+its Makefile
+
+obj-m := acpi_call.o                                                            
+
+KVERSION := $(shell uname -r)
+KDIR := /lib/modules/$(KVERSION)/build
+PWD := $(shell pwd)
+
+default:
+  $(MAKE) -C $(KDIR) M=$(PWD) modules
+
+clean:
+  $(MAKE) -C $(KDIR) M=$(PWD) clean
+
+install:
+  $(MAKE) -C $(KDIR) M=$(PWD) modules_install
+
+load:
+  -/sbin/rmmod acpi_call
+  /sbin/insmod acpi_call.ko
+
+
+

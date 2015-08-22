@@ -1,0 +1,5 @@
+
+
+sed -re 's/\[( |.|[0-9])+\] //g' <Xorg.0.log >Xorg.0.log.nots
+sed -re 's/\[( |.|[0-9])+\] //g' <Xorg.0.log.old >Xorg.0.log.old.nots
+

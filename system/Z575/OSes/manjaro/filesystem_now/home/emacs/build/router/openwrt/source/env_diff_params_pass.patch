@@ -1,0 +1,17 @@
+allow env diff to pass params to git
+ie.
+./scripts/env diff --no-color | grep -ve "^[+-]#"|grep -ve "^ "|grep -ve "^@@"|grep -ve "^+$"
+
+diff --git a/scripts/env b/scripts/env
+index 5542b20..7a5bef2 100755
+--- a/scripts/env
++++ b/scripts/env
+@@ -103,7 +103,7 @@ env_list() {
+ env_diff() {
+ 	env_init
+ 	env_sync_data
+-	git diff --cached --color
++	git diff --cached --color "$@"
+ 	env_link_config
+ }
+ 

@@ -1,0 +1,30 @@
+automatically exits when starting up terminal or sourcing .bashrc
+and it's only a matter of one space
+
+command substitution issue, in .bashrc :
+works:
+PS1='`date`\
+'                                                                               
+doesn't work:
+PS1='$( date )\
+'
+
+the error is:
+bash: command substitution: line 1: syntax error near `~)'
+bash: command substitution: line 1: `ps_lepath ~)'
+exit
+
+GNU bash, version 4.3.18(1)-release (x86_64-unknown-linux-gnu)
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+This is free software; you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+sent email report using bashbug template
+UPDATE: "Thanks for the report.  This will be fixed in the next release of bash.
+Chet"
+greatness!
+the git source is apparently here: http://git.savannah.gnu.org/cgit/bash.git
+

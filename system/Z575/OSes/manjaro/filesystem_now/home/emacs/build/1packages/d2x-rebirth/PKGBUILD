@@ -1,0 +1,57 @@
+# Contributor : zico <zico@dxx-rebirth.com>
+
+pkgname=d2x-rebirth
+pkgver=0.58.1
+pkgrel=1
+pkgdesc="An enhanced engine to play with Descent2 datas"
+arch=('i686' 'x86_64')
+url="http://www.dxx-rebirth.com/"
+license=('custom:D1x' 'LGPL' 'custom:as-is')
+depends=('sdl' 'sdl_mixer' 'mesa' 'physfs')
+makedepends=('scons' 'unzip')
+install=$pkgname.install
+patch1='nolimits.patch'
+source=(
+"http://www.dxx-rebirth.com/download/dxx/${pkgname}_v${pkgver}-src.tar.gz"
+"$pkgname.desktop" 
+"$pkgname.install"
+"http://www.dxx-rebirth.com/download/dxx/res/d2xr-sc55-music.dxa"
+"$patch1"
+)
+noextract=("d2xr-sc55-music.dxa")
+sha512sums=('19281c8dc554d595f6c40cbef2f4921c6325cd736ec648cb1abf60ad6a339e59b882b8a1426987f7bcfb8413c78bbda9b6f7fa86a6ff8927550a37d0290873fd'
+            'a229cd6159036d6cd4278aec1134fd11a131af8837e67f044fe56542973231a79ea064c425c06aa3cb07c88c1f7eafa3c5c3e186cd6d13aec135371d87258385'
+            '26e9e0583cc6c557caeca52d05b65c06f1522624629c4b3204de3df1d57333793231ce78185986cdd21f6fc3cafef5fd9f70aaf465151f33fc444cdd60680a6c'
+            '290713b05627bf65bdc55fc6631a0c86e50f484a167f3fd20b3fe2bc5b772437939b5bf32eea852874dd983fbd47f160cae2412a2d6c5319f0d1583a33d28da6'
+            'a605a3acd9abbc234c73f9edf7ed875bc53a085cc4468518fa8fd4c6bc0ca3173a97460dc4fa233a30c63310e8af7d12c21e06ccdec3f7479a90bdeeecb91ba8')
+
+prepare() {
+  cd "$srcdir/${pkgname}_v${pkgver}-src"
+  sed -ie "/^PREFIX =/s|/usr/local/|/usr/|" SConstruct
+
+  patch -Np1 -i "../$patch1"
+}
+
+build() {
+  cd "$srcdir/${pkgname}_v${pkgver}-src"
+  scons sharepath="/usr/share/$pkgname" || return 1
+}
+
+package() {
+  cd "$srcdir/${pkgname}_v${pkgver}-src"
+  
+  mkdir -p "$pkgdir/usr/bin/"
+  mkdir -p "$pkgdir/usr/share/$pkgname/"
+  mkdir -p "$pkgdir/usr/share/pixmaps/"
+  mkdir -p "$pkgdir/usr/share/applications/"
+  mkdir -p "$pkgdir/usr/share/licenses/$pkgname/"
+
+  install -m755 "${pkgname}" "${pkgdir}/usr/bin/"
+  cd "${srcdir}/"
+  install -m644 "$srcdir/${pkgname}_v${pkgver}-src/${pkgname}.xpm" "${pkgdir}/usr/share/pixmaps/"
+  install -m644 "$srcdir/${pkgname}.desktop" "${pkgdir}/usr/share/applications/"
+  install -m644 "$srcdir/${pkgname}_v${pkgver}-src/COPYING.txt" "${pkgdir}/usr/share/licenses/${pkgname}/"
+  #due to pacman commit 2f7e92ad045fb276c8fe88d4793c8edc383d147c
+  install -m644 "${SRCDEST}/d2xr-sc55-music.dxa" "${pkgdir}/usr/share/${pkgname}/"
+}
+

@@ -1,0 +1,40 @@
+right, so the fix is:
+
+put \a within \[  and \]
+"Using \[ \] says don't count the characters that appear within."
+
+PS1='\[\033[1;34m\]\d \t\[\033[0m\] \u@\H \s\V term:\l jobs:\j \n\w\n[\! \[\033[0;36m\]\#\[\033[0m\] $?]\$ \[\a\]'
+
+
+realized when reading this: https://stackoverflow.com/questions/3567743/dynamic-elements-in-bash-ps1/3567939#3567939
+
+--------old:
+PS1 multilines fail when typing/editing commands with this PS1 set:
+
+#doc prompt escape sequences: http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/bash-prompt-escape-sequences.html
+PS1='\[\033[1;34m\]\d \t\[\033[0m\] \u@\H \s\V term:\l jobs:\j \n\w\n[\! \[\033[0;36m\]\#\[\033[0m\] $?]\$ \a'
+#doc color codes: http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html
+
+what fails is:
+1. entering a command that's about to go to the second line:
+how it should look like:
+Sat Aug 02 05:53:03 emacs@manji bash4.3.18 term:6 jobs:0 
+~/bin
+[20456 3 0]$ hdsjl adjasl dsjad laskjd laskjd asldjs aldjas dklaj sdlkas jdlas jdlas jdla sdljas dlasj dlas
+
+how it looks like:
+
+Sat Aug 02 05:44:09 emacs@manji bash4.3.18 term:5 jobs:0 
+~
+d laskj dkjdlas kl jdsal djsla djsal dajsd lsakjd laskj daslkdj sakl dslak dasj 
+
+yep it overwrites the same line instead of going to the next
+
+2. when going up then down in commands with up arrow or ctrl+P then down arrow, the first character from a previous command remains and the commands are now showing one character to the right
+Ctrl+L is needed to clear/refresh screen to see correctly
+
+workaround, move \a to front of first line:
+PS1='\a\[\033[1;34m\]\d \t\[\033[0m\] \u@\H \s\V term:\l jobs:\j \n\w\n[\! \[\033[0;36m\]\#\[\033[0m\] $?]\$ '
+
+works in both cases!
+

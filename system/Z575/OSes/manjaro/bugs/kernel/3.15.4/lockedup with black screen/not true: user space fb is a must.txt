@@ -1,0 +1,38 @@
+updates are in reverse order ie. read file from bottom to top, if you want to get it in updates-order
+
+---
+so, compiling 3.12.24 kernel
+to get to see why it works with it
+it's actually kernel 3.12.23 'cause i didn't update my git repo with the PKGBUILD
+
+----
+so I don't get it :) why does it happen?
+then I guess: `user space fb is a must` is not true!
+----------
+wait a second! just as I suspected, I changed something else in kernel and rebooted and it blankscreen-locked again, then turned off power booted again and it worked this time-- 
+soooo, it may be something that happens only on reboot, or only on reboot after kernel got updated?
+hmm odd
+hmm just plain rebooting after being in X doesn't seem to crash it
+let's try parole play a video a bit then rebooting, which is what I did before
+yep that is the one, if I ran parole, then closed it then rebooted, it blank-froze when switching to fb (from text console!)
+
+now let's see if that happens if I don't change to next video in playlist (which when done causes some kind of fullscreen or fullsourcevideo resolution then minimize to normal window size before playing it)
+wtf that worked this time, hmm
+
+let's retry with switching to next video but without seeking into it
+that also worked
+let's try resizing also now: worked again!
+ok last thing was also seeking into the video!
+also worked.
+
+so I don't get it:) why did it blank ? hmmm
+
+spend more time before restart?
+
+------------
+when using framebuffer
+and
+CONFIG_FB_RADEON is Y (not M)
+then CONFIG_FB_UVESA  must also be Y (probably not M, not tested tho)
+or else black blank screen and system locks up when switching from textmode console to framebuffer, before root fs gets mounted, because it's in kernel(that Y)
+======== totally removed CONFIG_FB_UVESA and it works without it btw! just sometimes it crashes with blank screen and it seems to be after dkms compiles vboxdrv and related, on the next reboot!

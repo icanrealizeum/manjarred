@@ -1,0 +1,18 @@
+solved: it wasn't urxvt's fault
+(gist doesn't exist online anymore due to deleted github account)
+something else was applying some other options seemingly after ~/.Xresources was loaded, because otherwise my xresources would've overriden the Xft.hintstyle for example
+it's not the /root/.Xresources since it's similar and looks like it didn't go into effect anyway
+
+so I'm guessing some program does this, after X is run and after my ~/.Xresources is loaded, but before I manage to run an urxvt instace
+and after I manage to xrdb reload it, then whatever that program set is gone, thus urxvt font looking differently bigger
+
+a or asorted  is after X started
+b or bsorted is after xrdb reloaded the config
+======
+
+reload with: xrdb ~/.Xresources && urxvt
+screenshots: https://imgur.com/a/6Ij5b
+
+confirmed: relogging (restarts X) selects the old window font, but after reloading config with xrdb the new windows are wider (same height though, just wider)
+
+

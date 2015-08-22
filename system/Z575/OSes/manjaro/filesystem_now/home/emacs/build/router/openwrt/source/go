@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# http://wiki.openwrt.org/doc/faq/development#how.can.i.speed.up.build.process
+#this must be in .config
+### CONFIG_LOCALMIRROR="file:///home/emacs/build/router/openwrt/mirror"
+
+#will interfere with openwrt build if set
+#see http://wiki.openwrt.org/doc/howto/buildroot.exigence
+#they weren't set now, but just making sure                                     
+unset GREP_OPTIONS
+unset SED
+
+if pwd|grep " "; then
+  echo "`pwd` must not contain any spaces"
+  exit 1
+fi
+
+pushd .
+cd openwrt
+mkdir -p /tmp/logs >/dev/null 2>&1
+if [[ "$#" -le 0 ]]; then
+  echo "debug on and -j1; pass any params to -j4 and no debug(but bewarned it will fail at least once with more than -j1)"
+  extra="V=s -j1"
+  #-j1
+else
+  echo "debug off"
+  extra="-j4"
+fi
+time make $extra
+#-j1 V=s
+ec="$?"
+if test "$ec" -ne 0; then
+  echo "!! failed!"
+  exit $ec
+fi
+mkdir -p "/home/emacs/build/router/openwrt/source/tftproot"
+fname="`ls -1 -- ./bin/ramips/openwrt*-ramips-rt305x-f5d8235v2-initramfs-uImage.bin`"
+dname="../tftproot/test.bin"
+rm "$dname"
+#echo "$fname"
+if echo "$fname"|grep -- "\n"; then
+  echo "more than 1 images found! copying latest(sorted)"
+  tmpfname="`( for i in $fname ; do
+    echo "$i"
+  done ) | sort -k1 --unique --reverse | head -n 1`"
+  fname="$tmpfname"
+  if test -z "$fname"; then
+    echo "epic error of emptiness!"
+    exit 1
+  fi
+else
+  echo "copying the only image found..."
+fi
+cp -v -f -- "$fname" "$dname"
+popd
+

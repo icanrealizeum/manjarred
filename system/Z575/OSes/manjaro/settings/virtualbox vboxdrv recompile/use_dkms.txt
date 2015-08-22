@@ -1,0 +1,33 @@
+first make sure vboxdrv for current version of kernel is gone: (else modprobe will load the wrong one and thus fail)
+
+sudo pacman -Rs linux315-virtualbox-host-modules
+so now this one is gone from here:
+/usr/lib/modules/extramodules-3.15-MANJARO/vboxdrv.ko.gz
+but this one can still remain:
+/usr/lib/modules/extramodules-3.12-MANJARO/vboxdrv.ko.gz
+since I'm using stock 3.12 kernel
+
+then now:
+install this:
+sudo pacman -S virtualbox-host-dkms
+to be able to compile vboxdrv.
+
+run this as instructed:
+sudo dkms install vboxhost/4.3.12
+to compile vboxdrv and related ones.
+
+though they(in the virtualbox UI) say I should do this:
+sudo dkms autoinstall
+maybe do that also! when I tried it, seemed to have done nothing, maybe all checks passed:)
+
+
+enable this to rebuild it whenever needed(I think! i think it's like for the fglrx driver):
+sudo systemctl enable dkms.service
+
+the module is build and put in:
+/var/lib/dkms/vboxhost/4.3.12/3.15.3-1-MANJARO/x86_64/module/vboxdrv.ko
+/usr/lib/modules/extramodules-3.15-MANJARO/vboxdrv.ko.gz
+
+load it before starting up a virtualbox machine:
+sudo modprobe -v vboxdrv
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sudo -v
+
+one="/tmp/one1"
+two="/tmp/two2"
+sudo nft -a list ruleset > "$one"
+#links google.com
+firefox
+#ping -i 0.2 -c 10 127.0.0.1
+#links 192.168.1.1
+#ping -c 2 google.com #which is hostBlocked aka resolves to 127.0.0.3
+
+sudo nft -a list ruleset > "$two"
+
+colordiff -up "$one" "$two" | less
+

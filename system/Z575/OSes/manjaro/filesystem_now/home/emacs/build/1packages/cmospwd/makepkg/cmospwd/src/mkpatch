@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#pushd .
+basedir="cmospwd-5.0"
+lefil="award6.patch.remake"
+cat >"$lefil" <<EOF
+Patch for getting the right user/supervisor passwords for BIOS:
+Award Modular BIOS v6.00PG
+bios version: F8n
+found on motherboard GIGABYTE GA-MA790FXT-UD5P
+01/07/2011-RD790-SB750-....
+
+trivially found(thanks to the existing code) a while ago by EmanueL Czirai when I forgot my passwords
+
+the code in this patch was originally made for DOS with bcc.exe compiler, I think. Those definitions may be useless for Linux.
+
+EOF
+
+diff -urpN -X "./dontdiff" -- "${basedir}.orig" "${basedir}" >>"$lefil"
+#popd
+

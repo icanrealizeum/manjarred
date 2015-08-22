@@ -1,0 +1,62 @@
+#!/bin/bash
+
+#suppose you want to know which certs to add to your (initially empty) firefox CA database in order for a website to work
+#use this site to get the serial(s): https://www.sslshopper.com/ssl-checker.html
+#then find the filename of the CA which you then import in firefox
+
+#more info: https://wiki.mozilla.org/CA:UserCertDB
+
+
+certsdir="./the_certs/"
+found=0
+if test "$#" -le 0; then
+  echo "usage $0 string"
+  echo "will find the cert that has that string"
+  echo "usually string is the serial"
+  echo "serial can be incomplete"
+  echo "examples:"
+  echo "these 2 will find the same thing:"
+  echo "$0 44:BE:0C:8B:50:00:24:B4:11:D3:36:2A:FE:65:0A:FD"
+  echo "$0 2Afe650AFd"
+  echo "but this will find more than one cert:"
+  echo "$0 50"
+  echo "others examples:"
+  echo "$0 7278eed"
+  echo "$0 2b2e6eead975366c148a6edba37c8c07"
+  echo "this will find the exact serial 7 which is Go Daddy Secure Certificate Authority - G2:"
+  echo "$0 'serial=07$'"
+  exit 64
+fi
+serialtofind="`sed -e 's/://g' <<< "$@"`"
+echo "searching for string (eg. serial?): $serialtofind"
+
+self="`realpath "$0"`"
+
+pushd "${certsdir}" >/dev/null
+time for f in ./*; do #FIXME: will fail for filenames with spaces, use find with -noleaf and -print0 and some other way to iterate through them
+  if test "`realpath "$f"`" = "$self"; then
+    #skip myself
+    continue
+  fi
+  openssl x509 -serial -in "$f" | grep -i "$serialtofind"
+  pipeecs=("${PIPESTATUS[@]}")
+  if test "${pipeecs[1]}" -eq 0; then
+    echo "Found filename: '$f'"
+    let 'found++'
+  fi
+  if test "${pipeecs[0]}" -ne 0; then
+    echo "Errors in this cert: '$f'"
+  fi
+done
+popd
+
+if test "$found" -gt 0; then
+  if test "$found" -gt 1; then
+    echo "WARNING: more than 1 cert found: $found"
+  fi
+  echo "Done! found: $found certs."
+  exit 0
+else
+  echo "Nothing found!"
+  exit 1
+fi

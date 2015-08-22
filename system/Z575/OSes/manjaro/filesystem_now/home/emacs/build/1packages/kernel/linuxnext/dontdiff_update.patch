@@ -1,0 +1,29 @@
+diff-ing dirs that supposedly reside in two different kernel tree sources
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc6/Documentation/dontdiff linux-3.16-rc6.orig/Documentation/dontdiff linux-3.16-rc6/Documentation/dontdiff
+--- linux-3.16-rc6.orig/Documentation/dontdiff  2014-06-08 20:19:54.000000000 +0200
++++ linux-3.16-rc6/Documentation/dontdiff 2014-07-28 12:01:19.433189711 +0200
+@@ -258,3 +258,24 @@ wakeup.lds
+ zImage*
+ zconf.hash.c
+ zoffset.h
++vdso-image-32-int80.c
++vdso-image-32-syscall.c
++vdso-image-32-sysenter.c
++vdso-image-64.c
++devicetable-offsets.h
++asn1_compiler
++sortextable
++pasyms.h
++realmode.lds
++x509-asn1.c
++x509-asn1.h
++x509_rsakey-asn1.c
++x509_rsakey-asn1.h
++oid_registry_data.c
++cayman_reg_safe.h
++mkpiggy
++realmode.relocs
++vdso2c
++
++
++

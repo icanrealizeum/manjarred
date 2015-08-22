@@ -1,0 +1,149 @@
+attempted this: https://github.com/notsecure/uTox/issues/965
+but failed, gave up for now.
+
+
+diff --git a/list.c b/list.c
+index ee19099..7823c54 100644
+--- a/list.c
++++ b/list.c
+@@ -144,6 +144,7 @@ static ITEM* item_hit(int mx, int my, int UNUSED(height))
+ 
+ static void selectitem(ITEM *i)
+ {
++  fprintf(stderr,"!!!!! selecting %d\n",i->item-1);
+     panel_item[sitem->item - 1].disabled = 1;
+     panel_item[i->item - 1].disabled = 0;
+ 
+@@ -153,6 +154,7 @@ static void selectitem(ITEM *i)
+ 
+     if(sitem->item == ITEM_FRIEND) {
+         FRIEND *f = sitem->data;
++        fprintf(stderr,"!!!! selected friend1\n");
+ 
+         free(f->typed);
+         f->typed_length = edit_msg.length;
+@@ -197,6 +199,9 @@ static void selectitem(ITEM *i)
+ 
+     if(i->item == ITEM_FRIEND) {
+         FRIEND *f = i->data;
++        fprintf(stderr,"!!!! selected friend2 %p %p\n",f, i);
++//        sitem->data = f;
++//        abort();
+ 
+         #ifdef UNITY
+         if(unity_running) {
+@@ -267,6 +272,7 @@ static void selectitem(ITEM *i)
+ 
+ void list_start(void)
+ {
++fprintf(stderr,"!!!!! list_start\n");
+     ITEM *i = item;
+ 
+     item_add.item = ITEM_ADD;
+@@ -490,6 +496,17 @@ void list_selectswap(void)
+     selectitem(&item_transfer);
+ }
+ 
++void list_selectfirstfriend(void)
++{
++  ITEM ff;
++  ff.item = ITEM_FRIEND;
++  ff.data = &friend[0];
++fprintf(stderr, "%p\n", &(&friend[0])->avatar);
++//sitem->item = ITEM_FRIEND;
++//sitem->data = ff.data;
++  selectitem(&ff);       
++}
++
+ 
+ _Bool list_mmove(void *UNUSED(n), int UNUSED(x), int UNUSED(y), int UNUSED(width), int height, int mx, int my, int UNUSED(dx), int dy)
+ {
+diff --git a/list.h b/list.h
+index 00e6092..b31f3aa 100644
+--- a/list.h
++++ b/list.h
+@@ -33,6 +33,7 @@ void list_deleteritem(void);
+ void list_selectaddfriend(void);
+ void list_selectsettings(void);
+ void list_selectswap(void);
++void list_selectfirstfriend(void);
+ 
+ void list_scale(void);
+ 
+diff --git a/tox.c b/tox.c
+index 59e02ee..83f0556 100644
+--- a/tox.c
++++ b/tox.c
+@@ -375,6 +375,7 @@ static void tox_after_load(Tox *tox)
+         tox_friend_get_name(tox, i, name, 0);
+ 
+         friend_setname(f, name, size);
++        fprintf(stderr, "!!!! Friend '%s' %p\n", name, f);
+ 
+         size = tox_friend_get_status_message_size(tox, i, 0);
+         f->status_message = malloc(size);
+diff --git a/ui.c b/ui.c
+index 2ceeb54..ccb12c6 100644
+--- a/ui.c
++++ b/ui.c
+@@ -87,6 +87,8 @@ static void drawfriend(int UNUSED(x), int UNUSED(y), int UNUSED(w), int UNUSED(h
+ {
+     FRIEND *f = sitem->data;
+ 
++    fprintf(stderr,"!!!! null? '%p'\n", f);
++//    abort();
+     // draw avatar or default image
+     if (friend_has_avatar(f)) {
+         draw_avatar_image(f->avatar.image, LIST_RIGHT + SCALE * 5, SCALE * 5, f->avatar.width, f->avatar.height, BM_CONTACT_WIDTH, BM_CONTACT_WIDTH);
+diff --git a/xlib/main.c b/xlib/main.c
+index f0cfe44..4877f8e 100644
+--- a/xlib/main.c
++++ b/xlib/main.c
+@@ -50,6 +50,7 @@
+ #include "mmenu.c"
+ #endif
+ 
++
+ Display *display;
+ int screen;
+ Window window;
+@@ -1121,7 +1122,7 @@ int main(int argc, char *argv[])
+ 
+     /* wait for the tox thread to finish initializing */
+     while(!tox_thread_init) {
+-        yieldcpu(1);
++        yieldcpu(100);
+     }
+ 
+     /* Registers the app in the Unity MM */
+@@ -1137,9 +1138,21 @@ int main(int argc, char *argv[])
+ 
+     /* draw */
+     panel_draw(&panel_main, 0, 0, utox_window_width, utox_window_height);
++    fprintf(stderr,"!!!! before my select\n");
++//    list_selectsettings();
++//    list_selectfirstfriend();
++    fprintf(stderr,"!!!! sitem->data == '%p'\n", sitem->data);
+ 
++    static time_t beg=0,now=0;
++    time(&beg);
+     /* event loop */
+     while(1) {
++        if (now - beg >= 1) {
++          beg += 10000;
++          list_selectfirstfriend();
++        }else{
++          time(&now);
++        }
+         /* block on the first event, then process all events */
+         XEvent event;
+ 
+@@ -1213,7 +1226,7 @@ int main(int argc, char *argv[])
+ 
+     /* wait for threads to exit */
+     while(tox_thread_init) {
+-        yieldcpu(1);
++        yieldcpu(100);
+     }
+ 
+     debug("clean exit\n");

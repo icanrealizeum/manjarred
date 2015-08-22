@@ -1,0 +1,20 @@
+diff --git a/configure b/configure
+index b2f8c33..368782f 100755
+--- a/configure
++++ b/configure
+@@ -640,6 +640,15 @@ probe CFG_CCACHE           ccache
+ probe CFG_GCC              gcc
+ probe CFG_LD               ld
+ probe CFG_VALGRIND         valgrind
++if [ -z "$CFG_VALGRIND" ]
++then
++#  echo "~$CFG_ENABLE_VALGRIND~$CFG_ENABLE_VALGRIND_RPASS~$CFG_DISABLE_VALGRIND_RPASS~$CFG_DISABLE_VALGRIND"
++    if [ ! -z "$CFG_ENABLE_VALGRIND" ] || [ -z "$CFG_DISABLE_VALGRIND_RPASS" ]
++    then
++      err "Valgrind not found, but wanted. You may want to add --disable-valgrind-rpass"
++    fi
++fi
++
+ probe CFG_PERF             perf
+ probe CFG_ISCC             iscc
+ probe CFG_JAVAC            javac

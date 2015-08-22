@@ -1,0 +1,874 @@
+make linking succeed with the following side effects:
+- removing hotword
+
+diff --git a/chrome/app/theme/theme_resources.grd b/chrome/app/theme/theme_resources.grd
+index 7047b0c..2976514 100644
+--- a/chrome/app/theme/theme_resources.grd
++++ b/chrome/app/theme/theme_resources.grd
+@@ -52,6 +52,6 @@
+       <if expr="enable_app_list">
+         <structure type="chrome_scaled_image" name="IDR_APP_LIST_TAB_OVERLAY" file="common/app_list_v1_overlay.png" />
+-        <structure type="chrome_scaled_image" name="IDR_APP_LIST_MIC_HOTWORD_OFF" file="common/app_list_mic_hotword_off.png" />
+-        <structure type="chrome_scaled_image" name="IDR_APP_LIST_MIC_HOTWORD_ON" file="common/app_list_mic_hotword_on.png" />
++                <structure type="chrome_scaled_image" name="IDR_APP_LIST_MIC_HOTWORD_OFF" file="common/app_list_mic_hotword_off.png" />
++        <structure type="chrome_scaled_image" name="IDR_APP_LIST_MIC_HOTWORD_ON" file="common/app_list_mic_hotword_on.png" /> 
+       </if>
+       <if expr="toolkit_views and not is_macosx">
+@@ -330,5 +330,5 @@
+         <structure type="chrome_scaled_image" name="IDR_HOME_P" file="common/browser_home_pressed.png" />
+       </if>
+-      <structure type="chrome_scaled_image" name="IDR_HOTWORD_NOTIFICATION_ICON" file="common/notification_hotword_icon.png" />
++      <!--      <structure type="chrome_scaled_image" name="IDR_HOTWORD_NOTIFICATION_ICON" file="common/notification_hotword_icon.png" /> -->
+       <if expr="not is_android and not is_ios">
+         <structure type="chrome_scaled_image" name="IDR_ICON_PROFILES_ACCOUNT_BUTTON_ERROR" file="common/avatar_menu_auth_error.png" />
+diff --git a/chrome/browser/browser_resources.grd b/chrome/browser/browser_resources.grd
+index 5874f4a..400837b 100644
+--- a/chrome/browser/browser_resources.grd
++++ b/chrome/browser/browser_resources.grd
+@@ -24,5 +24,5 @@
+         <structure name="IDR_APP_LIST_START_PAGE_HTML" file="resources\app_list\start_page.html" flattenhtml="true" type="chrome_html" />
+         <structure name="IDR_APP_LIST_START_PAGE_JS" file="resources\app_list\start_page.js" flattenhtml="true" type="chrome_html" />
+-        <structure name="IDR_APP_LIST_HOTWORD_NACL_NMF" file="resources\app_list\hotword_nacl.nmf" flattenhtml="true" type="chrome_html" />
++<!--        <structure name="IDR_APP_LIST_HOTWORD_NACL_NMF" file="resources\app_list\hotword_nacl.nmf" flattenhtml="true" type="chrome_html" /> -->
+       </if>
+       <if expr="is_android">
+@@ -150,7 +150,7 @@
+         <include name="IDR_HANGOUT_SERVICES_MANIFEST" file="resources\hangout_services\manifest.json" type="BINDATA" />
+       </if>
+-      <include name="IDR_HOTWORD_HELPER_MANIFEST" file="resources\hotword_helper\manifest.json" type="BINDATA" />
++      <!--      <include name="IDR_HOTWORD_HELPER_MANIFEST" file="resources\hotword_helper\manifest.json" type="BINDATA" />
+       <include name="IDR_HOTWORD_MANIFEST" file="resources\hotword\manifest.json" type="BINDATA" />
+-      <include name="IDR_HOTWORD_AUDIO_VERIFICATION_MANIFEST" file="resources\hotword_audio_verification\manifest.json" type="BINDATA" />
++      <include name="IDR_HOTWORD_AUDIO_VERIFICATION_MANIFEST" file="resources\hotword_audio_verification\manifest.json" type="BINDATA" /> -->
+       <if expr="not is_android">
+         <include name="IDR_HELP_JS" file="resources\help\help.js" flattenhtml="true" type="BINDATA" />
+diff --git a/chrome/browser/extensions/browser_context_keyed_service_factories.cc b/chrome/browser/extensions/browser_context_keyed_service_factories.cc
+index 5830c48..9238439 100644
+--- a/chrome/browser/extensions/browser_context_keyed_service_factories.cc
++++ b/chrome/browser/extensions/browser_context_keyed_service_factories.cc
+@@ -20,5 +20,5 @@
+ #include "chrome/browser/extensions/api/gcd_private/gcd_private_api.h"
+ #include "chrome/browser/extensions/api/history/history_api.h"
+-#include "chrome/browser/extensions/api/hotword_private/hotword_private_api.h"
++//#include "chrome/browser/extensions/api/hotword_private/hotword_private_api.h"
+ #include "chrome/browser/extensions/api/identity/identity_api.h"
+ #include "chrome/browser/extensions/api/location/location_manager.h"
+@@ -102,5 +102,5 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
+   extensions::GcdPrivateAPI::GetFactoryInstance();
+   extensions::HistoryAPI::GetFactoryInstance();
+-  extensions::HotwordPrivateEventService::GetFactoryInstance();
++//  extensions::HotwordPrivateEventService::GetFactoryInstance();
+   extensions::IdentityAPI::GetFactoryInstance();
+   extensions::InstallTrackerFactory::GetInstance();
+diff --git a/chrome/browser/extensions/component_loader.cc b/chrome/browser/extensions/component_loader.cc
+index 9c60dd7..6ac33e4 100644
+--- a/chrome/browser/extensions/component_loader.cc
++++ b/chrome/browser/extensions/component_loader.cc
+@@ -17,6 +17,6 @@
+ #include "chrome/browser/extensions/extension_service.h"
+ #include "chrome/browser/pdf/pdf_extension_util.h"
+-#include "chrome/browser/search/hotword_service.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++//#include "chrome/browser/search/hotword_service.h"
++//#include "chrome/browser/search/hotword_service_factory.h"
+ #include "chrome/common/chrome_paths.h"
+ #include "chrome/common/chrome_switches.h"
+@@ -334,4 +334,5 @@ void ComponentLoader::AddHangoutServicesExtension() {
+ }
+ 
++/*
+ void ComponentLoader::AddHotwordAudioVerificationApp() {
+   if (HotwordService::IsExperimentalHotwordingEnabled() &&
+@@ -353,5 +354,5 @@ void ComponentLoader::AddHotwordHelperExtension() {
+   }
+ }
+-
++*/
+ void ComponentLoader::AddImageLoaderExtension() {
+ #if defined(IMAGE_LOADER_EXTENSION)
+@@ -548,6 +549,6 @@ void ComponentLoader::AddDefaultComponentExtensionsWithBackgroundPages(
+ 
+     AddHangoutServicesExtension();
+-    AddHotwordAudioVerificationApp();
+-    AddHotwordHelperExtension();
++//    AddHotwordAudioVerificationApp();
++//    AddHotwordHelperExtension();
+     AddImageLoaderExtension();
+ 
+diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
+index 8666c79..28e339e 100644
+--- a/chrome/browser/extensions/component_loader.h
++++ b/chrome/browser/extensions/component_loader.h
+@@ -136,5 +136,5 @@ class ComponentLoader {
+   void AddGalleryExtension();
+   void AddHangoutServicesExtension();
+-  void AddHotwordHelperExtension();
++//  void AddHotwordHelperExtension();
+   void AddImageLoaderExtension();
+   void AddNetworkSpeechSynthesisExtension();
+@@ -145,5 +145,5 @@ class ComponentLoader {
+                                  int description_string_id);
+   void AddChromeApp();
+-  void AddHotwordAudioVerificationApp();
++//  void AddHotwordAudioVerificationApp();
+   void AddKeyboardApp();
+   void AddWebStoreApp();
+diff --git a/chrome/browser/extensions/external_component_loader.cc b/chrome/browser/extensions/external_component_loader.cc
+index 3a0eacf..bb720e7 100644
+--- a/chrome/browser/extensions/external_component_loader.cc
++++ b/chrome/browser/extensions/external_component_loader.cc
+@@ -8,6 +8,6 @@
+ #include "chrome/browser/bookmarks/enhanced_bookmarks_features.h"
+ #include "chrome/browser/browser_process.h"
+-#include "chrome/browser/search/hotword_service.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++/*#include "chrome/browser/search/hotword_service.h"
++#include "chrome/browser/search/hotword_service_factory.h"*/
+ #include "chrome/browser/signin/signin_manager_factory.h"
+ #include "chrome/common/extensions/extension_constants.h"
+@@ -57,5 +57,5 @@ void ExternalComponentLoader::StartLoading() {
+                     extension_urls::GetWebstoreUpdateUrl().spec());
+ 
+-  if (HotwordServiceFactory::IsHotwordAllowed(profile_)) {
++/*  if (HotwordServiceFactory::IsHotwordAllowed(profile_)) {
+     std::string hotword_id = extension_misc::kHotwordExtensionId;
+     if (HotwordService::IsExperimentalHotwordingEnabled()) {
+@@ -64,5 +64,5 @@ void ExternalComponentLoader::StartLoading() {
+     prefs_->SetString(hotword_id + ".external_update_url",
+                       extension_urls::GetWebstoreUpdateUrl().spec());
+-  }
++  }*/
+ 
+   InitBookmarksExperimentState(profile_);
+diff --git a/chrome/browser/printing/print_preview_dialog_controller.cc b/chrome/browser/printing/print_preview_dialog_controller.cc
+index ad996d3..a0b9d4c 100644
+--- a/chrome/browser/printing/print_preview_dialog_controller.cc
++++ b/chrome/browser/printing/print_preview_dialog_controller.cc
+@@ -15,5 +15,5 @@
+ #include "chrome/browser/chrome_notification_types.h"
+ #include "chrome/browser/extensions/chrome_extension_web_contents_observer.h"
+-#include "chrome/browser/plugins/chrome_plugin_service_filter.h"
++//#include "chrome/browser/plugins/chrome_plugin_service_filter.h"
+ #include "chrome/browser/printing/print_view_manager.h"
+ #include "chrome/browser/ui/browser.h"
+@@ -35,5 +35,5 @@
+ #include "content/public/browser/notification_details.h"
+ #include "content/public/browser/notification_source.h"
+-#include "content/public/browser/plugin_service.h"
++//#include "content/public/browser/plugin_service.h"
+ #include "content/public/browser/render_frame_host.h"
+ #include "content/public/browser/render_process_host.h"
+@@ -41,5 +41,5 @@
+ #include "content/public/browser/web_contents.h"
+ #include "content/public/browser/web_contents_delegate.h"
+-#include "content/public/common/webplugininfo.h"
++//#include "content/public/common/webplugininfo.h"
+ #include "extensions/browser/guest_view/guest_view_base.h"
+ #include "ui/web_dialogs/web_dialog_delegate.h"
+@@ -51,4 +51,5 @@ using content::WebUIMessageHandler;
+ namespace {
+ 
++/*
+ void EnableInternalPDFPluginForContents(WebContents* preview_dialog) {
+   // Always enable the internal PDF plugin for the print preview page.
+@@ -66,5 +67,5 @@ void EnableInternalPDFPluginForContents(WebContents* preview_dialog) {
+       GURL(), pdf_plugin);
+ }
+-
++*/
+ // A ui::WebDialogDelegate that specifies the print preview dialog appearance.
+ class PrintPreviewDialogDelegate : public ui::WebDialogDelegate {
+@@ -392,5 +393,5 @@ WebContents* PrintPreviewDialogController::CreatePrintPreviewDialog(
+   content::HostZoomMap::Get(preview_dialog->GetSiteInstance())
+       ->SetZoomLevelForHostAndScheme(print_url.scheme(), print_url.host(), 0);
+-  EnableInternalPDFPluginForContents(preview_dialog);
++//  EnableInternalPDFPluginForContents(preview_dialog);
+   PrintViewManager::CreateForWebContents(preview_dialog);
+   extensions::ChromeExtensionWebContentsObserver::CreateForWebContents(
+diff --git a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
+index 0cac4e9..93654f4 100644
+--- a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
++++ b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
+@@ -63,5 +63,5 @@
+ #include "chrome/browser/extensions/browser_context_keyed_service_factories.h"
+ #include "chrome/browser/extensions/extension_management.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++//#include "chrome/browser/search/hotword_service_factory.h"
+ #include "chrome/browser/signin/easy_unlock_service_factory.h"
+ #include "chrome/browser/ui/bookmarks/enhanced_bookmark_key_service_factory.h"
+@@ -205,5 +205,5 @@ EnsureBrowserContextKeyedServiceFactoriesBuilt() {
+   HistoryServiceFactory::GetInstance();
+ #if defined(ENABLE_EXTENSIONS)
+-  HotwordServiceFactory::GetInstance();
++//  HotwordServiceFactory::GetInstance();
+ #endif
+   InMemoryURLIndexFactory::GetInstance();
+diff --git a/chrome/browser/resources/component_extension_resources.grd b/chrome/browser/resources/component_extension_resources.grd
+index e2853ff..b5a003a 100644
+--- a/chrome/browser/resources/component_extension_resources.grd
++++ b/chrome/browser/resources/component_extension_resources.grd
+@@ -14,5 +14,5 @@
+     <structures>
+       <structure name="IDR_BOOKMARK_MANAGER_MAIN" file="bookmark_manager/main.html" flattenhtml="true" allowexternalscript="true" type="chrome_html" />
+-      <structure name="IDR_HOTWORD_AUDIO_VERIFICATION_MAIN" file="hotword_audio_verification/main.html" flattenhtml="true" allowexternalscript="true" type="chrome_html" />
++      <!--      <structure name="IDR_HOTWORD_AUDIO_VERIFICATION_MAIN" file="hotword_audio_verification/main.html" flattenhtml="true" allowexternalscript="true" type="chrome_html" /> -->
+       <if expr="chromeos">
+         <structure name="IDR_WALLPAPER_MANAGER_MAIN" file="chromeos/wallpaper_manager/main.html" flattenhtml="true" allowexternalscript="true" type="chrome_html" />
+@@ -59,5 +59,5 @@
+         <include name="IDR_HANGOUT_SERVICES_THUNK_JS" file="hangout_services/thunk.js" type="BINDATA" />
+       </if>
+-      <if expr="enable_extensions">
++      <if expr="false">
+         <!-- Hotword Audio Verification app -->
+         <include name="IDR_HOTWORD_AUDIO_VERIFICATION_BACKGROUND_JS" file="hotword_audio_verification/event_page.js" type="BINDATA" />
+diff --git a/chrome/browser/resources/options/options_bundle.js b/chrome/browser/resources/options/options_bundle.js
+index dbdbcce..915c759 100644
+--- a/chrome/browser/resources/options/options_bundle.js
++++ b/chrome/browser/resources/options/options_bundle.js
+@@ -10,5 +10,4 @@
+ <include src="deletable_item_list.js">
+ <include src="editable_text_field.js">
+-<include src="hotword_search_setting_indicator.js">
+ <include src="inline_editable_list.js">
+ <include src="options_page.js">
+@@ -91,5 +90,4 @@ var CertificateImportErrorOverlay = options.CertificateImportErrorOverlay;
+ <include src="handler_options_list.js">
+ <include src="home_page_overlay.js">
+-<include src="hotword_confirm_dialog.js">
+ <include src="import_data_overlay.js">
+ <include src="language_add_language_overlay.js">
+diff --git a/chrome/browser/resources/options/options.html b/chrome/browser/resources/options/options.html
+index ec795bc..20d5159 100644
+--- a/chrome/browser/resources/options/options.html
++++ b/chrome/browser/resources/options/options.html
+@@ -29,6 +29,4 @@
+ <link rel="stylesheet" href="font_settings.css">
+ <link rel="stylesheet" href="handler_options.css">
+-<link rel="stylesheet" href="hotword_confirm_overlay.css">
+-<link rel="stylesheet" href="hotword_search_setting_indicator.css">
+ <link rel="stylesheet" href="import_data_overlay.css">
+ <if expr="not is_macosx">
+@@ -119,5 +117,4 @@
+   <include src="font_settings.html">
+   <include src="home_page_overlay.html">
+-  <include src="hotword_confirm_overlay.html">
+   <include src="import_data_overlay.html">
+   <include src="language_options.html">
+diff --git a/chrome/browser/task_manager/task_manager.cc b/chrome/browser/task_manager/task_manager.cc
+index 0bf4708..180949d 100644
+--- a/chrome/browser/task_manager/task_manager.cc
++++ b/chrome/browser/task_manager/task_manager.cc
+@@ -20,5 +20,5 @@
+ #include "chrome/browser/profiles/profile_manager.h"
+ #include "chrome/browser/profiles/profile_window.h"
+-#include "chrome/browser/task_manager/background_information.h"
++//#include "chrome/browser/task_manager/background_information.h"
+ #include "chrome/browser/task_manager/browser_process_resource_provider.h"
+ #include "chrome/browser/task_manager/child_process_resource_provider.h"
+@@ -256,8 +256,8 @@ TaskManagerModel::TaskManagerModel(TaskManager* task_manager)
+           "437890 TaskManagerModel::TaskManagerModel2"));
+ 
+-  AddResourceProvider(new task_manager::WebContentsResourceProvider(
++/*  AddResourceProvider(new task_manager::WebContentsResourceProvider(
+       task_manager,
+       scoped_ptr<WebContentsInformation>(
+-          new task_manager::BackgroundInformation())));
++          new task_manager::BackgroundInformation())));*/
+ 
+   // TODO(vadimt): Remove ScopedTracker below once crbug.com/437890 is fixed.
+diff --git a/chrome/browser/ui/app_list/app_list_service_impl.cc b/chrome/browser/ui/app_list/app_list_service_impl.cc
+index 3808fee..4fb23f4 100644
+--- a/chrome/browser/ui/app_list/app_list_service_impl.cc
++++ b/chrome/browser/ui/app_list/app_list_service_impl.cc
+@@ -341,5 +341,5 @@ void AppListServiceImpl::ShowForVoiceSearch(
+     const scoped_refptr<content::SpeechRecognitionSessionPreamble>& preamble) {
+   ShowForProfile(profile);
+-  view_delegate_->ToggleSpeechRecognitionForHotword(preamble);
++//  view_delegate_->ToggleSpeechRecognitionForHotword(preamble);
+ }
+ 
+diff --git a/chrome/browser/ui/app_list/app_list_view_delegate.cc b/chrome/browser/ui/app_list/app_list_view_delegate.cc
+index 3e9377e..9e38b97 100644
+--- a/chrome/browser/ui/app_list/app_list_view_delegate.cc
++++ b/chrome/browser/ui/app_list/app_list_view_delegate.cc
+@@ -20,6 +20,6 @@
+ #include "chrome/browser/profiles/profile_info_cache.h"
+ #include "chrome/browser/profiles/profile_manager.h"
+-#include "chrome/browser/search/hotword_service.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++//#include "chrome/browser/search/hotword_service.h"
++//#include "chrome/browser/search/hotword_service_factory.h"
+ #include "chrome/browser/search_engines/template_url_service_factory.h"
+ #include "chrome/browser/ui/app_list/app_list_controller_delegate.h"
+@@ -406,4 +406,5 @@ void AppListViewDelegate::SetUpCustomLauncherPages() {
+ }
+ 
++/*
+ void AppListViewDelegate::OnHotwordStateChanged(bool started) {
+   if (started) {
+@@ -424,5 +425,5 @@ void AppListViewDelegate::OnHotwordRecognized(
+   ToggleSpeechRecognitionForHotword(preamble);
+ }
+-
++*/
+ void AppListViewDelegate::SigninManagerCreated(SigninManagerBase* manager) {
+   scoped_observer_.Add(manager);
+@@ -558,4 +559,5 @@ void AppListViewDelegate::ViewInitialized() {
+   if (service) {
+     service->AppListShown();
++    /*
+     if (service->HotwordEnabled()) {
+       HotwordService* hotword_service =
+@@ -565,4 +567,5 @@ void AppListViewDelegate::ViewInitialized() {
+     }
+     OnHotwordStateChanged(service->HotwordEnabled());
++    */
+   }
+ }
+@@ -582,5 +585,5 @@ void AppListViewDelegate::ViewClosing() {
+   if (service) {
+     service->AppListHidden();
+-    if (service->HotwordEnabled()) {
++/*    if (service->HotwordEnabled()) {
+       HotwordService* hotword_service =
+           HotwordServiceFactory::GetForProfile(profile_);
+@@ -601,5 +604,5 @@ void AppListViewDelegate::ViewClosing() {
+           hotword_service->RequestHotwordSession(nullptr);
+       }
+-    }
++    }*/
+   }
+ }
+@@ -641,4 +644,5 @@ void AppListViewDelegate::OpenFeedback() {
+ }
+ 
++/*
+ void AppListViewDelegate::ToggleSpeechRecognition() {
+   ToggleSpeechRecognitionForHotword(nullptr);
+@@ -651,5 +655,4 @@ void AppListViewDelegate::ToggleSpeechRecognitionForHotword(
+   if (service)
+     service->ToggleSpeechRecognition(preamble);
+-
+   // With the new hotword extension, stop the hotword session. With the launcher
+   // and NTP, this is unnecessary since the hotwording is implicitly stopped.
+@@ -669,4 +672,5 @@ void AppListViewDelegate::ToggleSpeechRecognitionForHotword(
+   }
+ }
++*/
+ 
+ void AppListViewDelegate::ShowForProfileByPath(
+@@ -694,6 +698,8 @@ void AppListViewDelegate::OnSpeechRecognitionStateChanged(
+   speech_ui_->SetSpeechRecognitionState(new_state);
+ 
++/*
+   app_list::StartPageService* service =
+       app_list::StartPageService::Get(profile_);
++
+   // With the new hotword extension, we need to re-request hotwording after
+   // speech recognition has stopped. Do not request hotwording after the app
+@@ -708,5 +714,5 @@ void AppListViewDelegate::OnSpeechRecognitionStateChanged(
+       hotword_service->RequestHotwordSession(this);
+     }
+-  }
++  }*/
+ }
+ 
+diff --git a/chrome/browser/ui/app_list/app_list_view_delegate.h b/chrome/browser/ui/app_list/app_list_view_delegate.h
+index d351d85..a6f8273 100644
+--- a/chrome/browser/ui/app_list/app_list_view_delegate.h
++++ b/chrome/browser/ui/app_list/app_list_view_delegate.h
+@@ -17,5 +17,5 @@
+ #include "base/scoped_observer.h"
+ #include "chrome/browser/profiles/profile_info_cache_observer.h"
+-#include "chrome/browser/search/hotword_client.h"
++//#include "chrome/browser/search/hotword_client.h"
+ #include "chrome/browser/signin/signin_manager_factory.h"
+ #include "chrome/browser/ui/app_list/start_page_observer.h"
+@@ -59,5 +59,5 @@ class AppSyncUIStateWatcher;
+ class AppListViewDelegate : public app_list::AppListViewDelegate,
+                             public app_list::StartPageObserver,
+-                            public HotwordClient,
++//                            public HotwordClient,
+                             public ProfileInfoCacheObserver,
+                             public SigninManagerBase::Observer,
+@@ -77,7 +77,7 @@ class AppListViewDelegate : public app_list::AppListViewDelegate,
+   // Invoked to toggle the status of speech recognition based on a hotword
+   // trigger.
+-  void ToggleSpeechRecognitionForHotword(
++/*  void ToggleSpeechRecognitionForHotword(
+       const scoped_refptr<content::SpeechRecognitionSessionPreamble>& preamble);
+-
++*/
+   // Overridden from app_list::AppListViewDelegate:
+   bool ForceNativeDesktop() const override;
+@@ -139,4 +139,5 @@ class AppListViewDelegate : public app_list::AppListViewDelegate,
+       app_list::SpeechRecognitionState new_state) override;
+ 
++/*
+   // Overridden from HotwordClient:
+   void OnHotwordStateChanged(bool started) override;
+@@ -144,5 +145,5 @@ class AppListViewDelegate : public app_list::AppListViewDelegate,
+       const scoped_refptr<content::SpeechRecognitionSessionPreamble>& preamble)
+       override;
+-
++*/
+   // Overridden from SigninManagerFactory::Observer:
+   void SigninManagerCreated(SigninManagerBase* manager) override;
+diff --git a/chrome/browser/ui/app_list/start_page_service.cc b/chrome/browser/ui/app_list/start_page_service.cc
+index 8af8b47..7530100 100644
+--- a/chrome/browser/ui/app_list/start_page_service.cc
++++ b/chrome/browser/ui/app_list/start_page_service.cc
+@@ -18,6 +18,6 @@
+ #include "chrome/browser/media/media_stream_infobar_delegate.h"
+ #include "chrome/browser/profiles/profile.h"
+-#include "chrome/browser/search/hotword_service.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++/*#include "chrome/browser/search/hotword_service.h"
++#include "chrome/browser/search/hotword_service_factory.h"*/
+ #include "chrome/browser/search_engines/template_url_service_factory.h"
+ #include "chrome/browser/search_engines/ui_thread_search_terms_data.h"
+@@ -137,6 +137,7 @@ class StartPageService::StartPageWebContentsDelegate
+                                   const GURL& security_origin,
+                                   content::MediaStreamType type) override {
+-    return MediaCaptureDevicesDispatcher::GetInstance()
+-        ->CheckMediaAccessPermission(web_contents, security_origin, type);
++//    return MediaCaptureDevicesDispatcher::GetInstance()
++//        ->CheckMediaAccessPermission(web_contents, security_origin, type);
++    return false;
+   }
+ 
+@@ -294,7 +295,7 @@ StartPageService::StartPageService(Profile* profile)
+   // Transitioning into the "hotword recognizing" state is handled by the
+   // hotword extension.
+-  if (HotwordService::IsExperimentalHotwordingEnabled()) {
++/*  if (HotwordService::IsExperimentalHotwordingEnabled()) {
+     state_ = app_list::SPEECH_RECOGNITION_READY;
+-  }
++  }*/
+   if (switches::IsExperimentalAppListEnabled()) {
+     TemplateURLService* template_url_service =
+@@ -373,9 +374,10 @@ void StartPageService::AppListShown() {
+     // API, which is not used with
+     // experimental hotwording.
+-    contents_->GetWebUI()->CallJavascriptFunction(
++/*    contents_->GetWebUI()->CallJavascriptFunction(
+         "appList.startPage.onAppListShown",
+         base::FundamentalValue(HotwordEnabled()),
+         base::FundamentalValue(
+             !HotwordService::IsExperimentalHotwordingEnabled()));
++     */        
+   }
+ 
+@@ -393,5 +395,5 @@ void StartPageService::AppListHidden() {
+     UnloadContents();
+ 
+-  if (HotwordService::IsExperimentalHotwordingEnabled() &&
++/*  if (HotwordService::IsExperimentalHotwordingEnabled() &&
+       speech_recognizer_) {
+     speech_recognizer_->Stop();
+@@ -403,5 +405,5 @@ void StartPageService::AppListHidden() {
+     // again.
+     OnSpeechRecognitionStateChanged(SPEECH_RECOGNITION_READY);
+-  }
++  }*/
+ 
+ #if defined(OS_CHROMEOS)
+@@ -419,5 +421,5 @@ void StartPageService::ToggleSpeechRecognition(
+   // easier to identify what code needs to be deleted when V2 hotwording is
+   // stable.
+-  if (HotwordService::IsExperimentalHotwordingEnabled()) {
++/*  if (HotwordService::IsExperimentalHotwordingEnabled()) {
+     if (!speech_recognizer_) {
+       std::string profile_locale;
+@@ -437,5 +439,5 @@ void StartPageService::ToggleSpeechRecognition(
+     speech_recognizer_->Start(preamble);
+     return;
+-  }
++  }*/
+ 
+   if (!contents_->GetWebUI())
+@@ -516,10 +518,10 @@ void StartPageService::OnSpeechRecognitionStateChanged(
+     return;
+ 
+-  if (HotwordService::IsExperimentalHotwordingEnabled() &&
++/*  if (HotwordService::IsExperimentalHotwordingEnabled() &&
+       (new_state == SPEECH_RECOGNITION_READY ||
+        new_state == SPEECH_RECOGNITION_OFF) &&
+       speech_recognizer_) {
+     speech_recognizer_->Stop();
+-  }
++  }*/
+ 
+   if (!InSpeechRecognition(state_) && InSpeechRecognition(new_state)) {
+@@ -544,5 +546,5 @@ void StartPageService::OnSpeechRecognitionStateChanged(
+ void StartPageService::GetSpeechAuthParameters(std::string* auth_scope,
+                                                std::string* auth_token) {
+-  if (HotwordService::IsExperimentalHotwordingEnabled()) {
++/*  if (HotwordService::IsExperimentalHotwordingEnabled()) {
+     HotwordService* service = HotwordServiceFactory::GetForProfile(profile_);
+     if (service &&
+@@ -553,5 +555,5 @@ void StartPageService::GetSpeechAuthParameters(std::string* auth_scope,
+       *auth_token = speech_auth_helper_->GetToken();
+     }
+-  }
++  }*/
+ }
+ 
+diff --git a/chrome/browser/ui/webui/app_list/start_page_handler.cc b/chrome/browser/ui/webui/app_list/start_page_handler.cc
+index d8234cc..daa90d3 100644
+--- a/chrome/browser/ui/webui/app_list/start_page_handler.cc
++++ b/chrome/browser/ui/webui/app_list/start_page_handler.cc
+@@ -13,5 +13,5 @@
+ #include "base/version.h"
+ #include "chrome/browser/profiles/profile.h"
+-#include "chrome/browser/search/hotword_service.h"
++//#include "chrome/browser/search/hotword_service.h"
+ #include "chrome/browser/ui/app_list/app_list_controller_delegate.h"
+ #include "chrome/browser/ui/app_list/app_list_service.h"
+@@ -186,10 +186,10 @@ void StartPageHandler::HandleInitialize(const base::ListValue* args) {
+   // If v2 hotwording is enabled, don't tell the start page that the app list is
+   // being shown. V2 hotwording doesn't use the start page for anything.
+-  if (!app_list::switches::IsExperimentalAppListEnabled() &&
++/*  if (!app_list::switches::IsExperimentalAppListEnabled() &&
+       !HotwordService::IsExperimentalHotwordingEnabled()) {
+     web_ui()->CallJavascriptFunction(
+         "appList.startPage.onAppListShown",
+         base::FundamentalValue(service->HotwordEnabled()));
+-  }
++  }*/
+ }
+ 
+diff --git a/chrome/browser/ui/webui/app_list/start_page_ui.cc b/chrome/browser/ui/webui/app_list/start_page_ui.cc
+index 40f1e1e..3f32f81 100644
+--- a/chrome/browser/ui/webui/app_list/start_page_ui.cc
++++ b/chrome/browser/ui/webui/app_list/start_page_ui.cc
+@@ -82,5 +82,5 @@ void StartPageUI::InitDataSource() {
+   source->AddResourcePath("start_page.css", IDR_APP_LIST_START_PAGE_CSS);
+   source->AddResourcePath("start_page.js", IDR_APP_LIST_START_PAGE_JS);
+-  source->AddResourcePath("hotword_nacl.nmf", IDR_APP_LIST_HOTWORD_NACL_NMF);
++//  source->AddResourcePath("hotword_nacl.nmf", IDR_APP_LIST_HOTWORD_NACL_NMF);
+   source->SetDefaultResource(IDR_APP_LIST_START_PAGE_HTML);
+ 
+diff --git a/chrome/browser/ui/webui/options/browser_options_handler.cc b/chrome/browser/ui/webui/options/browser_options_handler.cc
+index 7bba6f8..e0c11b8 100644
+--- a/chrome/browser/ui/webui/options/browser_options_handler.cc
++++ b/chrome/browser/ui/webui/options/browser_options_handler.cc
+@@ -44,7 +44,7 @@
+ #include "chrome/browser/profiles/profile_window.h"
+ #include "chrome/browser/profiles/profiles_state.h"
+-#include "chrome/browser/search/hotword_audio_history_handler.h"
++/*#include "chrome/browser/search/hotword_audio_history_handler.h"
+ #include "chrome/browser/search/hotword_service.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++#include "chrome/browser/search/hotword_service_factory.h"*/
+ #include "chrome/browser/search/search.h"
+ #include "chrome/browser/search_engines/template_url_service_factory.h"
+@@ -284,5 +284,5 @@ void BrowserOptionsHandler::GetLocalizedValues(base::DictionaryValue* values) {
+     { "homePageUseNewTab", IDS_OPTIONS_HOMEPAGE_USE_NEWTAB },
+     { "homePageUseURL", IDS_OPTIONS_HOMEPAGE_USE_URL },
+-    { "hotwordAlwaysOnAudioHistoryDescription",
++/*    { "hotwordAlwaysOnAudioHistoryDescription",
+       IDS_HOTWORD_ALWAYS_ON_AUDIO_HISTORY_DESCRIPTION },
+     { "hotwordAlwaysOnDesc", IDS_HOTWORD_SEARCH_ALWAYS_ON_DESCRIPTION },
+@@ -294,5 +294,5 @@ void BrowserOptionsHandler::GetLocalizedValues(base::DictionaryValue* values) {
+     { "hotwordNoDSPDesc", IDS_HOTWORD_SEARCH_NO_DSP_DESCRIPTION },
+     { "hotwordRetrainLink", IDS_HOTWORD_RETRAIN_LINK },
+-    { "hotwordSearchEnable", IDS_HOTWORD_SEARCH_PREF_CHKBOX },
++    { "hotwordSearchEnable", IDS_HOTWORD_SEARCH_PREF_CHKBOX },*/
+     { "importData", IDS_OPTIONS_IMPORT_DATA_BUTTON },
+     { "improveBrowsingExperience", IDS_OPTIONS_IMPROVE_BROWSING_EXPERIENCE },
+@@ -533,9 +533,9 @@ void BrowserOptionsHandler::GetLocalizedValues(base::DictionaryValue* values) {
+       "defaultSearchGroupLabel",
+       l10n_util::GetStringFUTF16(IDS_SEARCH_PREF_EXPLANATION, omnibox_url));
+-  values->SetString("hotwordLearnMoreURL", chrome::kHotwordLearnMoreURL);
++/*  values->SetString("hotwordLearnMoreURL", chrome::kHotwordLearnMoreURL);
+   RegisterTitle(values, "hotwordConfirmOverlay",
+                 IDS_HOTWORD_CONFIRM_BUBBLE_TITLE);
+   values->SetString("hotwordManageAudioHistoryURL",
+-                    chrome::kManageAudioHistoryURL);
++                    chrome::kManageAudioHistoryURL);*/
+ 
+ #if defined(OS_CHROMEOS)
+@@ -798,5 +798,5 @@ void BrowserOptionsHandler::RegisterMessages() {
+                  base::Unretained(this)));
+ 
+-  web_ui()->RegisterMessageCallback(
++/*  web_ui()->RegisterMessageCallback(
+       "requestHotwordAvailable",
+       base::Bind(&BrowserOptionsHandler::HandleRequestHotwordAvailable,
+@@ -807,5 +807,5 @@ void BrowserOptionsHandler::RegisterMessages() {
+       base::Bind(
+           &BrowserOptionsHandler::HandleLaunchHotwordAudioVerificationApp,
+-          base::Unretained(this)));
++          base::Unretained(this)));*/
+ 
+   web_ui()->RegisterMessageCallback(
+@@ -1235,5 +1235,5 @@ void BrowserOptionsHandler::OnTemplateURLServiceChanged() {
+   SetupExtensionControlledIndicators();
+ 
+-  HandleRequestHotwordAvailable(nullptr);
++//  HandleRequestHotwordAvailable(nullptr);
+   HandleRequestGoogleNowAvailable(nullptr);
+ }
+@@ -1606,8 +1606,8 @@ void BrowserOptionsHandler::UpdateSyncState() {
+   // A change in sign-in state also affects how hotwording and audio history are
+   // displayed. Hide all hotwording and re-display properly.
+-  web_ui()->CallJavascriptFunction(
++/*  web_ui()->CallJavascriptFunction(
+       "BrowserOptions.setAllHotwordSectionsVisible",
+       base::FundamentalValue(false));
+-  HandleRequestHotwordAvailable(nullptr);
++  HandleRequestHotwordAvailable(nullptr);*/
+ }
+ 
+@@ -1717,5 +1717,5 @@ void BrowserOptionsHandler::ShowCloudPrintDevicesPage(
+ 
+ #endif
+-
++/*
+ void BrowserOptionsHandler::SetHotwordAudioHistorySectionVisible(
+     const base::string16& audio_history_state,
+@@ -1727,5 +1727,5 @@ void BrowserOptionsHandler::SetHotwordAudioHistorySectionVisible(
+       base::StringValue(audio_history_state));
+ }
+-
++*/
+ void BrowserOptionsHandler::HandleRequestGoogleNowAvailable(
+     const base::ListValue* args) {
+@@ -1749,5 +1749,5 @@ void BrowserOptionsHandler::HandleRequestGoogleNowAvailable(
+ }
+ 
+-void BrowserOptionsHandler::HandleRequestHotwordAvailable(
++/*void BrowserOptionsHandler::HandleRequestHotwordAvailable(
+     const base::ListValue* args) {
+   Profile* profile = Profile::FromWebUI(web_ui());
+@@ -1884,5 +1884,5 @@ void BrowserOptionsHandler::HandleLaunchHotwordAudioVerificationApp(
+   hotword_service->LaunchHotwordAudioVerificationApp(launch_mode);
+ }
+-
++*/
+ void BrowserOptionsHandler::HandleLaunchEasyUnlockSetup(
+     const base::ListValue* args) {
+diff --git a/chrome/browser/ui/webui/options/browser_options_handler.h b/chrome/browser/ui/webui/options/browser_options_handler.h
+index 1dee8a6..891d59b 100644
+--- a/chrome/browser/ui/webui/options/browser_options_handler.h
++++ b/chrome/browser/ui/webui/options/browser_options_handler.h
+@@ -297,4 +297,5 @@ class BrowserOptionsHandler
+ #endif
+ 
++/*
+   // Check if hotword is available. If it is, tell the javascript to show
+   // the hotword section of the settings page.
+@@ -313,5 +314,5 @@ class BrowserOptionsHandler
+   // Callback for "launchHotwordAudioVerificationApp" message.
+   void HandleLaunchHotwordAudioVerificationApp(const base::ListValue* args);
+-
++*/
+   // Callback for "requestGoogleNowAvailable" message.
+   void HandleRequestGoogleNowAvailable(const base::ListValue* args);
+diff --git a/chrome/browser/ui/webui/voice_search_ui.cc b/chrome/browser/ui/webui/voice_search_ui.cc
+index 3ddf0e9..b095f83 100644
+--- a/chrome/browser/ui/webui/voice_search_ui.cc
++++ b/chrome/browser/ui/webui/voice_search_ui.cc
+@@ -19,6 +19,6 @@
+ #include "chrome/browser/plugins/plugin_prefs.h"
+ #include "chrome/browser/profiles/profile.h"
+-#include "chrome/browser/search/hotword_service.h"
+-#include "chrome/browser/search/hotword_service_factory.h"
++/*#include "chrome/browser/search/hotword_service.h"
++#include "chrome/browser/search/hotword_service_factory.h"*/
+ #include "chrome/browser/ui/app_list/start_page_service.h"
+ #include "chrome/browser/ui/webui/version_handler.h"
+@@ -166,8 +166,8 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+     AddAudioInfo(list.get());
+     AddLanguageInfo(list.get());
+-    AddHotwordInfo(list.get());
++//    AddHotwordInfo(list.get());
+     AddAppListInfo(list.get());
+ 
+-    std::string extension_id = extension_misc::kHotwordExtensionId;
++ /*   std::string extension_id = extension_misc::kHotwordExtensionId;
+     HotwordService* hotword_service =
+         HotwordServiceFactory::GetForProfile(profile_);
+@@ -178,10 +178,10 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+     AddExtensionInfo(extension_misc::kHotwordSharedModuleId,
+                      "Shared Module",
+-                     list.get());
++                     list.get());*/
+ 
+     base::FilePath path;
+     extensions::ExtensionSystem* extension_system =
+         extensions::ExtensionSystem::Get(profile_);
+-    if (extension_system) {
++/*    if (extension_system) {
+       ExtensionService* extension_service =
+           extension_system->extension_service();
+@@ -191,5 +191,5 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+       if (extension)
+         path = extension->path();
+-    }
++    }*/
+     base::ListValue* raw_list = list.get();
+     content::BrowserThread::PostTask(
+@@ -274,8 +274,8 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+     AddPair(list, "NaCl Enabled", nacl_enabled);
+ 
+-    AddPair(list,
++/*    AddPair(list,
+             "Microphone",
+             HotwordServiceFactory::IsMicrophoneAvailable() ? "Yes" : "No");
+-
++*/
+     std::string audio_capture = "No";
+     if (profile_->GetPrefs()->GetBoolean(prefs::kAudioCaptureAllowed))
+@@ -297,13 +297,13 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+     AddPair(list, "Current Language", locale);
+ 
+-    AddPair(list,
++/*    AddPair(list,
+             "Hotword Previous Language",
+             profile_->GetPrefs()->GetString(prefs::kHotwordPreviousLanguage));
+-
++*/
+     AddLineBreak(list);
+   }
+ 
+   // Adds information specific to the hotword configuration to the list.
+-  void AddHotwordInfo(base::ListValue* list)  {
++/*  void AddHotwordInfo(base::ListValue* list)  {
+     std::string search_enabled = "No";
+     if (profile_->GetPrefs()->GetBoolean(prefs::kHotwordSearchEnabled))
+@@ -333,5 +333,5 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+ 
+     AddLineBreak(list);
+-  }
++  }*/
+ 
+   // Adds information specific to an extension to the list.
+@@ -404,7 +404,7 @@ class VoiceSearchDomHandler : public WebUIMessageHandler {
+           state = "SPEECH_RECOGNITION_READY";
+           break;
+-        case app_list::SPEECH_RECOGNITION_HOTWORD_LISTENING:
++/*        case app_list::SPEECH_RECOGNITION_HOTWORD_LISTENING:
+           state = "SPEECH_RECOGNITION_HOTWORD_LISTENING";
+-          break;
++          break;*/
+         case app_list::SPEECH_RECOGNITION_RECOGNIZING:
+           state = "SPEECH_RECOGNITION_RECOGNIZING";
+diff --git a/chrome/chrome_browser_extensions.gypi b/chrome/chrome_browser_extensions.gypi
+index 5dba54a..a8cc2b1 100644
+--- a/chrome/chrome_browser_extensions.gypi
++++ b/chrome/chrome_browser_extensions.gypi
+@@ -250,6 +250,6 @@
+       'browser/extensions/api/history/history_api.cc',
+       'browser/extensions/api/history/history_api.h',
+-      'browser/extensions/api/hotword_private/hotword_private_api.cc',
+-      'browser/extensions/api/hotword_private/hotword_private_api.h',
++#      'browser/extensions/api/hotword_private/hotword_private_api.cc',
++#      'browser/extensions/api/hotword_private/hotword_private_api.h',
+       'browser/extensions/api/i18n/i18n_api.cc',
+       'browser/extensions/api/i18n/i18n_api.h',
+diff --git a/chrome/chrome_browser.gypi b/chrome/chrome_browser.gypi
+index e2934c7..5a561f8 100644
+--- a/chrome/chrome_browser.gypi
++++ b/chrome/chrome_browser.gypi
+@@ -1377,11 +1377,11 @@
+       'browser/renderer_host/chrome_extension_message_filter.cc',
+       'browser/renderer_host/chrome_extension_message_filter.h',
+-      'browser/search/hotword_audio_history_handler.cc',
+-      'browser/search/hotword_audio_history_handler.h',
+-      'browser/search/hotword_client.h',
+-      'browser/search/hotword_service.cc',
+-      'browser/search/hotword_service.h',
+-      'browser/search/hotword_service_factory.cc',
+-      'browser/search/hotword_service_factory.h',
++#      'browser/search/hotword_audio_history_handler.cc',
++#      'browser/search/hotword_audio_history_handler.h',
++#      'browser/search/hotword_client.h',
++#      'browser/search/hotword_service.cc',
++#      'browser/search/hotword_service.h',
++#      'browser/search/hotword_service_factory.cc',
++#      'browser/search/hotword_service_factory.h',
+       'browser/signin/easy_unlock_app_manager.cc',
+       'browser/signin/easy_unlock_app_manager.h',
+@@ -2800,6 +2800,6 @@
+     ],
+     'chrome_browser_task_manager_sources': [
+-      'browser/task_manager/background_information.cc',
+-      'browser/task_manager/background_information.h',
++#      'browser/task_manager/background_information.cc',
++#      'browser/task_manager/background_information.h',
+       'browser/task_manager/browser_process_resource_provider.cc',
+       'browser/task_manager/browser_process_resource_provider.h',
+diff --git a/chrome/common/extensions/api/schemas.gypi b/chrome/common/extensions/api/schemas.gypi
+index e848f60..bde4afd 100644
+--- a/chrome/common/extensions/api/schemas.gypi
++++ b/chrome/common/extensions/api/schemas.gypi
+@@ -48,5 +48,5 @@
+       'hangouts_private.idl',
+       'history.json',
+-      'hotword_private.idl',
++#      'hotword_private.idl',
+       'i18n.json',
+       'identity.idl',
+diff --git a/content/common/frame_messages.h b/content/common/frame_messages.h
+index 38cd6ba..583dd57 100644
+--- a/content/common/frame_messages.h
++++ b/content/common/frame_messages.h
+@@ -26,4 +26,5 @@
+ #include "url/gurl.h"
+ #include "url/origin.h"
++#include "content/public/common/webplugininfo.h"
+ 
+ #undef IPC_MESSAGE_EXPORT
+diff --git a/content/common/view_messages.h b/content/common/view_messages.h
+index 3653db8..826bb0a 100644
+--- a/content/common/view_messages.h
++++ b/content/common/view_messages.h
+@@ -1226,7 +1226,7 @@ IPC_SYNC_MESSAGE_CONTROL3_1(ViewHostMsg_CookiesEnabled,
+ 
+ // Used to get the list of plugins
+-IPC_SYNC_MESSAGE_CONTROL1_1(ViewHostMsg_GetPlugins,
+-    bool /* refresh*/,
+-    std::vector<content::WebPluginInfo> /* plugins */)
++//IPC_SYNC_MESSAGE_CONTROL1_1(ViewHostMsg_GetPlugins,
++//    bool /* refresh*/,
++//    std::vector<content::WebPluginInfo> /* plugins */)
+ 
+ #if defined(OS_WIN)
+diff --git a/content/public/common/common_param_traits_macros.h b/content/public/common/common_param_traits_macros.h
+index 53f1128..522387a 100644
+--- a/content/public/common/common_param_traits_macros.h
++++ b/content/public/common/common_param_traits_macros.h
+@@ -14,5 +14,5 @@
+ #include "content/public/common/ssl_status.h"
+ #include "content/public/common/web_preferences.h"
+-#include "content/public/common/webplugininfo.h"
++//#include "content/public/common/webplugininfo.h"
+ #include "ipc/ipc_message_macros.h"
+ #include "net/base/network_change_notifier.h"
+@@ -84,5 +84,5 @@ IPC_STRUCT_TRAITS_BEGIN(content::SSLStatus)
+ IPC_STRUCT_TRAITS_END()
+ 
+-IPC_STRUCT_TRAITS_BEGIN(content::WebPluginMimeType)
++/*IPC_STRUCT_TRAITS_BEGIN(content::WebPluginMimeType)
+   IPC_STRUCT_TRAITS_MEMBER(mime_type)
+   IPC_STRUCT_TRAITS_MEMBER(file_extensions)
+@@ -101,5 +101,5 @@ IPC_STRUCT_TRAITS_BEGIN(content::WebPluginInfo)
+   IPC_STRUCT_TRAITS_MEMBER(pepper_permissions)
+ IPC_STRUCT_TRAITS_END()
+-
++*/
+ IPC_STRUCT_TRAITS_BEGIN(content::WebPreferences)
+   IPC_STRUCT_TRAITS_MEMBER(standard_font_family_map)
+diff --git a/extensions/common/api/_permission_features.json b/extensions/common/api/_permission_features.json
+index 736f0e3..64885b1 100644
+--- a/extensions/common/api/_permission_features.json
++++ b/extensions/common/api/_permission_features.json
+@@ -129,5 +129,5 @@
+         "FF78670081967CE21DB86A04AD94A0498F01E20A",
+         // Hotword component extension
+-        "62CCAAD339E6451BBF97C4BBDF758E934A05AD0B"
++//        "62CCAAD339E6451BBF97C4BBDF758E934A05AD0B"
+       ]
+     }

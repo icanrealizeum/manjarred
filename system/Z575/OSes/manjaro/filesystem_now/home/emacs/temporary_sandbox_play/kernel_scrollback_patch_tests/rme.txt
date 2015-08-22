@@ -1,0 +1,24 @@
+all this is done to test that patchRSB can be applied on top of patchISBS
+without hunks failed!
+also tests patchRSB on top of origKS (but this is where the patch came from in the first place though)
+
+patchRSB= that enables remembering each console scrollbuffer
+patchISBS= patch that increases max scrollbuffer size from 1024 to 4096
+
+folder a contains original kernel sources 3.16-rc7 currently aka origKS
+folder b contains patched sources with only the patchRSB (so it doesn't contain patchISBS)
+
+folder 2 contains only the *.orig files which ./testpatch must know of in order to restore them before applying the patchRSB to them
+these *.orig files are patchISBS applied on top of origKS
+
+folder 3 contains origKS but with filenames having an additional .orig extension
+they are used as source for testing the patchRSB against origKS, to see if it can be applied successfuly
+
+folder c contains patchISBS applied on origKS
+
+all above folders should have directory structure preserved
+
+put vgacon.c and Kconfig in current folder to have it copied into b/drivers/video/console/vgacon.c.orig ...
+so it's more automated this way
+this vgacon.c should be origKS patched with patchRSB
+

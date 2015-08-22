@@ -1,0 +1,22 @@
+MAYBE THAT'S THE RADEON GRAPHICS THAT'S FAMILY 12!
+in dmesg (3.12 kernel):
+
+[    0.075454] smpboot: CPU0: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam: 12, model: 01, stepping: 00)
+
+in /proc/cpuinfo
+
+processor       : 0
+vendor_id       : AuthenticAMD
+cpu family      : 18
+model           : 1
+model name      : AMD A6-3400M APU with Radeon(tm) HD Graphics
+stepping        : 0
+microcode       : 0x3000027
+
+
+hmm maybe the microcode patch fixed it?
+
+
+in kernel 3.15.4 :
+[    0.534593] smpboot: CPU0: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam: 12, model: 01, stepping: 00)
+

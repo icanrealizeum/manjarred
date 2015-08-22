@@ -1,0 +1,27 @@
+https://bugs.gentoo.org/show_bug.cgi?id=536432
+
+line 119 in `which net-setup` contains a line which is missing the \ at the end, therefore the output error from the next line gets into /etc/conf.d/net file
+
+tested with what seems to be the latest livecd iso at this time: install-amd64-minimal-20141204.iso
+
+
+
+Reproducible: Always
+
+Steps to Reproduce:
+1. execute net-setup enp0s3  (if inside virtualbox)
+2. fill in all the required info (2,2 manual ip, wired network, no dhcp)
+3. look inside /etc/conf.d/net
+Actual Results:  
+cat /etc/conf.d/net
+# This network configuration was written by net-setup
+config_enp0s3=( "192.168.169.200 broadcast 192.168.169.255 netmask /usr/sbin/net-setup: line 120: --inputbox: command not found" )
+routes_enp0s3=( "default via 192.168.169.193" )
+
+
+Expected Results:  
+cat /etc/conf.d/net
+# This network configuration was written by net-setup
+config_enp0s3=( "192.168.169.200 broadcast 192.168.169.255 netmask 255.255.255.0")
+routes_enp0s3=( "default via 192.168.169.193" )
+

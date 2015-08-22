@@ -1,0 +1,430 @@
+manji
+    description: Notebook
+    product: Sabine (System SKU Number Unknown)
+    vendor: LENOVO
+    version: Ideapad Z575
+    serial: WB03701465WB01102123
+    width: 64 bits
+    capabilities: smbios-2.6 dmi-2.6 vsyscall32
+    configuration: boot=normal chassis=notebook family=IDEAPAD sku=System SKU Number Unknown uuid=A2AC6860-FD30-11E0-A3F5-8D743EA047CF
+  *-core
+       description: Motherboard
+       product: Torpedo
+       vendor: LENOVO
+       physical id: 0
+       version: 109-C06210-00B
+       serial: WB03701465
+       slot: Chassis Location Unknown
+     *-firmware
+          description: BIOS
+          vendor: LENOVO
+          physical id: 0
+          version: 54CN18WW
+          date: 07/20/2011
+          size: 128KiB
+          capacity: 1984KiB
+          capabilities: pci upgrade shadowing cdboot bootselect edd int5printscreen int9keyboard int14serial int17printer int10video pc98 acpi usb biosbootspecification netboot
+     *-memory
+          description: System Memory
+          physical id: 2b
+          slot: System board or motherboard
+          size: 16GiB
+        *-bank:0
+             description: SODIMM DDR3 Synchronous
+             product: KHX1866C11S3L/8G
+             vendor: Kingston
+             physical id: 0
+             serial: 5912072C
+             slot: DIMM 0
+             size: 8GiB
+             width: 64 bits
+        *-bank:1
+             description: SODIMM DDR3 Synchronous
+             product: KHX1866C11S3L/8G
+             vendor: Kingston
+             physical id: 1
+             serial: 60120B2C
+             slot: DIMM 0
+             size: 8GiB
+             width: 64 bits
+     *-cpu
+          description: CPU
+          product: AMD A6-3400M APU with Radeon(tm) HD Graphics
+          vendor: Advanced Micro Devices [AMD]
+          physical id: 31
+          bus info: cpu@0
+          version: AMD A6-3400M APU with Radeon(tm) HD Graphics
+          slot: Socket FS1
+          size: 1400MHz
+          capacity: 1400MHz
+          width: 64 bits
+          clock: 100MHz
+          capabilities: x86-64 fpu fpu_exception wp vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp 3dnowext 3dnow constant_tsc rep_good nopl nonstop_tsc extd_apicid aperfmperf pni monitor cx16 popcnt lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt arat cpb hw_pstate npt lbrv svm_lock nrip_save pausefilter vmmcall cpufreq
+          configuration: cores=4 enabledcores=4 threads=4
+        *-cache:0
+             description: L1 cache
+             physical id: 32
+             slot: L1 Cache
+             size: 512KiB
+             capacity: 512KiB
+             clock: 1GHz (1.0ns)
+             capabilities: pipeline-burst internal write-back unified
+        *-cache:1
+             description: L2 cache
+             physical id: 33
+             slot: L2 Cache
+             size: 4MiB
+             capacity: 4MiB
+             clock: 1GHz (1.0ns)
+             capabilities: pipeline-burst internal write-back unified
+     *-pci:0
+          description: Host bridge
+          product: Family 12h Processor Root Complex [1022:1705]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 100
+          bus info: pci@0000:00:00.0
+          version: 00
+          width: 32 bits
+          clock: 66MHz
+          configuration: latency=64
+        *-display
+             description: VGA compatible controller
+             product: BeaverCreek [Radeon HD 6520G] [1002:9647]
+             vendor: Advanced Micro Devices, Inc. [AMD/ATI] [1002]
+             physical id: 1
+             bus info: pci@0000:00:01.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pm pciexpress msi vga_controller bus_master cap_list rom
+             configuration: driver=radeon latency=0
+             resources: irq:25 memory:e0000000-efffffff ioport:2000(size=256) memory:f0100000-f013ffff
+        *-multimedia:0
+             description: Audio device
+             product: BeaverCreek HDMI Audio [Radeon HD 6500D and 6400G-6600G series] [1002:1714]
+             vendor: Advanced Micro Devices, Inc. [AMD/ATI] [1002]
+             physical id: 1.1
+             bus info: pci@0000:00:01.1
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pm pciexpress msi bus_master cap_list
+             configuration: driver=snd_hda_intel latency=0
+             resources: irq:28 memory:f0144000-f0147fff
+        *-pci:0
+             description: PCI bridge
+             product: Family 12h Processor Root Port [1022:1709]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 4
+             bus info: pci@0000:00:04.0
+             version: 00
+             width: 32 bits
+             clock: 33MHz
+             capabilities: pci pm pciexpress msi ht normal_decode bus_master cap_list
+             configuration: driver=pcieport
+             resources: irq:24 ioport:1000(size=4096) ioport:f0000000(size=1048576)
+           *-network
+                description: Ethernet interface
+                product: RTL8101E/RTL8102E PCI Express Fast Ethernet controller [10EC:8136]
+                vendor: Realtek Semiconductor Co., Ltd. [10EC]
+                physical id: 0
+                bus info: pci@0000:01:00.0
+                logical name: net0
+                version: 05
+                serial: 0c:ef:07:3a:b6:01
+                size: 100Mbit/s
+                capacity: 100Mbit/s
+                width: 64 bits
+                clock: 33MHz
+                capabilities: pm msi pciexpress msix vpd bus_master cap_list ethernet physical tp mii 10bt 10bt-fd 100bt 100bt-fd autonegotiation
+                configuration: autonegotiation=on broadcast=yes driver=r8169 driverversion=2.3LK-NAPI duplex=full firmware=rtl_nic/rtl8105e-1.fw ip=192.168.169.212 latency=0 link=yes multicast=yes port=MII speed=100Mbit/s
+                resources: irq:27 ioport:1000(size=256) memory:f0004000-f0004fff memory:f0000000-f0003fff
+        *-storage
+             description: SATA controller
+             product: FCH SATA Controller [AHCI mode] [1022:7804]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 11
+             bus info: pci@0000:00:11.0
+             version: 00
+             width: 32 bits
+             clock: 66MHz
+             capabilities: storage msi ahci_1.0 bus_master cap_list
+             configuration: driver=ahci latency=64
+             resources: irq:26 ioport:2118(size=8) ioport:2124(size=4) ioport:2110(size=8) ioport:2120(size=4) ioport:2100(size=16) memory:f014a000-f014a7ff
+        *-usb:0
+             description: USB controller
+             product: FCH USB OHCI Controller [1022:7807]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 12
+             bus info: pci@0000:00:12.0
+             version: 11
+             width: 32 bits
+             clock: 66MHz
+             capabilities: ohci bus_master
+             configuration: driver=ohci-pci latency=64
+             resources: irq:18 memory:f0149000-f0149fff
+           *-usbhost
+                product: OHCI PCI host controller [1D6B:1]
+                vendor: Linux 3.19.0-gbfa76d49 ohci_hcd [1D6B]
+                physical id: 1
+                bus info: usb@3
+                logical name: usb3
+                version: 3.19
+                capabilities: usb-1.10
+                configuration: driver=hub slots=5 speed=12Mbit/s
+              *-usb
+                   description: Mouse
+                   product: 2.4G Wireless BlueEye Mouse [458:F2]
+                   vendor: Genius [458]
+                   physical id: 3
+                   bus info: usb@3:3
+                   version: 0.0a
+                   capabilities: usb-2.00
+                   configuration: driver=usbhid maxpower=100mA speed=12Mbit/s
+        *-usb:1
+             description: USB controller
+             product: FCH USB EHCI Controller [1022:7808]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 12.2
+             bus info: pci@0000:00:12.2
+             version: 11
+             width: 32 bits
+             clock: 66MHz
+             capabilities: pm debug ehci cap_list
+             configuration: driver=ehci-pci latency=64
+             resources: irq:17 memory:f014a900-f014a9ff
+           *-usbhost
+                product: EHCI Host Controller [1D6B:2]
+                vendor: Linux 3.19.0-gbfa76d49 ehci_hcd [1D6B]
+                physical id: 1
+                bus info: usb@1
+                logical name: usb1
+                version: 3.19
+                capabilities: usb-2.00
+                configuration: driver=hub slots=5 speed=480Mbit/s
+        *-usb:2
+             description: USB controller
+             product: FCH USB OHCI Controller [1022:7807]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 13
+             bus info: pci@0000:00:13.0
+             version: 11
+             width: 32 bits
+             clock: 66MHz
+             capabilities: ohci
+             configuration: driver=ohci-pci latency=64
+             resources: irq:18 memory:f0148000-f0148fff
+           *-usbhost
+                product: OHCI PCI host controller [1D6B:1]
+                vendor: Linux 3.19.0-gbfa76d49 ohci_hcd [1D6B]
+                physical id: 1
+                bus info: usb@4
+                logical name: usb4
+                version: 3.19
+                capabilities: usb-1.10
+                configuration: driver=hub slots=5 speed=12Mbit/s
+        *-usb:3
+             description: USB controller
+             product: FCH USB EHCI Controller [1022:7808]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 13.2
+             bus info: pci@0000:00:13.2
+             version: 11
+             width: 32 bits
+             clock: 66MHz
+             capabilities: pm debug ehci cap_list
+             configuration: driver=ehci-pci latency=64
+             resources: irq:17 memory:f014a800-f014a8ff
+           *-usbhost
+                product: EHCI Host Controller [1D6B:2]
+                vendor: Linux 3.19.0-gbfa76d49 ehci_hcd [1D6B]
+                physical id: 1
+                bus info: usb@2
+                logical name: usb2
+                version: 3.19
+                capabilities: usb-2.00
+                configuration: driver=hub slots=5 speed=480Mbit/s
+        *-serial UNCLAIMED
+             description: SMBus
+             product: FCH SMBus Controller [1022:780B]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 14
+             bus info: pci@0000:00:14.0
+             version: 13
+             width: 32 bits
+             clock: 66MHz
+             configuration: latency=0
+        *-multimedia:1
+             description: Audio device
+             product: FCH Azalia Controller [1022:780D]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 14.2
+             bus info: pci@0000:00:14.2
+             version: 01
+             width: 64 bits
+             clock: 33MHz
+             capabilities: pm bus_master cap_list
+             configuration: driver=snd_hda_intel latency=64
+             resources: irq:16 memory:f0140000-f0143fff
+        *-isa
+             description: ISA bridge
+             product: FCH LPC Bridge [1022:780E]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 14.3
+             bus info: pci@0000:00:14.3
+             version: 11
+             width: 32 bits
+             clock: 66MHz
+             capabilities: isa bus_master
+             configuration: latency=0
+        *-pci:1
+             description: PCI bridge
+             product: FCH PCI Bridge [1022:780F]
+             vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+             physical id: 14.4
+             bus info: pci@0000:00:14.4
+             version: 40
+             width: 32 bits
+             clock: 66MHz
+             capabilities: pci subtractive_decode bus_master
+     *-pci:1
+          description: Host bridge
+          product: Family 12h/14h Processor Function 0 [1022:1700]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 101
+          bus info: pci@0000:00:18.0
+          version: 43
+          width: 32 bits
+          clock: 33MHz
+     *-pci:2
+          description: Host bridge
+          product: Family 12h/14h Processor Function 1 [1022:1701]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 102
+          bus info: pci@0000:00:18.1
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+     *-pci:3
+          description: Host bridge
+          product: Family 12h/14h Processor Function 2 [1022:1702]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 103
+          bus info: pci@0000:00:18.2
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+     *-pci:4
+          description: Host bridge
+          product: Family 12h/14h Processor Function 3 [1022:1703]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 104
+          bus info: pci@0000:00:18.3
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+          configuration: driver=k10temp
+          resources: irq:0
+     *-pci:5
+          description: Host bridge
+          product: Family 12h/14h Processor Function 4 [1022:1704]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 105
+          bus info: pci@0000:00:18.4
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+     *-pci:6
+          description: Host bridge
+          product: Family 12h/14h Processor Function 6 [1022:1718]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 106
+          bus info: pci@0000:00:18.5
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+     *-pci:7
+          description: Host bridge
+          product: Family 12h/14h Processor Function 5 [1022:1716]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 107
+          bus info: pci@0000:00:18.6
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+     *-pci:8
+          description: Host bridge
+          product: Family 12h/14h Processor Function 7 [1022:1719]
+          vendor: Advanced Micro Devices, Inc. [AMD] [1022]
+          physical id: 108
+          bus info: pci@0000:00:18.7
+          version: 00
+          width: 32 bits
+          clock: 33MHz
+     *-scsi:0
+          physical id: 1
+          logical name: scsi1
+          capabilities: emulated
+        *-disk
+             description: ATA Disk
+             product: INTEL SSDSA2M080
+             physical id: 0.0.0
+             bus info: scsi@1:0.0.0
+             logical name: /dev/sda
+             version: 02M3
+             serial: CVPO0364044X080JGN
+             size: 74GiB (80GB)
+             capabilities: partitioned partitioned:dos
+             configuration: ansiversion=5 logicalsectorsize=512 sectorsize=512 signature=000d6cf6
+           *-volume:0
+                description: Linux filesystem partition
+                vendor: Linux
+                physical id: 1
+                bus info: scsi@1:0.0.0,1
+                logical name: /dev/sda1
+                logical name: /boot
+                version: 1.0
+                serial: 13750594-5d0d-41be-9e21-274609445286
+                size: 255MiB
+                capacity: 255MiB
+                capabilities: primary bootable extended_attributes ext2 initialized
+                configuration: filesystem=ext2 label=ManjaroBoot lastmountpoint=/boot modified=2015-03-21 04:54:19 mount.fstype=ext2 mount.options=rw,relatime mounted=2015-03-20 22:22:49 state=mounted
+           *-volume:1
+                description: Linux LVM Physical Volume partition
+                physical id: 2
+                bus info: scsi@1:0.0.0,2
+                logical name: /dev/sda2
+                serial: 70c08890-417a-497d-b6ab-c0d0357a63e2
+                size: 74GiB
+                capacity: 74GiB
+                width: 512 bits
+                capabilities: primary multi encrypted luks initialized
+                configuration: bits=512 cipher=aes filesystem=luks hash=sha1 mode=xts-plain version=1
+     *-scsi:1
+          physical id: 2
+          logical name: scsi3
+          capabilities: emulated
+        *-disk
+             description: ATA Disk
+             product: Samsung SSD 840
+             physical id: 0.0.0
+             bus info: scsi@3:0.0.0
+             logical name: /dev/sdb
+             version: BB6Q
+             serial: S1D9NSADB08326L
+             size: 931GiB (1TB)
+             capabilities: partitioned partitioned:dos
+             configuration: ansiversion=5 logicalsectorsize=512 sectorsize=512 signature=8b1a26d8
+           *-volume
+                description: Linux filesystem partition
+                vendor: Linux
+                physical id: 1
+                bus info: scsi@3:0.0.0,1
+                logical name: /dev/sdb1
+                logical name: /home/emacs/vmb
+                version: 1.0
+                serial: f47593bd-dad3-4349-9959-b27f7ba9e1f4
+                size: 80GiB
+                capacity: 80GiB
+                capabilities: primary extended_attributes large_files huge_files dir_nlink extents ext2 initialized
+                configuration: filesystem=ext2 lastmountpoint=/home/emacs/vmb modified=2015-03-21 10:58:11 mount.fstype=ext4 mount.options=rw,relatime mounted=2015-03-21 10:58:11 state=mounted

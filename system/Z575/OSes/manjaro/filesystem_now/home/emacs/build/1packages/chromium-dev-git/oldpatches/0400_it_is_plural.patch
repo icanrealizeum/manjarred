@@ -1,0 +1,30 @@
+nope, plural gives same error:
+warning: unknown warning option '-Wno-unused-local-typedefs' [-Wunknown-warning-option]
+so IGNORE this patch! for now
+
+diff --git a/chrome/browser/ui/libgtk2ui/BUILD.gn b/chrome/browser/ui/libgtk2ui/BUILD.gn
+index a8455be..ba3b150 100644
+--- a/chrome/browser/ui/libgtk2ui/BUILD.gn
++++ b/chrome/browser/ui/libgtk2ui/BUILD.gn
+@@ -96,7 +96,7 @@ component("libgtk2ui") {
+         "-Wno-unused-function",
+ 
+         # G_STATIC_ASSERT uses a typedef as a static_assert.
+-        "-Wno-unused-local-typedef",
++        "-Wno-unused-local-typedefs",
+       ]
+     }
+   }
+diff --git a/sdch/BUILD.gn b/sdch/BUILD.gn
+index 3ceeeb4..d623657 100644
+--- a/sdch/BUILD.gn
++++ b/sdch/BUILD.gn
+@@ -62,7 +62,7 @@ static_library("sdch") {
+     if (is_clang) {
+       # sdch uses the pre-c++11 typedef-as-static_assert hack.
+       # https://code.google.com/p/open-vcdiff/issues/detail?id=44
+-      cflags += [ "-Wno-unused-local-typedef" ]
++      cflags += [ "-Wno-unused-local-typedefs" ]
+     }
+   }
+   configs += [ ":sdch_warnings" ]

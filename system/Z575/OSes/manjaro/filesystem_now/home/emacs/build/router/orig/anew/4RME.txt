@@ -1,0 +1,66 @@
+-------------------
+NOPE: apparently resetC is needed  or otherwise it keeps rebooting itself!
+NOPE, it's something else!!
+I'm getting this new(middle) message:
+[17179569.916000] Freeing unused kernel memory: 124k freed
+[17179570.436000] reset_btn : reset_btn is 1...press
+[17179570.448000] Algorithmics/MIPS FPU Emulator v1.5
+
+ok i guess when loading into RAM, it auto resets for whatever reason they decided to, such as, it's using the filesystem from flash instead of the one that it just booted into RAM(?) 'cause apparently the message that I get "-- BUTTON: REBOOT --" was not already in the image I booted(but was in the flash-contained image)  so... i dno, maybe it's meant to auto reboot just in case so it doesn't do any writes to flash?!
+
+---------
+note: thenow.tar.xz (or ubuntu1504tested32bit.tar.xz ) 
+ still needs the  buildroot-gcc342.tgz
+-------
+10.4 LTS needs:
+sudo apt-get install tofrodos
+sudo ln -s /usr/bin/todos /usr/bin/unix2dos
+sudo ln -s /usr/bin/fromdos /usr/bin/dos2unix
+
+dpkg -i libstdc++5.3.3.6-20~lucid1_i386.deb  (manually written this, instead of copypasted)
+
+works!
+so this is why it segfaults:
+on ubuntu 15.4 32bit(segfaults):
+root@u32vm:~/2/Belkin_F5D8235-4_v2000_v2.01.07/bin# apt-file find /lib/i386-linux-gnu/libc.so.6
+libc6: /lib/i386-linux-gnu/libc.so.6
+that's package: libc6
+
+on ubuntu 10.4 32bit (works!):
+(13m48s compiletime)
+root@emacs-laptop:~# apt-file find /lib/tls/i686/cmov/libc.so.6
+libc6-i686: /lib/tls/i686/cmov/libc.so.6
+
+that's package: libc6-i686
+which won't install on 15.4 because it says libc6 is newest!
+
+
+------------
+in ubuntu
+Linux u32vm 3.19.0-15-generic #15-Ubuntu SMP Thu Apr 16 23:32:01 UTC 2015 i686 athlon i686 GNU/Linux
+you have to take care that /bin/sh doesn't symlink to dash!!!
+I renamed sh to shold and made new symlink:
+cd /bin && ln -rs sh bash
+
+or else that 'echo -e' error again! causing havok by not interpreting the -e, and -e being implicit in fact!
+
+
+compile time in ubuntu 32bit (inside virtualbox): 13m45s until error (+2m10s afterwards til finish)
+auth.o: In function `check_passwd':/root/2/Belkin_F5D8235-4_v2000_v2.01.07/user/pppd/pppd/auth.c:1318: undefined reference to `crypt'
+auth.o: In function `plogin':/root/2/Belkin_F5D8235-4_v2000_v2.01.07/user/pppd/pppd/auth.c:1521: undefined reference to `crypt'
+
+
+note: don't try 64bit one (or if you do, make sure it does know 32bit!)
+
+needed to compile:
+apt-get install libstdc++5
+apt-get install dos2unix
+needed for make menuconfig:
+apt-get install libncurses-dev
+
+make menuconfig can work in the following dirs:
+/root/2/Belkin_F5D8235-4_v2000_v2.01.07/lib
+/root/2/Belkin_F5D8235-4_v2000_v2.01.07
+/root/2/Belkin_F5D8235-4_v2000_v2.01.07/linux which is a symlink to:
+/root/2/Belkin_F5D8235-4_v2000_v2.01.07/linux-2.6.21.x
+

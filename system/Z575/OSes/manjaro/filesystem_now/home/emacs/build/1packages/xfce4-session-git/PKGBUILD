@@ -1,0 +1,55 @@
+# $Id
+# Contributor: Diego Principe <cdprincipeat gmaildot com>
+# Contributor: Baurzhan Muftakhidinov <baurthefirst@gmail.com>
+# Maintainer: Pablo Lezaeta <prflr@gmail.com>
+
+pkgname=xfce4-session-git
+pkgver=1762.6b7f523
+pkgrel=1
+pkgdesc="A session manager for Xfce"
+arch=('i686' 'x86_64')
+license=('GPL2')
+url="http://www.xfce.org/"
+groups=('xfce4-git')
+depends=('libxfce4ui' 'libwnck' 'libsm' 'xorg-iceauth' 'upower' 'xorg-xinit' 'hicolor-icon-theme')
+makedepends=('git' 'xfce4-dev-tools-git')
+#makedepends=('git' 'xfce4-dev-tools')
+replaces=('xfce4-utils' 'xfce4-session' 'xfce4-session-svn')
+conflicts=('xfce4-session')
+provides=('xfce4-session')
+options=('!libtool')
+install=xfce4-session-git.install
+patch1="0100_redirect_log_to_tmp_not_home_and_use_uptime_prefix.patch"
+
+source=("xfce4-session::git+git://git.xfce.org/xfce/xfce4-session"
+"$patch1")
+sha512sums=('SKIP'
+            '9c0483a9c88b1e587f397d7228beae6a8c8528d757016bafbf543f26ed0f888b5859c81efde427636264b1a612fe0c9e7aacbacaee74f751d1bd2af5a2f798e0')
+
+pkgver(){
+  cd "$srcdir/xfce4-session"
+  echo $(git rev-list --count HEAD).$(git rev-parse --short HEAD)
+}
+
+prepare() {
+  cd "$srcdir/xfce4-session"
+  patch -Np1 -i "../${patch1}" 
+}
+
+build() {
+  cd "$srcdir/xfce4-session"
+  ./autogen.sh \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --libexecdir=/usr/lib/xfce4 \
+    --localstatedir=/var \
+    --disable-static \
+    --enable-debug
+  make
+}
+
+package() {
+  cd "$srcdir/xfce4-session"
+  make DESTDIR="$pkgdir" sbindir=/usr/bin install
+}
+

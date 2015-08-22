@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source ./commonscripts.bash
+
+./gopreplinks || exit 1
+
+echo 'this will execute prepare too (which means: reapplies patches)'
+time makepkg --install --incremental --force
+
+echo when done, do: git checkout .  to make sure the patches are cleaned
+echo then do: git bisect good OR git bisect bad
+echo then rerun this script which will reapply the patches on the new bisect
+
+

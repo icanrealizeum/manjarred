@@ -1,0 +1,79 @@
+reported here: https://github.com/manjaro/packages-community/issues/2
+----
+now the problem is that dkms runs after system-load-modules and there doesn't seem to be a way to fix it (but I don't know enough of systemd at the moment)
+
+--------------old:
+prevents systemd-modules-load from starting
+if I put a Before line in dkms.service
+$ sudo vim /usr/lib/systemd/system/dkms.service
+
+so looks like this:
+[Unit]
+Description=Dynamic Kernel Modules System
+Before=systemd-modules-load.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/lib/systemd/scripts/dkms start
+ExecStop=/usr/lib/systemd/scripts/dkms stop
+
+[Install]
+WantedBy=multi-user.target
+
+
+btw, this was already done after the change:
+$ sudo systemctl daemon-reload
+
+so the statuses after reboot look like this:
+
+$ systemctl status systemd-modules-load
+● systemd-modules-load.service - Load Kernel Modules
+   Loaded: loaded (/usr/lib/systemd/system/systemd-modules-load.service; static)
+   Active: inactive (dead)
+     Docs: man:systemd-modules-load.service(8)
+           man:modules-load.d(5)
+
+[emacs@manji ~]$ systemctl status dkms
+● dkms.service - Dynamic Kernel Modules System
+   Loaded: loaded (/usr/lib/systemd/system/dkms.service; enabled)
+   Active: inactive (dead) since Tue 2014-07-08 21:34:50 CEST; 2min 32s ago
+  Process: 3053 ExecStop=/usr/lib/systemd/scripts/dkms stop (code=exited, status=0/SUCCESS)
+  Process: 2358 ExecStart=/usr/lib/systemd/scripts/dkms start (code=exited, status=0/SUCCESS)
+ Main PID: 2358 (code=exited, status=0/SUCCESS)
+[emacs@manji ~]$ 
+
+===============
+[   45.082502] systemd[1]: Found dependency on systemd-modules-load.service/start
+[   45.105077] systemd[1]: Found dependency on systemd-modules-load.service/start
+[   45.125110] systemd[1]: Found dependency on systemd-modules-load.service/start
+[   45.132263] systemd[1]: Breaking ordering cycle by deleting job systemd-modules-load.service/start
+[   45.134686] systemd[1]: Job systemd-modules-load.service/start deleted to break ordering cycle starting with basic.target/start
+
+so that's why it doesn't start...
+ok, it was because I had modified systemd-modules-load.service which lives here:
+$ sudo vim /usr/lib/systemd/system/systemd-modules-load.service
+and had put dkms.service as a dependency here:
+After=systemd-readahead-collect.service systemd-readahead-replay.service
+(unseen now, 'cause fixed it)
+
+now the statuses are like this (because nfs module wasn't found):
+$ systemctl status systemd-modules-load
+● systemd-modules-load.service - Load Kernel Modules
+   Loaded: loaded (/usr/lib/systemd/system/systemd-modules-load.service; static)
+   Active: failed (Result: exit-code) since Wed 2014-07-09 02:14:55 CEST; 4min 44s ago
+     Docs: man:systemd-modules-load.service(8)
+           man:modules-load.d(5)
+  Process: 1638 ExecStart=/usr/lib/systemd/systemd-modules-load (code=exited, status=1/FAILURE)
+ Main PID: 1638 (code=exited, status=1/FAILURE)
+
+$ systemctl status dkms
+● dkms.service - Dynamic Kernel Modules System
+   Loaded: loaded (/usr/lib/systemd/system/dkms.service; enabled)
+   Active: active (exited) since Wed 2014-07-09 02:14:58 CEST; 5min ago
+  Process: 2416 ExecStart=/usr/lib/systemd/scripts/dkms start (code=exited, status=0/SUCCESS)
+ Main PID: 2416 (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/dkms.service
+
+as you can see from the date/time (not from "ago" because i waited between commands)
+dkms was executed last!

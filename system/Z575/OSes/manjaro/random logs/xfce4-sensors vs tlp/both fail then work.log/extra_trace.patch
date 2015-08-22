@@ -1,0 +1,294 @@
+diff --git a/lib/configuration.c b/lib/configuration.c
+index 00c1ce5..070e64d 100644
+--- a/lib/configuration.c
++++ b/lib/configuration.c
+@@ -311,11 +311,14 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+     if (!rc)
+         return;
+ 
++    TRACE("sensors pre read_general_config = %d",sensors->num_sensorchips);
+     sensors_read_general_config (rc, sensors);
++    TRACE("sensors aft read_general_config = %d",sensors->num_sensorchips);
+ 
+     for (i = 0; i<sensors->num_sensorchips; i++) {
+ 
+         g_snprintf (rc_chip, 8, "Chip%d", i);
++        TRACE("Chip%d/%d",i,sensors->num_sensorchips);
+ 
+         if (xfce_rc_has_group (rc, rc_chip)) {
+ 
+@@ -324,7 +327,13 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+             num_sensorchip=0;
+ 
+             if ((value = xfce_rc_read_entry (rc, "Name", NULL)) && *value) {
++                TRACE("got sensorName:");
+                 sensorName = g_strdup (value);
++                if (NULL != sensorName) {
++                  TRACE("%s\n",sensorName);
++                }else{
++                  TRACE("FAILED - g_strdup\n");
++                }
+             }
+ 
+             num_sensorchip = (gint) xfce_rc_read_int_entry (rc, "Number", 0);
+@@ -332,9 +341,9 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+             /* assert that file does not contain more information
+               than does exist on system */
+               /* ??? At least, it works. */
+-              //DBG("number of chip from file: %d, number of expected or known chips: %d.\n", num_sensorchip, sensors->num_sensorchips);
++              TRACE("number of chip from file: %d, number of expected or known chips: %d.\n", num_sensorchip, sensors->num_sensorchips);
+             g_return_if_fail (num_sensorchip < sensors->num_sensorchips);
+-            //DBG ("Success.\n");
++            TRACE ("Success.\n");
+ 
+             /* now featuring enhanced string comparison */
+             //g_assert (chip!=NULL);
+@@ -343,11 +352,11 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+               chip = (t_chip *) g_ptr_array_index (sensors->chips, k++);
+               if (chip==NULL || k==sensors->num_sensorchips)
+                   break;
+-              //DBG("k=%d, chip=%p, name=.\n", k, chip);
++              TRACE("k=%d, chip=%p\n", k, chip);
+               }
+-            while (chip!=NULL && strcmp(chip->sensorId, sensorName) != 0 );
++            while (chip!=NULL && sensorName!=NULL && strcmp(chip->sensorId, sensorName) != 0 );
+             //DBG("Found a chip.\n");
+-            if ( chip!=NULL && strcmp(chip->sensorId, sensorName)==0 ) {
++            if ( chip!=NULL && sensorName!=NULL && strcmp(chip->sensorId, sensorName)==0 ) {
+ 
+                 for (j=0; j<chip->num_features; j++) {
+                     chipfeature = (t_chipfeature *) g_ptr_array_index (
+@@ -356,6 +365,7 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+                     g_assert (chipfeature!=NULL);
+ 
+                     g_snprintf (feature, 20, "%s_Feature%d", rc_chip, j);
++            TRACE ("%s_Feature%d\n", rc_chip, j);
+ 
+                     if (xfce_rc_has_group (rc, feature)) {
+                         xfce_rc_set_group (rc, feature);
+@@ -373,6 +383,7 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+                         /* assert correctly saved file */
+                         if (strcmp(chip->sensorId, _("Hard disks")) != 0) { /* chip->name? */
+                             chipfeature = g_ptr_array_index(chip->chip_features, id);
++                              TRACE("hard disks");
+                             /* FIXME: it might be necessary to use sensors->addresses here */
+                             /* g_return_if_fail
+                                 (chipfeature->address == address); */
+@@ -384,6 +395,10 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+                             if (chipfeature->devicename)
+                                 free (chipfeature->devicename);
+                             chipfeature->devicename = g_strdup(value);
++
++                            if (chipfeature->devicename) {
++                              TRACE("chipfeature->devicename = %s",chipfeature->devicename);
++                            }
+                             /* g_free (value); */
+                         }
+ 
+@@ -392,6 +407,10 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+                             if (chipfeature->name)
+                                 free (chipfeature->name);
+                             chipfeature->name = g_strdup (value);
++
++                            if (chipfeature->name) {
++                              TRACE("chipfeature->name = %s",chipfeature->name);
++                            }
+                             /* g_free (value); */
+                         }
+ 
+@@ -400,19 +419,32 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+                             if (chipfeature->color)
+                                 free (chipfeature->color);
+                             chipfeature->color = g_strdup (value);
++
++                            if (chipfeature->color) {
++                              TRACE("chipfeature->color = %s",chipfeature->color);
++                            }
+                             /* g_free (value); */
+                         }
+ 
+                         chipfeature->show =
+                             xfce_rc_read_bool_entry (rc, "Show", FALSE);
++                            if (chipfeature->show) {
++                              TRACE("chipfeature->show = %s",chipfeature->show ? "true" : "false");
++                            }
+ 
+                         if ((value = xfce_rc_read_entry (rc, "Min", NULL))
+                                 && *value)
+                             chipfeature->min_value = atof (value);
++                            if (chipfeature->min_value) {
++                              TRACE("chipfeature->min_value = %f",chipfeature->min_value);
++                            }
+ 
+                         if ((value = xfce_rc_read_entry (rc, "Max", NULL))
+                                 && *value)
+                             chipfeature->max_value = atof (value);
++                            if (chipfeature->max_value) {
++                              TRACE("chipfeature->max_value = %f",chipfeature->max_value);
++                            }
+ 
+ 
+                     } /* end if rc_grup has feature*/
+@@ -421,7 +453,8 @@ sensors_read_config (XfcePanelPlugin *plugin, t_sensors *sensors)
+ 
+             } /* end if chip && strcmp */
+ 
+-            g_free (sensorName);
++            if (NULL != sensorName)
++                g_free (sensorName);
+ 
+         } /* end if xfce_rc_has_group (rc, rc_chip) */
+ 
+diff --git a/lib/lmsensors.c b/lib/lmsensors.c
+index 90ddc5a..1df1141 100644
+--- a/lib/lmsensors.c
++++ b/lib/lmsensors.c
+@@ -117,7 +117,7 @@ t_chip *setup_chip (GPtrArray *chips, const sensors_chip_name *name, int num_sen
+         chip->description = g_strdup (sensors_get_adapter_name (&name->bus));
+     #endif
+ 
+-    TRACE ("leaves setup_chip");
++    TRACE ("leaves setup_chip  descr=%s", chip->description!=NULL?chip->description:"NULL");
+ 
+     return chip;
+ }
+@@ -252,7 +252,7 @@ t_chipfeature *find_chipfeature (const sensors_chip_name *name, t_chip *chip,
+     double sensorFeature;
+     t_chipfeature *chipfeature;
+ 
+-    TRACE ("enters find_chipfeature");
++    TRACE ("enters find_chipfeature v3");
+ 
+     chipfeature = g_new0 (t_chipfeature, 1);
+ 
+@@ -266,7 +266,7 @@ t_chipfeature *find_chipfeature (const sensors_chip_name *name, t_chip *chip,
+             if (res==0) {
+                 setup_chipfeature (chipfeature, number, sensorFeature);
+                 chip->num_features++;
+-                TRACE("leaves find_chipfeature");
++                TRACE("leaves find_chipfeature name=%s", name!=NULL?name:"NULL");
+                 return chipfeature;
+             }
+         }
+@@ -285,7 +285,7 @@ t_chipfeature *find_chipfeature (const sensors_chip_name *name, t_chip *chip,
+     double sensorFeature;
+     t_chipfeature *chipfeature;
+ 
+-    TRACE ("enters find_chipfeature");
++    TRACE ("enters find_chipfeature v4");
+ 
+     switch (feature->type) {
+         case SENSORS_FEATURE_IN:
+@@ -333,7 +333,7 @@ t_chipfeature *find_chipfeature (const sensors_chip_name *name, t_chip *chip,
+             setup_chipfeature_libsensors4 (chipfeature, feature, number,
+                                            sensorFeature, name);
+             chip->num_features++;
+-            TRACE("leaves find_chipfeature");
++            TRACE("leaves find_chipfeature name=%s feats=%d", chipfeature->name, chip->num_features);
+             return chipfeature;
+         }
+     }
+@@ -357,7 +357,7 @@ int initialize_libsensors (GPtrArray *chips)
+     const sensors_feature_data *sfd;
+ 		int nr2;
+ 
+-    TRACE("enters initialize_libsensors");
++    TRACE("enters initialize_libsensors libsensors3");
+ 
+     errno = 0;
+     file = fopen("/etc/sensors.conf", "r");
+@@ -409,18 +409,20 @@ int initialize_libsensors (GPtrArray *chips)
+     }
+ #else
+     const sensors_feature *sfd;
+-    TRACE("enters initialize_libsensors");
++    TRACE("enters initialize_libsensors version over four");
+ 
+     sensorsInit = sensors_init (NULL);
+     if (sensorsInit != 0)
+     {
+         g_printf(_("Error: Could not connect to sensors!"));
++    TRACE("Error: Could not connect to sensors!");
+         /* FIXME: better popup window? write to special logfile? */
+         return -2;
+     }
+ 
+     num_sensorchips = 0;
+     detected_chip = sensors_get_detected_chips (NULL, &num_sensorchips);
++    TRACE("num_sensorchips after detect: %d\n", num_sensorchips);
+     /* iterate over chips on mainboard */
+     while (detected_chip!=NULL)
+     {
+diff --git a/lib/middlelayer.c b/lib/middlelayer.c
+index cf2e281..404a74c 100644
+--- a/lib/middlelayer.c
++++ b/lib/middlelayer.c
+@@ -66,18 +66,22 @@ initialize_all (GPtrArray **chips, gboolean *suppressmessage)
+ 
+      #ifdef HAVE_LIBSENSORS
+     res += initialize_libsensors (*chips);
++    TRACE("libsensors result so far: %i chips len:%d",res, (*chips)->len);
+     #endif
+ 
+     #ifdef HAVE_HDDTEMP
+     res += initialize_hddtemp (*chips, suppressmessage);
++    TRACE("hddtemp result so far: %i chips len:%d",res, (*chips)->len);
+     #endif
+ 
+     #ifdef HAVE_ACPI
+     res += initialize_ACPI (*chips);
++    TRACE("acpi result so far: %i chips len:%d",res, (*chips)->len);
+     #endif
+ 
+     #ifdef HAVE_NVIDIA
+     res += initialize_nvidia (*chips);
++    TRACE("nvidia result so far: %i chips len:%d",res, (*chips)->len);
+ 	#endif
+ 	
+     TRACE ("leaves initialize_all, chips->len=%d", (*chips)->len);
+diff --git a/panel-plugin/sensors-plugin.c b/panel-plugin/sensors-plugin.c
+index fd64c06..a39757f 100644
+--- a/panel-plugin/sensors-plugin.c
++++ b/panel-plugin/sensors-plugin.c
+@@ -703,13 +703,14 @@ sensors_set_text_panel_label (t_sensors *sensors, gint numCols, gint itemsToDisp
+ static int
+ count_number_checked_sensor_features (t_sensors *sensors)
+ {
+-    gint chipNum, feature, itemsToDisplay;
++    gint chipNum, feature, itemsToDisplay, validbutnoshow;
+     t_chipfeature *chipfeature;
+     t_chip *chip;
+ 
+-    TRACE ("enters count_number_checked_sensor_features");
++    TRACE ("enters count_number_checked_sensor_features (num_sensorchips=%d)",sensors->num_sensorchips);
+ 
+     itemsToDisplay = 0;
++    validbutnoshow = 0;
+ 
+ 
+     for (chipNum=0; chipNum < sensors->num_sensorchips; chipNum++) {
+@@ -723,12 +724,12 @@ count_number_checked_sensor_features (t_sensors *sensors)
+             if (chipfeature->valid == TRUE && chipfeature->show == TRUE)
+                 itemsToDisplay++;
+ 
+-            //if (chipfeature->valid == TRUE)
+-                //feature++;
++            if (chipfeature->valid == TRUE)
++              validbutnoshow++;
+         }
+     }
+ 
+-    TRACE ("leaves count_number_checked_sensor_features with %d", itemsToDisplay);
++    TRACE ("leaves count_number_checked_sensor_features with %d %d", itemsToDisplay,validbutnoshow);
+ 
+     return itemsToDisplay;
+ }
+@@ -1029,7 +1030,7 @@ execute_command (GtkWidget *widget, GdkEventButton *event, gpointer data)
+     }
+     else {
+         TRACE ("leaves execute_command with FALSE");
+-        return TRUE;
++        return FALSE;
+     }
+ }
+ 

@@ -1,0 +1,1 @@
+#define UTS_RELEASE "3.16.0-1rc6-MANJARO"

@@ -1,0 +1,182 @@
+diff --git a/d1x-rebirth b/d1x-rebirth
+index 681299c..cf256ef 100755
+Binary files a/d1x-rebirth and b/d1x-rebirth differ
+diff --git a/main/cntrlcen.c b/main/cntrlcen.c
+index 004eeb2..256a035 100644
+--- a/main/cntrlcen.c
++++ b/main/cntrlcen.c
+@@ -110,7 +110,7 @@ int Control_center_destroyed = 0;
+ fix Countdown_timer=0;
+ int Countdown_seconds_left=0, Total_countdown_time=0;		//in whole seconds
+ 
+-static const int	Alan_pavlish_reactor_times[NDL] = {50, 45, 40, 35, 30};
++static const int	Alan_pavlish_reactor_times[NDL] = {350, 345, 340, 335, 330};
+ 
+ //	-----------------------------------------------------------------------------
+ //	Called every frame.  If control center been destroyed, then actually do something.
+diff --git a/main/player.h b/main/player.h
+index e19eb78..c04785f 100644
+--- a/main/player.h
++++ b/main/player.h
+@@ -31,11 +31,11 @@ COPYRIGHT 1993-1998 PARALLAX SOFTWARE CORPORATION.  ALL RIGHTS RESERVED.
+ #define MAX_MULTI_PLAYERS MAX_PLAYERS+3
+ 
+ // Initial player stat values
+-#define INITIAL_ENERGY  i2f(100)    // 100% energy to start
+-#define INITIAL_SHIELDS i2f(100)    // 100% shields to start
++#define INITIAL_ENERGY  i2f(200)    // 100% energy to start
++#define INITIAL_SHIELDS i2f(200)    // 100% shields to start
+ 
+-#define MAX_ENERGY      i2f(200)    // go up to 200
+-#define MAX_SHIELDS     i2f(200)
++#define MAX_ENERGY      i2f(16383)    // go up to 200
++#define MAX_SHIELDS     i2f(16383)
+ 
+ #define INITIAL_LIVES               3   // start off with 3 lives
+ 
+@@ -51,8 +51,8 @@ COPYRIGHT 1993-1998 PARALLAX SOFTWARE CORPORATION.  ALL RIGHTS RESERVED.
+ #define CALLSIGN_LEN                8       // so can use as filename (was: 12)
+ 
+ // Amount of time player is cloaked.
+-#define CLOAK_TIME_MAX          (F1_0*30)
+-#define INVULNERABLE_TIME_MAX   (F1_0*30)
++#define CLOAK_TIME_MAX          (F1_0*320)
++#define INVULNERABLE_TIME_MAX   (F1_0*320)
+ 
+ #define PLAYER_STRUCT_VERSION 	16		//increment this every time player struct changes
+ 
+diff --git a/main/powerup.c b/main/powerup.c
+index 1fb320f..93e9820 100644
+--- a/main/powerup.c
++++ b/main/powerup.c
+@@ -169,8 +169,32 @@ int pick_up_energy(void)
+ {
+ 	int	used=0;
+ 
++				Players[Player_num].invulnerable_time = GameTime64;
++				Players[Player_num].flags |= PLAYER_FLAGS_INVULNERABLE;
++				powerup_basic(7, 14, 21, INVULNERABILITY_SCORE, "%s!",TXT_INVULNERABILITY);
++
++				Players[Player_num].cloak_time = GameTime64;
++				Players[Player_num].flags |= PLAYER_FLAGS_CLOAKED;
++				ai_do_cloak_stuff();
++				#ifdef NETWORK
++				if (Game_mode & GM_MULTI)
++					multi_send_cloak();
++				#endif
++				powerup_basic(-10,-10,-10, CLOAK_SCORE, "%s!",TXT_CLOAKING_DEVICE);
++
++
++			pick_up_secondary(MEGA_INDEX,10);
++
++			Players[Player_num].flags |= PLAYER_FLAGS_GOLD_KEY;
++			powerup_basic(15, 15, 7, KEY_SCORE, "%s %s",TXT_YELLOW,TXT_ACCESS_GRANTED);
++			Players[Player_num].flags |= PLAYER_FLAGS_RED_KEY;
++			powerup_basic(15, 0, 0, KEY_SCORE, "%s %s",TXT_RED,TXT_ACCESS_GRANTED);
++
++			Players[Player_num].flags |= PLAYER_FLAGS_BLUE_KEY | PLAYER_FLAGS_MAP_ALL;
++			powerup_basic(0, 0, 15, KEY_SCORE, "%s %s",TXT_BLUE,TXT_ACCESS_GRANTED);
++
+ 	if (Players[Player_num].energy < MAX_ENERGY) {
+-		Players[Player_num].energy += 3*F1_0 + 3*F1_0*(NDL - Difficulty_level);
++		Players[Player_num].energy += 3*F1_0*10;//3*F1_0 + 3*F1_0*(NDL - Difficulty_level);
+ 		if (Players[Player_num].energy > MAX_ENERGY)
+ 			Players[Player_num].energy = MAX_ENERGY;
+ 		powerup_basic(15,15,7, ENERGY_SCORE, "%s %s %d",TXT_ENERGY,TXT_BOOSTED_TO,f2ir(Players[Player_num].energy));
+@@ -242,7 +266,7 @@ int do_powerup(object *obj)
+ 			break;
+ 		case POW_SHIELD_BOOST:
+ 			if (Players[Player_num].shields < MAX_SHIELDS) {
+-				Players[Player_num].shields += 3*F1_0 + 3*F1_0*(NDL - Difficulty_level);
++				Players[Player_num].shields += 3*F1_0*10;//3*F1_0 + 3*F1_0*(NDL - Difficulty_level);
+ 				if (Players[Player_num].shields > MAX_SHIELDS)
+ 					Players[Player_num].shields = MAX_SHIELDS;
+ 				powerup_basic(0, 0, 15, SHIELD_SCORE, "%s %s %d",TXT_SHIELD,TXT_BOOSTED_TO,f2ir(Players[Player_num].shields));
+@@ -274,8 +298,8 @@ int do_powerup(object *obj)
+ 			break;
+ 
+ 		case POW_KEY_BLUE:
+-			if (Players[Player_num].flags & PLAYER_FLAGS_BLUE_KEY)
+-				break;
++//			if (Players[Player_num].flags & PLAYER_FLAGS_BLUE_KEY)
++//				break;
+ #ifdef NETWORK
+ 			multi_send_play_sound(Powerup_info[obj->id].hit_sound, F1_0);
+ #endif
+@@ -288,8 +312,8 @@ int do_powerup(object *obj)
+ 				used=1;
+ 			break;
+ 		case POW_KEY_RED:
+-			if (Players[Player_num].flags & PLAYER_FLAGS_RED_KEY)
+-				break;
++//			if (Players[Player_num].flags & PLAYER_FLAGS_RED_KEY)
++//				break;
+ #ifdef NETWORK
+ 			multi_send_play_sound(Powerup_info[obj->id].hit_sound, F1_0);
+ #endif
+@@ -302,8 +326,8 @@ int do_powerup(object *obj)
+ 				used=1;
+ 			break;
+ 		case POW_KEY_GOLD:
+-			if (Players[Player_num].flags & PLAYER_FLAGS_GOLD_KEY)
+-				break;
++//			if (Players[Player_num].flags & PLAYER_FLAGS_GOLD_KEY)
++//				break;
+ #ifdef NETWORK
+ 			multi_send_play_sound(Powerup_info[obj->id].hit_sound, F1_0);
+ #endif
+@@ -391,6 +415,7 @@ int do_powerup(object *obj)
+ 			break;
+ 		case	POW_CLOAK:
+ 			if (Players[Player_num].flags & PLAYER_FLAGS_CLOAKED) {
++				Players[Player_num].cloak_time = GameTime64;
+ 				HUD_init_message(HM_DEFAULT|HM_REDUNDANT|HM_MAYDUPL, "%s %s!",TXT_ALREADY_ARE,TXT_CLOAKED);
+ 				break;
+ 			} else {
+@@ -407,6 +432,7 @@ int do_powerup(object *obj)
+ 			}
+ 		case	POW_INVULNERABILITY:
+ 			if (Players[Player_num].flags & PLAYER_FLAGS_INVULNERABLE) {
++				Players[Player_num].invulnerable_time = GameTime64;
+ 				HUD_init_message(HM_DEFAULT|HM_REDUNDANT|HM_MAYDUPL, "%s %s!",TXT_ALREADY_ARE,TXT_INVULNERABLE);
+ 				break;
+ 			} else {
+diff --git a/main/powerup.h b/main/powerup.h
+index dd8d340..2e42f8d 100644
+--- a/main/powerup.h
++++ b/main/powerup.h
+@@ -60,7 +60,7 @@ enum powerup_type_t
+ 	POW_MEGAWOW = 27,
+ };
+ 
+-#define VULCAN_AMMO_MAX             (392*2)
++#define VULCAN_AMMO_MAX             (40*392*2)
+ #define VULCAN_WEAPON_AMMO_AMOUNT   196
+ #define VULCAN_AMMO_AMOUNT          (49*2)
+ 
+diff --git a/main/weapon.c b/main/weapon.c
+index fe8044a..1724924 100644
+--- a/main/weapon.c
++++ b/main/weapon.c
+@@ -39,7 +39,7 @@ const ubyte Primary_weapon_to_powerup[MAX_PRIMARY_WEAPONS] = {POW_LASER,POW_VULC
+ //for each Secondary weapon, what kind of powerup gives weapon
+ const ubyte Secondary_weapon_to_powerup[MAX_SECONDARY_WEAPONS] = {POW_MISSILE_1,POW_HOMING_AMMO_1,POW_PROXIMITY_WEAPON,POW_SMARTBOMB_WEAPON,POW_MEGA_WEAPON};
+ const int Primary_ammo_max[MAX_PRIMARY_WEAPONS] = {0, VULCAN_AMMO_MAX, 0, 0, 0};
+-const ubyte Secondary_ammo_max[MAX_SECONDARY_WEAPONS] = {20, 10, 10, 5, 5};
++const ushort Secondary_ammo_max[MAX_SECONDARY_WEAPONS] = {16383, 16383, 16383,16383, 16383};
+ weapon_info Weapon_info[MAX_WEAPON_TYPES];
+ int	N_weapon_types=0;
+ sbyte   Primary_weapon, Secondary_weapon;
+diff --git a/main/weapon.h b/main/weapon.h
+index 51c9800..e1eb2b3 100644
+--- a/main/weapon.h
++++ b/main/weapon.h
+@@ -139,7 +139,7 @@ extern void auto_select_weapon(int weapon_type);        //parm is primary or sec
+ extern void select_weapon(int weapon_num, int secondary_flag, int print_message,int wait_for_rearm);
+ 
+ extern const int  Primary_ammo_max[MAX_PRIMARY_WEAPONS];
+-extern const ubyte	Secondary_ammo_max[MAX_PRIMARY_WEAPONS];
++extern const ushort	Secondary_ammo_max[MAX_PRIMARY_WEAPONS];
+ 
+ #define HAS_WEAPON_FLAG 1
+ #define HAS_ENERGY_FLAG 2

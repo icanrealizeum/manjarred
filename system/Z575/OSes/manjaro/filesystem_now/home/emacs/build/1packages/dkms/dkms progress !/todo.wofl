@@ -1,0 +1,16 @@
+* add option autouninstall which just like autoinstall, except it uninstalls all dkms modules for the specified kernel (-k)
+* add code for detection of source code changes
+  \ eg. file
+  \ /var/lib/dkms/vboxhost/4.3.14/source/vboxnetadp/linux/VBoxNetAdp-linux.c
+  \ changes, we can then compare to (if existing):
+  \ /var/lib/dkms/vboxhost/4.3.14/build/vboxnetadp/linux/VBoxNetAdp-linux.c
+  \ the folder 'build' wouldn't exist on first build
+* see why this error (just after a reinstall of virtualbox-host-dkms
+  \ sudo dkms autoinstall --all
+  \ Error! echo
+  \ Your kernel headers for kernel  cannot be found at
+  \ /usr/lib/modules//build or /usr/lib/modules//source.
+  \ Error! echo
+  \ Your kernel headers for kernel  cannot be found at
+  \ /usr/lib/modules//build or /usr/lib/modules//source.
+

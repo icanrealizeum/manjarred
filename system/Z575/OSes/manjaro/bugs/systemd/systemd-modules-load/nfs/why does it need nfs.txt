@@ -1,0 +1,13 @@
+solved:
+/usr/lib/modules-load.d/nfs-utils.conf
+with contents:
+nfs
+
+exists because packages nfs-utils is installed
+so: pacman -Rs nfs-utils
+
+also mentioned this here: https://github.com/manjaro/packages-community/issues/2
+as a side note.
+------
+there's no trace of nfs to be loaded and yet this tries to load it:
+Jul 08 19:41:35 manji systemd-modules-load[7172]: Failed to find module 'nfs'

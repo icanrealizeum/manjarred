@@ -1,0 +1,100 @@
+GRUB_DEFAULT=saved
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR=Manjaro
+GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug earlyprintk=vga dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt ; file net/netfilter/* +pflmt\" i8042.debug acpi_backlight=vendor nohz=on rcu_nocbs=1-3 pcie_aspm=force radeon.audio=0 radeon.lockup_timeout=120000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 radeon.dynclks=0 slub_debug=U noefi"
+#file drivers/acpi/* +pflmt
+#
+#slub_debug=U  is for kasan and nicer stack trace, see: https://github.com/google/kasan/wiki  or to switch off: slub_debug=- 
+#acpi_backlight=vendor  changing backlight won't work after this
+#nox2apic intremap=off"
+#nox2apic"
+#intremap=off"
+#Kernel panic during suspend
+#Debugging suspend/resume issues can be difficult if the kernel panics during suspend, especially late in the suspend because console messages are disabled. One can stop console messages from being suspended by using the kernel parameter no_console_suspend: no_console_suspend  src:https://wiki.ubuntu.com/Kernel/KernelDebuggingTricks also seen in: Documentation/kernel-parameters.txt
+#i8042.debug logs all keys so don't use it
+#the extra params from below(not present above) are:
+#nohz=on rcu_nocbs=1-3 pcie_aspm=force radeon.audio=0 radeon.lockup_timeout=0 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=1 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1"
+#
+#GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 radeon.audio=0 radeon.lockup_timeout=0 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=1 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 apic=debug earlyprintk=vga radeon.modeset=1 radeon.dpm=1 radeon.runpm=1"
+# <- putting a blank line here, makes vim lose syntax coloring when opening this file again later on
+# XXX: any fbcon= params have no effect when fbcon is a module; only when they are build into kernel they matter! as can be seen in sourcecode: drivers/video/console/fbcon.c
+# dynamic_debug.verbose=1 - see whats going on in dyndbg=value processing; for more info see: Documentation/dynamic-debug-howto.txt
+# radeon.modeset=0 will keep console in textmode and X won't start due to KMS not being supported, unless this option is 1 (don't forget you need radeon radeonfb and fb and fbcon modules loaded or blackscreen can happen esp. when radeonfb isn't loaded) - also enable UMS if you have =0 here or else radeon module won't load (even so, X won't start without KMS).
+# blank screen after suspend/resume ? hpet=disable acpi_sleep=s3_bios  https://bbs.archlinux.org/viewtopic.php?id=135979
+# disable acpi debug for now: acpi.debug_layer=0xfbff0000 acpi.debug_level=0xFFFFFFFD
+# nomodeset"
+#fbcon=map:1 when using 2 or more ati cards to avoid black console https://wiki.archlinux.org/index.php/ATI#Black_screen_with_mouse_cursor_on_resume_from_suspend_in_X
+#nomodeset was used for fglrx, let's not use it for radeon - has no effect with radeon (and radeonfb and fbcon) so we can leave it in.
+#earlyprintk=vga,dbgp,keep" this needs usb cable connected to another computer or something, see: Documentation/x86/earlyprintk.txt  - tested, only dbgp needs the USB debug device connected; vga is ok.
+#added: nomodeset for fglrx, catalyst-test package says so.
+#nofb
+#fbcon=scrollback:4096k fbcon=font:ProFont6x11 radeon.audio=0 radeon.lockup_timeout=0 radeon.test=0 radeon.agpmode=0 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.dpm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.modeset=1 radeon.dynclks=1 radeon.r4xx_atom=0 radeon.runpm=0 radeonfb radeon.fastfb=1
+#nohz_full=1-3" don't need this if CONFIG_NO_HZ_FULL_ALL=y
+
+#radeon.hard_reset=1 or 0 works either way
+#radeon.fastfb=1 works, like 0 also works - no idea if it's faster with =1
+#radeon.modeset=1 must be 1 (or unspecified ie. don't put it as kernel cmdline) or else (when 0) it will keep the grub initrd messages and now show anything on screen, but system still works normally - just can't see anything, no fb no X nothing else other than the initial initrd screen that grub gives to kernel
+
+#radeon.test=1 appears to lock up on a black cursorless screen right before boot but in fact it takes about 50 seconds to do the test and then boots; also =3 takes 80 sec; using =0 is immediate boot
+#radeon.benchmark=1 works ok with a 1-2 sec delay
+#lockup_timeout=0  - this has a default of 10 seconds but has no effect when 0
+#when kernel isn't patched, radeon.runpm=1 (or unspecified) locks up(only when hybrid mode on, aka from bios Dynamic on the gfx card which enables the discrete graphics card - usually disabled aka UDMA) after 10 seconds(boot time) freezing the text cursor too! don't even have to enter luks password to mount root, just wait there until 10 seconds are up
+#this patch https://bugzilla.kernel.org/show_bug.cgi?id=72701#c21  makes runpm=1 (with dpm=1 or 0) to not crash/freeze, but runpm=-1 will freeze(10sec into boot)! or runpm=0 will freeze only when echo 'OFF' > /sys/kernel/debug/vgaswitcheroo/switch  ; with runpm=1 and this patch, echo OFF won't freeze either
+#
+
+#fsck.mode=force  unsure if it does it while rw is on or it remounts ro then rw when done? or simply does it before that specific fs gets mounted
+#fbcon=scrollback:4096k seems to be max, because 5096k and 14096k offer no scrollback!
+#fbcon=font:MINI4x6" too hard to read!
+#seems memory_corruption_check=1  was already in effect even if not specified
+#nofb
+#too much debug(slow!): acpi.debug_layer=0xffffffff acpi.debug_level=0xffffffff 
+#pnp.debug=1 loglevel=7"
+#quiet splash
+
+GRUB_CMDLINE_LINUX="cryptdevice=/dev/disk/by-uuid/70c08890-417a-497d-b6ab-c0d0357a63e2:cryptManjaro:allow-discards"
+
+# If you want to enable the save default function, uncomment the following
+# line, and set GRUB_DEFAULT to saved.
+GRUB_SAVEDEFAULT=true
+
+# Preload both GPT and MBR modules so that they are not missed
+GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+
+# Uncomment to enable Hidden Menu, and optionally hide the timeout count
+#GRUB_HIDDEN_TIMEOUT=5
+#GRUB_HIDDEN_TIMEOUT_QUIET=true
+
+# Uncomment to use basic console
+GRUB_TERMINAL_INPUT=console
+
+# Uncomment to disable graphical terminal
+GRUB_TERMINAL_OUTPUT=console
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo'
+#GRUB_GFXMODE=auto
+GRUB_GFXMODE=1366x768x32
+
+# Uncomment to allow the kernel use the same resolution used by grub
+GRUB_GFXPAYLOAD_LINUX=keep
+
+# Uncomment if you want GRUB to pass to the Linux kernel the old parameter
+# format "root=/dev/xxx" instead of "root=/dev/disk/by-uuid/xxx"
+#GRUB_DISABLE_LINUX_UUID=true
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_RECOVERY=true
+
+# Uncomment and set to the desired menu colors.  Used by normal and wallpaper
+# modes only.  Entries specified as foreground/background.
+GRUB_COLOR_NORMAL="light-gray/black"
+GRUB_COLOR_HIGHLIGHT="green/black"
+
+# Uncomment one of them for the gfx desired, a image background or a gfxtheme
+#GRUB_BACKGROUND="/usr/share/grub/background.png"
+#GRUB_THEME="/path/to/gfxtheme"
+
+# Uncomment to get a beep at GRUB start
+#GRUB_INIT_TUNE="480 440 1"
+

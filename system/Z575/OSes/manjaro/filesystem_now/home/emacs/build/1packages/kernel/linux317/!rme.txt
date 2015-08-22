@@ -1,0 +1,16 @@
+0. maybe modify PKGBUILD to get next version
+1. run ./justextractandprep
+2. see if needed to update sha512sum for .sign or other (new)files, and you get the sha512sum by checking sign files with: cd into sources folder then run:
+./signcheck.bash linux-3.16.tar.sign_ 
+for example.
+then edit the appropriate sha512sums entry in PKGBUILD (order matters)
+
+3. diffconfigs config.x86_64 .config
+see what options are new and need rechecking
+
+4. ./updatekernel
+to install in grub
+or just ./recompile
+to recompile
+
+

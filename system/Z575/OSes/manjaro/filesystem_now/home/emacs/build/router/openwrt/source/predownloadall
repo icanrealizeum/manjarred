@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# http://wiki.openwrt.org/doc/faq/development#how.can.i.speed.up.build.process
+#this must be in .config
+### CONFIG_LOCALMIRROR="file:///home/emacs/build/router/openwrt/mirror"
+
+#will interfere with openwrt build if set
+#see http://wiki.openwrt.org/doc/howto/buildroot.exigence
+#they weren't set now, but just making sure                                     
+unset GREP_OPTIONS
+unset SED
+
+if pwd|grep " "; then
+  echo "`pwd` must not contain any spaces"
+  exit 1
+fi
+
+pushd .
+cd openwrt
+mkdir -p /tmp/logs >/dev/null 2>&1
+if [[ "$#" -le 0 ]]; then
+  echo "debug on and -j1; pass any params to -j4 and no debug; you should've already set your .config via ./mm"
+  extra="V=s -j1"
+  #-j1
+else
+  echo "debug off"
+  extra="-j4"
+fi
+echo "This downloads all the stuff that you selected in .config that would otherwise autodownload when compiling via ./go"
+time make $extra download
+popd
+

@@ -1,0 +1,20 @@
+--- makepkg.bad	2014-08-27 01:19:26.000000000 +0200
++++ makepkg	2014-08-27 01:25:47.000000000 +0200
+@@ -590,7 +590,7 @@ extract_git() {
+ #		exit 1
+ local ledir001abc="${dir##*/}"
+ if [[ VCSINCREMENTAL -ne 0 && -d "${ledir001abc}" ]]; then
+-	pushd pwd` &>/dev/null
++	pushd $(pwd) &>/dev/null
+ 	cd_safe "${ledir001abc}"
+ 	git pull
+ 	popd &>/dev/null
+@@ -685,7 +685,7 @@ extract_hg() {
+ 	if [[ -n $fragment ]]; then
+ 		case ${fragment%%=*} in
+ 			branch|revision|tag)
+-				ref=('-u "${fragment##*=}")
++				ref=('-u' "${fragment##*=}")
+ 				;;
+ 			*)
+ 				error "$(gettext "Unrecognized reference: %s")" "${fragment}"

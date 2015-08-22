@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#pushd .
+basedir="syslinux-6.03-pre20"
+diff -urpN -X "./dontdiff" -- "${basedir}.orig" "${basedir}" >"le.patch"
+#popd
+

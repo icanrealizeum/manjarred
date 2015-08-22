@@ -1,0 +1,24 @@
+no idea how to fix this while gsync
+
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux32/gn.sha1' in '/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root'
+File gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec for src/buildtools/linux32/gn does not exist.
+0> File gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec for src/buildtools/linux32/gn does not exist, skipping.
+Error: Command download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux32/gn.sha1 returned non-zero exit status 1 in /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root
+done doing stuff
+
+
+-----------------------
+WARNING: there's no code to apply *.patch from current folder, yet!
+but they are needed to get to:
+
+warning: unknown warning option '-Wno-unused-local-typedefs' [-Wunknown-warning-option]
+In file included from ../../chrome/browser/ui/webui/options/autofill_options_handler.cc:32:
+../../third_party/libaddressinput/src/cpp/include/libaddressinput/address_ui_component.h:18:10: fatal error: 'libaddressinput/address_field.h' file not found
+#include <libaddressinput/address_field.h>
+         ^
+1 warning and 1 error generated.
+
+
+and here is where I give up on Chrome/Chromium wtw back to firefox, slow but wtw
+
+

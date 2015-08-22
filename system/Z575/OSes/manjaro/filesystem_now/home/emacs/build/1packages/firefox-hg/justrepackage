@@ -1,0 +1,8 @@
+if [ ! -L "/tmp/makepkg" ]; then
+	echo run ./gopreplinks
+	exit 1
+else
+	#log? time makepkg --noextract -L -f
+	#time makepkg --noextract --repackage
+	time makepkg --repackage --force
+fi

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#PKGBUILD-environment simulation
+
+moo() {
+  echo "in moo: $@"
+  exit 1
+}
+
+set -o pipefail
+set -E
+set -e -x
+trap "moo something $-" ERR
+
+#set +o pipefail
+#set +E
+set +e
+echo $-
+restoretrap="`trap -p | grep -E "ERR$"`"
+trap -- "" ERR
+patch -Np0 -i /tmp/makepkg/chromium-dev-git/src/chromium-system-jinja-r7.patch | grep -E "(FAILEF|ignorec)" #; true )
+echo $?
+echo "${PIPESTATUS[@]}"
+#; true ; echo $?
+#randomdasjdlkajsl #only this triggers moo
+#so why does it get triggered at the patch line, within PKGBUILD?
+#yep nevermind, when grep fails, it does get moo triggered, if the trap is set! regardless of E or e setting!
+echo muah
+#$restoretrap  #work too
+eval "$restoretrap"
+testingrandomcrap
+echo SHOULD NOT HAPPEN
+

@@ -1,0 +1,69 @@
+[   18.090818] NetworkManager[2367]: <warn> failed to allocate link cache: (-26) Protocol mismatch
+[   18.094404] mdm-binary[3061]: DEBUG: mdm_slave_child_handler: Handling children...
+[   18.097653] mdm-binary[3061]: DEBUG: Sending VT_NUM == -1 for slave 3061
+[   18.100699] device: 'vcs7': device_add
+[   18.100955] device: 'vcsa7': device_add
+[   18.111506] mdm-binary[2593]: DEBUG: Got VT_NUM == -1
+[   18.112801] r8169 0000:01:00.0: firmware: direct-loading firmware rtl_nic/rtl8105e-1.fw
+[   18.112809] fw_set_page_data: fw-rtl_nic/rtl8105e-1.fw buf=ffff88040605b980 data=ffffc900018fe000 size=2076
+[   18.120709] mdm-binary[3061]: DEBUG: mdm_server_start: :0
+[   18.124125] mdm-binary[3061]: DEBUG: mdm_auth_secure_display: Setting up access for :0
+[   18.126530] mdm-binary[3061]: DEBUG: mdm_auth_secure_display: Setting up access
+[   18.129134] mdm-binary[3061]: DEBUG: mdm_auth_secure_display: Setting up access for :0 - 1 entries
+[   18.131662] mdm-binary[3061]: DEBUG: Sending COOKIE == <secret> for slave 3061
+[   18.134344] mdm-binary[2593]: DEBUG: Handling message: 'COOKIE 3061 e8...'
+[   18.136843] mdm-binary[2593]: DEBUG: Got COOKIE == <secret>
+[   18.139388] mdm-binary[3061]: DEBUG: Sending AUTHFILE == <secret> for slave 3061
+[   18.141994] mdm-binary[2593]: DEBUG: Got AUTHFILE == /var/lib/mdm/:0.Xauth
+[   18.144563] mdm-binary[3061]: DEBUG: Forking X server process
+[   18.147146] mdm-binary[3061]: DEBUG: mdm_server_spawn: Forked server on pid 3068
+[  OK  ] Started Network Time Service.
+[   18.150234] mdm-binary[3061]: DEBUG: do_server_wait: Before mainloop waiting for server
+[  OK  ] Reached target Multi-User System.
+[   18.157709] mdm-binary[3068]: DEBUG: mdm_server_spawn: '/usr/bin/Xorg :0 -audit 0 -auth /var/lib/mdm/:0.Xauth -nolisten tcp vt7'
+         Starting TLP system startup/shutdown...
+[   18.164336] ntpd[3065]: ntpd 4.2.7p441@1.2483-o Tue May  6 10:14:26 UTC 2014 (1): Starting
+[  OK  ] Reached target Graphical Interface.
+[   18.269551] device class 'leds': registering
+[   18.274648] device: 'nvram': device_add
+[   18.278793] Non-volatile memory driver v1.3
+[   18.284856] r8169 0000:01:00.0 enp1s0: link down
+[   18.292574] NetworkManager[2367]: <warn> /sys/devices/virtual/net/lo: couldn't determine device driver; ignoring...
+[   18.295886] NetworkManager[2367]: <warn> /sys/devices/virtual/net/lo: couldn't determine device driver; ignoring...
+[   18.296177] thinkpad_acpi: ThinkPad ACPI Extras v0.25
+[   18.296179] thinkpad_acpi: http://ibm-acpi.sf.net/
+[   18.296180] thinkpad_acpi: ThinkPad BIOS 54CN18WW, EC unknown
+[   18.296181] thinkpad_acpi: Lenovo LENOVO, model Sabine
+[   18.296444] bus: 'platform': add driver thinkpad_acpi
+[   18.296500] bus: 'platform': add driver thinkpad_hwmon
+[   18.296536] Registering platform device 'thinkpad_acpi'. Parent at platform
+[   18.296537] device: 'thinkpad_acpi': device_add
+[   18.296545] bus: 'platform': add device thinkpad_acpi
+[   18.296581] bus: 'platform': driver_probe_device: matched device thinkpad_acpi with driver thinkpad_acpi
+[   18.296584] bus: 'platform': really_probe: probing driver thinkpad_acpi with device thinkpad_acpi
+[   18.296600] driver: 'thinkpad_acpi': driver_bound: bound to device 'thinkpad_acpi'
+[   18.296603] bus: 'platform': really_probe: bound device thinkpad_acpi to driver thinkpad_acpi
+[   18.296607] Registering platform device 'thinkpad_hwmon'. Parent at platform
+[   18.296608] device: 'thinkpad_hwmon': device_add
+[   18.296612] bus: 'platform': add device thinkpad_hwmon
+[   18.296635] bus: 'platform': driver_probe_device: matched device thinkpad_hwmon with driver thinkpad_hwmon
+[   18.296636] bus: 'platform': really_probe: probing driver thinkpad_hwmon with device thinkpad_hwmon
+[   18.296640] driver: 'thinkpad_hwmon': driver_bound: bound to device 'thinkpad_hwmon'
+[   18.296642] bus: 'platform': really_probe: bound device thinkpad_hwmon to driver thinkpad_hwmon
+[   18.296649] device: 'hwmon2': device_add
+[   18.296759] thinkpad_acpi: detected a 8-level brightness capable ThinkPad
+[   18.296804] thinkpad_acpi: Standard ACPI backlight interface available, not loading native one
+[   18.296805] thinkpad_acpi: volume: disabled as there is no ALSA support in this kernel
+[   18.301355] device: 'input15': device_add
+[   18.301515] input: ThinkPad Extra Buttons as /devices/platform/thinkpad_acpi/input/input15
+[   18.301530] device: 'event14': device_add
+[   18.396451] NetworkManager[2367]: <warn> Couldn't get managed objects: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.bluez was not provided by an
+y .service files
+[   18.544701] rts51x: Idle state!
+[   18.547818] rts51x: rts51x_ctrl_transfer: rq=00 rqtype=40 value=56fd index=303 len=0
+[   18.551570] rts51x: Close SSC clock power!
+
+Manjaro Linux 3.15.4-1-MANJARO  (manji) (tty1)
+
+
+manji login:

@@ -1,0 +1,63 @@
+# Maintainer: jason ryan <jasonwryan@gmail.com>
+# Contributor: totoloco <totoloco en gmail>
+
+#get it ready for gdb debugging
+DEBUG=0
+
+pkgname=vimprobable2-git
+pkgver=2014.01.19.ga0801c3
+pkgrel=1
+pkgdesc="Lightweight, keyboard-driven, WebKit based browser with Vim keybinds."
+arch=('i686' 'x86_64')
+url="http://www.yllr.net/vimprobable/"
+license=('MIT')
+depends=('libwebkit>=1.1.11' 'gtk2' 'libsoup')
+makedepends=('git')
+provides=('vimprobable2')
+conflicts=('vimprobable2')
+_gitname="vimprobable"
+_gitbranch="vimprobable2"/
+
+if [ -n "$DEBUG" ]; then
+  options+=(!strip)
+fi
+
+source=(
+    "$_gitname::git+http://git.code.sf.net/p/$_gitname/code"
+    'config.h' 'keymap.h'
+    )
+md5sums=('SKIP'
+         '65455eda4f6134127586959b5e3c803f'
+         'ca54c781a880d87b96cafd80eee3ed13')
+
+pkgver() {
+  cd "$srcdir/${_gitname}"
+  git log -1 --format="%cd.g%h" --date=short | sed 's/-/./g'
+}
+
+prepare() {
+  cp {config,keymap}.h "$srcdir/${_gitname}"
+  cd "$srcdir/${_gitname}"
+  sed -i 's:LIBS = gtk+-2.0 webkit-1.0 libsoup-2.4:LIBS = gtk+-2.0 webkit-1.0 libsoup-2.4 javascriptcoregtk-1.0:' Makefile
+}
+
+build() {
+  cd "$srcdir/${_gitname}"
+  #debug mode for gdb, in case seg faults
+  if [ -n "$DEBUG" ]; then
+    export CFLAGS="$CFLAGS -O0 -fbuiltin -g"
+    export CXXFLAGS="$CXXFLAGS -O0 -fbuiltin -g"
+  fi
+
+  make
+}
+
+package() {
+  cd "$srcdir/$_gitname"
+  make PREFIX=/usr MANDIR=/usr/share/man DESTDIR="$pkgdir" install
+  mkdir -p "$pkgdir"/usr/share/licenses/"${_gitbranch}"
+  chmod 0755  "$pkgdir"/usr/share/licenses/"${_gitbranch}"/
+  install -m 644 LICENSE "$pkgdir"/usr/share/licenses/"${_gitbranch}"/LICENSE
+}
+
+# vim:set ts=2 sw=2 et:

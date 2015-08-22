@@ -1,0 +1,186 @@
+#!/bin/bash
+
+#set -e -x
+
+# Remember the location of commands as they are looked up. - this is already set tho! ie. default
+set -h
+#already unset in scripts:
+set +H
+
+#otfile="testfile"
+#tfile="/tmp/$otfile"
+#cp "$otfile" "$tfile"
+
+#include "base/metrics/histogram.h"
+#changed to remove lines containing:
+#linestoremove='
+##include "base/metrics/
+#something else
+#'
+#sanitize:
+#linestoremove="`sed -e 's|/|\\\\\\\\/|g'  <<<"$linestoremove"`"
+
+#TODO: need another set of lines and different comment string(eg. ; vs // ) for different type of file eg. *.gn* vs *.cc,*.h  - maybe associative arrays with exts as keys and lines as values?
+#TODO: exclude lines already commented eg. ^[^#].*$  unsure how to do it for // yet
+
+#echo "$linestoremove" | while read eachline; do
+#    if test -z "$eachline"; then 
+#      continue
+#    fi
+#    echo ".${eachline}."
+#    #sed -e "/${eachline}/d" -i "$tfile"
+#    #replace with ; just in case it's between and if else without {}
+#    sed -e "s/^.*${eachline}.*/;/g" -i "$tfile"
+#  done
+#colordiff -up -- "$otfile" "$tfile"
+#exit 1
+
+
+function sedify_lines()
+{
+  #expected $1 is a string separating lines with \n
+  local result=() #array
+  local linestofiddle="$1"
+  local comment="#" #TODO: should be 1 char
+  echo "$linestofiddle" | while read eachline; do
+    if test -z "$eachline"; then 
+      continue
+    fi
+
+    #sanitize:
+    #eachline="`sed -e 's|/|\\\\\\\\/|g'  <<<"$eachline"`"
+    eachline="`sed -e 's|/|\\\\/|g; s/"/\\\\"/g'  <<<"$eachline"`"
+
+#    echo "$eachline" >&2
+echo -n "/^[^$comment]?[[:space:]]*.*(test|executable|source_set|shared_library|rebase_path|android_library)\\((\")?.*$/!s/(^[^$comment][[:space:]]*.*($eachline).*$)/$comment\\1/g; "
+#delete all (non-commented out) matching lines:
+#echo -n "/(^[[:space:]]*[^$comment]*[[:space:]]*.*($eachline).*$)/d; "
+#ok don't do this because then we don't know how to find matching token: ERROR at //breakpad/BUILD.gn:645:1: Unexpected token '}'  - OR maybe we can use git diff? yeah it's too hard
+  done
+}
+
+#exit 1
+set +e 
+
+# / are autoescaped, so don't escape!
+# rest are sed interpretable
+gn_lines='
+"//sync
+[_:]unit[_]?test[s]?
+"//third_party/pdfium
+"//content/test
+"//base/test
+[/"]test:
+[/"]tests:
+"//printing
+//testing
+"//tools/telemetry
+"//components/rappor
+//components/signin
+//components/startup_metric_utils
+//components/sync_driver
+//components/password_manager
+//components/metrics
+//components/navigation_metrics
+//components/handoff
+//components/google/
+//components/feedback
+//chrome/common/safe_browsing
+//components/copresence
+//components/proximity_auth
+//device/
+//extensions/common/api:api_registration
+//third_party/webrtc
+//components/auto_login_parser
+"//native_client
+//build/config/android
+//components/bookmarks/test
+test_support
+_(perf|browser)tests
+geolocation/
+geofencing/
+speech/
+vibration/
+'
+#_test_ #need to avoid: non_test_
+
+#rebase_path(_core_v8_gypi.bindings_core_v8_unittest_files,
+#extrased='
+#/test\("/!s/[_:]unit[_]?test[s]?/
+#'
+
+#the original file will be backed up with this file extension:
+origext="sedified"
+sedscripts="`sedify_lines "$gn_lines"`"
+#echo $sedscripts  # the -e gets eaten by echo, which is what we want for sed
+#echo "$sedscripts" #all are 1 param, so extra quotes if passing it to sed
+
+#cp -f -- src/BUILD.gn /tmp/
+#cp -f -- src/build/config/android/rules.gni /tmp/
+#pushd /tmp
+pushd src
+#echo "find . -name '*.gn*' -type f | xargs sed -e \"$sedscripts\" --in-place"
+#set -x
+
+#I mean look at this non-sense
+#./repl:74+ xargs sed -e ''\''s/(^[[::space::]]*[^#].*("\\/\\/sync).*$)/#\1/g'\''' -e ''\''s/(^[[::space::]]*[^#].*(unittests).*$)/#\1/g'\''' -e ''\''s/(^[[::space::]]*[^#].*(unit_tests).*$)/#\1/g'\''' --in-place
+#./repl:74+ find . -name '*.gn*'
+#sed: -e expression #1, char 1: unknown command: `''
+
+#XXX: yep -type f must be repeated to have effect for each!!!
+#ofc u shouldn't quote the *.gn params if doing it this way through bash!!!
+findcmd='find . -type f -name *.gn -or -type f -name *.gni -or -type f -name *.gyp -or -type f -name *.gypi'
+#set -x
+#echo "$findcmd"
+#$findcmd
+#echo "real one:"
+#find . -type f -name '*.gn' -or -type f -name '*.gni' -or -type f -name '*.gyp' -or -type f -name '*.gypi'
+#exit 2
+#currently 1min55sec:
+time $findcmd | xargs sed -re "$sedscripts" --in-place=".$origext"
+#7sec:
+time for eachf in `$findcmd`; do
+  origfname="${eachf}.${origext}"
+  if [ -f "$origfname" ]; then
+    diff -q "$origfname" "$eachf" >/dev/null || echo "$eachf" >> "../patched_files.lst"
+#    ec=$?
+#    if test "$ec" -ne 0; then
+#      echo "$eachf" >> "../patched_files.lst"
+#    fi
+  fi
+#  colordiff -up "${eachf}.${origext}" "$eachf"
+done
+
+#set +x
+popd
+#colordiff -up src/BUILD.gn /tmp/BUILD.gn
+exit 2
+
+#declare -a ar
+pushd src
+
+ar=(`find . -name \*.h -or -name \*.cc`)
+
+#cp "${ar[1]}" /tmp
+#  sedeasy "${linestoremove}" "//${linestoremove}" "${ar[1]}"
+#echo "${ar[1]}"
+#colordiff -up "/tmp/${ar[1]}" "${ar[1]}"
+#exit 1
+
+max=${#ar[@]}
+count=0
+#for eachfile in ${ar[@]}; do
+#  let 'count++'
+#  echo "${count}/${max} $eachfile"
+  echo "files: $max"
+  echo "$linestoremove" | while read eachline; do
+    if test -z "$eachline"; then 
+      continue
+    fi
+#    echo ".${eachline}."
+    xargs sed "$eachline" "//$eachline" "$eachfile" <<<"${ar[@]}"
+  done
+#done
+
+popd
+

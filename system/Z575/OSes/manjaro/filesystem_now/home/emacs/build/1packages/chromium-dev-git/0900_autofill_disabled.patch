@@ -1,0 +1,29 @@
+when autofill is false in args.gn
+
+compilation error happens(without this patch):
+In file included from ../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclie
+nt_base/checkout_root/src/chrome/browser/ui/webui/options/autofill_options_handl
+er.cc:40:
+../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/
+src/third_party/libaddressinput/src/cpp/include/libaddressinput/address_ui_compo
+nent.h:18:10: fatal error: 'libaddressinput/address_field.h' file not found
+#include <libaddressinput/address_field.h>
+         ^
+1 error generated.
+
+
+diff --git a/chrome/chrome_browser_ui.gypi b/chrome/chrome_browser_ui.gypi
+index a3fc1bc..6c21eee 100644
+--- a/chrome/chrome_browser_ui.gypi
++++ b/chrome/chrome_browser_ui.gypi
+@@ -1713,8 +1713,8 @@
+       'browser/ui/webui/options/advanced_options_utils_linux.cc',
+       'browser/ui/webui/options/advanced_options_utils_mac.mm',
+       'browser/ui/webui/options/advanced_options_utils_win.cc',
+-      'browser/ui/webui/options/autofill_options_handler.cc',
+-      'browser/ui/webui/options/autofill_options_handler.h',
++#      'browser/ui/webui/options/autofill_options_handler.cc',
++#      'browser/ui/webui/options/autofill_options_handler.h',
+       'browser/ui/webui/options/automatic_settings_reset_handler.cc',
+       'browser/ui/webui/options/automatic_settings_reset_handler.h',
+       'browser/ui/webui/options/browser_options_handler.cc',

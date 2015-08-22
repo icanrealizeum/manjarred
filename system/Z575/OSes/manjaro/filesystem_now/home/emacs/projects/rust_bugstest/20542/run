@@ -1,0 +1,6 @@
+
+#source ../env.sh
+RUST_BACKTRACE=1 rustc --verbose main.rs
+RUST_BACKTRACE=1 rustc --verbose two.rs
+
+RUST_BACKTRACE=1 rustc --verbose three.rs

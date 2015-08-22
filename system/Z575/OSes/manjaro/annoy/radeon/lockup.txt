@@ -1,0 +1,5 @@
+as root, cat-ing the files in /sys/kernel/debug/dri/0/ like:
+# cat /sys/kernel/debug/dri/0/*
+while radeon.dpm=0
+will crash the system, first black screen then (maybe after C-c) the screen appears as it last were but system is locked up
+

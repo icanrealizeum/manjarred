@@ -1,0 +1,31 @@
+Module                  Size  Used by
+fuse                   78576  2 
+pci_stub               12429  1 
+vboxpci                18996  0 
+vboxnetflt             23316  0 
+vboxnetadp             25443  0 
+vboxdrv               269990  3 vboxnetadp,vboxnetflt,vboxpci
+cfq_iosched            49744  1 
+rts5139               296495  0 
+kvm_amd                54791  0 
+kvm                   370225  1 kvm_amd
+pcspkr                 12595  0 
+serio_raw              12849  0 
+snd_hda_codec_realtek    49927  1 
+snd_hda_codec_hdmi     39897  1 
+ideapad_laptop         17453  0 
+snd_hda_intel          39134  4 
+sparse_keymap          12818  1 ideapad_laptop
+snd_hda_codec         140705  3 snd_hda_codec_realtek,snd_hda_codec_hdmi,snd_hda_intel
+rfkill                 18121  1 ideapad_laptop
+snd_hwdep              13148  1 snd_hda_codec
+snd_pcm                79941  3 snd_hda_codec_hdmi,snd_hda_codec,snd_hda_intel
+snd_page_alloc         17114  2 snd_pcm,snd_hda_intel
+snd_timer              26614  1 snd_pcm
+snd                    60869  15 snd_hda_codec_realtek,snd_hwdep,snd_timer,snd_hda_codec_hdmi,snd_pcm,snd_hda_codec,snd_hda_intel
+soundcore              13031  1 snd
+shpchp                 35210  0 
+autofs4                27383  2 
+hid_generic            12393  0 
+usbhid                 31234  0 
+ohci_pci               12808  0 

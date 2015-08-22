@@ -1,0 +1,7 @@
+#!/bin/bash
+
+./gopreplinks || exit 1
+#log? time makepkg --noextract -L -f
+time makepkg -s --noprepare --force "$@"
+#time makepkg --incremental --force
+

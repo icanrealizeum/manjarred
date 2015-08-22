@@ -1,0 +1,61 @@
+--- "archlinux version!_dkms-2.2.0.3-15-any/dkms"	2014-11-05 12:18:45.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/dkms"	2014-11-05 12:09:02.538541798 +0100
+@@ -1239,8 +1239,11 @@ do_build()
+     [[ $kernel_config ]] && cp -f "$kernel_config" "$base_dir/log/"
+     mv -f "$dkms_tree/$module/$module_version/build/make.log" "$base_dir/log/make.log" 2>/dev/null
+ 
++    # save a copy of current kernel version information to know when to rebuild if it changes (ie. incremental compilation of the same kernel release)
+     cp -vT --remove-destination "$kernel_source_dir/include/generated/compile.h" "$base_dir/compile.h" >>"$base_dir/log/make.log"
+     cat "$base_dir/compile.h" >>"$base_dir/log/make.log"
++#example of $base_dir is: /var/lib/dkms/vboxhost/4.3.12/3.15.3-1-MANJARO/x86_64
++#example of $kernel_source_dir is: /usr/lib/modules/3.15.3-1-MANJARO/build
+ 
+ 
+     # Save a copy of the new module
+@@ -1463,6 +1466,9 @@ is_module_built() {
+     [[ -d $d/module ]] || return 1
+     read_conf_or_die "$3" "$4" "$dkms_tree/$1/$2/source/dkms.conf"
+ 
++#example of $d is: /var/lib/dkms/vboxhost/4.3.12/3.15.3-1-MANJARO/x86_64
++#example of $kernel_source_dir is: /usr/lib/modules/3.15.3-1-MANJARO/build
++
+ diff -q "${kernel_source_dir}/include/generated/compile.h" "$d/compile.h" >/dev/null 2>&1 || return 1
+ 
+     for m in "${dest_module_name[@]}"; do
+@@ -1472,6 +1478,7 @@ diff -q "${kernel_source_dir}/include/ge
+ }
+ 
+ files_already_up_to_date() (
++# must not echo anything here unless is >&2  or else dkms autoinstall will fail
+     [[ $1 && $2 && $3 && $4 ]] || return 1
+     is_module_built $1 $2 $3 $4 || return 1
+     set_module_suffix "$3"
+@@ -1479,21 +1486,28 @@ files_already_up_to_date() (
+     for ((count=0; count < ${#dest_module_name[@]}; count++)); do
+         tree_mod="$dkms_tree/$1/$2/$3/$4/module/${dest_module_name[$count]}$module_suffix"
+         if ! [[ -e $tree_mod ]]; then
++#            echo -n " (WARNING! Missing some built modules!)" >&2
+ 		return 1
+         else
+             real_dest="$(find_actual_dest_module_location "$1" $count "$3" "$4")"
++#	    echo $real_dest >&2
++#	    echo src: "$tree_mod" >&2
++#		echo dest: "$install_tree/$3${real_dest}/${dest_module_name[$count]}$module_suffix" >&2
+             if ! diff -q "$tree_mod" "$install_tree/$3${real_dest}/${dest_module_name[$count]}$module_suffix" >/dev/null 2>&1; then
++#                echo -n " (WARNING! Diff between built and installed module!)" >&2
+ 		return 1
+             fi
+         fi
+     done
+ 
++    # all files are up to date
+     return 0
+ )
+ 
+ 
+ # This assumes we have already checked to see if the module has been built.
+ _is_module_installed() {
++# must not echo anything here unless is >&2  or else dkms autoinstall will fail
+     [[ $1 && $2 && $3 && $4 ]] || return 1
+     local d="$dkms_tree/$1/$2/$3/$4"
+     local k="$dkms_tree/$1/kernel-$3-$4"

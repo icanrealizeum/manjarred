@@ -1,0 +1,9 @@
+#!/bin/bash
+
+./gopreplinks || exit 1
+#log? time makepkg --noextract -L -f
+time makepkg --incremental --noprepare --force "$@"
+#no --incremental coded for mercurial
+#time makepkg --noprepare --force "$@"
+#time makepkg --incremental --force
+

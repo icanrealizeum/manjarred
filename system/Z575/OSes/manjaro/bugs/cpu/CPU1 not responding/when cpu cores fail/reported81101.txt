@@ -1,0 +1,37 @@
+also:
+http://web.cecs.pdx.edu/~karavan/research/SMM_IISWC_preprint.pdf
+
+------
+good read about SMM/SMIs
+http://phrack.org/issues/66/11.html
+-------------
+
+* for 81101                                                                     
+  - read/apply Documentation/x86/usb-legacy-support.txt
+    \ this doesn't seem to apply, but good read maybe
+* 2.4.9.2.9 Locking SMM
+ The following conditions can cause one or more cores to enter SMM without all cores entering SMM:
+ • More than one IO device in the system is enabled to signal an SMI without hardware synchronization
+ (e.g. using an end of SMI gate).
+ • A single device may signal multiple SMI messages without hardware synchronization (e.g. using an end
+ of SMI gate).
+!• An SMI is received while one or more AP cores are in the INIT state. This may occur either during BIOS
+ or secure boot.
+ • A hardware error prevents a core from entering SMM.
+
+
+=============
+reported here:
+https://bugzilla.kernel.org/show_bug.cgi?id=81101
+
+
+bottom line:
+https://bugzilla.kernel.org/show_bug.cgi?id=81101#c19
+========
+
+some relevant pdf files:
+intel: http://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-manual-325462.pdf
+
+amd: http://amd-dev.wpengine.netdna-cdn.com/wordpress/media/2012/10/48751_BKDG_Fam_16h_Mod_00h-0Fh.pdf
+
+

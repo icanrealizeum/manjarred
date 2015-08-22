@@ -1,0 +1,134 @@
+# Maintainer: Adrian Perez <aperez@igalia.com>
+# Contributor: rway <rway07@gmail.com>
+# Contributor: wabi <aschrafl@jetnet.ch>
+# Contributor: Alexander RÃ¸dseth <rodseth@gmail.com>
+# Contributor: Andreas Schrafl <aschrafl@gmail.com>
+# Contributor: piojo <aur@zwell.net>
+# Contributor: hack.augusto <hack.augusto@gmail.com>
+
+pkgname=depot-tools-git
+pkgver=r2624.e969cc7
+pkgrel=1
+pkgdesc='Build tools for working with Chromium development, include gclient'
+arch=('any')
+url='https://dev.chromium.org/developers/how-tos/install-depot-tools'
+patch1='0100_dont_force-version.patch'
+patch2='0200_ignore_empty_AWS_CREDENTIAL_FILE_env_var.patch'
+patch3='0300_dont_hide_the_freaking_errors.patch'
+patch4='0400_show_gn_command.patch'
+source=("${pkgname}::git+https://chromium.googlesource.com/chromium/tools/depot_tools.git"
+	'depot_tools.sh' 'repo_fix.sh'
+  "$patch1"
+  "$patch2"
+  "$patch3"
+  "$patch4"
+  )
+license=('Custom')
+depends=('python2' 'python2-colorama' 'python2-pylint')
+makedepends=('git' 'scons' 'setconf')
+provides=('depot_tools' 'gclient')
+conflicts=('gclient-svn' 'depot_tools-svn')
+options=('!strip')
+md5sums=('SKIP'
+         '39d5d3e78fa7456a1d8dd5ac10a1c8bb'
+         'fb0c546a078c312aa64c1f2a31599557'
+         '1ce9e82e615f467e86c1098b13595191'
+         '09808115586dba93b9f4d3d21ca146b1'
+         '238ab4192d89bb920c641e3060bb72c2'
+         '4825b6b3b38ee8cd14eeb046dadf84e9')
+sha512sums=('SKIP'
+            '8bccc9b116cffabfb605431ff229e149865b00d8de20beb310a3ce5f6edb643dc4ab592a901e89d33bdc75b79104e5940ee8b876bf0bb033ee9f85dad770f3db'
+            'bde33ffcad42a4d554d5490b6562981ef4b9f3abebadbed909749ee05ba391da4b5acb31b901e785b6f019b4ed3f9c740ab92623dd6a87e67b4b599a0010374b'
+            '657667b8eda85ed15e8423d42bfc2ce227a41f3c2b545190adcf7f9e19d664458f69c522f8403fb5502384c52306f41ff0be566e3e87362aa2c402a6ae0dc814'
+            '2000013cbd46b67b8842ed0706100976d431c371231096d74473f0d44b65e5052a7f1cd3e6128362f0df60b3f97867f6be6564943d0c08204d4e7e0052981176'
+            '57e2d8a78d0c559705c4045694f561f8a329221acdd11237719dbd8e3d4eadf2f8510f83a91ec4d9380a1010dcbff639873f63178c5b7f39b16a6e8dae7aa957'
+            '7211efe51917af5083b0f411ede097b3305017f47251ff7bbf75ca570dd435b68bc6d88c1293e16df8a20192006f0c7eb76e80a1f333ef91b981b070972600ec')
+
+
+install="depot_tools.install"
+
+pkgver () {
+	cd "${pkgname}"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare () {
+	cd "${pkgname}"
+
+	# This tools work with python2, but ArchLinux default is python3. Fix it.
+	# pylint is in extra, ninja is an executable and it does not need any change.
+	# gclient.py require a fix for work correctly with python2-colorama
+	# Another way is make default python2, but I don't think is a good idea!
+	# Fixing python scripts.
+	msg "Patching script for python2 usage..."
+	for script in *.py
+	do
+		sed -i -r -e 's/#!(.*)python.*/#!\1python2/' "${script}"
+	done
+
+	# Fixing gclient.py
+	sed -i -r -e 's/#!(.*)python.*/#!\1python2/' \
+		        -e 's/from third_party import colorama/import colorama/' \
+			  	  -e 's/from third_party.colorama import Fore/from colorama import Fore/' \
+		gclient.py
+	sed -i -e 's/exec python/exec python2/' \
+		gclient
+
+	# Fixing repo
+	sed -r -i -e 's/"exec" python/"exec" python2/' repo
+
+	# Fixing scripts in root folder
+	for script in {apply_issue,drover,gcl,git-cl,git-gs,git-try,hammer,weekly,wtf,update_depot_tools,fetch,download_from_google_storage,gn,clang-format,git-runhooks,roll-dep}
+	do
+		sed -r -i -e 's/exec python/exec python2/' \
+			        -e 's/#!(.*)python.*/#!\1python2/' \
+			"${script}"
+	done
+
+	# Fixing scripts in other folders
+	# Is it safe remove those folders?? I don't now, further tests required. For now fix it and include all tools.
+	sed -r -i -e 's/python/python2/' git-cl-upload-hook
+
+	for script in {git_utils/git-tree-prune,support/chromite_wrapper,tests/sample_pre_commit_hook,third_party/pylint/epylint.py}
+	do
+		sed -r -i -e 's/env python/env python2/' "${script}"
+	done
+
+	for folder in {testing_support,tests,third_party}
+	do
+		cd "${folder}"
+		for script in *.py
+		do
+			sed -r -i -e 's/env python/env python2/' "${script}"
+		done
+		cd ..
+	done
+
+
+  patch -Np1 -i "${srcdir}/${patch1}"
+  patch -Np1 -i "${srcdir}/${patch2}"
+  patch -Np1 -i "${srcdir}/${patch3}"
+  patch -Np1 -i "${srcdir}/${patch4}"
+}
+
+package()
+{
+	# Creating directories
+	install -d "${pkgdir}/opt"
+
+	cp -r "${srcdir}/${pkgname}" "${pkgdir}/opt/"
+
+	# Export PATH
+	install -Dm755 "${srcdir}/depot_tools.sh" "${pkgdir}/etc/profile.d/depot_tools.sh"
+
+	# Install repo_fix.sh script
+	install -Dm 755 "${srcdir}/repo_fix.sh" "${pkgdir}/opt/${pkgname}"
+
+	# Install License
+	install -Dm644 "${pkgdir}/opt/${pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
+	rm -rf "${pkgdir}/opt/${pkgname}/.git"
+
+#this would fix --force-version (I believe, not tested yet), but... security issue
+#	install -dm777 "${pkgdir}/opt/${pkgname}/external_bin/gsutil/"
+}

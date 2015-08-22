@@ -1,0 +1,20 @@
+in chromium-dev
+on youtube videos with html5 player (extension)
+after a while of having chromium running
+youtube videos played appear pixelated as if software rendering was used instead
+
+it's exactly how they would look if the flag --disable-gpu was used
+and while that flag is used no errors appear on console or ~/.xsession-errors
+but when flag isn't used (so normal) these are some of the errors:
+
+[1463:1463:0806/011001:ERROR:gpu_video_decode_accelerator.cc(300)] Not implemented reached in void content::GpuVideoDecodeAccelerator::Initialize(const media::VideoCodecProfile, IPC::Message *)HW video decode acceleration not available.
+
+but these happen even when the video is rendered ok (presumably by gpu)
+and there doesn't seem to be a message saying when the switch was made to disable-gpu and go software
+
+and this is with fglrx driver!
+catalyst-utils 14.10.1006.1001-1
+but this is confusing, on manjaro, the driver is actually something like 14.4
+the 5may 2014 one, not the 11jun 2014 one though, i believe
+
+

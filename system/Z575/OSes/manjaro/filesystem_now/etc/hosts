@@ -1,0 +1,19 @@
+#
+# /etc/hosts: static lookup table for host names
+#
+
+#<ip-address>   <hostname.domain.org>   <hostname>
+
+127.0.0.1       localhost.localdomain   localhost
+127.0.0.1       manji ded
+#yourhostname here ^ or else  `hostname -f` will look it up by asking DNS server in /etc/resolv.conf !!!
+
+#NO DON'T!!when ipv6 is disabled, comment this line:
+::1             localhost.localdomain   localhost
+::1             manji ded
+#^ without that, `hostname -f` will DNS request it as `AAAA? hostname` where hostname is `uname -n` (or `hostname`)     
+
+#first, after localhost
+127.0.0.3	hostBlocked
+
+

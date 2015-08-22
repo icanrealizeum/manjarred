@@ -1,0 +1,9 @@
+ultra low speeds with 3.17-rc1 and rc2 kernels
+https://bugzilla.kernel.org/show_bug.cgi?id=83271
+190 KB/s max read speed vs over 12 meg/sec with 3.16 kernel
+
+reverting this commit fixes this:
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=6a38fa0e3c94dfd1394a71a2d47c9c4d47367374
+
+git revert -n 6a38fa0e3c94dfd1394a71a2d47c9c4d47367374
+

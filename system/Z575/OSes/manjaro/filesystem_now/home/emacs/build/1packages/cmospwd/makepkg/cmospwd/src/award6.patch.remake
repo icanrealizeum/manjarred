@@ -1,0 +1,38 @@
+Patch for getting the right user/supervisor passwords for BIOS:
+Award Modular BIOS v6.00PG
+bios version: F8n
+found on motherboard GIGABYTE GA-MA790FXT-UD5P
+01/07/2011-RD790-SB750-....
+
+trivially found(thanks to the existing code) a while ago by EmanueL Czirai when I forgot my passwords
+
+the code in this patch was originally made for DOS with bcc.exe compiler, I think. Those definitions may be useless for Linux.
+
+diff -urpN -X ./dontdiff -- cmospwd-5.0.orig/src/cmospwd.c cmospwd-5.0/src/cmospwd.c
+--- cmospwd-5.0.orig/src/cmospwd.c	2007-10-24 07:39:01.000000000 +0200
++++ cmospwd-5.0/src/cmospwd.c	2014-09-14 01:08:17.917616904 +0200
+@@ -30,7 +30,14 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <stdint.h>
++//#include "stdint.h"
++   typedef signed char       int8_t;
++   typedef signed short      int16_t;
++   typedef signed int        int32_t;
++   typedef unsigned char     uint8_t;
++   typedef unsigned short    uint16_t;
++   typedef unsigned int      uint32_t;
++
+ 
+ #ifdef __CYGWIN32__
+ #define HAVE_CTYPE_H 1
+@@ -1228,6 +1235,8 @@ void award6()
+   generic_basic(0x90, 8,  ALGO_AWARD6, 0, AFF_ASCII,cmos);
+   /* daiver1989 mail ru, april 2006 */
+   generic_basic(0xB4, 8,  ALGO_AWARD6, 0, AFF_ASCII,cmos);
++  generic_basic(0xD0, 8,  ALGO_AWARD6, 0, AFF_ASCII,cmos);//supervisor
++  generic_basic(0xD8, 8,  ALGO_AWARD6, 0, AFF_ASCII,cmos);//user
+ }
+ 
+ 				/* COMPAQ */

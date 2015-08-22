@@ -1,0 +1,14 @@
+Patch for getting the right Samsung 840 EVO 1TB temperature sensor
+by EmanueL Czirai
+
+diff -urpN -X ./dontdiff -- hddtemp-0.3-beta15.orig/debian/hddtemp.db hddtemp-0.3-beta15/debian/hddtemp.db
+--- hddtemp-0.3-beta15.orig/debian/hddtemp.db	2014-09-14 02:41:51.486812743 +0200
++++ hddtemp-0.3-beta15/debian/hddtemp.db	2014-09-14 02:55:24.389018652 +0200
+@@ -110,6 +110,7 @@
+ ########################################
+ # somenone reported a problem with the SP8004H which reports a temperature
+ # 10°C below the ambient temperature
++"Samsung SSD 840 EVO 1TB"					190    C  "Samsung SSD 840 EVO 1TB"
+ "SAMSUNG SW0434A"					0    C  "Samsung SW0434A"
+ "SAMSUNG SV0432A"					0    C  "Samsung SV0432A"
+ "SAMSUNG SV3002H"					0    C  "Samsung SpinPoint V30 serie"

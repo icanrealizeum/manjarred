@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ `id -u` != 0 ] ; then
+    echo "you are not root! press a key, not shift/ctrl/alt"
+    read -n 1 -s
+    exit 1
+fi
+
+
+#on manjaro/arch
+#all 4 cores affected
+cpupower frequency-set -g ondemand

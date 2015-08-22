@@ -1,0 +1,19 @@
+#!/bin/bash
+#^ for syntax colors in vim
+
+#XXX: you must've already run 1_sync once before running this because it needs the temporary python path(folders existing) for running python2 !
+
+#if you delete *.d files only, from $out folder (recursively!) then you don't have to run this!
+#old info: need to delete $out folder and rerun this script ($0 that is) whenever you encounter this error:
+#ninja: error: gen/content/resources.d: depfile has multiple output paths
+#which apparently happens if your previous build try got an error
+#FIXME: report ^ that
+
+#export CHROMIUM_BUILDTOOLS_PATH="/opt/depot-tools-git/"
+out="/tmp/out/Default"
+mkdir -p -- "$out"
+cp args.gn "$out"
+../../pythonic gn --root=src gen "$out"
+
+
+

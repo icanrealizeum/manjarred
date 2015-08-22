@@ -1,0 +1,42 @@
+i usually build these into kernel:
+
+
+required for internal gfx card (APU):
+[    1.099633] radeon 0000:00:01.0: firmware: using built-in firmware radeon/SUMO_pfp.bin
+[    1.099638] radeon 0000:00:01.0: firmware: using built-in firmware radeon/SUMO_me.bin
+[    1.099643] radeon 0000:00:01.0: firmware: using built-in firmware radeon/SUMO_rlc.bin
+[    1.099978] radeon 0000:00:01.0: firmware: using built-in firmware radeon/SUMO_uvd.bin
+
+
+required for discrete card:
+[    5.324896] radeon 0000:01:00.0: firmware: using built-in firmware radeon/TURKS_pfp.bin
+[    5.324926] radeon 0000:01:00.0: firmware: using built-in firmware radeon/TURKS_me.bin
+[    5.325124] ni_cp: Failed to load firmware "radeon/BTC_rlc.bin"
+actually seen better here: http://wiki.gentoo.org/wiki/Radeon
+Northern Islands	
+TURKS 
+HD6570, HD6670, HD7550M/7570M/7650M
+radeon/BTC_rlc.bin 
+radeon/TURKS_mc.bin 
+radeon/TURKS_me.bin 
+radeon/TURKS_pfp.bin 
+radeon/TURKS_smc.bin 
+radeon/SUMO_uvd.bin
+
+required for LAN nic:
+[   17.564678] r8169 0000:02:00.0: firmware: using built-in firmware rtl_nic/rtl8105e-1.fw
+
+required for CPU microcode:
+[  211.997156] platform microcode: firmware: direct-loading firmware amd-ucode/microcode_amd.bin
+but only when early load is not set or it fails, then you'll have to:
+echo 1 > /sys/devices/system/cpu/microcode/reload 
+
+[  522.210003] __allocate_fw_buf: fw-amd-ucode/microcode_amd.bin buf=ffff8803f0eff900
+[  522.210101] platform microcode: firmware: direct-loading firmware amd-ucode/microcode_amd.bin
+[  522.210108] fw_set_page_data: fw-amd-ucode/microcode_amd.bin buf=ffff8803f0eff900 data=ffffc90005caa000 size=12684
+[  522.210126] __fw_free_buf: fw-amd-ucode/microcode_amd.bin buf=ffff8803f0eff900 data=ffffc90005caa000 size=12684
+
+the above happen when you don't have that .bin included in kernel!
+
+---------
+

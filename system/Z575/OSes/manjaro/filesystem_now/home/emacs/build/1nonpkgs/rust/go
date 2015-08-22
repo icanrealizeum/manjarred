@@ -1,0 +1,56 @@
+#!/bin/bash
+
+cores=4
+cores=1
+
+#export NO_REBUILD=1
+#export VERBOSE=1
+# * `NO_REBUILD=1` - Don't rebootstrap when testing std
+#                     (and possibly other crates)
+
+#time ( time make -j4 all VERBOSE=1 && time make check )
+#don't use -j${cores}
+time ( time make -j4 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS="--verbose" && time make check )
+#time ( time make -j4 all && time make check )
+echo "For vim support make sure you do this (if you have vim pathogen plugin) eg.:"
+echo "you need to git clone rust.vim to get the vim goodies"
+echo "cd /home/emacs/.vim/bundle/ && ln -s `pwd`/../rust.vim/"
+
+#with -j1
+#tests:
+#real 28m36.582s
+#user  42m42.686s
+#sys 3m47.430s
+#both:
+#real  157m48.250s
+#user  168m28.132s
+#sys 6m54.670s
+
+#with -j4
+#fails and:
+#around 120min? forgot
+
+
+#without any -j
+#rust:
+#real  135m56.801s
+#user  131m41.536s
+#sys 3m42.140s
+#tests:
+#real  17m8.051s
+#user  31m47.666s
+#sys 4m13.833s
+#rust+tests:
+#real  153m4.853s
+#user  163m29.202s
+#sys 7m55.973s
+#
+#second try, tests:
+#real  24m43.892s
+#user  36m43.960s
+#sys 3m20.000s
+#second try, both:
+#real  176m30.756s
+#user  182m48.366s
+#sys 7m57.650s
+

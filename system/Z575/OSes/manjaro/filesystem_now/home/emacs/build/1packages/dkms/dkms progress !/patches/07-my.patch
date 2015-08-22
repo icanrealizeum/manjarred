@@ -1,0 +1,15 @@
+--- "archlinux version!_dkms-2.2.0.3-15-any/dkms"	2014-11-05 11:51:54.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/dkms"	2014-11-05 11:58:39.365294762 +0100
+@@ -1511,11 +1527,11 @@ maybe_add_module() (
+     module="$1" module_version="$2" add_module
+ )
+ 
+ maybe_build_module() (
+     is_module_built "$1" "$2" "$3" "$4" && {
+-	echo $"Module $1/$2 already built for kernel $3/4"
++	echo $"Module $1/$2 already built for kernel $3/$4"
+ 	return 0
+     }
+     module="$1" module_version="$2" kernelver="$3" arch="$4" build_module
+ )
+ 

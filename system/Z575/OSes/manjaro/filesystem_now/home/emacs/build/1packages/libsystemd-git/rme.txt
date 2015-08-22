@@ -1,0 +1,12 @@
+don't actually install this because it's missing libgudev
+
+and you get this dmesg:
+
+Jun 15 08:54:19 ded systemd[1]: Starting Daemon for power management...
+Jun 15 08:54:19 ded upowerd[3875]: /usr/lib/upower/upowerd: error while loading shared libraries: libgudev-1.0
+Jun 15 08:54:19 ded systemd[1]: upower.service: Main process exited, code=exited, status=127/n/a
+Jun 15 08:54:19 ded systemd[1]: Failed to start Daemon for power management.
+Jun 15 08:54:19 ded systemd[1]: upower.service: Unit entered failed state.
+Jun 15 08:54:19 ded systemd[1]: upower.service: Failed with result 'exit-code'.
+
+

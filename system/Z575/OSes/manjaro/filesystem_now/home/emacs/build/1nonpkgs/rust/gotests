@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#export NO_REBUILD=1
+#export VERBOSE=1
+# * `NO_REBUILD=1` - Don't rebootstrap when testing std
+#                     (and possibly other crates)
+
+#time ( time make -j4 all VERBOSE=1 && time make check )
+unset TIME_PASSES
+#time make -j4 check-stage1-std NO_REBUILD=1 TIME_LLVM_PASSES=1
+time make check-stage1-std NO_REBUILD=1 TIME_LLVM_PASSES=1
+#time make check NO_REBUILD=1 TIME_LLVM_PASSES=1 TESTNAME=sepcomp-lib
+#time ( time make -j4 all && time make check )
+

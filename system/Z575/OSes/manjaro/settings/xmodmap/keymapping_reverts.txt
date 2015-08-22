@@ -1,0 +1,7 @@
+sometimes key mapping wasn't working anymore,
+turns out it's because using pacman to install packages, these would run: source /etc/profile
+which restores the keymap
+and so for Home key (on keypad) to work on vim again, I have to do: xmodmap ~/.Xmodmap
+
+but here are the differences between the fixed way (aka normal) and the reverted to defaults (after source /etc/profile) way: see the *.diff files
+

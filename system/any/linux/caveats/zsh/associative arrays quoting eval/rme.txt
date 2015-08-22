@@ -1,0 +1,7 @@
+a.zsh has evil unicode U+2060  (use less a.zsh)
+Unicode Character 'WORD JOINER' (U+2060)
+http://www.fileformat.info/info/unicode/char/2060/index.htm
+
+fix by:
+iconv -c -f utf-8 -t ascii a.zsh >d.zsh
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+fil="unfocus.patch" #don't use the same filename as in root, because of symlink will get overwritten!
+cat >"$fil" <<EOF
+urxvt unfocus patch
+alternate colors when window lost focus
+Author: EmanueL Czirai
+whatever
+I needed different border and scrollbar colors (plain scrollbar only)
+while window was unfocused (or focused, depending on your p.o.v.)
+and this is it.
+EOF
+./godiff >>"$fil"
+
+sha512sum "$fil"
+

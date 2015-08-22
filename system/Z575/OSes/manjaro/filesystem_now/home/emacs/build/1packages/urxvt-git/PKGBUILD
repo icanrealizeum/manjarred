@@ -1,0 +1,177 @@
+# Maintainer: EmanueL Czirai
+# currently modified to suit my needs
+#
+# former maintainer: jjacky
+# Contributor: Angel Velasquez <angvp@archlinux.org> 
+# Contributor: tobias <tobias@archlinux.org>
+# Contributor: dibblethewrecker dibblethewrecker.at.jiwe.dot.org
+
+# clear.patch based on patch by rlblaster: https://bbs.archlinux.org/viewtopic.php?id=129302
+
+_pkgname=rxvt-unicode
+pkgbase=urxvt-git
+_gitfolder="${pkgbase}"
+pkgname=${_pkgname}-git-better-wheel-scrolling
+pkgrel=1
+#autoupdated by makepkg:
+pkgver=rxvt.unicode.rel.9.21.r31.g4583929
+pkgdesc="An unicode enabled rxvt-clone terminal emulator (urxvt git version) w/ better wheel scrolling (VTE-like) (& no utmp/wtmp support)"
+arch=('i686' 'x86_64')
+url="http://software.schmorp.de/pkg/rxvt-unicode.html"
+license=('GPL')
+depends=('gcc-libs' 'libxft' 'gdk-pixbuf2')
+optdepends=('perl: lots of utilities') # 'gtk2-perl: to use the urxvt-tabbed')
+makedepends=("cvs")
+provides=('rxvt-unicode')
+conflicts=('rxvt-unicode' 'rxvt-unicode-terminfo')
+# debug mode: https://wiki.archlinux.org/index.php/Step_By_Step_Debugging_Guide#Improved_gdb_output
+options+=(!strip)
+
+manypatches=(
+        "01_clear.patch"
+				"02_secondaryWheel.patch"
+        "03_unfocus.patch"
+        "04_release_M-s.patch"
+        "05_avoid_segfault.patch"
+        )
+source=(
+"${_gitfolder}::git+https://github.com/exg/rxvt-unicode"
+        "${_pkgname}.desktop"
+        ${manypatches[@]}
+				)
+sha512sums=('SKIP'
+            'd8c3a5eda005fd7313811eb5ded53bd8b9b02617abe9d63b614addeda4e5414041a263ef72e7bbefb3fadc451933857725d8440fd590cf29c60b196a467661d3'
+            '7c2114fe579e89ec044380597849f332d336ea72f085ac7ba3af5bf709279838a419d8800a06867274ab0fa133e42145fb96ae54258127fad0d942e9c746936c'
+            '2a5815ab20c3dd8fc128492b60f695202705408df59f276ac7edea7f8b3e7f931b72b73be98537436e559bce7327df6bd392b304bbbb55bcec11c2737af77360'
+            'cd8c8497ca7ebef357b4c938ce73d2af23d5ad07f0df33c4452861d53f8afbbe86e137e2b7fea388d71c0e7ee3ca5e96d0a39e305babe9c3c90d265aac28572d'
+            'f30e36de5f92d3a253ad4f5c8ce129741d8724ad279a1a6d3842614f940576d786c81d27d9128e68089ff99b7c041cda43ff1366ad21e495957abf955e6aeb2f'
+            'cdb78678c892b3440bdb0ba52555b3bc0c9d54d8e971d79f22742bda9d776f38e0aba1c2de42d818dba2932f0dc5ca9b003b83d387cc7f70e7cd96e6853084e0')
+
+pkgver() {
+  cd "$_gitfolder"
+  # Use the tag of the last commit
+	git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+}
+
+generic_patch() {
+  # $1 which patch
+  # $2- which params to the patch command
+  local lepatch="$1"
+  shift
+  local params=("$@")
+  patch "${params[@]}" -i "${lepatch}"
+}
+
+apply_le_patch() {
+  # $1 which patch
+  # $2- which extra params to the patch command
+  generic_patch "$@" -Np1
+}
+
+dryrun_patch() {
+  # $1 which patch
+  # $2- which extra params to the patch command
+  apply_le_patch "$@" --dry-run #>/dev/null 2>&1
+}
+
+onlyfilename() {
+  [[ $# -eq 1 ]]
+  echo -n "${1%%::*}"
+}
+
+prepare() {
+  cd "${srcdir}/${_gitfolder}"
+
+  # add my patches
+  # test if all patches can be applied!
+  local _failpatch="n"
+  for each in ${manypatches[@]}; do
+    #    if ! patch --dry-run -Np1 -i "${srcdir}/${each}"; then
+    local _fn1="$(onlyfilename "${srcdir}/${each}")"
+    if ! dryrun_patch "${_fn1}"; then
+      warning "cannot (re)apply patch: '${_fn1}'"
+      _failpatch="y"
+      break
+    fi
+  done
+  # if all can be applied, then apply them
+  if [ "$_failpatch" != "y" ]; then
+    msg "Applying a bunch of patches"
+    for each in ${manypatches[@]}; do
+      local _fn2="$(onlyfilename "${srcdir}/${each}")"
+      if ! apply_le_patch "${_fn2}"; then
+        error "Unable to apply patch '${_fn2}'\nThis is not supposed to happen!"
+        exit 104
+      fi
+    done
+  else
+    error "Cannot proceed towards applying all the patches!"
+    exit 4
+  fi
+
+	#FIXME: research git submodules and keep them up to date  instead of using cvs
+	cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co libev
+	cvs -z3 -d :pserver:anonymous@cvs.schmorp.de/schmorpforge co libptytty
+}
+
+build() {
+  #debug mode:
+  #-g enables debug symbols and -O0 turns off optimizations. 
+  export CFLAGS="$CFLAGS -O0 -fbuiltin -g"
+  export CXXFLAGS="$CXXFLAGS -O0 -fbuiltin -g"
+
+  cd "${srcdir}/${_gitfolder}"
+	./autogen.sh
+  ./configure --prefix=/usr \
+		--enable-assert \
+    --enable-256-color \
+    --disable-unicode3 \
+    --disable-combining \
+		--enable-xft \
+    --enable-font-styles \
+    --disable-pixbuf \
+    --enable-startup-notification \
+    --enable-transparency \
+		--disable-fading \
+		--enable-unfocus \
+		--disable-rxvt-scroll \
+		--disable-next-scroll \
+		--disable-xterm-scroll \
+    --enable-perl \
+    --disable-xim \
+    --enable-resources \
+		--disable-fallback \
+		--enable-swapscreen \
+    --disable-iso14755 \
+		--enable-frills \
+    --enable-keepscrolling \
+    --enable-selectionscrolling \
+		--enable-mousewheel \
+		--enable-slipwheeling \
+		--enable-smart-resize \
+		--enable-text-blink \
+		--disable-pointer-blank \
+    --disable-utmp \
+    --disable-wtmp \
+    --disable-lastlog \
+    --with-terminfo=/usr/share/terminfo \
+    --with-x
+  make alldoc
+  make -j4
+}
+
+package() {
+  cd "${srcdir}/${_gitfolder}"
+  install -d "${pkgdir}/usr/share/terminfo"
+  export TERMINFO="${pkgdir}/usr/share/terminfo"
+  make DESTDIR="${pkgdir}" install
+#  # for utmp/wtmp support
+#  chgrp utmp $pkgdir/usr/bin/urxvt
+#  chmod g+s $pkgdir/usr/bin/urxvt
+# # install the tabbing wrapper ( requires gtk2-perl! )
+#  sed -i 's/\"rxvt\"/"urxvt"/' doc/rxvt-tabbed
+#  install -Dm 755 doc/rxvt-tabbed "${pkgdir}/usr/bin/urxvt-tabbed"
+ # install freedesktop menu
+  install -Dm644 ../${_pkgname}.desktop \
+    "${pkgdir}/usr/share/applications/${_pkgname}.desktop"
+}

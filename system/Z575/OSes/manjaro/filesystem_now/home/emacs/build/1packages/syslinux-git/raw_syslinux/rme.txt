@@ -1,0 +1,30 @@
+wget -c https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/6.03/syslinux-6.03-pre20.tar.xz
+
+wget -c https://www.kernel.org/pub/linux/utils/boot/syslinux/Testing/6.03/syslinux-6.03-pre20.tar.sign
+
+cp syslinux-6.03-pre20.tar.* /tmp
+cd /tmp
+xz --decompress syslinux-6.03-pre20.tar.xz
+gpg2 --verify syslinux-6.03-pre20.tar.sign
+gpg --keyserver pgp.mit.edu --recv-keys 58F7ABFE
+gpg2 --verify syslinux-6.03-pre20.tar.sign
+
+
+unpack
+
+tar -Jxvf syslinux-6.03-pre20.tar.xz
+cp -r syslinux-6.03-pre20 syslinux-6.03-pre20.orig
+for future patching generation
+
+apply current patch with:
+patch -p1 -i le.patch
+while pwd is ./
+
+looks like this now:
+drwxr-xr-x  4 emacs users  4096 10.09.2014 15:41 ./
+drwxr-xr-x 49 emacs users  4096 10.09.2014 15:38 ../
+drwxr-xr-x 32 emacs users  4096 10.09.2014 15:36 syslinux-6.03-pre20/
+drwxr-xr-x 33 emacs users  4096 27.08.2014 03:59 syslinux-6.03-pre20.orig/
+-rw-r--r--  1 emacs users 21181 10.09.2014 15:36 le.patch
+
+

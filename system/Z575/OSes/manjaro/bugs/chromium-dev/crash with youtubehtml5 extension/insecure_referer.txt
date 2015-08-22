@@ -1,0 +1,22 @@
+reported here: https://github.com/chrisrobins/YouTubeHTML5/issues/55
+------
+Reproduce:
+1. the only enabled extension should be: HTML5 video for YouTube™ 0.5.11
+2. load this unlisted youtube video in a tab: https://www.youtube.com/watch?v=MVKkW-UhLuM
+3. chromium crashed with:
+
+[11664:11693:0806/210113:FATAL:url_request.cc(706)] Trying to send secure referrer for insecure load
+Aborted
+
+Chromium Version 38.0.2107.2 (286086) (64-bit)
+Linux manji 3.16.0-rc7-MANJAROed SMP Sat Aug 2 21:37:56 CEST 2014 x86_64 GNU/Linux
+all chromium plugins are disabled (there's no flash anyway)
+
+Fix: disable extension: HTML5 video for YouTube™ 0.5.11
+step 2 doesn't crash now.
+
+Maybe this happens only with unlisted youtube videos?
+
+relevant chromium bug: https://code.google.com/p/chromium/issues/detail?id=334125
+(but, I don't have a google account to add this to it)
+

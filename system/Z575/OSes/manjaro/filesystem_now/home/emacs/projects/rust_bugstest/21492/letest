@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source ../env.sh
+
+#export LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/"
+#rust='/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/rustc'
+
+
+rustc --verbose main.rs
+
+#unset LD_LIBRARY_PATH
+

@@ -1,0 +1,19 @@
+when:
+GRUB_DEFAULT=saved
+is set like that in /etc/default/grub
+then executing
+grub2-mkconfig -o /but/grub/grub.cfg
+(notice the /but vs /boot)
+grub2-mkconfig will execute internally:
+grub2-editenv - list
+and that - will want to use the default grubenv:
+/boot/grub/grubenv
+hence the error:
+/usr/bin/grub2-editenv: error: cannot open `/boot/grub/grubenv.new': No such file or directory.
+
+to manually set the right grubenv path:
+sed -re 's|("\$\{grub_editenv\}" )(\-)( list)|\1"/but/grub/grubenv"\3|' -i grub2-mkconfig
+in this case it's: /but/grub/grubenv
+
+To get a proper fix, don't use the ${grub_cfg} var (which is computed from the -o param to mkconfig, because lacking -o  it will dump config to stdout, and this would still need a grubenv, rite?)
+

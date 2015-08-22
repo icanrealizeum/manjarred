@@ -1,0 +1,700 @@
+#!/bin/bash
+
+fname='all.patch'
+pushd src
+#XXX: DO NOT put any # comments inside the following:
+#dups are ok, they will be filtered out.
+#./ in front is ok, it will be filtered out
+allfiles='
+base/base.gypi
+base/BUILD.gn
+base/message_loop/message_loop.h
+base/prefs/json_pref_store.cc
+base/prefs/pref_service.cc
+build/config/clang/BUILD.gn
+build/config/compiler/BUILD.gn
+build/config/features.gni
+BUILD.gn
+build/json_schema_api.gni
+build/toolchain/linux/BUILD.gn
+chrome/app/BUILD.gn
+chrome/app/generated_resources.grd
+chrome/browser/about_flags.cc
+chrome/browser/apps/ephemeral_app_launcher.cc
+chrome/browser/browser_process_impl.cc
+chrome/browser/browser_process_impl.h
+chrome/browser/BUILD.gn
+chrome/browser/chrome_browser_main.cc
+chrome/browser/component_updater/widevine_cdm_component_installer.cc
+chrome/browser/devtools/BUILD.gn
+chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
+chrome/browser/extensions/api/content_settings/content_settings_api.cc
+chrome/browser/extensions/api/content_settings/content_settings_api.h
+chrome/browser/extensions/api/permissions/permissions_api_helpers.cc
+chrome/browser/extensions/api/screenlock_private/screenlock_private_api.cc
+chrome/browser/extensions/browser_context_keyed_service_factories.cc
+chrome/browser/extensions/BUILD.gn
+chrome/browser/extensions/component_loader.cc
+chrome/browser/extensions/crx_installer.cc
+chrome/browser/extensions/extension_install_checker.cc
+chrome/browser/extensions/extension_install_checker.h
+chrome/browser/extensions/extension_service.cc
+chrome/browser/extensions/extension_service.h
+chrome/browser/extensions/extension_system_factory.cc
+chrome/browser/extensions/extension_system_impl.cc
+chrome/browser/extensions/plugin_manager.cc
+chrome/browser/lifetime/application_lifetime_aura.cc
+chrome/browser/prefs/browser_prefs.cc
+chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
+chrome/browser/profiles/profile_impl.cc
+chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.cc
+chrome/browser/renderer_host/chrome_resource_dispatcher_host_delegate.h
+chrome/browser/renderer_preferences_util.cc
+chrome/browser/resources/easy_unlock/manifest.json
+chrome/browser/resources/easy_unlock/manifest_signin.json
+chrome/browser/resources/options/autofill_options.js
+chrome/browser/search/instant_service.cc
+chrome/browser/supervised_user/supervised_user_interstitial.cc
+chrome/browser/task_manager/task_manager.cc
+chrome/browser/ui/aura/chrome_browser_main_extra_parts_aura.cc
+chrome/browser/ui/autofill/autofill_dialog_controller.cc
+chrome/browser/ui/BUILD.gn
+chrome/browser/ui/libgtk2ui/BUILD.gn
+chrome/browser/ui/views/message_center/web_notification_tray.cc
+chrome/BUILD.gn
+chrome/chrome_browser_extensions.gypi
+chrome/chrome_browser.gypi
+chrome/chrome_browser_ui.gypi
+chrome/chrome_common.gypi
+chrome/chrome_exe.gypi
+chrome/chrome_renderer.gypi
+chrome/chrome_repack_locales.gni
+chrome/chrome_utility.gypi
+chrome/common/BUILD.gn
+chrome/common/chrome_paths_linux.cc
+chrome/common/chrome_switches.h
+chrome/common/chrome_utility_messages.h
+chrome/common/extensions/api/BUILD.gn
+chrome/common/extensions/api/preferences_private.json
+chrome/common/extensions_api_resources.grd
+chrome/common/extensions/api/schemas.gypi
+chrome/common/pref_names.h
+chrome/renderer/BUILD.gn
+chrome/renderer/extensions/chrome_extensions_dispatcher_delegate.cc
+chrome/renderer/resources/renderer_resources.grd
+
+
+chrome/utility/BUILD.gn
+chrome/utility/chrome_content_utility_client.cc
+components/bookmarks/browser/BUILD.gn
+components/BUILD.gn
+components/history/core/browser/BUILD.gn
+components/history/core/browser/web_history_service.cc
+components/invalidation/BUILD.gn
+components/omnibox/BUILD.gn
+components/policy/core/browser/BUILD.gn
+components/precache/core/precache_database.cc
+components/search_engines/BUILD.gn
+components/suggestions/suggestions_service.cc
+components/translate/core/browser/BUILD.gn
+components/variations/entropy_provider.h
+components/variations/net/BUILD.gn
+components/webdata/common/BUILD.gn
+components/webdata_services/BUILD.gn
+content/browser/BUILD.gn
+content/common/BUILD.gn
+content/public/renderer/BUILD.gn
+content/renderer/BUILD.gn
+crypto/nss_util.cc
+extensions/browser/browser_context_keyed_service_factories.cc
+extensions/browser/BUILD.gn
+extensions/browser/extension_web_contents_observer.cc
+extensions/BUILD.gn
+extensions/common/api/BUILD.gn
+extensions/common/api/schemas.gypi
+extensions/common/BUILD.gn
+extensions/common/common_manifest_handlers.cc
+extensions/common/permissions/extensions_api_permissions.cc
+extensions/extensions.gypi
+extensions/renderer/dispatcher.cc
+extensions/renderer/resources/extensions_renderer_resources.grd
+extensions/shell/app_shell.gyp
+extensions/shell/app_shell.gypi
+extensions/shell/BUILD.gn
+media/audio/alsa/audio_manager_alsa.cc
+media/audio/audio_input_controller.cc
+media/audio/audio_input_controller.h
+media/audio/audio_output_controller.cc
+media/audio/audio_output_controller.h
+media/audio/audio_output_resampler.cc
+media/audio/linux/audio_manager_linux.cc
+media/media_options.gni
+skia/BUILD.gn
+skia/ext/image_operations.cc
+third_party/leveldatabase/env_chromium.cc
+third_party/leveldatabase/env_chromium.h
+third_party/libaddressinput/BUILD.gn
+third_party/libaddressinput/libaddressinput.gyp
+tools/json_schema_compiler/schema_loader.py
+ui/events/event.cc
+ui/message_center/dummy_message_center.cc
+ui/webui/resources/webui_resources.grd
+
+base/message_loop/message_loop.cc
+base/message_loop/message_loop.h
+net/net.gypi
+net/quic/quic_client_session.h
+net/quic/quic_client_session.cc
+
+ui/app_list/BUILD.gn
+chrome/BUILD.gn
+components/sessions/BUILD.gn
+components/dom_distiller/core/BUILD.gn
+components/gcm_driver/BUILD.gn
+components/search_engines/BUILD.gn
+chrome/common/extensions/api/BUILD.gn
+components/dom_distiller/content/BUILD.gn
+
+
+sandbox/mac/BUILD.gn
+sandbox/linux/BUILD.gn
+sandbox/win/BUILD.gn
+BUILD.gn
+build/config/BUILDCONFIG.gn
+build/config/compiler/BUILD.gn
+build/secondary/third_party/cacheinvalidation/BUILD.gn
+build/secondary/third_party/leveldatabase/BUILD.gn
+tools/gn/BUILD.gn
+tools/gn/format_test_data/062.gn
+tools/gn/format_test_data/030.gn
+tools/perf/clear_system_cache/BUILD.gn
+tools/relocation_packer/BUILD.gn
+sql/BUILD.gn
+components/update_client/BUILD.gn
+components/web_resource/BUILD.gn
+components/nacl/BUILD.gn
+components/BUILD.gn
+components/favicon_base/BUILD.gn
+components/constrained_window/BUILD.gn
+components/browser_watcher/BUILD.gn
+components/ownership/BUILD.gn
+components/gcm_driver/android/BUILD.gn
+components/data_reduction_proxy/core/browser/BUILD.gn
+components/data_reduction_proxy/core/common/BUILD.gn
+components/data_reduction_proxy/content/browser/BUILD.gn
+components/invalidation/BUILD.gn
+components/dom_distiller/core/BUILD.gn
+components/dom_distiller/content/BUILD.gn
+components/dom_distiller/webui/BUILD.gn
+components/login/BUILD.gn
+components/omnibox/BUILD.gn
+components/webdata_services/BUILD.gn
+components/content_settings/core/browser/BUILD.gn
+components/content_settings/core/common/BUILD.gn
+components/crx_file/BUILD.gn
+components/history/core/test/BUILD.gn
+components/packed_ct_ev_whitelist/BUILD.gn
+components/domain_reliability/BUILD.gn
+components/variations/BUILD.gn
+components/sessions/BUILD.gn
+components/bookmarks/browser/BUILD.gn
+components/webdata/common/BUILD.gn
+components/device_event_log/BUILD.gn
+components/captive_portal/BUILD.gn
+courgette/BUILD.gn
+dbus/BUILD.gn
+skia/BUILD.gn
+ui/keyboard/BUILD.gn
+ui/display/BUILD.gn
+ui/compositor/BUILD.gn
+ui/app_list/BUILD.gn
+ui/aura/BUILD.gn
+ui/shell_dialogs/BUILD.gn
+ui/accessibility/BUILD.gn
+ui/ozone/BUILD.gn
+ui/ozone/platform/drm/BUILD.gn
+ui/android/BUILD.gn
+ui/wm/BUILD.gn
+ui/chromeos/BUILD.gn
+ui/base/BUILD.gn
+ui/message_center/BUILD.gn
+ui/gfx/BUILD.gn
+ui/views/BUILD.gn
+ui/views/controls/webview/BUILD.gn
+ui/events/BUILD.gn
+ui/touch_selection/BUILD.gn
+ui/snapshot/BUILD.gn
+ash/BUILD.gn
+third_party/libaddressinput/BUILD.gn
+third_party/WebKit/public/BUILD.gn
+third_party/WebKit/Source/core/core.gni
+third_party/WebKit/Source/wtf/BUILD.gn
+third_party/WebKit/Source/bindings/bindings.gni
+third_party/WebKit/Source/bindings/modules/v8/v8.gni
+third_party/WebKit/Source/web/BUILD.gn
+third_party/WebKit/Source/modules/modules.gni
+third_party/WebKit/Source/platform/BUILD.gn
+third_party/WebKit/Source/platform/platform.gni
+third_party/mojo/src/mojo/edk/js/BUILD.gn
+third_party/mojo/src/mojo/edk/embedder/BUILD.gn
+third_party/mojo/src/mojo/edk/system/BUILD.gn
+gin/BUILD.gn
+url/BUILD.gn
+content/shell/BUILD.gn
+ppapi/proxy/BUILD.gn
+ppapi/BUILD.gn
+ppapi/shared_impl/BUILD.gn
+net/BUILD.gn
+net/android/BUILD.gn
+net/base/registry_controlled_domains/BUILD.gn
+breakpad/BUILD.gn
+media/BUILD.gn
+media/audio/BUILD.gn
+media/blink/BUILD.gn
+media/test/BUILD.gn
+media/cast/BUILD.gn
+media/base/BUILD.gn
+media/base/mac/BUILD.gn
+media/base/android/BUILD.gn
+media/mojo/services/BUILD.gn
+cc/BUILD.gn
+cc/blink/BUILD.gn
+gpu/BUILD.gn
+google_apis/gcm/BUILD.gn
+google_apis/BUILD.gn
+rlz/BUILD.gn
+chromeos/BUILD.gn
+.gn
+ipc/BUILD.gn
+ipc/mojo/BUILD.gn
+base/BUILD.gn
+mojo/BUILD.gn
+mojo/services/html_viewer/BUILD.gn
+mojo/common/BUILD.gn
+mojo/android/BUILD.gn
+crypto/BUILD.gn
+chrome/browser/BUILD.gn
+chrome/browser/ui/BUILD.gn
+chrome/browser/chromeos/BUILD.gn
+chrome/browser/extensions/BUILD.gn
+chrome/renderer/BUILD.gn
+chrome/tools/service_discovery_sniffer/BUILD.gn
+chrome/android/BUILD.gn
+chrome_elf/BUILD.gn
+BUILD.gn
+components/content_settings/core/browser/BUILD.gn
+third_party/mojo/src/mojo/edk/js/BUILD.gn
+third_party/mojo/src/mojo/edk/embedder/BUILD.gn
+third_party/mojo/src/mojo/edk/system/BUILD.gn
+media/BUILD.gn
+media/mojo/services/BUILD.gn
+mojo/BUILD.gn
+mojo/common/BUILD.gn
+chrome/app/BUILD.gn
+chrome/browser/BUILD.gn
+chrome/renderer/BUILD.gn
+chrome/common/BUILD.gn
+
+
+./BUILD.gn
+./third_party/WebKit/public/BUILD.gn
+./third_party/WebKit/Source/core/core.gni
+./third_party/WebKit/Source/wtf/BUILD.gn
+./third_party/WebKit/Source/bindings/bindings.gni
+./third_party/WebKit/Source/bindings/modules/v8/v8.gni
+./third_party/WebKit/Source/web/BUILD.gn
+./third_party/WebKit/Source/modules/modules.gni
+./third_party/WebKit/Source/platform/BUILD.gn
+./third_party/WebKit/Source/platform/platform.gni
+./third_party/mojo/src/mojo/public/BUILD.gn
+./content/public/android/BUILD.gn
+./mojo/android/BUILD.gn
+./tools/json_schema_compiler/test/BUILD.gn
+./third_party/mojo/src/mojo/edk/js/BUILD.gn
+third_party/WebKit/Source/wtf/BUILD.gn
+
+./BUILD.gn
+./third_party/WebKit/public/BUILD.gn
+./third_party/WebKit/Source/core/core.gni
+./third_party/WebKit/Source/wtf/BUILD.gn
+./third_party/WebKit/Source/bindings/bindings.gni
+./third_party/WebKit/Source/bindings/modules/v8/v8.gni
+./third_party/WebKit/Source/web/BUILD.gn
+./third_party/WebKit/Source/modules/modules.gni
+./third_party/WebKit/Source/platform/BUILD.gn
+./third_party/WebKit/Source/platform/platform.gni
+./third_party/mojo/src/mojo/public/BUILD.gn
+./content/public/android/BUILD.gn
+./mojo/android/BUILD.gn
+./tools/json_schema_compiler/test/BUILD.gn
+./third_party/mojo/src/mojo/edk/js/BUILD.gn
+./third_party/WebKit/public/BUILD.gn
+./third_party/WebKit/Source/core/core.gni
+./third_party/WebKit/Source/wtf/BUILD.gn
+./third_party/WebKit/Source/bindings/bindings.gni
+./third_party/WebKit/Source/bindings/modules/v8/v8.gni
+./third_party/WebKit/Source/web/BUILD.gn
+./third_party/WebKit/Source/modules/modules.gni
+./third_party/WebKit/Source/platform/BUILD.gn
+./third_party/WebKit/Source/platform/platform.gni
+./content/browser/BUILD.gn
+./content/renderer/BUILD.gn
+./.gn
+./chrome/browser/BUILD.gn
+./chrome/browser/ui/BUILD.gn
+./chrome/browser/ui/libgtk2ui/BUILD.gn
+./chrome/browser/chromeos/BUILD.gn
+./chrome/BUILD.gn
+./chrome/renderer/BUILD.gn
+./chrome/service/BUILD.gn
+./chrome/common/BUILD.gn
+./chrome/android/BUILD.gn
+./content/browser/BUILD.gn
+./content/renderer/BUILD.gn
+./.gn
+./chrome/browser/BUILD.gn
+./chrome/browser/ui/BUILD.gn
+./chrome/browser/ui/libgtk2ui/BUILD.gn
+./chrome/browser/chromeos/BUILD.gn
+./chrome/BUILD.gn
+./chrome/renderer/BUILD.gn
+./chrome/service/BUILD.gn
+./chrome/common/BUILD.gn
+./chrome/android/BUILD.gn
+
+extensions/extensions.gni
+
+./BUILD.gn
+./third_party/WebKit/public/BUILD.gn
+./third_party/WebKit/Source/core/core.gni
+./third_party/WebKit/Source/wtf/BUILD.gn
+./third_party/WebKit/Source/bindings/bindings.gni
+./third_party/WebKit/Source/bindings/modules/v8/v8.gni
+./third_party/WebKit/Source/web/BUILD.gn
+./third_party/WebKit/Source/modules/modules.gni
+./third_party/WebKit/Source/platform/BUILD.gn
+./third_party/WebKit/Source/platform/platform.gni
+./third_party/mojo/src/mojo/public/BUILD.gn
+./content/public/android/BUILD.gn
+./mojo/android/BUILD.gn
+./tools/json_schema_compiler/test/BUILD.gn
+./third_party/mojo/src/mojo/edk/js/BUILD.gn
+./third_party/WebKit/public/BUILD.gn
+./third_party/WebKit/Source/core/core.gni
+./third_party/WebKit/Source/wtf/BUILD.gn
+./third_party/WebKit/Source/bindings/bindings.gni
+./third_party/WebKit/Source/bindings/modules/v8/v8.gni
+./third_party/WebKit/Source/web/BUILD.gn
+./third_party/WebKit/Source/modules/modules.gni
+./third_party/WebKit/Source/platform/BUILD.gn
+./third_party/WebKit/Source/platform/platform.gni
+./content/browser/BUILD.gn
+./content/renderer/BUILD.gn
+./.gn
+./chrome/browser/BUILD.gn
+./chrome/browser/ui/BUILD.gn
+./chrome/browser/ui/libgtk2ui/BUILD.gn
+./chrome/browser/chromeos/BUILD.gn
+./chrome/BUILD.gn
+./chrome/renderer/BUILD.gn
+./chrome/service/BUILD.gn
+./chrome/common/BUILD.gn
+./chrome/android/BUILD.gn
+./content/browser/BUILD.gn
+./content/renderer/BUILD.gn
+./.gn
+./chrome/browser/BUILD.gn
+./chrome/browser/ui/BUILD.gn
+./chrome/browser/ui/libgtk2ui/BUILD.gn
+./chrome/browser/chromeos/BUILD.gn
+./chrome/BUILD.gn
+./chrome/renderer/BUILD.gn
+./chrome/service/BUILD.gn
+./chrome/common/BUILD.gn
+./chrome/android/BUILD.gn
+./content/browser/BUILD.gn
+./content/renderer/BUILD.gn
+./.gn
+./chrome/browser/BUILD.gn
+./chrome/browser/ui/BUILD.gn
+./chrome/browser/ui/libgtk2ui/BUILD.gn
+./chrome/browser/chromeos/BUILD.gn
+./chrome/BUILD.gn
+./chrome/renderer/BUILD.gn
+./chrome/service/BUILD.gn
+./chrome/common/BUILD.gn
+./chrome/android/BUILD.gn
+
+build/all.gyp
+
+./sandbox/mac/sandbox_mac.gypi
+./sandbox/linux/sandbox_linux.gypi
+./sandbox/win/sandbox_win.gypi
+./build/gn_migration.gypi
+./build/linux/unbundle/protobuf.gyp
+./build/common.gypi
+./build/filename_rules.gypi
+./tools/gn/gn.gyp
+./tools/cygprofile/cygprofile.gyp
+./tools/relocation_packer/relocation_packer.gyp
+./tools/android/heap_profiler/heap_profiler.gyp
+./tools/gyp/tools/emacs/testdata/media.gyp
+./sql/sql.gyp
+./components/nacl_nonsfi.gyp
+./components/history.gypi
+./components/content_settings.gypi
+./components/nacl.gyp
+./courgette/courgette.gyp
+./dbus/dbus.gyp
+./ui/keyboard/keyboard.gyp
+./ui/display/display.gyp
+./ui/compositor/compositor.gyp
+./ui/app_list/app_list.gyp
+./ui/aura/aura.gyp
+./ui/gl/gl.gyp
+./ui/shell_dialogs/shell_dialogs.gyp
+./ui/accessibility/accessibility.gyp
+./ui/ozone/ozone.gyp
+./ui/ozone/platform/drm/drm.gypi
+./ui/android/ui_android.gyp
+./ui/wm/wm.gyp
+./ui/chromeos/ui_chromeos.gyp
+./ui/native_theme/native_theme.gyp
+./ui/message_center/message_center.gyp
+./ui/gfx/gfx.gyp
+./ui/views/views.gyp
+./ui/events/events.gyp
+./ui/touch_selection/ui_touch_selection.gyp
+./ui/snapshot/snapshot.gyp
+./cloud_print/cloud_print.gyp
+./cloud_print/gcp20/prototype/gcp20_device.gyp
+./ash/ash.gyp
+./third_party/snappy/snappy.gyp
+./third_party/libaddressinput/src/cpp/libaddressinput.gypi
+./third_party/libyuv/libyuv_test.gyp
+./third_party/skia/gyp/dm.gypi
+./third_party/skia/gyp/most.gyp
+./third_party/cacheinvalidation/cacheinvalidation.gyp
+./third_party/leveldatabase/leveldatabase.gyp
+./third_party/WebKit/public/all.gyp
+./third_party/WebKit/Source/core/core.gypi
+./third_party/WebKit/Source/wtf/wtf.gypi
+./third_party/WebKit/Source/bindings/bindings.gypi
+./third_party/WebKit/Source/bindings/core/v8/v8.gypi
+./third_party/WebKit/Source/bindings/modules/v8/v8.gypi
+./third_party/WebKit/Source/web/web.gypi
+./third_party/WebKit/Source/web/web.gyp
+./third_party/WebKit/Source/modules/modules.gypi
+./third_party/WebKit/Source/platform/blink_platform.gypi
+./third_party/mojo/mojo_edk.gyp
+./third_party/mojo/mojo_public.gyp
+./third_party/mojo/mojo_variables.gypi
+./gin/gin.gyp
+./url/url.gyp
+./net/net.gyp
+./breakpad/breakpad.gyp
+./breakpad/src/tools/windows/dump_syms/dump_syms.gyp
+./breakpad/src/common/common.gyp
+./breakpad/src/common/windows/common_windows.gyp
+./breakpad/src/processor/processor.gyp
+./media/media.gyp
+./media/blink/media_blink.gyp
+./gpu/gpu.gyp
+./google_apis/gcm/gcm.gyp
+./google_apis/google_apis.gyp
+./rlz/rlz.gyp
+./chromeos/chromeos.gyp
+./ipc/ipc.gyp
+./ipc/mojo/ipc_mojo.gyp
+./chromecast/media/media.gyp
+./base/allocator/allocator.gyp
+./base/base.gyp
+./mojo/mojo_nacl_untrusted.gyp
+./mojo/mojo_base.gyp
+./crypto/crypto.gyp
+./chrome/app_installer/app_installer.gypi
+./chrome/chrome_installer.gypi
+./chrome/chrome_nibs.gyp
+./chrome/chrome.gyp
+./chrome_elf/chrome_elf.gyp
+
+tools/gn/BUILD.gn
+
+third_party/WebKit/Source/bindings/core/idl.gni
+third_party/WebKit/Source/bindings/modules/idl.gni
+./third_party/WebKit/Source/web/web.gypi
+third_party/WebKit/Source/core/BUILD.gn
+third_party/WebKit/Source/bindings/core/v8/BUILD.gn
+third_party/WebKit/Source/bindings/modules/v8/BUILD.gn
+third_party/WebKit/Source/modules/BUILD.gn
+third_party/WebKit/Source/wtf/BUILD.gn
+
+./sandbox/mac/sandbox_mac.gypi
+./sandbox/linux/sandbox_linux.gypi
+./sandbox/win/sandbox_win.gypi
+./build/gn_migration.gypi
+./build/linux/unbundle/protobuf.gyp
+./build/common.gypi
+./build/filename_rules.gypi
+./tools/gn/gn.gyp
+./tools/cygprofile/cygprofile.gyp
+./tools/relocation_packer/relocation_packer.gyp
+./tools/android/heap_profiler/heap_profiler.gyp
+./tools/gyp/tools/emacs/testdata/media.gyp
+./sql/sql.gyp
+./components/nacl_nonsfi.gyp
+./components/history.gypi
+./components/content_settings.gypi
+./components/nacl.gyp
+./courgette/courgette.gyp
+./dbus/dbus.gyp
+./ui/keyboard/keyboard.gyp
+./ui/display/display.gyp
+./ui/compositor/compositor.gyp
+./ui/app_list/app_list.gyp
+./ui/aura/aura.gyp
+./ui/gl/gl.gyp
+./ui/shell_dialogs/shell_dialogs.gyp
+./ui/accessibility/accessibility.gyp
+./ui/ozone/ozone.gyp
+./ui/ozone/platform/drm/drm.gypi
+./ui/android/ui_android.gyp
+./ui/wm/wm.gyp
+./ui/chromeos/ui_chromeos.gyp
+./ui/native_theme/native_theme.gyp
+./ui/message_center/message_center.gyp
+./ui/gfx/gfx.gyp
+./ui/views/views.gyp
+./ui/events/events.gyp
+./ui/touch_selection/ui_touch_selection.gyp
+./ui/snapshot/snapshot.gyp
+./cloud_print/cloud_print.gyp
+./cloud_print/gcp20/prototype/gcp20_device.gyp
+./ash/ash.gyp
+./third_party/snappy/snappy.gyp
+./third_party/libaddressinput/src/cpp/libaddressinput.gypi
+./third_party/libyuv/libyuv_test.gyp
+./third_party/skia/gyp/dm.gypi
+./third_party/skia/gyp/most.gyp
+./third_party/cacheinvalidation/cacheinvalidation.gyp
+./third_party/leveldatabase/leveldatabase.gyp
+./third_party/WebKit/public/all.gyp
+./third_party/WebKit/Source/core/core.gypi
+./third_party/WebKit/Source/wtf/wtf.gypi
+./third_party/WebKit/Source/bindings/bindings.gypi
+./third_party/WebKit/Source/bindings/core/v8/v8.gypi
+./third_party/WebKit/Source/bindings/modules/v8/v8.gypi
+./third_party/WebKit/Source/web/web.gypi
+./third_party/WebKit/Source/web/web.gyp
+./third_party/WebKit/Source/modules/modules.gypi
+./third_party/WebKit/Source/platform/blink_platform.gypi
+./third_party/mojo/mojo_edk.gyp
+./third_party/mojo/mojo_public.gyp
+./third_party/mojo/mojo_variables.gypi
+./gin/gin.gyp
+./url/url.gyp
+./net/net.gyp
+./breakpad/breakpad.gyp
+./breakpad/src/tools/windows/dump_syms/dump_syms.gyp
+./breakpad/src/common/common.gyp
+./breakpad/src/common/windows/common_windows.gyp
+./breakpad/src/processor/processor.gyp
+./media/media.gyp
+./media/blink/media_blink.gyp
+./gpu/gpu.gyp
+./google_apis/gcm/gcm.gyp
+./google_apis/google_apis.gyp
+./rlz/rlz.gyp
+./chromeos/chromeos.gyp
+./ipc/ipc.gyp
+./ipc/mojo/ipc_mojo.gyp
+./chromecast/media/media.gyp
+./base/allocator/allocator.gyp
+./base/base.gyp
+./mojo/mojo_nacl_untrusted.gyp
+./mojo/mojo_base.gyp
+./crypto/crypto.gyp
+./chrome/app_installer/app_installer.gypi
+./chrome/chrome_installer.gypi
+./chrome/chrome_nibs.gyp
+./chrome/chrome.gyp
+./chrome_elf/chrome_elf.gyp
+
+'
+allfiles+="$(echo;cat "../patched_files.lst")"
+#remove "./" from the beginning, ignoring any whitespace prefix
+allfiles="$(sed -re 's|^[[:space:]]*\.\/||g' <<< "$allfiles")"
+#echo "${allfiles}"
+#echo "${allfiles[@]}"
+
+#sort everything to avoid duplicates! very important, since we append patches without knowing they repeated earlier - if they do, PKGBUILD patch-applying will fail
+params="$(sort -bu -- <<< "$allfiles")"
+# | read -r -d '' -a params 
+#exit 1
+
+#TODO: ensure each file exists! and fail otherwise
+#no quotes to allow globbing
+#echo git diff --minimal --no-color --irreversible-delete -- ${params[@]}
+#set -x
+#FIXME: some files in submodules are not git diff-ed!!! eg. third_party/WebKit/Source/bindings/bindings.gni
+#git diff --minimal --no-color --irreversible-delete -- ${params[*]} > "/tmp/${fname}"
+#set +x
+
+outpatch="/tmp/${fname}"
+echo -n "" > "$outpatch" #start with empty contents
+temp_newlist="/tmp/patched_files.lst"
+echo -n "" > "$temp_newlist" #start with empty contents
+
+#echo "${params[@]}" | 
+
+#XXX: paths can't have spaces because of this(they will be treated as two different things!):
+#yep this takes a while, because it executes git diff for each file!!!
+echo "wait like 3m17sec currently"
+time for eachf in ${params[@]}; do
+  if ! test -f "$eachf" -o -d "$eachf" ; then
+    echo "Inexistent file/dir: '$eachf'"
+#    echo "please remove and re-run"
+#    exit 2
+  else
+    #existing.
+    if test -d "$eachf"; then
+      justfname="."
+      justpath="$eachf"
+    else
+      #not a dir, so file:
+      justfname="${eachf##*/}"
+      justpath="${eachf%$justfname}"
+      if test -z "$justpath"; then
+        justpath='.'
+      fi
+    fi
+#    echo "justpath: $justpath"
+#    echo "justfname: $justfname"
+#    echo
+#    echo "$eachf"
+    if ! test -d "$justpath"; then
+      echo "Impossible, dir doesn't exist: '$justpath'"
+      exit 2
+#      continue
+    fi
+    pushd "$justpath" >/dev/null
+    if ! test -d "$justfname" -o -f "$justfname"; then
+      echo "Impossible, file doesn't exist: '$justfname'"
+      exit 3
+#      continue
+    fi
+    #must not use "." as path in diff below:
+    if test "$justpath" = "."; then
+      justpath=""
+    fi
+    git diff --patch --unified=2 --no-color --irreversible-delete -- "$justfname" | sed -re "s|^((\+\+\+\|\-\-\-) [ab]\\/).*$|\\1${justpath}${justfname}|g" >> "$outpatch"
+    popd >/dev/null
+    echo "${justpath}${justfname}" >> "$temp_newlist"
+  fi
+done
+popd
+cp "${outpatch}" .
+cp "$temp_newlist" .
+
+# search for "deleted file mode" or only first 2 words, to see which file is deleted, and comment it out from the above, after you've done a full ./1_sync
+
