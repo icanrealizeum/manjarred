@@ -303,7 +303,7 @@
           * mkdir -p -- '/patches' && chown root:root /patches && chmod a+rx,a-w,u+w /patches
             \ what you put inside this dir is eg. app-misc/  instead of portage/app-misc/
         * replace the USE flags line (Ctrl+K to remove that line): 
-          * USE="3dnow 3dnowext X bindist btrfs -crypt -cryptsetup cscope dbus -device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext     pulseaudio readline session sse sse2 sse3 startup-notification     -strong-security system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -mudflap -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -gstreamer -gstreamer-0 egl -gmp-autoupdate -tty-helpers -tcpd"
+          * USE="3dnow 3dnowext X bindist btrfs -crypt -cryptsetup cscope dbus -device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext     pulseaudio readline session sse sse2 sse3 startup-notification     -strong-security -system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -mudflap -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -gstreamer -gstreamer-0 egl -gmp-autoupdate -tty-helpers -tcpd"
           \ -tty-helpers  is something that sys-apps/util-linux-2.26.2  said it did automatically!
           \ online USE flags list+descriptions: https://www.gentoo.org/dyn/use-index.xml#doc_chap1
           \ XXX: libav was default but was switched to ffmpeg(by either not specifying libav or by -libav); we'll try ffmpeg (aka -libav) in next incarnation
@@ -1673,7 +1673,8 @@
           \ DONE: xfce-extra/xfce4-power-manager-1.3.0 needs kernel option CONFIG_TIMER_STATS to be set: *   CONFIG_TIMER_STATS:  is not set when it should be.
           \ XXX: libunique fails due to env var being set DEBUG=1  (TODO: report this on bugs)
         * vim /etc/portage/package.use/firefox
-          \ www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu system-cairo system-libvpx system-sqlite -wifi
+          \ www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu -system-cairo system-libvpx system-sqlite -wifi
+          \ changed to minus system-cairo to avoid this bug that causes youtube videos to freeze with firefox 40.0.2 (not with 39.0.3) https://bugs.gentoo.org/show_bug.cgi?id=558150#c23
         * first, you must move /var/tmp/ccache into root dir (aka /  not /root )
           * and either:
             * symlink it - or u'll run out of memory! and some random compile errors would happen
