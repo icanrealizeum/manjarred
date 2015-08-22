@@ -1,0 +1,8 @@
+#!/bin/bash
+
+pushd /usr/portage/sys-apps/debianutils/
+#this rebuilds the recorded checksum for all packages in current dir.
+#needed because .ebuild got patched!
+repoman -pv  --digest=y  --ask manifest
+popd
+
