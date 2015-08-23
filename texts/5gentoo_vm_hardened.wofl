@@ -1304,8 +1304,9 @@
             \ verify the files are there
           * popd
         * time emerge -nav --backtrack=30 \>=sys-boot/grub-9999
-          \ 7m41s
-        * nano /etc/default/grub
+          \ 70 packages
+          \ 
+        - (rsynced) nano /etc/default/grub
           \ #:set paste
           \ only this line exists (uncommented):
           \ GRUB_DISTRIBUTOR="Gentoo"
@@ -1335,7 +1336,7 @@
           \ GRUB_DISABLE_OS_PROBER=true
           \ GRUB_ENABLE_CRYPTODISK=y
           \ #^ for LUKS =y, src: http://www.pavelkogan.com/2014/05/23/luks-full-disk-encryption/
-        - (rsync)patch to look at /bewt instead of /boot
+        - (rsynced)patch to look at /bewt instead of /boot
           * grubenv: patch grub2-mkconfig to use /bewt instead of the default /boot
             * grubenv patch TODO: add this to grub-9999-r1 patches; technically we don't need this, but only because hmm it WAS inside lvm, but now it's inside luks only, so we could use the env hmm; actually I don't remember this correctly: is it failing to save grubenv while in grub menu if the fs is btrfs or when it's lvm? anyway do this!
               * sed -re 's|("\$\{grub_editenv\}" )(\-)( list)|\1"/bewt/grub/grubenv"\3|' -i /usr/sbin/grub2-mkconfig
@@ -1366,16 +1367,16 @@
                   \ set root=(lvm/vgall-bootlvol)
                   \ insmod normal
                   \ normal
-        - ensure /bewt is mounted:
+        * ensure /bewt is mounted:
           \ df /bewt (if size is like 512M then it's mounted) otherwise, you can only mount it outside of chroot (or if you're not on installCD: mount /bewt)
           \ needed for both grub2-* commands below
           * if it's not mounted eg. #SECONDBOOT then look for luksOpen before trying mount /bewt
-            \ cryptsetup --verbose luksOpen /dev/sda2 luks_on_sda2_boot
-            \ mount /bewt
-            \ df /bewt
+            * cryptsetup --verbose luksOpen /dev/sda2 luks_on_sda2_boot
+            * mount /bewt
+            * df /bewt
         * use genkernel made symlinks
           * nano /etc/grub.d/40_custom
-            - add passwords
+            * add passwords
               * prepend these lines(after exec tail, ofc):
                 \ set superusers="username1 username2"
                 \ password user3 thisisplaintextpassword
@@ -1383,7 +1384,7 @@
                 \ #that's the output of this line: grub2-mkpasswd-pbkdf2 -s 512
                 \ #more: info grub
                 \ #that is the password for username1 which is the one that allows booting into kernel
-            * add shutdown/reboot grub menu entries
+            - (rsynced) add shutdown/reboot grub menu entries
               \# :set paste
               \ menuentry "System shutdown" {
               \    echo "System shutting down..."
@@ -1456,20 +1457,23 @@
           \ patches are there, but now a new issue:
           \ //lvmid/  paths are useless, grub doesn't find the volumes, unless I use lvm/vgall-bootlvol instead(XXX: turns out it detected root instead of boot and used root's lvmid as grub root-which is supposed to be the /boot for grub - it's only grub2-mkconfig doing this, and it's because /boot vs /bewt and I forgot to apply that patch which I already had above ^ !)
           \ //then after doing that, kernel panics and I cannot scroll up to see exactly why it tries to kill init... and this is why: https://bugzilla.kernel.org/show_bug.cgi?id=90001#c3 aka !! The ramdisk does not support LUKS   (confirmed, for some reason I ran the last genkernel command(seen from ~/.bash_history) with --no-luks
-        - (only for luks)need to add root to kernel cmdline
+        * need to add root to kernel cmdline
           * find uuid of crypt device by:
             \ cryptsetup luksDump /dev/sda3 |grep UUID
             \ /dev/sda3 is root partition (not boot one!)
-            \ so looks like this: b904d6c0-4b05-4c9f-a468-f9242faba2df
+            \ so looks like this: e8b64567-124a-46a7-a167-d3d9c041de35
           * vim /etc/default/grub
             \ ie. prepend this to GRUB_CMDLINE_LINUX
-            \ crypt_root=UUID=b904d6c0-4b05-4c9f-a468-f9242faba2df root_trim=yes rd.luks.uuid=b904d6c0-4b05-4c9f-a468-f9242faba2df rd.luks.allow-discards
+            \ crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 root_trim=yes rd.luks.uuid=e8b64567-124a-46a7-a167-d3d9c041de35 rd.luks.allow-discards
             \ NOTE: for now rd. ones are not used, unless you use dracut (aka manual mode of compiling the kernel, instead of via genkernel!)
         * grub2-mkconfig -o /boot/grub/grub.cfg 2>&1
           \ this generated /bewt/grub/grub.cfg
           \ XXX: /bewt needs to be mounted: mount /bewt
           \ XXX: run only this command(mkconfig one) if you've changed /etc/default/grub
-        * ls -la /boot 
+        * ls -la /boot                                                          
+          \ should be empty!!! because used /bewt
+          \ well there's ".keep" file from tar unpacking!
+        * ls -la /bewt 
           \ example:
           \ drwxr-xr-x 1 root root     306 Apr 15 01:38 .
           \ drwxr-xr-x 1 root root     352 Apr  9 19:34 ..
@@ -1480,25 +1484,27 @@
           \ -rw-r--r-- 1 root root 4310144 Apr 15 00:32 kernel-genkernel-x86_64-3.18.9-hardened
           \ lrwxrwxrwx 1 root root      43 Apr 15 00:32 System.map -> System.map-genkernel-x86_64-3.18.9-hardened
           \ -rw-r--r-- 1 root root 2302717 Apr 15 00:32 System.map-genkernel-x86_64-3.18.9-hardened
-        - inspect grub.cfg a bit (should've worked if the grub patches were in place!)
-          \ vim /boot/grub/grub.cfg
+        * inspect grub.cfg a bit (should've worked if the grub patches were in place!)
+          \ vim /bewt/grub/grub.cfg
           \ see if "set root=" is something of (blkid /dev/sda2 | grep UUID)
           \ and hint has the uuid of (blkid /dev/mapper/luks_on_sda2_boot | grep UUID) and the root in the else is the /dev/mapper/luks_on_sda2_boot uuid as reported by blkid
           \ and the root= within the linux line is root=/dev/mapper/vgall-rootlvol  and the crypt_root=UUID= on the same line that follows is ofc a totally different id than the above mentioned two because it's the blkid of the / (actual root; not the grub root which to grub is the boot device)
-      - close /bewt luks
+      * close /bewt luks
         * umount /bewt
         * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
         * when you wanna mount it later (when sys is running):
           \ cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
           \ mount /bewt
-      - backup boot ...
+      * backup boot ...
         * sync; time dd if=/dev/sda2 of=/dev/mapper/vgall-bootlvolbackup bs=100M ; sync
-          \ yep 537MB reported is 512M in fact (536870912 bytes (537 MB) copied, 7.76532 s, 69.1 MB/s)
-        * TODO: do something with this backup... dno what at this time, eg. check for modifications after having booted, even though there shouldn't be any because only grub is mounting that one at grub menu, kernel isn't mounting it! unless you manually do luksOpen later on!
+          \ //yep 537MB reported is 512M in fact (536870912 bytes (537 MB) copied, 7.76532 s, 69.1 MB/s)
+        * TODO: do something with this backup... dno what at this time, eg. check for modifications after having booted, even though there shouldn't be any because only grub is mounting that one at grub menu, kernel isn't mounting it! unless you manually do luksOpen later on! in other words it should be readonly mounting by grub only!
+          \ maybe vbindiff the devices, heh
       * disable some services
         * rc-update del netmount
+          \ * service netmount removed from runlevel default
           \ rc-update: service `netmount' is not in the runlevel `sysinit'  (or 'boot')
-      * don't clear tty1 on boot (and logout)
+      - (rsynced) don't clear tty1 on boot (and logout)
         * nano /etc/inittab
           \ replace line:
           \ c1:12345:respawn:/sbin/agetty 38400 tty1 linux
