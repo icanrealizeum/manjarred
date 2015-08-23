@@ -676,7 +676,7 @@
       * run this on host:
         * cd /home/emacs/rsync/
           \ or cd /home/zazdxscf/rsync/
-        * ./0updateTO   XXX: ok wait, this doesn't apply it in /mnt/gentoo !
+        * ./0updateTOchroot
           \ run that script... from ~/rsync/ on host!
         - sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --max-delete=0 --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60   --rsh="ssh -p 8822 -l root" -- ~/rsync/gentoo/ 127.0.0.111:/mnt/gentoo/
           \ XXX: --no-delete is not recognized, so using --max-delete=0
@@ -841,8 +841,9 @@
       * time emerge -av \>=ccache-3.2.2
         \ 37s
         \ for future reference, to read: /usr/share/doc/ccache-3.2.2/README.gentoo
-      - ccache -M 26G
+      - (rsynced) CCACHE_DIR="/ccache" ccache -M 26G
         \ unsure if this is needed although after emerging it, it says that we should do it.
+        \ I do it because it creates the dir
       * nano -w /etc/portage/make.conf
         \ change -ccache into ccache
       - when want to use ccache for non-portage compilations:
@@ -852,12 +853,13 @@
         * Ctrl+R, PS1
         \ export PS1="(chroot1) $PS1"
       * to watch ccache in another (chrooted) terminal
-        \ CCACHE_DIR="/var/tmp/ccache" watch -n1 -d -- ccache -s
+        \ CCACHE_DIR="/ccache" watch -n1 -d -- ccache -s
+        \ or /var/tmp/ccache  if you left it there...(see make.conf setting)
         \ XXX: chrooted because ccache command is not available on live cd(admin cd currently; but neither install-cd has it)
         \ to chroot:
         \ chroot /mnt/gentoo /bin/bash --login
-        \ export PS1="(chroot2) $PS1"
-    - this adds /root/bin to path (and later for /home/zazdxscf/bin)
+        \ //export PS1="(chroot2) $PS1"
+    - (rsynced)this adds /root/bin to path (and later for /home/zazdxscf/bin)
       * nano -w ~/.bashrc
        \ export PATH="${PATH}:~/bin"
       * mkdir ~/bin
@@ -872,6 +874,10 @@
     * debugedit for FEATURES=installsources to work
       * time emerge -nav debugedit
         \ 6m38s
+    * reinstall fakeroot to get its sources(since we have debugedit now)
+      * time emerge -av sys-apps/fakeroot debugedit dev-libs/icu dev-libs/beecrypt
+        \ yep also install debugedit and its deps
+        \ about 5mins 15sec
     - install mosh to "replace" ssh (7m48s) - NOPE, maybe some other time
       \ connecting to remote(this VM) remote host only needs running ssh, mosh package installed, and utf8 locale set.  then connect to it via: $ mosh root@10.0.2.15 - the IP used above when set up networking
       * time emerge --ask -v net-misc/mosh
@@ -908,7 +914,7 @@
       * time emerge --ask -v app-misc/tmux
     * the btrfs command (equery b btrfs shows which pkg) (3m1s)
       * time emerge -nav sys-fs/btrfs-progs
-        \ 3m6s
+        \ 4m23s
     * install pfl
       \ https://wiki.gentoo.org/wiki/Pfl
       * time emerge -nav pfl
@@ -920,7 +926,7 @@
       \ needed to run: revdep-rebuild or its replacement time emerge @preserved-rebuild
       * time emerge -nav gentoolkit
         \ 7m53s
-        \ this installs latest python (3.4, from 3.3) and rebuild portage too!
+        \ this installs latest python (3.4, from 3.3) and rebuilds portage too!
       * examples:
         * equery b vim
           \ to find packages which provide vim command
