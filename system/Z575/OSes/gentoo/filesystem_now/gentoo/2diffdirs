@@ -5,9 +5,25 @@
 
 thedir='rsync-backed'  #TODO: make these vars a common file sourced in each script!
 
-sudo diff --exclude="/${thedir}" -rup "$thedir" / |grep -E -v '^Only in /' | colordiff | less
+#hmm, we don't have sudo and diff when booting from admincd, BUT diff is there inside chroot!
+#also colordiff we don't have.
+
+sudo2() {
+ cmd="$@"
+ if ! sudo "$@"; then
+	 ${cmd}
+ fi
+}
+
+colordiff2() {
+	if ! colordiff; then
+		tee
+	fi
+}
+
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ |grep -E -v '^Only in ./' | colordiff2 | less -R
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
 
 
-sudo diff --exclude="/${thedir}" -rup "$thedir" / |grep "Only in $thedir"
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ |grep "Only in $thedir"
 

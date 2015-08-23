@@ -752,6 +752,7 @@
           \ ok apparently that /usr/portage dir was made after this, and not err next time;
       * manually check sig from outside chroot
         * switch to another terminal or start a new ssh session to have access to the gpg command, and run this outside chroot:
+          \ or exit chroot, checksig and enter chroot back again.
           * gpg --verbose --homedir /mnt/gentoo/etc/portage/gpg --verify /mnt/gentoo/usr/portage/distfiles/portage-201*.tar.xz.gpgsig /mnt/gentoo/usr/portage/distfiles/portage-201*.tar.xz
             \ new:
             \ Version: GnuPG v2
@@ -771,6 +772,7 @@
       * switch back to the chroot-ed terminal
       * temporarily remove webrsync-gpg from make.conf
         * nano -w /etc/portage/make.conf  (you nolonger have vim here, because chroot-ed!)
+          \ Note: there is no vim inside chroot, even though admincd has it(outside of chroot)
           \ Ctrl+W webrsync, to position yourself on it and put a - in front of it
           \ ^ that edited the FEATURES line to NOT have webrsync-gpg or just put a - in front of it(better!)
           \ Ctrl+X, y, Enter
@@ -798,7 +800,7 @@
     * configure locales
       \ sys-libs/glibc-2.19-r1 (/etc/locale.gen)
       \ XXX: Do I need to hold off on any emerge --ask  invocations until after I've set up locale ? - probably
-      * nano -w /etc/locale.gen
+      - (already done by rsync) nano -w /etc/locale.gen
         \ XXX: this doesn't exist in uclibc version!
         \ uncomment the first two
         \ en_US ISO-8859-1
@@ -816,10 +818,10 @@
       - Ctrl+R, PS1
         \ export PS1="(chroot1) $PS1"
     * timezone
-      * ls /usr/share/zoneinfo/
+      - (rsyncdone) ls /usr/share/zoneinfo/
         \ FIXME: this doesn't exist in uclibchardened version?!
         \ sys-libs/timezone-data-2014i-r1 (/usr/share/zoneinfo)
-      * echo "Europe/Brussels" > /etc/timezone
+      - (rsyncdone) echo "Europe/Brussels" > /etc/timezone
       * emerge --config sys-libs/timezone-data
         \ this needs fakeroot - NO it doesn't, but you still get the warning:
         \ !!! FEATURES=fakeroot is enabled, but the fakeroot binary is not installed.
@@ -829,7 +831,7 @@
     * get a newer portage (if any)
       \ TODO: do I need the unstable one? currently going with stable one!
       * time emerge -1avu \>=portage-2.2
-        \ does nothing because 2.2.20 already installed and latest (stable one?)
+        \ does nothing because 2.2.20 already installed and latest (stable one?) took 1m31s though
         \ say no to add to favorites hmmm, i added -1 arg so nvm.
         \ NOTE XXX: patches in /etc/portage/patches/ silently ignored when using symlinks to any folder within /root (but not for /home(or /home/user) due to o-rx for /root and o+rx for the /home and /home/user) and userpriv in FEATURES because folder is inaccessible by portage:portage
         \ https://wiki.gentoo.org/index.php?title=%2Fetc%2Fportage%2Fpatches&diff=265028&oldid=200410
@@ -839,6 +841,8 @@
       * time emerge -av \>=ccache-3.2.2
         \ 37s
         \ for future reference, to read: /usr/share/doc/ccache-3.2.2/README.gentoo
+      - ccache -M 26G
+        \ unsure if this is needed although after emerging it, it says that we should do it.
       * nano -w /etc/portage/make.conf
         \ change -ccache into ccache
       - when want to use ccache for non-portage compilations:
