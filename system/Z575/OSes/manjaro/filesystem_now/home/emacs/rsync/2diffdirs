@@ -5,11 +5,17 @@
 
 thedir='rsync-backed'  #TODO: make these vars a common file sourced in each script!
 
-sudo diff -rup "$thedir" gentoo |grep -E -v '^Only in gentoo' | colordiff | less
+sudo diff -rup "$thedir" gentoo 2>/dev/null |grep -E -v '^Only in gentoo' | colordiff | less
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
 
 
-sudo diff -rup "$thedir" gentoo |grep --color=tty "Only in $thedir"
+sudo diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "Only in $thedir"
 
-sudo diff -rup "$thedir" gentoo |grep --color=tty "^Binary files "
+sudo diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "^Binary files "
+
+echo "Errors: -------------"
+sudo diff -rup "$thedir" gentoo 1>/dev/null
+echo "---------------"
+
+sudo diff -rup "$thedir" gentoo 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| xargs -n 1 ls -la --color=tty
 
