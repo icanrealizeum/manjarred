@@ -792,11 +792,18 @@
         \ f=$(LC_CTYPE=C LC_COLLATE=C "${grep_cmd}" --invert-match -E $'^( \x1b\[33;01m\*\x1b\[0m |\x1b\[31;01m \* \x1b\[39;49;00m)' "${PORTAGE_LOG_FILE}" | LC_CTYPE=C LC_COLLATE=C "${grep_cmd}" -E "${joined_msgs}")
       * do same for 3.3 file
         * nano -w /usr/lib/portage/python3.3/install-qa-check.d/90gcc-warnings
-    - select profile
+    * select profile
       \ nothing to do here but look, otherwise u'd need a different stage3 now wouldn't you?!
       * eselect profile list
         \ already selected:
         \   [11]  default/linux/amd64/13.0/no-multilib *
+        \ yes, this is bad!! it's normal gentoo no-multilib!
+        \ because of rsync-ed content!
+        \ make sure you select that hardened no-multilib:
+        \   [16]  hardened/linux/amd64/no-multilib
+        * eselect profile 16
+        * eselect profile list
+          \ to be sure
     * configure locales
       \ sys-libs/glibc-2.19-r1 (/etc/locale.gen)
       \ XXX: Do I need to hold off on any emerge --ask  invocations until after I've set up locale ? - probably
@@ -936,6 +943,7 @@
     * set hostname (needed for nullmailer config; nullmailer gets installed with sudo)
       * nano -w /etc/conf.d/hostname
         \ ie. tux
+        \ this file was rsync-ed
       * hostname tux
       * env-update && source /etc/profile && source ~/.bash_profile
       * nano -w /etc/hosts   APPEND these NEW lines:
@@ -946,8 +954,9 @@
         \ #^ replace that one with this,  or comment out existing one.
         \ ::1 localhost tux
         \ #^ you must have this ipv6 stuff(even if USE=-ipv6) because `hostname -f` will otherwise ask the dns server everytime you execute hostname -f or eg. startx, mc !!!
-    * time emerge -nav app-admin/sudo  (FIXME: maybe I shouldn't install sudo at this time! maybe move til later)
-      \ 21m50s
+    * time emerge -nav app-admin/sudo
+      \ 11 packages
+      \ 25m26s
       \ //at least 28 mins (failed on gnutls due to -DDEBUG in CFLAGS!!! confirmed to be so, in hardened!)
       \ //14mins after the above fail(then fixed then reran the emerge, but ccache had them so far)
       \ this also gets metalog and other stuff
@@ -955,8 +964,8 @@
         * emerge --config =mail-mta/nullmailer-1.13-r5
           \ aka create an initial setup
           \ getting this error twice: hostname: No address associated with name
-          \ unsure how to fix yet, maybe just need to set hostname first?
-      * nano -w /etc/sudoers.d/wheel
+          \ (should be fixed) unsure how to fix yet, maybe just need to set hostname first?
+      - (rsynced) nano -w /etc/sudoers.d/wheel
         \ %wheel ALL=(ALL) ALL
         \ now all users in group wheel can sudo (with their own password)
     - add reboot/shutdown users (forget this!)
@@ -977,7 +986,8 @@
         \ XXX: do not use discard in fstab or mount(or tunee2fs) because deleting a ton of files is expensive! use fstrim instead!! (also don't use fstrim for now, because vm is set to not support TRIM currently by having discard="false" or just not having discard="true" in .vbox file! did it so that it won't shrink the .vdi file because that costs writes on my host's SSD aka the real SSD)
         \ XXX: for btrfs fs_passno(last field) should be 0
         \ looks like this:
-        \ /dev/sda2               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300         0 0
+        \ #for normal gentoo#/dev/sda2               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300         0 0
+        \ /dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300
         \ # XXX: do not add errors=remount-ro  because btrfs says: unrecognized mount option
         \ #/dev/SWAP              none            swap            sw              0 0
         \ /dev/cdrom              /mnt/cdrom      auto            noauto,ro       0 0
@@ -985,11 +995,33 @@
         \ tmpfs                   /tmp            tmpfs           rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
         \ tmpfs                   /var/tmp        tmpfs rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
         \ tmpfs                   /var/tmp/portage        tmpfs   rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 0 0
-    * replace udev with eudev
+      - make sure /var/tmp/portage gets mounted on startup!
+        \ not needed anymore due to x-mount.mkdir  (see man 8 mount)
+        * vim /etc/local.d/portagemount.start
+          \ mkdir /var/tmp/portage
+          \ mount /var/tmp/portage
+        * chmod +x /etc/local.d/portagemount.start 
+        - already added
+          \ rc-update add local default
+    * Kernel (part 1)
+      \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
+      - time emerge -nav sys-kernel/git-sources
+        \ 4.2-rc3 currently, duration: 5m49s
+        \ user patches are already in (rscyn-ed above)
+        \ this works with ccache, no PIC error (I mean later when compiling it with genkernel!!)
+        \ license: freedist   (use dispatch-conf to apply it)
+      * time emerge -nav hardened-sources
+        \ that's 4.1.6 at the moment
+        \ wants license: freedist   (use dispatch-conf to apply it)
+        \ 5m8s
+        * eselect kernel list
+        * eselect kernel set 1
+        * eselect kernel list
+    * replace udev with eudev (need to do this after we get kernel sources)
       \ do we need this?
       \ done: I should install this after getting kernel sources!! and after compiling kernel; because: "Unable to find kernel sources at /usr/src/linux"
       * time emerge -av '>=sys-fs/eudev-3.1.2'
-        \ 2m31s
+        \ 3m19s
       - /etc/init.d/udev --nodeps restart
         \ unsure if this is needed at this time, or only when running the system normally (not from within chroot)
       - a test will fail https://github.com/gentoo/eudev/issues/101
@@ -999,18 +1031,23 @@
       - run this inside non-chrooted vm:  (i don't think it's needed tho hmm, but I did it anyway)
         \ /etc/init.d/udev --nodeps restart
         \ yeah this doesn't make sense because eudev binary is only inside chroot anyway!
-    * Kernel
+    * Kernel (part 2)
       \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
-      * time emerge -nav sys-kernel/git-sources
-        \ 4.2-rc3 currently, duration: 5m49s
-        \ user patches are already in (rscyn-ed above)
-        \ this works with ccache, no PIC error (I mean later when compiling it with genkernel!!)
-        \ license: freedist   (use dispatch-conf to apply it)
+      * time emerge -nav '>=sys-apps/gradm-3.1'
+        \ that's unstable, so use dispatch-config, u, rerun above
+        \ 38sec
+      * time emerge -nav sys-apps/paxctl app-misc/pax-utils app-admin/paxtest
+        \ get these other "needed" stuffs for grsecurity
+        \ 29s
       * compile
         * genkernel (because VM)
           * time emerge -n --ask --verbose '>=sys-kernel/genkernel-3.4.51.2'
-            \ 2 packages
-            \ 3m20s
+            \ 9 packages
+            \ 27m46s
+            \ (fixed by eselect kernel above): lvm2 and cryptsetup require a kernel in /usr/src/linux/ but supposedly this isn't bad! they just want to get the kernel version!
+            * rc-update add lvm boot
+              \ it was NOT already there!
+              \ seen with: rc-status boot
           - XXX: /bewt must be already mounted at this point!!
             \ df /bewt
             \ should show 512MB total, if it's mounted
