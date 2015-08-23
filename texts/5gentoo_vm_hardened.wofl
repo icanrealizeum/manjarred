@@ -467,7 +467,7 @@
         - to see what's already in effect, switch to another terminal(or a new ssh session) and
           \ can't do this yet, only later on inside chroot!
           \ emerge --info | less
-        * TODO: XXX: this has NO EFFECT!!! fffs! set EPATCH_SOURCE='/patches' to the /etc/portage/patches folder but a different one! and apply the folder path accordingly in the text you'll be reading below(eg. scp).
+        - TODO: XXX: this has NO EFFECT!!! fffs! set EPATCH_SOURCE='/patches' to the /etc/portage/patches folder but a different one! and apply the folder path accordingly in the text you'll be reading below(eg. scp).
           \ also EPATCH_SUFFIX='pech' (instead of 'patch') and rename all files accordingly!
           \ TODO: add .pech to mc's extension list, so it is properly colored
           \ set EPATCH_FORCE='no' and use this form for all patches: ??_${ARCH}_foo.${EPATCH_SUFFIX}
@@ -477,7 +477,7 @@
           * mkdir -p -- '/patches' && chown root:root /patches && chmod a+rx,a-w,u+w /patches
             \ what you put inside this dir is eg. app-misc/  instead of portage/app-misc/
         * replace the USE flags line (Ctrl+K to remove that line): 
-          * USE="3dnow 3dnowext X bindist btrfs -crypt -cryptsetup cscope dbus -device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext     pulseaudio readline session sse sse2 sse3 startup-notification     -strong-security -system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -mudflap -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -gstreamer -gstreamer-0 egl -gmp-autoupdate -tty-helpers -tcpd"
+          * USE="3dnow 3dnowext X bindist btrfs crypt cryptsetup cscope dbus device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext  mosh-hardening pie   pulseaudio readline session sse sse2 sse3 ssp startup-notification     strong-security -system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -mudflap -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -gstreamer -gstreamer-0 egl -gmp-autoupdate -tty-helpers -tcpd"
           \ -tty-helpers  is something that sys-apps/util-linux-2.26.2  said it did automatically!
           \ online USE flags list+descriptions: https://www.gentoo.org/dyn/use-index.xml#doc_chap1
           \ XXX: libav was default but was switched to ffmpeg(by either not specifying libav or by -libav); we'll try ffmpeg (aka -libav) in next incarnation
@@ -493,7 +493,7 @@
           - emerge --info | grep ^USE
             \ to see current (profile's) USE contents
             \ can't do this yet, only later on inside chroot!
-        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2"
+        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -Wstack-protector -fstack-protector-all"
           \ XXX: don't use -g3  use -ggdb instead; because "There is actually another flag ( -g3 ), but its use is not recommended. It seems to break binary interfaces and might lead to extra crashes. " src: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Backtraces  see that on how to get stack traces!
           \ XXX: for debug, I have: -g3 -DDEBUG -O1 -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2
           \ not using -fstack-protector-all because since I don't have hardened, then why bother with this puny protection anyway.
@@ -550,7 +550,7 @@
         * prepare for ccache later on
           \ add lines:
           \ #this is the default ccache dir, but it's great to state it, in case we wanna change it later, eg. when firefox compilation happens:
-          \ CCACHE_SIZE="6G"
+          \ CCACHE_SIZE="26G"
           \ 5G seems to be the default if that line doesn't exist
           \ CCACHE_UMASK="0002"
           \ ^ https://bugs.gentoo.org/show_bug.cgi?id=492910
@@ -561,7 +561,7 @@
             * hdd (if not in virtualbox)
               \ CCACHE_DIR="/ccache"
               \ CCACHE_SIZE="100G"
-        * ensure git-r3 (git3-src) (well ebuild command) updates the git source folder with the right permissions to allow ebuild to be ran as normal user(a normal user that's in the portage group, ofc)
+        * ensure git-r3 (git3-src) (well, the ebuild command) updates the git source folder with the right permissions to allow ebuild to be ran as normal user(a normal user that's in the portage group, ofc)
           \ EVCS_UMASK="0002"
           * ebuild/emerge will fail with live ebuilds (eg. ebuild somefile.ebuild compile) when ran as normal user, after having been ran as root
             \ workaroundFIX: # chmod -cR g+w /usr/portage/distfiles/git3-src
@@ -583,7 +583,7 @@
             \ sys-auth/pambase -debug
         * add a gentoo mirror
           \ by appending this line:
-          \ GENTOO_MIRRORS="http://tux.rainside.sk/gentoo/ http://de-mirror.org/gentoo/ http://gd.tuwien.ac.at/opsys/linux/gentoo/ http://mirror.netcologne.de/gentoo/"
+          \ GENTOO_MIRRORS="http://ftp.romnet.org/gentoo/ http://tux.rainside.sk/gentoo/ http://de-mirror.org/gentoo/ http://gd.tuwien.ac.at/opsys/linux/gentoo/ http://www.las.ic.unicamp.br/pub/gentoo/"
           \ in /mnt/gentoo/etc/portage/make.conf
           \ or by running this to manually select mirrors:
           \ mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
@@ -617,8 +617,8 @@
         * let's get rid of a warning:
           \ !!! Repository 'x-portage' is missing masters attribute in '/usr/portage/metadata/layout.conf'
           \ !!! Set 'masters = gentoo' in this file for future compatibility
-          * mkdir -p /usr/portage/metadata/
-          * nano -w /usr/portage/metadata/layout.conf
+          * mkdir -p /mnt/gentoo/usr/portage/metadata/
+          * nano -w /mnt/gentoo/usr/portage/metadata/layout.conf
             \ masters = gentoo
     * copy DNS info
       * cp -L /etc/resolv.conf /mnt/gentoo/etc/
