@@ -10,20 +10,32 @@ thedir='rsync-backed'  #TODO: make these vars a common file sourced in each scri
 
 sudo2() {
  cmd="$@"
- if ! sudo "$@"; then
+ if test -x "`which sudo`" ; then
+	 sudo ${cmd}
+ else
 	 ${cmd}
  fi
 }
 
 colordiff2() {
-	if ! colordiff; then
+	if test -x "`which colordiff`"; then
+    colordiff
+  else
 		tee
 	fi
 }
 
-sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ |grep -E -v '^Only in ./' | colordiff2 | less -R
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ 2>/dev/null |grep -E -v '^Only in ./' | colordiff2 | less -R
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
 
 
-sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ |grep "Only in $thedir"
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ 2>/dev/null |grep --color=tty "Only in $thedir"
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ 2>/dev/null |grep --color=tty "^Binary files "
+
+
+echo "Errors: -------------"
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ 1>/dev/null
+echo "---------------"
+
+sudo2 diff --exclude="${thedir}" -rup "$thedir" ./ 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| sudo2 xargs --no-run-if-empty -n 1 ls -la --color=tty
 

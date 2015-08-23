@@ -1326,16 +1326,16 @@
           \ #GRUB_DEFAULT=saved  #only when not btrfs! (eg. ext2 is ok)
           \ #//fixed: when this ^ is set(to `saved`), grub2-editenv(ran by grub2-mkconfig) will want /boot/grub/grubenv instead of the /bewt one; because grub2-mkconfig is running this: grub2-editenv - list  which uses default path. https://savannah.gnu.org/bugs/?group=grub (it's ssl3) bug-grub@gnu.org (latest grub binary release was in 2012, latest cvs log is from 2013, we're in 2015 now) so, I guess I should just fix this myself without reporting it(not even in gentoo bugs because they probably don't need the noise, since all are likely using /boot). Can't really use the value from ${grub_cfg} variable as that's the one from -o in command: grub2-mkconfig -o /bewt/grub/grub.cfg  and this way I can pull out that folder and use it inside grub2-mkconfig to call: grub2-editenv "/bewt/grub/grubenv" list  Without -o the config is spewed to stdout.
           \ # //fixed below, skip this: manually fix to /bewt/grub/ by executing this: sed -re 's|("\$\{grub_editenv\}" )(\-)( list)|\1"/bewt/grub/grubenv"\3|' -i grub2-mkconfig
-          \ GRUB_TIMEOUT=10
-          \ # 10 sec timeout
+          \ GRUB_TIMEOUT=1
+          \ # 1 sec timeout
           \ #GRUB_TIMEOUT=-1  #or no timeout
           \ GRUB_TIMEOUT_STYLE=menu
           \ GRUB_DISABLE_RECOVERY=false
           \ GRUB_DISABLE_LINUX_UUID=false
           \ GRUB_DISABLE_OS_PROBER=true
-          \ GRUB_ENABLE_CRYPTODISK=n
-          \ #^ for LUKS would be y, src: http://www.pavelkogan.com/2014/05/23/luks-full-disk-encryption/
-        - (nolonger in use)patch to look at /bewt instead of /boot
+          \ GRUB_ENABLE_CRYPTODISK=y
+          \ #^ for LUKS =y, src: http://www.pavelkogan.com/2014/05/23/luks-full-disk-encryption/
+        - (rsync)patch to look at /bewt instead of /boot
           * grubenv: patch grub2-mkconfig to use /bewt instead of the default /boot
             * grubenv patch TODO: add this to grub-9999-r1 patches; technically we don't need this, but only because hmm it WAS inside lvm, but now it's inside luks only, so we could use the env hmm; actually I don't remember this correctly: is it failing to save grubenv while in grub menu if the fs is btrfs or when it's lvm? anyway do this!
               * sed -re 's|("\$\{grub_editenv\}" )(\-)( list)|\1"/bewt/grub/grubenv"\3|' -i /usr/sbin/grub2-mkconfig

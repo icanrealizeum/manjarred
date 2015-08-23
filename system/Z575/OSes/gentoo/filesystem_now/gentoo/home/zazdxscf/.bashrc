@@ -463,3 +463,6 @@ dmesg|grep 'clocking to' | grep -v 48000 | grep 'clocking to'
 true
 
 
+#for grub 'To avoid automounting and auto(un)installing with /boot'
+export DONT_MOUNT_BOOT=1
+

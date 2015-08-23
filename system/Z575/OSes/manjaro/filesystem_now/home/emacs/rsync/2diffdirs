@@ -5,17 +5,35 @@
 
 thedir='rsync-backed'  #TODO: make these vars a common file sourced in each script!
 
-sudo diff -rup "$thedir" gentoo 2>/dev/null |grep -E -v '^Only in gentoo' | colordiff | less
+sudo2() {
+ cmd="$@"
+ if test -x "`which sudo`" ; then
+   sudo ${cmd}
+ else
+   ${cmd}
+ fi
+}
+
+colordiff2() {
+  if test -x "`which colordiff`"; then
+    colordiff
+  else
+    tee
+  fi
+}
+
+
+sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep -E -v '^Only in gentoo' | colordiff2 | less
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
 
 
-sudo diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "Only in $thedir"
+sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "Only in $thedir"
 
-sudo diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "^Binary files "
+sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "^Binary files "
 
 echo "Errors: -------------"
-sudo diff -rup "$thedir" gentoo 1>/dev/null
+sudo2 diff -rup "$thedir" gentoo 1>/dev/null
 echo "---------------"
 
-sudo diff -rup "$thedir" gentoo 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| sudo xargs --no-run-if-empty -n 1 ls -la --color=tty
+sudo2 diff -rup "$thedir" gentoo 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| sudo2 xargs --no-run-if-empty -n 1 ls -la --color=tty
 
