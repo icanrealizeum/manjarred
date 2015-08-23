@@ -1305,7 +1305,7 @@
           * popd
         * time emerge -nav --backtrack=30 \>=sys-boot/grub-9999
           \ 70 packages
-          \ 
+          \ real 148m11s (user 299m46s, sys 41m11s)
         - (rsynced) nano /etc/default/grub
           \ #:set paste
           \ only this line exists (uncommented):
@@ -1374,8 +1374,9 @@
             * cryptsetup --verbose luksOpen /dev/sda2 luks_on_sda2_boot
             * mount /bewt
             * df /bewt
-        * use genkernel made symlinks
-          * nano /etc/grub.d/40_custom
+        * use genkernel made symlinks and set passwords
+          * TODO:(untested!) nano /etc/grub.d/39_passwords
+            \ XXX: might need that exec tail line!
             * add passwords
               * prepend these lines(after exec tail, ofc):
                 \ set superusers="username1 username2"
@@ -1384,7 +1385,8 @@
                 \ #that's the output of this line: grub2-mkpasswd-pbkdf2 -s 512
                 \ #more: info grub
                 \ #that is the password for username1 which is the one that allows booting into kernel
-            - (rsynced) add shutdown/reboot grub menu entries
+          - (rsynced) nano /etc/grub.d/40_custom
+            * add shutdown/reboot grub menu entries
               \# :set paste
               \ menuentry "System shutdown" {
               \    echo "System shutting down..."
@@ -1415,7 +1417,7 @@
               \ # note that hd0,2 is the /bewt /dev/sda2 device, not root / /dev/sda3
               \ while still in vim do: gg=G
               \ to indend whole file
-        * grub2-install --compress=xz --target=i386-pc --recheck --debug --locales= --fonts= --boot-directory=/boot --no-rs-codes --verbose -- /dev/sda 2>&1
+        * grub2-install --compress=xz --target=i386-pc --recheck --debug --locales= --fonts= --boot-directory=/bewt --no-rs-codes --verbose -- /dev/sda 2>&1
           \ #GRUBY
           \ dev mode(used to track down bugs):
           \ # time ebuild /usr/portage/sys-boot/grub/grub-9999-r1.ebuild configure
@@ -1466,14 +1468,14 @@
             \ ie. prepend this to GRUB_CMDLINE_LINUX
             \ crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 root_trim=yes rd.luks.uuid=e8b64567-124a-46a7-a167-d3d9c041de35 rd.luks.allow-discards
             \ NOTE: for now rd. ones are not used, unless you use dracut (aka manual mode of compiling the kernel, instead of via genkernel!)
-        * grub2-mkconfig -o /boot/grub/grub.cfg 2>&1
+        * grub2-mkconfig -o /bewt/grub/grub.cfg 2>&1
           \ this generated /bewt/grub/grub.cfg
           \ XXX: /bewt needs to be mounted: mount /bewt
           \ XXX: run only this command(mkconfig one) if you've changed /etc/default/grub
-        * ls -la /boot                                                          
+        * ls -la /boot
           \ should be empty!!! because used /bewt
           \ well there's ".keep" file from tar unpacking!
-        * ls -la /bewt 
+        * ls -la /bewt
           \ example:
           \ drwxr-xr-x 1 root root     306 Apr 15 01:38 .
           \ drwxr-xr-x 1 root root     352 Apr  9 19:34 ..
@@ -1487,19 +1489,27 @@
         * inspect grub.cfg a bit (should've worked if the grub patches were in place!)
           \ vim /bewt/grub/grub.cfg
           \ see if "set root=" is something of (blkid /dev/sda2 | grep UUID)
-          \ and hint has the uuid of (blkid /dev/mapper/luks_on_sda2_boot | grep UUID) and the root in the else is the /dev/mapper/luks_on_sda2_boot uuid as reported by blkid
-          \ and the root= within the linux line is root=/dev/mapper/vgall-rootlvol  and the crypt_root=UUID= on the same line that follows is ofc a totally different id than the above mentioned two because it's the blkid of the / (actual root; not the grub root which to grub is the boot device)
-      * close /bewt luks
-        * umount /bewt
-        * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
+          \ eg. cryptouuid/e07b18f3310f494d9104a791e4722476
+          \ and 1st part of hint has the same uuid eg. cryptouuid/e07b18f3310f494d9104a791e4722476
+          \ and 2nd part of hint has the uuid of (blkid /dev/mapper/luks_on_sda2_boot | grep UUID) eg. 3a6305a7-57aa-4712-a6d3-60e10bcee71e
+          \ and the root in the 'else' is the same /dev/mapper/luks_on_sda2_boot uuid as reported by blkid eg. 3a6305a7-57aa-4712-a6d3-60e10bcee71e
+          \ and the root= within the linux line is root=/dev/mapper/vgall-rootlvol  and the crypt_root=UUID= on the same line that follows is ofc a totally different id than the above mentioned two because it's the blkid of the / (actual root; not the grub root which to grub is the boot device) eg. it's crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 (aka blkid /dev/sda3  the UUID not the PARTUUID!)
+      * (will close later, outside of chroot!) close /bewt luks
+        - umount /bewt
+          \ DON'T unmount it here, because it was mounted from outside chroot!
+        - cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
         * when you wanna mount it later (when sys is running):
           \ cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
           \ mount /bewt
       * backup boot ...
         * sync; time dd if=/dev/sda2 of=/dev/mapper/vgall-bootlvolbackup bs=100M ; sync
-          \ //yep 537MB reported is 512M in fact (536870912 bytes (537 MB) copied, 7.76532 s, 69.1 MB/s)
+          \ //old: yep 537MB reported is 512M in fact (536870912 bytes (537 MB) copied, 7.76532 s, 69.1 MB/s)
+          \ 1073741824 bytes (1.1 GB) copied, 25.8407 s, 41.6 MB/s
+          \ 25s
         * TODO: do something with this backup... dno what at this time, eg. check for modifications after having booted, even though there shouldn't be any because only grub is mounting that one at grub menu, kernel isn't mounting it! unless you manually do luksOpen later on! in other words it should be readonly mounting by grub only!
           \ maybe vbindiff the devices, heh
+          * time emerge -nav vbindiff
+          * 
       * disable some services
         * rc-update del netmount
           \ * service netmount removed from runlevel default
@@ -1515,12 +1525,21 @@
           * vim ~/.bash_logout
             \ new file, append line:
             \ clear
+    * time emerge @preserved-rebuild
+      \ 1m41s
     * rebooting #REBOOT #SHUTDOWN
       * exit
       * cd
       * ensure you exited all OTHER ssh terminals
       * umount --lazy /mnt/gentoo/{dev/{shm,pts,},sys/}
-      * umount /mnt/gentoo/{proc,var/tmp/portage,var/tmp,tmp,run,}
+      * umount /mnt/gentoo/{bewt,proc,var/tmp/portage,var/tmp,tmp,run,}
+      * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
+      * close lvm volumes
+        * lvm lvchange --verbose -a n vgall
+          \ works, tested!
+          \ or: vgchange -van vgall
+          \ (untested)
+      * cryptsetup --verbose luksClose /dev/mapper/lvm_on_luks_on_sda3_root
       * sync
         \ not really needed
       * reboot & exit
