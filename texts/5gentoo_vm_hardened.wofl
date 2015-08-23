@@ -1045,13 +1045,20 @@
             \ 9 packages
             \ 27m46s
             \ (fixed by eselect kernel above): lvm2 and cryptsetup require a kernel in /usr/src/linux/ but supposedly this isn't bad! they just want to get the kernel version!
-            * rc-update add lvm boot
-              \ it was NOT already there!
-              \ seen with: rc-status boot
-          - XXX: /bewt must be already mounted at this point!!
+            * lvm2
+              \ since it got installed by emerge genkernel above...
+              * dispatch-conf (zap new!, because it wants to restore the defaults!)
+              * rc-update add lvm boot
+                \ it was NOT already there!
+                \ seen with: rc-status boot
+            * cryptsetup (nothing to do here, go to next step)
+              * TODO: see this example for luks mountpoint configuration: /etc/conf.d/dmcrypt
+                \ TODO: add the /bewt here so we can mount it (aka luksOpen) faster than having to specify
+                \ also use crypt_root=/dev/blah instead of real_root=luks:/dev/blah.
+          * XXX: /bewt must be already mounted at this point!!
             \ df /bewt
-            \ should show 512MB total, if it's mounted
-          - eselect kernel list
+            \ should show 1022M total, if it's mounted
+          - (already done) eselect kernel list
             \  [1]   linux-4.2-rc4 *
             \ ^ that's the only one in list at this point
           - (can't be installed at same time) radeon needs its firmware
@@ -1069,32 +1076,38 @@
               \ not bothering to edit that "config"
           * cp /usr/src/.config /usr/src/linux/
             \ that's from rsync
-          * time genkernel --menuconfig all --bootdir="/boot" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --no-lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --no-luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
-            \ 15m52s (with the bare-metal .config which will likely not work in virtualbox)
+          * cd /usr/src/linux && make nconfig
+            \ if needed
+          * time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+            \ removed --menuconfig because make nconfig is better!
+            \ looks like genkernel knows to not use ccache ! at least when on hardened now. (and I checked there are no -ccache or so, options in /etc/portage/)
+            \ 22m47s (another compilation was happening in the background though: vim)
             \ WARNING: after successfuly running genkernel, you have to re-run grub2-mkconfig (which we do later if you follow this guide thingy) ! (booting the previous kernel still works though, because grub.cfg isn't changed and all previous kernel files are kept in /bewt and are available in a grub submenu called Advanced at boot!)
             \ # --no-postclear won't delete the busybox and lvm2 that were just built every time genkernel is ran.
             \ Once genkernel completes, a kernel, full set of modules and initial ram disk (initramfs) will be created.
             \ #XXX: note that --bootloader=grub  uses grub.conf instead of the new name(as per `info grub`) of grub.cfg !! ergo it will fail
             \ # --kernname=genkernel  should be! otherwise /etc/grub.d/10_linux will not find the initramfs image due to hardcoded stuff. FIXME ? or just use --bootloader=grub  (i dno about this latter one; obsolete/old comment?)
             \ # --oldconfig implies --no-clean which in turn implies --no-mrproper; it's also OLDCONFIG="yes" by default in /etc/genkernel.conf ; also this implies (they say in that .conf comments) that if clean is NO, it won't copy over any configuration file(from /etc/kernels/), it will use what's there(the .config) instead. But I dno how true that is because I'm seeing this message: * Linux Kernel 3.17.7-gentoo for x86_64...              * .. with config file /etc/kernels/kernel-config-x86_64-3.17.7-gentoo
-            * reminder of steps after boot needed to regen kernel:  
-              - mount /bewt
-              * cd /usr/src/linux ; make nconfig
+            * reminder of steps after boot needed to regen kernel: #SECONDBOOT
+              * luksOpen the sda2 luks device
+              * mount /bewt
+              * cd /usr/src/linux && make nconfig
                 * change stuff
                 * exit and save
               * genkernel (without any clean or mrproper options!!  --no-clean  and --no-mrproper yes!)
               * rerun grub2-mkconfig command
               * recompile modules search for: @module-rebuild
-              - umount /bewt
+              * umount /bewt
+              * luksClose
               * ready to: reboot & exit
-            * while in MENUCONFIG:
-            * to get audio aka sound (in X via pavucontrol let's say)
+            - while in MENUCONFIG:
+            - (rsynced)to get audio aka sound (in X via pavucontrol let's say)
               * SND_INTEL8X0 which is in -> Device Drivers  -> Sound card support (SOUND [=m]) -> Advanced Linux Sound Architecture (SND [=m]) -> PCI sound devices (SND_PCI [=y]) -> [m] Intel/SiS/nVidia/AMD/ALi AC97 Controller
                 \ and this gets selected automatically(? apparently): SND_AC97_CODEC [=m]  and also AC97_BUS [=m] 
-            * chromium needs the following kernel options(or else sandbox won't work they say):
+            - (rsynced) chromium needs the following kernel options(or else sandbox won't work, they say):
               \ CONFIG_USER_NS which recommends CONFIG_MEMCG and CONFIG_MEMCG_KMEM
               \ recompile kernel(21m48s by adding CONFIG_USER_NS, the other two were set already)... and then recompile chromium
-            * ensure CONFIG_AUDITSYSCALL is set for sys-auth/consolekit-0.4.6 complains about it.
+            - (rsynced) ensure CONFIG_AUDITSYSCALL is set for sys-auth/consolekit-0.4.6 complains about it.
               \ this needs CONFIG_AUDIT first, in -> General setup -> [*] Auditing support
               \ then in same place is our CONFIG_AUDITSYSCALL right after it. aka [*] Enable system-call auditing support
               \ TODO: maybe this isn't really needed at all? I mean, it works fine on my host which is using same kernel .config
@@ -1102,8 +1115,8 @@
               \ to have access to radeon temperatures in /sys/kernel/debug/dri/1/radeon_pm_info
               * Kernel hacking -> Compile-time checks and compiler options -> Debug Filesystem
                 \ select it [*]
-            * don't forget the network driver Intel PRO/100 (which isn't selected due to rsync); it's in Device Drivers->Networking->Ethernet devices (or something like that)
-            - usb keyboard detection at the luks prompt (or else you have no keyboard, unless you plug a PS2 one):
+            - (rsynced)don't forget the network driver Intel PRO/100 (which isn't selected due to rsync); it's in Device Drivers->Networking->Ethernet devices (or something like that)
+            - (rsynced) usb keyboard detection at the luks prompt (or else you have no keyboard, unless you plug a PS2 one):
               * Device Drivers -> USB support  ---> {*} Support for Host-side USB
                 \ make it Y not M
               * Device Drivers -> HID support  ---> USB HID support  ---> <*> USB HID transport layer
@@ -1119,7 +1132,6 @@
                 \ {*}       Generic OHCI driver for a platform device
                 \ <*>     UHCI HCD (most Intel and VIA) support
               * now the usb keyboard should work at luks prompt before mounting
-                \ note: there's no LUKS in this article; these are leftover comments.
             -(rsync) for radeon driver to work in kernel: (not for virtualbox)
               \ aka for KMS to work; also this in dmesg [drm:rv770_init] *ERROR* Failed to load firmware!
               - (rsync)this is already selected:
@@ -1161,15 +1173,18 @@
               \ why disable? https://wiki.gentoo.org/wiki/Udev/upgrade#udev_216_to_217
               * disable CONFIG_DELL_RBU which disables CONFIG_FW_LOADER_USER_HELPER  (well I mean it doesn't force select it automatically, when disabled)
                 \ Firmware Drivers  ---> BIOS update support for DELL systems via sysfs
-            * disable CONFIG_CC_STACKPROTECTOR_STRONG in -> General setup -> Stack Protector buffer overflow detection -> Regular
+            - (rsynced) disable CONFIG_CC_STACKPROTECTOR_STRONG in -> General setup -> Stack Protector buffer overflow detection -> Regular
               \ Makefile:654: Cannot use CONFIG_CC_STACKPROTECTOR_STRONG: -fstack-protector-strong not supported by compiler
               \ due to x86_64-pc-linux-gnu-4.8.4
-            * XXX: (must do, not in rsync currently) don't forget to enable BTRFS in kernel (not as module, to be sure) - it's in Filesystems->BTRFS enable all suboptions.
+              \ Makefile:734: Cannot use CONFIG_CC_STACKPROTECTOR_STRONG: -fstack-protector-strong not supported by compiler
+              \ using  [1] x86_64-pc-linux-gnu-4.8.4 *
+            - (rsynced): (must do, not in rsync currently) don't forget to enable BTRFS in kernel (not as module, to be sure) - it's in Filesystems->BTRFS enable all suboptions.
             - (in rsync)xfce-extra/xfce4-power-manager-1.3.0 needs kernel option CONFIG_TIMER_STATS to be set: *   CONFIG_TIMER_STATS:  is not set when it should be.
               \ Kernel hacking  ---> Collect kernel timers statistics
-            * Exit menu and Save, compiling will commence automatically!
-              \ NOTE: this needs grub2-mkconfig to run to make it so... which we do later
-        * TODO: manually (if you didn't do genkernel above) TODO: incomplete and outdated!
+            - Exit menu and Save, compiling will commence automatically!
+              \ this when using --menuconfig
+            * NOTE: this will not boot as is now, it needs executing grub2-mkconfig which we do later on in the bootloader section below... patience grasshopper.
+        * TODO(ignore this section for now): manually (if you didn't do genkernel above) TODO: incomplete and outdated!
           * initramfs - dracut
             * /etc/dracut.conf.d/my.conf
               \ dracutmodules+="btrfs caps rootfs-block crypt dm crypt-gpg lvm i18n kernel-modules terminfo udev-rules usrmount base fs-lib shutdown biosdevname caps"
@@ -1222,7 +1237,7 @@
       * set root password (inside chroot) - don't skip this
         \ passwd
       * init and boot config
-        * nano /etc/rc.conf
+        - (rsynced) nano /etc/rc.conf
           \ modify/uncomment:
           \ rc_start_wait=100
           \ #UNICODE="NO" #looks like it's lowercase by default:
@@ -1241,9 +1256,10 @@
           * time emerge -n --ask --verbose app-admin/metalog
             \ this was already added, by something I installed before; this just adds it to favs.
           * rc-update add metalog default
+            \ FIXME: shouldn't this be added to boot? or does boot not have mounted the fs yet?
         * get a cron
           * time emerge -nav sys-process/cronie
-            \ 56s
+            \ 1m11s
             \ TODO: read how to use it http://www.gentoo.org/doc/en/cron-guide.xml
           * rc-update add cronie default
         * rc-update add sshd default
@@ -1251,18 +1267,18 @@
         * delete some systemd leftover files from stage3
           * rm -vrf /usr/lib{,64}/systemd /usr/lib64/debug/lib/systemd /usr/lib64/portage/python{2.7,3.3}/install-qa-check.d/*systemd /lib64/netifrc/sh/systemd-wrapper.sh
       * bootloader
-        - (git version not needed)set accept flags (apparently this is needed to get the git package aka 9999 , and that ~amd64 thing in make.conf is unstable but not as unstable as the git version)
+        * set accept flags (apparently this is needed to get the git package aka 9999 , and that ~amd64 thing in make.conf is unstable but not as unstable as the git version)
           - mkdir -p /etc/portage/package.accept_keywords
             \ ok well the file with this name already exists(due to us not using ~amd64 in make.conf), so we can just append to it
           * vim /etc/portage/package.accept_keywords
             \ =sys-boot/grub-9999-r1 **
-        * set USE flags (for future emerges too)
+        - (rsynced) set USE flags (for future emerges too)
           \ src: https://wiki.gentoo.org/wiki//etc/portage/package.use
           * mkdir /etc/portage/package.use/
             \ already exists with iputils file
           * nano /etc/portage/package.use/grub
             \ sys-boot/grub -themes debug mount -device-mapper -fonts
-        * set FEATURES flags (for future emerges too)
+        - (rsynced) set FEATURES flags (for future emerges too)
           \ src: https://wiki.gentoo.org/wiki//etc/portage/env
           * nano /etc/portage/package.env
             \ sys-boot/grub grub.conf
@@ -1271,7 +1287,7 @@
             \ FEATURES="-stricter"
             \ because of this: https://bugs.gentoo.org/show_bug.cgi?id=539606
         - time USE="debug mount device-mapper -themes" FEATURES="-stricter" emerge -av =sys-boot/grub-9999-r1
-        - (nolonger relevant!)make sure the /etc/portage/patches folder contains the grub patches!!!
+        - (rsynced)make sure the /etc/portage/patches folder contains the grub patches!!!
           \ so we don't have to do the sed actions below AND XXX: also when updating, the sed action would have to be repeated!!!
           \ using emacs instead of zazdxscf here(because that what I really name my username:P ok dont hack me :)) ):
           * mkdir -p /home/emacs/patches/portage/sys-boot
@@ -1287,14 +1303,14 @@
           * ls -la grub
             \ verify the files are there
           * popd
-        * time emerge -nav sys-boot/grub
+        * time emerge -nav --backtrack=30 \>=sys-boot/grub-9999
           \ 7m41s
         * nano /etc/default/grub
           \ #:set paste
           \ only this line exists (uncommented):
           \ GRUB_DISTRIBUTOR="Gentoo"
           \ so, add more lines:
-          \ GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi"
+          \ GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs"
           \ #slub_debug=U  is for kasan and nicer stack trace, see: https://github.com/google/kasan/wiki  or to switch off: slub_debug=-
           \ the radeon stuff is irrelevant for virtualbox
           \ #i8042.debug

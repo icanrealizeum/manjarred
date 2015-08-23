@@ -17,5 +17,5 @@ echo "Errors: -------------"
 sudo diff -rup "$thedir" gentoo 1>/dev/null
 echo "---------------"
 
-sudo diff -rup "$thedir" gentoo 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| sudo xargs -n 1 ls -la --color=tty
+sudo diff -rup "$thedir" gentoo 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| sudo xargs --no-run-if-empty -n 1 ls -la --color=tty
 

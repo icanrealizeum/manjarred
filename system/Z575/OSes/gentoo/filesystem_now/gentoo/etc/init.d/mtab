@@ -1,0 +1,41 @@
+#!/sbin/openrc-run
+# Copyright (c) 2007-2008 Roy Marples <roy@marples.name>
+# Released under the 2-clause BSD license.
+
+description="Update /etc/mtab to match what the kernel knows about"
+
+depend()
+{
+	need root
+	keyword -prefix -systemd-nspawn
+}
+
+start()
+{
+	[ -L /etc/mtab ] && return 0
+	local rc=0
+	ebegin "Updating /etc/mtab"
+	if ! checkpath -W /etc; then
+		rc=1
+	elif [ ! -e /etc/mtab ]; then
+		ln -snf /proc/self/mounts /etc/mtab
+	else
+		ewarn "The support for updating /etc/mtab as a file is"
+		ewarn "deprecated and will be removed in the future."
+		ewarn "Please run the following command as root on your system."
+		ewarn
+		ewarn "ln -snf /proc/self/mounts /etc/mtab"
+		ewarn
+
+		# With / as tmpfs we cannot umount -at tmpfs in localmount as that
+		# makes / readonly and dismounts all tmpfs even if in use which is
+		# not good. Luckily, umount uses /etc/mtab instead of /proc/mounts
+		# which allows this hack to work.
+		grep -v "^[! ]* / tmpfs " /proc/mounts > /etc/mtab
+
+		# Remove stale backups
+		rm -f /etc/mtab~ /etc/mtab~~
+	fi
+	eend $rc "/etc is not writable; unable to create /etc/mtab"
+	return 0
+}
