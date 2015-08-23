@@ -2129,6 +2129,16 @@
     \ eselect fontconfig ...
     \ ^ will overwrite /etc/fonts/fonts.conf
 
+* howtos
+  * check all installed packages for modifications of their installed files
+    * q qcheck --all -v -B
+      \ will show packages that have at least 1 bad checksum, but not the file(s) which do.
+      * q qcheck -v packagename
+        \ will show which files of that packagename have the bad checksum
+  * scanelf: seccomp_load failed: Invalid argument
+    \ don't install pax-utils-1.1 or you get those errors during any emerges
+    \ pax-utils-1.0.5 tested to work ok
+
 * bigTODO:
   * add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
   * get in that eutils.eclass patch
