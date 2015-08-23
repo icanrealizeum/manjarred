@@ -177,6 +177,8 @@
               \ Guest Port: 22
           * ssh -v -p 8822 127.0.0.111 -l root
     * start this inside vm:
+      * setterm --blank 0
+        \ to avoid blanking the screen after a few mins
       * dmesg -w
       \ and watch for segfaults (apparently cc1plus likes to do that - 3 times so far)
       \ note that you are using ssh terminal now, so putting this inside vm window is ok (or in another ssh session, non-chrooted)
@@ -672,9 +674,11 @@
       - (already in rsync)run this inside virtualbox:
         * ln -s /home/zazdxscf/patches/portage/ /etc/portage/patches
       * run this on host:
-        * ./0updateTO
+        * cd /home/emacs/rsync/
+          \ or cd /home/zazdxscf/rsync/
+        * ./0updateTO   XXX: ok wait, this doesn't apply it in /mnt/gentoo !
           \ run that script... from ~/rsync/ on host!
-        - sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --max-delete=0 --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60   --rsh="ssh -p 8822 -l root" -- ~/rsync/gentoo/ 127.0.0.188:/mnt/gentoo/
+        - sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --max-delete=0 --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60   --rsh="ssh -p 8822 -l root" -- ~/rsync/gentoo/ 127.0.0.111:/mnt/gentoo/
           \ XXX: --no-delete is not recognized, so using --max-delete=0
           \ NOTE: add --update if you don't want newer files inside virtualbox to get overwritten by potentially older ones on the host's side BEFORE doing the above rsync command. We don't want this because when creating the new user the sekl .bashrc will always be newer inside virtualbox, but that's not the one we wanna keep.
     - (auto applied after webrsync) apply patch that rsync put it (which portage itself cannot apply automatically via euser_patch)
@@ -683,6 +687,9 @@
       * patch -Np1 -i /mnt/gentoo/home/zazdxscf/patches/webrsync/notify_when_patches_folder_inaccessible_by_portage.patch
         \ XXX: this needs to be applied after every successful emerge-webrsync !!!
         \ done: make a script which calls webrsync AND applies this patch afterwards! - done and put in /etc/portage/postsync.d/  aka the hooks that emerge-webrsync executes (if they are set executable)
+    * vim /etc/portage/make.conf
+      * ensure ccache is disabled, so it's: -ccache
+        \ because we don't yet have it installed
     * chrooting
       - nano -w /mnt/gentoo/root/.bash_profile
         \ [[ -f ~/.bashrc ]] && . ~/.bashrc
