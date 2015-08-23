@@ -1,11 +1,11 @@
 #!/bin/bash
-rootdir="$@"
-if test -z "$@"; then
-  echo "bad param: '${rootdir}'"
+remoterootdir="$@"
+if test -z "$remoterootdir"; then
+  echo "bad param: '${remoterootdir}'"
   exit 2
 fi
 src="/home/emacs/rsync/gentoo/" #where to update from (aka source)
-backupdirfordeletions="${rootdir}/rsync-backed/" #dir where modified files will be moved from destination before being updated! this is on remote!
+backupdirfordeletions="${remoterootdir}/rsync-backed/" #dir where modified files will be moved from destination before being updated! this is on remote!
 
 declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 --exclude='*.tmp *~ *.swp' #FIXME: maybe it should be *.sw?  but I don't want it to be too broad
@@ -20,5 +20,5 @@ declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 --update  #this was already implied in rsyncy, but just to be extra sure!
 )
 
-rsyncy 'ssh -v -p 8822 -l root' "${src}" "127.0.0.111:${rootdir}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+rsyncy 'ssh -v -p 8822 -l root' "${src}" "127.0.0.111:${remoterootdir}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
 

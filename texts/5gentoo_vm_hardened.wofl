@@ -690,6 +690,8 @@
     * vim /etc/portage/make.conf
       * ensure ccache is disabled, so it's: -ccache
         \ because we don't yet have it installed
+    * chroot /mnt/gentoo env-update
+      \ needed because of all the changes that rsync did, and before actually chroot logging in!
     * chrooting
       - nano -w /mnt/gentoo/root/.bash_profile
         \ [[ -f ~/.bashrc ]] && . ~/.bashrc
