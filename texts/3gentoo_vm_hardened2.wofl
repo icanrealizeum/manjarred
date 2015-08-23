@@ -425,7 +425,7 @@
         * append this: INSTALL_MASK="/lib/systemd /lib32/systemd /lib64/systemd /usr/lib/systemd /usr/lib32/systemd /usr/lib64/systemd /etc/systemd"
           \ src: http://gentooexperimental.org/~patrick/weblog/archives/2014-02.html
         * replace the USE flags line (Ctrl+K to remove that line): 
-          * USE="3dnow 3dnowext X bindist btrfs crypt cryptsetup cscope dbus device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext mosh-hardening pie     pulseaudio readline session sse sse2 sse3 ssp startup-notification     strong-security system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -wifi -gstreamer -gstreamer-0 -egl -gmp-autoupdate"
+          * USE="3dnow 3dnowext X bindist btrfs crypt cryptsetup cscope dbus device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext mosh-hardening pie     pulseaudio readline session sse sse2 sse3 ssp startup-notification     strong-security -system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -wifi -gstreamer -gstreamer-0 -egl -gmp-autoupdate"
           \ online USE flags list+descriptions: https://www.gentoo.org/dyn/use-index.xml#doc_chap1
           \ XXX: libav was default but was switched to ffmpeg(by either not specifying libav or by -libav); we'll try ffmpeg (aka -libav) in next incarnation
           \ there's ufed to show and sort flags! TODO: eventually run ufed to tidy up the flags(eg. sort) which breaks them on multiple lines though.
@@ -1800,7 +1800,8 @@
           \ 35 packages, and 1 USE change needed, duration: 39m23s
           \ DONE: xfce-extra/xfce4-power-manager-1.3.0 needs kernel option CONFIG_TIMER_STATS to be set: *   CONFIG_TIMER_STATS:  is not set when it should be.
         * vim /etc/portage/package.use/firefox
-          \ www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu system-cairo system-libvpx system-sqlite -wifi
+          \ www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu -system-cairo system-libvpx system-sqlite -wifi
+          \ use -system-cairo to avoid that firefox bug (see 4*.wofl for info about it)
         * first, you must move /var/tmp/ccache into root dir (aka /  not /root )
           * and either:
             * symlink it - or u'll run out of memory! and some random compile errors would happen
