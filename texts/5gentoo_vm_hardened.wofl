@@ -495,7 +495,7 @@
           - emerge --info | grep ^USE
             \ to see current (profile's) USE contents
             \ can't do this yet, only later on inside chroot!
-        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -Wstack-protector -fstack-protector-all"
+        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -fstack-protector-all"
           \ XXX: don't use -g3  use -ggdb instead; because "There is actually another flag ( -g3 ), but its use is not recommended. It seems to break binary interfaces and might lead to extra crashes. " src: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Backtraces  see that on how to get stack traces!
           \ XXX: for debug, I have: -g3 -DDEBUG -O1 -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2
           \ not using -fstack-protector-all because since I don't have hardened, then why bother with this puny protection anyway.
@@ -1564,10 +1564,17 @@
         \ getting gdb before gcc recompile because gcc compiling segfaults 3 times
     * update gcc
       \ based on these instructions: https://wiki.gentoo.org/wiki/Upgrading_GCC#Short_Version
+      * remove stack protector warning
+        * vim /etc/portage/make.conf
+          \ vim I installed at some point, got tired of nano
+        * remove -Wstack-protector from CFLAGS
       * time emerge -av '>=sys-devel/gcc-5.2'
         \ answer y to make changes (adds ** keyword aka testing?, for this gcc)
         \ installed 5.2.0 (from 4.8.4 p1.6)
-      * time emerge -navu sys-devel/gcc:5.1
+        \ failed after 27min of compilation, due to:
+        \ /var/tmp/portage/sys-devel/gcc-5.2.0/work/gcc-5.2.0/libgomp/team.c:273:1: error: stack protector not protecting local variables: variable length buffer [-Werror=stack-protector]
+        \ which is because warnings are treated as errors and CFLAGS
+      - time emerge -navu sys-devel/gcc:5.1
         \ 5.1 needed when using git sources or else some string.h 'new' variable error will be hit with 4.9 gcc!
         \ 5.1, duration: 95m21s
         \ //this will install 4.8.5 AND 4.9.3 versions; I should've added :4.9  to get only 4.9.3 which would've been latest ~amd64  (5.1.0 and 5.2.0 are well untagged, and 5.2.0 is not supported later by xf86-video...)
