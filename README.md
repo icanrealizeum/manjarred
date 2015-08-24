@@ -5,8 +5,8 @@ gentooskyline
 What is this ?
 --------------
 
-- a bunch of customizations and work-in-progress scripts and patches on my linux system - quite useless to anyone else 
-- this is mainly for learning purposes; expect the quality of anything inhere to be quite low and filled with bugs and unhandled cases 
+- a bunch of customizations and work-in-progress scripts and patches on my linux system - others might still find bits and pieces of useful data, if even just for educational purposes; at least I know I would if I were them.
+- expect the quality of anything inhere to be low and filled with bugs and unhandled cases, although I kinda strive to handle as many cases as possible otherwise that's how bugs get created.
 - also keeping track of some things(like bugs/issues/caveats) in some text files 
 - some dotfiles should also be here 
 
@@ -15,7 +15,8 @@ Authors
 -------
 
 * Emanuel Czirai
-* programs made by other authors may be included for reference, they are copyright by their respective authors
+* programs made by other authors are included for reference, they are copyright by their respective authors
+* I've every intention of giving credit where possible (see "src:") if even just for connectivity's sake.
 
 License
 -------
