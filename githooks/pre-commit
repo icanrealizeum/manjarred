@@ -56,7 +56,7 @@ LC_ALL=C find . -regex '.*[^ -z}{|~].*' -exec echo "{}" \;
 #"`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
 cat <<\EOF
 ie. run this command to rename all affected files in current dir (recursively!):
-LC_ALL=C find . -regex '.*[^ -z}{|~].*' -execdir bash -c 'echo -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+LC_ALL=C find . -regex '.*[^ -z}{|~].*' -execdir bash -c 'mv --verbose -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
 
 OR
 

@@ -48,3 +48,13 @@ sudo cp $verbose --archive --reflink=auto --sparse=always $extrasafe -t "$destdi
 reaccess_for_git "$destdir"
 #^ this also resets WARNING.txt which is a sibbling of the ./gentoo/ folder there; AND any other files/dirs present there (currently no others)
 
+#rename some certs to be ascii only, 
+set -e
+pushd "${destdir}/gentoo/etc/ssl/certs/"
+#just to see(no changes applied):
+#LC_ALL=C find . -regex '.*[^ -z}{|~].*' -exec bash -c 'echo -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+#apply changes(wit see):
+LC_ALL=C find . -regex '.*[^ -z}{|~].*' -execdir bash -c 'mv --verbose -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+set +e
+popd
+
