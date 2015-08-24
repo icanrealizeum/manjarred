@@ -108,7 +108,7 @@ alias cls2='echo -ne "\e[H\e[J"'
 #cd \"\$lastwd\"
 #fi
 #"
-alias cm="mc"
+alias cm="mc --nomouse --subshell"
 #alias mp3='time mpg123 -C --loop -100 --cpu x86-64 --gapless --buffer 1024 --smooth --control --title --stereo --equalizer ~/mpg123.eq'
 #alias mp3='time gst123 --repeat'
 mp3dir(){
