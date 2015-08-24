@@ -1,4 +1,4 @@
-* Note: these are the steps to install gentoo(hardened, no-multilib, with btrfs on lvm on luks on sda3, with /boot on btrfs (no lvm here) on luks, bootable by grub but prompted for /boot luks password before grub menu appears) in virtualbox;
+* Note: these are the steps to install gentoo(unstable(~amd64), hardened, no-multilib, with btrfs on lvm on luks on sda3, with /boot on btrfs (no lvm here) on luks, bootable by grub but prompted for /boot luks password before grub menu appears) in virtualbox;
 * Legend:
   \ indicates additional info/description
   - indicates disabled item, do not do;
@@ -1560,11 +1560,11 @@
         \ *             soft      core       unlimited
     * get gdb
       * time emerge -nav sys-devel/gdb
-        \ 13m15s
+        \ 16m3s
         \ getting gdb before gcc recompile because gcc compiling segfaults 3 times
     * update gcc
-      \ based one these instructions: https://wiki.gentoo.org/wiki/Upgrading_GCC#Short_Version
-      - time emerge -av '>=sys-devel/gcc-5.2'
+      \ based on these instructions: https://wiki.gentoo.org/wiki/Upgrading_GCC#Short_Version
+      * time emerge -av '>=sys-devel/gcc-5.2'
         \ answer y to make changes (adds ** keyword aka testing?, for this gcc)
         \ installed 5.2.0 (from 4.8.4 p1.6)
       * time emerge -navu sys-devel/gcc:5.1
