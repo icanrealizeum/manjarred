@@ -987,6 +987,8 @@
         \ XXX: for btrfs fs_passno(last field) should be 0
         \ looks like this:
         \ #for normal gentoo#/dev/sda2               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300         0 0
+        \ #for luks:
+        \ /dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300  1 0
         \ /dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300
         \ # XXX: do not add errors=remount-ro  because btrfs says: unrecognized mount option
         \ #/dev/SWAP              none            swap            sw              0 0
@@ -1574,6 +1576,7 @@
         \ failed after 27min of compilation, due to:
         \ /var/tmp/portage/sys-devel/gcc-5.2.0/work/gcc-5.2.0/libgomp/team.c:273:1: error: stack protector not protecting local variables: variable length buffer [-Werror=stack-protector]
         \ which is because warnings are treated as errors and CFLAGS
+        \ continued, extra 106m13s
       - time emerge -navu sys-devel/gcc:5.1
         \ 5.1 needed when using git sources or else some string.h 'new' variable error will be hit with 4.9 gcc!
         \ 5.1, duration: 95m21s
@@ -1586,26 +1589,36 @@
           \ will fail if -DDEBUG is in CFLAGS!! https://bugs.gentoo.org/show_bug.cgi?id=545316#c12
           \ duration, at least: 76m43s
           \ XXX: segfaults 3 times !! and still succeeded  (seen as cc1plus on dmesg)
+          \ actually no segfaults happened! 5.2.0
       * gcc-config -l
-        \ [1] x86_64-pc-linux-gnu-4.8.4
-        \ [2] x86_64-pc-linux-gnu-4.8.5 *
-        \ [3] x86_64-pc-linux-gnu-4.9.3
-      * gcc-config 3
-        \ [3] x86_64-pc-linux-gnu-4.9.3
+        \ [1] x86_64-pc-linux-gnu-4.8.4 *
+        \ [2] x86_64-pc-linux-gnu-4.8.4-hardenednopie
+        \ [3] x86_64-pc-linux-gnu-4.8.4-hardenednopiessp
+        \ [4] x86_64-pc-linux-gnu-4.8.4-hardenednossp
+        \ [5] x86_64-pc-linux-gnu-4.8.4-vanilla
+        \ [6] x86_64-pc-linux-gnu-5.2.0
+        \ [7] x86_64-pc-linux-gnu-5.2.0-hardenednopie
+        \ [8] x86_64-pc-linux-gnu-5.2.0-hardenednopiessp
+        \ [9] x86_64-pc-linux-gnu-5.2.0-hardenednossp
+        \ [10] x86_64-pc-linux-gnu-5.2.0-vanilla
+      * gcc-config 6
         \ pick the newest one
       * env-update && source /etc/profile ; source ~/.bash_profile
         \ looks like gcc-config already runs env-update!
       - Ctrl+R, PS1
         \ export PS1="(chroot1) $PS1"
       * time emerge --oneshot libtool
-        \ duration: 3m4s
-      * actually 4.8.4 doesn't exist anymore, it got U pgraded! but the config remained! eg. can't depclean it
+        \ duration: 2m28s
+      - TODO: report this(that on gcc upgrade(U), there's leftover configs): actually 4.8.4 doesn't exist anymore, it got U pgraded! but the config remained! eg. can't depclean it
         * rm /etc/env.d/gcc/x86_64-pc-linux-gnu-4.8.4
         * gcc-config -l
-      - keep old gcc?
-        * if yes then: emerge -nav =gcc-4.8.4 or emerge -nav sys-devel/gcc:4.8 (will add it to favorites, so that --depclean won't remove it next time)
+      * keep old gcc? yes
+        * if yes then: emerge -nav sys-devel/gcc:4.8
+        - if yes then: emerge -nav =gcc-4.8.4 or emerge -nav sys-devel/gcc:4.8 (will add it to favorites, so that --depclean won't remove it next time)
+          \ -n is --noreplace
+          \ adds gcc:4.8 to favs regardless of which command was used!
         * if not then:
-          * time emerge -a --depclean  (XXX: but I wanna keep the old gcc for now, so don't!)
+          * time emerge -av --depclean  (XXX: but I wanna keep the old gcc for now, so don't!)
             \ this will remove old gcc version (4.8.3 in this case)
       * time emerge @preserved-rebuild  (old version of this: revdep-rebuild)
         \ //revdep-rebuild command is part of gentoolkit package
@@ -1643,7 +1656,7 @@
       * gcc --version
       - env-update && source /etc/profile
         \ to be sure
-    * time emerge -av sys-apps/mlocate 
+    * time emerge -nav sys-apps/mlocate 
       \ 1m0s
       \ to have the locate command
     - (already updated) update bash to fix the HISTSIZE=-1 bug as follows: (don't update .bashrc yet!)
@@ -1691,13 +1704,17 @@
         - (already in rsync) put this into your ~/.bashrc:  (zazdxscf user will be updated later)
           \ source /usr/libexec/mc/mc.sh
     * recompile all, based on what changed in USE flags and also update!
+      * before updating, consider masking gcc:4.8 or else 4.8.5 (previously 4.8.4 being installed) will be the next emerged which isn't bad but we likely don't need to ever use the 4.8 gcc series again.
       * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
         \ //Total: 141 packages (88 upgrades, 27 new, 3 in new slots, 23 reinstalls, 1 uninstall), Size of downloads: 360,506 KiB
-        \ //duration: 527m15s
-        \ Total: 179 packages (89 upgrades, 64 new, 4 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 527,311 KiB
-        \ duration: 443m3s
+        \ //duration: 527m15s (gentoo hardened)
+        \ //Total: 179 packages (89 upgrades, 64 new, 4 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 527,311 KiB
+        \ //duration: 443m3s (gentoo normal)
+        \ Total: 151 packages (99 upgrades, 17 new, 3 in new slots, 32 reinstalls, 2 uninstalls), Size of downloads: 362,717 KiB
+        \ stopped after 52m47s due to power outtage
+        \ 142 packages left, took an extra:  545m4s (641m48s user, 509m32s sys)
         \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Portage#Updating_the_system
-        \ running that will sometimes update kernel sources (that is, get a new set of sources for next kernel version, alongside existing ones) - to update kernel read here https://wiki.gentoo.org/wiki/Kernel/Upgrade#Installing_and_using_a_new_kernel TODO: get the steps
+        \ running that will sometimes update kernel sources (that is, get a new set of sources for next kernel version, alongside existing ones) - to update kernel read here https://wiki.gentoo.org/wiki/Kernel/Upgrade#Installing_and_using_a_new_kernel done: get the steps(see Kernel section in this wofl file)
       * when you see: IMPORTANT: 2 config files in '/etc' need updating.
         \ in current case the new configs are just the default ones which we shouldn't put back (so zap new to avoid them, below)
         \ just run: dispatch-conf
@@ -1709,39 +1726,38 @@
       * hash -r && env-update && source /etc/profile && source ~/.bash_profile
       * reinstall perl modules (after each perl update, apparently)
         * time perl-cleaner --all
-          \ about 7min
+          \ 9m43s
       * any pam? (they need restart after this pam update)
         * lsof / | egrep -i 'del.*libpam\.so'
           \ none
       * time emerge @preserved-rebuild
         \ old name for this whole command is: revdep-rebuild
         \ rebuilds pinentry, as mentioned by the prior emerge
-        \ about 20min
+        \ 9m32s
       * dispatch-conf
         \ z to zap new, since that's the default and we don't want that
       * select latest python, or it will be depcleaned!
+        \ note: any python that's not 2.7 or the selected 3.4 (eg.3.3.5) will be removed with the depclean below
         * eselect python list
           \ [1]   python2.7 *
-          \ [2]   python3.3
-          \ [3]   python3.4
-        * eselect python set 3
+          \ [2]   python3.4
+        * eselect python set 2
         * eselect python list
           \ [1]   python2.7
-          \ [2]   python3.3
-          \ [3]   python3.4 *
-        * note: python 3.3.5 will be removed; not 2.7 not 3.4; with the depclean below
+          \ [2]   python3.4 *
       * time emerge -av --depclean
-        \ 2m7s
+        \ 1m58s
         \ // = old comments not in effect
         \ //if all good and more than 0 packages to remove then, remove the -p param and rerun
         \ //-p is --pretend, no needed when -a aka --ask  well unless you have some pressed keys from before(such as double enter) that will start removing... unless you're quick to C-c in the next 5 sec(countdown is shown after the answer to question is Yes)
         \ //this also removes leftover gcc 4.8.3 (which I kept until now) - not anymore, I added it to favs
       * time emerge @preserved-rebuild
-        \ //again apparently there's more new ones to remove now, weird
-        \ re-emerges perl /:  10m25s
-    * multi off
+        \ re-emerges perl /:  9m33s
+    - (rsynced)multi off
       * vim /etc/host.conf
         \ multi off
+    * if gcc 4.8.4 got updated to 4.8.5 then there's one leftover file which needs deleting or else gcc-config -l shows it in the list but cannot be selected due to missing other files(it was removed after all: equery l gcc  see?)
+      * mv /etc/env.d/gcc/x86_64-pc-linux-gnu-4.8.4 /tmp
     * time emerge -nav app-crypt/gnupg
       \ for future emerge-webrsync -v -k  invocations
       \ now, this only adds this to favs. (maybe I installed it before? or some other packaged pulled it)
@@ -1751,8 +1767,8 @@
     - where to go from here
       \ portage: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Portage#Welcome_to_portage
       \ USE flags & others: https://wiki.gentoo.org/wiki/Handbook:AMD64#Working_with_Gentoo
-    * make sure ccache is either empty or moved to have enough ram and tmpfs space left to continue
-      \ df /var/tmp
+    - (ccache is on hdd; this isn't in effect - ignore it) make sure ccache is either empty or moved to have enough ram and tmpfs space left to continue
+      \ df /var/tmp/portage
       \ choose one:
       * to move it
         * time mv -v -n -t / -- /var/tmp/ccache
@@ -1766,12 +1782,14 @@
       \ https://wiki.gentoo.org/wiki/Xorg/Configuration#Input_driver_support
       \ okfixed: should use --onlydeps on this next emerge since I know the specific package will fail! aka -o
       * time emerge -avo x11-drivers/xf86-video-virtualbox
-        \ 145m50s and failed
-        \ first, do use ccache for all other packages (59 total currently)
+        \ Total: 44 packages (44 new), Size of downloads: 128,330 KiB
+        \ //old: 145m50s and failed
+        \ 65m45s until fail (gcc 5.2 found need 5.1 at most!) at package x11-drivers/xf86-video-virtualbox-5.0.2 which is kinda odd since i specified -o aka --onlydeps
+        \ first, do use ccache for all other packages.
         \ this does fetch all required X packages too
         \ tail -f /var/log/emerge-fetch.log
         \ ^ to see downloads progress which happen all at once at the beginning, while compilation is in progress ie. parallel downloads (forgot which FEATURES flag does this, can probably easily find though) well they are sequential, but in parallel with the compilation i mean.
-        \ failed after 160m30s  with '** gcc version 5.2 found, expected gcc 3.x with x>1 or gcc 4.x with 0<x<10 or gcc 5.1!'  for x11-drivers/xf86-video-virtualbox-5.0.0
+        \ //failed after 160m30s  with '** gcc version 5.2 found, expected gcc 3.x with x>1 or gcc 4.x with 0<x<10 or gcc 5.1!'  for x11-drivers/xf86-video-virtualbox-5.0.0
         - FIXME: virtualbox-guest-additions(to make copy/pasting to/from guest OS)
           - (only with hardened) temporarily switch gcc to vanilla 4.9.2 (4.8.3 will fail to compile this) [for vboxvideo]
             \ is it because of the undefined symbol vgaHWFreeHWRec ? on startx in /var/log/Xorg.0.log ? yep!! so this is why you need vanilla!
@@ -1815,36 +1833,53 @@
             \ "Depending on where you live, you might need a valid license for s3tc
             \ in order to be legally allowed to use the external library.
             \ Redistribution in binary form might also be problematic."
-        * time emerge -nav x11-drivers/xf86-video-virtualbox
+        * recompile kernel with genkernel...
+          \ to avoid this error when compiling x11-drivers/xf86-video-virtualbox-5.0.2
+          \ cc1: error: cannot load plugin ./tools/gcc/colorize_plugin.so
+        * time CCACHE_DISABLE=1 emerge -nav x11-drivers/xf86-video-virtualbox
+          \ XXX: must not use ccache due to that PIC error
+          \ FAIL(5.0.2): cc1: error: cannot load plugin ./tools/gcc/colorize_plugin.so
+          \ ./tools/gcc/colorize_plugin.so: undefined symbol: _Z18pp_base_set_prefixP17pretty_print_infoPKc
+          \ cc1: error: cannot load plugin ./tools/gcc/initify_plugin.so
+          \ ./tools/gcc/initify_plugin.so: undefined symbol: _Z24varpool_add_new_variableP9tree_node
+          \ scripts/Makefile.build:258: recipe for target '/var/tmp/portage/x11-drivers/xf86-video-virtualbox-5.0.2/work/vboxvideo_drm/vboxvideo_drm.o' failed
+          \ old:
           \ (apparently virtualbox-guest-additions also includes xf86-video-virtualbox - that is, it selects it, as package, and is first in order! ok this doesn't happen always, seems to not happen when specifying version AND the other package already existed)
           \ 4.3.26 is nolonger in the list
           \ this (4.3.28) also fails with gcc 5.2.0 as '** gcc version 5.2.0 found, expected gcc 3.x with x>1 or gcc 4.x with 0<x<10!'
-          - switch to gcc 4.8.5 (DON'T it's useless)
+          - switch to gcc 4.8.5 (because we don't have 5.1.0, only 5.2.0)
             * gcc-config -l
-            * gcc-config 2
-            * . /etc/profile
+            * gcc-config 1
+            * hash -r && env-update && source /etc/profile && source ~/.bash_profile
             * gcc-config -l
-              \ [2] x86_64-pc-linux-gnu-4.8.5 *
-          * vim /usr/src/linux/include/linux/string.h +114
+              \ [1] x86_64-pc-linux-gnu-4.8.5 *
+          - vim /usr/src/linux/include/linux/string.h +114
             \ edit that string.h file and change 'new' to 'neww' for example.
-          * eselect python set 1
+          - eselect python set 1
             \ select python 2.7 or get some print ""  errors due to using python 3.4
-          * time emerge -nav x11-drivers/xf86-video-virtualbox
-            \ this now pulls virtualbox 5.0.0 xf86 driver, duration: 12min and fail with cannot find vboxvideo, really! nevermind it worked this time, I was using FEATURES='keepwork keeptemp' and that's why it failed, apparently; since it just worked without them! 8m21s to rerun without them (ccache must've helped)
-            \ fail, 4.8.5 also with 4.9.3 and with 5.1.0 all fail: 
-            \ /usr/src/linux/include/linux/string.h:114:42: error: expected ',' or '...' before 'new'
-            \  char *strreplace(char *s, char old, char new);
+            \ apparently not needed, possibly due to USE_PYTHON=2.7 in make.conf even though eselect python list  is python3.4 *
+          - time CCACHE_DISABLE=1 emerge -nav x11-drivers/xf86-video-virtualbox
+            \ also works FEATURES=-ccache  but this won't handle the case when ccache's gcc is in PATH (untested with the former does tho)
+            \ //old:this now pulls virtualbox 5.0.0 xf86 driver, duration: 12min and fail with cannot find vboxvideo, really! nevermind it worked this time, I was using FEATURES='keepwork keeptemp' and that's why it failed, apparently; since it just worked without them! 8m21s to rerun without them (ccache must've helped)
+            \ //fail, 4.8.5 also with 4.9.3 and with 5.1.0 all fail: 
+            \ ///usr/src/linux/include/linux/string.h:114:42: error: expected ',' or '...' before 'new'
+            \ // char *strreplace(char *s, char old, char new);
             \ XXX: 5.2.0 is not allowed at configure step.
-      * time emerge -av x11-base/xorg-drivers
-        \ emerge rest of stuff (1 packages)
-        \ 41s
+            \ XXX: need ccache disabled due to that PIC error when using hardened gentoo.
+            \ fails with 4.8.5 with: /usr/src/linux/include/linux/compiler.h:221:29: error: can't set 'no_instrument_function' attribute after definition
+        * TODO: try; apparently we don't need vboxvideo added to /etc/conf.d/modules
+          \ but it says: "to use the kernel drm video driver" ...
+      * time emerge -nav x11-base/xorg-drivers
+        \ does nothing, except wants to add itself to favs.
       * get sound in X
         \ //ensure USE flag is set: pulseaudio   (it is!)
         \ src: https://wiki.gentoo.org/wiki/PulseAudio
         * time emerge -nav media-sound/pavucontrol media-sound/paprefs
           \ this will add the gnome flag to pulseaudio package! and egl to mesa
-          \ Total: 58 packages (57 new, 1 reinstall), Size of downloads: 174,508 KiB
-          \ 203m36s
+          \ //old: Total: 58 packages (57 new, 1 reinstall), Size of downloads: 174,508 KiB
+          \ //203m36s
+          \ Total: 56 packages (56 new), Size of downloads: 174,064 KiB
+          \ 
         * consolekit must not be running (something else is starting it anyway, with the --no-daemon param(see ps axuw|grep cons): /usr/sbin/console-kit-daemon --no-daemon)
           \ apparently not running anymore (maybe this happened only in hardened?)
         * rc-update del consolekit default
@@ -2418,6 +2453,7 @@
     \ pax-utils-1.0.5 tested to work ok
 
 * bigTODO:
+  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so needs to be used, requires kernel recompile with 5.2.0 and that can't use the previous ccache due to new gcc version.
   * add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
   * get in that eutils.eclass patch
     \ notify_when_patches_folder_inaccessible_by_portage.patch

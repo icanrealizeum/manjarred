@@ -11,5 +11,6 @@ session         optional        pam_loginuid.so
 session		required	pam_env.so 
 session		optional	pam_lastlog.so silent 
 session		include		system-auth
+session		optional	pam_ck_connector.so nox11
 session		optional	pam_motd.so motd=/etc/motd
 session		optional	pam_mail.so

@@ -2,6 +2,7 @@
 # Copyright (c) 2007-2009 Roy Marples <roy@marples.name>
 # Released under the 2-clause BSD license.
 
+SHDIR="/lib/netifrc/sh"
 MODULESDIR="/lib/netifrc/net"
 MODULESLIST="${RC_SVCDIR}/nettree"
 _config_vars="config routes"
@@ -13,9 +14,20 @@ description="Configures network interfaces."
 # Handy var so we don't have to embed new lines everywhere for array splitting
 __IFS="
 "
+
+#  Set the INIT to be openrc if this file is called directly
+: ${INIT:=openrc}
+
+if [ -f "$SHDIR/functions.sh" ]; then
+	. "$SHDIR/functions.sh"
+else
+	echo "$SHDIR/functions.sh missing. Exiting"
+	exit 1
+fi
+
 depend()
 {
-	local IFACE=${RC_SVCNAME#*.}
+	local IFACE=$(get_interface)
 	local IFVAR=$(shell_var "${IFACE}")
 
 	need localmount
@@ -203,7 +215,7 @@ _program_available()
 			/*) [ -x "${x}" ] && break;;
 			*) type "${x}" >/dev/null 2>&1 && break;;
 		esac
-		unset x
+		x=
 	done
 	[ -n "${x}" ] && echo $x && return 0
 	return 1
@@ -218,16 +230,20 @@ _show_address()
 _gen_module_list()
 {
 	local x= f= force=$1
-	if ! ${force} && [ -s "${MODULESLIST}" -a "${MODULESLIST}" -nt "${MODULESDIR}" ]; then
-		local update=false
-		for x in "${MODULESDIR}"/*.sh; do
-			[ -e "${x}" ] || continue
-			if [ "${x}" -nt "${MODULESLIST}" ]; then
-				update=true
-				break
-			fi
-		done
-		${update} || return 0
+	if ! ${force} ; then
+		if [ -s "${MODULESLIST}" -a "${MODULESLIST}" -nt /proc/$$/status ]; then
+			ewarn "Discarding cached module list ($MODULESLIST) as it's newer current time!"
+		elif [ -s "${MODULESLIST}" -a "${MODULESLIST}" -nt "${MODULESDIR}" ]; then
+			local update=false
+			for x in "${MODULESDIR}"/*.sh; do
+				[ -e "${x}" ] || continue
+				if [ "${x}" -nt "${MODULESLIST}" ]; then
+					update=true
+					break
+				fi
+			done
+			${update} || return 0
+		fi
 	fi
 
 	einfo "Caching network module dependencies"
@@ -522,7 +538,7 @@ interface_down()
 
 start()
 {
-	local IFACE=${RC_SVCNAME#*.} oneworked=false fallback=false module=
+	local IFACE=$(get_interface) oneworked=false fallback=false module=
 	local IFVAR=$(shell_var "${IFACE}") cmd= our_metric=
 	local metric=0 _up_before_preup
 	eval _up_before_preup="\$up_before_preup_${IFVAR}"
@@ -717,7 +733,7 @@ stop()
 	# correctly if we go back to multiuser.
 	yesno ${keep_network:-YES} && yesno $RC_GOINGDOWN && return 0
 
-	local IFACE=${RC_SVCNAME#*.} module=
+	local IFACE=$(get_interface) module=
 	local IFVAR=$(shell_var "${IFACE}") opts=
 
 	einfo "Bringing down interface ${IFACE}"

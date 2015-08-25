@@ -1,8 +1,14 @@
 #!/bin/bash
 
-pushd /usr/portage/sys-apps/debianutils/
-#this rebuilds the recorded checksum for all packages in current dir.
-#needed because .ebuild got patched!
-repoman -pv  --digest=y  --ask manifest
-popd
+alldirswithoutspaces='
+sys-apps/debianutils
+x11-drivers/xf86-video-virtualbox
+'
+
+for i in $alldirswithoutspaces ; do
+  pushd "/usr/portage/${i}/" && repoman -pv  --digest=y  --ask manifest && popd
+  #^ this rebuilds the recorded checksum for all packages in current dir.
+  #needed because .ebuild files got patched!
+done
+
 

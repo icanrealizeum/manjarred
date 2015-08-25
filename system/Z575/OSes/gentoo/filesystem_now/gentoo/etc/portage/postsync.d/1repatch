@@ -6,6 +6,10 @@ pushd /
 for i in /home/zazdxscf/patches/webrsync/*.patch ; do 
   #patch -Np1 -i /home/zazdxscf/patches/webrsync/notify_when_patches_folder_inaccessible_by_portage.patch
   patch -Np1 -i "$i"
+  ec="$?"
+  if test "$ec" -ne "0"; then
+    echo "FAILED!" | grep --color=tty "FAIL"
+  fi
 done
 )
 popd
