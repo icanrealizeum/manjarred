@@ -43,7 +43,7 @@ declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 
   mkdir -p "${where}/"
 #  echo "${EXTRA_RSYNCY_PARAMS[@]}"
-  rsyncy 'ssh -v -p 8822 -l root' "127.0.0.111:${remoterootdir}/" "${where}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+  rsyncy 'ssh -v -p 8822 -i /home/emacs/.ssh/id_ed25519 -l root' "127.0.0.111:${remoterootdir}/" "${where}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
 
 
 
