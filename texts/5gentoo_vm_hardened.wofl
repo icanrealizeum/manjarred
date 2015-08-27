@@ -2793,6 +2793,10 @@
               \ CONFIG_PAX_SIZE_OVERFLOW
         * Memory Protections  --->
           \ TODO: see if I can select more options here
+          * select this CONFIG_GRKERNSEC_IO: Disable privileged I/O  and use the patch from here: http://resources.infosecinstitute.com/gentoo-hardening-part-4-pax-rbac-clamav/  or else X won't start (also needs recompile X I think)
+            \ patch is technically here: https://github.com/N8Fear/hvb-overlay/blob/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
+            \ so to wget https://raw.github.com/N8Fear/hvb-overlay/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
+            \ XXX: for now, fails to compile xorg-server-1.17.1-r1 due to:  "* !!! User patches were applied to this build!"  well no shiet! or maybe it's due to this: "/usr/lib/portage/python2.7/phase-helpers.sh: /var/tmp/portage/x11-base/xorg-server-1.17.1-r1/work/xorg-server-1.17.1/configure: /bin/sh: bad interpreter: Permission denied"  - that's what you get with grsecurity already enabled but not configured, i guess...
           * [*] Harden ASLR against information leaks and entropy reduction (NEW)
             \ CONFIG_GRKERNSEC_PROC_MEMMAP
           * [*] Hide kernel symbols
