@@ -2536,8 +2536,8 @@
 
 * bigTODO:
   * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used, requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
-  * add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
-  * get in that eutils.eclass patch
+  - add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
+  - get in that eutils.eclass patch
     \ notify_when_patches_folder_inaccessible_by_portage.patch
     \ it's in gentoo/quilt.patches/ 
     \ apparently no package owns /usr/portage/eclass/eutils.eclass which is kinda odd(?) but then for sure it got there via stage3 or even portage snapshot (via webrsync -v -k)
