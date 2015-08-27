@@ -3,7 +3,7 @@
 #set -e
 pushd /
 (
-for i in /home/zazdxscf/patches/webrsync/*.patch ; do 
+for i in /patches/webrsync/*.patch ; do 
   #patch -Np1 -i /home/zazdxscf/patches/webrsync/notify_when_patches_folder_inaccessible_by_portage.patch
   patch -Np1 -i "$i"
   ec="$?"

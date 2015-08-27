@@ -1,6 +1,7 @@
 * Note: these are the steps to install gentoo(unstable(~amd64), hardened, no-multilib, with btrfs on lvm on luks on sda3, with /boot on btrfs (no lvm here) on luks, bootable by grub but prompted for /boot luks password before grub menu appears) in virtualbox;
 * Legend:
   \ indicates additional info/description
+  \ //comment; indicates old obsolete comment left there to give you an idea of what was tried/happened.
   - indicates disabled item, do not do;
   * indicates enabled item, for you to do;
 * location of this(nolonger online): ./texts/5gentoo_vm_hardened.wofl
@@ -495,7 +496,8 @@
           - emerge --info | grep ^USE
             \ to see current (profile's) USE contents
             \ can't do this yet, only later on inside chroot!
-        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -fstack-protector-all"
+        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -fstack-protector-all -fPIC"
+          \ XXX: added -fPIC because lots of packages complain! and ask for -fPIC; it's ridiculous!
           \ XXX: don't use -g3  use -ggdb instead; because "There is actually another flag ( -g3 ), but its use is not recommended. It seems to break binary interfaces and might lead to extra crashes. " src: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Backtraces  see that on how to get stack traces!
           \ XXX: for debug, I have: -g3 -DDEBUG -O1 -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2
           \ not using -fstack-protector-all because since I don't have hardened, then why bother with this puny protection anyway.
@@ -552,7 +554,7 @@
         * prepare for ccache later on
           \ add lines:
           \ #this is the default ccache dir, but it's great to state it, in case we wanna change it later, eg. when firefox compilation happens:
-          \ CCACHE_SIZE="26G"
+          \ CCACHE_SIZE="56G"
           \ 5G seems to be the default if that line doesn't exist
           \ CCACHE_UMASK="0002"
           \ ^ https://bugs.gentoo.org/show_bug.cgi?id=492910
@@ -1108,6 +1110,8 @@
                 \ and this gets selected automatically(? apparently): SND_AC97_CODEC [=m]  and also AC97_BUS [=m] 
             - (rsynced) chromium needs the following kernel options(or else sandbox won't work, they say):
               \ CONFIG_USER_NS which recommends CONFIG_MEMCG and CONFIG_MEMCG_KMEM
+              \ also SECCOMP_FILTER which needs SECCOMP
+              \ SECCOMP = Enable seccomp to safely compute untrusted bytecode, in -> Processor type and features
               \ recompile kernel(21m48s by adding CONFIG_USER_NS, the other two were set already)... and then recompile chromium
             - (rsynced) ensure CONFIG_AUDITSYSCALL is set for sys-auth/consolekit-0.4.6 complains about it.
               \ this needs CONFIG_AUDIT first, in -> General setup -> [*] Auditing support
@@ -1836,6 +1840,14 @@
         * recompile kernel with genkernel...
           \ to avoid this error when compiling x11-drivers/xf86-video-virtualbox-5.0.2
           \ cc1: error: cannot load plugin ./tools/gcc/colorize_plugin.so
+        * need to use vanilla kernel due to 'undefined symbol vgaHWFreeHWRec' later on when startx happens (even tho compilation is successful!)
+          \ FIXME: find a way to compile hardened still!
+          * gcc-config -l
+          * gcc-config 10
+            \ vanilla!
+            \ eg.  [10] x86_64-pc-linux-gnu-5.2.0-vanilla *
+          * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+            \ or just "source /etc/profile" as they say.
         * time CCACHE_DISABLE=1 emerge -nav x11-drivers/xf86-video-virtualbox
           \ XXX: must not use ccache due to that PIC error
           \ FAIL(5.0.2): cc1: error: cannot load plugin ./tools/gcc/colorize_plugin.so
@@ -1867,10 +1879,20 @@
             \ XXX: 5.2.0 is not allowed at configure step.
             \ XXX: need ccache disabled due to that PIC error when using hardened gentoo.
             \ fails with 4.8.5 with: /usr/src/linux/include/linux/compiler.h:221:29: error: can't set 'no_instrument_function' attribute after definition
-        * TODO: try; apparently we don't need vboxvideo added to /etc/conf.d/modules
+        * switch back to hardened gcc 
+          * gcc-config -l
+          * gcc-config 6
+            \ eg.  [6] x86_64-pc-linux-gnu-5.2.0
+          * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+        * TODO: try; apparently we don't need vboxvideo added to /etc/conf.d/modules because at least when startx happens you can see it being loaded in Xorg.0.log and unloaded afterwards. (not seen in lsmod before/after)
           \ but it says: "to use the kernel drm video driver" ...
-      * time emerge -nav x11-base/xorg-drivers
-        \ does nothing, except wants to add itself to favs.
+      * time emerge -av x11-base/xorg-drivers
+        \ XXX: don't use -nav here, use -av because, with -nav it does nothing, except wants to add itself to favs. but with -av  needs to install evdev and keyboard, looks like this:
+        \ [ebuild  N     ] x11-drivers/xf86-input-evdev-2.9.2::gentoo  0 KiB
+        \ [ebuild  N     ] x11-drivers/xf86-input-keyboard-1.8.1::gentoo  0 KiB
+        \ [ebuild   R    ] x11-base/xorg-drivers-1.17::gentoo
+        \ you see those two N ? and that R with the -nav prevents those two N from being installed!
+        \ 7m19s
       * get sound in X
         \ //ensure USE flag is set: pulseaudio   (it is!)
         \ src: https://wiki.gentoo.org/wiki/PulseAudio
@@ -1879,9 +1901,9 @@
           \ //old: Total: 58 packages (57 new, 1 reinstall), Size of downloads: 174,508 KiB
           \ //203m36s
           \ Total: 56 packages (56 new), Size of downloads: 174,064 KiB
-          \ 
+          \ 187m17s real (208m10s user, 137m30s sys)
         * consolekit must not be running (something else is starting it anyway, with the --no-daemon param(see ps axuw|grep cons): /usr/sbin/console-kit-daemon --no-daemon)
-          \ apparently not running anymore (maybe this happened only in hardened?)
+          \ apparently not running anymore (maybe this happened only in hardened? not in hardened at this time)
         * rc-update del consolekit default
           \ wasn't already there.
       * get xfce4
@@ -1891,15 +1913,10 @@
         * add a line in make.conf
           \ XFCE_PLUGINS="brightness clock trash battery power"
           \ current list is here: https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/profiles/desc/xfce_plugins.desc?view=markup
-        * time emerge -1nav media-libs/netpbm
-          \ 4m27s
-          \ FIXME: why -1 ?
-        * time emerge -1nav x11-libs/gdk-pixbuf
-          \ nothing done!
-          \ FIXME: why -1 ?
-        * time emerge -nav xfce4-meta xfce4-notifyd
-          \ Total: 61 packages (61 new), Size of downloads: 36,480 KiB
-          \ 61 packages! 57m21s
+        * time emerge -nav media-libs/netpbm x11-libs/gdk-pixbuf xfce4-meta xfce4-notifyd
+          \ Total: 62 packages (62 new), Size of downloads: 39,040 KiB
+          \ 73m52s
+          \ //old: 61 packages! 57m21s
           \ XXX: Without explicitly including xfce-extra/xfce4-notifyd in your emerge command, virtual/notification-daemon will draw in GNOME's x11-misc/notification-daemon instead:
           - xfdesktop fails to compile (4.12.1 unstable that is)
             \ xfdesktop-xfdesktop-icon-view.o: In function `xfdesktop_icon_view_drag_drop':
@@ -1916,7 +1933,7 @@
           * eselect fontconfig enable 57-dejavu-sans-mono.conf
             \ was just installed but not enabled
             * eselect fontconfig list
-        - time emerge -nav x11-misc/pcmanfm (actually we don't want this, xfce's desktop seems better though different!)
+        - time emerge -nav x11-misc/pcmanfm (actually we don't want this, xfce's desktop seems better though different! ie. you can't have shortcuts on desktop, only minimized windows showing as icons!)
           \ this wants 1 new USE flag: gtk
           \ Total: 12 packages (12 new), Size of downloads: 7,542 KiB
           \ 16m34s
@@ -1924,23 +1941,34 @@
             \ it doesn't, anymore
             * /etc/init.d/udev --nodeps restart
         * rc-update add dbus default
-          \ hmm I already added this somewhere above; actually, now, trying to not add this at all to see if it works anyway (eg. something else will start it, if it needs it) - ok doesn't work without adding it; the reboot/shutdown menus are disabled; but they are enabled if dbus is added to default as such.
+          \ this is for reboot/shutdown menus in xfce to be enabled
+          \ //hmm I already added this somewhere above; actually, now, trying to not add this at all to see if it works anyway (eg. something else will start it, if it needs it) - ok doesn't work without adding it; the reboot/shutdown menus are disabled; but they are enabled if dbus is added to default as such.
+        * start dbus? (unsure if needed before running startx because X isn't working for me right now for other reasons)
+          * /etc/init.d/dbus start
         * add user zazdxscf to groups
           * for x in cdrom cdrw usb ; do gpasswd -a zazdxscf $x ; done
         * hash -r && env-update && source /etc/profile && source ~/.bash_profile
         * time emerge -nav x11-terms/xfce4-terminal xfce4-volumed-pulse
-          \ Total: 5 packages (5 new), Size of downloads: 3,283 KiB
-          \ 8m44s
+          \ apparently already installed!
+          \ // Total: 5 packages (5 new), Size of downloads: 3,283 KiB
+          \ // 10m13s
           \ //18 packages, 28m33s
+          * config
+            * General
+              * set Scrollback lines to 5242880 (which is max!)
+              * untick Scroll on output
+              * Dynamically-set title: Replaces initial title
+            * Appearance tab
+              * Background - Transparent 0.90
         - time FEATURES="-stricter" emerge -nav x11-terms/xfce4-terminal
         - time emerge -nav xfce4-volumed-pulse
           \ volume keys
           \ docs from: https://wiki.gentoo.org/wiki/Xfce
-      * echo "exec ck-launch-session dbus-launch --sh-syntax --exit-with-session startxfce4" | tee /home/zazdxscf/.xinitrc
+      - (rsynced) echo "exec ck-launch-session dbus-launch --sh-syntax --exit-with-session startxfce4" | tee /home/zazdxscf/.xinitrc
         \ this extra consolekit stuff is for to enable the restart/shutdown buttons
         \ but don't add it to rc; eg. don't do this: rc-update add consolekit default   (something else is already starting it, even when it dies - gets restarted; ps axjf  doesn't show any parents)
         * chown zazdxscf:users /home/zazdxscf/.xinitrc
-        * fixed: restart/shutdown don't work, when you startx that is.
+        - fixed: restart/shutdown don't work, when you startx that is.
           * rc-update add dbus default
             \ now they do, after you reboot that is; but without this, they won't!
       * get into zazdxscf user from within the virtualbox window (not ssh!) and then:
@@ -1951,7 +1979,8 @@
           \ this extra consolekit stuff is for to enable the restart/shutdown buttons
           \ but don't add it to rc; eg. don't do this: rc-update add consolekit default   (something else is already starting it, even when it dies - gets restarted; ps axjf  doesn't show any parents)
         * startx
-      * remove leftover from skel, clear command on bash logout (still as user zazdxscf); remove clear because it gives dalse sense of security (scroll up will still work fine)
+          \ currently stuck, mouse is dead, can only kill X; because evdev module is not found! because x11-base/xorg-drivers didn't get reinstalled due to using -n flag to emerge which made 2 other packages not install at all ( evdev and keyboard) so using -av instead of -nav to x11-base/xorg-drivers because of this.
+      - (no need, only for zazdxscf is already rsynced) remove leftover from skel, clear command on bash logout (still as user zazdxscf); remove clear because it gives false sense of security (scroll up will still work fine)
         * sudo vim /etc/skel/.bash_logout
           \ yep, we do have sudo rights
         * vim ~/.bash_logout
@@ -1959,10 +1988,14 @@
         * time emerge -nav net-misc/ntp
           \ for ntpdate
           \ 10m57s
-          * ntpdate -s time.nist.gov
+          * ntpdate -4vs time.nist.gov
             \ this updates time currently (aka manually, any time you want to, independent of ntpd)
-          * rc-update add ntpd default
-          * vim /etc/ntp.conf
+            \ or use updclock script from ~/bin/
+          - (let's not run ntpd fulltime here, maybe we can cron it instead) rc-update add ntpd default
+            \ undo with: 
+            \ rc-update del ntpd default
+            \ rc-service ntpd stop
+          - (rscyned) vim /etc/ntp.conf
             \ server 127.127.1.0
             \ fudge  127.127.1.0 stratum 10
             \
@@ -1974,14 +2007,16 @@
             * denying access to NTP's monlist functionality, used for querying traffic stats but also exploited in a denial-of-service attack.
               \ disable monitor
           * set these in kernel to avoid having to use hwclock service (see: https://wiki.gentoo.org/wiki/Ntp )
-            \ note: these were already set
+            \ note: these were already set (in non rsynced .config !)
             \ Device Drivers  --->
-            \  [*] Real Time Clock  --->
-            \      [*]   Set system time from RTC on startup and resume
-            \      [*]   Set the RTC time based on NTP synchronization
+            \  [*] Real Time Clock  ---> CONFIG_RTC_CLASS
+            \      [*]   Set system time from RTC on startup and resume  (this wasn't set in rsynced .config!) CONFIG_RTC_HCTOSYS
+            \      [*]   Set the RTC time based on NTP synchronization - CONFIG_RTC_SYSTOHC
         * time DEBUG= FEATURES="-stricter" emerge -nav xfce4-battery-plugin xfce4-sensors-plugin xfce4-mixer xfce4-taskmanager xfwm4-themes orage mousepad xfce4-power-manager
-          \ Total: 26 packages (25 new, 1 in new slot), Size of downloads: 19,058 KiB
-          \ 22m39s until first fail; + 16m31s after that
+          \ Total: 28 packages (24 new, 4 in new slots), Size of downloads: 19,309 KiB
+          \ 57m11s
+          \ //Total: 26 packages (25 new, 1 in new slot), Size of downloads: 19,058 KiB
+          \ //22m39s until first fail; + 16m31s after that
           \ //35 packages, and 1 USE change needed, duration: 39m23s
           \ DONE: xfce-extra/xfce4-power-manager-1.3.0 needs kernel option CONFIG_TIMER_STATS to be set: *   CONFIG_TIMER_STATS:  is not set when it should be.
           \ XXX: libunique fails due to env var being set DEBUG=1  (TODO: report this on bugs)
@@ -1997,19 +2032,20 @@
         * hash -r && env-update && source /etc/profile ; source ~/.bashrc
           \ just did this for good measure
         * time FEATURES="-stricter" emerge -nav firefox
-          \
+          \ 229m30s (with lots of other background stuff going, like other compilations/youtube)
+          \ old:
           \ still needs 4 other USE changes, for 4 other packages!
           \ >=dev-lang/python-2.7.10:2.7 sqlite
           \ >=dev-db/sqlite-3.8.10.2 secure-delete
           \ >=media-libs/libpng-1.6.17 apng
           \ >=media-libs/libvpx-1.4.0 postproc
           \ TODO: add those from the beginning of installation!
-          \ Total: 14 packages (8 new, 3 in new slots, 3 reinstalls), Size of downloads: 216,883 KiB
-          \ duration: 130m33s
+          \ //Total: 14 packages (8 new, 3 in new slots, 3 reinstalls), Size of downloads: 216,883 KiB
+          \ //duration: 130m33s
           \ //duration: failed after 145m23s due to no space left(in tmpfs aka 90% of 8g ram), likely because 540MB was left in /var/tmp/portage/x11-drivers/xf86-video-virtualbox-4.3.18 (even tho i've installed 4.3.26 last! the failed one i forgot to delete!)
-          \ and kernel crashed with NULL pointer dereference!
+          \ //and kernel crashed with NULL pointer dereference!
           * remember to install https://github.com/futpib/policeman instead of requestpolicy  and also install uBlock (or adblock plus?)  AND noscript! (yes)
-        * enable compositing for xfwm4
+        - (rsynced) enable compositing for xfwm4
           * mkdir -p /etc/X11/xorg.conf.d/
           * vim /etc/X11/xorg.conf.d/25composite.conf (new file)
             \ Section "Extensions"
@@ -2021,15 +2057,15 @@
           \ actually, we got 1 package due to egl USE flag; shouldn't happen again because I put it in make.conf so any new full installations will see this command do nothing; duration 20m13s (it was qtgui)
         * time emerge -nav xfce4-screenshooter
           \ for screenshots; basically not needed for virtualbox guest OS, because I could use virtualbox screenshot feature or the xfce4-screenshooter on host (unless virtualbox window doesn't fix on host's screen, in the latter case)
+          \ 9m40s
         - time FEATURES="-stricter" emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
           \ update everything, if needed, based on what USE flags changed too.
           \ should do nothing, currently
-        * chromium can't! (need 25G disk space!)
-          * chromium needs kernel options(or else sandbox won't work they say):
+        * get chromium (warning: needs 25G space!)
+          - (rscyned) chromium needs kernel options(or else sandbox won't work they say):
             \ CONFIG_USER_NS which recommends CONFIG_MEMCG and CONFIG_MEMCG_KMEM
+            \ also SECCOMP_FILTER which I already did (rscyned)
             \ recompile kernel... and then recompile chromium
-          * get chromium
-          \ time emerge -nav chromium
           \ XXX: requirements: at least 3 GiB RAM + least 25 GiB disk space at "/var/tmp/portage/www-client/chromium-45.0.2454.15/temp"
           \ wants 3 USE changes
           \ then 33 packages... duration: 175m55s or 19m2s to reemerge with ccache, to show the same error
@@ -2041,18 +2077,49 @@
           * vim /etc/portage/env/chromium.conf
             \ USE="-bindist"
             \ ^ to allow that H.264 video, or else: * bindist enabled: H.264 video support will be disabled.
-            \ CFLAGS="-O2 -pipe -march=native -Wstack-protector -fstack-protector-all"
-            \ CXXFLAGS="$CFLAGS"
+            \ #//CFLAGS="-O2 -pipe -march=native -Wstack-protector -fstack-protector-all"
+            \ #//CXXFLAGS="$CFLAGS"
             \ ^ that doesn't have the -g3 one!
+            \ ommiting these 2 for now, using make.conf ones!
+          * to get 25G in /vat/tmp/portage we must unmount it(it's tmpfs remember?) so it hits the disk instead!
+            * umount /var/tmp/portage
+            * umount /var/tmp/
+              \ yep, hits this one too!
+          * time DEBUG= emerge -nav gsm
+            \ this one fails when DEBUG=1 is set in environment (and it is for me in ~/.bashrc )
+            \ error is:
+            \ x86_64-pc-linux-gnu-gcc: error: 1: No such file or directory
+            \
+            \ Then another one with hardened compiler(not with vanilla though!) we get this error:
+            \ /usr/lib/gcc/x86_64-pc-linux-gnu/5.2.0/../../../../x86_64-pc-linux-gnu/bin/ld: ./src/toast.o: relocation R_X86_64_32 against `f_fast' can not be used when making a shared object; recompile with -fPIC
+            \ ./src/toast.o: error adding symbols: Bad value
+            \ collect2: error: ld returned 1 exit status
+            \ Makefile:339: recipe for target 'bin/toast' failed
+            \ make: *** [bin/toast] Error 1
+            \ rsynced patch, tested to work.
           * time emerge -nav chromium
-        * make sensors temp show up in sensors in xfce (untested here in virtualbox)
+            \ 647m13s real, 1900m2s user, 292m22s sys. (in virtualbox! with sometimes youtube videos playing in another vbox aka less cpu available) 16G space consumed in /var/tmp/portage/www-client/chromium-45.0.2454.46/  this is with -ggdb btw!  also failed at ld stage(last part) due to out of memory! killed:) need more ram than 10G or maybe need swap(also) dayum that recompile worked with 10827MB RAM(instead of 10240MB which was previously! amazing! because that was max it would let me alloc.!) also recompile (ebuild install phase) took 28min
+          * need more fonts, possibly, for pages to display properly
+            * time emerge -nav media-fonts/arphicfonts media-fonts/bitstream-cyberbit media-fonts/droid media-fonts/ipamonafont media-fonts/ja-ipafonts media-fonts/takao-fonts media-fonts/wqy-microhei media-fonts/wqy-zenhei 
+              \ avoiding new license requirements: BitstreamCyberbit grass-ipafonts  from  media-fonts/bitstream-cyberbit-2.0 resp. media-fonts/ipamonafont-1.0.8
+              \ duration(in vbox): 
+            * add emoji fonts too!
+              * time emerge -nav media-fonts/symbola
+                \ 8m28s
+                \ to test:
+                \ http://www.fileformat.info/info/emoji/browsertest.htm
+                \ http://www.fileformat.info/info/unicode/char/1f4a9/browsertest.htm
+                \ http://fsymbols.com/emoji-bookmarklet/
+              - (apparently not needed!) probably need some fontconfig to enable
+                \ eselect fontconfig list
+        * (not for in-virtualbox) make sensors temp show up in sensors in xfce (untested here in virtualbox)
           \ src: https://wiki.gentoo.org/wiki/Lm_sensors
           * put this new USE flag:
             \ lm_sensors
           * recompile all: time FEATURES="-stricter" emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world 
             \ 2 packages: 1m15s
           * /usr/sbin/sensors-detect
-            \ paste: YES  to every question, it worked fine, no lockups!
+            \ paste: YES  to every question, it worked fine, no lockups! (press Enter, works too) - no sensors detected in virtualbox!
             \ /etc/conf.d/lm_sensors contains this(without comments):
             \ LOADMODULES=yes
             \ INITSENSORS=yes
@@ -2060,6 +2127,7 @@
           * rc-update add lm_sensors default
           * now add the sensors xfce4-panel plugin to the panel...
         - auto login with xdm and slim (untested here in virtualbox)
+          \ NOTE: there's another type of autologin with aggetty (inittab) and .bash_profile - this is commented out but there. (don't use this xdm thing!)
           \ XXX: WORKS but Restart/Shutdown buttons are greyed out!! however, with just login from agetty and startx, they show up ok(after adding the right param to startxfce4  this one: --with-ck-launch )
           \ also don't like that X is started as root!!
           \ src: https://wiki.gentoo.org/wiki/SLiM
@@ -2101,17 +2169,17 @@
         * get whisker menu (untested here in virtualbox)
           * time emerge -nav xfce-extra/xfce4-whiskermenu-plugin
             \ on virtualbox: 1m8s (with firefox/youtube on background)
-            \ on real: 40s
+            \ on real: 1m31s
           * add it to panel via rightclick->Panel->Add New Items->Whisker Menu
             \ then move with with Rightclick on it -> Move
         * get weather plugin (untested here in virtualbox)
           * time emerge -nav xfce-extra/xfce4-weather-plugin
-            \ on virtualbox: 1m35s
+            \ on virtualbox: 1m38s
             \ on desktop: 26s
           * add it to panel...
         * get net speed plugin (untested here in virtualbox)
           * time emerge -nav xfce-extra/xfce4-netspeed-plugin
-            \ on virtualbox: 3m9s
+            \ on virtualbox: 3m1s
             \ on desktop: 52s
           * add it to panel...
         * add already existing orage(plugin) to Panel just like you did the above ones! (untested here in virtualbox)
@@ -2189,7 +2257,7 @@
             \ and also I had the polkit script 10-admin.rules  (see below!)
           - rc-update add consolekit default
             \ not needed! should not be in any runlevel!
-          * ok it would've worked, probably, if I had consolekit in my USE flags!! it's -consolekit by default!
+          - (rsynced) ok it would've worked, probably, if I had consolekit in my USE flags!! it's -consolekit by default!
             \ src: https://wiki.gentoo.org/wiki/ConsoleKit
             * vim /etc/portage/make.conf
               \ add   consolekit policykit  to USE flags!!
@@ -2212,7 +2280,7 @@
                 \    if ( ((action.id == "org.freedesktop.udisks2.filesystem-mount") ||
                 \         (action.id == "org.freedesktop.consolekit.system.restart") ||
                 \         (action.id == "org.freedesktop.consolekit.system.shutdown") ) &&
-                \        subject.user == "emacs2") {
+                \        subject.user == "zazdxscf") {
                 \        return "yes";
                 \    }
                 \});
@@ -2243,17 +2311,6 @@
               \ RSAAuthentication no
               \ PubkeyAuthentication yes
               \ AuthorizedKeysFile      .ssh/authorized_key
-              * put your key there:
-                * # mkdir ~/.ssh
-                * from host:
-                  - scp -P 8822 -4vp ~/.ssh/id_ed25519.pub root@127.0.0.20:/root/.ssh/authorized_key
-                    \ virtualbox
-                  *
-                * # ls -la ~/.ssh
-                  \ -r--r--r-- 1 root root  93 Feb 21 18:49 authorized_key
-                * # chmod go-rwx ~/.ssh/authorized_key
-                * # ls -la ~/.ssh
-                  \ -r-------- 1 root root  93 Feb 21 18:49 authorized_key
               \ RhostsRSAAuthentication no
               \ HostbasedAuthentication no
               \ IgnoreUserKnownHosts yes
@@ -2261,7 +2318,7 @@
               \ PasswordAuthentication no
               \ PermitEmptyPasswords no
               \ ChallengeResponseAuthentication no
-              \#^ yes = enables TIS Challenge/Response in SSH protocol version 1, and keyboard-interactive in SSH protocol v2
+              \ #^ yes = enables TIS Challenge/Response in SSH protocol version 1, and keyboard-interactive in SSH protocol v2
               \ UsePAM no
               \ #^ PAM not used if public key authentication is used! src: https://dev.gentoo.org/~swift/docs/security_benchmarks/openssh.html#item-xccdf_org.gentoo.dev.swift_group_config-default
               \ AllowAgentForwarding no
@@ -2291,10 +2348,23 @@
               \ KexAlgorithms curve25519-sha256@libssh.org
               \ AuthenticationMethods publickey
               \ #ListenAddress 192.168.100.121
+              * there's a line
+                \ Subsystem sftp  /usr/lib64/misc/sftp-server
+                \ but I commented it out!
+            * put your key there:
+              * # mkdir ~/.ssh
+              * from host:
+                * scp -P 8822 -4vp ~/.ssh/id_ed25519.pub root@127.0.0.111:/root/.ssh/authorized_key
+                  \ this copies your ssh public key into virtualbox as authorized key! so you can now ssh into the virtualbox w/o a password
+              * # ls -la ~/.ssh
+                \ -r--r--r-- 1 root root  93 Feb 21 18:49 authorized_key
+              * # chmod go-rwx ~/.ssh/authorized_key
+              * # ls -la ~/.ssh
+                \ -r-------- 1 root root  93 Feb 21 18:49 authorized_key
             * /etc/init.d/sshd restart
-          * verify that root and emacs can connect
-            \ done
-        * fixed: how to make startx not hang on `hostname -f` which it does, when internet isn't available but network is up!
+          * verify that root and zazdxscf can connect
+            \ done; btw, you have to put the same key inside /home/zazdxscf/.ssh/
+        * (already in effect!)fixed: how to make startx not hang on `hostname -f` which it does, when internet isn't available but network is up!
           * make hostname -f  NOT DNS lookup upstream ...
             \ WOW I mean, WOW! lacking a ::1 (aka ipv6) entry in /etc/hosts will cause hostname -f to DNS lookup (AAAA? hostnamehere) that upstream!!! fml!! because USE=-ipv6
             \ in fact lacking either ipv4 or ipv6 in /etc/hosts for your hostname will cause a DNS query out.
@@ -2350,11 +2420,12 @@
             \ this is on par with tox-git commit 4ad76497881ee2a623acdedcf0ac10406208b716
           * get in X and test if it works!
         * get pdf viewer 
-          - time emerge -nav evince
-            \ duration: 0s we already have this installed!
+          * time emerge -nav evince
+            \ Total: 20 packages (19 new, 1 in new slot), Size of downloads: 54,449 KiB
+            \ duration: 60m15s
         * get lsusb
           * time emerge -nav sys-apps/usbutils
-            \ 34s
+            \ 1m31s
         * get vlc
           * make sure qt4 USE flag is set somehow before emerging!! done, set globally!
         - jdk6
@@ -2370,11 +2441,12 @@
           * java-config --list-available-vms
             \ *)  IcedTea JDK 6.1.13.5 [icedtea-bin-6]
         * fail2ban
+          * TODO: ensure kernel has the iptables modules! like filter and stuff...
           * time emerge -nav net-analyzer/fail2ban
             \ vbox: 1m32s
             \ desktop: 52s
           * time emerge -nav app-admin/gamin
-            \ vbox: 3m
+            \ vbox: 4m4s
             \ desktop: 
           * vim /etc/fail2ban/jail.d/sshd.conf
             \ [ssh-iptables]
@@ -2399,18 +2471,25 @@
         * to can open archives like .zip
           * time emerge -nav xarchiver
             \ dispatch-conf, u
-            \ duration: 2m23s (with firefox+pulseaudio using 70-80% cpu)
+            \ duration: 2m0s
+          * time emerge -nav app-arch/unrar app-arch/rar app-arch/unzip app-arch/zip app-arch/p7zip
+            \ don't really need these; zip's already in!
+            \ 6m41s
         * images viewer
-          * time emerge -nav viewnior
-            \ duration: 5m10s (with firefox+pulseaudio using 70-80% cpu)
           * time emerge -nav xdg-utils
             \ to get xdg-open which mc uses to for example invoke viewnior when you press enter on a .png or .jpg
+            \ also to get ability for programs to install their mime-type files which registers their extensions! FIXME: TODO: move this to top so it's available early! but unsure if this is the one doing this, maybe via xdg-mime
             \ tested to work while previously(without it) didn't.
             \ 7 packages, 3m19s
-            * Still have to set .png and .jpg in mime-editor because default is unset! to run viewnior that is
+            - (nope it's already set!) Still have to set .png and .jpg in mime-editor because default is unset! to run viewnior that is
               * xfce4-mime-settings
                 \ search for png, then jpeg
                 \ select viewnior for each! (becomes User-set, not the empty Default)
+                \ XXX: hmm, already set after installing viewnior-1.4 now, because:
+                \ * Updating desktop mime database ...
+                \ unusual because this didn't happen on previous install(in gentoo normal, non-hardened) but to note that for some reason xdg-utils was already installed before emerging viewnior now. - moving viewnior after it.
+          * time emerge -nav viewnior
+            \ duration: 4m30s
         * time emerge -nav pwgen
           \ less than 1 min
         * time emerge -nav vbindiff
@@ -2420,7 +2499,7 @@
         * time emerge -nav net-analyzer/tcpdump
           \ 3m54s
         * time emerge -nav =ffmpeg-9999
-          \ getting git version of ffmpeg(previously 2.7.2 which was crashing firefox 39.0.0)
+          \ getting git version of ffmpeg(previously 2.7.2 which was crashing firefox 39.0.0) - git version is also crashing but not with 40.0.2 firefox.
           \ 16m51s
         * time emerge -nav x11-apps/xev
           \ 1m29s
@@ -2428,11 +2507,14 @@
           \ 39m55s (with firefox/youtube on background)
     * ln -snf /proc/self/mounts /etc/mtab
       \ else you get a warning on every boot about it, that's deprecated to update /etc/mtab, so this is the way to "fix" it.
+      \ should be in rsync by now
     * colordiff
       \ time emerge -avn app-misc/colordiff
     * time emerge -nav app-portage/mirrorselect
-      \ 20 packages, 11m5s
-    * time emerge -nav media-gfx/zgv
+      \ Total: 19 packages (19 new), Size of downloads: 3,251 KiB
+      \ 16m52s (in parallel with chromium compile)
+      \ //20 packages, 11m5s
+    - time emerge -nav media-gfx/zgv
       \ for when pressing enter on .png and .jpg files inside mc
       \ XXX: errors in media-libs/svgalib-1.9.25-r4
 
@@ -2453,7 +2535,7 @@
     \ pax-utils-1.0.5 tested to work ok
 
 * bigTODO:
-  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so needs to be used, requires kernel recompile with 5.2.0 and that can't use the previous ccache due to new gcc version.
+  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used, requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
   * add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
   * get in that eutils.eclass patch
     \ notify_when_patches_folder_inaccessible_by_portage.patch
@@ -3098,8 +3180,9 @@
     \ more info: https://wiki.gentoo.org/wiki/Eix
     \ search is way faster ie. eix kernel  or  eix -S -c corba
     * time emerge -navt eix
-      \ 5m24s (oldtime)
-      \ 5m32s (with 2 youtube vids playing in firefox)
+      \ //5m24s (oldtime)
+      \ //5m32s (with 2 youtube vids playing in firefox)
+      \ 12m7s
     * time eix-update
       \ to create the database, before you can use eix
     - but DON'T use eix-sync -w -v  WARNING: because it can't keep the downloaded file as emerge-webrsync -k could! (I don't see an option to pass -k to it)
