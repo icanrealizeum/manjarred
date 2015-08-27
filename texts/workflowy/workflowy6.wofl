@@ -694,7 +694,7 @@
           * in Settings->Downloads->Download location: Change
             \ "download location: /tmp   and tick Ask where to save each file before downloading"
           * install the following (5-6) extensions
-            * WebRTC Block - doesn't block WebRTC anymore( https://diafygi.github.io/webrtc-ips/ ) so only use this if you haven't compiled chromium to disable webrtc, but don't expect it to work
+            - WebRTC Block - doesn't block WebRTC anymore( https://diafygi.github.io/webrtc-ips/ ) so only use this if you haven't compiled chromium to disable webrtc, but don't expect it to work
               \ https://chrome.google.com/webstore/detail/webrtc-block/nphkkbaidamjmhfanlpblblcadhfbkdm/reviews
               \ with uMatrix you may need to add this line
               \ * googleusercontent.com other allow
@@ -777,10 +777,14 @@
               * but it conflicts with ScriptSafe, so disable, set to Off the Referrer Spoof in ScriptSafe because this Referer Control extension is better ie. it won't break the image on this page http://www.hardwaresecrets.com/article/Understanding-RAM-Timings/26/2
                 \ "Warning:    This extension failed to modify the request header "Referer" of a network request because the modification conflicted with another extension (Referer Control)."
               * ok i guess we don't need this because ScriptSafe has Referrer Spoof:
-            * uBlock
+            * uBlock Origin
               \ from github
-            * YouTweak for YouTube from my github
-            * HTTP Switchboard from github
+              \ gorhill version
+            * uMatrix (replaces http switchboard)
+              \ from github
+              \ by gorhill
+            - YouTweak for YouTube from my github (don't have this anymore - wiped)
+            - HTTP Switchboard from github
               * options
                 * Settings tab
                   * Enable strict blocking
@@ -794,7 +798,7 @@
                   * Block all hyperlink auditing attempts.
                 * Ubiquitous rules - all deselected
                 * import recipe httpsb-all-rules-backup.txt
-            * FooTab from my coostomhuston
+            * FooTab from my gentooskyline github repo
               \ to prevent autorestoring tabs from slowing down chromium
             * optional extensions:
               * see JSON better (like a tree): jSON_formatter
