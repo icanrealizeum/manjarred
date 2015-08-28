@@ -1,0 +1,11 @@
+--- /usr/portage/app-emulation/virtualbox-guest-additions/virtualbox-guest-additions-5.0.2.ebuild	2015-08-28 08:34:05.284887355 +0300
++++ /tmp/virtualbox-guest-additions-5.0.2.ebuild	2015-08-28 08:33:20.350859130 +0300
+@@ -87,8 +87,6 @@ src_prepare() {
+ 				"${WORKDIR}/${mdir}/${vboxheader}"
+ 		done
+ 	done
+-
+-	epatch_user
+ }
+ 
+ src_configure() {

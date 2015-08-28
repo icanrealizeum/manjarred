@@ -2517,6 +2517,10 @@
     - time emerge -nav media-gfx/zgv
       \ for when pressing enter on .png and .jpg files inside mc
       \ XXX: errors in media-libs/svgalib-1.9.25-r4
+    * virtualbox-guest-additions (for eg. copy/paste to work between host and guest)
+      * time emerge -navo '>=virtualbox-guest-additions-5.0.2'
+        \ install everything else, eg. deps!
+      * time emerge -nav '>=virtualbox-guest-additions-5.0.2'
 
 * config
   * fontconfig (how to configure system fonts)
@@ -2893,19 +2897,20 @@
       \ this includes gecko and mono !!
       * needs ncursesw or something!! due to error in sys-apps/gptfdisk-1.0.0! (aka the unstable one)
         \ the only other package is sys-apps/gptfdisk-0.8.10  (aka the stable one)
-  * auto choose last option (so use saved env, somehow; maybe we have to not use btrfs in /bewt ? search above for: grubenv)
-  * make /bewt ext2 or ext4 instead of btrfs so we can use grub env (did i say this already?)
-  * kernel upgrade
+  * (grub)auto choose last option (so use saved env, somehow; maybe we have to not use btrfs in /bewt ? search above for: grubenv)
+    * make /bewt ext2 or ext4 instead of btrfs so we can use grub env
+  * what else needs to be done after a kernel upgrade
     * do whatever was needed to compile kernel and eselect kernel
     * time emerge -avt1 @module-rebuild
-      * note that for virtualbox modules (vboxsf, vboxguest) ccache must be disabled (so the @module-rebuild won't work) - this for hardened gentoo/kernel only!
+      * note that for virtualbox modules (vboxsf, vboxguest) ccache must be disabled (so the @module-rebuild won't work) - this applies for hardened gentoo/kernel only!
         \ that is: app-emulation/virtualbox-guest-additions-4.3.26
         * time CCACHE_DISABLE=1 emerge -av virtualbox-guest-additions
+          \ for guest OS integration (copy/paste for example)
       * the xf86-video-virtualbox will need to be compiled with vanilla gcc ! so @module-rebuild won't work for this!
   * get at least 2 kernels (the hardened and the latest git) just in case to avoid that btrfs mount log thingy in the future or who knows what other issues!
     * must ensure first in list is not the latest(which would be the git version) but rather the hardened which is a previous(than git) version, but this gets auto ordered by whatever grub scripts in conf.d
-      * maybe see if we can use non-btrfs /bewt and thus then we can use that grub save env feature!
-  * after a power failure (lost power while in X, aka blackout, or just hard reset computer) then system gets stuck at:
+      * maybe see if we can use non-btrfs /bewt and thus then we can use that grub save env feature! (yep already said this)
+  - after a power failure (lost power while in X, aka blackout, or just hard reset computer) then system gets stuck at:
     \ https://bugs.gentoo.org/show_bug.cgi?id=548452
     \ fixed, it's because of this: https://btrfs.wiki.kernel.org/index.php/Gotchas
     \ remeber to zero the log somehow, via btrfs-zero-log
@@ -2920,14 +2925,14 @@
         \ note: cannot be killed ! eg. if you add and &  and then kill -9 on it, nope!
         * mount -t auto -o ro
         * mount -o ro /dev/mapper/vgall-rootlvol /
-  * see how to access previous dmesg logs and set the value of how many to keep
+  - see how to access previous dmesg logs and set the value of how many to keep
     * vim /etc/metalog.conf
       \ TODO: these changes were not tested yet!
       * change all 'minimum =' to some big number like *1000 more
       * do same for maxsize, maxtime, maxfiles
     * ls -la /var/log/everything/
       \ that's where all the logs will be
-  * virtualbox-guest-additions (in non-hardened gentoo profile)
+  - virtualbox-guest-additions (in non-hardened gentoo profile)
     * time emerge -nav '>=virtualbox-guest-additions-5.0.2'
       \ 4 packages, 7m10s until fail
       \ kmk: *** No rule to make target `/var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.0/work/VirtualBox-5.0.0/out/linux.amd64/release/lib/additions/VBoxDnDGuestR3Lib.a', needed by `/var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.0/work/VirtualBox-5.0.0/out/linux.amd64/release/obj/VBoxControl/VBoxControl'.  Stop.
