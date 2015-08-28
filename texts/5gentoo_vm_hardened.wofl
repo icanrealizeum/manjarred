@@ -2520,7 +2520,39 @@
     * virtualbox-guest-additions (for eg. copy/paste to work between host and guest)
       * time emerge -navo '>=virtualbox-guest-additions-5.0.2'
         \ install everything else, eg. deps!
-      * time emerge -nav '>=virtualbox-guest-additions-5.0.2'
+      * time CCACHE_DISABLE=1 emerge -nav '>=virtualbox-guest-additions-5.0.2'
+        \ ccache does this "error: code model kernel does not support PIC mode"
+        \ 7m51s
+      * add user to vboxguest group
+        \ gpasswd -a zazdxscf vboxguest
+        \ needs relogin to have effect!
+      * make sure we're already using mesa lib
+        \ usually already selected, and the only one in list
+        * eselect opengl list
+          \ [1] xorg-x11 *
+          * if not do: eselect opengl set xorg-x11
+      - (rsynced) vim /etc/X11/xorg.conf.d/30_dri.conf
+        \ ensure this is uncommented (although probably unneeded because it picked it up before anyway)
+        \ Driver "vboxvideo"
+        \ NOTE: this file doesn't exist!! I don't know which package added it! I think I created this manually!
+        \ Section "Device"
+        \  Identifier "Device0"
+        \  Driver "vboxvideo"
+        \ #  BusID "PCI:0:1:0"
+        \  Option "DRI" "true"
+        \  Option "AccelMethod" "EXA"
+        \ EndSection
+        \
+        \
+        \ Section "DRI"
+        \  Group "video"
+        \  Mode 0666
+        \ EndSection
+      * gpasswd -a zazdxscf vboxsf
+        \ needs relogin to have effect!
+        * NOTE: to mount shared folders within virtualbox do: mount -t vboxsf sharedfoldername mountpoint
+          \ and you have to be in vboxsf group to be able to access them! or else only root can!  
+      * rc-update add virtualbox-guest-additions default
 
 * config
   * fontconfig (how to configure system fonts)
@@ -2534,7 +2566,7 @@
       \ will show packages that have at least 1 bad checksum, but not the file(s) which do.
       * q qcheck -v packagename
         \ will show which files of that packagename have the bad checksum
-  * scanelf: seccomp_load failed: Invalid argument
+  - (rsynced) scanelf: seccomp_load failed: Invalid argument
     \ don't install pax-utils-1.1 or you get those errors during any emerges
     \ pax-utils-1.0.5 tested to work ok
 
@@ -2952,7 +2984,7 @@
         \ FIXME: ??
     - time CCACHE_DISABLE=1 emerge -nav virtualbox-guest-additions
       \ 1 packages, without ccache 5m48s until the same fail.
-  * so apparently(tested) there's another way to disable ccache by setting CCACHE_DISABLE=1 and this doesn't require resetting PATH to not point to ccache's gcc and also doesn't require setting FEATURES="-ccache" although this latter one is probably better!(except for the need to also set PATH!!) eg.
+  - so apparently(tested) there's another way to disable ccache by setting CCACHE_DISABLE=1 and this doesn't require resetting PATH to not point to ccache's gcc and also doesn't require setting FEATURES="-ccache" although this latter one is probably better!(except for the need to also set PATH!!) eg.
     * time CCACHE_DISABLE=1 emerge -nav '=virtualbox-guest-additions-4.3.26'
       \ 5m38s
       \ or 16 packages: 10m20s
