@@ -2726,9 +2726,9 @@
       * (re)build kernel
         * . /etc/profile
           \ to clear PATH which includes ccache's gcc
-        * time FEATURES="-ccache" genkernel all --bootdir="/but" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
-        * grub2-mkconfig -o /but/grub/grub.cfg 2>&1
-        * umount /but
+        * time FEATURES="-ccache" genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
+        * grub2-mkconfig -o /bewt/grub/grub.cfg 2>&1
+        * umount /bewt
         * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
         * sync
       * update modules due to kernel update:
@@ -2746,9 +2746,9 @@
         * gradm -F -L /etc/grsec/learning.log
           \ works without needing to switch to admin role via  gradm -a admin  (to leave admin role: gradm -u admin )
         * TODO: need more here, eg. enable RBAC system, remove sysctl access from kernel...
-      * TODO: see if we need to add USE=pax_kernel
-        \ By default, python has CONFIG_PAX_EMUTRAMP enabled by                                         │
-        \ │ the ebuild when USE=pax_kernel is set, otherise CONFIG_PAX_PAGEEXEC                                      │
+      - don't need(because emerge --info shows pax_kernel is already set): see if we need to add USE=pax_kernel
+        \ By default, python has CONFIG_PAX_EMUTRAMP enabled by
+        \ │ the ebuild when USE=pax_kernel is set, otherise CONFIG_PAX_PAGEEXEC
         \  │ is enabled as a fallback.
         \ from: F2 help of CONFIG_PAX_EMUTRAMP
 
