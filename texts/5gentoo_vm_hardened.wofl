@@ -1043,6 +1043,8 @@
       * time emerge -nav sys-apps/paxctl app-misc/pax-utils app-admin/paxtest
         \ get these other "needed" stuffs for grsecurity
         \ 29s
+        \ time paxtest blackhat
+        \ 5m16s (without grsecurity enabled)
       * compile
         * genkernel (because VM)
           * time emerge -n --ask --verbose '>=sys-kernel/genkernel-3.4.51.2'
@@ -2566,6 +2568,189 @@
           \ this probably happened because mesa was compiled with gcc 4.8.4 and whever else followed(eg. Xorg) was compiled with gcc 5.2.0; i even checked the .so data eas 7 hours earlier than my emerging gcc 5.2.0 command.
           * time emerge -av media-libs/mesa
             \ duration(vbox): 24m26s
+    * use grsecurity to also prevent apps from going out on the internet!
+      \ https://superuser.com/questions/179994/is-there-an-interactive-firewall-for-outbound-traffic-on-ubuntu
+      * make sure all stuff is up to date
+        * time emerge-webrsync -v -k
+        * time FEATURES="-stricter" emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+      * open/mount boot device
+        * cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
+        * mount /bewt
+      * get latest kernel
+        * time emerge -nav --update sys-kernel/hardened-sources
+          \ or remove the --update if you never had a hardened kernel already (unlikely!)
+      * select latest hardened kernel
+        * eselect kernel list
+          \ see all kernels
+        * copy old .config file from current kernel into the new one:
+          * cp /usr/src/linux/.config /usr/src/linux-4.0.6-hardened-r2/
+        * eselect kernel set 2
+          \ [2]   linux-4.0.6-hardened-r2
+        * eselect kernel list
+          \ see it worked:
+          \ [2]   linux-4.0.6-hardened-r2 *
+      * cd /usr/src/linux
+        \ VERY IMPORTANT - to be done after the 'eselect kernel set' or else you find yourself in the old dir editing the old(previous) kernel's .config
+      * pax utils
+        * time emerge -nav sys-apps/paxctl sys-apps/gradm app-misc/pax-utils app-admin/paxtest
+          \ should be already installed (in which case nothing happens)
+          \  paxtest should not be run now, but only after reboot when pax is enabled and stuff
+          \ time paxtest blackhat
+          \ 5m16s (without grsecurity enabled)
+      * configure kernel for grsecurity
+        \ details of each option: http://resources.infosecinstitute.com/gentoo-hardening-part-2-introduction-pax-grsecurity/
+        * make nconfig
+        * find grsecurity kernel config options as menu entries:
+          \ search for the config option from here: https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart  eg. CONFIG_PAX_XATTR_PAX_FLAGS aka PAX_XATTR_PAX_FLAGS (because you drop the CONFIG_ part)
+          \ search that into this page: https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options  and you see right above it something like this "Use filesystem extended attributes marking"
+          \ well since we're using make nconfig, we can use F8 SymSearch to find the symbols!
+        * enable config options:
+          * CONFIG_GRKERNSEC
+            \ -> Security options -> Grsecurity -> Grsecurity
+          * CONFIG_GRKERNSEC_CONFIG_CUSTOM
+            \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Configuration Method (<choice> [=y]) -> Custom [=y]
+          * PaX  ---> 
+            * CONFIG_PAX - [*] Enable various PaX features
+              \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Customize Configuration -> PaX -> Enable various PaX features [=y]
+            * PaX Control  --->
+              - (don't enable for now) CONFIG_PAX_XATTR_PAX_FLAGS
+                \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Customize Configuration -> PaX -> Enable various PaX features (PAX [=y]) -> PaX Control -> Use filesystem extended attributes marking [=y]
+              * PAX_HAVE_ACL_FLAGS  (default)
+                \ ... -> PaX Control -> MAC system integration (<choice> [=y]) -> direct
+            * Non-executable pages  --->
+              * CONFIG_PAX_NOEXEC - Enforce non-executable pages
+              * CONFIG_PAX_PAGEEXEC - Paging based non-executable pages
+                * CONFIG_PAX_EMUTRAMP - Emulate trampolines
+                  \ XXX: need this enabled for python/portage on hardened kernel or else they won't work(says in the F2 help)
+                  \ pax_kernel USE flag is already enabled automatically(so, not in make.conf); use 'emerge --info' to see
+                  \ TODO: get rid of this option somehow because of the loophole it opens (see F2 help)
+                * CONFIG_PAX_MPROTECT - Restrict mprotect()
+                  \ don't set the 2 sub-options
+              * CONFIG_PAX_KERNEXEC - Enforce non-executable kernel pages
+              * CONFIG_PAX_KERNEXEC_PLUGIN_METHOD_BTS (default) - Return Address Instrumentation Method - bts
+            * Address Space Layout Randomization  --->
+              * CONFIG_PAX_ASLR - Address Space Layout Randomization
+              * CONFIG_PAX_RANDKSTACK - Randomize kernel stack base
+              * CONFIG_PAX_RANDMMAP - Randomize user stack and mmap() bases
+            * Miscellaneous hardening features  --->
+              \ select all except this due to slowdown and gcc plugin requirement(untested) [ ] Generate some entropy during boot and runtime  TODO: select this and see how it works!
+              * [*] Sanitize all freed memory
+                \ CONFIG_PAX_MEMORY_SANITIZE
+              * [*] Sanitize kernel stack
+                \ CONFIG_PAX_MEMORY_STACKLEAK
+              * [*] Forcibly initialize local variables copied to userland
+                \ CONFIG_PAX_MEMORY_STRUCTLEAK
+              * [*] Prevent invalid userland pointer dereference
+                \ CONFIG_PAX_MEMORY_UDEREF
+              * [*] Prevent various kernel object reference counter overflows
+                \ CONFIG_PAX_REFCOUNT
+              * [*] Automatically constify eligible structures (NEW)
+                \ CONFIG_PAX_CONSTIFY_PLUGIN
+                \ already enabled by default
+              * [*] Harden heap object copies between kernel and userland
+                \ CONFIG_PAX_USERCOPY
+              * [*] Prevent various integer overflows in function size parameters
+                \ CONFIG_PAX_SIZE_OVERFLOW
+              * [ ] Generate some entropy during boot and runtime (NEW)
+                \ CONFIG_PAX_LATENT_ENTROPY
+                \ don't select this!
+          * Memory Protections  --->
+            \ TODO: see if I can select more options here
+            * select this CONFIG_GRKERNSEC_IO: Disable privileged I/O  and 
+              \ //(already rsynced) use the patch from here: http://resources.infosecinstitute.com/gentoo-hardening-part-4-pax-rbac-clamav/  or else X won't start (also needs recompile X I think)
+              \ //patch is technically here: https://github.com/N8Fear/hvb-overlay/blob/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
+              \ //so to wget https://raw.github.com/N8Fear/hvb-overlay/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
+              \ XXX: for now, fails to compile xorg-server-1.17.1-r1 due to:  "* !!! User patches were applied to this build!"  well no shiet! or maybe it's due to this: "/usr/lib/portage/python2.7/phase-helpers.sh: /var/tmp/portage/x11-base/xorg-server-1.17.1-r1/work/xorg-server-1.17.1/configure: /bin/sh: bad interpreter: Permission denied"  - that's what you get with grsecurity already enabled but not configured, i guess...
+              \ XXX: ^ yep, worked fine without grsecurity already compiled&enabled.
+              \ recompiling x11-base/xorg-server took 8m29s (ccache)
+            * [*] Harden ASLR against information leaks and entropy reduction (NEW)
+              \ CONFIG_GRKERNSEC_PROC_MEMMAP
+              \ already selected (by default)
+            * [*] Hide kernel symbols
+              \ CONFIG_GRKERNSEC_HIDESYM
+          * Role Based Access Control Options  --->
+            \ leave all these as defaults (eg. unset, 3,30)
+            * unset [ ] Disable RBAC system (NEW)  (default)
+          * Filesystem Protections  --->
+            * [*] Proc restrictions
+              \ CONFIG_GRKERNSEC_PROC
+            * [*]     Allow special group
+              \ CONFIG_GRKERNSEC_PROC_USERGROUP
+            * GRKERNSEC_PROC_GID [=1001]
+              \ FIXME: select the right gid here and TODO: create it on cmdline!
+            * [*] Additional restrictions
+              \ CONFIG_GRKERNSEC_PROC_ADD
+            * [*] Linking restrictions
+              \ CONFIG_GRKERNSEC_LINK
+            * [*] Kernel-enforced SymlinksIfOwnerMatch
+              \ CONFIG_GRKERNSEC_SYMLINKOWN
+            * GRKERNSEC_SYMLINKOWN_GID [=1006]
+              \ FIXME: get the right gid here and create that GID on cmdline!
+            * [*] FIFO restrictions
+              \ CONFIG_GRKERNSEC_FIFO
+            * [*] Sysfs/debugfs restriction
+              \ CONFIG_GRKERNSEC_SYSFS_RESTRICT
+              \ FIXME: "This option also breaks pulseaudio and battery widgets, which won’t be able to get access to the /sys filesystem, which is why the pulseaudio on a hardened system might not work. Don’t enable this option if you’re on a desktop system."
+            * [*] Eliminate stat/notify-based device sidechannels
+              \ CONFIG_GRKERNSEC_DEVICE_SIDECHANNEL
+            * [*] Chroot jail restrictions
+              \ CONFIG_GRKERNSEC_CHROOT
+              * select all suboptions here, EXCEPT this one: [ ]   Exempt initrd tasks from restrictions
+          * Kernel Auditing  --->
+            \ enable all EXCEPT this one: [ ] Single group for auditing (NEW)
+          * Executable Protections  --->
+            \ set all options and set the GID to 0 (aka root group, instead of 10 wheel group)
+            \ (0) GID for TPE-trusted users
+          * Network Protections  --->
+            * [*] TCP/UDP blackhole and LAST_ACK DoS prevention
+              \ CONFIG_GRKERNSEC_BLACKHOLE
+            * [*] Disable TCP Simultaneous Connect
+              \ CONFIG_GRKERNSEC_NO_SIMULT_CONNECT
+            * [*] Socket restrictions
+              \ CONFIG_GRKERNSEC_SOCKET
+            * [*]   Deny any sockets to group
+              \ CONFIG_GRKERNSEC_SOCKET_ALL
+            * (65534) GID to deny all sockets for (NEW)
+              \ CONFIG_GRKERNSEC_SOCKET_ALL_GID
+          * Physical Protections  --->
+            * [*] Deny new USB connections after toggle
+              \ CONFIG_GRKERNSEC_DENYUSB
+          * Sysctl Support  --->
+            * [*] Sysctl support - CONFIG_GRKERNSEC_SYSCTL
+              \ temporarily set this up, for now; FIXME:/TODO: unset this after I know how to use grsec correctly!
+          * Logging Options  --->
+            * (3) Seconds in between log messages (minimum)
+              \ default is 10
+            * (6) Number of messages in a burst (maximum)
+              \ default is (still) 6
+      * (re)build kernel
+        * . /etc/profile
+          \ to clear PATH which includes ccache's gcc
+        * time FEATURES="-ccache" genkernel all --bootdir="/but" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
+        * grub2-mkconfig -o /but/grub/grub.cfg 2>&1
+        * umount /but
+        * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
+        * sync
+      * update modules due to kernel update:
+        \ there are only 2 modules which are found by: emerge -avt1 @module-rebuild
+        * vboxsf and co.
+          * . /etc/profile
+          * time emerge -av '>=app-emulation/virtualbox-guest-additions-5.0.2'
+            \ //this doesn't currently compile with virtualbox 5.0.0 due to some missing thing in makefile - fixed in 5.0.2 ! bug number 554952 on bugs.gentoo.org
+        * search above for xf86-video-virtualbox to compile this too! (vboxvideo)
+          \ this is done by: emerge -avt1 @module-rebuild
+      * reboot & exit
+      * after reboot
+        * gradm -P
+          \ only works when kernel has grsec enabled(selected in kernel, that is)!
+        * gradm -F -L /etc/grsec/learning.log
+          \ works without needing to switch to admin role via  gradm -a admin  (to leave admin role: gradm -u admin )
+        * TODO: need more here, eg. enable RBAC system, remove sysctl access from kernel...
+      * TODO: see if we need to add USE=pax_kernel
+        \ By default, python has CONFIG_PAX_EMUTRAMP enabled by                                         │
+        \ │ the ebuild when USE=pax_kernel is set, otherise CONFIG_PAX_PAGEEXEC                                      │
+        \  │ is enabled as a fallback.
+        \ from: F2 help of CONFIG_PAX_EMUTRAMP
 
 
 * config
@@ -2583,9 +2768,17 @@
   - (rsynced) scanelf: seccomp_load failed: Invalid argument
     \ don't install pax-utils-1.1 or you get those errors during any emerges
     \ pax-utils-1.0.5 tested to work ok
+  * what else needs to be done after a kernel upgrade
+    * do whatever was needed to compile kernel and eselect kernel
+    * time emerge -avt1 @module-rebuild
+      * note that for virtualbox modules (vboxsf, vboxguest) ccache must be disabled (so the @module-rebuild won't work) - this applies for hardened gentoo/kernel only!
+        \ that is: app-emulation/virtualbox-guest-additions-4.3.26
+        * time CCACHE_DISABLE=1 emerge -av virtualbox-guest-additions
+          \ for guest OS integration (copy/paste for example)
+      * the xf86-video-virtualbox will need to be compiled with vanilla gcc ! so @module-rebuild won't work for this!
 
 * bigTODO:
-  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used, requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
+  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
   - add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
   - get in that eutils.eclass patch
     \ notify_when_patches_folder_inaccessible_by_portage.patch
@@ -2762,178 +2955,6 @@
       * vim /etc/conf.d/modules
         \ modules="vboxdrv vboxnetadp vboxnetflt"
         \ the modules=  line must not exist multiple times in this file!
-  * use grsecurity to also prevent apps from going out on the internet!
-    \ https://superuser.com/questions/179994/is-there-an-interactive-firewall-for-outbound-traffic-on-ubuntu
-    * make sure all stuff is up to date
-      * time emerge-webrsync -v -k
-      * time FEATURES="-stricter" emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
-    * open/mount boot device
-      * cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
-      * mount /bewt
-    * get latest kernel
-      * time emerge -nav --update sys-kernel/hardened-sources
-        \ or remove the --update if you never had a hardened kernel already (unlikely!)
-    * select latest hardened kernel
-      * eselect kernel list
-        \ see all kernels
-      * copy old .config file from current kernel into the new one:
-        * cp /usr/src/linux/.config /usr/src/linux-4.0.6-hardened-r2/
-      * eselect kernel set 2
-        \ [2]   linux-4.0.6-hardened-r2
-      * eselect kernel list
-        \ see it worked:
-        \ [2]   linux-4.0.6-hardened-r2 *
-    * cd /usr/src/linux
-      \ VERY IMPORTANT - to be done after the 'eselect kernel set' or else you find yourself in the old dir editing the old(previous) kernel's .config
-    * pax utils
-      * time emerge -nav sys-apps/paxctl sys-apps/gradm app-misc/pax-utils app-admin/paxtest
-        \ should be already installed (in which case nothing happens)
-        \  paxtest should not be run now, but only after reboot when pax is enabled and stuff
-    * configure kernel for grsecurity
-      \ details of each option: http://resources.infosecinstitute.com/gentoo-hardening-part-2-introduction-pax-grsecurity/
-      * make nconfig
-      * find grsecurity kernel config options as menu entries:
-        \ search for the config option from here: https://wiki.gentoo.org/wiki/Hardened/Grsecurity2_Quickstart  eg. CONFIG_PAX_XATTR_PAX_FLAGS aka PAX_XATTR_PAX_FLAGS (because you drop the CONFIG_ part)
-        \ search that into this page: https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options  and you see right above it something like this "Use filesystem extended attributes marking"
-        \ well since we're using make nconfig, we can use F8 SymSearch to find the symbols!
-      * enable config options:
-        * CONFIG_GRKERNSEC
-          \ -> Security options -> Grsecurity -> Grsecurity
-        * CONFIG_GRKERNSEC_CONFIG_CUSTOM
-          \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Configuration Method (<choice> [=y]) -> Custom [=y]
-        * PaX  ---> 
-          * CONFIG_PAX - [*] Enable various PaX features
-            \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Customize Configuration -> PaX -> Enable various PaX features [=y]
-          * PaX Control  --->
-            * CONFIG_PAX_XATTR_PAX_FLAGS
-              \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Customize Configuration -> PaX -> Enable various PaX features (PAX [=y]) -> PaX Control -> Use filesystem extended attributes marking [=y]
-            * PAX_HAVE_ACL_FLAGS  (default)
-              \ ... -> PaX Control -> MAC system integration (<choice> [=y]) -> direct
-          * Non-executable pages  --->
-            * CONFIG_PAX_NOEXEC - Enforce non-executable pages
-            * CONFIG_PAX_PAGEEXEC - Paging based non-executable pages
-              * CONFIG_PAX_EMUTRAMP - Emulate trampolines
-                \ XXX: need this enabled for python/portage on hardened kernel or else they won't work(says in the F2 help)
-                \ TODO: get rid of this option somehow because of the loophole it opens (see F2 help)
-              * CONFIG_PAX_MPROTECT - Restrict mprotect()
-                \ don't set the 2 sub-options
-            * CONFIG_PAX_KERNEXEC - Enforce non-executable kernel pages
-            * CONFIG_PAX_KERNEXEC_PLUGIN_METHOD_BTS (default) - Return Address Instrumentation Method - bts
-          * Address Space Layout Randomization  --->
-            * CONFIG_PAX_ASLR - Address Space Layout Randomization
-            * CONFIG_PAX_RANDKSTACK - Randomize kernel stack base
-            * CONFIG_PAX_RANDMMAP - Randomize user stack and mmap() bases
-          * Miscellaneous hardening features  --->
-            \ select all except this due to slowdown and gcc plugin requirement(untested) [ ] Generate some entropy during boot and runtime  TODO: select this and see how it works!
-            * [*] Sanitize all freed memory
-              \ CONFIG_PAX_MEMORY_SANITIZE
-            * [*] Sanitize kernel stack
-              \ CONFIG_PAX_MEMORY_STACKLEAK
-            * [*] Forcibly initialize local variables copied to userland
-              \ CONFIG_PAX_MEMORY_STRUCTLEAK
-            * [*] Prevent invalid userland pointer dereference
-              \ CONFIG_PAX_MEMORY_UDEREF
-            * [*] Prevent various kernel object reference counter overflows
-              \ CONFIG_PAX_REFCOUNT
-            * [*] Automatically constify eligible structures (NEW)
-              \ CONFIG_PAX_CONSTIFY_PLUGIN
-            * [*] Harden heap object copies between kernel and userland
-              \ CONFIG_PAX_USERCOPY
-            * [*] Prevent various integer overflows in function size parameters
-              \ CONFIG_PAX_SIZE_OVERFLOW
-        * Memory Protections  --->
-          \ TODO: see if I can select more options here
-          * select this CONFIG_GRKERNSEC_IO: Disable privileged I/O  and use the patch from here: http://resources.infosecinstitute.com/gentoo-hardening-part-4-pax-rbac-clamav/  or else X won't start (also needs recompile X I think)
-            \ patch is technically here: https://github.com/N8Fear/hvb-overlay/blob/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
-            \ so to wget https://raw.github.com/N8Fear/hvb-overlay/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
-            \ XXX: for now, fails to compile xorg-server-1.17.1-r1 due to:  "* !!! User patches were applied to this build!"  well no shiet! or maybe it's due to this: "/usr/lib/portage/python2.7/phase-helpers.sh: /var/tmp/portage/x11-base/xorg-server-1.17.1-r1/work/xorg-server-1.17.1/configure: /bin/sh: bad interpreter: Permission denied"  - that's what you get with grsecurity already enabled but not configured, i guess...
-          * [*] Harden ASLR against information leaks and entropy reduction (NEW)
-            \ CONFIG_GRKERNSEC_PROC_MEMMAP
-          * [*] Hide kernel symbols
-            \ CONFIG_GRKERNSEC_HIDESYM
-        * Role Based Access Control Options  --->
-          \ leave all these as defaults (eg. unset, 3,30)
-          * unset [ ] Disable RBAC system (NEW)  (default)
-        * Filesystem Protections  --->
-          * [*] Proc restrictions
-            \ CONFIG_GRKERNSEC_PROC
-          * [*]     Allow special group
-            \ CONFIG_GRKERNSEC_PROC_USERGROUP
-          * GRKERNSEC_PROC_GID [=1001]
-            \ FIXME: select the right gid here and TODO: create it on cmdline!
-          * [*] Additional restrictions
-            \ CONFIG_GRKERNSEC_PROC_ADD
-          * [*] Linking restrictions
-            \ CONFIG_GRKERNSEC_LINK
-          * [*] Kernel-enforced SymlinksIfOwnerMatch
-            \ CONFIG_GRKERNSEC_SYMLINKOWN
-          * GRKERNSEC_SYMLINKOWN_GID [=1006]
-            \ FIXME: get the right gid here and create that GID on cmdline!
-          * [*] FIFO restrictions
-            \ CONFIG_GRKERNSEC_FIFO
-          * [*] Sysfs/debugfs restriction
-            \ CONFIG_GRKERNSEC_SYSFS_RESTRICT
-            \ FIXME: "This option also breaks pulseaudio and battery widgets, which won’t be able to get access to the /sys filesystem, which is why the pulseaudio on a hardened system might not work. Don’t enable this option if you’re on a desktop system."
-          * [*] Eliminate stat/notify-based device sidechannels
-            \ CONFIG_GRKERNSEC_DEVICE_SIDECHANNEL
-          * [*] Chroot jail restrictions
-            \ CONFIG_GRKERNSEC_CHROOT
-            * select all suboptions here, EXCEPT this one: [ ]   Exempt initrd tasks from restrictions
-        * Kernel Auditing  --->
-          \ enable all EXCEPT this one: [ ] Single group for auditing (NEW)
-        * Executable Protections  --->
-          \ set all options and set the GID to 0 (aka root group, instead of 10 wheel group)
-          \ (0) GID for TPE-trusted users
-        * Network Protections  --->
-          * [*] TCP/UDP blackhole and LAST_ACK DoS prevention
-            \ CONFIG_GRKERNSEC_BLACKHOLE
-          * [*] Disable TCP Simultaneous Connect
-            \ CONFIG_GRKERNSEC_NO_SIMULT_CONNECT
-          * [*] Socket restrictions
-            \ CONFIG_GRKERNSEC_SOCKET
-          * [*]   Deny any sockets to group
-            \ CONFIG_GRKERNSEC_SOCKET_ALL
-          * (65534) GID to deny all sockets for (NEW)
-            \ CONFIG_GRKERNSEC_SOCKET_ALL_GID
-        * Physical Protections  --->
-          * [*] Deny new USB connections after toggle
-            \ CONFIG_GRKERNSEC_DENYUSB
-        * Sysctl Support  --->
-          * [*] Sysctl support - CONFIG_GRKERNSEC_SYSCTL
-            \ temporarily set this up, for now; FIXME:/TODO: unset this after I know how to use grsec correctly!
-        * Logging Options  --->
-          * (3) Seconds in between log messages (minimum)
-            \ default is 10
-          * (6) Number of messages in a burst (maximum)
-            \ default is (still) 6
-    * (re)build kernel
-      * . /etc/profile
-        \ to clear PATH which includes ccache's gcc
-      * time FEATURES="-ccache" genkernel all --bootdir="/but" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
-      * grub2-mkconfig -o /but/grub/grub.cfg 2>&1
-      * umount /but
-      * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
-      * sync
-    * update modules due to kernel update:
-      \ there are only 2 modules which are found by: emerge -avt1 @module-rebuild
-      * vboxsf and co.
-        * . /etc/profile
-        * time emerge -av '>=app-emulation/virtualbox-guest-additions-5.0.2'
-          \ //this doesn't currently compile with virtualbox 5.0.0 due to some missing thing in makefile - fixed in 5.0.2 ! bug number 554952 on bugs.gentoo.org
-      * search above for xf86-video-virtualbox to compile this too! (vboxvideo)
-        \ this is done by: emerge -avt1 @module-rebuild
-    * reboot & exit
-    * after reboot
-      * gradm -P
-        \ only works when kernel has grsec enabled(selected in kernel, that is)!
-      * gradm -F -L /etc/grsec/learning.log
-        \ works without needing to switch to admin role via  gradm -a admin  (to leave admin role: gradm -u admin )
-      * TODO: need more here, eg. enable RBAC system, remove sysctl access from kernel...
-    * TODO: see if we need to add USE=pax_kernel
-      \ By default, python has CONFIG_PAX_EMUTRAMP enabled by                                         │
-      \ │ the ebuild when USE=pax_kernel is set, otherise CONFIG_PAX_PAGEEXEC                                      │
-      \  │ is enabled as a fallback.
-      \ from: F2 help of CONFIG_PAX_EMUTRAMP
   * use something else(dracut maybe?) instead of genkernel so that we can fully control the boot process and image generation! eg. using custom scripts for boot process and knowing exactly how the image gets generated (like mkcpio stuff)
   * epic emerge conflicts? add --backtrack=30
     \ eg.
@@ -2945,14 +2966,6 @@
         \ the only other package is sys-apps/gptfdisk-0.8.10  (aka the stable one)
   * (grub)auto choose last option (so use saved env, somehow; maybe we have to not use btrfs in /bewt ? search above for: grubenv)
     * make /bewt ext2 or ext4 instead of btrfs so we can use grub env
-  * what else needs to be done after a kernel upgrade
-    * do whatever was needed to compile kernel and eselect kernel
-    * time emerge -avt1 @module-rebuild
-      * note that for virtualbox modules (vboxsf, vboxguest) ccache must be disabled (so the @module-rebuild won't work) - this applies for hardened gentoo/kernel only!
-        \ that is: app-emulation/virtualbox-guest-additions-4.3.26
-        * time CCACHE_DISABLE=1 emerge -av virtualbox-guest-additions
-          \ for guest OS integration (copy/paste for example)
-      * the xf86-video-virtualbox will need to be compiled with vanilla gcc ! so @module-rebuild won't work for this!
   * get at least 2 kernels (the hardened and the latest git) just in case to avoid that btrfs mount log thingy in the future or who knows what other issues!
     * must ensure first in list is not the latest(which would be the git version) but rather the hardened which is a previous(than git) version, but this gets auto ordered by whatever grub scripts in conf.d
       * maybe see if we can use non-btrfs /bewt and thus then we can use that grub save env feature! (yep already said this)
