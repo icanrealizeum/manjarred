@@ -1840,6 +1840,7 @@
         * recompile kernel with genkernel...
           \ to avoid this error when compiling x11-drivers/xf86-video-virtualbox-5.0.2
           \ cc1: error: cannot load plugin ./tools/gcc/colorize_plugin.so
+          \ this was likely because kernel was compiled with gcc 4.8.4 at the installation stage and ofc its built .so files were left there in build dir.
         * need to use vanilla kernel due to 'undefined symbol vgaHWFreeHWRec' later on when startx happens (even tho compilation is successful!)
           \ FIXME: find a way to compile hardened still!
           * gcc-config -l
@@ -1884,7 +1885,7 @@
           * gcc-config 6
             \ eg.  [6] x86_64-pc-linux-gnu-5.2.0
           * hash -r && env-update && source /etc/profile && source ~/.bash_profile
-        * TODO: try; apparently we don't need vboxvideo added to /etc/conf.d/modules because at least when startx happens you can see it being loaded in Xorg.0.log and unloaded afterwards. (not seen in lsmod before/after)
+        - truth: try; apparently we don't need vboxvideo added to /etc/conf.d/modules because at least when startx happens you can see it being loaded in Xorg.0.log and unloaded afterwards. (not seen in lsmod before/after)
           \ but it says: "to use the kernel drm video driver" ...
       * time emerge -av x11-base/xorg-drivers
         \ XXX: don't use -nav here, use -av because, with -nav it does nothing, except wants to add itself to favs. but with -av  needs to install evdev and keyboard, looks like this:
