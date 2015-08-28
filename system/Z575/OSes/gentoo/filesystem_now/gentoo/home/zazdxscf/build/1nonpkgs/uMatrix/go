@@ -1,0 +1,9 @@
+
+# prerequisite:
+# cd .. && git clone https://github.com/gorhill/uMatrix.git
+
+./tools/update-3rdparties.sh
+./tools/update-checksums.sh
+./tools/make-chromium.sh
+echo Load from: `pwd`/dist/build/uMatrix.chromium/
+
