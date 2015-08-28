@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#this is needed after unplugging the mouse (or wireless receiver) why? because the hub goes to sleep since its child(mouse) is gone; hub is set to auto
+
+__die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+source funx.bash || __die 100 "funx.bash not in PATH"
+
+
+if ! isroot ; then                                                            
+  safepromptkey "you are not root! press a key, not shift/ctrl/alt"
+  exit 1
+fi
+
+
+echo 'on' > '/sys/bus/usb/devices/usb3/power/control'
+sleep 3
+echo 'auto' > '/sys/bus/usb/devices/usb3/power/control'
+
+

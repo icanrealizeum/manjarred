@@ -1,0 +1,29 @@
+#!/bin/bash
+
+sudo ntpdate -4vs time.nist.gov
+#any output is logged to syslog (ie. dmesg)
+#man page is here: https://www.freebsd.org/cgi/man.cgi?query=ntpdate&sektion=8
+
+#ok that only syncs the system clock (aka resets back after reboot!)
+
+#now put the sysclock into hwclock so after reboot, we maintain that clock!
+
+#before
+sudo hwclock --show
+#put it:
+sudo hwclock --systohc
+#after
+sudo hwclock --show
+
+
+#otherwise u get this:
+
+#[   16.233556] systemd-fsck[2484]: ManjaroBoot: Superblock last write time is in the future.
+#[   16.236822] systemd-fsck[2484]: (by less than a day, probably due to the hardware clock being incorrectly set).  FIXED.
+#[   16.239209] systemd-fsck[2484]: ManjaroBoot: 374/65280 files (22.2% non-contiguous), 129710/261120 blocks
+#[   16.242400] lvm[2499]: 2 logical volume(s) in volume group "ManjaroVG" now active
+#[   16.246226] systemd-fsck[2513]: ManjaroHome: Superblock last write time is in the future.
+#[   16.249784] systemd-fsck[2513]: (by less than a day, probably due to the hardware clock being incorrectly set).  FIXED.
+#[   30.441936] systemd-fsck[2513]: ManjaroHome: 655951/3506176 files (0.1% non-contiguous), 7218700/14014464 blocks
+
+

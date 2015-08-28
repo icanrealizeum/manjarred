@@ -20,5 +20,5 @@ declare -a -r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 --update  #this was already implied in rsyncy, but just to be extra sure!
 )
 
-rsyncy 'ssh -v -p 8822 -l root' "${src}" "127.0.0.111:${remoterootdir}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+rsyncy 'ssh -v -p 8822 -i /home/emacs/.ssh/id_ed25519 -l root' "${src}" "127.0.0.111:${remoterootdir}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+dig @208.67.222.220 myip.opendns.com +short
+
+#also works:
+#dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short
+# I guess -4 is implied FIXME: must check when/if it uses -6 or -4  say if both are available.
+#dig -4 @ns1.google.com -t txt o-o.myaddr.l.google.com +short
+#dig -6 @ns1.google.com -t txt o-o.myaddr.l.google.com +short
+
+# as per src: https://serverfault.com/questions/89114/finding-the-public-ip-address-in-a-shell-script
+
