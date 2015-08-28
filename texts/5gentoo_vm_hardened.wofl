@@ -2554,6 +2554,19 @@
         * NOTE: to mount shared folders within virtualbox do: mount -t vboxsf sharedfoldername mountpoint
           \ and you have to be in vboxsf group to be able to access them! or else only root can!  
       * rc-update add virtualbox-guest-additions default
+      * rc-service virtualbox-guest-additions start
+        \ if you don't do this now, you get something like "virtualbox kernel driver isn't running, exiting" as a systray tooltip right after startx
+        \ so, naturally a reboot will start that, if you don't issue that command!
+    * recompile mesa
+      * grep swrast /var/log/Xorg.0.log
+        \ see if you have the error
+        * if you have it, then re-emerge
+          \ to get rid of this error from /var/log/Xorg.0.log
+          \ [  8759.324] (EE) AIGLX error: dlopen of /usr/lib64/dri/swrast_dri.so failed (/usr/lib64/dri/swrast_dri.so: undefined symbol: _ZN4llvm19RTDyldMemoryManager25getSymbolAddressInProcessERKSs) 
+          \ this probably happened because mesa was compiled with gcc 4.8.4 and whever else followed(eg. Xorg) was compiled with gcc 5.2.0; i even checked the .so data eas 7 hours earlier than my emerging gcc 5.2.0 command.
+          * time emerge -av media-libs/mesa
+            \ duration(vbox): 24m26s
+
 
 * config
   * fontconfig (how to configure system fonts)
