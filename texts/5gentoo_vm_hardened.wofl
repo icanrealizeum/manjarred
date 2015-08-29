@@ -1881,7 +1881,7 @@
             \ select python 2.7 or get some print ""  errors due to using python 3.4
             \ apparently not needed, possibly due to USE_PYTHON=2.7 in make.conf even though eselect python list  is python3.4 *
           - time CCACHE_DISABLE=1 emerge -nav x11-drivers/xf86-video-virtualbox
-            \ also works FEATURES=-ccache  but this won't handle the case when ccache's gcc is in PATH (untested with the former does tho)
+            \ also works FEATURES=-ccache  but this won't handle the case when ccache's gcc is in PATH (the former definitely does work even if ccache's gcc is in PATH, tested now for kernel)
             \ //old:this now pulls virtualbox 5.0.0 xf86 driver, duration: 12min and fail with cannot find vboxvideo, really! nevermind it worked this time, I was using FEATURES='keepwork keeptemp' and that's why it failed, apparently; since it just worked without them! 8m21s to rerun without them (ccache must've helped)
             \ //fail, 4.8.5 also with 4.9.3 and with 5.1.0 all fail: 
             \ ///usr/src/linux/include/linux/string.h:114:42: error: expected ',' or '...' before 'new'
