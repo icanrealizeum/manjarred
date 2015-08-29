@@ -1,5 +1,6 @@
 * incorrect udp checkums ? (seen with tcpdump) with software from within virtualbox
   \ fix: ethtool --offload eth0 rx off tx off ; ethtool -K eth0 gso off
+  \ ^ apparently this works even when you get networking freezes right after you get 'Detected Tx Unit Hang' within virtualbox. - either that, or it just got better by itself. (but for example you couldn't even navigate in make nconfig due to the network delay/lags)
   \ within the virtualbox guest OS
   \ src: http://ubuntuforums.org/showthread.php?t=1940190
 * how to echo(or use) escape chars without using echo -e
@@ -36,5 +37,9 @@
 * good gentoo info
   \ https://devmanual.gentoo.org/ebuild-writing/
   \ https://devmanual.gentoo.org/eclass-reference/index.html
+
+
+* disable NMI selftest in kernel running inside virtualbox or it will panic on boot if you press any keys or mouse mouse(touchpad) - at least with hardened kernel 4.1.6-hardened-r1-g45b4b78
+  \ CONFIG_DEBUG_NMI_SELFTEST
 
 

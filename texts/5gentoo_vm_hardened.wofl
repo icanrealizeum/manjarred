@@ -112,7 +112,13 @@
       \ Port File Path: /tmp/gentoovmnormal3_80g_com1.txt
       - in kernel cmdline of the guest OS(so, later!) add: DONE: move this below!
         \ console=tty1,ttyS0,115200n8 earlyprintk=vga,serial,ttyS0,115200,keep
-        \ done: well you can increase the speed actually, to: 115200  or maybe more, haven't tested with anything other than 9600
+        \ ^ that isn't working! (because there was an earlier: console=tty1 earlyprintk=vga) - just make sure there are no other occurrences of console= and earlyprintk=
+        \ //but this is:
+        \ //console=ttyS0,115200n8,tty1 earlyprintk=serial,ttyS0,115200,keep,vga
+        \ //^ works but ttyS0 is console and tty1 is NOT! so can't input luks password for example.
+        \ DONE: Well you can increase the speed actually, to: 115200  or maybe more, haven't tested with anything other than 9600
+        \ for some reason 115200 is slow! possibly just like 9600 or slower!,, actually I can't tell the difference, maybe 115200 is faster than 9600 or same? but it should be visible!!!
+        \ takes lots of minutes to boot! keep it disabled!
 * install gentoo
   * boot from liveCD using boot params when prompted:
     * gentoo-nofb ipv6.disable=1 nodhcp   #SECONDBOOT (secondboot=things you need to do if you need to boot from CD again because booting after install failed or you took a break)
@@ -1107,6 +1113,7 @@
               * luksClose
               * ready to: reboot & exit
             - while in MENUCONFIG:
+            - (rsynced) keep CONFIG_DEBUG_NMI_SELFTEST disabled to avoid boot-time kernel panics due to mouse movements (key presses).
             - (rsynced)to get audio aka sound (in X via pavucontrol let's say)
               * SND_INTEL8X0 which is in -> Device Drivers  -> Sound card support (SOUND [=m]) -> Advanced Linux Sound Architecture (SND [=m]) -> PCI sound devices (SND_PCI [=y]) -> [m] Intel/SiS/nVidia/AMD/ALi AC97 Controller
                 \ and this gets selected automatically(? apparently): SND_AC97_CODEC [=m]  and also AC97_BUS [=m] 

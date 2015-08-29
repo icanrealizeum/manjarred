@@ -620,4 +620,11 @@
   * uMatrix
   * uBlock Origin
 
+* fix mc of gentoo to run without mouse! due to that sourcing, I only made an alias: cm
+
+* add kernel config options that allow virtualbox to log to serial so we can see the full panic that happens when moving mouse(touchpad) while booting gentoo currently (before luks pwd)
+  * set as Y this: CONFIG_SERIAL_8250  (was M)
+    * this appears and set as Y: CONFIG_SERIAL_8250_CONSOLE  (was N)
+
+
 

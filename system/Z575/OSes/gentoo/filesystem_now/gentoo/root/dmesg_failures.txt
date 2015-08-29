@@ -1,0 +1,2637 @@
+[    0.000000] Initializing cgroup subsys cpuset
+[    0.000000] Initializing cgroup subsys cpu
+[    0.000000] Initializing cgroup subsys cpuacct
+[    0.000000] Linux version 4.1.6-hardened-r1-g45b4b78 (root@luks80) (gcc version 5.2.0 (Gentoo Hardened 5.2.0 p1.0, pie-0.6.3) ) #3 SMP Fri Aug 28 17:11:49 EEST 2015
+[    0.000000] Command line: BOOT_IMAGE=/kernel-genkernel-x86_64-4.1.6-hardened-r1-g45b4b78 root=/dev/mapper/vgall-rootlvol ro crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 root_trim=yes rd.luks.uuid=e8b64567-124a-46a7-a167-d3d9c041de35 rd.luks.allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 "dyndbg=file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memde
+[    0.000000] KERNEL supported cpus:
+[    0.000000]   AMD AuthenticAMD
+[    0.000000] tseg: 0000000000
+[    0.000000] e820: BIOS-provided physical RAM map:
+[    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000009fbff] usable
+[    0.000000] BIOS-e820: [mem 0x000000000009fc00-0x000000000009ffff] reserved
+[    0.000000] BIOS-e820: [mem 0x00000000000f0000-0x00000000000fffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000000100000-0x00000000dffeffff] usable
+[    0.000000] BIOS-e820: [mem 0x00000000dfff0000-0x00000000dfffffff] ACPI data
+[    0.000000] BIOS-e820: [mem 0x00000000fffc0000-0x00000000ffffffff] reserved
+[    0.000000] BIOS-e820: [mem 0x0000000100000000-0x00000002c4afffff] usable
+[    0.000000] console [earlyvga0] enabled
+[    0.000000] console [earlyser0] enabled
+[    0.000000] NX (Execute Disable) protection: active
+[    0.000000] SMBIOS 2.5 present.
+[    0.000000] DMI: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[    0.000000] e820: update [mem 0x00000000-0x00000fff] usable ==> reserved
+[    0.000000] e820: remove [mem 0x000a0000-0x000fffff] usable
+[    0.000000] e820: last_pfn = 0x2c4b00 max_arch_pfn = 0x400000000
+[    0.000000] MTRR default type: uncachable
+[    0.000000] MTRR variable ranges disabled:
+[    0.000000] CPU MTRRs all blank - virtualized system.
+[    0.000000] e820: last_pfn = 0xdfff0 max_arch_pfn = 0x400000000
+[    0.000000] Scan for SMP in [mem 0x00000000-0x000003ff]
+[    0.000000] Scan for SMP in [mem 0x0009fc00-0x0009ffff]
+[    0.000000] found SMP MP-table at [mem 0x0009fff0-0x0009ffff] mapped at [ffff88000009fff0]
+[    0.000000]   mpc: e1300-e141c
+[    0.000000] Base memory trampoline at [ffff880000099000] 99000 size 24576
+[    0.000000] init_memory_mapping: [mem 0x00000000-0x000fffff]
+[    0.000000]  [mem 0x00000000-0x000fffff] page 4k
+[    0.000000] BRK [0x1d5b7000, 0x1d5b7fff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x2c4800000-0x2c49fffff]
+[    0.000000]  [mem 0x2c4800000-0x2c49fffff] page 2M
+[    0.000000] BRK [0x1d5b8000, 0x1d5b8fff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x2c0000000-0x2c47fffff]
+[    0.000000]  [mem 0x2c0000000-0x2c47fffff] page 2M
+[    0.000000] init_memory_mapping: [mem 0x2a0000000-0x2bfffffff]
+[    0.000000]  [mem 0x2a0000000-0x2bfffffff] page 2M
+[    0.000000] BRK [0x1d5b9000, 0x1d5b9fff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x00100000-0xdffeffff]
+[    0.000000]  [mem 0x00100000-0x001fffff] page 4k
+[    0.000000]  [mem 0x00200000-0xdfdfffff] page 2M
+[    0.000000]  [mem 0xdfe00000-0xdffeffff] page 4k
+[    0.000000] init_memory_mapping: [mem 0x100000000-0x29fffffff]
+[    0.000000]  [mem 0x100000000-0x29fffffff] page 2M
+[    0.000000] BRK [0x1d5ba000, 0x1d5bafff] PGTABLE
+[    0.000000] BRK [0x1d5bb000, 0x1d5bbfff] PGTABLE
+[    0.000000] BRK [0x1d5bc000, 0x1d5bcfff] PGTABLE
+[    0.000000] init_memory_mapping: [mem 0x2c4a00000-0x2c4afffff]
+[    0.000000]  [mem 0x2c4a00000-0x2c4afffff] page 4k
+[    0.000000] log_buf_len: 16777216 bytes
+[    0.000000] early log buf free: 2092804(99%)
+[    0.000000] RAMDISK: [mem 0x36e87000-0x3773afff]
+[    0.000000] ACPI: Early table checksum verification disabled
+[    0.000000] ACPI: RSDP 0x00000000000E0000 000024 (v02 VBOX  )
+[    0.000000] ACPI: XSDT 0x00000000DFFF0030 00003C (v01 VBOX   VBOXXSDT 00000001 ASL  00000061)
+[    0.000000] ACPI: FACP 0x00000000DFFF00F0 0000F4 (v04 VBOX   VBOXFACP 00000001 ASL  00000061)
+[    0.000000] ACPI: DSDT 0x00000000DFFF0480 001BF1 (v01 VBOX   VBOXBIOS 00000002 INTL 20150717)
+[    0.000000] ACPI: FACS 0x00000000DFFF0200 000040
+[    0.000000] ACPI: FACS 0x00000000DFFF0200 000040
+[    0.000000] ACPI: APIC 0x00000000DFFF0240 00006C (v02 VBOX   VBOXAPIC 00000001 ASL  00000061)
+[    0.000000] ACPI: SSDT 0x00000000DFFF02B0 0001CC (v01 VBOX   VBOXCPUT 00000002 INTL 20150717)
+[    0.000000] ACPI: Local APIC address 0xfee00000
+[    0.000000] mapped APIC to ffffffffff7fd000 (        fee00000)
+[    0.000000] No NUMA configuration found
+[    0.000000] Faking a node at [mem 0x0000000000000000-0x00000002c4afffff]
+[    0.000000] NODE_DATA(0) allocated [mem 0x2c4afc000-0x2c4afffff]
+[    0.000000]  [ffffea0000000000-ffffea000b1fffff] PMD -> [ffff8802b8600000-ffff8802c2ffffff] on node 0
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+[    0.000000]   DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+[    0.000000]   Normal   [mem 0x0000000100000000-0x00000002c4afffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000001000-0x000000000009efff]
+[    0.000000]   node   0: [mem 0x0000000000100000-0x00000000dffeffff]
+[    0.000000]   node   0: [mem 0x0000000100000000-0x00000002c4afffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000001000-0x00000002c4afffff]
+[    0.000000] On node 0 totalpages: 2771598
+[    0.000000]   DMA zone: 64 pages used for memmap
+[    0.000000]   DMA zone: 21 pages reserved
+[    0.000000]   DMA zone: 3998 pages, LIFO batch:0
+[    0.000000]   DMA32 zone: 14272 pages used for memmap
+[    0.000000]   DMA32 zone: 913392 pages, LIFO batch:31
+[    0.000000]   Normal zone: 28972 pages used for memmap
+[    0.000000]   Normal zone: 1854208 pages, LIFO batch:31
+[    0.000000] ACPI: PM-Timer IO Port: 0x4008
+[    0.000000] ACPI: Local APIC address 0xfee00000
+[    0.000000] mapped APIC to ffffffffff7fd000 (        fee00000)
+[    0.000000] IOAPIC[0]: apic_id 4, version 17, address 0xfec00000, GSI 0-23
+[    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 00, APIC ID 4, APIC INT 02
+[    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 high level)
+[    0.000000] Int: type 0, pol 1, trig 3, bus 00, IRQ 09, APIC ID 4, APIC INT 09
+[    0.000000] ACPI: IRQ0 used by override.
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 01, APIC ID 4, APIC INT 01
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 03, APIC ID 4, APIC INT 03
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 04, APIC ID 4, APIC INT 04
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 05, APIC ID 4, APIC INT 05
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 06, APIC ID 4, APIC INT 06
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 07, APIC ID 4, APIC INT 07
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 08, APIC ID 4, APIC INT 08
+[    0.000000] ACPI: IRQ9 used by override.
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 0a, APIC ID 4, APIC INT 0a
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 0b, APIC ID 4, APIC INT 0b
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 0c, APIC ID 4, APIC INT 0c
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 0d, APIC ID 4, APIC INT 0d
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 0e, APIC ID 4, APIC INT 0e
+[    0.000000] Int: type 0, pol 0, trig 0, bus 00, IRQ 0f, APIC ID 4, APIC INT 0f
+[    0.000000] Using ACPI (MADT) for SMP configuration information
+[    0.000000] smpboot: Allowing 4 CPUs, 0 hotplug CPUs
+[    0.000000] mapped IOAPIC to ffffffffff7fc000 (fec00000)
+[    0.000000] e820: [mem 0xe0000000-0xfffbffff] available for PCI devices
+[    0.000000] clocksource refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 6370452778343963 ns
+[    0.000000] setup_percpu: NR_CPUS:64 nr_cpumask_bits:64 nr_cpu_ids:4 nr_node_ids:1
+[    0.000000] PERCPU: Embedded 29 pages/cpu @ffff8802c3600000 s79960 r8192 d30632 u524288
+[    0.000000] pcpu-alloc: s79960 r8192 d30632 u524288 alloc=1*2097152
+[    0.000000] pcpu-alloc: [0] 0 1 2 3 
+[    0.000000] Built 1 zonelists in Node order, mobility grouping on.  Total pages: 2728269
+[    0.000000] Policy zone: Normal
+[    0.000000] Kernel command line: BOOT_IMAGE=/kernel-genkernel-x86_64-4.1.6-hardened-r1-g45b4b78 root=/dev/mapper/vgall-rootlvol ro crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 root_trim=yes rd.luks.uuid=e8b64567-124a-46a7-a167-d3d9c041de35 rd.luks.allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 "dyndbg=file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug r
+[    0.000000] PCIe ASPM is forcibly enabled
+[    0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
+[    0.000000] Memory: 10804112K/11086392K available (7671K kernel code, 1413K rwdata, 3352K rodata, 976K init, 2604K bss, 282280K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] Hierarchical RCU implementation.
+[    0.000000] 	Additional per-CPU info printed with stalls.
+[    0.000000] 	RCU restricting CPUs from NR_CPUS=64 to nr_cpu_ids=4.
+[    0.000000] RCU: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[    0.000000] NR_IRQS:4352 nr_irqs:456 16
+[    0.000000] 	Offload RCU callbacks from all CPUs
+[    0.000000] 	Offload RCU callbacks from CPUs: 0-3.
+[    0.000000] Console: colour VGA+ 80x25
+[    0.000000] console [tty1] enabled
+[    0.000000] tsc: Fast TSC calibration failed
+[    0.000000] tsc: Unable to calibrate against PIT
+[    0.000000] tsc: using PMTIMER reference calibration
+[    0.000000] tsc: Detected 1397.457 MHz processor
+[    0.000000] tsc: Marking TSC unstable due to TSCs unsynchronized
+[    0.029999] Calibrating delay loop (skipped), value calculated using timer frequency.. 2796.36 BogoMIPS (lpj=4658190)
+[    0.033355] pid_max: default: 32768 minimum: 501
+[    0.036822] ACPI: Core revision 20150410
+[    0.105071] ACPI: All ACPI Tables successfully acquired
+[    0.113665] Security Framework initialized
+[    0.123441] Dentry cache hash table entries: 2097152 (order: 12, 16777216 bytes)
+[    0.143389] Inode-cache hash table entries: 1048576 (order: 11, 8388608 bytes)
+[    0.157577] Mount-cache hash table entries: 32768 (order: 6, 262144 bytes)
+[    0.160094] Mountpoint-cache hash table entries: 32768 (order: 6, 262144 bytes)
+[    0.164783] Initializing cgroup subsys blkio
+[    0.166754] Initializing cgroup subsys memory
+[    0.170131] Initializing cgroup subsys devices
+[    0.173392] Initializing cgroup subsys freezer
+[    0.176742] Initializing cgroup subsys net_cls
+[    0.183406] CPU: Physical Processor ID: 0
+[    0.186692] CPU: Processor Core ID: 0
+[    0.190030] mce: CPU supports 0 MCE banks
+[    0.193444] Last level iTLB entries: 4KB 512, 2MB 16, 4MB 8
+[    0.196712] Last level dTLB entries: 4KB 1024, 2MB 128, 4MB 64, 1GB 0
+[    0.204347] Freeing SMP alternatives memory: 24K (ffffffff9d325000 - ffffffff9d32b000)
+[    0.211682] enabled ExtINT on CPU#0
+[    0.218454] ENABLING IO-APIC IRQs
+[    0.220067] init IO_APIC IRQs
+[    0.223362]  apic 4 pin 0 not connected
+[    0.226716] IOAPIC[0]: Set routing entry (4-1 -> 0x31 -> IRQ 1 Mode:0 Active:0 Dest:1)
+[    0.230167] IOAPIC[0]: Set routing entry (4-2 -> 0x30 -> IRQ 0 Mode:0 Active:0 Dest:1)
+[    0.236689] IOAPIC[0]: Set routing entry (4-2 -> 0x30 -> IRQ 0 Mode:0 Active:0 Dest:1)
+[    0.240080] IOAPIC[0]: Set routing entry (4-3 -> 0x33 -> IRQ 3 Mode:0 Active:0 Dest:1)
+[    0.243430] IOAPIC[0]: Set routing entry (4-4 -> 0x34 -> IRQ 4 Mode:0 Active:0 Dest:1)
+[    0.246800] IOAPIC[0]: Set routing entry (4-5 -> 0x35 -> IRQ 5 Mode:0 Active:0 Dest:1)
+[    0.250141] IOAPIC[0]: Set routing entry (4-6 -> 0x36 -> IRQ 6 Mode:0 Active:0 Dest:1)
+[    0.253428] IOAPIC[0]: Set routing entry (4-7 -> 0x37 -> IRQ 7 Mode:0 Active:0 Dest:1)
+[    0.256764] IOAPIC[0]: Set routing entry (4-8 -> 0x38 -> IRQ 8 Mode:0 Active:0 Dest:1)
+[    0.260078] IOAPIC[0]: Set routing entry (4-9 -> 0x39 -> IRQ 9 Mode:1 Active:0 Dest:1)
+[    0.263476] IOAPIC[0]: Set routing entry (4-10 -> 0x3a -> IRQ 10 Mode:0 Active:0 Dest:1)
+[    0.266763] IOAPIC[0]: Set routing entry (4-11 -> 0x3b -> IRQ 11 Mode:0 Active:0 Dest:1)
+[    0.270112] IOAPIC[0]: Set routing entry (4-12 -> 0x3c -> IRQ 12 Mode:0 Active:0 Dest:1)
+[    0.273420] IOAPIC[0]: Set routing entry (4-13 -> 0x3d -> IRQ 13 Mode:0 Active:0 Dest:1)
+[    0.276747] IOAPIC[0]: Set routing entry (4-14 -> 0x3e -> IRQ 14 Mode:0 Active:0 Dest:1)
+[    0.280106] IOAPIC[0]: Set routing entry (4-15 -> 0x3f -> IRQ 15 Mode:0 Active:0 Dest:1)
+[    0.283391]  apic 4 pin 16 not connected
+[    0.286693]  apic 4 pin 17 not connected
+[    0.290034]  apic 4 pin 18 not connected
+[    0.293367]  apic 4 pin 19 not connected
+[    0.300025]  apic 4 pin 20 not connected
+[    0.303362]  apic 4 pin 21 not connected
+[    0.306713]  apic 4 pin 22 not connected
+[    0.310032]  apic 4 pin 23 not connected
+[    0.313596] ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+[    0.352368] Using local APIC timer interrupts.
+               calibrating APIC timer ...
+[    0.356666] ... lapic delta = 6198452
+[    0.356666] ... PM-Timer delta = 354995
+[    0.356666] ... PM-Timer result ok
+[    0.356666] ..... delta 6198452
+[    0.356666] ..... mult: 266221512
+[    0.356666] ..... calibration result: 3305841
+[    0.356666] ..... CPU clock speed is 1386.0130 MHz.
+[    0.356666] ..... host bus clock speed is 991.2838 MHz.
+[    0.356875] smpboot: CPU0: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam: 12, model: 01, stepping: 00)
+[    0.373472] Performance Events: Broken PMU hardware detected, using software events only.
+[    0.383355] Failed to access perfctr msr (MSR c0010007 is 0)
+[    0.389527] dynamic_debug:ddebug_add_module: 2 debug prints in module main
+[    0.390088] dynamic_debug:ddebug_add_module: 1 debug prints in module initramfs
+[    0.393391] dynamic_debug:ddebug_add_module: 1 debug prints in module common
+[    0.396756] dynamic_debug:ddebug_add_module: 2 debug prints in module main
+[    0.400049] dynamic_debug:ddebug_add_module: 7 debug prints in module generic
+[    0.403425] dynamic_debug:ddebug_add_module: 8 debug prints in module microcode
+[    0.406716] dynamic_debug:ddebug_add_module: 1 debug prints in module boot
+[    0.410071] dynamic_debug:ddebug_add_module: 22 debug prints in module smpboot
+[    0.413408] dynamic_debug:ddebug_add_module: 1 debug prints in module tsc_sync
+[    0.416754] dynamic_debug:ddebug_add_module: 2 debug prints in module setup_percpu
+[    0.420098] dynamic_debug:ddebug_add_module: 30 debug prints in module vector
+[    0.423389] dynamic_debug:ddebug_add_module: 4 debug prints in module io_apic
+[    0.426716] dynamic_debug:ddebug_add_module: 1 debug prints in module msi
+[    0.430048] dynamic_debug:ddebug_add_module: 1 debug prints in module htirq
+[    0.433379] dynamic_debug:ddebug_add_module: 2 debug prints in module init_64
+[    0.436723] dynamic_debug:ddebug_add_module: 1 debug prints in module numa
+[    0.440087] dynamic_debug:ddebug_add_module: 4 debug prints in module params
+[    0.443392] dynamic_debug:ddebug_add_module: 4 debug prints in module async
+[    0.446719] dynamic_debug:ddebug_add_module: 1 debug prints in module manage
+[    0.450093] dynamic_debug:ddebug_add_module: 11 debug prints in module irqdomain
+[    0.453417] dynamic_debug:ddebug_add_module: 2 debug prints in module freezer
+[    0.456813] dynamic_debug:ddebug_add_module: 18 debug prints in module module
+[    0.460060] dynamic_debug:ddebug_add_module: 6 debug prints in module mempolicy
+[    0.463386] dynamic_debug:ddebug_add_module: 1 debug prints in module vmpressure
+[    0.466717] dynamic_debug:ddebug_add_module: 1 debug prints in module fsnotify
+[    0.470061] dynamic_debug:ddebug_add_module: 2 debug prints in module notification
+[    0.473502] dynamic_debug:ddebug_add_module: 1 debug prints in module inotify_fsnotify
+[    0.476723] dynamic_debug:ddebug_add_module: 5 debug prints in module inotify_user
+[    0.480090] dynamic_debug:ddebug_add_module: 6 debug prints in module fanotify
+[    0.483388] dynamic_debug:ddebug_add_module: 13 debug prints in module fanotify_user
+[    0.486816] dynamic_debug:ddebug_add_module: 20 debug prints in module aio
+[    0.490067] dynamic_debug:ddebug_add_module: 13 debug prints in module binfmt_misc
+[    0.493403] dynamic_debug:ddebug_add_module: 2 debug prints in module mount
+[    0.496754] dynamic_debug:ddebug_add_module: 1 debug prints in module dir
+[    0.500061] dynamic_debug:ddebug_add_module: 8 debug prints in module configfs
+[    0.503386] dynamic_debug:ddebug_add_module: 1 debug prints in module debugfs
+[    0.506752] dynamic_debug:ddebug_add_module: 1 debug prints in module tracefs
+[    0.513397] dynamic_debug:ddebug_add_module: 22 debug prints in module btrfs
+[    0.516732] dynamic_debug:ddebug_add_module: 2 debug prints in module ramoops
+[    0.520099] dynamic_debug:ddebug_add_module: 186 debug prints in module capability
+[    0.523398] dynamic_debug:ddebug_add_module: 1 debug prints in module inode
+[    0.526724] dynamic_debug:ddebug_add_module: 2 debug prints in module asymmetric_keys
+[    0.530053] dynamic_debug:ddebug_add_module: 1 debug prints in module public_key
+[    0.533492] dynamic_debug:ddebug_add_module: 11 debug prints in module x509_key_parser
+[    0.536725] dynamic_debug:ddebug_add_module: 13 debug prints in module efi
+[    0.540065] dynamic_debug:ddebug_add_module: 1 debug prints in module decompress
+[    0.543425] dynamic_debug:ddebug_add_module: 10 debug prints in module kobject
+[    0.546724] dynamic_debug:ddebug_add_module: 6 debug prints in module kobject_uevent
+[    0.550065] dynamic_debug:ddebug_add_module: 1 debug prints in module list_sort
+[    0.553398] dynamic_debug:ddebug_add_module: 1 debug prints in module percpu_refcount
+[    0.556731] dynamic_debug:ddebug_add_module: 11 debug prints in module asn1_decoder
+[    0.560088] dynamic_debug:ddebug_add_module: 5 debug prints in module probe
+[    0.563393] dynamic_debug:ddebug_add_module: 4 debug prints in module pci
+[    0.566735] dynamic_debug:ddebug_add_module: 3 debug prints in module slot
+[    0.573392] dynamic_debug:ddebug_add_module: 3 debug prints in module quirks
+[    0.576780] dynamic_debug:ddebug_add_module: 2 debug prints in module pme
+[    0.580103] dynamic_debug:ddebug_add_module: 1 debug prints in module pci_hotplug
+[    0.583395] dynamic_debug:ddebug_add_module: 12 debug prints in module acpiphp
+[    0.586725] dynamic_debug:ddebug_add_module: 1 debug prints in module pci_acpi
+[    0.590088] dynamic_debug:ddebug_add_module: 3 debug prints in module backlight
+[    0.593388] dynamic_debug:ddebug_add_module: 4 debug prints in module fb
+[    0.596771] dynamic_debug:ddebug_add_module: 44 debug prints in module radeonfb
+[    0.600186] dynamic_debug:ddebug_add_module: 7 debug prints in module tables
+[    0.603436] dynamic_debug:ddebug_add_module: 50 debug prints in module acpi
+[    0.606724] dynamic_debug:ddebug_add_module: 3 debug prints in module fan
+[    0.610083] dynamic_debug:ddebug_add_module: 1 debug prints in module video
+[    0.613390] dynamic_debug:ddebug_add_module: 4 debug prints in module pci_slot
+[    0.616758] dynamic_debug:ddebug_add_module: 2 debug prints in module processor
+[    0.620061] dynamic_debug:ddebug_add_module: 4 debug prints in module pnp
+[    0.623386] dynamic_debug:ddebug_add_module: 2 debug prints in module acpi_dma
+[    0.626755] dynamic_debug:ddebug_add_module: 7 debug prints in module core
+[    0.630050] dynamic_debug:ddebug_add_module: 1 debug prints in module fixed
+[    0.633373] dynamic_debug:ddebug_add_module: 6 debug prints in module virtual
+[    0.636731] dynamic_debug:ddebug_add_module: 3 debug prints in module lp3971
+[    0.640052] dynamic_debug:ddebug_add_module: 3 debug prints in module lp3972
+[    0.643374] dynamic_debug:ddebug_add_module: 1 debug prints in module tty_io
+[    0.646753] dynamic_debug:ddebug_add_module: 1 debug prints in module vt_ioctl
+[    0.650089] dynamic_debug:ddebug_add_module: 5 debug prints in module serial_core
+[    0.653385] dynamic_debug:ddebug_add_module: 3 debug prints in module 8250
+[    0.656710] dynamic_debug:ddebug_add_module: 1 debug prints in module tpm
+[    0.660069] dynamic_debug:ddebug_add_module: 10 debug prints in module tpm_tis
+[    0.663421] dynamic_debug:ddebug_add_module: 2 debug prints in module dmar
+[    0.666721] dynamic_debug:ddebug_add_module: 3 debug prints in module drm
+[    0.670060] dynamic_debug:ddebug_add_module: 3 debug prints in module ttm
+[    0.673421] dynamic_debug:ddebug_add_module: 2 debug prints in module radeon
+[    0.676720] dynamic_debug:ddebug_add_module: 17 debug prints in module vgaarb
+[    0.680184] dynamic_debug:ddebug_add_module: 2 debug prints in module component
+[    0.683406] dynamic_debug:ddebug_add_module: 8 debug prints in module core
+[    0.686726] dynamic_debug:ddebug_add_module: 7 debug prints in module bus
+[    0.690320] dynamic_debug:ddebug_add_module: 10 debug prints in module dd
+[    0.693388] dynamic_debug:ddebug_add_module: 5 debug prints in module class
+[    0.696726] dynamic_debug:ddebug_add_module: 1 debug prints in module platform
+[    0.700055] dynamic_debug:ddebug_add_module: 6 debug prints in module firmware_class
+[    0.703392] dynamic_debug:ddebug_add_module: 1 debug prints in module regmap
+[    0.706755] dynamic_debug:ddebug_add_module: 7 debug prints in module regcache
+[    0.710061] dynamic_debug:ddebug_add_module: 1 debug prints in module regcache_lzo
+[    0.713387] dynamic_debug:ddebug_add_module: 1 debug prints in module dma_buf
+[    0.716727] dynamic_debug:ddebug_add_module: 3 debug prints in module scsi_mod
+[    0.720054] dynamic_debug:ddebug_add_module: 1 debug prints in module libphy
+[    0.723386] dynamic_debug:ddebug_add_module: 1 debug prints in module r8169
+[    0.726922] dynamic_debug:ddebug_add_module: 98 debug prints in module cdrom
+[    0.733416] dynamic_debug:ddebug_add_module: 145 debug prints in module usbcore
+[    0.736754] dynamic_debug:ddebug_add_module: 4 debug prints in module phy
+[    0.740044] dynamic_debug:ddebug_add_module: 10 debug prints in module pci_quirks
+[    0.743392] dynamic_debug:ddebug_add_module: 3 debug prints in module xhci_pci
+[    0.746769] dynamic_debug:ddebug_add_module: 58 debug prints in module ehci_hcd
+[    0.753419] dynamic_debug:ddebug_add_module: 2 debug prints in module ehci_pci
+[    0.756761] dynamic_debug:ddebug_add_module: 46 debug prints in module ohci_hcd
+[    0.760061] dynamic_debug:ddebug_add_module: 6 debug prints in module ohci_pci
+[    0.763420] dynamic_debug:ddebug_add_module: 11 debug prints in module uhci_hcd
+[    0.766854] dynamic_debug:ddebug_add_module: 248 debug prints in module xhci_hcd
+[    0.770063] dynamic_debug:ddebug_add_module: 10 debug prints in module usb_storage
+[    0.773388] dynamic_debug:ddebug_add_module: 1 debug prints in module ums_realtek
+[    0.776733] dynamic_debug:ddebug_add_module: 6 debug prints in module input_core
+[    0.780066] dynamic_debug:ddebug_add_module: 3 debug prints in module atkbd
+[    0.783400] dynamic_debug:ddebug_add_module: 12 debug prints in module psmouse
+[    0.786701] dynamic_debug:ddebug_add_module: 7 debug prints in module rtc_core
+[    0.790060] dynamic_debug:ddebug_add_module: 5 debug prints in module rtc_cmos
+[    0.793387] dynamic_debug:ddebug_add_module: 1 debug prints in module i2c_boardinfo
+[    0.796762] dynamic_debug:ddebug_add_module: 20 debug prints in module i2c_core
+[    0.800087] dynamic_debug:ddebug_add_module: 2 debug prints in module i2c_smbus
+[    0.803390] dynamic_debug:ddebug_add_module: 17 debug prints in module i2c_algo_bit
+[    0.806729] dynamic_debug:ddebug_add_module: 11 debug prints in module power_supply
+[    0.813420] dynamic_debug:ddebug_add_module: 1 debug prints in module hwmon
+[    0.816719] dynamic_debug:ddebug_add_module: 8 debug prints in module thermal_sys
+[    0.820098] dynamic_debug:ddebug_add_module: 38 debug prints in module cpufreq
+[    0.823392] dynamic_debug:ddebug_add_module: 6 debug prints in module freq_table
+[    0.826752] dynamic_debug:ddebug_add_module: 2 debug prints in module cpufreq_stats
+[    0.830060] dynamic_debug:ddebug_add_module: 1 debug prints in module cpufreq_performance
+[    0.833389] dynamic_debug:ddebug_add_module: 22 debug prints in module acpi_cpufreq
+[    0.836714] dynamic_debug:ddebug_add_module: 1 debug prints in module led_core
+[    0.840112] dynamic_debug:ddebug_add_module: 3 debug prints in module dmi_scan
+[    0.843406] dynamic_debug:ddebug_add_module: 1 debug prints in module hid
+[    0.846722] dynamic_debug:ddebug_add_module: 8 debug prints in module usbhid
+[    0.850066] dynamic_debug:ddebug_add_module: 2 debug prints in module i386
+[    0.853400] dynamic_debug:ddebug_add_module: 2 debug prints in module fixup
+[    0.856726] dynamic_debug:ddebug_add_module: 1 debug prints in module acpi
+[    0.860091] dynamic_debug:ddebug_add_module: 7 debug prints in module irq
+[    0.863393] dynamic_debug:ddebug_add_module: 1 debug prints in module sock
+[    0.866726] dynamic_debug:ddebug_add_module: 14 debug prints in module dev
+[    0.873410] dynamic_debug:ddebug_add_module: 2 debug prints in module sch_api
+[    0.876755] dynamic_debug:ddebug_add_module: 2 debug prints in module act_api
+[    0.880053] dynamic_debug:ddebug_add_module: 1 debug prints in module route
+[    0.883382] dynamic_debug:ddebug_add_module: 1 debug prints in module ip_fragment
+[    0.886730] dynamic_debug:ddebug_add_module: 1 debug prints in module ip_output
+[    0.890087] dynamic_debug:ddebug_add_module: 1 debug prints in module tcp
+[    0.893388] dynamic_debug:ddebug_add_module: 6 debug prints in module tcp_input
+[    0.896731] dynamic_debug:ddebug_add_module: 3 debug prints in module tcp_output
+[    0.900053] dynamic_debug:ddebug_add_module: 3 debug prints in module tcp_timer
+[    0.903408] dynamic_debug:ddebug_add_module: 1 debug prints in module tcp_ipv4
+[    0.906704] dynamic_debug:ddebug_add_module: 1 debug prints in module tcp_cong
+[    0.910087] dynamic_debug:ddebug_add_module: 8 debug prints in module udp
+[    0.913381] dynamic_debug:ddebug_add_module: 1 debug prints in module arp
+[    0.916733] dynamic_debug:ddebug_add_module: 2 debug prints in module icmp
+[    0.920066] dynamic_debug:ddebug_add_module: 1 debug prints in module devinet
+[    0.923348] dynamic_debug:ddebug_add_module: 8 debug prints in module fib_trie
+[    0.930093] dynamic_debug:ddebug_add_module: 1 debug prints in module inet_fragment
+[    0.933395] dynamic_debug:ddebug_add_module: 27 debug prints in module ping
+[    0.936718] dynamic_debug:ddebug_add_module: 1 debug prints in module sysctl_net_ipv4
+[    0.940071] dynamic_debug:ddebug_add_module: 2 debug prints in module ip6_checksum
+[    0.943367] dynamic_debug:dynamic_debug_init: 159 modules, 1669 entries and 6360 bytes in ddebug tables, 141260 bytes in (readonly) verbose section
+[    0.946723] dynamic_debug:ddebug_dyndbg_boot_param_cb: BOOT_IMAGE="/kernel-genkernel-x86_64-4.1.6-hardened-r1-g45b4b78"
+[    0.950026] dynamic_debug:ddebug_dyndbg_boot_param_cb: root="/dev/mapper/vgall-rootlvol"
+[    0.953369] dynamic_debug:ddebug_dyndbg_boot_param_cb: ro="(null)"
+[    0.956698] dynamic_debug:ddebug_dyndbg_boot_param_cb: crypt_root="UUID=e8b64567-124a-46a7-a167-d3d9c041de35"
+[    0.960027] dynamic_debug:ddebug_dyndbg_boot_param_cb: root_trim="yes"
+[    0.963382] dynamic_debug:ddebug_dyndbg_boot_param_cb: rd.luks.uuid="e8b64567-124a-46a7-a167-d3d9c041de35"
+[    0.966692] dynamic_debug:ddebug_dyndbg_boot_param_cb: rd.luks.allow-discards="(null)"
+[    0.970034] dynamic_debug:ddebug_dyndbg_boot_param_cb: ipv6.disable="1"
+[    0.973377] dynamic_debug:ddebug_dyndbg_boot_param_cb: pnp.debug="1"
+[    0.976692] dynamic_debug:ddebug_dyndbg_boot_param_cb: loglevel="9"
+[    0.980033] dynamic_debug:ddebug_dyndbg_boot_param_cb: log_buf_len="10M"
+[    0.983362] dynamic_debug:ddebug_dyndbg_boot_param_cb: printk.always_kmsg_dump="y"
+[    0.986695] dynamic_debug:ddebug_dyndbg_boot_param_cb: printk.time="y"
+[    0.990027] dynamic_debug:ddebug_dyndbg_boot_param_cb: mminit_loglevel="0"
+[    0.993377] dynamic_debug:ddebug_dyndbg_boot_param_cb: memory_corruption_check="1"
+[    0.996697] dynamic_debug:ddebug_dyndbg_boot_param_cb: nohz="on"
+[    1.000049] dynamic_debug:ddebug_dyndbg_boot_param_cb: rcu_nocbs="1-3"
+[    1.003365] dynamic_debug:ddebug_dyndbg_boot_param_cb: pcie_aspm="force"
+[    1.006695] dynamic_debug:ddebug_dyndbg_boot_param_cb: fbcon="scrollback:4096k"
+[    1.010044] dynamic_debug:ddebug_dyndbg_boot_param_cb: fbcon="font:ProFont6x11"
+[    1.013364] dynamic_debug:ddebug_dyndbg_boot_param_cb: apic="debug"
+[    1.016711] dynamic_debug:ddebug_dyndbg_boot_param_cb: dynamic_debug.verbose="1"
+[    1.020029] dynamic_debug:ddebug_dyndbg_boot_param_cb: dyndbg="file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt"
+[    1.023379] dynamic_debug:ddebug_exec_queries: query 0: "file arch/x86/kernel/apic/* +pflmt "
+[    1.026710] dynamic_debug:ddebug_tokenize: split into words: "file" "arch/x86/kernel/apic/*" "+pflmt"
+[    1.043345] dynamic_debug:ddebug_parse_flags: op='+'
+[    1.046697] dynamic_debug:ddebug_parse_flags: flags=0x1f
+[    1.050027] dynamic_debug:ddebug_parse_flags: *flagsp=0x1f *maskp=0xffffffff
+[    1.053360] dynamic_debug:vpr_info_dq: parsed: func="" file="arch/x86/kernel/apic/*" module="" format="" lineno=0-0
+[    1.056713] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:682 [vector]print_PIC =pmflt
+[    1.060034] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:679 [vector]print_PIC =pmflt
+[    1.063365] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:669 [vector]print_PIC =pmflt
+[    1.066695] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:666 [vector]print_PIC =pmflt
+[    1.070029] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:661 [vector]print_PIC =pmflt
+[    1.073367] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:631 [vector]print_local_APIC =pmflt
+[    1.076700] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:628 [vector]print_local_APIC =pmflt
+[    1.080033] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:626 [vector]print_local_APIC =pmflt
+[    1.083366] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:621 [vector]print_local_APIC =pmflt
+[    1.086716] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:619 [vector]print_local_APIC =pmflt
+[    1.090050] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:617 [vector]print_local_APIC =pmflt
+[    1.093364] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:613 [vector]print_local_APIC =pmflt
+[    1.096716] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:608 [vector]print_local_APIC =pmflt
+[    1.100031] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:606 [vector]print_local_APIC =pmflt
+[    1.103442] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:603 [vector]print_local_APIC =pmflt
+[    1.106717] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:598 [vector]print_local_APIC =pmflt
+[    1.110034] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:595 [vector]print_local_APIC =pmflt
+[    1.113364] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:594 [vector]print_local_APIC =pmflt
+[    1.116701] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:590 [vector]print_local_APIC =pmflt
+[    1.120198] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:580 [vector]print_local_APIC =pmflt
+[    1.123384] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:578 [vector]print_local_APIC =pmflt
+[    1.126698] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:576 [vector]print_local_APIC =pmflt
+[    1.130030] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:574 [vector]print_local_APIC =pmflt
+[    1.133365] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:571 [vector]print_local_APIC =pmflt
+[    1.136704] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:568 [vector]print_local_APIC =pmflt
+[    1.140035] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:564 [vector]print_local_APIC =pmflt
+[    1.143362] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:555 [vector]print_local_APIC =pmflt
+[    1.146695] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:552 [vector]print_local_APIC =pmflt
+[    1.150049] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:545 [vector]print_local_APIC =pmflt
+[    1.153383] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/vector.c:536 [vector]print_local_APIC =pmflt
+[    1.156698] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/io_apic.c:1381 [io_apic]intel_ir_io_apic_print_entries =pmflt
+[    1.160036] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/io_apic.c:1371 [io_apic]intel_ir_io_apic_print_entries =pmflt
+[    1.163383] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/io_apic.c:1352 [io_apic]native_io_apic_print_entries =pmflt
+[    1.166700] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/io_apic.c:1345 [io_apic]native_io_apic_print_entries =pmflt
+[    1.170029] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/msi.c:141 [msi]setup_msi_irq =pmflt
+[    1.176691] dynamic_debug:ddebug_change: changed arch/x86/kernel/apic/htirq.c:104 [htirq]arch_setup_ht_irq =pmflt
+[    1.180198] dynamic_debug:vpr_info_dq: applied: func="" file="arch/x86/kernel/apic/*" module="" format="" lineno=0-0
+[    1.190018] dynamic_debug:ddebug_exec_queries: query 1: "file drivers/video/* +pflmt "
+[    1.193377] dynamic_debug:ddebug_tokenize: split into words: "file" "drivers/video/*" "+pflmt"
+[    1.210010] dynamic_debug:ddebug_parse_flags: op='+'
+[    1.213362] dynamic_debug:ddebug_parse_flags: flags=0x1f
+[    1.216698] dynamic_debug:ddebug_parse_flags: *flagsp=0x1f *maskp=0xffffffff
+[    1.220036] dynamic_debug:vpr_info_dq: parsed: func="" file="drivers/video/*" module="" format="" lineno=0-0
+[    1.226785] dynamic_debug:ddebug_change: changed drivers/video/backlight/backlight.c:324 [backlight]backlight_device_register =pmflt
+[    1.230049] dynamic_debug:ddebug_change: changed drivers/video/backlight/backlight.c:185 [backlight]brightness_store =pmflt
+[    1.233364] dynamic_debug:ddebug_change: changed drivers/video/backlight/backlight.c:146 [backlight]bl_power_store =pmflt
+[    1.236696] dynamic_debug:ddebug_change: changed drivers/video/fbdev/core/fbmon.c:1082 [fb]fb_edid_add_monspecs =pmflt
+[    1.240027] dynamic_debug:ddebug_change: changed drivers/video/fbdev/core/fbmon.c:1070 [fb]fb_edid_add_monspecs =pmflt
+[    1.243369] dynamic_debug:ddebug_change: changed drivers/video/fbdev/core/fbmon.c:1033 [fb]fb_edid_add_monspecs =pmflt
+[    1.246703] dynamic_debug:ddebug_change: changed drivers/video/fbdev/core/fbmon.c:1027 [fb]fb_edid_add_monspecs =pmflt
+[    1.250034] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:2375 [radeonfb]radeonfb_pci_register =pmflt
+[    1.253364] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:2276 [radeonfb]radeonfb_pci_register =pmflt
+[    1.256695] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:2150 [radeonfb]radeonfb_pci_register =pmflt
+[    1.260050] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:2084 [radeonfb]radeon_identify_vram =pmflt
+[    1.263382] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1718 [radeonfb]radeonfb_set_par =pmflt
+[    1.270026] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1717 [radeonfb]radeonfb_set_par =pmflt
+[    1.273366] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1712 [radeonfb]radeonfb_set_par =pmflt
+[    1.276704] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1710 [radeonfb]radeonfb_set_par =pmflt
+[    1.280051] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1601 [radeonfb]radeonfb_set_par =pmflt
+[    1.283382] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1599 [radeonfb]radeonfb_set_par =pmflt
+[    1.286698] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1526 [radeonfb]radeon_calc_pll_regs =pmflt
+[    1.290029] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1525 [radeonfb]radeon_calc_pll_regs =pmflt
+[    1.293362] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1524 [radeonfb]radeon_calc_pll_regs =pmflt
+[    1.296732] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1517 [radeonfb]radeon_calc_pll_regs =pmflt
+[    1.300033] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1507 [radeonfb]radeon_calc_pll_regs =pmflt
+[    1.303363] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_base.c:1485 [radeonfb]radeon_calc_pll_regs =pmflt
+[    1.306698] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:849 [radeonfb]radeon_check_modes =pmflt
+[    1.310030] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:801 [radeonfb]radeon_check_modes =pmflt
+[    1.313381] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:781 [radeonfb]radeon_check_modes =pmflt
+[    1.316716] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:485 [radeonfb]radeon_probe_screens =pmflt
+[    1.320050] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:455 [radeonfb]radeon_probe_screens =pmflt
+[    1.323368] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:289 [radeonfb]radeon_parse_connector_info =pmflt
+[    1.326695] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:281 [radeonfb]radeon_parse_connector_info =pmflt
+[    1.330034] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:277 [radeonfb]radeon_parse_connector_info =pmflt
+[    1.333367] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:245 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.336695] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:240 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.340033] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:239 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.343365] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:238 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.346720] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:237 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.350030] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:236 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.353364] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:235 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.356698] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:234 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.360050] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:233 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.363365] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:214 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.366701] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:209 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.370031] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:207 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.373367] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:206 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.376716] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:205 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.380032] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_monitor.c:191 [radeonfb]radeon_get_panel_info_BIOS =pmflt
+[    1.383371] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_i2c.c:164 [radeonfb]radeon_probe_i2c_connector =pmflt
+[    1.386715] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_i2c.c:160 [radeonfb]radeon_probe_i2c_connector =pmflt
+[    1.390042] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_i2c.c:157 [radeonfb]radeon_probe_i2c_connector =pmflt
+[    1.393366] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_i2c.c:150 [radeonfb]radeon_probe_i2c_connector =pmflt
+[    1.396698] dynamic_debug:ddebug_change: changed drivers/video/fbdev/aty/radeon_i2c.c:93 [radeonfb]radeon_setup_i2c_bus =pmflt
+[    1.400258] dynamic_debug:vpr_info_dq: applied: func="" file="drivers/video/*" module="" format="" lineno=0-0
+[    1.403364] dynamic_debug:ddebug_exec_queries: query 2: "file drivers/input/* -pflmt "
+[    1.406693] dynamic_debug:ddebug_tokenize: split into words: "file" "drivers/input/*" "-pflmt"
+[    1.423355] dynamic_debug:ddebug_parse_flags: op='-'
+[    1.426699] dynamic_debug:ddebug_parse_flags: flags=0x1f
+[    1.430044] dynamic_debug:ddebug_parse_flags: *flagsp=0x0 *maskp=0xffffffe0
+[    1.433370] dynamic_debug:vpr_info_dq: parsed: func="" file="drivers/input/*" module="" format="" lineno=0-0
+[    1.440373] dynamic_debug:vpr_info_dq: applied: func="" file="drivers/input/*" module="" format="" lineno=0-0
+[    1.443362] dynamic_debug:ddebug_exec_queries: query 3: "file drivers/acpi/* -pflmt"
+[    1.446699] dynamic_debug:ddebug_tokenize: split into words: "file" "drivers/acpi/*" "-pflmt"
+[    1.463347] dynamic_debug:ddebug_parse_flags: op='-'
+[    1.466698] dynamic_debug:ddebug_parse_flags: flags=0x1f
+[    1.470028] dynamic_debug:ddebug_parse_flags: *flagsp=0x0 *maskp=0xffffffe0
+[    1.473381] dynamic_debug:vpr_info_dq: parsed: func="" file="drivers/acpi/*" module="" format="" lineno=0-0
+[    1.477067] dynamic_debug:vpr_info_dq: applied: func="" file="drivers/acpi/*" module="" format="" lineno=0-0
+[    1.480032] dynamic_debug:ddebug_exec_queries: processed 4 queries, with 175 matches, 0 errs
+[    1.483364] dynamic_debug:ddebug_dyndbg_boot_param_cb: acpi_backlight="vendor"
+[    1.486700] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.audio="0"
+[    1.490031] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.lockup_timeout="20000"
+[    1.493360] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.test="0"
+[    1.496692] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.agpmode="-1"
+[    1.500025] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.benchmark="0"
+[    1.503359] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.tv="0"
+[    1.506711] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.hard_reset="1"
+[    1.510030] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.aspm="1"
+[    1.513361] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.msi="1"
+[    1.516697] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.pcie_gen2="-1"
+[    1.520028] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.no_wb="1"
+[    1.523361] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.dynclks="0"
+[    1.526752] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.r4xx_atom="0"
+[    1.530033] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeonfb="(null)"
+[    1.533378] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.fastfb="1"
+[    1.536701] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.modeset="1"
+[    1.540044] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.dpm="1"
+[    1.543368] dynamic_debug:ddebug_dyndbg_boot_param_cb: radeon.runpm="1"
+[    1.546695] dynamic_debug:ddebug_dyndbg_boot_param_cb: rd.debug="(null)"
+[    1.550026] dynamic_debug:ddebug_dyndbg_boot_param_cb: rd.udev.debug="(null)"
+[    1.553379] dynamic_debug:ddebug_dyndbg_boot_param_cb: rd.memdebug="3"
+[    1.556698] dynamic_debug:ddebug_dyndbg_boot_param_cb: net.ifnames="1"
+[    1.560033] dynamic_debug:ddebug_dyndbg_boot_param_cb: slub_debug="U"
+[    1.563378] dynamic_debug:ddebug_dyndbg_boot_param_cb: noefi="(null)"
+[    1.566698] dynamic_debug:ddebug_dyndbg_boot_param_cb: dolvm="(null)"
+[    1.570045] dynamic_debug:ddebug_dyndbg_boot_param_cb: dobtrfs="(null)"
+[    1.573364] dynamic_debug:ddebug_dyndbg_boot_param_cb: console="tty1,ttyS0,115200n8"
+[    1.576695] dynamic_debug:ddebug_dyndbg_boot_param_cb: earlyprintk="vga,serial,ttyS0,115200,keep"
+[    1.580525] MCE: In-kernel MCE decoding enabled.
+[    1.583832] NMI watchdog: disabled (cpu0): hardware events not enabled
+[    1.586691] NMI watchdog: Shutting down hard lockup detector on all cpus
+[    1.591043] x86: Booting SMP configuration:
+[    1.593357] .... node  #0, CPUs:      #1
+[    0.029999] masked ExtINT on CPU#1
+[    0.029999] mce: CPU supports 0 MCE banks
+[    1.697767]  #2
+[    0.029999] masked ExtINT on CPU#2
+[    0.029999] mce: CPU supports 0 MCE banks
+[    0.029999]  #3
+[    0.029999] masked ExtINT on CPU#3
+[    0.029999] mce: CPU supports 0 MCE banks
+[    1.907041] x86: Booted up 1 node, 4 CPUs
+[    1.920039] ----------------
+[    1.923387] | NMI testsuite:
+[    1.926833] --------------------
+[    1.930026]   remote IPI:  ok  |
+[    1.946679]    local IPI:  ok  |
+[    1.973390] --------------------
+[    1.976678] Good, all   2 testcases passed! |
+[    1.980019] ---------------------------------
+[    1.983360] smpboot: Total of 4 processors activated (11127.85 BogoMIPS)
+[    1.990725] devtmpfs: initialized
+[    1.993686] device: 'platform': device_add
+[    1.997019] bus: 'platform': registered
+[    2.000328] bus: 'cpu': registered
+[    2.003407] device: 'cpu': device_add
+[    2.007113] bus: 'container': registered
+[    2.010043] device: 'container': device_add
+[    2.017476] bus: 'workqueue': registered
+[    2.017405] kworker/u8:0 (38) used greatest stack depth: 14184 bytes left
+[    2.023395] device: 'workqueue': device_add
+[    2.027666] clocksource jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 6370867519511994 ns
+[    2.034450] xor: measuring software checksum speed
+[    2.070023]    prefetch64-sse:   384.000 MB/sec
+[    2.106688]    generic_sse:   472.800 MB/sec
+[    2.110057] xor: using function: generic_sse (472.800 MB/sec)
+[    2.113427] atomic64_test: passed for x86-64 platform with CX8 and with SSE
+[    2.120059] device class 'regulator': registering
+[    2.123773] Registering platform device 'reg-dummy'. Parent at platform
+[    2.126720] device: 'reg-dummy': device_add
+[    2.130105] bus: 'platform': add device reg-dummy
+[    2.133683] bus: 'platform': add driver reg-dummy
+[    2.136830] bus: 'platform': driver_probe_device: matched device reg-dummy with driver reg-dummy
+[    2.140029] bus: 'platform': really_probe: probing driver reg-dummy with device reg-dummy
+[    2.143409] device: 'regulator.0': device_add
+[    2.147959] regulator-dummy: no parameters
+[    2.150191] driver: 'reg-dummy': driver_bound: bound to device 'reg-dummy'
+[    2.153386] bus: 'platform': really_probe: bound device reg-dummy to driver reg-dummy
+[    2.157743] NET: Registered protocol family 16
+[    2.357902] device class 'bdi': registering
+[    2.573995] bus: 'platform': add driver ramoops
+[    2.803628] device class 'pci_bus': registering
+[    3.028258] bus: 'pci': registered
+[    3.190237] device class 'backlight': registering
+[    3.445065] device class 'tty': registering
+[    3.655268] device class 'vtconsole': registering
+[    3.914173] device: 'vtcon0': device_add
+[    4.125377] bus: 'node': registered
+[    4.303579] device: 'node': device_add
+[    4.485981] bus: 'i2c': registered
+[    4.490307] kworker/u8:0 (53) used greatest stack depth: 13864 bytes left
+[    4.986794] bus: 'i2c': add driver dummy
+[    5.176743] i2c-core: driver [dummy] registered
+[    5.406877] cpuidle: using governor ladder
+[    5.426904] cpuidle: using governor menu
+[    5.433456] ACPI: bus type PCI registered
+[    5.436701] acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+[    5.440065] device class 'dmi': registering
+[    5.443521] device: 'id': device_add
+[    5.448395] PCI: Using configuration type 1 for base access
+[    5.450018] PCI: Using configuration type 1 for extended access
+[    5.457216] device: 'node0': device_add
+[    5.460493] bus: 'node': add device node0
+[    5.464400] device: 'cpu0': device_add
+[    5.466773] bus: 'cpu': add device cpu0
+[    5.473396] device: 'cpu1': device_add
+[    5.476782] bus: 'cpu': add device cpu1
+[    5.483445] device: 'cpu2': device_add
+[    5.486828] bus: 'cpu': add device cpu2
+[    5.490572] device: 'cpu3': device_add
+[    5.493459] bus: 'cpu': add device cpu3
+[    5.597028] device: 'writeback': device_add
+[    5.600193] bus: 'workqueue': add device writeback
+[    5.607312] device class 'block': registering
+[    5.666700] raid6: sse2x1   gen()  1565 MB/s
+[    5.843099] raid6: sse2x1   xor()  1490 MB/s
+[    6.006533] raid6: sse2x2   gen()  2155 MB/s
+[    6.169592] raid6: sse2x2   xor()  1297 MB/s
+[    6.346382] raid6: sse2x4   gen()  2098 MB/s
+[    6.503579] raid6: sse2x4   xor()  1180 MB/s
+[    6.633365] raid6: using algorithm sse2x2 gen() 2155 MB/s
+[    6.783373] raid6: .... xor() 1297 MB/s, rmw enabled
+[    6.913350] raid6: using intx1 recovery algorithm
+[    7.020201] device class 'graphics': registering
+[    7.130640] ACPI: Added _OSI(Module Device)
+[    7.283368] ACPI: Added _OSI(Processor Device)
+[    7.403382] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    7.530031] ACPI: Added _OSI(Processor Aggregator Device)
+[    7.654859] IOAPIC[0]: Set routing entry (4-9 -> 0x39 -> IRQ 9 Mode:1 Active:0 Dest:15)
+[    7.881780] ACPI: Executed 1 blocks of module-level executable AML code
+[    8.178238] ACPI: Interpreter enabled
+[    8.256821] ACPI: (supports S0 S5)
+[    8.363361] ACPI: Using IOAPIC for interrupt routing
+[    8.497511] bus: 'acpi': registered
+[    8.576723] PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+[    8.830424] device: 'LNXSYSTM:00': device_add
+[    8.933455] bus: 'acpi': add device LNXSYSTM:00
+[    9.054221] device: 'LNXCPU:00': device_add
+[    9.166791] bus: 'acpi': add device LNXCPU:00
+[    9.264609] device: 'LNXCPU:01': device_add
+[    9.386782] bus: 'acpi': add device LNXCPU:01
+[    9.487208] device: 'LNXCPU:02': device_add
+[    9.583450] bus: 'acpi': add device LNXCPU:02
+[    9.694039] device: 'LNXCPU:03': device_add
+[    9.786795] bus: 'acpi': add device LNXCPU:03
+[    9.907782] device: 'LNXSYBUS:00': device_add
+[   10.010124] bus: 'acpi': add device LNXSYBUS:00
+[   10.124095] device: 'PNP0A03:00': device_add
+[   10.226793] bus: 'acpi': add device PNP0A03:00
+[   10.330253] device: 'device:00': device_add
+[   10.440119] bus: 'acpi': add device device:00
+[   10.564929] device: 'PNP0303:00': device_add
+[   10.670126] bus: 'acpi': add device PNP0303:00
+[   10.791384] device: 'PNP0200:00': device_add
+[   10.883461] bus: 'acpi': add device PNP0200:00
+[   10.996762] device: 'PNP0700:00': device_add
+[   11.090276] bus: 'acpi': add device PNP0700:00
+[   11.202488] device: 'PNP0F03:00': device_add
+[   11.300194] bus: 'acpi': add device PNP0F03:00
+[   11.401875] device: 'PNP0400:00': device_add
+[   11.516814] bus: 'acpi': add device PNP0400:00
+[   11.621875] device: 'PNP0100:00': device_add
+[   11.730162] bus: 'acpi': add device PNP0100:00
+[   11.837942] device: 'PNP0000:00': device_add
+[   11.900171] bus: 'acpi': add device PNP0000:00
+[   12.018138] device: 'PNP0B00:00': device_add
+[   12.123476] bus: 'acpi': add device PNP0B00:00
+[   12.225037] device: 'PNP0103:00': device_add
+[   12.333631] bus: 'acpi': add device PNP0103:00
+[   12.463514] device: 'APP0001:00': device_add
+[   12.583478] bus: 'acpi': add device APP0001:00
+[   12.695461] device: 'PNP0C02:00': device_add
+[   12.833459] bus: 'acpi': add device PNP0C02:00
+[   12.935109] device: 'PNP0501:00': device_add
+[   13.036901] bus: 'acpi': add device PNP0501:00
+[   13.167593] device: 'PNP0501:01': device_add
+[   13.270125] bus: 'acpi': add device PNP0501:01
+[   13.408547] device: 'PNP8390:00': device_add
+[   13.533442] bus: 'acpi': add device PNP8390:00
+[   13.641456] device: 'LNXVIDEO:00': device_add
+[   13.756802] bus: 'acpi': add device LNXVIDEO:00
+[   13.848288] device: 'device:01': device_add
+[   13.956713] bus: 'acpi': add device device:01
+[   14.058980] device: 'device:02': device_add
+[   14.173485] bus: 'acpi': add device device:02
+[   14.291183] device: 'PNP0C0A:00': device_add
+[   14.393458] bus: 'acpi': add device PNP0C0A:00
+[   14.512580] device: 'ACPI0003:00': device_add
+[   14.643456] bus: 'acpi': add device ACPI0003:00
+[   14.775558] device: 'PNP0C0F:00': device_add
+[   14.883444] bus: 'acpi': add device PNP0C0F:00
+[   14.991449] device: 'PNP0C0F:01': device_add
+[   15.090164] bus: 'acpi': add device PNP0C0F:01
+[   15.211695] device: 'PNP0C0F:02': device_add
+[   15.330127] bus: 'acpi': add device PNP0C0F:02
+[   15.465818] device: 'PNP0C0F:03': device_add
+[   15.576782] bus: 'acpi': add device PNP0C0F:03
+[   15.664384] device: 'LNXSYBUS:01': device_add
+[   15.766808] bus: 'acpi': add device LNXSYBUS:01
+[   15.891997] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+[   16.046760] acpi PNP0A03:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI]
+[   16.250399] acpi PNP0A03:00: _OSC failed (AE_NOT_FOUND); disabling ASPM
+[   16.394566] device: 'pci0000:00': device_add
+[   16.484081] device: '0000:00': device_add
+[   16.595085] PCI host bridge to bus 0000:00
+[   16.696752] pci_bus 0000:00: root bus resource [bus 00-ff]
+[   16.846715] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
+[   17.006696] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
+[   17.190050] pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff window]
+[   17.393444] pci_bus 0000:00: root bus resource [mem 0xe0000000-0xffdfffff window]
+[   17.573444] pci_bus 0000:00: scanning bus
+[   17.696832] pci 0000:00:00.0: [8086:1237] type 00 class 0x060000
+[   17.816797] pci 0000:00:00.0: calling quirk_mmio_always_on+0x0/0x10
+[   17.977152] device: '0000:00:00.0': device_add
+[   18.094076] bus: 'pci': add device 0000:00:00.0
+[   18.180025] pci 0000:00:01.0: [8086:7000] type 00 class 0x060100
+[   18.347253] device: '0000:00:01.0': device_add
+[   18.461725] bus: 'pci': add device 0000:00:01.0
+[   18.583409] pci 0000:00:01.1: [8086:7111] type 00 class 0x01018a
+[   18.747281] pci 0000:00:01.1: reg 0x20: [io  0xd000-0xd00f]
+[   18.870456] pci 0000:00:01.1: legacy IDE quirk: reg 0x10: [io  0x01f0-0x01f7]
+[   19.056707] pci 0000:00:01.1: legacy IDE quirk: reg 0x14: [io  0x03f6]
+[   19.200026] pci 0000:00:01.1: legacy IDE quirk: reg 0x18: [io  0x0170-0x0177]
+[   19.400049] pci 0000:00:01.1: legacy IDE quirk: reg 0x1c: [io  0x0376]
+[   19.566861] device: '0000:00:01.1': device_add
+[   19.677431] bus: 'pci': add device 0000:00:01.1
+[   19.747632] pci 0000:00:02.0: [80ee:beef] type 00 class 0x030000
+[   19.907368] pci 0000:00:02.0: reg 0x10: [mem 0xe0000000-0xe0ffffff pref]
+[   20.120342] device: '0000:00:02.0': device_add
+[   20.236678] bus: 'pci': add device 0000:00:02.0
+[   20.357303] pci 0000:00:03.0: [8086:100e] type 00 class 0x020000
+[   20.533557] pci 0000:00:03.0: reg 0x10: [mem 0xf0000000-0xf001ffff]
+[   20.663127] pci 0000:00:03.0: reg 0x18: [io  0xd010-0xd017]
+[   20.847288] device: '0000:00:03.0': device_add
+[   20.964072] bus: 'pci': add device 0000:00:03.0
+[   21.087623] pci 0000:00:04.0: [80ee:cafe] type 00 class 0x088000
+[   21.236909] pci 0000:00:04.0: reg 0x10: [io  0xd020-0xd03f]
+[   21.393483] pci 0000:00:04.0: reg 0x14: [mem 0xf0400000-0xf07fffff]
+[   21.547158] pci 0000:00:04.0: reg 0x18: [mem 0xf0800000-0xf0803fff pref]
+[   21.757632] device: '0000:00:04.0': device_add
+[   21.884548] bus: 'pci': add device 0000:00:04.0
+[   21.983697] pci 0000:00:05.0: [8086:2415] type 00 class 0x040100
+[   22.146808] pci 0000:00:05.0: reg 0x10: [io  0xd100-0xd1ff]
+[   22.273472] pci 0000:00:05.0: reg 0x14: [io  0xd200-0xd23f]
+[   22.413808] device: '0000:00:05.0': device_add
+[   22.524482] bus: 'pci': add device 0000:00:05.0
+[   22.641926] pci 0000:00:06.0: [106b:003f] type 00 class 0x0c0310
+[   22.800558] pci 0000:00:06.0: reg 0x10: [mem 0xf0804000-0xf0804fff]
+[   23.022377] device: '0000:00:06.0': device_add
+[   23.142019] bus: 'pci': add device 0000:00:06.0
+[   23.253345] pci 0000:00:07.0: [8086:7113] type 00 class 0x068000
+[   23.400169] pci 0000:00:07.0: calling acpi_pm_check_blacklist+0x0/0x40
+[   23.544640] pci 0000:00:07.0: calling quirk_piix4_acpi+0x0/0x150
+[   23.690103] pci 0000:00:07.0: calling pci_fixup_piix4_acpi+0x0/0x10
+[   23.840101] device: '0000:00:07.0': device_add
+[   23.941615] bus: 'pci': add device 0000:00:07.0
+[   24.064276] pci 0000:00:0d.0: [8086:2829] type 00 class 0x010601
+[   24.213596] pci 0000:00:0d.0: reg 0x10: [io  0xd240-0xd247]
+[   24.370071] pci 0000:00:0d.0: reg 0x18: [io  0xd250-0xd257]
+[   24.530086] pci 0000:00:0d.0: reg 0x20: [io  0xd260-0xd26f]
+[   24.680411] pci 0000:00:0d.0: reg 0x24: [mem 0xf0806000-0xf0807fff]
+[   24.834612] device: '0000:00:0d.0': device_add
+[   24.961959] bus: 'pci': add device 0000:00:0d.0
+[   25.077523] pci_bus 0000:00: fixups for bus
+[   25.196696] pci_bus 0000:00: bus scan returning with max=00
+[   25.355755] Registering platform device 'PNP0C0A:00'. Parent at pci0000:00
+[   25.523385] device: 'PNP0C0A:00': device_add
+[   25.633641] bus: 'platform': add device PNP0C0A:00
+[   25.777508] Registering platform device 'ACPI0003:00'. Parent at pci0000:00
+[   25.960051] device: 'ACPI0003:00': device_add
+[   26.070617] bus: 'platform': add device ACPI0003:00
+[   26.233633] ACPI: PCI Interrupt Link [LNKA] (IRQs 5 9 10 *11)
+[   26.391448] ACPI: PCI Interrupt Link [LNKB] (IRQs 5 9 10 *11)
+[   26.538725] ACPI: PCI Interrupt Link [LNKC] (IRQs
+[   26.616703] INFO: rcu_sched detected stalls on CPUs/tasks:
+
+[   26.616703] 	1: (530 ticks this GP) idle=319/140000000000000/0 softirq=407/407 fqs=3064 
+[   26.616703] 	
+[   26.616706] (detected by 0, t=6302 jiffies, g=-282, c=-283, q=0)
+[   26.616709] Task dump for CPU 1:
+[   26.616712] swapper/0       R
+[   26.616714]   running task    
+[   26.616722] 12504     1      0 0x00000008
+[   26.616726]  ffff8800000beea0
+[   26.616729]  ffffffff9d35b6b4
+[   26.616758]  ffff8802b69f3b88
+[   26.616761]  ffffffff9c62edb8
+
+[   26.616765]  ffffffff9d35b6ad
+[   26.616768]  ffffffff9d35b6b4
+[   26.616770]  ffff8802b69f3ba8
+[   26.616772]  ffffffff9c62ee0c
+
+[   26.616779]  ffffffff9d16b360
+[   26.616781]  0000000000000034
+[   26.616783]  ffff8802b69f3bd8
+[   26.616786]  ffffffff9c68c052
+
+[   26.616792] Call Trace:
+[   26.616863]  [<ffffffff9c62eda1>] ? early_serial_putc+0x31/0x70
+[   26.616868]  [<ffffffff9c62ee0c>] ? early_serial_write+0x2c/0x60
+[   26.616873]  [<ffffffff9c68c052>] ? call_console_drivers.constprop.13+0xa2/0xf0
+[   26.616876]  [<ffffffff9c68ceda>] ? console_unlock+0x38a/0x4c0
+[   26.616880]  [<ffffffff9c687a99>] ? down_trylock+0x29/0x40
+[   26.616884]  [<ffffffff9c68d2f0>] ? vprintk_emit+0x2e0/0x500
+[   26.616888]  [<ffffffff9c68d64a>] ? vprintk_default+0x1a/0x20
+[   26.616893]  [<ffffffff9cd6163c>] ? printk+0x41/0x43
+[   26.616902]  [<ffffffff9c9a1bc3>] ? acpi_pci_link_add+0x1c1/0x1e8
+[   26.616905]  [<ffffffff9c99da73>] ? acpi_bus_attach+0xbf/0x15e
+[   26.616909]  [<ffffffff9c99dacd>] ? acpi_bus_attach+0x119/0x15e
+[   26.616913]  [<ffffffff9c99dacd>] ? acpi_bus_attach+0x119/0x15e
+[   26.616917]  [<ffffffff9d277509>] ? acpi_sleep_init+0xe8/0xe8
+[   26.616921]  [<ffffffff9d277509>] ? acpi_sleep_init+0xe8/0xe8
+[   26.616925]  [<ffffffff9c99dc0d>] ? acpi_bus_scan+0x5c/0x67
+[   26.616929]  [<ffffffff9d277973>] ? acpi_scan_init+0x7c/0x1ab
+[   26.616932]  [<ffffffff9d277762>] ? acpi_init+0x259/0x271
+[   26.616937]  [<ffffffff9c600384>] ? do_one_initcall+0xa4/0x190
+[   26.616942]  [<ffffffff9d246079>] ? kernel_init_freeable+0x149/0x1db
+[   26.616945]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[   26.616949]  [<ffffffff9cd5f1f9>] ? kernel_init+0x9/0xf0
+[   26.616953]  [<ffffffff9cd707ce>] ? ret_from_fork+0x3e/0x70
+[   26.616956]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[   29.649999] NMI watchdog: BUG: soft lockup - CPU#1 stuck for 22s! [swapper/0:1]
+[   29.649999] Modules linked in:
+
+[   29.649999] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 4.1.6-hardened-r1-g45b4b78 #3
+[   29.649999] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[   29.649999] task: ffff8802b69e8000 ti: ffff8802b69e86b8 task.ti: ffff8802b69e86b8
+[   29.649999] RIP: 0010:[<ffffffff9c68ce45>] 
+[   29.649999]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[   29.649999] RSP: 0018:ffff8802b69f3be8  EFLAGS: 00000246
+[   29.649999] RAX: 0000000000000038 RBX: 0000000000000246 RCX: 0000000000000042
+[   29.649999] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[   29.649999] RBP: ffff8802b69f3c28 R08: 0000000000000018 R09: 0000000000000019
+[   29.649999] R10: ffff8800000b0038 R11: 0000000000000720 R12: 0000000000000000
+[   29.649999] R13: 0000000000000007 R14: ffff8802c3a08acc R15: 0000000000000000
+[   29.649999] FS:  0000000000000000(0000) GS:ffff8802c3680000(0000) knlGS:0000000000000000
+[   29.649999] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[   29.649999] CR2: 0000000000000000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[   29.649999] Stack:
+[   29.649999]  ffff8802b69f3c08
+[   29.649999]  01ffffff9c687a99
+[   29.649999]  0000000000000001
+[   29.649999]  00000000ffffffff
+
+[   29.649999]  0000000000000000
+[   29.649999]  0000000000000000
+[   29.649999]  0000000000000025
+[   29.649999]  0000000000000004
+
+[   29.649999]  ffff8802b69f3ca8
+[   29.649999]  ffffffff9c68d2f0
+[   29.649999]  0000000000000000
+[   29.649999]  0000000000000000
+
+[   29.649999] Call Trace:
+[   29.649999]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[   29.649999]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[   29.649999]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[   29.649999]  [<ffffffff9c9a1bc3>] acpi_pci_link_add+0x1c1/0x1e8
+[   29.649999]  [<ffffffff9c99da73>] acpi_bus_attach+0xbf/0x15e
+[   29.649999]  [<ffffffff9c99dacd>] acpi_bus_attach+0x119/0x15e
+[   29.649999]  [<ffffffff9c99dacd>] acpi_bus_attach+0x119/0x15e
+[   29.649999]  [<ffffffff9d277509>] ? acpi_sleep_init+0xe8/0xe8
+[   29.649999]  [<ffffffff9d277509>] ? acpi_sleep_init+0xe8/0xe8
+[   29.649999]  [<ffffffff9c99dc0d>] acpi_bus_scan+0x5c/0x67
+[   29.649999]  [<ffffffff9d277973>] acpi_scan_init+0x7c/0x1ab
+[   29.649999]  [<ffffffff9d277762>] acpi_init+0x259/0x271
+[   29.649999]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[   29.649999]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[   29.649999]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[   29.649999]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[   29.649999]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[   29.649999]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[   29.649999] Code: 
+[   29.649999] b6 
+[   29.649999] 46 
+[   29.649999] 0f 
+[   29.649999] 89 
+[   29.649999] 15 
+[   29.649999] 21 
+[   29.649999] f5 
+[   29.649999] ec 
+[   29.649999] 00 
+[   29.649999] 48 
+[   29.649999] 83 
+[   29.649999] 05 
+[   29.649999] 1d 
+[   29.649999] f5 
+[   29.649999] ec 
+[   29.649999] 00 
+[   29.649999] 01 
+[   29.649999] 83 
+[   29.649999] e0 
+[   29.649999] 1f 
+[   29.649999] 89 
+[   29.649999] 05 
+[   29.649999] 0c 
+[   29.649999] f5 
+[   29.649999] ec 
+[   29.649999] 00 
+[   29.649999] 80 
+[   29.649999] 05 
+[   29.649999] 4d 
+[   29.649999] f5 
+[   29.649999] ec 
+[   29.649999] 00 
+[   29.649999] 01 
+[   29.649999] 44 
+[   29.649999] 89 
+[   29.649999] ef 
+[   29.649999] e8 
+[   29.649999] 6d 
+[   29.649999] f1 
+[   29.649999] ff 
+[   29.649999] ff 
+[   29.649999] 53 
+[   29.649999] 9d 
+[   29.649999] <e9> 
+[   29.649999] 86 
+[   29.649999] fd 
+[   29.649999] ff 
+[   29.649999] ff 
+[   29.649999] 66 
+[   29.649999] 0f 
+[   29.649999] 1f 
+[   29.649999] 44 
+[   29.649999] 00 
+[   29.649999] 00 
+[   29.649999] 45 
+[   29.649999] 84 
+[   29.649999] ed 
+[   29.649999] 0f 
+[   29.649999] 85 
+[   29.649999] 8d 
+[   29.649999] 01 
+[   29.649999] 00 
+[   29.649999] 00 
+[   29.649999] 49 
+
+[   37.575622]  5
+[   37.650023]  9 *10 11)
+[   37.674888] ACPI: PCI Interrupt Link [LNKD] (IRQs 5 *9 10 11)
+[   37.800910] device: 'LNXPWRBN:00': device_add
+[   37.913473] bus: 'acpi': add device LNXPWRBN:00
+[   38.017078] device: 'LNXSLPBN:00': device_add
+[   38.120196] bus: 'acpi': add device LNXSLPBN:00
+[   38.223913] ACPI: Enabled 2 GPEs in block 00 to 07
+[   38.350035] bus: 'acpi': add driver ec
+[   38.460539] bus: 'pnp': registered
+[   38.550072] bus: 'platform': add driver reg-fixed-voltage
+[   38.670291] bus: 'i2c': add driver lp3972
+[   38.770219] i2c-core: driver [lp3972] registered
+[   38.890072] bus: 'i2c': add driver lp8755-regulator
+[   39.000204] i2c-core: driver [lp8755-regulator] registered
+[   39.113455] device class 'misc': registering
+[   39.240306] device class 'tpm': registering
+[   39.363537] device: 'vga_arbiter': device_add
+[   39.483770] vgaarb: setting as boot device: PCI:0000:00:02.0
+[   39.486666] vgaarb: device added: PCI:0000:00:02.0,decodes=io+mem,owns=io+mem,locks=none
+[   39.850038] vgaarb: loaded
+[   39.876872] vgaarb: bridge control possible 0000:00:02.0
+[   40.021227] device class 'scsi_host': registering
+[   40.140420] bus: 'scsi': registered
+[   40.246700] device class 'scsi_device': registering
+[   40.383549] SCSI subsystem initialized
+[   40.497052] device class 'ata_link': registering
+[   40.613642] device class 'ata_port': registering
+[   40.743590] device class 'ata_device': registering
+[   40.880232] libata version 3.00 loaded.
+[   40.970057] device class 'mdio_bus': registering
+[   41.073771] bus: 'mdio_bus': registered
+[   41.186706] bus: 'mdio_bus': add driver Generic PHY
+[   41.287110] bus: 'mdio_bus': add driver Generic 10G PHY
+[   41.430330] ACPI: bus type USB registered
+[   41.543603] bus: 'usb': registered
+[   41.640111] bus: 'usb': add driver usbfs
+[   41.753681] usbcore: registered new interface driver usbfs
+[   41.900062] bus: 'usb': add driver hub
+[   42.010134] usbcore: registered new interface driver hub
+[   42.130214] bus: 'usb': add driver usb
+[   42.233608] usbcore: registered new device driver usb
+[   42.370209] bus: 'serio': registered
+[   42.476729] device class 'input': registering
+[   42.600314] device class 'rtc': registering
+[   42.706905] device class 'power_supply': registering
+[   42.830200] device class 'hwmon': registering
+[   42.953527] device class 'watchdog': registering
+[   43.066843] EDAC MC: Ver: 3.0.0
+[   43.153779] bus: 'edac': registered
+[   43.243388] device: 'edac': device_add
+[   43.346981] device: 'mc': device_add
+[   43.453395] bus: 'edac': add device mc
+[   43.560250] EDAC DEBUG: edac_mc_sysfs_init: device mc created
+[   43.710201] device class 'wmi': registering
+[   43.820182] bus: 'acpi': add driver wmi
+[   43.903813] wmi: Mapper loaded
+[   44.003412] device class 'devfreq': registering
+[   44.087234] PCI: Using ACPI for IRQ routing
+[   44.216697] PCI: pci_cache_line_size set to 64 bytes
+[   44.340044] pci 0000:00:01.1: BAR 0: reserving [io  0x01f0-0x01f7 flags 0x110] (d=0, p=0)
+[   44.566700] pci 0000:00:01.1: BAR 1: reserving [io  0x03f6 flags 0x110] (d=0, p=0)
+[   44.716742] pci 0000:00:01.1: BAR 2: reserving [io  0x0170-0x0177 flags 0x110] (d=0, p=0)
+[   44.920062] pci 0000:00:01.1: BAR 3: reserving [io  0x0376 flags 0x110] (d=0, p=0)
+[   45.110049] pci 0000:00:01.1: BAR 4: reserving [io  0xd000-0xd00f flags 0x40101] (d=0, p=0)
+[   45.343379] pci 0000:00:02.0: BAR 0: reserving [mem 0xe0000000-0xe0ffffff flags 0x42208] (d=0, p=0)
+[   45.576735] pci 0000:00:03.0: BAR 0: reserving [mem 0xf0000000-0xf001ffff flags 0x40200] (d=0, p=0)
+[   45.783395] pci 0000:00:03.0: BAR 2: reserving [io  0xd010-0xd017 flags 0x40101] (d=0, p=0)
+[   46.046739] pci 0000:00:04.0: BAR 0: reserving [io  0xd020-0xd03f flags 0x40101] (d=0, p=0)
+[   46.276709] pci 0000:00:04.0: BAR 1: reserving [mem 0xf0400000-0xf07fffff flags 0x40200] (d=0, p=0)
+[   46.490061] pci 0000:00:04.0: BAR 2: reserving [mem 0xf0800000-0xf0803fff flags 0x42208] (d=0, p=0)
+[   46.703415] pci 0000:00:05.0: BAR 0: reserving [io  0xd100-0xd1ff flags 0x40101] (d=0, p=0)
+[   46.933385] pci 0000:00:05.0: BAR 1: reserving [io  0xd200-0xd23f flags 0x40101] (d=0, p=0)
+[   47.150116] pci 0000:00:06.0: BAR 0: reserving [mem 0xf0804000-0xf0804fff flags 0x40200] (d=0, p=0)
+[   47.380076] pci 0000:00:0d.0: BAR 0: reserving [io  0xd240-0xd247 flags 0x40101] (d=0, p=0)
+[   47.593384] pci 0000:00:0d.0: BAR 2: reserving [io  0xd250-0xd257 flags 0x40101] (d=0, p=0)
+[   47.830080] pci 0000:00:0d.0: BAR 4: reserving [io  0xd260-0xd26f flags 0x40101] (d=0, p=0)
+[   48.053377] pci 0000:00:0d.0: BAR 5: reserving [mem 0xf0806000-0xf0807fff flags 0x40200] (d=0, p=0)
+[   48.330251] e820: reserve RAM buffer [mem 0x0009fc00-0x0009ffff]
+[   48.483373] e820: reserve RAM buffer [mem 0xdfff0000-0xdfffffff]
+[   48.633398] e820: reserve RAM buffer [mem 0x2c4b00000-0x2c7ffffff]
+[   48.750291] device class 'net': registering
+[   48.853603] device: 'lo': device_add
+[   48.969080] NetLabel: Initializing
+[   49.066691] NetLabel:  domain hash size = 128
+[   49.170031] NetLabel:  protocols = UNLABELED CIPSOv4
+[   49.286862] NetLabel:  unlabeled traffic allowed by default
+[   49.423936] Switched to clocksource refined-jiffies
+[   49.769650] device: 'fbcon': device_add
+[   50.003492] bus: 'pnp': add driver system
+[   50.180305] pnp: PnP ACPI init
+[   50.340266] device: 'pnp0': device_add
+[   50.537081] pnp 00:00: parse allocated resources
+[   50.758168] IOAPIC[0]: Set routing entry (4-1 -> 0x31 -> IRQ 1 Mode:0 Active:0 Dest:15)
+[   51.176708] device: '00:00': device_add
+[   51.376554] bus: 'pnp': add device 00:00
+[   51.570318] pnp 00:00: Plug and Play ACPI device, IDs PNP0303 (active)
+[   51.878420] pnp 00:01: parse allocated resources
+[   52.111532] IOAPIC[0]: Set routing entry (4-12 -> 0x3c -> IRQ 12 Mode:0 Active:0 Dest:15)
+[   52.526575] device: '00:01': device_add
+[   52.720426] bus: 'pnp': add device 00:01
+[   52.916565] pnp 00:01: Plug and Play ACPI device, IDs PNP0f03 (active)
+[   53.237279] pnp 00:02: parse allocated resources
+[   53.433261] IOAPIC[0]: Set routing entry (4-7 -> 0x37 -> IRQ 7 Mode:0 Active:0 Dest:15)
+[   53.840109] device: '00:02': device_add
+[   54.039882] bus: 'pnp': add device 00:02
+[   54.233719] pnp 00:02: Plug and Play ACPI device, IDs PNP0400 (active)
+[   54.526006] pnp 00:03: parse allocated resources
+[   54.754043] IOAPIC[0]: Set routing entry (4-4 -> 0x34 -> IRQ 4 Mode:0 Active:0 Dest:15)
+[   55.153150] device: '00:03': device_add
+[   55.353127] bus: 'pnp': add device 00:03
+[   55.537173] pnp 00:03: Plug and Play ACPI device, IDs PNP0501 (active)
+[   55.857204] pnp: PnP ACPI: found 4 devices
+[   56.063563] device class 'mem': registering
+[   56.280176] device: 'mem': device_add
+[   56.473431] device: 'null': device_add
+[   56.679592] device: 'port': device_add
+[   56.869778] device: 'zero': device_add
+[   57.043171] device: 'full': device_add
+[   57.249781] device: 'random': device_add
+[   57.449719] device: 'urandom': device_add
+[   57.663112] device: 'kmsg': device_add
+[   57.853022] device: 'tty': device_add
+[   58.059724] device: 'console': device_add
+[   58.226437] device: 'tty0': device_add
+[   58.412965] device class 'vc': registering
+[   58.553580] device: 'vcs': device_add
+[   58.729624] device: 'vcsa': device_add
+[   58.906272] device: 'vcs1': device_add
+[   59.109706] device: 'vcsa1': device_add
+[   59.276466] device: 'tty1': device_add
+[   59.459571] device: 'tty2': device_add
+[   59.633040] device: 'tty3': device_add
+[   59.826549] device: 'tty4': device_add
+[   60.003531] device: 'tty5': device_add
+[   60.183180] device: 'tty6': device_add
+[   60.346427] device: 'tty7': device_add
+[   60.536216] device: 'tty8': device_add
+[   60.719775] device: 'tty9': device_add
+[   60.909422] device: 'tty10': device_add
+[   61.077152] device: 'tty11': device_add
+[   61.276154] device: 'tty12': device_add
+[   61.400000] device: 'tty13': device_add
+[   61.532886] device: 'tty14': device_add
+[   61.626307] device: 'tty15': device_add
+[   61.739568] device: 'tty16': device_add
+[   61.852900] device: 'tty17': device_add
+[   61.956386] device: 'tty18': device_add
+[   62.040081] device: 'tty19': device_add
+[   62.166435] device: 'tty20': device_add
+[   62.276044] device: 'tty21': device_add
+[   62.376278] device: 'tty22': device_add
+[   62.486271] device: 'tty23': device_add
+[   62.582880] device: 'tty24': device_add
+[   62.669590] device: 'tty25': device_add
+[   62.789363] device: 'tty26': device_add
+[   62.863287] device: 'tty27': device_add
+[   62.959577] device: 'tty28': device_add
+[   63.076324] device: 'tty29': device_add
+[   63.166278] device: 'tty30': device_add
+[   63.265946] device: 'tty31': device_add
+[   63.365991] device: 'tty32': device_add
+[   63.469178] device: 'tty33': device_add
+[   63.562610] device: 'tty34': device_add
+[   63.679373] device: 'tty35': device_add
+[   63.796107] device: 'tty36': device_add
+[   63.895950] device: 'tty37': device_add
+[   64.002593] device: 'tty38': device_add
+[   64.082856] device: 'tty39': device_add
+[   64.189443] device: 'tty40': device_add
+[   64.286042] device: 'tty41': device_add
+[   64.406220] device: 'tty42': device_add
+[   64.522726] device: 'tty43': device_add
+[   64.603176] device: 'tty44': device_add
+[   64.706205] device: 'tty45': device_add
+[   64.806001] device: 'tty46': device_add
+[   64.912689] device: 'tty47': device_add
+[   65.009745] device: 'tty48': device_add
+[   65.129428] device: 'tty49': device_add
+[   65.219327] device: 'tty50': device_add
+[   65.315875] device: 'tty51': device_add
+[   65.415969] device: 'tty52': device_add
+[   65.522379] device: 'tty53': device_add
+[   65.642654] device: 'tty54': device_add
+[   65.742711] device: 'tty55': device_add
+[   65.835964] device: 'tty56': device_add
+[   65.943914] device: 'tty57': device_add
+[   66.032639] device: 'tty58': device_add
+[   66.119341] device: 'tty59': device_add
+[   66.216364] device: 'tty60': device_add
+[   66.295768] device: 'tty61': device_add
+[   66.392634] device: 'tty62': device_add
+[   66.502629] device: 'tty63': device_add
+[   66.606285] device class 'thermal': registering
+[   66.720598] clocksource acpi_pm: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns: 2085701024 ns
+[   66.952310] Switched to clocksource acpi_pm
+[   67.084476] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 window]
+[   67.336236] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff window]
+[   67.577031] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bffff window]
+[   67.911711] pci_bus 0000:00: resource 7 [mem 0xe0000000-0xffdfffff window]
+[   68.239930] NET: Registered protocol family 2
+[   68.404391] TCP established hash table entries: 131072 (order: 8, 1048576 bytes)
+[   68.762236] TCP bind hash table entries: 65536 (order: 8, 1048576 bytes)
+[   69.083325] TCP: Hash tables configured (established 131072 bind 65536)
+[   69.448100] UDP hash table entries: 8192 (order: 6, 262144 bytes)
+[   69.740628] UDP-Lite hash table entries: 8192 (order: 6, 262144 bytes)
+[   70.050641] NET: Registered protocol family 1
+[   70.254521] pci 0000:00:00.0: calling quirk_natoma+0x0/0x40
+[   70.538051] pci 0000:00:00.0: Limiting direct PCI/PCI transfers
+[   70.867315] pci 0000:00:00.0: calling quirk_passive_release+0x0/0x90
+[   71.198091] pci 0000:00:01.0: calling quirk_isa_dma_hangs+0x0/0x40
+[   71.498056] pci 0000:00:01.0: Activating ISA DMA hang workarounds
+[   71.827093] pci 0000:00:02.0: calling pci_fixup_video+0x0/0xd0
+[   72.091652] pci 0000:00:02.0: Video device with shadowed ROM
+[   72.355626] pci 0000:00:03.0: calling quirk_e100_interrupt+0x0/0x1a0
+[   72.635273] pci 0000:00:06.0: calling quirk_usb_early_handoff+0x0/0x760
+[   72.965552] IOAPIC[0]: Set routing entry (4-22 -> 0x41 -> IRQ 22 Mode:1 Active:1 Dest:15)
+[   73.379386] PCI: CLS 0 bytes, default 64
+[   73.558513] Unpacking initramfs...
+[   76.355071] Freeing initrd memory: 8912K (ffff880036e87000 - ffff88003773b000)
+[   76.549154] PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+[   76.723476] software IO TLB [mem 0xdbff0000-0xdfff0000] (64MB) mapped at [ffff8800dbff0000-ffff8800dffeffff]
+[   77.011027] Registering platform device 'rtc_cmos'. Parent at platform
+[   77.182422] device: 'rtc_cmos': device_add
+[   77.314302] bus: 'platform': add device rtc_cmos
+[   77.442689] platform rtc_cmos: registered platform RTC device (no PNP device found)
+[   77.643710] Registering platform device 'microcode'. Parent at platform
+[   77.825231] device: 'microcode': device_add
+[   77.938767] bus: 'platform': add device microcode
+[   78.062504] microcode: CPU0: patch_level=0x06000626
+[   78.201540] microcode: CPU1: patch_level=0x06000626
+[   78.235129] microcode: CPU2: patch_level=0x06000626
+[   78.402177] microcode: CPU3: patch_level=0x06000626
+[   78.582728] device: 'microcode': device_add
+[   78.647431] clocksource tsc: mask: 0xffffffffffffffff max_cycles: 0x1424be0ff50, max_idle_ns: 440795248955 ns
+[   78.648428] microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+[   78.648490] Registering platform device 'pcspkr'. Parent at platform
+[   78.648500] device: 'pcspkr': device_add
+[   78.648588] bus: 'platform': add device pcspkr
+[   78.649259] Registering platform device 'platform-framebuffer.0'. Parent at platform
+[   78.649267] device: 'platform-framebuffer.0': device_add
+[   78.649371] bus: 'platform': add device platform-framebuffer.0
+[   78.651077] sha1_ssse3: Neither AVX nor AVX2 nor SSSE3 is available/usable.
+[   78.651729] bus: 'clocksource': registered
+[   78.651759] device: 'clocksource': device_add
+[   78.652121] device: 'clocksource0': device_add
+[   78.652185] bus: 'clocksource': add device clocksource0
+[   78.652644] bus: 'platform': add driver alarmtimer
+[   78.653270] Registering platform device 'alarmtimer'. Parent at platform
+[   78.653280] device: 'alarmtimer': device_add
+[   78.653370] bus: 'platform': add device alarmtimer
+[   78.654205] bus: 'platform': driver_probe_device: matched device alarmtimer with driver alarmtimer
+[   78.654216] bus: 'platform': really_probe: probing driver alarmtimer with device alarmtimer
+[   78.654279] driver: 'alarmtimer': driver_bound: bound to device 'alarmtimer'
+[   78.654283] bus: 'platform': really_probe: bound device alarmtimer to driver alarmtimer
+[   78.654955] bus: 'clockevents': registered
+[   78.654978] device: 'clockevents': device_add
+[   78.655263] device: 'clockevent0': device_add
+[   78.655315] bus: 'clockevents': add device clockevent0
+[   78.655683] device: 'clockevent1': device_add
+[   78.655744] bus: 'clockevents': add device clockevent1
+[   78.656067] device: 'clockevent2': device_add
+[   78.656129] bus: 'clockevents': add device clockevent2
+[   78.656422] device: 'clockevent3': device_add
+[   78.656484] bus: 'clockevents': add device clockevent3
+[   78.657769] device: 'broadcast': device_add
+[   78.657880] bus: 'clockevents': add device broadcast
+[   78.658331] futex hash table entries: 1024 (order: 4, 65536 bytes)
+[   78.658413] Initialise system trusted keyring
+[   78.658667] audit: initializing netlink subsys (disabled)
+[   78.658823] audit: type=2000 audit(1440834977.652:1): initialized
+[   78.659987] bus: 'event_source': registered
+[   78.660258] device: 'breakpoint': device_add
+[   78.660324] bus: 'event_source': add device breakpoint
+[   78.660691] device: 'tracepoint': device_add
+[   78.660755] bus: 'event_source': add device tracepoint
+[   78.661158] device: 'software': device_add
+[   78.661222] bus: 'event_source': add device software
+[   78.662706] HugeTLB registered 2 MB page size, pre-allocated 0 pages
+[   78.803428] alg: No test for stdrng (krng)
+[   78.824396] Key type asymmetric registered
+[   78.824417] Asymmetric key parser 'x509' registered
+[   78.825712] device class 'bsg': registering
+[   78.825806] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 251)
+[   78.825831] io scheduler noop registered
+[   78.825845] io scheduler deadline registered (default)
+[   78.832549] test_string_helpers: Running tests...
+[   78.837999] bus: 'pci_express': registered
+[   78.838005] bus: 'pci': add driver pcieport
+[   78.838269] bus: 'pci_express': add driver aer
+[   78.838450] bus: 'pci_express': add driver pcie_pme
+[   78.838637] pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+[   78.838654] bus: 'pci_express': add driver pciehp_dummy
+[   78.838820] bus: 'pci_express': remove driver pciehp_dummy
+[   78.838870] driver: 'pciehp_dummy': driver_release
+[   78.838883] bus: 'pci_express': add driver pciehp
+[   78.839094] pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+[   78.839111] bus: 'pci': add driver radeonfb
+[   78.839382] bus: 'platform': add driver ipmi
+[   78.839596] ipmi message handler version 39.2
+[   78.839628] ipmi device interface
+[   78.839640] device class 'ipmi': registering
+[   78.839766] IPMI Watchdog: driver initialized
+[   78.839779] Copyright (C) 2004 MontaVista Software - IPMI Powerdown via sys_reboot.
+[   78.839835] bus: 'acpi': add driver ac
+[   78.839899] bus: 'acpi': driver_probe_device: matched device ACPI0003:00 with driver ac
+[   78.839904] bus: 'acpi': really_probe: probing driver ac with device ACPI0003:00
+[   78.840500] device: 'AC': device_add
+[   78.841096] ACPI: AC Adapter [AC] (on-line)
+[   78.841115] driver: 'ac': driver_bound: bound to device 'ACPI0003:00'
+[   78.841124] bus: 'acpi': really_probe: bound device ACPI0003:00 to driver ac
+[   78.841227] bus: 'acpi': add driver button
+[   78.841285] bus: 'acpi': driver_probe_device: matched device LNXPWRBN:00 with driver button
+[   78.841289] bus: 'acpi': really_probe: probing driver button with device LNXPWRBN:00
+[   78.841398] device: 'input0': device_add
+[   78.842601] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input0
+[   78.842620] ACPI: Power Button [PWRF]
+[   78.842661] driver: 'button': driver_bound: bound to device 'LNXPWRBN:00'
+[   78.842666] bus: 'acpi': really_probe: bound device LNXPWRBN:00 to driver button
+[   78.842672] bus: 'acpi': driver_probe_device: matched device LNXSLPBN:00 with driver button
+[   78.842676] bus: 'acpi': really_probe: probing driver button with device LNXSLPBN:00
+[   78.842765] device: 'input1': device_add
+[   78.843854] input: Sleep Button as /devices/LNXSYSTM:00/LNXSLPBN:00/input/input1
+[   78.843870] ACPI: Sleep Button [SLPF]
+[   78.843910] driver: 'button': driver_bound: bound to device 'LNXSLPBN:00'
+[   78.843914] bus: 'acpi': really_probe: bound device LNXSLPBN:00 to driver button
+[   78.844017] bus: 'platform': add driver acpi-fan
+[   78.844220] bus: 'acpi': add driver video
+[   78.844264] bus: 'acpi': driver_probe_device: matched device LNXVIDEO:00 with driver video
+[   78.844273] bus: 'acpi': really_probe: probing driver video with device LNXVIDEO:00
+[   78.845354] ACPI: Video Device [GFX0] (multi-head: yes  rom: no  post: no)
+[   78.845844] device: 'input2': device_add
+[   78.846984] input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A03:00/LNXVIDEO:00/input/input2
+[   78.847030] driver: 'video': driver_bound: bound to device 'LNXVIDEO:00'
+[   78.847034] bus: 'acpi': really_probe: bound device LNXVIDEO:00 to driver video
+[   78.847171] bus: 'cpu': add driver processor
+[   78.847223] bus: 'cpu': driver_probe_device: matched device cpu0 with driver processor
+[   78.847228] bus: 'cpu': really_probe: probing driver processor with device cpu0
+[   78.847376] device: 'cooling_device0': device_add
+[   78.848026] driver: 'processor': driver_bound: bound to device 'cpu0'
+[   78.848031] bus: 'cpu': really_probe: bound device cpu0 to driver processor
+[   78.848036] bus: 'cpu': driver_probe_device: matched device cpu1 with driver processor
+[   78.848039] bus: 'cpu': really_probe: probing driver processor with device cpu1
+[   78.848248] device: 'cooling_device1': device_add
+[   78.848721] driver: 'processor': driver_bound: bound to device 'cpu1'
+[   78.848730] bus: 'cpu': really_probe: bound device cpu1 to driver processor
+[   78.848735] bus: 'cpu': driver_probe_device: matched device cpu2 with driver processor
+[   78.848739] bus: 'cpu': really_probe: probing driver processor with device cpu2
+[   78.848871] device: 'cooling_device2': device_add
+[   78.849407] driver: 'processor': driver_bound: bound to device 'cpu2'
+[   78.849411] bus: 'cpu': really_probe: bound device cpu2 to driver processor
+[   78.849417] bus: 'cpu': driver_probe_device: matched device cpu3 with driver processor
+[   78.849421] bus: 'cpu': really_probe: probing driver processor with device cpu3
+[   78.849614] device: 'cooling_device3': device_add
+[   78.851052] driver: 'processor': driver_bound: bound to device 'cpu3'
+[   78.851056] bus: 'cpu': really_probe: bound device cpu3 to driver processor
+[   78.851608] bus: 'acpi': add driver thermal
+[   78.851891] bus: 'acpi': add driver hardware_error_device
+[   78.851997] bus: 'acpi': add driver battery
+[   78.852024] GHES: HEST is not enabled!
+[   78.852040] bus: 'platform': add driver reg-virt-consumer
+[   78.852177] bus: 'acpi': driver_probe_device: matched device PNP0C0A:00 with driver battery
+[   78.852182] bus: 'acpi': really_probe: probing driver battery with device PNP0C0A:00
+[   78.852243] bus: 'i2c': add driver LP3971
+[   78.852415] i2c-core: driver [LP3971] registered
+[   78.852428] bus: 'i2c': add driver lp872x
+[   78.852531] i2c-core: driver [lp872x] registered
+[   78.852630] device: 'ptmx': device_add
+[   78.853268] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[   78.853350] bus: 'pnp': add driver serial
+[   78.853634] bus: 'pnp': driver_probe_device: matched device 00:03 with driver serial
+[   78.853639] bus: 'pnp': really_probe: probing driver serial with device 00:03
+[   78.868391] device: 'BAT0': device_add
+[   78.871225] ACPI: Battery Slot [BAT0] (battery present)
+[   78.871242] driver: 'battery': driver_bound: bound to device 'PNP0C0A:00'
+[   78.871247] bus: 'acpi': really_probe: bound device PNP0C0A:00 to driver battery
+[   78.877029] 00:03: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
+[   78.877103] device: 'ttyS0': device_add
+[   78.879129] driver: 'serial': driver_bound: bound to device '00:03'
+[   78.879133] bus: 'pnp': really_probe: bound device 00:03 to driver serial
+[   78.879227] Registering platform device 'serial8250'. Parent at platform
+[   78.879235] device: 'serial8250': device_add
+[   78.879287] bus: 'platform': add device serial8250
+[   78.879692] device: 'ttyS1': device_add
+[   78.881464] device: 'ttyS2': device_add
+[   78.882685] device: 'ttyS3': device_add
+[   78.883854] bus: 'platform': add driver serial8250
+[   78.883905] bus: 'platform': driver_probe_device: matched device serial8250 with driver serial8250
+[   78.883909] bus: 'platform': really_probe: probing driver serial8250 with device serial8250
+[   78.883962] driver: 'serial8250': driver_bound: bound to device 'serial8250'
+[   78.883966] bus: 'platform': really_probe: bound device serial8250 to driver serial8250
+[   78.884080] device: 'hpet': device_add
+[   78.885179] bus: 'acpi': add driver hpet
+[   78.885400] device: 'hw_random': device_add
+[   78.886233] Hangcheck: starting hangcheck timer 0.9.1 (tick is 180 seconds, margin is 60 seconds).
+[   78.886262] bus: 'pnp': add driver tpm_tis
+[   78.886529] bus: 'i2c': add driver tpm_i2c_infineon
+[   78.886806] i2c-core: driver [tpm_i2c_infineon] registered
+[   78.886834] bus: 'pnp': add driver tpm_inf_pnp
+[   78.887198] device class 'drm': registering
+[   78.887358] [drm] Initialized drm 1.1.0 20060810
+[   78.887388] device: 'ttm': device_add
+[   78.887828] [drm] radeon kernel modesetting enabled.
+[   78.887876] bus: 'pci': add driver radeon
+[   79.049886] device: 'cache': device_add
+[   79.050195] device: 'index0': device_add
+[   79.050560] device: 'index1': device_add
+[   79.050923] device: 'index2': device_add
+[   79.051542] device: 'cache': device_add
+[   79.051735] device: 'index0': device_add
+[   79.052110] device: 'index1': device_add
+[   79.052477] device: 'index2': device_add
+[   79.053058] device: 'cache': device_add
+[   79.053251] device: 'index0': device_add
+[   79.053732] device: 'index1': device_add
+[   79.054108] device: 'index2': device_add
+[   79.054495] device: 'cache': device_add
+[   79.054708] device: 'index0': device_add
+[   79.055077] device: 'index1': device_add
+[   79.055438] device: 'index2': device_add
+[   79.055818] device class 'spi_transport': registering
+[   79.055949] device class 'spi_host': registering
+[   79.056108] device class 'scsi_disk': registering
+[   79.058877] bus: 'scsi': add driver sd
+[   79.059101] bus: 'scsi': add driver sr
+[   79.059295] device class 'scsi_generic': registering
+[   79.059497] bus: 'pci': add driver ahci
+[   79.059560] bus: 'pci': driver_probe_device: matched device 0000:00:0d.0 with driver ahci
+[   79.059565] bus: 'pci': really_probe: probing driver ahci with device 0000:00:0d.0
+[   79.059635] ahci 0000:00:0d.0: version 3.0
+[   79.085510] IOAPIC[0]: Set routing entry (4-21 -> 0x51 -> IRQ 21 Mode:1 Active:1 Dest:15)
+[   79.085787] ahci 0000:00:0d.0: SSS flag set, parallel bus scan disabled
+[   79.086131] ahci 0000:00:0d.0: AHCI 0001.0100 32 slots 2 ports 3 Gbps 0x3 impl SATA mode
+[   79.086137] ahci 0000:00:0d.0: flags: 64bit ncq stag only ccc 
+[   79.086925] device: 'ata1': device_add
+[   79.087173] device: 'ata1': device_add
+[   79.087782] device: 'link1': device_add
+[   79.088033] device: 'link1': device_add
+[   79.095234] device: 'dev1.0': device_add
+[   79.095479] device: 'dev1.0': device_add
+[   79.112024] device: 'ata2': device_add
+[   79.112267] device: 'ata2': device_add
+[   79.125696] device: 'link2': device_add
+[   79.125937] device: 'link2': device_add
+[   79.126532] device: 'dev2.0': device_add
+[   79.127197] device: 'dev2.0': device_add
+[   79.129967] scsi host0: ahci
+[   79.132828] device: 'host0': device_add
+[   79.132910] bus: 'scsi': add device host0
+[   79.133305] device: 'host0': device_add
+[   79.135989] scsi host1: ahci
+[   79.136033] device: 'host1': device_add
+[   79.136117] bus: 'scsi': add device host1
+[   79.136482] device: 'host1': device_add
+[   79.137787] ata1: SATA max UDMA/133 abar m8192@0xf0806000 port 0xf0806100 irq 21
+[   79.137797] ata2: SATA max UDMA/133 abar m8192@0xf0806000 port 0xf0806180 irq 21
+[   79.137852] driver: 'ahci': driver_bound: bound to device '0000:00:0d.0'
+[   79.137859] bus: 'pci': really_probe: bound device 0000:00:0d.0 to driver ahci
+[   79.138232] bus: 'pci': add driver ata_piix
+[   79.138286] bus: 'pci': driver_probe_device: matched device 0000:00:01.1 with driver ata_piix
+[   79.138289] bus: 'pci': really_probe: probing driver ata_piix with device 0000:00:01.1
+[   79.138343] ata_piix 0000:00:01.1: version 2.13
+[   79.140798] device: 'ata3': device_add
+[   79.141039] device: 'ata3': device_add
+[   79.141652] device: 'link3': device_add
+[   79.141894] device: 'link3': device_add
+[   79.142449] device: 'dev3.0': device_add
+[   79.142676] device: 'dev3.0': device_add
+[   79.143460] device: 'dev3.1': device_add
+[   79.143692] device: 'dev3.1': device_add
+[   79.144394] device: 'ata4': device_add
+[   79.144614] device: 'ata4': device_add
+[   79.145186] device: 'link4': device_add
+[   79.145422] device: 'link4': device_add
+[   79.145998] device: 'dev4.0': device_add
+[   79.146220] device: 'dev4.0': device_add
+[   79.147040] device: 'dev4.1': device_add
+[   79.147259] device: 'dev4.1': device_add
+[   79.148900] scsi host2: ata_piix
+[   79.148937] device: 'host2': device_add
+[   79.149027] bus: 'scsi': add device host2
+[   79.149357] device: 'host2': device_add
+[   79.152288] scsi host3: ata_piix
+[   79.152314] device: 'host3': device_add
+[   79.152379] bus: 'scsi': add device host3
+[   79.152697] device: 'host3': device_add
+[   79.153624] ata3: PATA max UDMA/33 cmd 0x1f0 ctl 0x3f6 bmdma 0xd000 irq 14
+[   79.153628] ata4: PATA max UDMA/33 cmd 0x170 ctl 0x376 bmdma 0xd008 irq 15
+[   79.153666] driver: 'ata_piix': driver_bound: bound to device '0000:00:01.1'
+[   79.153673] bus: 'pci': really_probe: bound device 0000:00:01.1 to driver ata_piix
+[   79.153906] bus: 'pci': add driver pata_amd
+[   79.154156] bus: 'pci': add driver pata_oldpiix
+[   79.154395] bus: 'pci': add driver pata_sch
+[   79.154642] bus: 'mdio_bus': add driver RTL8201CP Ethernet
+[   79.154766] bus: 'mdio_bus': add driver RTL8211B Gigabit Ethernet
+[   79.154902] bus: 'mdio_bus': add driver RTL8211E Gigabit Ethernet
+[   79.155016] bus: 'pci': add driver r8169
+[   79.155318] bus: 'pci': add driver xhci_hcd
+[   79.155538] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[   79.155569] ehci-pci: EHCI PCI platform driver
+[   79.155575] bus: 'pci': add driver ehci-pci
+[   79.155761] ehci-platform: EHCI generic platform driver
+[   79.155769] bus: 'platform': add driver ehci-platform
+[   79.155933] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[   79.155957] ohci-pci: OHCI PCI platform driver
+[   79.155962] bus: 'pci': add driver ohci-pci
+[   79.156003] bus: 'pci': driver_probe_device: matched device 0000:00:06.0 with driver ohci-pci
+[   79.156008] bus: 'pci': really_probe: probing driver ohci-pci with device 0000:00:06.0
+[   79.179545] IOAPIC[0]: Set routing entry (4-22 -> 0x61 -> IRQ 22 Mode:1 Active:1 Dest:15)
+[   79.179713] ohci-pci 0000:00:06.0: enabling bus mastering
+[   79.179750] ohci-pci 0000:00:06.0: OHCI PCI host controller
+[   79.179809] ohci-pci 0000:00:06.0: new USB bus registered, assigned bus number 1
+[   79.180344] ohci-pci 0000:00:06.0: irq 22, io mem 0xf0804000
+[   79.232600] usb usb1: New USB device found, idVendor=1d6b, idProduct=0001
+[   79.232606] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[   79.232610] usb usb1: Product: OHCI PCI host controller
+[   79.232614] usb usb1: Manufacturer: Linux 4.1.6-hardened-r1-g45b4b78 ohci_hcd
+[   79.232617] usb usb1: SerialNumber: 0000:00:06.0
+[   79.232639] device: 'usb1': device_add
+[   79.233568] bus: 'usb': add device usb1
+[   79.234645] bus: 'usb': driver_probe_device: matched device usb1 with driver usb
+[   79.234650] bus: 'usb': really_probe: probing driver usb with device usb1
+[   79.234910] device: '1-0:1.0': device_add
+[   79.235279] bus: 'usb': add device 1-0:1.0
+[   79.235430] bus: 'usb': driver_probe_device: matched device 1-0:1.0 with driver hub
+[   79.235433] bus: 'usb': really_probe: probing driver hub with device 1-0:1.0
+[   79.235528] hub 1-0:1.0: USB hub found
+[   79.235669] hub 1-0:1.0: 12 ports detected
+[   79.235921] device: 'usb1-port1': device_add
+[   79.236347] device: 'usb1-port2': device_add
+[   79.237084] device: 'usb1-port3': device_add
+[   79.237502] device: 'usb1-port4': device_add
+[   79.237903] device: 'usb1-port5': device_add
+[   79.238339] device: 'usb1-port6': device_add
+[   79.238743] device: 'usb1-port7': device_add
+[   79.239141] device: 'usb1-port8': device_add
+[   79.239540] device: 'usb1-port9': device_add
+[   79.239939] device: 'usb1-port10': device_add
+[   79.240351] device: 'usb1-port11': device_add
+[   79.240758] device: 'usb1-port12': device_add
+[   79.244318] driver: 'hub': driver_bound: bound to device '1-0:1.0'
+[   79.244334] bus: 'usb': really_probe: bound device 1-0:1.0 to driver hub
+[   79.244367] device: 'ep_81': device_add
+[   79.244945] driver: 'usb': driver_bound: bound to device 'usb1'
+[   79.244949] bus: 'usb': really_probe: bound device usb1 to driver usb
+[   79.244971] device: 'ep_00': device_add
+[   79.245505] driver: 'ohci-pci': driver_bound: bound to device '0000:00:06.0'
+[   79.245509] bus: 'pci': really_probe: bound device 0000:00:06.0 to driver ohci-pci
+[   79.245696] ohci-platform: OHCI generic platform driver
+[   79.245717] bus: 'platform': add driver ohci-platform
+[   79.245895] uhci_hcd: USB Universal Host Controller Interface driver
+[   79.246771] bus: 'pci': add driver uhci_hcd
+[   79.247057] bus: 'usb': add driver usb-storage
+[   79.247325] usbcore: registered new interface driver usb-storage
+[   79.247338] bus: 'usb': add driver ums-realtek
+[   79.247565] usbcore: registered new interface driver ums-realtek
+[   79.247582] bus: 'pnp': add driver i8042 kbd
+[   79.247628] bus: 'pnp': driver_probe_device: matched device 00:00 with driver i8042 kbd
+[   79.247632] bus: 'pnp': really_probe: probing driver i8042 kbd with device 00:00
+[   79.247684] driver: 'i8042 kbd': driver_bound: bound to device '00:00'
+[   79.247688] bus: 'pnp': really_probe: bound device 00:00 to driver i8042 kbd
+[   79.247790] bus: 'pnp': add driver i8042 aux
+[   79.247832] bus: 'pnp': driver_probe_device: matched device 00:01 with driver i8042 aux
+[   79.247835] bus: 'pnp': really_probe: probing driver i8042 aux with device 00:01
+[   79.247884] driver: 'i8042 aux': driver_bound: bound to device '00:01'
+[   79.247888] bus: 'pnp': really_probe: bound device 00:01 to driver i8042 aux
+[   79.247995] i8042: PNP: PS/2 Controller [PNP0303:PS2K,PNP0f03:PS2M] at 0x60,0x64 irq 1,12
+[   79.248055] Registering platform device 'i8042'. Parent at platform
+[   79.248062] device: 'i8042': device_add
+[   79.248144] bus: 'platform': add device i8042
+[   79.248402] bus: 'platform': add driver i8042
+[   79.248448] bus: 'platform': driver_probe_device: matched device i8042 with driver i8042
+[   79.248451] bus: 'platform': really_probe: probing driver i8042 with device i8042
+[   79.268792] serio: i8042 KBD port at 0x60,0x64 irq 1
+[   79.268828] serio: i8042 AUX port at 0x60,0x64 irq 12
+[   79.268846] driver: 'i8042': driver_bound: bound to device 'i8042'
+[   79.268852] bus: 'platform': really_probe: bound device i8042 to driver i8042
+[   79.269088] device: 'mice': device_add
+[   79.269444] device: 'serio0': device_add
+[   79.269657] bus: 'serio': add device serio0
+[   79.269890] device: 'serio1': device_add
+[   79.269924] device: 'psaux': device_add
+[   79.270506] bus: 'serio': add device serio1
+[   79.271061] mousedev: PS/2 mouse device common for all mice
+[   79.271129] device: 'event0': device_add
+[   79.271808] device: 'event1': device_add
+[   79.272672] device: 'event2': device_add
+[   79.273614] bus: 'serio': add driver atkbd
+[   79.273947] bus: 'serio': driver_probe_device: matched device serio0 with driver atkbd
+[   79.273952] bus: 'serio': really_probe: probing driver atkbd with device serio0
+[   79.274327] bus: 'serio': add driver psmouse
+[   79.274900] bus: 'pnp': add driver rtc_cmos
+[   79.275108] bus: 'platform': add driver rtc_cmos
+[   79.275156] bus: 'platform': driver_probe_device: matched device rtc_cmos with driver rtc_cmos
+[   79.275159] bus: 'platform': really_probe: probing driver rtc_cmos with device rtc_cmos
+[   79.275459] rtc rtc0: alarm rollover: day
+[   79.275502] device: 'rtc0': device_add
+[   79.276540] rtc rtc0: rtc_cmos: dev (253:0)
+[   79.276588] rtc_cmos rtc_cmos: rtc core: registered rtc_cmos as rtc0
+[   79.277208] rtc_cmos rtc_cmos: alarms up to one day, 114 bytes nvram
+[   79.277212] driver: 'rtc_cmos': driver_bound: bound to device 'rtc_cmos'
+[   79.277215] bus: 'platform': really_probe: bound device rtc_cmos to driver rtc_cmos
+[   79.277343] bus: 'i2c': add driver smbus_alert
+[   79.277518] i2c-core: driver [smbus_alert] registered
+[   79.277576] bus: 'pci': add driver k10temp
+[   79.308171] device: 'device-mapper': device_add
+[   79.309020] device-mapper: ioctl: 4.31.0-ioctl (2015-3-12) initialised: dm-devel@redhat.com
+[   79.309223] bus: 'hid': registered
+[   79.309260] device class 'hidraw': registering
+[   79.309330] hidraw: raw HID events driver (C) Jiri Kosina
+[   79.309385] bus: 'usb': add driver usbhid
+[   79.309681] usbcore: registered new interface driver usbhid
+[   79.309684] usbhid: USB HID core driver
+[   79.309891] NET: Registered protocol family 17
+[   79.309948] Key type dns_resolver registered
+[   79.310597] bus: 'machinecheck': registered
+[   79.310614] device: 'machinecheck': device_add
+[   79.310834] device: 'machinecheck0': device_add
+[   79.310874] bus: 'machinecheck': add device machinecheck0
+[   79.311161] ata4.00: ATAPI: VBOX CD-ROM, 1.0, max UDMA/133
+[   79.311236] device: 'machinecheck1': device_add
+[   79.311318] bus: 'machinecheck': add device machinecheck1
+[   79.311680] ata4.00: configured for UDMA/33
+[   79.311689] device: 'machinecheck2': device_add
+[   79.311769] bus: 'machinecheck': add device machinecheck2
+[   79.312123] device: 'machinecheck3': device_add
+[   79.312160] bus: 'machinecheck': add device machinecheck3
+[   79.312493] device: 'mcelog': device_add
+[   79.313821] [1] vector:print_PIC:661: 
+               printing PIC contents
+[   79.313832] [1] vector:print_PIC:666: ... PIC  IMR: ffff
+[   79.313839] [1] vector:print_PIC:669: ... PIC  IRR: 8003
+[   79.313856] [1] vector:print_PIC:679: ... PIC  ISR: 0000
+[   79.313864] [1] vector:print_PIC:682: ... PIC ELCR: 0e00
+[   79.271184] <intr> vector:print_local_APIC:536: printing local APIC contents on CPU#0/0:
+[   79.271184] ... APIC ID:      00000000 (0)
+[   79.271184] ... APIC VERSION: 00050014
+[   79.271184] <intr> vector:print_local_APIC:545: ... APIC TASKPRI: 00000000 (00)
+[   79.271184] <intr> vector:print_local_APIC:555: ... APIC PROCPRI: 00000000
+[   79.271184] <intr> vector:print_local_APIC:568: ... APIC LDR: 01000000
+[   79.271184] <intr> vector:print_local_APIC:571: ... APIC DFR: ffffffff
+[   79.271184] <intr> vector:print_local_APIC:574: ... APIC SPIV: 000001ff
+[   79.271184] <intr> vector:print_local_APIC:576: ... APIC ISR field:
+[   79.271184] 0000000000000000000000000000000000000000000000000000000000000000
+[   79.271184] <intr> vector:print_local_APIC:578: ... APIC TMR field:
+[   79.271184] 0000000000000000000000000000000000000000000000000000000000000000
+[   79.271184] <intr> vector:print_local_APIC:580: ... APIC IRR field:
+[   79.271184] 0000000080020000000000000000000000000000000000000000000000008000
+[   79.271184] <intr> vector:print_local_APIC:590: ... APIC ESR: 00000000
+[   79.271184] <intr> vector:print_local_APIC:594: ... APIC ICR: 000008fd
+[   79.271184] <intr> vector:print_local_APIC:595: ... APIC ICR2: 08000000
+[   79.271184] <intr> vector:print_local_APIC:598: ... APIC LVTT: 000000ef
+[   79.271184] <intr> vector:print_local_APIC:603: ... APIC LVTPC: 00010000
+[   79.271184] <intr> vector:print_local_APIC:606: ... APIC LVT0: 00010700
+[   79.271184] <intr> vector:print_local_APIC:608: ... APIC LVT1: 00000400
+[   79.271184] <intr> vector:print_local_APIC:613: ... APIC LVTERR: 000000fe
+[   79.271184] <intr> vector:print_local_APIC:617: ... APIC TMICT: 0001fa28
+[   79.271184] <intr> vector:print_local_APIC:619: ... APIC TMCCT: 00000000
+[   79.271184] <intr> vector:print_local_APIC:621: ... APIC TDCR: 00000003
+
+[   79.497087] number of MP IRQ sources: 15.
+[   79.497090] number of IO-APIC #4 registers: 24.
+[   79.497093] testing the IO APIC.......................
+[   79.497126] IO APIC #4......
+[   79.497128] .... register #00: 04000000
+[   79.497130] .......    : physical APIC id: 04
+[   79.497132] .......    : Delivery Type: 0
+[   79.497134] .......    : LTS          : 0
+[   79.497136] .... register #01: 00170011
+[   79.497138] .......     : max redirection entries: 17
+[   79.497140] .......     : PRQ implemented: 0
+[   79.497142] .......     : IO APIC version: 11
+[   79.497144] .... register #02: 00000000
+[   79.497146] .......     : arbitration: 00
+[   79.497147] .... IRQ redirection table:
+[   79.497152] [1] io_apic:native_io_apic_print_entries:1345:  NR Dst Mask Trig IRR Pol Stat Dmod Deli Vect:
+[   79.497177] [1] io_apic:native_io_apic_print_entries:1352:  00 00  1    0    0   0   0    0    0    00
+[   79.497215] [1] io_apic:native_io_apic_print_entries:1352:  01 0F  0    0    0   0   0    1    1    31
+[   79.497257] [1] io_apic:native_io_apic_print_entries:1352:  02 01  0    0    0   0   0    1    1    30
+[   79.497289] [1] io_apic:native_io_apic_print_entries:1352:  03 0F  0    0    0   0   0    1    1    33
+[   79.497315] [1] io_apic:native_io_apic_print_entries:1352:  04 0F  0    0    0   0   0    1    1    34
+[   79.497336] [1] io_apic:native_io_apic_print_entries:1352:  05 0F  0    0    0   0   0    1    1    35
+[   79.497400] [1] io_apic:native_io_apic_print_entries:1352:  06 0F  0    0    0   0   0    1    1    36
+[   79.497429] [1] io_apic:native_io_apic_print_entries:1352:  07 0F  0    0    0   0   0    1    1    37
+[   79.497500] [1] io_apic:native_io_apic_print_entries:1352:  08 0F  0    0    0   0   0    1    1    38
+[   79.497552] [1] io_apic:native_io_apic_print_entries:1352:  09 0F  0    1    0   0   0    1    1    39
+[   79.497573] [1] io_apic:native_io_apic_print_entries:1352:  0a 0F  0    0    0   0   0    1    1    3A
+[   79.497598] [1] io_apic:native_io_apic_print_entries:1352:  0b 0F  0    0    0   0   0    1    1    3B
+[   79.497630] [1] io_apic:native_io_apic_print_entries:1352:  0c 0F  0    0    0   0   0    1    1    3C
+[   79.497659] [1] io_apic:native_io_apic_print_entries:1352:  0d 0F  0    0    0   0   0    1    1    3D
+[   79.497730] [1] io_apic:native_io_apic_print_entries:1352:  0e 0F  0    0    0   0   0    1    1    3E
+[   79.497771] [1] io_apic:native_io_apic_print_entries:1352:  0f 0F  0    0    0   0   0    1    1    3F
+[   79.497817] [1] io_apic:native_io_apic_print_entries:1352:  10 00  1    0    0   0   0    0    0    00
+[   79.497893] [1] io_apic:native_io_apic_print_entries:1352:  11 00  1    0    0   0   0    0    0    00
+[   79.498001] [1] io_apic:native_io_apic_print_entries:1352:  12 00  1    0    0   0   0    0    0    00
+[   79.498037] [1] io_apic:native_io_apic_print_entries:1352:  13 00  1    0    0   0   0    0    0    00
+[   79.498093] [1] io_apic:native_io_apic_print_entries:1352:  14 00  1    0    0   0   0    0    0    00
+[   79.498187] [1] io_apic:native_io_apic_print_entries:1352:  15 0F  0    1    0   1   0    1    1    51
+[   79.498256] [1] io_apic:native_io_apic_print_entries:1352:  16 0F  0    1    0   1   0    1    1    61
+[   79.498354] [1] io_apic:native_io_apic_print_entries:1352:  17 00  1    0    0   0   0    0    0    00
+[   79.498356] IRQ to pin mappings:
+[   79.498365] IRQ0 -> 0:2
+[   79.498370] IRQ1 -> 0:1
+[   79.498375] IRQ3 -> 0:3
+[   79.498380] IRQ4 -> 0:4
+[   79.498385] IRQ5 -> 0:5
+[   79.498391] IRQ6 -> 0:6
+[   79.498396] IRQ7 -> 0:7
+[   79.498401] IRQ8 -> 0:8
+[   79.498405] IRQ9 -> 0:9
+[   79.498410] IRQ10 -> 0:10
+[   79.498414] IRQ11 -> 0:11
+[   79.498418] IRQ12 -> 0:12
+[   79.498423] IRQ13 -> 0:13
+[   79.498427] IRQ14 -> 0:14
+[   79.498431] IRQ15 -> 0:15
+[   79.498436] IRQ21 -> 0:21
+[   79.498440] IRQ22 -> 0:22
+[   79.498442] .................................... done.
+[   79.498567] device: 'cpu_dma_latency': device_add
+[   79.498929] device: 'network_latency': device_add
+[   79.499332] device: 'network_throughput': device_add
+[   79.500770] device: 'memory_bandwidth': device_add
+[   79.501455] Loading compiled-in X.509 certificates
+[   79.501602] registered taskstats version 1
+[   79.527577] device: 'btrfs-control': device_add
+[   79.528428] Btrfs loaded, debug=on, assert=on, integrity-checker=on
+[   79.528542] BTRFS: selftest: Running btrfs free space cache tests
+[   79.528556] BTRFS: selftest: Running extent only tests
+[   79.528659] BTRFS: selftest: Running bitmap only tests
+[   79.528720] BTRFS: selftest: Running bitmap and extent tests
+[   79.528856] BTRFS: selftest: Running space stealing from bitmap to extent
+[   79.529358] BTRFS: selftest: Free space cache tests finished
+[   79.529372] BTRFS: selftest: Running extent buffer operation tests
+[   79.529374] BTRFS: selftest: Running btrfs_split_item tests
+[   79.531597] BTRFS: selftest: Running find delalloc tests
+[   79.587175] ata1: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+[   79.621114] BTRFS: selftest: Running btrfs_get_extent tests
+[   79.621696] BTRFS: selftest: Running hole first btrfs_get_extent test
+[   79.621837] BTRFS: selftest: Running outstanding_extents tests
+[   79.622069] BTRFS: selftest: Running qgroup tests
+[   79.622072] BTRFS: selftest: Qgroup basic add
+[   79.622153] BTRFS: selftest: Qgroup multiple refs test
+[   79.650119] ata1.00: ATA-8: VBOX HARDDISK, 1.0, max UDMA/133
+[   79.650125] ata1.00: 167772160 sectors, multi 128: LBA48 NCQ (depth 31/32)
+[   79.893537] usb 1-1: new full-speed USB device number 2 using ohci-pci
+[   79.951840] ata1.00: configured for UDMA/133
+[   79.952534] scsi 0:0:0:0: Direct-Access     ATA      VBOX HARDDISK    1.0  PQ: 0 ANSI: 5
+[   79.954621] device: 'target0:0:0': device_add
+[   79.954709] bus: 'scsi': add device target0:0:0
+[   79.955081] device: '0:0:0:0': device_add
+[   79.955777] bus: 'scsi': add device 0:0:0:0
+[   79.956003] bus: 'scsi': driver_probe_device: matched device 0:0:0:0 with driver sd
+[   79.956007] bus: 'scsi': really_probe: probing driver sd with device 0:0:0:0
+[   79.956201] device: '0:0:0:0': device_add
+[   79.956658] driver: 'sd': driver_bound: bound to device '0:0:0:0'
+[   79.957837] bus: 'scsi': really_probe: bound device 0:0:0:0 to driver sd
+[   79.957856] device: '0:0:0:0': device_add
+[   79.958353] device: 'sg0': device_add
+[   79.962654] sd 0:0:0:0: Attached scsi generic sg0 type 0
+[   79.962700] device: '0:0:0:0': device_add
+[   79.962709] sd 0:0:0:0: [sda] 167772160 512-byte logical blocks: (85.8 GB/80.0 GiB)
+[   79.964031] sd 0:0:0:0: [sda] Write Protect is off
+[   79.964038] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
+[   79.964219] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[   79.964319] device: '259:0': device_add
+[   79.964783] device: 'sda': device_add
+[   80.163813] device: 'input3': device_add
+[   80.164759] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input3
+[   80.164902] device: 'event3': device_add
+[   80.166611] driver: 'atkbd': driver_bound: bound to device 'serio0'
+[   80.166617] bus: 'serio': really_probe: bound device serio0 to driver atkbd
+[   80.166624] bus: 'serio': driver_probe_device: matched device serio1 with driver atkbd
+[   80.166628] bus: 'serio': really_probe: probing driver atkbd with device serio1
+[   80.276537] atkbd: probe of serio1 rejects match -19
+[   80.276608] bus: 'serio': driver_probe_device: matched device serio1 with driver psmouse
+[   80.276620] bus: 'serio': really_probe: probing driver psmouse with device serio1
+[   80.280596] ata2: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+[   80.401320] ata2.00: ATA-8: VBOX HARDDISK, 1.0, max UDMA/133
+[   80.401325] ata2.00: 209715200 sectors, multi 128: LBA48 NCQ (depth 31/32)
+[   80.402317] ata2.00: configured for UDMA/133
+[   80.403443] scsi 1:0:0:0: Direct-Access     ATA      VBOX HARDDISK    1.0  PQ: 0 ANSI: 5
+[   80.405080] device: 'target1:0:0': device_add
+[   80.405150] bus: 'scsi': add device target1:0:0
+[   80.405460] device: '1:0:0:0': device_add
+[   80.406071] bus: 'scsi': add device 1:0:0:0
+[   80.406334] bus: 'scsi': driver_probe_device: matched device 1:0:0:0 with driver sd
+[   80.406338] bus: 'scsi': really_probe: probing driver sd with device 1:0:0:0
+[   80.406470] device: '1:0:0:0': device_add
+[   80.407975] driver: 'sd': driver_bound: bound to device '1:0:0:0'
+[   80.407978] bus: 'scsi': really_probe: bound device 1:0:0:0 to driver sd
+[   80.407987] device: '1:0:0:0': device_add
+[   80.408421] device: 'sg1': device_add
+[   80.408545] sd 1:0:0:0: [sdb] 209715200 512-byte logical blocks: (107 GB/100 GiB)
+[   80.409075] sd 1:0:0:0: [sdb] Write Protect is off
+[   80.409080] sd 1:0:0:0: [sdb] Mode Sense: 00 3a 00 00
+[   80.409108] sd 1:0:0:0: Attached scsi generic sg1 type 0
+[   80.409176] device: '1:0:0:0': device_add
+[   80.409286] sd 1:0:0:0: [sdb] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[   80.409388] device: '259:524288': device_add
+[   80.409867] device: 'sdb': device_add
+[   80.535055] scsi 3:0:0:0: CD-ROM            VBOX     CD-ROM           1.0  PQ: 0 ANSI: 5
+[   80.539385] sd 1:0:0:0: [sdb] Attached SCSI disk
+[   80.819856] device: 'target3:0:0': device_add
+[   80.819933] bus: 'scsi': add device target3:0:0
+[   80.821058] device: '3:0:0:0': device_add
+[   80.821757] bus: 'scsi': add device 3:0:0:0
+[   80.822072] bus: 'scsi': driver_probe_device: matched device 3:0:0:0 with driver sd
+[   80.822076] bus: 'scsi': really_probe: probing driver sd with device 3:0:0:0
+[   80.822232] sd: probe of 3:0:0:0 rejects match -19
+[   80.822237] bus: 'scsi': driver_probe_device: matched device 3:0:0:0 with driver sr
+[   80.822240] bus: 'scsi': really_probe: probing driver sr with device 3:0:0:0
+[   81.400607] usb 1-1: New USB device found, idVendor=80ee, idProduct=0021
+[   81.400617] usb 1-1: New USB device strings: Mfr=1, Product=3, SerialNumber=0
+[   81.400626] usb 1-1: Product: USB Tablet
+[   81.400634] usb 1-1: Manufacturer: VirtualBox
+[   81.400674] device: '1-1': device_add
+[   81.402323] bus: 'usb': add device 1-1
+[   81.405846] bus: 'usb': driver_probe_device: matched device 1-1 with driver usb
+[   81.405856] bus: 'usb': really_probe: probing driver usb with device 1-1
+[   81.601318] sr 3:0:0:0: [sr0] scsi3-mmc drive: 32x/32x xa/form2 tray
+[   81.601362] cdrom: Uniform CD-ROM driver Revision: 3.20
+[   81.601563] device: '11:0': device_add
+[   81.604964] device: 'sr0': device_add
+[   81.612360] sr 3:0:0:0: Attached scsi CD-ROM sr0
+[   81.612370] driver: 'sr': driver_bound: bound to device '3:0:0:0'
+[   81.612380] bus: 'scsi': really_probe: bound device 3:0:0:0 to driver sr
+[   81.612404] device: '3:0:0:0': device_add
+[   81.613830] device: 'sg2': device_add
+[   81.616538] sr 3:0:0:0: Attached scsi generic sg2 type 5
+[   81.616648] device: '3:0:0:0': device_add
+[   81.815528] device: '1-1:1.0': device_add
+[   81.816146] bus: 'usb': add device 1-1:1.0
+[   81.816584] bus: 'usb': driver_probe_device: matched device 1-1:1.0 with driver usbhid
+[   81.816593] bus: 'usb': really_probe: probing driver usbhid with device 1-1:1.0
+[   82.298665] device: '0003:80EE:0021.0001': device_add
+[   82.298808] bus: 'hid': add device 0003:80EE:0021.0001
+[   82.302535] driver: 'usbhid': driver_bound: bound to device '1-1:1.0'
+[   82.302545] bus: 'usb': really_probe: bound device 1-1:1.0 to driver usbhid
+[   82.302597] device: 'ep_81': device_add
+[   82.303335] driver: 'usb': driver_bound: bound to device '1-1'
+[   82.303341] bus: 'usb': really_probe: bound device 1-1 to driver usb
+[   82.303658] device: 'ep_00': device_add
+[   82.691540]  sda: sda1 sda2 sda3
+[   82.691685] device: 'sda1': device_add
+[   82.693621] device: 'sda2': device_add
+[   82.695399] device: 'sda3': device_add
+[   82.705162] sd 0:0:0:0: [sda] Attached SCSI disk
+[   90.149900] device: 'input5': device_add
+[   90.152724] input: PS/2 Generic Mouse as /devices/platform/i8042/serio1/input/input5
+[   90.152846] device: 'mouse0': device_add
+[   90.154918] device: 'event4': device_add
+[   90.356899] psmouse serio1: Failed to enable mouse on isa0060/serio1
+[   90.356914] driver: 'psmouse': driver_bound: bound to device 'serio1'
+[   90.356925] bus: 'serio': really_probe: bound device serio1 to driver psmouse
+[   99.683583] INFO: rcu_sched detected stalls on CPUs/tasks:
+[   99.683598] 	0: (142 ticks this GP) idle=8ff/140000000000000/0 softirq=268/268 fqs=2799 
+[   99.683613] 	(detected by 1, t=6303 jiffies, g=-156, c=-157, q=0)
+[   99.683619] Task dump for CPU 0:
+[   99.683642] kworker/0:1     R  running task    14912   499      2 0x00000008
+[   99.683668] Workqueue: events tsc_refine_calibration_work
+[   99.683684]  ffff8802b22c3de8 ffffffff9c60b4c1 ffff8802b22c3de8 ffffffff9c76ca48
+[   99.683696]  ffff8802b649c5d0 ffff8802c3611d80 ffff8802b22c3e38 ffffffff9c65bcf4
+[   99.683708]  ffff8802c3611d80 0000000000000000 ffff8802c3611d98 ffff8802b649c600
+[   99.683714] Call Trace:
+[   99.683730]  [<ffffffff9c60b4c1>] ? tsc_refine_calibration_work+0x131/0x1e0
+[   99.683757]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[   99.683767]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[   99.683775]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[   99.683784]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[   99.683792]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[   99.683802]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[   99.683812]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[   99.683822]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[   99.683831]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  101.714136] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 21s! [kworker/0:1:499]
+[  101.714145] Modules linked in:
+[  101.714154] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  101.714163] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  101.714180] Workqueue: events tsc_refine_calibration_work
+[  101.714185] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  101.714197] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  101.714201] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  101.714206] RAX: 000000000000000a RBX: 0000000000000246 RCX: 0000000000000052
+[  101.714210] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  101.714215] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  101.714220] R10: ffff8800000b000a R11: 0000000000000720 R12: 0000000000000000
+[  101.714224] R13: 0000000000000006 R14: ffff8802c3a0fc18 R15: 0000000000000000
+[  101.714248] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  101.714253] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  101.714275] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  101.714279] Stack:
+[  101.714288]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  101.714295]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  101.714302]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  101.714306] Call Trace:
+[  101.714315]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  101.714321]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  101.714329]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  101.714337]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  101.714342]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  101.714349]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  101.714356]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  101.714362]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  101.714367]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  101.714373]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  101.714378]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  101.714384]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  101.714390]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  101.714397]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  101.714403]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  101.714433] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  101.876922] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  101.876929]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  101.876933] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  101.876950] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  101.876962]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  101.876971]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  101.876979]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  101.876983] Call Trace:
+[  101.877000]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  101.877006]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  101.877013]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  101.877021]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  101.877028]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  101.877036]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  101.877042]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  101.877049]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  101.877056]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  101.877061]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  101.877069]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  101.877152]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  101.877159]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  101.877166]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  101.877174]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  101.877181]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  101.877187]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  101.877193]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  101.877199]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  113.877121] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  113.877134]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  113.877141] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  113.877166] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  113.877184]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  113.877197]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  113.877212]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  113.877218] Call Trace:
+[  113.877241]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  113.877251]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  113.877262]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  113.877273]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  113.877282]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  113.877293]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  113.877303]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  113.877313]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  113.877322]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  113.877330]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  113.877341]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  113.877351]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  113.877360]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  113.877369]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  113.877380]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  113.877389]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  113.877397]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  113.877405]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  113.877413]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  125.877080] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  125.877088]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  125.877091] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  125.877106] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  125.877116]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  125.877123]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  125.877130]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  125.877133] Call Trace:
+[  125.877147]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  125.877153]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  125.877159]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  125.877166]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  125.877171]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  125.877179]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  125.877184]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  125.877190]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  125.877196]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  125.877200]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  125.877207]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  125.877213]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  125.877218]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  125.877223]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  125.877230]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  125.877307]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  125.877312]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  125.877317]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  125.877322]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  129.636842] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [kworker/0:1:499]
+[  129.636851] Modules linked in:
+[  129.636860] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  129.636864] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  129.636882] Workqueue: events tsc_refine_calibration_work
+[  129.636886] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  129.636900] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  129.636905] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  129.636908] RAX: 0000000000000034 RBX: 0000000000000246 RCX: 0000000000000053
+[  129.636912] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  129.636916] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  129.636920] R10: ffff8800000b0034 R11: 0000000000000720 R12: 0000000000000000
+[  129.636923] R13: 0000000000000007 R14: ffff8802c3a128f4 R15: 0000000000000000
+[  129.636945] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  129.636949] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  129.636956] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  129.636960] Stack:
+[  129.636968]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  129.636976]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  129.636983]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  129.636986] Call Trace:
+[  129.636996]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  129.637002]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  129.637010]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  129.637018]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  129.637024]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  129.637030]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  129.637038]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  129.637044]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  129.637050]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  129.637055]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  129.637060]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  129.637066]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  129.637073]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  129.637080]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  129.637087]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  129.637118] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  137.878200] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  137.878212]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  137.878218] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  137.878241] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  137.878258]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  137.878271]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  137.878283]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  137.878289] Call Trace:
+[  137.878311]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  137.878320]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  137.878331]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  137.878342]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  137.878351]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  137.878363]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  137.878373]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  137.878383]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  137.878393]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  137.878401]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  137.878414]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  137.878424]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  137.878432]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  137.878441]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  137.878454]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  137.878463]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  137.878471]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  137.878480]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  137.878488]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  149.876896] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  149.876903]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  149.876906] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  149.876921] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  149.876932]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  149.876939]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  149.876945]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  149.876949] Call Trace:
+[  149.876962]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  149.876967]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  149.876973]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  149.876980]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  149.876986]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  149.876993]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  149.876998]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  149.877004]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  149.877010]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  149.877015]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  149.877022]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  149.877027]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  149.877032]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  149.877037]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  149.877044]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  149.877048]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  149.877052]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  149.877056]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  149.877060]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  157.613288] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [kworker/0:1:499]
+[  157.613295] Modules linked in:
+[  157.613301] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  157.613304] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  157.613316] Workqueue: events tsc_refine_calibration_work
+[  157.613319] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  157.613327] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  157.613330] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  157.613332] RAX: 0000000000000065 RBX: 0000000000000246 RCX: 0000000000000045
+[  157.613335] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  157.613337] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  157.613340] R10: ffff8800000b0065 R11: 0000000000000720 R12: 0000000000000000
+[  157.613342] R13: 0000000000000006 R14: ffff8802c3a15480 R15: 0000000000000000
+[  157.613408] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  157.613410] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  157.613415] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  157.613418] Stack:
+[  157.613423]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  157.613428]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  157.613432]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  157.613434] Call Trace:
+[  157.613440]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  157.613445]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  157.613450]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  157.613455]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  157.613458]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  157.613462]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  157.613467]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  157.613471]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  157.613474]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  157.613477]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  157.613480]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  157.613486]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  157.613490]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  157.613494]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  157.613497]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  157.613515] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  161.877839] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  161.877846]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  161.877849] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  161.877863] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  161.877873]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  161.877879]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  161.877885]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  161.877925] Call Trace:
+[  161.877953]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  161.877958]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  161.877964]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  161.877970]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  161.877975]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  161.877981]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  161.877985]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  161.877990]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  161.877995]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  161.877999]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  161.878005]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  161.878010]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  161.878015]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  161.878019]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  161.878025]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  161.878030]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  161.878033]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  161.878037]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  161.878041]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  162.703401] INFO: rcu_sched detected stalls on CPUs/tasks:
+[  162.703410] 	0: (549 ticks this GP) idle=8ff/140000000000000/0 softirq=268/268 fqs=12103 
+[  162.703452] 	(detected by 3, t=25209 jiffies, g=-156, c=-157, q=0)
+[  162.703455] Task dump for CPU 0:
+[  162.703467] kworker/0:1     R  running task    14912   499      2 0x00000008
+[  162.703481] Workqueue: events tsc_refine_calibration_work
+[  162.703489]  ffff8802b22c3de8 ffffffff9c60b4c1 ffff8802b22c3de8 ffffffff9c76ca48
+[  162.703496]  ffff8802b649c5d0 ffff8802c3611d80 ffff8802b22c3e38 ffffffff9c65bcf4
+[  162.703502]  ffff8802c3611d80 0000000000000000 ffff8802c3611d98 ffff8802b649c600
+[  162.703505] Call Trace:
+[  162.703514]  [<ffffffff9c60b4c1>] ? tsc_refine_calibration_work+0x131/0x1e0
+[  162.703521]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  162.703526]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  162.703530]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  162.703534]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  162.703538]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  162.703544]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  162.703586]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  162.703592]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  162.703596]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  173.877197] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  173.877210]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  173.877215] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  173.877238] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  173.877253]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  173.877266]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  173.877278]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  173.877284] Call Trace:
+[  173.877305]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  173.877314]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  173.877325]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  173.877399]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  173.877409]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  173.877420]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  173.877430]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  173.877440]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  173.877450]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  173.877457]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  173.877468]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  173.877478]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  173.877486]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  173.877495]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  173.877506]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  173.877515]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  173.877523]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  173.877531]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  173.877539]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  185.679952] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [kworker/0:1:499]
+[  185.679959] Modules linked in:
+[  185.679966] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  185.679969] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  185.679983] Workqueue: events tsc_refine_calibration_work
+[  185.679986] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  185.679996] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  185.679999] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  185.680002] RAX: 0000000000000031 RBX: 0000000000000246 RCX: 000000000000004c
+[  185.680005] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  185.680007] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  185.680010] R10: ffff8800000b0031 R11: 0000000000000720 R12: 0000000000000000
+[  185.680013] R13: 0000000000000007 R14: ffff8802c3a182d4 R15: 0000000000000000
+[  185.680030] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  185.680033] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  185.680039] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  185.680042] Stack:
+[  185.680048]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  185.680053]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  185.680059]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  185.680061] Call Trace:
+[  185.680069]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  185.680074]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  185.680079]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  185.680085]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  185.680089]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  185.680094]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  185.680101]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  185.680105]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  185.680109]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  185.680113]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  185.680117]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  185.680123]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  185.680128]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  185.680134]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  185.680140]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  185.680162] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  185.877011] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  185.877019]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  185.877022] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  185.877039] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  185.877051]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  185.877060]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  185.877068]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  185.877072] Call Trace:
+[  185.877088]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  185.877095]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  185.877102]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  185.877110]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  185.877117]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  185.877126]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  185.877132]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  185.877139]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  185.877146]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  185.877151]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  185.877159]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  185.877167]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  185.877173]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  185.877179]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  185.877187]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  185.877193]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  185.877199]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  185.877204]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  185.877210]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  197.880195] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  197.880201]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  197.880205] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  197.880220] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  197.880230]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  197.880237]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  197.880244]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  197.880248] Call Trace:
+[  197.880263]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  197.880268]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  197.880275]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  197.880282]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  197.880287]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  197.880294]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  197.880300]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  197.880306]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  197.880312]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  197.880316]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  197.880323]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  197.880330]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  197.880334]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  197.880340]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  197.880347]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  197.880352]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  197.880357]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  197.880362]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  197.880367]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  209.877116] INFO: task swapper/0:1 blocked for more than 12 seconds.
+[  209.877123]       Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  209.877127] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  209.877155] swapper/0       D ffff8802c3692580 12184     1      0 0x00000000
+[  209.877167]  ffff8802b69f3ca8 0000000000000046 ffff8802b6a6eb80 ffff8802b69e8000
+[  209.877176]  ffff8802b69f3cc8 0000001000000009 ffff8802b24f2d60 ffff8802b69e86b8
+[  209.877185]  0000000000000002 0000000000000000 7fffffffffffffff ffff8802b69f3e38
+[  209.877189] Call Trace:
+[  209.877205]  [<ffffffff9cd6c1f2>] schedule+0x32/0x80
+[  209.877211]  [<ffffffff9cd6f57c>] schedule_timeout+0x18c/0x210
+[  209.877219]  [<ffffffff9cd6caa3>] wait_for_common+0xa3/0x150
+[  209.877227]  [<ffffffff9c66e850>] ? wake_up_process+0x50/0x50
+[  209.877234]  [<ffffffff9c697710>] ? __call_rcu+0x340/0x340
+[  209.877241]  [<ffffffff9d26b79c>] ? ftrace_define_fields_btrfs_space_reservation+0xf7/0xf7
+[  209.877247]  [<ffffffff9cd6cb68>] wait_for_completion+0x18/0x20
+[  209.877254]  [<ffffffff9c6951f8>] wait_rcu_gp+0x48/0x50
+[  209.877294]  [<ffffffff9c6951a0>] ? ftrace_raw_output_rcu_utilization+0x70/0x70
+[  209.877299]  [<ffffffff9c69636d>] synchronize_sched+0x2d/0x40
+[  209.877307]  [<ffffffff9c78c61a>] kern_unmount+0x2a/0x60
+[  209.877314]  [<ffffffff9c89f7b0>] btrfs_destroy_test_fs+0x10/0x20
+[  209.877319]  [<ffffffff9d26b8b2>] init_btrfs_fs+0x116/0x175
+[  209.877324]  [<ffffffff9c600384>] do_one_initcall+0xa4/0x190
+[  209.877332]  [<ffffffff9d246079>] kernel_init_freeable+0x149/0x1db
+[  209.877338]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  209.877343]  [<ffffffff9cd5f1f9>] kernel_init+0x9/0xf0
+[  209.877348]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  209.877354]  [<ffffffff9cd5f1f0>] ? rest_init+0x80/0x80
+[  213.671490] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [kworker/0:1:499]
+[  213.671498] Modules linked in:
+[  213.671506] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  213.671510] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  213.671527] Workqueue: events tsc_refine_calibration_work
+[  213.671531] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  213.671541] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  213.671545] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  213.671549] RAX: 000000000000002f RBX: 0000000000000246 RCX: 000000000000004c
+[  213.671552] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  213.671556] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  213.671559] R10: ffff8800000b002f R11: 0000000000000720 R12: 0000000000000000
+[  213.671562] R13: 0000000000000003 R14: ffff8802c3a1af00 R15: 0000000000000000
+[  213.671585] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  213.671589] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  213.671596] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  213.671600] Stack:
+[  213.671608]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  213.671616]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  213.671622]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  213.671625] Call Trace:
+[  213.671634]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  213.671640]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  213.671647]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  213.671654]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  213.671659]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  213.671664]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  213.671670]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  213.671675]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  213.671680]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  213.671685]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  213.671689]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  213.671695]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  213.671700]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  213.671706]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  213.671711]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  213.671736] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  225.724285] INFO: rcu_sched detected stalls on CPUs/tasks:
+[  225.724300] 	0: (910 ticks this GP) idle=8ff/140000000000000/0 softirq=268/268 fqs=21367 
+[  225.724314] 	(detected by 3, t=44115 jiffies, g=-156, c=-157, q=0)
+[  225.724321] Task dump for CPU 0:
+[  225.724345] kworker/0:1     R  running task    14912   499      2 0x00000008
+[  225.724371] Workqueue: events tsc_refine_calibration_work
+[  225.724385]  ffff8802b22c3de8 ffffffff9c60b4c1 ffff8802b22c3de8 ffffffff9c76ca48
+[  225.724396]  ffff8802b649c5d0 ffff8802c3611d80 ffff8802b22c3e38 ffffffff9c65bcf4
+[  225.724407]  ffff8802c3611d80 0000000000000000 ffff8802c3611d98 ffff8802b649c600
+[  225.724412] Call Trace:
+[  225.724428]  [<ffffffff9c60b4c1>] ? tsc_refine_calibration_work+0x131/0x1e0
+[  225.724439]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  225.724449]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  225.724457]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  225.724465]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  225.724532]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  225.724542]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  225.724551]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  225.724562]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  225.724571]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  241.592540] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 23s! [kworker/0:1:499]
+[  241.592547] Modules linked in:
+[  241.592555] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  241.592558] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  241.592573] Workqueue: events tsc_refine_calibration_work
+[  241.592577] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  241.592586] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  241.592590] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  241.592593] RAX: 0000000000000030 RBX: 0000000000000246 RCX: 0000000000000050
+[  241.592595] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  241.592598] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  241.592601] R10: ffff8800000b0030 R11: 0000000000000720 R12: 0000000000000000
+[  241.592604] R13: 0000000000000007 R14: ffff8802c3a1d9e4 R15: 0000000000000000
+[  241.592622] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  241.592625] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  241.592631] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  241.592634] Stack:
+[  241.592641]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  241.592647]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  241.592653]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  241.592655] Call Trace:
+[  241.592663]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  241.592668]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  241.592674]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  241.592680]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  241.592686]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  241.592692]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  241.592698]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  241.592704]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  241.592710]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  241.592714]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  241.592719]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  241.592725]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  241.592731]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  241.592736]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  241.592740]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  241.592763] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  269.685601] NMI watchdog: BUG: soft lockup - CPU#0 stuck for 23s! [kworker/0:1:499]
+[  269.685611] Modules linked in:
+[  269.685620] CPU: 0 PID: 499 Comm: kworker/0:1 Tainted: G             L  4.1.6-hardened-r1-g45b4b78 #3
+[  269.685624] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  269.685641] Workqueue: events tsc_refine_calibration_work
+[  269.685646] task: ffff8802b644d600 ti: ffff8802b644dcb8 task.ti: ffff8802b644dcb8
+[  269.685658] RIP: 0010:[<ffffffff9c68ce45>]  [<ffffffff9c68ce45>] console_unlock+0x2f5/0x4c0
+[  269.685662] RSP: 0018:ffff8802b22c3c48  EFLAGS: 00000246
+[  269.685666] RAX: 000000000000002b RBX: 0000000000000246 RCX: 0000000000000036
+[  269.685670] RDX: 00000000000003f8 RSI: 0000000000000000 RDI: 00000000000003f8
+[  269.685674] RBP: ffff8802b22c3c88 R08: 0000000000000018 R09: 0000000000000019
+[  269.685677] R10: ffff8800000b002b R11: 0000000000000720 R12: 0000000000000000
+[  269.685681] R13: 0000000000000007 R14: ffff8802c3a205a0 R15: 0000000000000000
+[  269.685702] FS:  0000000000000000(0000) GS:ffff8802c3600000(0000) knlGS:0000000000000000
+[  269.685706] CS:  0010 DS: 0000 ES: 0000 CR0: 000000008005003b
+[  269.685713] CR2: ffff8802c49ff000 CR3: 000000001cd88000 CR4: 00000000000006f0
+[  269.685717] Stack:
+[  269.685725]  ffff8802b22c3c68 01ffffff9c687a99 0000000000000000 00000000ffffffff
+[  269.685733]  0000000000000000 0000000000000000 0000000000000061 0000000000000006
+[  269.685740]  ffff8802b22c3d08 ffffffff9c68d2f0 ffffffff9d35baa2 ffff880200000061
+[  269.685744] Call Trace:
+[  269.685753]  [<ffffffff9c68d2f0>] vprintk_emit+0x2e0/0x500
+[  269.685759]  [<ffffffff9c68d64a>] vprintk_default+0x1a/0x20
+[  269.685767]  [<ffffffff9cd6163c>] printk+0x41/0x43
+[  269.685774]  [<ffffffff9c6a8a40>] __clocksource_update_freq_scale+0x1a0/0x1f0
+[  269.685780]  [<ffffffff9c6a8a9f>] __clocksource_register_scale+0xf/0x1e0
+[  269.685786]  [<ffffffff9c60b4c1>] tsc_refine_calibration_work+0x131/0x1e0
+[  269.685793]  [<ffffffff9c76ca48>] ? delayed_fput+0x28/0x40
+[  269.685799]  [<ffffffff9c65bcf4>] process_one_work+0x144/0x430
+[  269.685805]  [<ffffffff9c65c028>] worker_thread+0x48/0x4c0
+[  269.685810]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  269.685815]  [<ffffffff9c65bfe0>] ? process_one_work+0x430/0x430
+[  269.685821]  [<ffffffff9c661934>] kthread+0xc4/0xe0
+[  269.685828]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  269.685835]  [<ffffffff9cd707ce>] ret_from_fork+0x3e/0x70
+[  269.685840]  [<ffffffff9c661870>] ? kthread_worker_fn+0x160/0x160
+[  269.685870] Code: b6 46 0f 89 15 21 f5 ec 00 48 83 05 1d f5 ec 00 01 83 e0 1f 89 05 0c f5 ec 00 80 05 4d f5 ec 00 01 44 89 ef e8 6d f1 ff ff 53 9d <e9> 86 fd ff ff 66 0f 1f 44 00 00 45 84 ed 0f 85 8d 01 00 00 49 
+[  284.751429] Key type trusted registered
+[  284.898098] Key type encrypted registered
+[  285.039456] rtc_cmos rtc_cmos: setting system clock to 2015-08-29 08:01:28 UTC (1440835288)
+[  285.254195] Freeing unused kernel memory: 976K (ffffffff9d231000 - ffffffff9d325000)
+[  304.439121] bus: 'hid': add driver hid-generic
+[  304.439165] bus: 'hid': driver_probe_device: matched device 0003:80EE:0021.0001 with driver hid-generic
+[  304.439170] bus: 'hid': really_probe: probing driver hid-generic with device 0003:80EE:0021.0001
+[  304.443307] device: 'input6': device_add
+[  304.446588] input: VirtualBox USB Tablet as /devices/pci0000:00/0000:00:06.0/usb1/1-1/1-1:1.0/0003:80EE:0021.0001/input/input6
+[  304.447002] device: 'mouse1': device_add
+[  304.449087] device: 'event5': device_add
+[  304.450993] device: 'hidraw0': device_add
+[  304.453102] hid-generic 0003:80EE:0021.0001: input,hidraw0: USB HID v1.10 Mouse [VirtualBox USB Tablet] on usb-0000:00:06.0-1/input0
+[  304.453178] driver: 'hid-generic': driver_bound: bound to device '0003:80EE:0021.0001'
+[  304.453192] bus: 'hid': really_probe: bound device 0003:80EE:0021.0001 to driver hid-generic
+[  304.454524] modprobe (7875) used greatest stack depth: 12952 bytes left
+[  305.411393] fuse init (API version 7.23)
+[  305.415991] device: 'fuse': device_add
+[  305.451768] dynamic_debug:ddebug_add_module: 10 debug prints in module atl1c
+[  305.454699] bus: 'pci': add driver atl1c
+[  305.497567] dynamic_debug:ddebug_add_module: 118 debug prints in module e1000
+[  305.500445] e1000: Intel(R) PRO/1000 Network Driver - version 7.3.21-k8-NAPI
+[  305.500460] e1000: Copyright (c) 1999-2006 Intel Corporation.
+[  305.500484] bus: 'pci': add driver e1000
+[  305.500613] bus: 'pci': driver_probe_device: matched device 0000:00:03.0 with driver e1000
+[  305.500625] bus: 'pci': really_probe: probing driver e1000 with device 0000:00:03.0
+[  305.561830] IOAPIC[0]: Set routing entry (4-19 -> 0x71 -> IRQ 19 Mode:1 Active:1 Dest:15)
+[  306.106438] device: 'eth0': device_add
+[  306.109015] e1000 0000:00:03.0 eth0: (PCI:33MHz:32-bit) 08:00:27:0d:a9:37
+[  306.109028] e1000 0000:00:03.0 eth0: Intel(R) PRO/1000 Network Connection
+[  306.109034] driver: 'e1000': driver_bound: bound to device '0000:00:03.0'
+[  306.109049] bus: 'pci': really_probe: bound device 0000:00:03.0 to driver e1000
+[  306.109624] modprobe (8127) used greatest stack depth: 12504 bytes left
+[  306.126281] dynamic_debug:ddebug_add_module: 16 debug prints in module pps_core
+[  306.127433] device class 'pps': registering
+[  306.127546] pps_core: LinuxPPS API ver. 1 registered
+[  306.127551] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[  306.129568] device class 'ptp': registering
+[  306.129680] PTP clock support registered
+[  306.134292] dynamic_debug:ddebug_add_module: 171 debug prints in module igb
+[  306.135468] igb: Intel(R) Gigabit Ethernet Network Driver - version 5.2.15-k
+[  306.135472] igb: Copyright (c) 2007-2014 Intel Corporation.
+[  306.135484] bus: 'pci': add driver igb
+[  306.831455] random: lvm urandom read with 41 bits of entropy available
+[  307.013653] BTRFS: device fsid bae43b32-4099-4e4f-9ddd-af69c744e76f devid 1 transid 393 /dev/sdb
+[  308.245997] device: '254:0': device_add
+[  308.247021] device: 'dm-0': device_add
+[  308.335728] device: '254:0': device_unregister
+[  308.336161] device: '254:0': device_create_release
+[  308.407165] device: '254:0': device_add
+[  308.408143] device: 'dm-0': device_add
+[  308.565016] device: '254:1': device_add
+[  308.566267] device: 'dm-1': device_add
+[  308.577898] device: '254:2': device_add
+[  308.579188] device: 'dm-2': device_add
+[  308.913970] BTRFS: device fsid 1ae0564b-b1df-4d4a-b19b-a46b6081224e devid 1 transid 1748 /dev/mapper/vgall-rootlvol
+[  308.955222] device: 'btrfs-1': device_add
+[  308.958724] BTRFS info (device dm-2): disk space caching is enabled
+[  308.958740] BTRFS: has skinny extents
+[  309.222737] BTRFS: detected SSD devices, enabling SSD mode
+[  309.234745] mount (8379) used greatest stack depth: 12312 bytes left
+[  309.283125] init (8405) used greatest stack depth: 12168 bytes left
+[  309.961698] kbd_mode (8424) used greatest stack depth: 11616 bytes left
+[  310.413533] init-early.sh (8422) used greatest stack depth: 11376 bytes left
+[  313.105498] udevd[8629]: starting version 3.1.2
+[  313.216968] udevd (8629) used greatest stack depth: 11352 bytes left
+[  314.922223] dynamic_debug:ddebug_add_module: 12 debug prints in module i2c_piix4
+[  314.923297] bus: 'pci': add driver piix4_smbus
+[  314.923935] bus: 'pci': driver_probe_device: matched device 0000:00:07.0 with driver piix4_smbus
+[  314.923943] bus: 'pci': really_probe: probing driver piix4_smbus with device 0000:00:07.0
+[  314.924042] piix4_smbus 0000:00:07.0: SMBus base address uninitialized - upgrade BIOS or use force_addr=0xaddr
+[  314.924074] piix4_smbus: probe of 0000:00:07.0 rejects match -19
+[  314.935570] device class 'sound': registering
+[  314.987570] IOAPIC[0]: Set routing entry (4-18 -> 0x81 -> IRQ 18 Mode:1 Active:1 Dest:15)
+[  314.987907] device: 'card0': device_add
+[  315.031690] [drm] Initialized vboxvideo 1.0.0 20090303 for 0000:00:02.0 on minor 0
+[  315.061017] bus: 'pci': add driver vboxguest
+[  315.061156] bus: 'pci': driver_probe_device: matched device 0000:00:04.0 with driver vboxguest
+[  315.061162] bus: 'pci': really_probe: probing driver vboxguest with device 0000:00:04.0
+[  315.096922] IOAPIC[0]: Set routing entry (4-20 -> 0x91 -> IRQ 20 Mode:1 Active:1 Dest:15)
+[  315.097192] driver: 'vboxguest': driver_bound: bound to device '0000:00:04.0'
+[  315.097313] bus: 'pci': really_probe: bound device 0000:00:04.0 to driver vboxguest
+[  315.103131] dynamic_debug:ddebug_add_module: 5 debug prints in module snd
+[  315.104079] VbgdCommonInitDevExt: Setting up heartbeat to trigger every 2000 milliseconds
+[  315.104282] device: 'input7': device_add
+[  315.105465] input: Unspecified device as /devices/pci0000:00/0000:00:04.0/input/input7
+[  315.105525] device: 'event6': device_add
+[  315.107238] device: 'vboxguest': device_add
+[  315.107709] device: 'vboxuser': device_add
+[  315.109382] vboxguest: misc device minor 58, IRQ 20, I/O port d020, MMIO at 00000000f0400000 (size 0x400000)
+[  315.109398] vboxguest: Successfully loaded version 5.0.2_OSE (interface 0x00010004)
+[  315.137882] bus: 'platform': add driver pcspkr
+[  315.137961] bus: 'platform': driver_probe_device: matched device pcspkr with driver pcspkr
+[  315.137976] bus: 'platform': really_probe: probing driver pcspkr with device pcspkr
+[  315.138076] device: 'input8': device_add
+[  315.139699] input: PC Speaker as /devices/platform/pcspkr/input/input8
+[  315.139834] device: 'event7': device_add
+[  315.171504] driver: 'pcspkr': driver_bound: bound to device 'pcspkr'
+[  315.171555] bus: 'platform': really_probe: bound device pcspkr to driver pcspkr
+[  315.171986] dynamic_debug:ddebug_add_module: 2 debug prints in module serio_raw
+[  315.172978] bus: 'serio': add driver serio_raw
+[  315.177578] dynamic_debug:ddebug_add_module: 1 debug prints in module snd_timer
+[  315.178896] device: 'timer': device_add
+[  315.189670] e1000 0000:00:03.0 enp0s3: renamed from eth0
+[  315.189681] net eth0: renaming to enp0s3
+[  315.221385] dynamic_debug:ddebug_add_module: 5 debug prints in module snd_pcm
+[  315.236292] bus: 'ac97': registered
+[  315.270823] dynamic_debug:ddebug_add_module: 3 debug prints in module snd_ac97_codec
+[  315.292189] dynamic_debug:ddebug_add_module: 2 debug prints in module snd_intel8x0
+[  315.293290] bus: 'pci': add driver snd_intel8x0
+[  315.293302] bus: 'pci': driver_probe_device: matched device 0000:00:05.0 with driver snd_intel8x0
+[  315.294451] bus: 'pci': really_probe: probing driver snd_intel8x0 with device 0000:00:05.0
+[  315.318480] snd_intel8x0 0000:00:05.0: disable (unknown or VT-d) VM optimization
+[  315.607602] snd_intel8x0 0000:00:05.0: white list rate for 1028:0177 is 48000
+[  315.607619] device: 'card0': device_add
+[  315.608119] device: 'controlC0': device_add
+[  315.608877] device: '0-0:AD1980': device_add
+[  315.608941] bus: 'ac97': add device 0-0:AD1980
+[  315.609206] device: 'pcmC0D0p': device_add
+[  315.610145] device: 'pcmC0D0c': device_add
+[  315.610915] device: 'pcmC0D1c': device_add
+[  315.611917] driver: 'snd_intel8x0': driver_bound: bound to device '0000:00:05.0'
+[  315.611988] bus: 'pci': really_probe: bound device 0000:00:05.0 to driver snd_intel8x0
+[  317.133279] BTRFS info (device dm-2): enabling auto defrag
+[  317.134954] BTRFS info (device dm-2): disk space caching is enabled
+[  319.264833] device: 'vcs2': device_add
+[  319.266019] device: 'vcsa2': device_add
+[  319.267439] device: 'vcs3': device_add
+[  319.269722] device: 'vcsa3': device_add
+[  319.273504] device: 'vcs4': device_add
+[  319.274462] device: 'vcsa4': device_add
+[  319.275900] device: 'vcs5': device_add
+[  319.276918] device: 'vcsa5': device_add
+[  319.278197] device: 'vcs6': device_add
+[  319.279240] device: 'vcsa6': device_add
+[  319.280598] device: 'vcs7': device_add
+[  319.281677] device: 'vcsa7': device_add
+[  319.283056] device: 'vcs8': device_add
+[  319.284065] device: 'vcsa8': device_add
+[  319.285838] device: 'vcs9': device_add
+[  319.286898] device: 'vcsa9': device_add
+[  319.288152] device: 'vcs10': device_add
+[  319.289022] device: 'vcsa10': device_add
+[  319.291150] device: 'vcs11': device_add
+[  319.292060] device: 'vcsa11': device_add
+[  319.293145] device: 'vcs12': device_add
+[  319.294331] device: 'vcsa12': device_add
+[  319.953884] ip (9075) used greatest stack depth: 10600 bytes left
+[  327.672525] e1000: enp0s3 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+[  335.479152] vboxsf: Successfully loaded version 5.0.2_OSE (interface 0x00010004)
+[  335.570666] VBoxService 5.0.2_OSE r102095 (verbosity: 0) linux.amd64 (Aug 28 2015 08:50:43) release log
+               00:00:00.000263 main     Log opened 2015-08-29T08:02:19.124474000Z
+[  335.570797] 00:00:00.000606 main     OS Product: Linux
+[  335.570900] 00:00:00.000716 main     OS Release: 4.1.6-hardened-r1-g45b4b78
+[  335.570992] 00:00:00.000776 main     OS Version: #3 SMP Fri Aug 28 17:11:49 EEST 2015
+[  335.571048] 00:00:00.000867 main     OS Service Pack: #3 SMP Fri Aug 28 17:11:49 EEST 2015
+[  335.571202] 00:00:00.000965 main     Executable: /usr/sbin/vboxguest-service
+               00:00:00.000969 main     Process ID: 9511
+               00:00:00.000972 main     Package type: LINUX_64BITS_GENERIC (OSE)
+[  335.579948] 00:00:00.009594 main     5.0.2_OSE r102095 started. Verbose level = 0
+[  339.833217] random: nonblocking pool is initialized
+[  686.870013] e1000 0000:00:03.0 enp0s3: Detected Tx Unit Hang
+                 Tx Queue             <0>
+                 TDH                  <19>
+                 TDT                  <1b>
+                 next_to_use          <1b>
+                 next_to_clean        <19>
+               buffer_info[next_to_clean]
+                 time_stamp           <10001c3e1>
+                 next_to_watch        <1a>
+                 jiffies              <10001c55c>
+                 next_to_watch.status <0>
+[  688.875017] e1000 0000:00:03.0 enp0s3: Detected Tx Unit Hang
+                 Tx Queue             <0>
+                 TDH                  <19>
+                 TDT                  <1b>
+                 next_to_use          <1b>
+                 next_to_clean        <19>
+               buffer_info[next_to_clean]
+                 time_stamp           <10001c3e1>
+                 next_to_watch        <1a>
+                 jiffies              <10001c7b6>
+                 next_to_watch.status <0>
+[  690.884628] e1000 0000:00:03.0 enp0s3: Detected Tx Unit Hang
+                 Tx Queue             <0>
+                 TDH                  <19>
+                 TDT                  <1b>
+                 next_to_use          <1b>
+                 next_to_clean        <19>
+               buffer_info[next_to_clean]
+                 time_stamp           <10001c3e1>
+                 next_to_watch        <1a>
+                 jiffies              <10001ca11>
+                 next_to_watch.status <0>
+[  692.888171] e1000 0000:00:03.0 enp0s3: Detected Tx Unit Hang
+                 Tx Queue             <0>
+                 TDH                  <19>
+                 TDT                  <1b>
+                 next_to_use          <1b>
+                 next_to_clean        <19>
+               buffer_info[next_to_clean]
+                 time_stamp           <10001c3e1>
+                 next_to_watch        <1a>
+                 jiffies              <10001cc6a>
+                 next_to_watch.status <0>
+[  693.346821] ------------[ cut here ]------------
+[  693.346955] WARNING: CPU: 1 PID: 0 at net/sched/sch_generic.c:303 dev_watchdog+0x242/0x250()
+[  693.346965] NETDEV WATCHDOG: enp0s3 (e1000): transmit queue 0 timed out
+[  693.346973] Modules linked in: vboxsf(O) snd_intel8x0 snd_ac97_codec ac97_bus snd_pcm snd_timer serio_raw pcspkr snd vboxguest(O) vboxvideo(O) soundcore i2c_piix4 igb ptp pps_core e1000 atl1c fuse dm_snapshot dm_bufio dm_mirror dm_region_hash dm_log hid_generic
+[  693.347028] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G           O L  4.1.6-hardened-r1-g45b4b78 #3
+[  693.347099] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[  693.347109]  ffffffff9d0724a4 ffff8802c3683d78 ffffffff9cd63cb1 ffffffff9d184738
+[  693.347120]  ffff8802c3683dc8 ffff8802c3683db8 ffffffff9c642925 0000000000000092
+[  693.347129]  0000000000000000 ffff8802a80c4260 0000000000000001 0000000000000001
+[  693.347139] Call Trace:
+[  693.347149]  <IRQ>  [<ffffffff9cd63cb1>] dump_stack+0x45/0x57
+[  693.347170]  [<ffffffff9c642925>] warn_slowpath_common+0x85/0xc0
+[  693.347180]  [<ffffffff9c6429a1>] warn_slowpath_fmt+0x41/0x50
+[  693.347192]  [<ffffffff9cce1f32>] dev_watchdog+0x242/0x250
+[  693.347202]  [<ffffffff9cce1cf0>] ? qdisc_rcu_free+0x40/0x40
+[  693.347215]  [<ffffffff9c69db04>] call_timer_fn+0x34/0x100
+[  693.347224]  [<ffffffff9cce1cf0>] ? qdisc_rcu_free+0x40/0x40
+[  693.347234]  [<ffffffff9c69e013>] run_timer_softirq+0x1f3/0x2d0
+[  693.347245]  [<ffffffff9c646228>] __do_softirq+0xf8/0x270
+[  693.347255]  [<ffffffff9c6464ed>] irq_exit+0x9d/0xa0
+[  693.347266]  [<ffffffff9c627541>] smp_apic_timer_interrupt+0x41/0x50
+[  693.347277]  [<ffffffff9cd7119f>] apic_timer_interrupt+0x7f/0x90
+[  693.347283]  <EOI>  [<ffffffff9c60c4d6>] ? default_idle+0x16/0xb0
+[  693.347300]  [<ffffffff9c60cdaa>] arch_cpu_idle+0xa/0x10
+[  693.347312]  [<ffffffff9c681c24>] cpu_startup_entry+0x244/0x350
+[  693.347323]  [<ffffffff9c6253d1>] start_secondary+0x201/0x250
+[  693.347332] ---[ end trace 94ee1ae84153dcd0 ]---
+[  693.347703] e1000 0000:00:03.0 enp0s3: Reset adapter
+[  693.407395] e1000: enp0s3 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
+[  913.931614] device: '254:3': device_add
+[  913.932288] device: 'dm-3': device_add
+[  913.966528] device: '254:3': device_unregister
+[  913.967033] device: '254:3': device_create_release
+[  914.021026] device: '254:3': device_add
+[  914.021715] device: 'dm-3': device_add
+[  914.198579] BTRFS: device fsid 3a6305a7-57aa-4712-a6d3-60e10bcee71e devid 1 transid 32 /dev/dm-3
+[  916.846278] device: 'btrfs-2': device_add
+[  916.851987] BTRFS info (device dm-3): use ssd allocation scheme
+[  916.852011] BTRFS info (device dm-3): enabling auto defrag
+[  916.852072] BTRFS info (device dm-3): disk space caching is enabled
+[  916.852090] BTRFS: has skinny extents
