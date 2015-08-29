@@ -2788,6 +2788,7 @@
         * time CCACHE_DISABLE=1 emerge -av virtualbox-guest-additions
           \ for guest OS integration (copy/paste for example)
       * the xf86-video-virtualbox will need to be compiled with vanilla gcc ! so @module-rebuild won't work for this!
+        \ takes 10m23s or less (ccache disabled, required)
 
 * bigTODO:
   * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
