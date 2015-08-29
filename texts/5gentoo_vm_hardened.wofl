@@ -2663,6 +2663,9 @@
                 \ don't select this!
           * Memory Protections  --->
             \ TODO: see if I can select more options here
+            * can't select [ ] Deny reading/writing to /dev/kmem, /dev/mem, and /dev/port (NEW)
+              \ CONFIG_GRKERNSEC_KMEM
+              \ due to cannot write to msr, needed for undervolting
             * select this CONFIG_GRKERNSEC_IO: Disable privileged I/O  and 
               \ //(already rsynced) use the patch from here: http://resources.infosecinstitute.com/gentoo-hardening-part-4-pax-rbac-clamav/  or else X won't start (also needs recompile X I think)
               \ //patch is technically here: https://github.com/N8Fear/hvb-overlay/blob/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
@@ -2673,6 +2676,8 @@
             * [*] Harden ASLR against information leaks and entropy reduction (NEW)
               \ CONFIG_GRKERNSEC_PROC_MEMMAP
               \ already selected (by default)
+            * [*] Prevent kernel stack overflows
+              \ CONFIG_GRKERNSEC_KSTACKOVERFLOW
             * [*] Hide kernel symbols
               \ CONFIG_GRKERNSEC_HIDESYM
           * Role Based Access Control Options  --->
