@@ -1,0 +1,11 @@
+--- ./rc-cgroup.sh	2015-08-29 22:35:15.448536778 +0300
++++ /lib64/rc/sh/rc-cgroup.sh	2015-08-29 22:43:11.222335345 +0300
+@@ -86,7 +86,7 @@ cgroup_add_service()
+ 	if [ -d "$openrc_cgroup" ]; then
+ 		cgroup="$openrc_cgroup/$RC_SVCNAME"
+ 		mkdir -p "$cgroup"
+-		[ -f "$cgroup/tasks" ] && printf "%d" 0 > "$cgroup/tasks"
++		[ -f "$cgroup/tasks" ] && printf "%d" 0 > "$cgroup/tasks" || echo "$cgroup/tasks" 1>&2
+ 	fi
+ }
+ 
