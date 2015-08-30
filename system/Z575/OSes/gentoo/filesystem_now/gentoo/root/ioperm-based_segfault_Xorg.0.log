@@ -1,0 +1,122 @@
+[    88.299] 
+X.Org X Server 1.17.2
+Release Date: 2015-06-16
+[    88.316] X Protocol Version 11, Revision 0
+[    88.319] Build Operating System: Linux 4.1.6-hardened-r1-g45b4b78 x86_64 Gentoo
+[    88.326] Current Operating System: Linux luks80 4.1.6-hardened-r1-g45b4b78 #11 SMP Sun Aug 30 16:53:54 EEST 2015 x86_64
+[    88.327] Kernel command line: BOOT_IMAGE=/kernel-ggrsec-x86_64-4.1.6-hardened-r1-g45b4b78 root=/dev/mapper/vgall-rootlvol ro crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 root_trim=yes rd.luks.uuid=e8b64567-124a-46a7-a167-d3d9c041de35 rd.luks.allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 "dyndbg=file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 slub_debug=U pax_sanitize_slab=full noefi dolvm dobtrfs console=tty1 earlyprintk=vga
+[    88.361] Build Date: 28 August 2015  12:57:37PM
+[    88.363]  
+[    88.365] Current version of pixman: 0.33.2
+[    88.368] 	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+[    88.369] Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+[    88.382] (==) Log file: "/var/log/Xorg.0.log", Time: Sun Aug 30 17:30:08 2015
+[    88.400] (==) Using config directory: "/etc/X11/xorg.conf.d"
+[    88.402] (==) Using system config directory "/usr/share/X11/xorg.conf.d"
+[    88.408] (==) No Layout section.  Using the first Screen section.
+[    88.408] (==) No screen section available. Using defaults.
+[    88.408] (**) |-->Screen "Default Screen Section" (0)
+[    88.409] (**) |   |-->Monitor "<default monitor>"
+[    88.409] (==) No device specified for screen "Default Screen Section".
+	Using the first device section listed.
+[    88.409] (**) |   |-->Device "Device0"
+[    88.410] (==) No monitor specified for screen "Default Screen Section".
+	Using a default monitor configuration.
+[    88.410] (==) Automatically adding devices
+[    88.410] (==) Automatically enabling devices
+[    88.411] (==) Automatically adding GPU devices
+[    88.423] (WW) The directory "/usr/share/fonts/TTF/" does not exist.
+[    88.423] 	Entry deleted from font path.
+[    88.424] (WW) The directory "/usr/share/fonts/OTF/" does not exist.
+[    88.424] 	Entry deleted from font path.
+[    88.424] (WW) The directory "/usr/share/fonts/Type1/" does not exist.
+[    88.424] 	Entry deleted from font path.
+[    88.427] (WW) `fonts.dir' not found (or not valid) in "/usr/share/fonts/100dpi/".
+[    88.427] 	Entry deleted from font path.
+[    88.427] 	(Run 'mkfontdir' on "/usr/share/fonts/100dpi/").
+[    88.428] (WW) `fonts.dir' not found (or not valid) in "/usr/share/fonts/75dpi/".
+[    88.428] 	Entry deleted from font path.
+[    88.428] 	(Run 'mkfontdir' on "/usr/share/fonts/75dpi/").
+[    88.428] (==) FontPath set to:
+	/usr/share/fonts/misc/
+[    88.429] (==) ModulePath set to "/usr/lib64/xorg/modules"
+[    88.429] (**) Extension "Composite" is enabled
+[    88.432] (II) The server relies on udev to provide the list of input devices.
+	If no devices become available, reconfigure udev or disable AutoAddDevices.
+[    88.432] (II) Loader magic: 0x2ac7799c40
+[    88.432] (II) Module ABI versions:
+[    88.433] 	X.Org ANSI C Emulation: 0.4
+[    88.433] 	X.Org Video Driver: 19.0
+[    88.433] 	X.Org XInput driver : 21.0
+[    88.433] 	X.Org Server Extension : 9.0
+[    88.435] (II) xfree86: Adding drm device (/dev/dri/card0)
+[    88.443] (--) PCI:*(0:0:2:0) 80ee:beef:0000:0000 rev 0, Mem @ 0xe0000000/16777216
+[    88.443] (II) LoadModule: "glx"
+[    88.447] (II) Loading /usr/lib64/xorg/modules/extensions/libglx.so
+[    88.602] (II) Module glx: vendor="X.Org Foundation"
+[    88.604] 	compiled for 1.17.2, module version = 1.0.0
+[    88.607] 	ABI class: X.Org Server Extension, version 9.0
+[    88.607] (==) AIGLX enabled
+[    88.608] (II) LoadModule: "vboxvideo"
+[    88.620] (II) Loading /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so
+[    88.627] (II) Module vboxvideo: vendor="Oracle Corporation"
+[    88.627] 	compiled for 1.17.2, module version = 1.0.1
+[    88.627] 	Module class: X.Org Video Driver
+[    88.628] 	ABI class: X.Org Video Driver, version 19.0
+[    88.628] (**) Load address of symbol "VBOXVIDEO" is 0x3448d5ad400
+[    88.628] (II) VBoxVideo: guest driver for VirtualBox: vbox
+[    88.629] (--) using VT number 7
+
+[    88.752] xf86EnableIOPorts: failed to set IOPL for I/O (No such device)
+[    88.754] (II) VBoxVideo(0): VirtualBox guest additions video driver version 5.0.2_OSEr102095
+[    88.754] (II) Loading sub module "ramdac"
+[    88.754] (II) LoadModule: "ramdac"
+[    88.755] (II) Module "ramdac" already built-in
+[    88.755] (II) Loading sub module "fb"
+[    88.755] (II) LoadModule: "fb"
+[    88.767] (II) Loading /usr/lib64/xorg/modules/libfb.so
+[    88.784] (II) Module fb: vendor="X.Org Foundation"
+[    88.785] 	compiled for 1.17.2, module version = 1.0.0
+[    88.785] 	ABI class: X.Org ANSI C Emulation, version 0.4
+[    88.785] (II) Loading sub module "shadowfb"
+[    88.785] (II) LoadModule: "shadowfb"
+[    88.787] (II) Loading /usr/lib64/xorg/modules/libshadowfb.so
+[    88.791] (II) Module shadowfb: vendor="X.Org Foundation"
+[    88.791] 	compiled for 1.17.2, module version = 1.0.0
+[    88.792] 	ABI class: X.Org ANSI C Emulation, version 0.4
+[    88.792] (II) Loading sub module "vgahw"
+[    88.792] (II) LoadModule: "vgahw"
+[    88.794] (II) Loading /usr/lib64/xorg/modules/libvgahw.so
+[    88.798] (II) Module vgahw: vendor="X.Org Foundation"
+[    88.798] 	compiled for 1.17.2, module version = 0.1.0
+[    88.799] 	ABI class: X.Org Video Driver, version 19.0
+[    88.799] (II) Loading sub module "dri2"
+[    88.799] (II) LoadModule: "dri2"
+[    88.800] (II) Module "dri2" already built-in
+[    88.800] (EE) 
+[    88.800] (EE) Backtrace:
+[    88.801] (EE) 0: /usr/bin/X (xorg_backtrace+0x80) [0x2ac751ee60]
+[    88.802] (EE) 1: /usr/bin/X (0x2ac7330000+0x1f3ee0) [0x2ac7523ee0]
+[    88.802] (EE) 2: /lib64/libc.so.6 (0x344913b1000+0x34920) [0x344913e5920]
+[    88.803] (EE) 3: /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so (0x3448d39e000+0x839c) [0x3448d3a639c]
+[    88.803] (EE) 4: /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so (0x3448d39e000+0x6391) [0x3448d3a4391]
+[    88.804] (EE) 5: /usr/bin/X (InitOutput+0xab8) [0x2ac73d9dd8]
+[    88.804] (EE) 6: /usr/bin/X (0x2ac7330000+0x5c11e) [0x2ac738c11e]
+[    88.805] (EE) 7: /lib64/libc.so.6 (__libc_start_main+0x114) [0x344913d1954]
+[    88.805] (EE) 8: /usr/bin/X (_start+0x29) [0x2ac7373349]
+[    88.806] (EE) 
+[    88.806] (EE) Segmentation fault at address 0x0
+[    88.807] (EE) 
+Fatal server error:
+[    88.807] (EE) Caught signal 11 (Segmentation fault). Server aborting
+[    88.808] (EE) 
+[    88.808] (EE) 
+Please consult the The X.Org Foundation support 
+	 at http://wiki.x.org
+ for help. 
+[    88.809] (EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+[    88.809] (EE) 
+[    88.863] (EE) Server terminated with error (1). Closing log file.

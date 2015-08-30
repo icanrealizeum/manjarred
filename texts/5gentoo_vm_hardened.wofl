@@ -2682,13 +2682,15 @@
               \ also kexec support is removed - just a note.
               \ TODO: find a way to undervolt without needing to write to /dev/cpu/*/msr (see: amdmsrtweaker-lnx)
               \ enable this inside virtualbox! (but not on bare metal, yet)
-            * select this CONFIG_GRKERNSEC_IO: Disable privileged I/O  and 
+            * [ ] Disable privileged I/O
+              \ don't select this CONFIG_GRKERNSEC_IO: Disable privileged I/O
+              \ because X won't start in vboxvideo.c when trying an inl instruction that gets RAM size.
               \ //(already rsynced) use the patch from here: http://resources.infosecinstitute.com/gentoo-hardening-part-4-pax-rbac-clamav/  or else X won't start (also needs recompile X I think)
               \ //patch is technically here: https://github.com/N8Fear/hvb-overlay/blob/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
               \ //so to wget https://raw.github.com/N8Fear/hvb-overlay/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
               \ //XXX: for now, fails to compile xorg-server-1.17.1-r1 due to:  "* !!! User patches were applied to this build!"  well no shiet! or maybe it's due to this: "/usr/lib/portage/python2.7/phase-helpers.sh: /var/tmp/portage/x11-base/xorg-server-1.17.1-r1/work/xorg-server-1.17.1/configure: /bin/sh: bad interpreter: Permission denied"  - that's what you get with grsecurity already enabled but not configured, i guess...
               \ //XXX: ^ yep, worked fine without grsecurity already compiled&enabled.
-              \ //this should fix it: https://forums.gentoo.org/viewtopic-t-971312-start-0.html (untested yet)
+              \ //this should fix it: https://forums.gentoo.org/viewtopic-t-971312-start-0.html (tested) but it's unrelated to this configure option that I'm commenting on (it's about tpe below)
               \ recompiling x11-base/xorg-server took 8m29s (ccache)
             * [*] Harden BPF interpreter
               \ CONFIG_GRKERNSEC_BPF_HARDEN
@@ -2896,6 +2898,10 @@
         \ │ the ebuild when USE=pax_kernel is set, otherise CONFIG_PAX_PAGEEXEC
         \  │ is enabled as a fallback.
         \ from: F2 help of CONFIG_PAX_EMUTRAMP
+    * recompile glibc
+      \ so that we get symbols and source code installed!
+      * time emerge -av glibc
+        \ 61m13s (94m user, 93m sys)
 
 
 * config

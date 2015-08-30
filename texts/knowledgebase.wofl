@@ -30,6 +30,21 @@
   \ also can use this hex calculator for the difference: http://www.miniwebtool.com/hex-calculator/
   \ gdb / info symbol
 
+* If you have something like this nf_send_reset+0x3a/0x140 and you want to gdb
+  \ see: https://bugzilla.kernel.org/show_bug.cgi?id=97631#c0
+  \ the key is: (gdb) list *nf_send_reset+0x3a
+  \ it should list the source code next.
+  \ eg. 3: /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so (0x3448d39e000+0x839c) [0x3448d3a639c]
+  \ gdb /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so
+  \ list *0x839c
+  \ works, shows:
+  \ 0x839c is in VBoxVideoGetVRAMSize() (/usr/include/xorg/compiler.h:381).
+  \ 381     __asm__ __volatile__("inl %1,%0":"=a"(ret):"d"(port));
+  \ which is called here: /usr/src/debug/x11-drivers/xf86-video-virtualbox-5.0.2/VirtualBox-5.0.2/src/VBox/Additions/x11/vboxvideo/vboxvideo.c:906
+  \ 906     pVBox->cbFBMax = VBoxVideoGetVRAMSize();
+  \ that's why startx segfaults above, because of that 'Disable privileged I/O' CONFIG_GRKERNSEC_IO
+  \ ok "fix" by disabling that option!
+
 
 * (gentoo)startx also segfaults when grsec is enabled(not RBAC tho), 
   \ even though I have that I/O patch which adds -hwaccess flag
