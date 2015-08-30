@@ -2686,8 +2686,9 @@
               \ //(already rsynced) use the patch from here: http://resources.infosecinstitute.com/gentoo-hardening-part-4-pax-rbac-clamav/  or else X won't start (also needs recompile X I think)
               \ //patch is technically here: https://github.com/N8Fear/hvb-overlay/blob/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
               \ //so to wget https://raw.github.com/N8Fear/hvb-overlay/master/x11-base/xorg-server/files/xorg-nohwaccess.patch
-              \ XXX: for now, fails to compile xorg-server-1.17.1-r1 due to:  "* !!! User patches were applied to this build!"  well no shiet! or maybe it's due to this: "/usr/lib/portage/python2.7/phase-helpers.sh: /var/tmp/portage/x11-base/xorg-server-1.17.1-r1/work/xorg-server-1.17.1/configure: /bin/sh: bad interpreter: Permission denied"  - that's what you get with grsecurity already enabled but not configured, i guess...
-              \ XXX: ^ yep, worked fine without grsecurity already compiled&enabled.
+              \ //XXX: for now, fails to compile xorg-server-1.17.1-r1 due to:  "* !!! User patches were applied to this build!"  well no shiet! or maybe it's due to this: "/usr/lib/portage/python2.7/phase-helpers.sh: /var/tmp/portage/x11-base/xorg-server-1.17.1-r1/work/xorg-server-1.17.1/configure: /bin/sh: bad interpreter: Permission denied"  - that's what you get with grsecurity already enabled but not configured, i guess...
+              \ //XXX: ^ yep, worked fine without grsecurity already compiled&enabled.
+              \ //this should fix it: https://forums.gentoo.org/viewtopic-t-971312-start-0.html (untested yet)
               \ recompiling x11-base/xorg-server took 8m29s (ccache)
             * [*] Harden BPF interpreter
               \ CONFIG_GRKERNSEC_BPF_HARDEN
@@ -2773,8 +2774,55 @@
             \ [ ] Single group for auditing (NEW) CONFIG_GRKERNSEC_AUDIT_GROUP
           * Executable Protections  --->
             \ set all options and set the GID to 0 (aka root group, instead of 10 wheel group)
-            \ (0) GID for TPE-trusted users
-            \ sysctl: tpe_invert (default on)
+            * [*] Dmesg(8) restriction
+              \ CONFIG_GRKERNSEC_DMESG
+            * [*] Deter ptrace-based process snooping
+              \ CONFIG_GRKERNSEC_HARDEN_PTRACE
+            * [*] Require read access to ptrace sensitive binaries
+              \ CONFIG_GRKERNSEC_PTRACE_READEXEC
+            * [*] Enforce consistent multithreaded privileges
+              \ CONFIG_GRKERNSEC_SETXID
+            * [*] Disallow access to overly-permissive IPC objects
+              \ CONFIG_GRKERNSEC_HARDEN_IPC
+            * [*] Trusted Path Execution (TPE)
+              \ CONFIG_GRKERNSEC_TPE
+              * [*]   Partially restrict all non-root users
+                \ CONFIG_GRKERNSEC_TPE_ALL
+              * [*]   Invert GID option
+                \ CONFIG_GRKERNSEC_TPE_INVERT
+            * (120) GID for TPE-trusted users - CONFIG_GRKERNSEC_TPE_TRUSTED_GID
+              * groupadd --system tpe_group
+              * getent group tpe_group|cut -d: -f3
+                \ the id of the newly created group
+              * set that id number (eg. 120) as the GID number here on this option CONFIG_GRKERNSEC_TPE_TRUSTED_GID
+              * gpasswd -a portage tpe_group
+                \ Adding user portage to group tpe_group
+              * note: now it looks like this (AFTER reboot!)
+                \ # sysctl -a|grep -i tpe
+                \ kernel.grsecurity.tpe = 1
+                \ kernel.grsecurity.tpe_gid = 120
+                \ kernel.grsecurity.tpe_invert = 1
+                \ kernel.grsecurity.tpe_restrict_all = 1
+                \ sysctl: tpe_invert (default on)
+                \ XXX: if you later get "/bin/sh: bad interpreter: Permission denied" during an emerge (virtualbox-guest-additions for example, at extracting the second archive) then it's this TPE thing's fault! tested to be so just by disabling tpe via sysctl! aka kernel.grsecurity.tpe=0 ;
+                \ also doesn't work with:
+                \ kernel.grsecurity.tpe = 1
+                \ kernel.grsecurity.tpe_gid = 250  (that's 'portage' group)
+                \ kernel.grsecurity.tpe_invert = 0
+                \ kernel.grsecurity.tpe_restrict_all = 1
+                \ and with:
+                \ kernel.grsecurity.tpe = 1
+                \ kernel.grsecurity.tpe_gid = 0
+                \ kernel.grsecurity.tpe_invert = 1
+                \ kernel.grsecurity.tpe_restrict_all = 1
+                \ but works with this(because portage group is allowed now):
+                \ kernel.grsecurity.tpe = 1
+                \ kernel.grsecurity.tpe_gid = 250
+                \ kernel.grsecurity.tpe_invert = 1
+                \ kernel.grsecurity.tpe_restrict_all = 1
+                \ )
+                \ + /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/work/VirtualBox-5.0.2/src/VBox/Additions/linux/export_modules /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/work/vbox-kmod.tar.gz
+                \ /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/temp/environment: /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/work/VirtualBox-5.0.2/src/VBox/Additions/linux/export_modules: /bin/sh: bad interpreter: Permission denied
           * Network Protections  --->
             * [*] TCP/UDP blackhole and LAST_ACK DoS prevention
               \ CONFIG_GRKERNSEC_BLACKHOLE
@@ -2821,6 +2869,7 @@
         - time FEATURES="-ccache" genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
           \ FIXME: ^ this is likely outdated
         * time CCACHE_DISABLE=1 genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernelgrsec --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+          \ 40m7s
         * grub2-mkconfig -o /bewt/grub/grub.cfg 2>&1
         * umount /bewt
         * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot

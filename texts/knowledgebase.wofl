@@ -28,6 +28,49 @@
 * if you have the segfault line in the log (eg. dmesg) then
   \ http://coredump.io/blog/2012/02/23/debugging-segfaults-from-logs-to-gdb/
   \ also can use this hex calculator for the difference: http://www.miniwebtool.com/hex-calculator/
+  \ gdb / info symbol
+
+
+* (gentoo)startx also segfaults when grsec is enabled(not RBAC tho), 
+  \ even though I have that I/O patch which adds -hwaccess flag
+  \ ...
+  \ [ 2074.742883] grsec: denied resource overstep by requesting 21 for RLIMIT_NICE against limit 0 for /usr/bin/xinit[xinit:24835] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/bin/startx[startx:24819] uid/euid:1000/1000 gid/egid:1000/1000
+  \ ...
+  \ [ 2075.022772] grsec: denied use of ioperm() by /usr/bin/Xorg[X:24836] uid/euid:1000/0 gid/egid:1000/1000, parent /usr/bin/xinit[xinit:24835] uid/euid:1000/1000 gid/egid:1000/1000
+  \ what looks like in Xorg.0.log :
+  \ [  2075.036] (EE) 
+  \ [  2075.037] (EE) Backtrace:
+  \ [  2075.038] (EE) 0: /usr/bin/X (xorg_backtrace+0x80) [0x20554cfe60]
+  \ [  2075.038] (EE) 1: /usr/bin/X (0x20552e1000+0x1f3ee0) [0x20554d4ee0]
+  \ [  2075.039] (EE) 2: /lib64/libc.so.6 (0x3c844fbb000+0x34920) [0x3c844fef920]
+  \ [  2075.039] (EE) 3: /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so (0x3c840fa8000+0x839c) [0x3c840fb039c]
+  \ [  2075.040] (EE) 4: /usr/lib64/xorg/modules/drivers/vboxvideo_drv.so (0x3c840fa8000+0x6391) [0x3c840fae391]
+  \ [  2075.040] (EE) 5: /usr/bin/X (InitOutput+0xab8) [0x205538add8]
+  \ [  2075.041] (EE) 6: /usr/bin/X (0x20552e1000+0x5c11e) [0x205533d11e]
+  \ [  2075.041] (EE) 7: /lib64/libc.so.6 (__libc_start_main+0x114) [0x3c844fdb954]
+  \ [  2075.042] (EE) 8: /usr/bin/X (_start+0x29) [0x2055324349]
+  \ [  2075.042] (EE) 
+  \ [  2075.043] (EE) Segmentation fault at address 0x0
+  \ [  2075.043] (EE) 
+  \ Fatal server error:
+  \ [  2075.044] (EE) Caught signal 11 (Segmentation fault). Server aborting
+  \ [  2075.044] (EE) 
+  * looks like that X patch(xorg-nohwaccess.patch) isn't doing its job, because without the 'Disable privileged I/O' CONFIG_GRKERNSEC_IO it works, startx works.
+    \ but that polkitd still crashes (unrelate tho)
+    \ [  305.996534] grsec: exec of /usr/libexec/dbus-daemon-launch-helper (/usr/libexec/dbus-daemon-launch-helper org.freedesktop.PolicyKit1 ) by /usr/libexec/dbus-daemon-launch-helper[dbus-daemon:9907] uid/euid:101/101 gid/egid:246/246, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+    \ [  306.019402] grsec: exec of /usr/lib64/polkit-1/polkitd (/usr/lib/polkit-1/polkitd --no-debug ) by /usr/lib64/polkit-1/polkitd[dbus-daemon-lau:9907] uid/euid:0/0 gid/egid:0/0, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+    \ [  306.062775] grsec: chdir to /var/lib/polkit-1 by /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+    \ [  306.131069] grsec: denied RWX mmap of <anonymous mapping> by /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+    \ [  306.131281] polkitd[9907]: segfault at 10 ip 000003df5dab0ce7 sp 000003f375186890 error 4 in libpthread-2.21.so[3df5daa7000+18000]
+    \ [  306.131351] grsec: Segmentation fault occurred at 0000000000000010 in /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+    \ [  306.131764] grsec: bruteforce prevention initiated due to crash of /usr/lib64/polkit-1/polkitd against uid 102, banning suid/sgid execs for 15 minutes.  Please investigate the crash report for /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+
+* (gentoo)polkitd segfaults when grsec is enabled(not RBAC tho), in Symbol "pthread_mutex_lock" is at 0x9cd0 + 23 (aka 0x9ce7) in /lib64/libpthread-2.21.so
+  \ see above
+
+* this happens with apparently no bad effects:
+  \ [ 2926.973983] grsec: From 10.0.2.2: denied RWX mmap of <anonymous mapping> by /usr/lib64/python-exec/python3.4/portageq[portageq:25050] uid/euid:0/0 gid/egid:0/0, parent /usr/bin/gcc-config[gcc-config:25049] uid/euid:0/0 gid/egid:0/0
+
 
 
 * to emerge a binary package(eg. that was saved by emerge before upgrading it to a newer version)
@@ -41,5 +84,24 @@
 
 * disable NMI selftest in kernel running inside virtualbox or it will panic on boot if you press any keys or mouse mouse(touchpad) - at least with hardened kernel 4.1.6-hardened-r1-g45b4b78
   \ CONFIG_DEBUG_NMI_SELFTEST
+
+
+* emerge with grsec on gentoo hardened will not work... /bin/sh: bad interpreter: Permission denied
+  \ eg.
+  \ >>> Unpacking VirtualBox-5.0.2.tar.bz2 to /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/work
+  \ /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/temp/environment: /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/work/VirtualBox-5.0.2/src/VBox/Additions/linux/export_modules: /bin/sh: bad interpreter: Permission denied
+  * to fix:
+    \ https://forums.gentoo.org/viewtopic-t-971312-start-0.html
+    * 
+
+* failed to mount root at boot?
+  \ [  246.198391] VFS: Cannot open root device "mapper/vgall-rootlvol" or unknown-block(0,0): error -6
+  \ [  246.458353] Please append a correct "root=" boot option; here are the available partitions:
+  \ ...
+  \ [  247.638880] DEBUG_BLOCK_EXT_DEVT is enabled, you need to specify explicit textual name for "root=" boot option.
+  \ [  247.927275] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+  * it's because --kernname=1genkernelgrsec passed to genkernel (either name too long, or that 1 is doing this, or I'm missing the point and it was something else!; but another previous variant worked fine: --kernname=genkernelgrsec  so w/o that 1 in front! )
+    \ this works: --kernname=ggrsec
+    \ or this works: --kernname=genkernel
 
 
