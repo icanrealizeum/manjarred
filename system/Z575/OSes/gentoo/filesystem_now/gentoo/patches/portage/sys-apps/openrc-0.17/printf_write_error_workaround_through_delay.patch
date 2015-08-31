@@ -2,9 +2,9 @@ left as is because it works, for now
 that echo & ps delays seems to be preventing the write error from occurring so far
 
 
---- orig/sh/rc-cgroup.sh.in	2015-08-31 09:09:37.169796236 +0300
-+++ patched/sh/rc-cgroup.sh.in	2015-08-31 09:11:40.473322109 +0300
-@@ -85,8 +85,21 @@ cgroup_add_service()
+--- orig/sh/rc-cgroup.sh.in	2015-08-31 10:39:36.068009618 +0300
++++ patched/sh/rc-cgroup.sh.in	2015-08-31 10:38:29.817210595 +0300
+@@ -85,8 +85,28 @@ cgroup_add_service()
  	openrc_cgroup=/sys/fs/cgroup/openrc
  	if [ -d "$openrc_cgroup" ]; then
  		cgroup="$openrc_cgroup/$RC_SVCNAME"
@@ -12,12 +12,19 @@ that echo & ps delays seems to be preventing the write error from occurring so f
 +    #the delay these introduce, seems to prevent wtw race is going on that causes this: /lib64/rc/sh/rc-cgroup.sh: line 89: printf: write error: No such device
 +    echo "Current: $$ $RC_SVCNAME" 2>/dev/null 1>&2
 +    ps afwj $$ 2>/dev/null 1>&2
++  #^tested and confirmed to FAIL(2) (at boot) when the above 2 lines are commented out! but not when they are uncommented! so, draw your own conclusions.
  		mkdir -p "$cgroup"
 -		[ -f "$cgroup/tasks" ] && printf "%d" 0 > "$cgroup/tasks"
++    local fail=0
 +		if test -f "$cgroup/tasks"; then
-+      printf "%d" 0 > "$cgroup/tasks"
++      if ! printf "%d" 0 > "$cgroup/tasks"; then
++        fail=1
++      fi
 +    else
-+      echo "------FAIL----- $cgroup/tasks" 1>&2
++      fail=2
++    fi
++    if test "$fail" -ne "0"; then
++      echo "------FAIL(${fail})----- $cgroup/tasks" 1>&2
 +      echo "Current: $$ $RC_SVCNAME" 1>&2
 +      cat "$cgroup/tasks"
 +    fi
