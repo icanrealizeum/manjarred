@@ -1,0 +1,29 @@
+left as is because it works, for now
+that echo & ps delays seems to be preventing the write error from occurring so far
+
+
+--- orig/sh/rc-cgroup.sh.in	2015-08-31 09:09:37.169796236 +0300
++++ patched/sh/rc-cgroup.sh.in	2015-08-31 09:11:40.473322109 +0300
+@@ -85,8 +85,21 @@ cgroup_add_service()
+ 	openrc_cgroup=/sys/fs/cgroup/openrc
+ 	if [ -d "$openrc_cgroup" ]; then
+ 		cgroup="$openrc_cgroup/$RC_SVCNAME"
++
++    #the delay these introduce, seems to prevent wtw race is going on that causes this: /lib64/rc/sh/rc-cgroup.sh: line 89: printf: write error: No such device
++    echo "Current: $$ $RC_SVCNAME" 2>/dev/null 1>&2
++    ps afwj $$ 2>/dev/null 1>&2
+ 		mkdir -p "$cgroup"
+-		[ -f "$cgroup/tasks" ] && printf "%d" 0 > "$cgroup/tasks"
++		if test -f "$cgroup/tasks"; then
++      printf "%d" 0 > "$cgroup/tasks"
++    else
++      echo "------FAIL----- $cgroup/tasks" 1>&2
++      echo "Current: $$ $RC_SVCNAME" 1>&2
++      cat "$cgroup/tasks"
++    fi
++#    [ -f "$cgroup/tasks" ] || ls -la "$openrc_cgroup" 1>&2
++
++#		[ -f "$cgroup/tasks" ] && printf "%d" 0 > "$cgroup/tasks"
+ 	fi
+ }
+ 
