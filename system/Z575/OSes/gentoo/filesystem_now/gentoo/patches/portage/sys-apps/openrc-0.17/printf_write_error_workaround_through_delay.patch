@@ -10,8 +10,8 @@ that echo & ps delays seems to be preventing the write error from occurring so f
  		cgroup="$openrc_cgroup/$RC_SVCNAME"
 +
 +    #the delay these introduce, seems to prevent wtw race is going on that causes this: /lib64/rc/sh/rc-cgroup.sh: line 89: printf: write error: No such device
-+    echo "Current: $$ $RC_SVCNAME" 2>/dev/null 1>&2
-+    ps afwj $$ 2>/dev/null 1>&2
++    echo "Current: $$ $RC_SVCNAME" >/dev/null #2>/dev/null 1>&2
++    ps afwj $$ >/dev/null #2>/dev/null 1>&2
 +  #^tested and confirmed to FAIL(2) (at boot) when the above 2 lines are commented out! but not when they are uncommented! so, draw your own conclusions.
  		mkdir -p "$cgroup"
 -		[ -f "$cgroup/tasks" ] && printf "%d" 0 > "$cgroup/tasks"
