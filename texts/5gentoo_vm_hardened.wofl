@@ -2564,7 +2564,7 @@
           \ and you have to be in vboxsf group to be able to access them! or else only root can!  
       * rc-update add virtualbox-guest-additions default
       * rc-service virtualbox-guest-additions start
-        \ if you don't do this now, you get something like "virtualbox kernel driver isn't running, exiting" as a systray tooltip right after startx
+        \ if you don't do this now, you get something like "virtualbox kernel service isn't running, exiting" as a systray tooltip right after startx
         \ so, naturally a reboot will start that, if you don't issue that command!
     * recompile mesa
       * grep swrast /var/log/Xorg.0.log
