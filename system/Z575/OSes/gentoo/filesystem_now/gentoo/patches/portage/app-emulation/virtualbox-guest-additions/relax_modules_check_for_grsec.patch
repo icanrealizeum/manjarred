@@ -1,5 +1,10 @@
---- /root/VBoxClient-all	2015-09-03 15:34:41.353821403 +0200
-+++ /usr/bin/VBoxClient-all	2015-09-03 15:46:44.995012317 +0200
+
+Note:
+the file in srcdir at: src/VBox/Additions/x11/Installer/98vboxadd-xclient
+will be installed as: /usr/bin/VBoxClient-all
+
+--- orig/src/VBox/Additions/x11/Installer/98vboxadd-xclient	2015-09-03 15:34:41.353821403 +0200
++++ patched/src/VBox/Additions/x11/Installer/98vboxadd-xclient	2015-09-03 15:46:44.995012317 +0200
 @@ -21,10 +21,22 @@ for i in $HOME/.vboxclient-*.pid; do
      test -w $i || rm -f $i
  done
