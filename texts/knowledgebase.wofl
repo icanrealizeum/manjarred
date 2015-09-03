@@ -79,6 +79,8 @@
     \ [  306.131281] polkitd[9907]: segfault at 10 ip 000003df5dab0ce7 sp 000003f375186890 error 4 in libpthread-2.21.so[3df5daa7000+18000]
     \ [  306.131351] grsec: Segmentation fault occurred at 0000000000000010 in /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
     \ [  306.131764] grsec: bruteforce prevention initiated due to crash of /usr/lib64/polkit-1/polkitd against uid 102, banning suid/sgid execs for 15 minutes.  Please investigate the crash report for /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
+    \ polkitd crashing is fixed: https://bugs.gentoo.org/show_bug.cgi?id=559436
+    \ was because lacking kernel config option: CONFIG_PAX_PT_PAX_FLAGS
 
 * (gentoo)polkitd segfaults when grsec is enabled(not RBAC tho), in Symbol "pthread_mutex_lock" is at 0x9cd0 + 23 (aka 0x9ce7) in /lib64/libpthread-2.21.so
   \ see above

@@ -2564,7 +2564,14 @@
           \ and you have to be in vboxsf group to be able to access them! or else only root can!  
       * rc-update add virtualbox-guest-additions default
       * rc-service virtualbox-guest-additions start
-        \ if you don't do this now, you get something like "virtualbox kernel service isn't running, exiting" as a systray tooltip right after startx
+        \ if you don't do this now, you get "VBoxClient: the VirtualBox kernel service is not running. Exiting." as a systray tooltip right after you startx. (you also get this under hardened gentoo with grsec enabled in kernel - it might be because polkitd segfaults? but dbus doesn't go down with it) see: https://bugs.gentoo.org/show_bug.cgi?id=472098#c31 It's not because polkitd segfaults because that's fixed now: https://bugs.gentoo.org/show_bug.cgi?id=559436
+        \ it's because /proc/modules cannot be accessed by normal user!
+        \ ^ [  146.859209] grsec: exec of /usr/bin/VBoxClient-all (VBoxClient-all ) by /usr/bin/VBoxClient-all[xfce4-session:9826] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/bin/xfce4-session[xfce4-session:9798] uid/euid:1000/1000 gid/egid:1000/1000
+        \ [  147.157551] grsec: exec of /bin/rm (rm -f /home/zazdxscf/.vboxclient-*.pid ) by /bin/rm[VBoxClient-all:9827] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/bin/VBoxClient-all[VBoxClient-all:9826] uid/euid:1000/1000 gid/egid:1000/1000
+        \ [  147.176473] grsec: exec of /bin/grep (grep -q vboxguest /proc/modules ) by /bin/grep[VBoxClient-all:9828] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/bin/VBoxClient-all[VBoxClient-all:9826] uid/euid:1000/1000 gid/egid:1000/1000
+        \ [  147.268116] grsec: exec of /usr/bin/libnotify-notify-send (notify-send VBoxClient: the VirtualBox kernel service is not running.  Exiting. ) by /usr/bin/libnotify-notify-send[VBoxClient-all:9829] uid/euid:1000/1000 gid/egid:1000/1000, parent /usr/bin/VBoxClient-all[VBoxClient-all:9826] uid/euid:1000/1000 gid/egid:1000/1000
+        \ looks like VBoxClient-all (when startx, as user zazdxscf) doesn't have access to /proc/modules and thus thinks that the module is not loaded!
+        \ grep: /proc/modules: Permission denied
         \ so, naturally a reboot will start that, if you don't issue that command!
     * recompile mesa
       * grep swrast /var/log/Xorg.0.log
@@ -2928,6 +2935,10 @@
           \ for guest OS integration (copy/paste for example)
       * the xf86-video-virtualbox will need to be compiled with vanilla gcc ! so @module-rebuild won't work for this!
         \ takes 10m23s or less (ccache disabled, required)
+  * in order for ~/bin/ executing scripts to work for zazdxscf with pax/grsec enabled
+    * gpasswd -a zazdxscf tpe_group
+    * TODO: find another way? maybe make the bin folder root owned and writable, but group+other not writable! (this means that everytime I've to edit something in there, I've to fuck with the permissions on the dir)
+    
 
 * bigTODO:
   * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
