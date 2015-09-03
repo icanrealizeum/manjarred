@@ -2630,8 +2630,9 @@
             * PaX Control  --->
               * [ ] Support soft mode (NEW)
                 \ CONFIG_PAX_SOFTMODE
-              * [ ] Use ELF program header marking (NEW)
+              * [*] Use ELF program header marking (NEW)
                 \ CONFIG_PAX_PT_PAX_FLAGS
+                \ select this or polkitd will fail to start! because it has in-header embedded paxctl(-ng) settings(PT_PAX, not XATTR_PAX flags) which allows it to run normally instead of being killed by grsec.
               * CONFIG_PAX_XATTR_PAX_FLAGS
                 \ -> Security options -> Grsecurity -> Grsecurity (GRKERNSEC [=y]) -> Customize Configuration -> PaX -> Enable various PaX features (PAX [=y]) -> PaX Control -> Use filesystem extended attributes marking [=y]
                 \ TODO: see if this is actually needed at all
