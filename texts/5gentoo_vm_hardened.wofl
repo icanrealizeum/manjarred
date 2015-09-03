@@ -2032,6 +2032,7 @@
           \ XXX: libunique fails due to env var being set DEBUG=1  (TODO: report this on bugs)
         * vim /etc/portage/package.use/firefox
           \ www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu -system-cairo system-libvpx system-sqlite -wifi
+          \ never use system-cairo , reason: https://bugzilla.mozilla.org/show_bug.cgi?id=1200934#c5  and I kinda agree with him.
           \ changed to minus system-cairo to avoid this bug that causes youtube videos to freeze with firefox 40.0.2 (not with 39.0.3) https://bugs.gentoo.org/show_bug.cgi?id=558150#c23  also see https://bugzilla.mozilla.org/show_bug.cgi?id=1193520 which is the same thing, supposedly!
         * first, you must move /var/tmp/ccache into root dir (aka /  not /root )
           * and either:

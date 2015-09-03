@@ -382,7 +382,8 @@ export LESS="-+X -R -+S -+F -+E -I"
 #then core.pager configuration,
 #then $PAGER,
 #and then the default chosen at compile time (usually 'less').
-export PAGER="less $LESS"
+#export PAGER="less $LESS"
+export PAGER="less" #use this to avoid a manpager issue, see: https://bugs.gentoo.org/show_bug.cgi?id=559490 and also use it to be compatible with anything in the future; thanks SpanKY
 export GIT_PAGER="$PAGER"
 
 
