@@ -144,5 +144,13 @@
     \ Also worth noting that selecting Intel HD Audio(from the default ICH AC97) and then selecting back ICH AC97 will clear this codec flag and all is well. (OK must be pressed after each selection, ofc.) (This is in virtualbox on host, in Settings->Audio->Audio Controller ) 
 
 
+* youtube videos playing are delayed(even audio-wise: freezes) due to copying files (with mc for example; or even while compiling) even just through tmpfs drives.
+  \ so it's not a matter of cpu usage (unless it's btrfs lzma taking all cpu slices, or something like cli-sti during the compression, so to speak)
+  \ it's also not a matter of disk writing/syncing, since it happens between tmpfs drives (even just copying 23M of a package like cairo)
 
+* copy/pasting into youtube comments not working in firefox?
+  * set dom.event.clipboardevents.enabled false
+    \ in about:config
+    \ src: http://merabheja.com/fix-can-not-paste-text-in-youtube-comments-using-mozilla/
+    \ TODO: this means that RightToClick isn't fucking working!!! since I had the same thing disabled with it! and had it run on all sites... so wtf.
 

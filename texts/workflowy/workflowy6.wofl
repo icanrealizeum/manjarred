@@ -809,6 +809,14 @@
                 \ "https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc"
         * setup firefox
           * in about:config
+            * dom.event.clipboardevents.enabled
+              \ false
+              \ so pasting in youtube comments works! also so pages don't know when and what you're copy/pasting! ffs (RightToClick didn't seems to work when I had this selected!)
+              \ src: http://merabheja.com/fix-can-not-paste-text-in-youtube-comments-using-mozilla/
+            * clipboard.autocopy
+              \ false
+              \ so that just selecting text doesn't copy it to clipboard like gpm
+              \ src: http://kb.mozillazine.org/Clipboard.autocopy
             * extensions.sdk.console.logLevel
               \ New->String, Ctrl+Alt+J (or K) to open console and see the logs
               \ set to: all
