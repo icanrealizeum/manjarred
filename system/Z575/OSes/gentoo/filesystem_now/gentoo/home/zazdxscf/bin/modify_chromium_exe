@@ -112,6 +112,7 @@ echo "copying modified over the original, C-c if you don't want this"
 
 #FIXME: handle case when root, better!
 if test "`id -u`" -eq "0"; then
+  echo "press a key to continue with that copying..."
   read -s
 else
   #forget already cached pwd

@@ -1914,8 +1914,10 @@
           \ 187m17s real (208m10s user, 137m30s sys)
         * consolekit must not be running (something else is starting it anyway, with the --no-daemon param(see ps axuw|grep cons): /usr/sbin/console-kit-daemon --no-daemon)
           \ apparently not running anymore (maybe this happened only in hardened? not in hardened at this time)
+          \ actually it's running now, on working system, at least after having exited X. But this is necessary for pulseaudio to work, it's just not needed to run on startup.
         * rc-update del consolekit default
           \ wasn't already there.
+        * FIXME: there's no hardware device (inside virtualbox) with hardened kernel and grsec!
       * get xfce4
         \ https://wiki.gentoo.org/wiki/Xfce/HOWTO
         - add more USE flags in /etc/portage/make.conf (already added in first USE)
@@ -2764,9 +2766,10 @@
             * [*] FIFO restrictions
               \ CONFIG_GRKERNSEC_FIFO
               \ sysctl: fifo_restrictions
-            * [*] Sysfs/debugfs restriction
+            * [ ] Sysfs/debugfs restriction
               \ CONFIG_GRKERNSEC_SYSFS_RESTRICT
-              \ FIXME: "This option also breaks pulseaudio and battery widgets, which won’t be able to get access to the /sys filesystem, which is why the pulseaudio on a hardened system might not work. Don’t enable this option if you’re on a desktop system."
+              \ fixedme: "This option also breaks pulseaudio and battery widgets, which won’t be able to get access to the /sys filesystem, which is why the pulseaudio on a hardened system might not work. Don’t enable this option if you’re on a desktop system." src: http://resources.infosecinstitute.com/gentoo-hardening-part-2-introduction-pax-grsecurity/
+              \ disabled this to see if pulseaudio will detect soundcard(inside virtualbox) - yep, confirmed to work!
             * [*] Runtime read-only mount protection
               \ CONFIG_GRKERNSEC_ROFS
               \ sysctl: romount_protect

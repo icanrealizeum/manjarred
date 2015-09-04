@@ -18,6 +18,7 @@
         <value type="int" value="4"/>
         <value type="int" value="6"/>
         <value type="int" value="7"/>
+        <value type="int" value="10"/>
         <value type="int" value="8"/>
         <value type="int" value="2"/>
       </property>
@@ -45,5 +46,11 @@
     <property name="plugin-8" type="string" value="xfce4-orageclock-plugin"/>
     <property name="plugin-9" type="string" value="xfce4-netspeed-plugin"/>
     <property name="plugin-7" type="string" value="screenshooter"/>
+    <property name="plugin-10" type="string" value="mixer">
+      <property name="sound-card" type="string" value="PlaybackBuiltinAudioAnalogStereoPulseAudioMixer"/>
+      <property name="track" type="string" value="Master"/>
+      <property name="command" type="string" value="xfce4-mixer"/>
+      <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+    </property>
   </property>
 </channel>

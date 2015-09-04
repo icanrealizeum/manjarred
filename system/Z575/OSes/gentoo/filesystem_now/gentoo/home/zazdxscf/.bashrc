@@ -460,7 +460,7 @@ export FFREPORT=1
 #src: https://www.ffmpeg.org/bugreports.html
 
 
-dmesg|grep 'clocking to' | grep -v 48000 | grep 'clocking to'
+dmesg|grep 'clocking to' | grep -v 48000 |grep -v grsec| grep 'clocking to'
 true
 
 

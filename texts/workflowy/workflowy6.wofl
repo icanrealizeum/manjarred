@@ -839,6 +839,11 @@
               \ https://www.browserleaks.com/webrtc#webrtc-disable
               \ about:config and toggle media.peerconnection.enabled to false.
               \ XXX: do I need to false this too? media.peerconnection.video.enabled
+              * media.peerconnection.identity.enabled false
+              * media.peerconnection.video.enabled false
+              * already false: media.peerconnection.video.h264_enabled
+              * media.peerconnection.turn.disable true
+              * clear media.peerconnection.default_iceservers
             * disable WebGL
               \ https://www.browserleaks.com/webgl#howto-enable-disable-webgl
               \ webgl.disabled true
@@ -887,7 +892,7 @@
               \ "http://askubuntu.com/questions/404737/horizontal-scrolling-in-firefox-to-shiftmouse-scroll-instead-of-back-forward"
               * mousewheel.with_shift.action
                 \ "1" (was 2)
-            * places.history.enabled   (actually I need this in linux, else it won't cache the urls that I visited; just remember that bug https://bugzilla.mozilla.org/show_bug.cgi?id=1015001 )
+            - places.history.enabled   (actually I need this in linux, else it won't cache the urls that I visited; just remember that bug https://bugzilla.mozilla.org/show_bug.cgi?id=1015001 )
               \ "false"
               \ actually setting this to false may be a good idea to avoid the epic slowdown after a few months of a few seconds when loading any page (had to get a new firefox profile to get rid of it) - YES let's do this!
             - enable 3D hardware acceleration: (it's slower with this than just software acceleration, so avoid)
@@ -901,7 +906,7 @@
                 \ export MOZ_USE_OMTC=1
               * test hardware acceleration FPS
                 \ https://developer.mozilla.org/media/uploads/demos/p/a/paulrouget/8bfba7f0b6c62d877a2b82dd5e10931e/hacksmozillaorg-achi_1334270447_demo_package/HWACCEL/
-            * reflows
+            * reflows (skipping this for now)
               \ from here: http://www.computerworld.com/article/2541429/networking/hacking-firefox--the-secrets-of-about-config.html?page=2
               \ create integer:
               \ content.notify.interval 500000
@@ -916,7 +921,7 @@
             - open bookmarks in new tab
               \ browser.tabs.loadFolderAndReplace true
               \ also this, leave it false
-            * browser.search.update
+            - browser.search.update
               \ false
             * set security.tls.version.min to 2 to allow only tls v1.1 and 1.2 (not 1.0 or ssl3)
               \ calomel can do this from a setting!
@@ -931,8 +936,8 @@
           * Edit->Preferences
             * Privacy
               * Use Custom Setting for history
-                * untick Remember my browsing and download history
-                * untick Remember search and form history
+                - untick Remember my browsing and download history
+                - untick Remember search and form history
                 * tick Accept cookies from sites
                   * Never - Accept third party cookies
                   * Keep Until
@@ -949,7 +954,7 @@
                   * Warn me when websites try to redirect or reload the page
                     \ mainly to prevent really quick(flood-like) page-reloads due to some bugs or lacking their expectes scripts (noscript-caused)
                 * Browsing (vertical label)
-                  * untick Use hardware acceleration when available
+                  - untick Use hardware acceleration when available
               * Data Choices
                 * untick Firefox Health Report
           * addons(aka extensions)
@@ -1054,6 +1059,7 @@
               * Optimization tab
                 * select:
                   * wait up to 2000ms before page rendering
+                    \ not selected this for now, to test for the videos freezing bug
                   * disable prefetch of unvisited links
             * to see domStorage
               \ //IGNORE this: https://addons.mozilla.org/en-us/firefox/addon/foundstone-html5-local-storage/  this is still better because it can show ALL storage! without having to go on the specific website(like firestorage plus!) ACTUALLY, just tested, and firestorage plus! can see the null value vars from openmailbox.org but foundstone cannot see anything inside the storage!(eg. empty) well it hasn't been updated since 2011 so maybe that's why. OK, maybe it is empty! because firestorage seems to show those null keys(key,getItem,setItem,removeItem,clear,length) for more sites (although not for all!)
@@ -1134,6 +1140,9 @@
           * when all done
             * check this https://www.howsmyssl.com/
               \ all are green GOOD
+          * start as: firefox -P
+            * deselect: Use the select profile without asking at startup
+              \ so you're always prompted on start, just in case you misclick an url and opens firefox, you can cancel at startup
       * on Linux
         * lenovo z575 hybrid graphics (discrete graphics card) 
           \ "an interesting article for linux http://ubuntuforums.org/showthread.php?t=1942151  about the hybrid graphics on lenovo z575
