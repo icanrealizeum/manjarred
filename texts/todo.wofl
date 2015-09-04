@@ -637,3 +637,13 @@
 
 * enable RBAC (# gradm -P)
 
+* report keepassx bug that trying to open a db that's not accessible(eg. u+rw where owner is root; and you are not root) will not show any errors but will just pretend you didn't do anything, or just like starting keepassx without params.
+
+* my mc patch(perhaps) is clashing with emerge
+  \ while in mc, execute:
+  \ emerge --info cairo  (for example)
+  \ output gets stuck at this:
+  \ bash: 7: Bad file descriptor
+  \ then I can C-c out
+
+

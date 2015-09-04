@@ -124,10 +124,15 @@
 * man fails with: could not launch PAGER: No such file or directory
   \ https://bugs.gentoo.org/show_bug.cgi?id=559490
 
-* keep pulseaudio(inside virtualbox) on Analog Stereo Duplex (not Output) or else you get Dummy Output only the next time you restart.
+- keep pulseaudio(inside virtualbox) on Analog Stereo Duplex (not Output) or else you get Dummy Output only the next time you restart.
   \ although, looks like it worked ok regardless, on non-hardened(non-grsec) gentoo installation
 
+* no pulseaudio soundcard detected under hardened kernel with grsecurity enabled?
+  \ deselect CONFIG_GRKERNSEC_SYSFS_RESTRICT aka [ ] Sysfs/debugfs restriction
+  \ https://wiki.gentoo.org/wiki/Talk:PulseAudio#Keep_CONFIG_GRKERNSEC_SYSFS_RESTRICT_deselected_for_pulseaudio_to_..._work.
+
 * pulseaudio inside virtualbox works but there's no sound heard on host
+  \ https://wiki.gentoo.org/wiki/Talk:PulseAudio#with_Virtualbox_5.0.0_sound_works_inside_guest_OS_but_is_not_heard_on_host_OS
   * fixedme:
     \ +      <AudioAdapter controller="AC97" driver="Pulse" enabled="true"/>
     \ -      <AudioAdapter controller="AC97" codec="AD1980" driver="Pulse" enabled="true"/>
@@ -135,6 +140,8 @@
     \ this is inside the *.vbox file! (true for, at least, virtualbox 5.0.0 r101573)
     \ tested on song: https://www.youtube.com/watch?v=73Jrq1sk8Y4
     \ also when moving output volume sliders, sounds are being made automatically
+    \ Forgot to mention that the codec="AD1980" is added automatically by virtualbox when the virtual machine (Type: Linux version: Gentoo (64bit)) is created, on virtualbox 5.0.0 r101573 but not on a version 4.* virtualbox
+    \ Also worth noting that selecting Intel HD Audio(from the default ICH AC97) and then selecting back ICH AC97 will clear this codec flag and all is well. (OK must be pressed after each selection, ofc.) (This is in virtualbox on host, in Settings->Audio->Audio Controller ) 
 
 
 

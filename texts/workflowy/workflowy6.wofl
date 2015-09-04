@@ -906,6 +906,10 @@
                 \ export MOZ_USE_OMTC=1
               * test hardware acceleration FPS
                 \ https://developer.mozilla.org/media/uploads/demos/p/a/paulrouget/8bfba7f0b6c62d877a2b82dd5e10931e/hacksmozillaorg-achi_1334270447_demo_package/HWACCEL/
+            * layers.async-pan-zoom.enabled true
+              \ experiemental feature (in 40.0.3 at least)
+              \ see: https://mozillagfx.wordpress.com/2015/05/19/off-main-thread-compositing-on-linux/#comment-1004
+              \ "will attempt to separate scrolling and painting so that scrolling is not affected by scripts that take too long"
             * reflows (skipping this for now)
               \ from here: http://www.computerworld.com/article/2541429/networking/hacking-firefox--the-secrets-of-about-config.html?page=2
               \ create integer:
@@ -1044,6 +1048,7 @@
                     * [ ] Enable whitelist support 
             * gui:config maybe get this about:config extension which allows GUI editing
               \ https://addons.mozilla.org/en-US/firefox/addon/guiconfig/
+            * for backing up about:config changes see the list of them(changed) in about:support
             - this one is great for backing up things like about:config (aka prefs.js)
               \ https://addons.mozilla.org/en-US/firefox/addon/febe/
               \ warning: some popup windows(from FEBE's Options) remain even after firefox exits
