@@ -80,7 +80,7 @@
     \ [  306.131351] grsec: Segmentation fault occurred at 0000000000000010 in /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
     \ [  306.131764] grsec: bruteforce prevention initiated due to crash of /usr/lib64/polkit-1/polkitd against uid 102, banning suid/sgid execs for 15 minutes.  Please investigate the crash report for /usr/lib64/polkit-1/polkitd[polkitd:9907] uid/euid:102/102 gid/egid:245/245, parent /usr/bin/dbus-daemon[dbus-daemon:9906] uid/euid:101/101 gid/egid:246/246
     \ polkitd crashing is fixed: https://bugs.gentoo.org/show_bug.cgi?id=559436
-    \ was because lacking kernel config option: CONFIG_PAX_PT_PAX_FLAGS
+    \ ^ was because lacking kernel config option: CONFIG_PAX_PT_PAX_FLAGS
 
 * (gentoo)polkitd segfaults when grsec is enabled(not RBAC tho), in Symbol "pthread_mutex_lock" is at 0x9cd0 + 23 (aka 0x9ce7) in /lib64/libpthread-2.21.so
   \ see above
@@ -109,7 +109,7 @@
   \ /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/temp/environment: /var/tmp/portage/app-emulation/virtualbox-guest-additions-5.0.2/work/VirtualBox-5.0.2/src/VBox/Additions/linux/export_modules: /bin/sh: bad interpreter: Permission denied
   * to fix:
     \ https://forums.gentoo.org/viewtopic-t-971312-start-0.html
-    * 
+    * this is the TPE's fault, see kernel.grsecurity.tpe sysctl option or kernel config, either disable TPE or add the portage user to that tpe group... more info inside ./5gentoo_vm_hardened.wofl
 
 * failed to mount root at boot?
   \ [  246.198391] VFS: Cannot open root device "mapper/vgall-rootlvol" or unknown-block(0,0): error -6
@@ -123,4 +123,19 @@
 
 * man fails with: could not launch PAGER: No such file or directory
   \ https://bugs.gentoo.org/show_bug.cgi?id=559490
+
+* keep pulseaudio(inside virtualbox) on Analog Stereo Duplex (not Output) or else you get Dummy Output only the next time you restart.
+  \ although, looks like it worked ok regardless, on non-hardened(non-grsec) gentoo installation
+
+* pulseaudio inside virtualbox works but there's no sound heard on host
+  * fixedme:
+    \ +      <AudioAdapter controller="AC97" driver="Pulse" enabled="true"/>
+    \ -      <AudioAdapter controller="AC97" codec="AD1980" driver="Pulse" enabled="true"/>
+    \ that extra codec=  prevents the sound from being heard on host, even though it works fine on guest(according to the observed gfx levels)!
+    \ this is inside the *.vbox file! (true for, at least, virtualbox 5.0.0 r101573)
+    \ tested on song: https://www.youtube.com/watch?v=73Jrq1sk8Y4
+    \ also when moving output volume sliders, sounds are being made automatically
+
+
+
 

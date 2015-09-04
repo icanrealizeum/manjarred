@@ -99,6 +99,15 @@
         - ok set discard="false"  for now! because we don't want the overhead of shrinking!!!
         - start virtualbox
     * optional: add another SSD to be used for ccache that you can detach later if you want to use it in another virtual machine! this will speed up the compilation times because it's using ccache! (even tho it has no effect for when using gentoo normal and then gentoo hardened for example)
+  * in Audio:
+    * Enable Audio
+      * Host Audio Driver: PulseAudio
+      * Audio Controller: ICH AC97
+    * close all virtualbox instances or something, so that you can:
+    * edit its corresponding *.vbox file, to
+    * remove: codec="AD1980"  or else you can't hear(on host) the pulseaudio sound that works well inside guest
+      \ +      <AudioAdapter controller="AC97" driver="Pulse" enabled="true"/>
+      \ -      <AudioAdapter controller="AC97" codec="AD1980" driver="Pulse" enabled="true"/>
   * in Network:
     * set Adapter 1, Attached to: NAT   (this is set by default)
       \ we'll use dhcp IPs given by virtualbox eg. 10.0.2.15
@@ -2769,7 +2778,7 @@
             * [ ] Sysfs/debugfs restriction
               \ CONFIG_GRKERNSEC_SYSFS_RESTRICT
               \ fixedme: "This option also breaks pulseaudio and battery widgets, which won’t be able to get access to the /sys filesystem, which is why the pulseaudio on a hardened system might not work. Don’t enable this option if you’re on a desktop system." src: http://resources.infosecinstitute.com/gentoo-hardening-part-2-introduction-pax-grsecurity/
-              \ disabled this to see if pulseaudio will detect soundcard(inside virtualbox) - yep, confirmed to work!
+              \ disabled this to see if pulseaudio will detect soundcard(inside virtualbox) - yep, confirmed to work but no sound is heard hmm...  I mean, the soundcard is detected this time, seems to work, but there's no sound heard on host, I think because of virtualbox, changing soundcard type in virtualbox config I think fixed it last time, yep remove codec="AD1980" from *.vbox file!
             * [*] Runtime read-only mount protection
               \ CONFIG_GRKERNSEC_ROFS
               \ sysctl: romount_protect
