@@ -2494,9 +2494,10 @@
           * time emerge -nav xarchiver
             \ dispatch-conf, u
             \ duration: 2m0s
-          * time emerge -nav app-arch/unrar app-arch/rar app-arch/unzip app-arch/zip app-arch/p7zip
+          * time emerge -nav app-arch/unzip app-arch/zip app-arch/p7zip
             \ don't really need these; zip's already in!
             \ 6m41s
+            \ avoiding  app-arch/unrar and app-arch/rar  due to different licenses
         * images viewer
           * time emerge -nav xdg-utils
             \ to get xdg-open which mc uses to for example invoke viewnior when you press enter on a .png or .jpg
