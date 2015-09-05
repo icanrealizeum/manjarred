@@ -405,9 +405,10 @@ eval `dircolors`
 #vim /home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/kernel/smp.c +552
 #vim /home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/arch/x86/kernel/smpboot.c +529
 
+#cd "/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git"&& vim kernel/smp.c 
+#cd "/home/emacs/build/kernel/linuxnet/makepkg/linux-net/src/linux-net/"
 cat <<EOF
-cd "/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git"&& vim kernel/smp.c 
-cd "/home/emacs/build/kernel/linuxnet/makepkg/linux-net/src/linux-net/"
+/var/tmp/portage/www-client/firefox-40.0.3/work/mozilla-release/gfx/layers/basic/X11BasicCompositor.cpp
 EOF
 alias mountmsproduo='sudo mount /dev/sdc1 ~/here -o uid=1000,gid=100'
 alias ejectmsproduo='sudo umount here ; sync && sudo eject /dev/sdc'
@@ -466,4 +467,8 @@ true
 
 #for grub 'To avoid automounting and auto(un)installing with /boot'
 export DONT_MOUNT_BOOT=1
+
+alias bt='echo 0 | gdb -batch-silent -ex "run" -ex "set logging overwrite on" -ex "set logging file gdb.bt" -ex "set logging on" -ex "set pagination off" -ex "handle SIG33 pass nostop noprint" -ex "echo backtrace:\n" -ex "backtrace full" -ex "echo \n\nregisters:\n" -ex "info registers" -ex "echo \n\ncurrent instructions:\n" -ex "x/16i \$pc" -ex "echo \n\nthreads backtrace:\n" -ex "thread apply all backtrace" -ex "set logging off" -ex "quit" --args'
+#usage: bt crashed_program_filename
+#src: https://blog.cryptomilk.org/2010/12/23/gdb-backtrace-to-file/
 
