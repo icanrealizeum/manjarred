@@ -415,12 +415,12 @@ alias ejectmsproduo='sudo umount here ; sync && sudo eject /dev/sdc'
 
 
 # http://cscope.sourceforge.net/cscope_vim_tutorial.html
-export CSCOPE_DB="/home/emacs/cscope/cscope.out"
+export CSCOPE_DB="/home/zazdxscf/cscope/"
 
 
 # from: https://code.google.com/p/chromium/wiki/LinuxFasterBuilds#Linking_using_gold
 export CCACHE_SLOPPINESS=include_file_mtime
-export CCACHE_BASEDIR="/home/emacs/build"
+#export CCACHE_BASEDIR="/home/emacs/build"
 
 #see man ccache, basically ignore compiler's executable(or path) changing
 #export CCACHE_COMPILERCHECK="none"
