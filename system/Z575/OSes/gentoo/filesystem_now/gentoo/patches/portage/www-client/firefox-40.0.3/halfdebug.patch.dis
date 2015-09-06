@@ -1,0 +1,36 @@
+Index: /var/tmp/portage/www-client/firefox-40.0.3/work/mozilla-release/xpcom/glue/nsDebug.h
+===================================================================
+--- .orig/xpcom/glue/nsDebug.h
++++ patched/xpcom/glue/nsDebug.h
+@@ -124,6 +124,9 @@ inline void MOZ_PretendNoReturn()
+ #define NS_NOTREACHED(str)             do { /* nothing */ } while(0)
+ #endif
+ 
++
++#define mooo(type, str) \
++  fprintf(stderr, "!! "# type ": '%s'\nvim '%s' +%d\n", str, __FILE__, __LINE__);
+ /**
+  * Log an error message.
+  */
+@@ -134,7 +137,9 @@ inline void MOZ_PretendNoReturn()
+     MOZ_PretendNoReturn();                                    \
+   } while(0)
+ #else
+-#define NS_ERROR(str)                  do { /* nothing */ } while(0)
++#define NS_ERROR(str)                  do { /* nothing */ \
++  moo(NS_ERROR, str); \
++    } while(0)
+ #endif
+ 
+ /**
+@@ -144,7 +149,9 @@ inline void MOZ_PretendNoReturn()
+ #define NS_WARNING(str)                                       \
+   NS_DebugBreak(NS_DEBUG_WARNING, str, nullptr, __FILE__, __LINE__)
+ #else
+-#define NS_WARNING(str)                do { /* nothing */ } while(0)
++#define NS_WARNING(str)                do { /* nothing */ \
++  moo(NS_WARNING, str); \
++  } while(0)
+ #endif
+ 
+ /**
