@@ -7,11 +7,20 @@
 
 set -e
 
+zeestring='RTCPeerConnection'
+
 backup="/tmp/backup/chromium.backup"
 #manjaro/archlinux:
 #exe="/usr/lib/chromium/chromium"
 #gentoo (64bit):
 exe="/usr/lib64/chromium-browser/chrome"
+
+echo "Wait while checking if already applied..."
+if ! grep -q "$zeestring" "$exe" ; then
+  echo "${zeestring} not found in ${exe}. This likely means this was already applied!"
+  exit 13
+fi
+echo "All good, continuing..."
 
 result="/tmp/chromium.modified"
 
@@ -81,7 +90,7 @@ function replaxe()
 }
 
 #disable evil webrtc, to test: https://diafygi.github.io/webrtc-ips/
-replaxe 'RTCPeerConnection'
+replaxe "$zeestring"
 #sed --binary -re 's|RTCPeerConnection|LoLaJvyuoN3HnJogV|g' "$exe" > "$result"
 
 
