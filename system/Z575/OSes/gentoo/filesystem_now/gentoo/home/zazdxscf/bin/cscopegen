@@ -1,6 +1,9 @@
 #!/bin/bash
 
 set -u
+echo "WARNING: this uses enough memory(virt?) to cause OOM to kill virtualbox, sort or both!(had all cases happen!) You will need like (virt)10g ram free"
+read -p -s "Press Enter to continue or C-c to cancel"
+
 #can't using multiple -s params :/
 #kernelmode='-k' # -I"/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"'
 kernelfolder="/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"

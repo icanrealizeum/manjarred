@@ -2119,7 +2119,10 @@
             \ Makefile:339: recipe for target 'bin/toast' failed
             \ make: *** [bin/toast] Error 1
             \ rsynced patch, tested to work.
+          * equery m chromium
+            \ see what's latest
           * time emerge -nav chromium
+            \ see that this selected latest! ~amd64  because it doesn't usually, unless there's some package.unmask or something! even tho I've ACCEPT_KEYWORDS=~amd64 in make.conf for example it installed 45 (amd64) instead of 47 (~amd64)
             \ 647m13s real, 1900m2s user, 292m22s sys. (in virtualbox! with sometimes youtube videos playing in another vbox aka less cpu available) 16G space consumed in /var/tmp/portage/www-client/chromium-45.0.2454.46/  this is with -ggdb btw!  also failed at ld stage(last part) due to out of memory! killed:) need more ram than 10G or maybe need swap(also) dayum that recompile worked with 10827MB RAM(instead of 10240MB which was previously! amazing! because that was max it would let me alloc.!) also recompile (ebuild install phase) took 28min
           * need more fonts, possibly, for pages to display properly
             * time emerge -nav media-fonts/arphicfonts media-fonts/bitstream-cyberbit media-fonts/droid media-fonts/ipamonafont media-fonts/ja-ipafonts media-fonts/takao-fonts media-fonts/wqy-microhei media-fonts/wqy-zenhei 
