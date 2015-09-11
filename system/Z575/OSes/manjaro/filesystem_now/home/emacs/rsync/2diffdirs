@@ -25,6 +25,8 @@ colordiff2() {
 
 sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep -E -v '^Only in gentoo' | colordiff2 | less
 #^ sudo is needed because gentoo/root for example is inaccessible to normal user!
+#sudo git diff --no-index  -- rsync-backed gentoo
+#^ this isn't working due to  it displays the + diffs for all new files as if they didn't exist (which they don't, but I can't see a way to turn it off like diff does)
 
 
 sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "Only in $thedir"
