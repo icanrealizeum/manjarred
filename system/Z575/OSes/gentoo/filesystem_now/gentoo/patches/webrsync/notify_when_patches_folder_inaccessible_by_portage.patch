@@ -17,8 +17,8 @@
  		fi
  	done
  	echo "none" > "${applied}"
-+	ewarn "Ignoring patches from inaccessible directories(by user `id`), tried: ${accu[@]}"
-+	ewarn "If you're using symlink(s) please make sure that the parent folders that the symlink points to ie. append /../  has +rx permissions for the above mentioned user ^ or o+rx"
++	ewarn "!! Ignoring patches from inaccessible directories(by user `id`), tried: ${accu[@]}"
++	ewarn "!! If you're using symlink(s) please make sure that the parent folders that the symlink points to ie. append /../  have +rx permissions for the above mentioned user ^ or o+rx"
  	return 1
  }
  # @FUNCTION: epatch_user_death_notice
