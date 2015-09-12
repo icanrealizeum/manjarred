@@ -22,12 +22,14 @@ if test "$#" -gt "1" ; then
   exit 64
 fi
 
-minfsizebeforeplaying=200000 #bytes
+minfsizebeforeplaying=400000 #bytes
 
 #file to save stream to:
 file="/tmp/periscope_`date`.mp2t"
 #livestreamer --retry-streams 5 --retry-open 1 --default-stream best -o "$file" -- "$@" &
-livestreamer --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+#livestreamer --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+#livestreamer --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+livestreamer --stream-url --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
 pid="$!"
 
 onint(){
