@@ -101,6 +101,9 @@
 
 * disable NMI selftest in kernel running inside virtualbox or it will panic on boot if you press any keys or mouse mouse(touchpad) - at least with hardened kernel 4.1.6-hardened-r1-g45b4b78
   \ CONFIG_DEBUG_NMI_SELFTEST
+  \ to catch the exact panic msg (while in virtualbox) you might need to add the following to kernel cmdline: console=tty1,ttyS0,115200n8 earlyprintk=vga,serial,ttyS0,115200,keep
+  \ ^ but beware you will get hung tasks due to the slow printf to serial, eg. NMI watchdog: BUG: soft lockup - CPU#3 stuck for 23s! [kworker/3:1:44]
+  \ ^ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
 
 
 * emerge with grsec on gentoo hardened will not work... /bin/sh: bad interpreter: Permission denied
@@ -111,15 +114,70 @@
     \ https://forums.gentoo.org/viewtopic-t-971312-start-0.html
     * this is the TPE's fault, see kernel.grsecurity.tpe sysctl option or kernel config, either disable TPE or add the portage user to that tpe group... more info inside ./5gentoo_vm_hardened.wofl
 
-* failed to mount root at boot?
+* failed to mount root at boot? - it's grub2-mkconfig not having SEEN an initramfs image! see /etc/grub.d/10_linux script because you probably used a wrong --kernname=genkernel  name!
   \ [  246.198391] VFS: Cannot open root device "mapper/vgall-rootlvol" or unknown-block(0,0): error -6
   \ [  246.458353] Please append a correct "root=" boot option; here are the available partitions:
   \ ...
   \ [  247.638880] DEBUG_BLOCK_EXT_DEVT is enabled, you need to specify explicit textual name for "root=" boot option.
   \ [  247.927275] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
-  * it's because --kernname=1genkernelgrsec passed to genkernel (either name too long, or that 1 is doing this, or I'm missing the point and it was something else!; but another previous variant worked fine: --kernname=genkernelgrsec  so w/o that 1 in front! )
-    \ this works: --kernname=ggrsec
-    \ or this works: --kernname=genkernel
+  \ or it may take longer:
+  \ [  467.749741] ---[ end Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+  * it's because --kernname=1genkernelgrsec passed to genkernel (either name too long, or that 1 is doing this, or I'm missing the point and it was something else! yep it's something else: grub2-mkconfig seeing only hardcoded filenames!; but another previous variant worked fine: --kernname=genkernelgrsec  so w/o that 1 in front! but this worked only because old filenames with initramfs-genkernel-* name existed in the boot folder and grub2-mkconfig used those! )
+    \ //this works: --kernname=ggrsec  (XXX: NOPE, it just used the initramfs-genkernel-* ones!)
+    \ or this works: --kernname=genkernel  (this is the only one that works!)
+    \ XXX: future note: I should've figured out why this didn't work in the first place, so it wouldn't've bitten me later. Don't let issues go unsolved! Always find root cause and thus make sure they are fully understood!
+    * ok now I've used --kernname=ggrsec and although it used to work before with 4.1.6-hardened-r1, it doesn't right now, with 4.1.6-hardened-r2; retrying...
+      \ removed any leftover 1genkernelgrsec files (3 of them) from /bewt
+      \ still the same.
+      \ [  466.074012] VFS: Cannot open root device "mapper/vgall-rootlvol" or unknown-block(0,0): error -6
+      \ [  466.314836] Please append a correct "root=" boot option; here are the available partitions:
+      \ [  466.538679] 103:00000   83886080 sda  driver: sd
+      \ [  466.679124]   103:80000       4096 sda1 25db916d-b655-435c-9fe4-031ea304accf
+      \ [  466.869295]   103:40000    1048576 sda2 ea1404b3-a5c9-4e2f-8f85-7fdaca31ff6f
+      \ [  467.049621]   103:c0000   82831360 sda3 7bfc903b-b394-4481-ac27-51abc031b3b6
+      \ [  467.234154] 103:20000  104857600 sdb  driver: sd
+      \ [  467.364389] 0b00         1048575 sr0  driver: sr
+      \ [  467.509133] DEBUG_BLOCK_EXT_DEVT is enabled, you need to specify explicit textual name for "root=" boot option.
+      \ [  467.746512] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+      \ [  467.749741] CPU: 2 PID: 1 Comm: swapper/0 Tainted: G             L  4.1.6-hardened-r2-g45b4b78 #1
+      \ [  467.749741] Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+      \ [  467.749741]  ffffffff926097c3 0000000000000000 0000000000000000 0000000000008001
+      \ [  467.749741]  ffffc9000189bda8 ffffffff92044230 ffffffff926b0398 ffffffff928dd420
+      \ [  467.749741]  ffffc9000189be38 ffffffff92041446 ffffffff00000010 ffffc9000189be48
+      \ [  467.749741] Call Trace:
+      \ [  467.749741]  [<ffffffff92044230>] dump_stack+0x45/0x5d
+      \ [  467.749741]  [<ffffffff92041446>] panic+0xc7/0x20a
+      \ [  467.749741]  [<ffffffff9281579b>] mount_block_root+0x220/0x2b9
+      \ [  467.749741]  [<ffffffff92815888>] mount_root+0x54/0x5e
+      \ [  467.749741]  [<ffffffff928159c2>] prepare_namespace+0x130/0x16d
+      \ [  467.749741]  [<ffffffff928153de>] kernel_init_freeable+0x1e0/0x214
+      \ [  467.749741]  [<ffffffff9203ec90>] ? rest_init+0x80/0x80
+      \ [  467.749741]  [<ffffffff9203ec99>] kernel_init+0x9/0xf0
+      \ [  467.749741]  [<ffffffff920520be>] ret_from_fork+0x3e/0x70
+      \ [  467.749741]  [<ffffffff9203ec90>] ? rest_init+0x80/0x80
+      \ [  467.749741] Kernel Offset: 0x10800000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+      \ [  467.749741] ---[ end Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+      * booting the previous kernel (-r1) still works fine.
+      - checking if the cause is the change that I made with 3000_avoid_a_warning.patch which changes arch/x86/include/asm/uaccess.h +112   although it shouldn't be(the cause)! (this recompiles whole kernel apparently, that's how deep it is; 39mins)
+        \ orig   : if (type != VERIFY_WRITE) {
+        \ patched: if ((type) != VERIFY_WRITE) {
+        \ orig gives this warning: ./arch/x86/include/asm/uaccess.h:112:14: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+        \ in lib/iov_iter.c:844   if (unlikely(!access_ok(!rw, buf, len)))
+        \ hit when compiling lib/iov_iter.o
+        * but ofc that wasn't it!!
+      * recompiling old kernel to see if it still works (having already the .o files intact)
+        \ took 7m45s anyway
+        \ works!
+      - recompiling old kernel with a make clean(as root was) first
+        \ took: 43m1s
+        \ btw the command use was always this:
+        \ # time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=ggrsec --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+        \ (also obviously did the grub2-mkconfig everytime so far!)
+        \ panic'd prolly because grub didn't see or add any initramfs to the grub.cfg
+      * so, thanks to iamben on #gentoo freenode irc for helping me realize that grub2-mkconfig wasn't finding my initramfs files!
+        \ the reason is in /etc/grub.d/10_linux which matches only initramfs-genkernel-* filenames! which means I should only use --kernname=genkernel  when invoking genkernel!
+
+
 
 * man fails with: could not launch PAGER: No such file or directory
   \ https://bugs.gentoo.org/show_bug.cgi?id=559490
@@ -164,4 +222,8 @@
   * thread apply all bt full
   * set logging off
   * quit
+
+* undefined symbol vgaHWFreeHWRec  on startx in /var/log/Xorg.0.log
+  * switch to vanilla gcc and recompile x11-drivers/xf86-video-virtualbox
+
 

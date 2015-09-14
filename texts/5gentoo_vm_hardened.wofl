@@ -1099,15 +1099,15 @@
             \ that's from rsync
           * cd /usr/src/linux && make nconfig
             \ if needed
-          * time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+          * time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
             \ removed --menuconfig because make nconfig is better!
             \ looks like genkernel knows to not use ccache ! at least when on hardened now. (and I checked there are no -ccache or so, options in /etc/portage/)
             \ 22m47s (another compilation was happening in the background though: vim)
             \ WARNING: after successfuly running genkernel, you have to re-run grub2-mkconfig (which we do later if you follow this guide thingy) ! (booting the previous kernel still works though, because grub.cfg isn't changed and all previous kernel files are kept in /bewt and are available in a grub submenu called Advanced at boot!)
             \ # --no-postclear won't delete the busybox and lvm2 that were just built every time genkernel is ran.
             \ Once genkernel completes, a kernel, full set of modules and initial ram disk (initramfs) will be created.
+            \ # XXX: always use --kernname=genkernel (or don't specify this option, to get it as default!) otherwise grub2-mkconfig via /etc/grub.d/10_linux will not find the initramfs image due to hardcoded stuff. FIXME patch it? But don't use --bootloader=grub
             \ #XXX: note that --bootloader=grub  uses grub.conf instead of the new name(as per `info grub`) of grub.cfg !! ergo it will fail
-            \ # --kernname=genkernel  should be! otherwise /etc/grub.d/10_linux will not find the initramfs image due to hardcoded stuff. FIXME ? or just use --bootloader=grub  (i dno about this latter one; obsolete/old comment?)
             \ # --oldconfig implies --no-clean which in turn implies --no-mrproper; it's also OLDCONFIG="yes" by default in /etc/genkernel.conf ; also this implies (they say in that .conf comments) that if clean is NO, it won't copy over any configuration file(from /etc/kernels/), it will use what's there(the .config) instead. But I dno how true that is because I'm seeing this message: * Linux Kernel 3.17.7-gentoo for x86_64...              * .. with config file /etc/kernels/kernel-config-x86_64-3.17.7-gentoo
             * reminder of steps after boot needed to regen kernel: #SECONDBOOT
               * luksOpen the sda2 luks device
@@ -1551,7 +1551,7 @@
             \ clear
     * time emerge @preserved-rebuild
       \ 1m41s
-    * rebooting #REBOOT #SHUTDOWN
+    * rebooting #REBOOT #SHUTDOWN #SECONDBOOT
       * exit
       * cd
       * ensure you exited all OTHER ssh terminals
@@ -2894,9 +2894,9 @@
       * (re)build kernel
         * . /etc/profile
           \ to clear PATH which includes ccache's gcc
-        - time FEATURES="-ccache" genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
+        - time FEATURES="-ccache" genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
           \ FIXME: ^ this is likely outdated
-        * time CCACHE_DISABLE=1 genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernelgrsec --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+        * time CCACHE_DISABLE=1 genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
           \ 40m7s
         * grub2-mkconfig -o /bewt/grub/grub.cfg 2>&1
         * umount /bewt
@@ -3293,8 +3293,8 @@
         * cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
         * mount /bewt
         * . /etc/profile
-        * time FEATURES="-ccache" genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs --kernname=genkernel --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
-          \ so apparently if --kernname=^Cnkernel (yes ^C the two chars!) then on boot it will fail to load most modules and thus luks device will not be able to mount (so no password asked, just some error which doesn't seem related to module not being loaded)
+        * time FEATURES="-ccache" genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-clean --oldconfig --no-mountboot --no-postclear
+          \ so apparently if --kernname=^Cnkernel (yes ^C the two chars!) then on boot it will fail to load most modules and thus luks device will not be able to mount (so no password asked, just some error which doesn't seem related to module not being loaded) - and that's because grub2-mkconfig is only searching for initramfs-genkernel-* filenames so it was using an old one or none!
         * grub2-mkconfig -o /bewt/grub/grub.cfg 2>&1
         * umount /bewt
         * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot 
