@@ -2965,6 +2965,8 @@
     * gpasswd -a zazdxscf tpe_group
     * TODO: find another way? maybe make the bin folder root owned and writable, but group+other not writable! (this means that everytime I've to edit something in there, I've to fuck with the permissions on the dir)
     
+  * (rsynced but monitor name may vary)set display resolution on startup (startx)
+    \ https://wiki.gentoo.org/wiki/Xorg/Guide#Setting_the_screen_resolution
 
 * bigTODO:
   * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
