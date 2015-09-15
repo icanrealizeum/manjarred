@@ -56,7 +56,8 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 #^ yes = enables TIS Challenge/Response in SSH protocol version 1, and keyboard-interactive in SSH protocol v2
 UsePAM no
-#^ PAM not used if public key authentication is used! src: https://dev.gentoo.org/~swift/docs/security_benchmarks/openssh.html#item-xccdf_org.gentoo.dev.swift_group_config-default
+#^ set PAM to no, because PAM is not used if public key authentication is used! src: https://dev.gentoo.org/~swift/docs/security_benchmarks/openssh.html#item-xccdf_org.gentoo.dev.swift_group_config-default
+#okno: but if PAM is no, then limits.conf is not applied! but keep these 2 as 'no' to disable PAM auth PasswordAuthentication ChallengeResponseAuthentication; OK, that wasn't it, XXX: even with UsePAM no, ulimit -c works, set to unlimited as per limits.conf except in the case when you use '*' instead of '0:' as first field in there! tested!
 AllowAgentForwarding no
 AllowTcpForwarding yes
 GatewayPorts no
