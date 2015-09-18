@@ -2935,6 +2935,14 @@
         \ support the menu://applications/ location
         \ wtw that is.
         \ 1m25s
+    * hexchat
+      * time emerge -av hexchat
+        \ 2 packages (due to USE=spell)
+        \ duration (with chromium compilation in the background): 15m52s
+      - time emerge -av x11-themes/sound-theme-freedesktop
+        \ this for default BEEP sound (already having USE=libcanberra)
+        \ duration:
+        \ ok this isn't necessary (pulse audio System Sounds being at 100%, the soundcard sound is heard fine, it's not like a speaker BEEP though)
 
 
 * config
