@@ -227,3 +227,17 @@
   * switch to vanilla gcc and recompile x11-drivers/xf86-video-virtualbox
 
 
+* this chrome emerge took 59m49s
+  \ time emerge -av =www-client/google-chrome-unstable-47.0.2508.0_p1
+  \ 5 packages
+  \ inside grsec virtualbox (see 5gentoo_vm_hardened.wofl )
+
+* # time quickpkg chromium
+  \ www-client/chromium-47.0.2498.0
+  \ took 28m6s  (uses only 1 core btw)
+
+
+* time emerge -avK1 =chromium-47.0.2498.0
+  \ 37m50s hitting the disk (non-tmpfs)
+
+
