@@ -20,6 +20,13 @@
 * to force kernel to reread partition (sfdisk -R  doesn't work anymore)
   \ sudo blockdev --rereadpt /dev/sde
 
+* when dd-ing the gentoo admincd iso to the usb stick or card reader:
+  * $ sudo dd if=admincd-amd64-20150910.iso of=/dev/sde bs=6M
+    \ 404750336 bytes (405 MB) copied, 75.8235 s, 5.3 MB/s
+  * $ sudo blockdev --rereadpt /dev/sde
+    \ needed so that lsblk sees the right partitions after the dd-ing above.
+    \ that is the equivalent of: sfdisk -R (which nolonger works; its man does say about blockdev)
+
 
 * telinit q (or Q) will tell init to re-read /etc/inittab
   \ run only as root(or sudo) else telinit is not even in path
