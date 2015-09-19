@@ -243,4 +243,8 @@
 * chromium download link: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-47.0.2508.0-lite.tar.xz
   \ when emerge doesn't find it on any mirrors(404) for 3 days now, then that url will work just fine, download it in /usr/portage/distfiles/
 
+* emerging non ccached chromium www-client/chromium-47.0.2508.0
+  \ took: 1005m45s before ld being killed due to out of memory!
+  \ had no swap; was inside virtualbox; total RAM inside was MemTotal:       10809864 kB
+
 
