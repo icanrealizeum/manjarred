@@ -22,7 +22,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.2.rc2.r77.gf760b87
+pkgver=4.2.rc4.r0.gcbfe8fa
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -51,6 +51,7 @@ manypatches=(
 "2700_isitnull.patch"
 "2800_anotherNULLandpanic.patch"
 "2900_prevent_dmesg_spam_from_preempt_notifier.patch"
+"3100_kernel_underclocking.patch"
 )
 
 presetfile="${pkgbase}.preset"
@@ -84,7 +85,7 @@ ${manypatches[@]}
 #src: https://wiki.archlinux.org/index.php/makepkg#Generate_new_checksums
 #problem is that it kill my spacing! those horizontal lines also
 sha512sums=('SKIP'
-            '710438c520dbefc1187e29c0b60054453abac76252988d0440c713822cda5a43073121af3accd4b3f0abba8f536cb87418bcca337384b75d59e193bb074dadcb'
+            '3b44920d9917ec9c40183bdd7667ef66ac031e5c1edf87df5c1e9eac32ae63180b790331d1c3fcef3753f89a305338162bafa2c5c8bf36574f05617ee26d9252'
             'c673dff942ae7f11776717a50c8ed9da06c799c6035e6ec5c010494d28c06f778d35f15461130b83961bf53a3445b1b4d1a210b0a4a1f4dedac8c3717bb18679'
             '10264a96d2a3d0b6d8dc77a91bf4bf299a18082fe3ffce4e4b78121d70ec84f7628ce8822ab6d96f9d413b1613b2f17abf8e647d4f6626b23186686341d1f891'
             'bb62d66a95e2d27378433d0f9c2fc7943bbcd655a89952fc25ef28d5796b8d65ca6c9c48bc70d40d71daada20707b266f781f57ba71950009b32cb6d58e155d0'
@@ -103,7 +104,8 @@ sha512sums=('SKIP'
             '8f69ffbac1116fa80d8eaac017452c4a4ef51a17d08a82cf1d5f8b1a640ca3c5cca205936814c9f09b7e2096b5feafbe689173bfca5772c87741fb3ec183b99b'
             'afc9b207b23ed989efd137294f0f6466e5dbfdac8e40c6c8b7a3db2d1e55b1ad11833f511e7d187a5b8db666cf4b555baf6fe735852243b5b6a64ec89fd7a4f6'
             'ea43190a8627a5de9d5836a36af538d8b4489e30731d090f4c6210279e4062e9ed9266b19d60fe5347d4d313a6ec7c41492e8b082c456f8dc14c00ef97bb5851'
-            '2508151b88e8f07644de1252f8af31c7d8c41fb026c120ea6a6c2633c0b22c669c560b451f40ced84b9c88006e86b2ef3f3ee57bc9baeaea3688b9eb4273abd4')
+            '2508151b88e8f07644de1252f8af31c7d8c41fb026c120ea6a6c2633c0b22c669c560b451f40ced84b9c88006e86b2ef3f3ee57bc9baeaea3688b9eb4273abd4'
+            '06e0bb05508eb96b2da2f506977a592e0fa08abf6719ddd606fc8358eb008f6df9707195dc4d3b99ff9cb9c9749e3d5c884b11d53c212925fe611138b30728a0')
 
 pkgver() {
   cd "${pkgbase}"
