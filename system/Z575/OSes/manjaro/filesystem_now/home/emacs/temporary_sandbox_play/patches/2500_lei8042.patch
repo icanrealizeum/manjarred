@@ -1,3 +1,6 @@
+patch on top of kernel of 18 sept 2015
+HEAD commit 00ade1f553e3b947cd26228392ee47d6f0f550e1
+
 diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
 index ec876b5..ced4af8 100644
 --- a/drivers/input/keyboard/atkbd.c
@@ -34,10 +37,10 @@ index ec876b5..ced4af8 100644
  		if (click != -1)
  			input_report_key(dev, BTN_MIDDLE, click);
 diff --git a/drivers/input/serio/i8042.c b/drivers/input/serio/i8042.c
-index cb5ece7..395ee0f 100644
+index db91de5..0516a6e 100644
 --- a/drivers/input/serio/i8042.c
 +++ b/drivers/input/serio/i8042.c
-@@ -435,13 +440,13 @@ static bool i8042_filter(unsigned char data, unsigned char str,
+@@ -441,13 +441,13 @@ static bool i8042_filter(unsigned char data, unsigned char str,
  		if ((~str & I8042_STR_AUXDATA) &&
  		    (data == 0xfa || data == 0xfe)) {
  			i8042_suppress_kbd_ack--;
@@ -53,7 +56,7 @@ index cb5ece7..395ee0f 100644
  		return true;
  	}
  
-@@ -464,6 +469,152 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+@@ -470,6 +470,152 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
  	unsigned int port_no;
  	bool filtered;
  	int ret = 1;
@@ -206,7 +209,7 @@ index cb5ece7..395ee0f 100644
  
  	spin_lock_irqsave(&i8042_lock, flags);
  
-@@ -471,7 +622,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+@@ -477,7 +623,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
  	if (unlikely(~str & I8042_STR_OBF)) {
  		spin_unlock_irqrestore(&i8042_lock, flags);
  		if (irq)
@@ -215,7 +218,7 @@ index cb5ece7..395ee0f 100644
  		ret = 0;
  		goto out;
  	}
-@@ -484,7 +635,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+@@ -490,7 +636,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
  
  		dfl = 0;
  		if (str & I8042_STR_MUXERR) {
@@ -224,7 +227,7 @@ index cb5ece7..395ee0f 100644
  			    str, data);
  /*
   * When MUXERR condition is signalled the data register can only contain
-@@ -502,6 +653,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+@@ -508,6 +654,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
  			switch (data) {
  				default:
  					if (time_before(jiffies, last_transmit + HZ/10)) {
@@ -232,18 +235,20 @@ index cb5ece7..395ee0f 100644
  						str = last_str;
  						break;
  					}
-@@ -528,16 +680,116 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+@@ -533,17 +680,116 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+ 
  	port = &i8042_ports[port_no];
  	serio = port->exists ? port->serio : NULL;
- 
--	dbg("%02x <- i8042 (interrupt, %d, %d%s%s)\n",
--	    data, port_no, irq,
-+  /*
-+	dbg("%02x %02d <- i8042 (interrupt, %d, %d%s%s)\n",
-+	    data, data, port_no, irq,
- 	    dfl & SERIO_PARITY ? ", bad parity" : "",
- 	    dfl & SERIO_TIMEOUT ? ", timeout" : "");
-+      */
+-
+-	filter_dbg(port->driver_bound, data, "<- i8042 (interrupt, %d, %d%s%s)\n",
+-		   port_no, irq,
++/*
++	filter_dbg(port->driver_bound, data, "%02x %02x <- i8042 (interrupt, %d, %d%s%s)\n",
++		   data, data, port_no, irq,
+ 		   dfl & SERIO_PARITY ? ", bad parity" : "",
+ 		   dfl & SERIO_TIMEOUT ? ", timeout" : "");
+-
++       */
 +
 +  if (data == 0x58) {
 +    udbg("------------------------%lu\n",jiffies);
@@ -280,8 +285,8 @@ index cb5ece7..395ee0f 100644
 +  
 +      isRepeat=((data<0x80) && (skd <= 14));
 +      if ((data<0x80) && (skd <= 20)) {//potential repeats
-+  	    udbg("j:%lu jdiff:%4ld '%s%02x %03d %10s %s%s' %d skd:%8ld pp:%8ld%s\n",
-+    	    jiffies_snapshot, jdiff,//this will be 4.2 billion the first time!(= to jiffies)
++        udbg("j:%lu jdiff:%4ld '%s%02x %03d %10s %s%s' %d skd:%8ld pp:%8ld%s\n",
++          jiffies_snapshot, jdiff,//this will be 4.2 billion the first time!(= to jiffies)
 +          data > 0x80? "\x1b[48;5;7m":"\x1b[48;5;2m", //start color (released:pressed); tput setab 7 : tput setab 2  (white:green)
 +          data, data, 
 +          named[data%0x80],
@@ -307,16 +312,16 @@ index cb5ece7..395ee0f 100644
 +//      itoa (dfl,binary,2); implicit declaration - i didn't include #include <stdio.h> #include <stdlib.h> maybe? don't wanna try
 +//        printf ("binary: %s\n",buffer);
 +//    jdiff=jiffies-lastjiffies;
-+  	udbg("%lu jdiff:%8ld '%s%02x %03d %10s %s%s' %d %d%s%s dfl:%3u %s:%lu\n",
-+	    jiffies, jdiff,//this will be 4.2 billion the first time!(= to jiffies)
++    udbg("%lu jdiff:%8ld '%s%02x %03d %10s %s%s' %d %d%s%s dfl:%3u %s:%lu\n",
++      jiffies, jdiff,//this will be 4.2 billion the first time!(= to jiffies)
 +      data > 0x80? "\x1b[48;5;7m":"\x1b[48;5;2m", //start color (released:pressed); tput setab 7 : tput setab 2  (white:green)
 +      data, data, 
 +      named[data%0x80],
 +      data > 0x80? "r":"P", //in case u can't see colors, also show state as text
 +      "\x1b[m\x1b(B", //stop color: tput sgr0
 +      port_no, irq,
-+	    dfl & SERIO_PARITY ? ", bad parity" : "",
-+	    dfl & SERIO_TIMEOUT ? ", timeout" : "",
++      dfl & SERIO_PARITY ? ", bad parity" : "",
++      dfl & SERIO_TIMEOUT ? ", timeout" : "",
 +      dfl,//binary, aka %8s
 +      lastdoubletime!=doubletime?"doubletime":"no",
 +      doubletime
@@ -333,7 +338,7 @@ index cb5ece7..395ee0f 100644
 +  if (lastdoubletime!=doubletime) {
 +    lastdoubletime=doubletime;
 +  }
- 
++ 
  	filtered = i8042_filter(data, str, serio);
  
  	spin_unlock_irqrestore(&i8042_lock, flags);
@@ -348,15 +353,15 @@ index cb5ece7..395ee0f 100644
 +  //that means that DownArrow pressed also generates a #96 key release(aka 96+128=224 aka E0); also downarrow released generates the same extra E0. Actually I stand corrected!!! E0 is first then there's the DownArrow press(or release!)
 +  //ok that's "escaped scancodes e0 xx (8+7 bits)" see: man 8 setkeycodes
 +  //FIXME: for some reason, Shift+PgUp (L/R Shift) detects the shift as the repeat instead of the PgUp which is odd! and breaks scrolling up (it gets me back to prompt while I was somewhere up scrolling as if I pressed just PgUp) - maybe this only happens because of my failed way of dropping repeats currently, let's stop that until fixed properly:
-+	if ((likely(port->exists && !filtered)) )//&& (!isRepeat))
++  if ((likely(port->exists && !filtered)) )//&& (!isRepeat))
  		serio_interrupt(serio, data, dfl);
  
   out:
 diff --git a/drivers/input/serio/serio.c b/drivers/input/serio/serio.c
-index a05a517..439243a 100644
+index 8f82897..6597bb6 100644
 --- a/drivers/input/serio/serio.c
 +++ b/drivers/input/serio/serio.c
-@@ -996,6 +996,12 @@ void serio_close(struct serio *serio)
+@@ -994,6 +994,12 @@ void serio_close(struct serio *serio)
  }
  EXPORT_SYMBOL(serio_close);
  
@@ -369,7 +374,7 @@ index a05a517..439243a 100644
  irqreturn_t serio_interrupt(struct serio *serio,
  		unsigned char data, unsigned int dfl)
  {
-@@ -1007,6 +1013,7 @@ irqreturn_t serio_interrupt(struct serio *serio,
+@@ -1005,6 +1011,7 @@ irqreturn_t serio_interrupt(struct serio *serio,
          if (likely(serio->drv)) {
                  ret = serio->drv->interrupt(serio, data, dfl);
  	} else if (!dfl && device_is_registered(&serio->dev)) {
