@@ -2977,6 +2977,8 @@
     \ https://wiki.gentoo.org/wiki/Xorg/Guide#Setting_the_screen_resolution
 
 * bigTODO:
+  * add swap partition, inside LUKS ofc
+    \ why? because compiling chromium (inside virtualbox on 10827M RAM selected in vbox options) will get ld killed! (it used to work before, barely; but not since 2508 chromium build)
   * add USE flag binpkg-multi-instance
     \ added in current installation for testing
   * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
