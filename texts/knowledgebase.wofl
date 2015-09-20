@@ -258,4 +258,11 @@
   * emaint --fix binhost
     \ it's instant
 
+* virtualbox causes startx to get into 740x240 (unsure about the last number) even though it passes through 800x600
+  \ this happens when View->Autoresize guest display (Host+G) is unselected!
+  * to fix: switch resolution to wanted (eg. 1024x768 via Start->Display ) then select the previously deselected: View-> Auto-resize guest display (Host+G), then deselect it again(or keep it selected whatever).
+    \ xrandr shows the first resolution as * and thus preferred.
+    \ XXX: caveat: you'll need to switch to 1024x768 again on next startx, since it's now 1024x690 for whatever reason(even with Auto-resize being deselected!
+
+
 
