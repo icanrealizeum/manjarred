@@ -3295,7 +3295,6 @@
           * already have usb mass storage support selected with the specific realtek card
         * time genkernel all --bootdir="/boot" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
           \ yeah /boot already exists with /.keep file inside
-
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
@@ -3306,8 +3305,21 @@
   - see if nosuid needs to be removed from /var/tmp/portage  eg. for chromium binary will be suid in order for sandbox to work.
     \ find / \( -perm -4000 -fprintf /root/suid.txt '%#m %u %p\n' \)
     \ hmm, apparently sys-apps/shadow-4.2.1-r1 which I recently emerged(update) has multiple suid files already in filesystem which means the nosuid in all 3 tmpfs locations, one of which is used by portage(/var/tmp/portage), had no effect on the suid bit!
-  * look into making rescue media
+  * making grub rescue media
     \ dev-libs/libisoburn for Create rescue media (grub-mkrescue)
+    * time emerge -nav dev-libs/libisoburn
+      \ needed for cmd: xorriso
+      \ else you get this error when grub2-mkrescue:
+      \ grub2-mkrescue: warning: Your xorriso doesn't support `--grub2-boot-info'. Some features are disabled. Please use xorriso 1.2.9 or later..
+      \ grub2-mkrescue: warning: Your xorriso doesn't support `--grub2-boot-info'. Your core image is too big. Boot as disk is disabled. Please use xorriso 1.2.9 or later..
+      \ duration: 18m58s
+      \ installs 1.4.0 and 2 more packages: libisofs libburn
+    * grub2-mkrescue --verbose --compress=xz --output=/tmp/moo.iso
+      \ so: --core-compress=xz fails: grub2-mkrescue: --core-compress: (PROGRAM ERROR) Option should have been recognized!?
+      \ also just --core-compress
+      \ but --core-compress1 works until the end: xorriso : FAILURE : -as mkisofs: Unrecognized option '--core-compress1'
+      \ apprently doesn't need /boot (or /bewt) mounted to work.
+    * untested!
   - (maybe we don't do this) add "minimal -dbus" to firefox, before emerging! (don't add to global USE, because both are toggled there!), see: equery u firefox    for what those use flags do for firefox.
   * get virtualbox(only do this on bare metal computer, not inside a virtualbox guest OS already)
     \ TODO: this may need to switch to vanilla gcc, we'll see; but it definitely needs switching OFF ccache!
