@@ -206,6 +206,18 @@
       * unit mib
       * creating the partitions
         \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks#Creating_the_partitions
+        * TODO: try/test if works to make a swap partition at the beginning here just in case an accidental dd overwrites the entire device
+          * mkpart primary 1 16385
+            \ 16gig+1meg
+          - mkpart primary 1 32769
+            \ 32gig + 1 meg = 32gig partition
+            \ do twice the RAM + 1 meg that we skipped
+            \ this on bare metal.
+          * name 1 swap_on_luks_part
+          * set 1 swap on
+            \ does this even work??
+          * print
+          * FIXME: adjust sizes accordingly
         * make a 2MB grub bios partition that will be used by the GRUB2 boot loader later
           * mkpart primary 1 5
             \ that's a 4MB one, 5-1=4
@@ -527,7 +539,7 @@
           \ https://wiki.gentoo.org/wiki/GCC_optimization#Introduction
           \ https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html#Invoking-GCC
           \ https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-        * append this: FEATURES="assume-digests binpkg-logs -buildpkg -buildsyspkg -candy -ccache cgroup -clean-logs collision-protect -compress-build-logs -compress-index -compressdebug config-protect-if-modified -digest -distcc -distcc-pump distlocks downgrade-backup ebuild-locks -fail-clean fakeroot fixlafiles force-mirror -force-prefix -getbinpkg installsources ipc-sandbox -keeptemp -keepwork -lmirror merge-sync -metadata-transfer -mirror multilib-strict network-sandbox news -noauto -noclean -nodoc -noinfo -noman nostrip -notitles parallel-fetch parallel-install prelink-checksums preserve-libs -protect-owned sandbox sfperms -sign -skiprocheck split-elog split-log -splitdebug strict -stricter -suidctl -test -test-fail-continue -unknown-features-filter unknown-features-warn unmerge-backup unmerge-logs -unmerge-orphans userfetch userpriv usersandbox -usersync webrsync-gpg -xattr"
+        * append this: FEATURES="assume-digests binpkg-logs -buildpkg -buildsyspkg -candy -ccache cgroup -clean-logs collision-protect -compress-build-logs -compress-index -compressdebug config-protect-if-modified -digest -distcc -distcc-pump distlocks downgrade-backup binpkg-multi-instance ebuild-locks -fail-clean fakeroot fixlafiles force-mirror -force-prefix -getbinpkg installsources ipc-sandbox -keeptemp -keepwork -lmirror merge-sync -metadata-transfer -mirror multilib-strict network-sandbox news -noauto -noclean -nodoc -noinfo -noman nostrip -notitles parallel-fetch parallel-install prelink-checksums preserve-libs -protect-owned sandbox sfperms -sign -skiprocheck split-elog split-log -splitdebug strict -stricter -suidctl -test -test-fail-continue -unknown-features-filter unknown-features-warn unmerge-backup unmerge-logs -unmerge-orphans userfetch userpriv usersandbox -usersync webrsync-gpg -xattr"
           \ see all FEATURES flags in man make.conf
           \ these flags save binary packages: buildpkg buildsyspkg downgrade-backup unmerge-backup 
           \ When Portage is run as root, FEATURES="userfetch" will allow Portage to drop root privileges while fetching package sources. This is a small security improvement. 
@@ -2977,8 +2989,8 @@
     \ https://wiki.gentoo.org/wiki/Xorg/Guide#Setting_the_screen_resolution
 
 * bigTODO:
-  * add swap partition, inside LUKS ofc
-    \ why? because compiling chromium (inside virtualbox on 10827M RAM selected in vbox options) will get ld killed! (it used to work before, barely; but not since 2508 chromium build)
+  - add swap partition, inside LUKS ofc
+    \ why? because compiling chromium (inside virtualbox on 10827M RAM selected in vbox options) will get ld killed! (it used to work before(eg. for 2498 build), barely; but not since 2508 chromium build)
   * add USE flag binpkg-multi-instance
     \ added in current installation for testing
   * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
@@ -2989,7 +3001,7 @@
     \ apparently no package owns /usr/portage/eclass/eutils.eclass which is kinda odd(?) but then for sure it got there via stage3 or even portage snapshot (via webrsync -v -k)
     \ FIXME: looks like patching /usr/portage/eclass/eutils.eclass after each emerge-webrsync (via hooks) 'causes the next emerge to rebuild whatever (ebuild.sh depend) everything (portage list of all packages? depends and stuff) which takes like 15mins(I can't remember actually)
   * build your own iso
-    * get catalyst (for building stages and .iso)
+    - get catalyst (for building stages and .iso)
       * time emerge -nav dev-util/catalyst
         \ 16 packages, 22m43s; 47m10s on hardened (with youtube playing on background)
       * vim /etc/catalyst/catalyst.conf
@@ -3040,17 +3052,27 @@
       * catalyst -v -f releng/releases/weekly/specs/amd64/hardened/admincd-stage1.spec 
       * ...
     * http://gentoo-en.vfose.ru/wiki/Build_Your_Own_LiveCD_or_LiveDVD#Introduction
-      - time emerge -nav app-cdr/cdrtools sys-fs/squashfs-tools
+      * time emerge -nav app-cdr/cdrtools sys-fs/squashfs-tools
         \ hmm, already have them apparently (maybe they got installed with catalyst package?) - yes
+        \ this adds them to favs
+      * time emerge -nav dev-util/catalyst
+        \ 16 packages, 22m43s; 47m10s on hardened (with youtube playing on background)
+      * vim /etc/catalyst/catalyst.conf
+        \ options="autoresume bindist kerncache pkgcache seedcache snapcache ccache"
+      * cd /root
       * catalyst -s latest
         \ creating a snapshot from current /usr/portage/
         \ puts it in: /var/tmp/catalyst/snapshots/portage-latest.tar.bz2*
         \ (depends on a /etc/catalyst/catalyst.conf setting for the location!)
-      * export ADMINCD="$HOME/admincd"
-      * mkdir -p "$ADMINCD/source"
-      * cd "$ADMINCD/source"
+        \ space taken: 866M
+        \ the *.bz2* files take only 85M
+      * export LIVECD="$HOME/admincd"
+      * mkdir -p "$LIVECD/source"
+      * cd "$LIVECD/source"
       * get a stage3 and unpack in current dir (see #stage3)
         * download
+          * links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-hardened+nomultilib/
+            \ to find latest stage3 to download
           * wget http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-hardened+nomultilib/stage3-amd64-hardened+nomultilib-20150813.tar.bz2.DIGESTS.asc
           * wget http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-hardened+nomultilib/stage3-amd64-hardened+nomultilib-20150813.tar.bz2
         * verify integrity
@@ -3091,29 +3113,67 @@
       * extract the portage stuff
         * tar -xvjpf /var/tmp/catalyst/snapshots/portage-latest.tar.bz2 -C usr
           \ ./usr already exists due to prev. extraction!
+      - (nvm we need it on --update after webrsync) do not set up /etc/resolv.conf because we don't need internet(portage) to download packages!
+        \ so yeah, don't!
       * mount points
-        * mkdir proc dev sys
+        * mkdir proc dev sys run
           \ all already exist!
-        * mount --bind /proc proc ; mount --bind /dev dev ; mount --bind /sys sys
+        - mount --bind /proc proc ; mount --bind /dev dev ; mount --bind /sys sys
+        * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=1777 tmpfs ./tmp
+        * mount --rbind ./tmp/ ./var/tmp/
+        * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs ./var/tmp/portage/
+        * mount -t proc proc ./proc ; mount --rbind /sys ./sys ; mount --rbind /dev ./dev ; mount --rbind /run ./run
       * avoid redownload...
-        * mkdir -p usr/portage/distfiles
-        * mount --bind /usr/portage/distfiles usr/portage/distfiles
-      * cp --archive -- /etc/portage/make.conf etc/portage/
-      * cp --archive -- /etc/resolv.conf etc/
+        * mkdir -p ./usr/portage/distfiles
+        * mount --rbind /usr/portage/distfiles ./usr/portage/distfiles
+      * use that ccache goodness
+        * mkdir -p ./ccache
+        * mount --rbind /ccache ./ccache
+      * set up make.conf
+        * cp --archive -- /etc/portage/make.conf ./etc/portage/
+          \ overwrite
+        * vim ./etc/portage/make.conf
+          * remove USE flags: X
+          * add USE flags: livecd -X userlocales
+      * portage patches
+        * mkdir -p ./patches
+        * cp --archive -- /patches ./patches/
+        - mount --rbind /patches ./patches
+          \ mount: mount point ./patches does not exist
+        * cp --archive -- /etc/portage/bashrc ./etc/portage/
+      * cp --archive -- /etc/default/grub ./etc/default/
+        * vim ./etc/default/grub
+          * prepend to kernel cmdline: cdroot
+          * remove: crypt_root rd.luks.uuid
+      * cp --archive -- /etc/locale.gen ./etc/
+        \ overwrite!
+      * cp --archive -- /etc/resolv.conf ./etc/
         \ to can download new packages during a later emerge below
+      - cp --archive -- /etc/localtime ./etc/
+        \ this is regenerated by an emerge
+      * cp --archive -- /etc/timezone ./etc/
+      * ln -sf /proc/self/mounts ./etc/mtab
       * chroot
-        * chroot $ADMINCD/source/ /bin/bash --login
-      * env-update && source /etc/profile
-      * Make sure you add livecd to your USE variables.
+        * chroot ${LIVECD}/source/ /bin/bash --login
+        * env-update && source /etc/profile
+      * passwd
+        \ set root password
+      - Make sure you add livecd to your USE variables.
         \ nano -w /etc/portage/make.conf
-      * make sure you add -X (minus X) as USE var!
+      - make sure you add -X (minus X) as USE var!
         \ search with Ctrl+W  (in nano) Alt+W repeat last search
-      * add USE flag: userlocales
-      * nano /etc/locale.gen
+      - add USE flag: userlocales
+      - nano /etc/locale.gen
         \ uncommed the first two
         \ en_US ISO-8859-1
         \ en_US.UTF-8 UTF-8
-      - time emerge -av1 =gcc-5.1.0
+      * emerge --config sys-libs/timezone-data
+        \  * Updating /etc/localtime with /usr/share/zoneinfo/Europe/Budapest
+        \ getting these errors, unsure why:
+        \ mount: permission denied
+        \ Unable to unshare: EPERM
+        \ maybe those grsec chroot permissions!!!
+      * time emerge -nav =gcc-5.2.0
         \ because ~amd64 is at 4.9.3  (and there's 5.1.0 and 5.2.0 extra)
         \ u'll need to run dispatch-conf to apply the changes before rerunning emerge
       * ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
