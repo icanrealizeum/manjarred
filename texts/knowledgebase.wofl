@@ -265,4 +265,18 @@
     \ XXX: caveat: you'll need to switch to 1024x768 again on next startx, since it's now 1024x690 for whatever reason(even with Auto-resize being deselected!
 
 
+* this fixes the frequent : Unable to unshare: EPERM
+  \ this happens inside a manually chroot-ed environment in which you run emerge/portage
+  \ workaround/fix: sysctl -w kernel.grsecurity.chroot_caps=0
+  \ in dmesg is probably this: [75212.656718] grsec: From 10.0.2.2: use of CAP_SYS_ADMIN in chroot denied for /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:24096] uid/euid:0/0 gid/egid:0/0, parent /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:4652] uid/euid:0/0 gid/egid:0/0
+  \ kernel.grsecurity.chroot_caps is kernel config option CONFIG_GRKERNSEC_CHROOT_CAPS:
+  \ "If you say Y here, the capabilities on all processes within a
+  \ chroot jail will be lowered to stop module insertion, raw i/o
+  \ system and net admin tasks, rebooting the system, modifying immutable
+  \ files, modifying IPC owned by another, and changing the system time.
+  \ This is left an option because it can break some apps.  Disable this
+  \ if your chrooted apps are having problems performing those kinds of
+  \ tasks.  If the sysctl option is enabled, a sysctl option with
+  \ name "chroot_caps" is created."
+
 

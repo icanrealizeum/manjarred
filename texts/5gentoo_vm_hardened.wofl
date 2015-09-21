@@ -3179,6 +3179,22 @@
           \ none                    /proc           proc            defaults             0 0
           \ none                    /dev/shm        tmpfs           defaults             0 0
           \
+      * grsec settings to relax chroot for emerge not to fail on some packages!
+        * sysctl -w kernel.grsecurity.chroot_deny_mount=0
+        * sysctl -w kernel.grsecurity.chroot_deny_chmod=0
+        * sysctl -w kernel.grsecurity.chroot_deny_chroot=0
+        - sysctl -w kernel.grsecurity.chroot_caps=0
+          \ this fixes the frequent : Unable to unshare: EPERM
+          \ in dmesg is probably this: [75212.656718] grsec: From 10.0.2.2: use of CAP_SYS_ADMIN in chroot denied for /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:24096] uid/euid:0/0 gid/egid:0/0, parent /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:4652] uid/euid:0/0 gid/egid:0/0
+          \ kernel.grsecurity.chroot_caps is kernel config option CONFIG_GRKERNSEC_CHROOT_CAPS:
+          \ "If you say Y here, the capabilities on all processes within a
+          \ chroot jail will be lowered to stop module insertion, raw i/o
+          \ system and net admin tasks, rebooting the system, modifying immutable
+          \ files, modifying IPC owned by another, and changing the system time.
+          \ This is left an option because it can break some apps.  Disable this
+          \ if your chrooted apps are having problems performing those kinds of
+          \ tasks.  If the sysctl option is enabled, a sysctl option with
+          \ name "chroot_caps" is created."
       * chroot
         * chroot "${LIVECD}/source/" /bin/bash --login
         * env-update && source /etc/profile
@@ -3254,10 +3270,23 @@
         \ Total: 178 packages (95 upgrades, 56 new, 5 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 3,788 KiB
         \ i installed glibc manually first, so:
         \ Total: 177 packages (94 upgrades, 56 new, 5 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 0 KiB
+        \ duration: 464mins until first fail due to grsec permissions inside chroot!: 
+        \ chmod: changing permissions of ‘/var/tmp/portage/sys-apps/util-linux-2.27/image//bin/mount’: Permission denied
+        \ in sys-apps/util-linux-2.27
+        \ also failed: sys-libs/pam-1.2.1-r1
+        \ with: Setting caps 'cap_dac_override=ep' on file '/sbin/unix_chkpwd' failed:
+        \ also failed: ERROR: net-misc/iputils-20121221-r2::gentoo failed (postinst phase):
+        \ (no error message)
+        \ Note: went back into history(above) and set some grsec via sysctl so the above may not be an issue anymore!
       - ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
       - time emerge -nav dhcpcd
         \ apparently I should already have udhcpc (busybox)
       * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+      * time perl-cleaner --all
+        \ 12m30s
+      * time emerge @preserved-rebuild
+        \ rebuilds 18 packages
+        \ duration: 
       * time emerge -nav memtest86+ localepurge genkernel gentoolkit dmraid livecd-tools scripts mingetty
         \ ommiting failing package: memtest86+
       * kernel
