@@ -3135,7 +3135,13 @@
           \ overwrite
         * vim ./etc/portage/make.conf
           * remove USE flags: X qt4
+          * TODO: maybe remove USE flags: dbus consolekit
+            \ maybe also remove: -nls
+            \ but note that it will miss ccache this way! (currently still misses it because old items got expunged due to many recent chromium compilations)
           * add USE flags: livecd -X userlocales -qt4
+          * TODO: add USE flags: -dbus -consolekit
+            \ maybe also add: nls
+            \ so to avoid recompiling packages just because of this single flag change!
       * portage patches
         * mkdir -p ./patches
         * mount --rbind /patches ./patches
@@ -3286,9 +3292,43 @@
         \ 12m30s
       * time emerge @preserved-rebuild
         \ rebuilds 18 packages
-        \ duration: 
-      * time emerge -nav memtest86+ localepurge genkernel gentoolkit dmraid livecd-tools scripts mingetty
-        \ ommiting failing package: memtest86+
+        \ duration: 127m11s
+      * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+      * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+        \ rerun this because of the fails earlier, now they're handled
+        \ Total: 19 packages (9 upgrades, 6 new, 1 in new slot, 3 reinstalls), Size of downloads: 0 KiB
+        \ duration: 153m26s
+      * time emerge @preserved-rebuild
+      * time emerge --depclean -av
+        \ this removes gcc 4.8.5 too!
+      * time emerge @preserved-rebuild
+        \ yep this still had 1 package to recompile now after --depclean, it's perl!
+        \ duration: 17m11s
+      * time emerge -nav localepurge genkernel gentoolkit dmraid livecd-tools scripts mingetty
+        \ omitting failing package: memtest86+
+        \ sys-apps/memtest86+-5.01-r1
+        \ Total: 18 packages (18 new), Size of downloads: 309 KiB
+        \ duration: 75m50s
+      * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+      * time emerge -nav bc
+        \ or else, kernel compilation will fail:
+        \ */bin/sh: bc: command not found
+        \ *kernel/time/Makefile:30: recipe for target 'kernel/time/timeconst.h' failed
+        \ duration: 3m1s
+      * linux firmware (radeon and amd cpu microcode is here)
+        \ https://wiki.gentoo.org/wiki/AMD_microcode
+        * time emerge -nav sys-kernel/linux-firmware
+          \ 2m40s
+          \ not bothering to edit that "config"
+          \ need because: make[1]: *** No rule to make target '/lib/firmware/radeon/SUMO_me.bin', needed by 'firmware/radeon/SUMO_me.bin.gen.o'.  Stop.
+      * need btrfs command
+        * time emerge -nav sys-fs/btrfs-progs
+          \ Total: 3 packages (3 new), Size of downloads: 0 KiB
+          \ 12m32s
+      * exit out of chroot or get into another terminal and do this outside of chroot:
+        \ as to avoid this: mknod: ‘console’: Operation not permitted
+        \ during genkernel (apparently at end of kernel compilation)
+        * sysctl -w kernel.grsecurity.chroot_deny_mknod=0
       * kernel
         * cd /usr/src/linux
         * make nconfig
@@ -3324,6 +3364,9 @@
           * already have usb mass storage support selected with the specific realtek card
         * time genkernel all --bootdir="/boot" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
           \ yeah /boot already exists with /.keep file inside
+      * do this outside of chroot:
+        * sysctl -w kernel.grsecurity.chroot_deny_mknod=1
+      * TODO: next
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
