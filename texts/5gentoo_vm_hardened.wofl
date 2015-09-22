@@ -206,7 +206,7 @@
       * unit mib
       * creating the partitions
         \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks#Creating_the_partitions
-        * TODO: try/test if works to make a swap partition at the beginning here just in case an accidental dd overwrites the entire device
+        * FIXME: make it inside lvm(is that even possible?) TODO: try/test if works to make a swap partition at the beginning here just in case an accidental dd overwrites the entire device
           * mkpart primary 1 16385
             \ 16gig+1meg
           - mkpart primary 1 32769
@@ -3124,12 +3124,20 @@
         * mount --rbind ./tmp/ ./var/tmp/
         * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs ./var/tmp/portage/
         * mount -t proc proc ./proc ; mount --rbind /sys ./sys ; mount --rbind /dev ./dev ; mount --rbind /run ./run
-      * avoid redownload...
-        * mkdir -p ./usr/portage/distfiles
-        * mount --rbind /usr/portage/distfiles ./usr/portage/distfiles
-      * use that ccache goodness
-        * mkdir -p ./ccache
-        * mount --rbind /ccache ./ccache
+        * avoid redownload...
+          * mkdir -p ./usr/portage/distfiles
+          * mount --rbind /usr/portage/distfiles ./usr/portage/distfiles
+        * use that ccache goodness
+          * mkdir -p ./ccache
+          * mount --rbind /ccache ./ccache
+        * portage patches
+          * mkdir -p ./patches
+          * mount --rbind /patches ./patches
+            \ mount: mount point ./patches does not exist
+          - cp --archive -- /patches ./patches/
+          * cp --archive -- /etc/portage/bashrc ./etc/portage/
+          * cp --archive -- /etc/portage/patches ./etc/portage/
+            \ it's a symlink, remember?
       * set up make.conf
         * cp --archive -- /etc/portage/make.conf ./etc/portage/
           \ overwrite
@@ -3142,14 +3150,6 @@
           * TODO: add USE flags: -dbus -consolekit
             \ maybe also add: nls
             \ so to avoid recompiling packages just because of this single flag change!
-      * portage patches
-        * mkdir -p ./patches
-        * mount --rbind /patches ./patches
-          \ mount: mount point ./patches does not exist
-        - cp --archive -- /patches ./patches/
-        * cp --archive -- /etc/portage/bashrc ./etc/portage/
-        * cp --archive -- /etc/portage/patches ./etc/portage/
-          \ it's a symlink, remember?
       * cp --archive -- /etc/default/grub ./etc/default/
         * vim ./etc/default/grub
           * prepend to kernel cmdline: cdroot
@@ -3366,7 +3366,133 @@
           \ yeah /boot already exists with /.keep file inside
       * do this outside of chroot:
         * sysctl -w kernel.grsecurity.chroot_deny_mknod=1
-      * TODO: next
+      * cd /boot
+        * cp initramfs-genkernel-x86_64-4.1.7-hardened-g45b4b78 initrd
+        * cp kernel-genkernel-x86_64-4.1.7-hardened-g45b4b78 vmlinuz
+      * time emerge -nav vim
+        \ need it
+        \ duration: 13m46s
+      * clean extra locales
+        - emerge app-admin/localepurge
+          \ already emerged above
+        * eselect locate list
+          \ make note of these
+        * vim /etc/locale.nopurge
+          * delete all locales
+          * delete: NEEDSCONFIGFIRST
+          * these should remain:
+            \ MANDELETE
+            \ SHOWFREEDSPACE
+            \ VERBOSE
+          * add the ones from the eselect above, so:
+            \ C
+            \ en_US
+            \ en_US.iso88591
+            \ en_US.utf8
+            \ POSIX
+        * time localepurge
+          \ 11s
+        - time makewhatis -u
+          \ apparently makewhatis is part of sys-apps/man which isn't installed even on my outside-of-chroot!(but I've 'man' there which is part of sys-apps/man-db-2.7.3 )
+          \ this is supposed to "reindex" they say.
+        * time mandb
+          \ 5m49s
+        * time mandb -u
+          \ 1s
+      - Delete wrong symbolic links
+        * find / -type l ! -xtype f ! -xtype d -ok rm -f {} \;
+          \ don't run this because it wants to delete /dev/disk/by-uuid/* for example which are from outside of chroot
+      - delete ".keep" files that are necessary to restore empty directories
+        * find / -type f -xdev -name ".keep" -print -exec rm {} \;
+      * time emerge -nav mlocate
+        \ 2m49s
+        * time updatedb
+          \ 9s
+      * time emerge -nav =grub-9999-r1
+        \ Total: 2 packages (2 new), Size of downloads: 1,725 KiB
+        \ media-libs/freetype-2.6 sys-boot/grub-9999-r1
+        \ 19m54s
+      * vim /etc/default/grub
+        \ change timeout from 1 to 10:
+        \ GRUB_TIMEOUT=10
+        \ wait, this has no effect... if we're using menu.lst below, right?
+      * mkdir -p /boot/grub/
+      * vim /boot/grub/menu.lst
+        \ default 0
+        \ timeout 7
+        \ splashimage=/boot/grub/splash.xpm.gz
+        \ 
+        \ title=LiveCD
+        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs vga=ask initrd udev nodevfs cdroot dodmraid 
+        \ initrd /boot/initrd
+        \ 
+        \ title=LiveCD NO-FB
+        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid
+        \ initrd /boot/initrd
+      * remove any old modules
+        \ there are none the first time you're doing this
+        * cd /lib/modules
+          \ there's no /lib64/modules/ dir btw!
+        * du -sh *
+          \ keep the newly generated one (currently shows only one)
+        * otherwise rm -rf other folder
+      * exit chroot
+      * cd ${LIVECD}/source
+        \ already still here.
+      * umount --recursive --verbose --lazy -- ./patches ./ccache ./usr/portage/distfiles ./tmp ./var/tmp/portage/ ./var/tmp/ ./proc ./sys ./dev ./run
+      * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+      * mkdir -p ${LIVECD}/target/files/source
+      - rsync --delete-after --archive --hard-links --quiet ${LIVECD}/source/boot ${LIVECD}/target/
+      * cp --archive --reflink=always --verbose -- ${LIVECD}/source/boot ${LIVECD}/target/
+      - time rsync --delete-after --archive --hard-links ${LIVECD}/source/ ${LIVECD}/target/files/source
+        \ why am I doing this again?
+        \ 12m19s before I C-c it! I mean cmon! fuuuu!
+      * time cp --archive --reflink=always --verbose -- ${LIVECD}/source/ ${LIVECD}/target/files/source
+      * cleaning
+        * cd ${LIVECD}/target/files/source
+        * rm stage3-*.bz2
+          \ yeah keep the DIGEST why not
+        - ( cd ./usr/src/linux/ && make clean )
+          \ before: 4.3G
+          \ after: 697M
+        * time rm -rf ./usr/src/linux*
+          \ not /usr/src/debug tho!
+          \ 30+ sec.
+          \ 1.2G(+3.7G which I make cleaned already)
+        * rm -rf ./var/log/*
+          \ 66M
+        * time rm -rf ./usr/portage/
+          \ 1.1G
+        - rm ./var/run ; mkdir ./var/run
+          \ it's a symlink and "iso9660 doesn't handle symbolic links"
+          \ wait, then how teh! what about the ton of symlinks: find . -type l
+          \ oh wait, it's gonna be squashfs-ed so symlinks will work!
+        - rm -rf ./etc/portage
+          \ 123k, we keep it then
+        * 
+      * Building the LiveCD
+        * cd ${LIVECD}/target/files
+        * rm -f ${LIVECD}/target/livecd.squashfs
+          \ doesn't already exist, the first time (exit code is still 0 tho)
+        * time mksquashfs source ${LIVECD}/target/livecd.squashfs
+          \ 8m58s
+          \ 1.1G file
+        * touch ${LIVECD}/target/livecd
+          \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
+        * time emerge -nav sys-boot/grub-static
+          \ installs: sys-boot/grub-static-0.97-r12
+          \ need that /lib/grub/i386-pc/stage2_eltorito which is 128116 bytes size, sha512: 0506f786634bffed2333c4efe4708f6c4876961bcdf33726228e05b7bcf907072e1831ddec8533d3824e892b62de2bb6707880d219ba57ff370205b3aa1ebe8b
+          \ FIXME: install this inside chroot, not outside!
+          * cp --archive -- /lib/grub/i386-pc/stage2_eltorito ${LIVECD}/target/boot/grub/
+        * cd ${LIVECD}
+        * time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o ${LIVECD}/livecd.iso -x files ${LIVECD}/target
+          \ 17s
+          \ FIXME: what the what? mkisofs: Uh oh, I cant find the boot image 'boot/grub/stage2_eltorito' inside the target tree.
+          \ where did they get that from? there's only menu.lst there!
+        * iso cd is at ${LIVECD}/livecd.iso weighing 1.1G (with du -c -s --si -P  so, at most!) 1051127808 bytes
+          \ the whole dir ${LIVECD} currently is at 15G
+        * scp -P 8822 -4vp root@127.0.0.111:/root/admincd/livecd.iso /tmp
+          \ wow scp is limited at 10.5MB/s 10.9MB/s max! what the! (not even using compression!) Virtualbox starts using over 220% cpu, ssh using 40%, yep sshd using 190% inside vbox and 34% scp. So I guess ssh was doing compression!
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
