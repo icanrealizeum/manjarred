@@ -3068,8 +3068,10 @@
         \ space taken: 866M
         \ the *.bz2* files take only 85M
       * export LIVECD="$HOME/admincd"
+        \ #NEXTTIME
       * mkdir -p "$LIVECD/source"
       * cd "$LIVECD/source"
+        \ #NEXTTIME
       * get a stage3 and unpack in current dir (see #stage3)
         * download
           * links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-hardened+nomultilib/
@@ -3116,10 +3118,9 @@
           \ ./usr already exists due to prev. extraction!
       - (nvm we need it on --update after webrsync) do not set up /etc/resolv.conf because we don't need internet(portage) to download packages!
         \ so yeah, don't!
-      * mount points
-        * mkdir proc dev sys run
-          \ all already exist!
-        - mount --bind /proc proc ; mount --bind /dev dev ; mount --bind /sys sys
+      * mkdir proc dev sys run
+        \ all already exist!
+      * mount points #NEXTTIME
         * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=1777 tmpfs ./tmp
         * mount --rbind ./tmp/ ./var/tmp/
         * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs ./var/tmp/portage/
@@ -3127,13 +3128,15 @@
         * avoid redownload...
           * mkdir -p ./usr/portage/distfiles
           * mount --rbind /usr/portage/distfiles ./usr/portage/distfiles
+            \ #NEXTTIME
         * use that ccache goodness
           * mkdir -p ./ccache
           * mount --rbind /ccache ./ccache
+            \ #NEXTTIME
         * portage patches
           * mkdir -p ./patches
           * mount --rbind /patches ./patches
-            \ mount: mount point ./patches does not exist
+            \ #NEXTTIME
           - cp --archive -- /patches ./patches/
           * cp --archive -- /etc/portage/bashrc ./etc/portage/
           * cp --archive -- /etc/portage/patches ./etc/portage/
@@ -3186,6 +3189,7 @@
           \ none                    /dev/shm        tmpfs           defaults             0 0
           \
       * grsec settings to relax chroot for emerge not to fail on some packages!
+        \ #NEXTTIME
         * sysctl -w kernel.grsecurity.chroot_deny_mount=0
         * sysctl -w kernel.grsecurity.chroot_deny_chmod=0
         * sysctl -w kernel.grsecurity.chroot_deny_chroot=0
@@ -3203,6 +3207,7 @@
           \ name "chroot_caps" is created."
       * chroot
         * chroot "${LIVECD}/source/" /bin/bash --login
+          \ #NEXTTIME
         * env-update && source /etc/profile
       * passwd
         \ set root password
@@ -3329,6 +3334,7 @@
         \ as to avoid this: mknod: ‘console’: Operation not permitted
         \ during genkernel (apparently at end of kernel compilation)
         * sysctl -w kernel.grsecurity.chroot_deny_mknod=0
+          \ #NEXTTIME
       * kernel
         * cd /usr/src/linux
         * make nconfig
@@ -3364,11 +3370,15 @@
           * already have usb mass storage support selected with the specific realtek card
         * time genkernel all --bootdir="/boot" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
           \ yeah /boot already exists with /.keep file inside
+          \ #NEXTTIME recompile takes: 7m38s (with zlib option selected for squashfs, since I forgot it!)
       * do this outside of chroot:
         * sysctl -w kernel.grsecurity.chroot_deny_mknod=1
+          \ #NEXTTIME
       * cd /boot
-        * cp initramfs-genkernel-x86_64-4.1.7-hardened-g45b4b78 initrd
-        * cp kernel-genkernel-x86_64-4.1.7-hardened-g45b4b78 vmlinuz
+        \ #NEXTTIME
+        \ get the latest files and copy them as initrd/vmlinuz
+        * cp --archive -- initramfs-genkernel-x86_64-4.1.7-hardened-g45b4b78 initrd
+        * cp --archive -- kernel-genkernel-x86_64-4.1.7-hardened-g45b4b78 vmlinuz
       * time emerge -nav vim
         \ need it
         \ duration: 13m46s
@@ -3408,61 +3418,89 @@
         \ 2m49s
         * time updatedb
           \ 9s
-      * time emerge -nav =grub-9999-r1
+      * time emerge -nav sys-boot/grub-static
+        \ installs: sys-boot/grub-static-0.97-r12
+        \ need that /lib/grub/i386-pc/stage2_eltorito which is 128116 bytes size, sha512: 0506f786634bffed2333c4efe4708f6c4876961bcdf33726228e05b7bcf907072e1831ddec8533d3824e892b62de2bb6707880d219ba57ff370205b3aa1ebe8b
+        \ duration: 1m44s
+      - time emerge -nav =grub-9999-r1
         \ Total: 2 packages (2 new), Size of downloads: 1,725 KiB
         \ media-libs/freetype-2.6 sys-boot/grub-9999-r1
         \ 19m54s
+        \ this is not the version that we want!
       * vim /etc/default/grub
         \ change timeout from 1 to 10:
         \ GRUB_TIMEOUT=10
         \ wait, this has no effect... if we're using menu.lst below, right?
+        \ TODO: rm this file
       * mkdir -p /boot/grub/
       * vim /boot/grub/menu.lst
         \ default 0
         \ timeout 7
-        \ splashimage=/boot/grub/splash.xpm.gz
+        \ #splashimage=/boot/grub/splash.xpm.gz
         \ 
         \ title=LiveCD
-        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs vga=ask initrd udev nodevfs cdroot dodmraid 
+        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid CPUunderclocking
         \ initrd /boot/initrd
         \ 
-        \ title=LiveCD NO-FB
-        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid
+        \ title=LiveCD ask
+        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs vga=ask initrd udev nodevfs cdroot dodmraid CPUunderclocking
         \ initrd /boot/initrd
+        \ #TODO: fix the loop= for this second entry! left as is for now for whatever reason
       * remove any old modules
         \ there are none the first time you're doing this
+        \ #NEXTTIME
         * cd /lib/modules
           \ there's no /lib64/modules/ dir btw!
         * du -sh *
           \ keep the newly generated one (currently shows only one)
-        * otherwise rm -rf other folder
+        * otherwise rm -rf other folders
       * exit chroot
+        \ #NEXTTIME
       * cd ${LIVECD}/source
         \ already still here.
+        \ #NEXTTIME
       * umount --recursive --verbose --lazy -- ./patches ./ccache ./usr/portage/distfiles ./tmp ./var/tmp/portage/ ./var/tmp/ ./proc ./sys ./dev ./run
+        \ #NEXTTIME
       * hash -r && env-update && source /etc/profile && source ~/.bash_profile
-      * mkdir -p ${LIVECD}/target/files/source
+        \ this shouldn't be needed!
+      * mkdir -p "${LIVECD}/target/files/source"
+      * rm -rf "${LIVECD}/target/boot/"
+        \ #NEXTTIME
       - rsync --delete-after --archive --hard-links --quiet ${LIVECD}/source/boot ${LIVECD}/target/
-      * cp --archive --reflink=always --verbose -- ${LIVECD}/source/boot ${LIVECD}/target/
+      * cp --archive --reflink=always --verbose -- "${LIVECD}/source/boot" "${LIVECD}/target/"
+        \ #NEXTTIME
       - time rsync --delete-after --archive --hard-links ${LIVECD}/source/ ${LIVECD}/target/files/source
         \ why am I doing this again?
         \ 12m19s before I C-c it! I mean cmon! fuuuu!
-      * time cp --archive --reflink=always --verbose -- ${LIVECD}/source/ ${LIVECD}/target/files/source
+        \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
+      * time rm -rf "${LIVECD}/target/files/source"
+        \  1m
+        \ #NEXTTIME
+      * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
+        \ with --verbose, duration: 7m46s
+        \ removed --verbose for next time, duration: 
+        \ #NEXTTIME
       * cleaning
-        * cd ${LIVECD}/target/files/source
+        * cd "${LIVECD}/target/files/source"
+          \ #NEXTTIME
         * rm stage3-*.bz2
+          \ #NEXTTIME
           \ yeah keep the DIGEST why not
         - ( cd ./usr/src/linux/ && make clean )
           \ before: 4.3G
           \ after: 697M
         * time rm -rf ./usr/src/linux*
           \ not /usr/src/debug tho!
-          \ 30+ sec.
+          \ duration: 38.4s
           \ 1.2G(+3.7G which I make cleaned already)
+          \ #NEXTTIME
         * rm -rf ./var/log/*
           \ 66M
+          \ #NEXTTIME
         * time rm -rf ./usr/portage/
           \ 1.1G
+          \ 1m23s
+          \ #NEXTTIME
         - rm ./var/run ; mkdir ./var/run
           \ it's a symlink and "iso9660 doesn't handle symbolic links"
           \ wait, then how teh! what about the ton of symlinks: find . -type l
@@ -3471,28 +3509,38 @@
           \ 123k, we keep it then
         * 
       * Building the LiveCD
-        * cd ${LIVECD}/target/files
-        * rm -f ${LIVECD}/target/livecd.squashfs
+        * cd "${LIVECD}/target/files"
+          \ #NEXTTIME
+        * rm -f "${LIVECD}/target/livecd.squashfs"
           \ doesn't already exist, the first time (exit code is still 0 tho)
-        * time mksquashfs source ${LIVECD}/target/livecd.squashfs
-          \ 8m58s
+          \ #NEXTTIME
+        * time mksquashfs source "${LIVECD}/target/livecd.squashfs"
+          \ //8m58s
+          \ //10m17s
+          \ //12m39s
+          \ 11m7s
           \ 1.1G file
-        * touch ${LIVECD}/target/livecd
+          \ #NEXTTIME
+        * touch "${LIVECD}/target/livecd"
           \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
-        * time emerge -nav sys-boot/grub-static
-          \ installs: sys-boot/grub-static-0.97-r12
-          \ need that /lib/grub/i386-pc/stage2_eltorito which is 128116 bytes size, sha512: 0506f786634bffed2333c4efe4708f6c4876961bcdf33726228e05b7bcf907072e1831ddec8533d3824e892b62de2bb6707880d219ba57ff370205b3aa1ebe8b
-          \ FIXME: install this inside chroot, not outside!
-          * cp --archive -- /lib/grub/i386-pc/stage2_eltorito ${LIVECD}/target/boot/grub/
-        * cd ${LIVECD}
-        * time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o ${LIVECD}/livecd.iso -x files ${LIVECD}/target
-          \ 17s
-          \ FIXME: what the what? mkisofs: Uh oh, I cant find the boot image 'boot/grub/stage2_eltorito' inside the target tree.
-          \ where did they get that from? there's only menu.lst there!
-        * iso cd is at ${LIVECD}/livecd.iso weighing 1.1G (with du -c -s --si -P  so, at most!) 1051127808 bytes
+          \ already exists on next time(run).
+        * cp --archive -- "${LIVECD}/source/lib/grub/i386-pc/stage2_eltorito" "${LIVECD}/target/boot/grub/"
+          \ assumed sys-boot/grub-static-0.97-r12 is already installed
+          \ #NEXTTIME
+          \ need to run this everytime due to an ealier rm -rf on that boot dir.
+        * cd "${LIVECD}"
+          \ #NEXTTIME
+        * time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "${LIVECD}/livecd.iso" -x files "${LIVECD}/target"
+          \ //17s
+          \ //24s
+          \ 48s
+          \ #NEXTTIME
+        * iso cd is at "${LIVECD}/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1051127808 bytes
           \ the whole dir ${LIVECD} currently is at 15G
-        * scp -P 8822 -4vp root@127.0.0.111:/root/admincd/livecd.iso /tmp
-          \ wow scp is limited at 10.5MB/s 10.9MB/s max! what the! (not even using compression!) Virtualbox starts using over 220% cpu, ssh using 40%, yep sshd using 190% inside vbox and 34% scp. So I guess ssh was doing compression!
+        * time scp -P 8822 -4vp root@127.0.0.111:/root/admincd/livecd.iso /tmp
+          \ wow scp is limited at 10.5MB/s 10.9MB/s max! what the! (not even using compression!) Virtualbox starts using over 220% cpu, ssh using 40%, yep sshd using 190% inside vbox and 34% scp. So I guess ssh was doing compression(or not unless it's going to be enabled by default if not specified by scp; maybe's just encryption that uses that much CPU)!
+          \ duration: //2m26s
+          \ 3m40s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
