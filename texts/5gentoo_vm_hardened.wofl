@@ -3159,6 +3159,8 @@
           * remove: crypt_root rd.luks.uuid
       * cp --archive -- /etc/locale.gen ./etc/
         \ overwrite!
+      * cp --archive -- /etc/inittab ./etc/
+        \ so it doesn't autoclear after boot! it has that --noclear arg already!
       * cp --archive -- /etc/resolv.conf ./etc/
         \ to can download new packages during a later emerge below
       - cp --archive -- /etc/localtime ./etc/
