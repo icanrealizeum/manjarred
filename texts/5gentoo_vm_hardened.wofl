@@ -3701,7 +3701,7 @@
             \ //old comment: we make sure there's nothing there or else it will fail to boot! as per: "ISOLINUX will search for the config file directory in the order /boot/isolinux, /isolinux, /. The first directory that exists is used, even if it contains no files. Therefore, please make sure that these directories don't exist if you don't want ISOLINUX to use them. " src: http://www.syslinux.org/wiki/index.php/Doc/isolinux
           - mkdir -p /tmp/target/boot/isolinux ; 
             \ already exists
-          * cp --archive -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/
+          * cp --archive -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
             \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
             \ only isolinux.bin is needed in /tmp/target/isolinux/
             \ isohdpfx.bin just needs to be fullpath specified at xorriso cmdline
@@ -3732,8 +3732,11 @@
                 \ dur: 3m55s  and we don't know when it's done this way, heh
                 \ dang it! looks limited to 100mbit or something! scp was faster!
           * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecdhybrid.iso /tmp
-            \ 
-          * 
+            \ 1m46s
+            \ 1m43s
+          * now copy to usbstick losing all the existing data on it
+            * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
+              \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
