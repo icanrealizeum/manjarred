@@ -3168,6 +3168,15 @@
       * cp --archive -- /etc/timezone ./etc/
       * cp --archive -- /etc/rc.conf ./etc/
       * cp --archive -- /etc/conf.d/net ./etc/conf.d/
+      * cp --archive -- /etc/init.d/net.lo ./etc/init.d/
+      * cp --archive -- /etc/init.d/net.enp0s3 ./etc/init.d/
+        \ it's a symlink to net.lo
+      * cp --archive -- /etc/runlevels/default/net.enp0s3 ./etc/runlevels/default/
+        \ this is the equivalent of running the following inside chroot:
+        \ rc-update add net.enp0s3 default
+      * rm ./etc/runlevels/default/netmount
+        \ this is the equivalent of running the following inside chroot:
+        \ rc-update del netmount default
       * cp --archive -- /usr/src/linux ./usr/src/
       * cp --archive --reflink=always -- /usr/src/linux-4.1.7-hardened ./usr/src/
         \ XXX: make sure this is the folder that /usr/src/linux points to, before copying!
@@ -3207,10 +3216,17 @@
           \ if your chrooted apps are having problems performing those kinds of
           \ tasks.  If the sysctl option is enabled, a sysctl option with
           \ name "chroot_caps" is created."
-      * chroot
+      * get the pub key so that webrsync doesn't fail
+        * cp --archive -- /etc/portage/gpg ./etc/portage/
+      * get .bashrc in there because it sets some CCACHE vars without which apparently cache miss happens all the time!
+        * cp --archive -L -- /root/.bashrc ./root
+        * cp --archive -L -- /root/.bash_profile ./root
+      * other stuff
+        * cp --archive -L -- /root/.vimrc ./root
+      * CHROOT
         * chroot "${LIVECD}/source/" /bin/bash --login
           \ #NEXTTIME
-        * env-update && source /etc/profile
+        * env-update && source /etc/profile && source ~/.bash_profile
       * passwd
         \ set root password
       * eselect profile list
@@ -3278,19 +3294,23 @@
       - time emerge -av --emptytree world --exclude glibc --exclude gcc
         \ no idea why this is needed!
         \ 231 packages!! that's a bad idea!
-      * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
-        \ let's do this instead!
-        \ Total: 178 packages (95 upgrades, 56 new, 5 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 3,788 KiB
-        \ i installed glibc manually first, so:
-        \ Total: 177 packages (94 upgrades, 56 new, 5 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 0 KiB
-        \ duration: 464mins until first fail due to grsec permissions inside chroot!: 
-        \ chmod: changing permissions of ‘/var/tmp/portage/sys-apps/util-linux-2.27/image//bin/mount’: Permission denied
-        \ in sys-apps/util-linux-2.27
-        \ also failed: sys-libs/pam-1.2.1-r1
-        \ with: Setting caps 'cap_dac_override=ep' on file '/sbin/unix_chkpwd' failed:
-        \ also failed: ERROR: net-misc/iputils-20121221-r2::gentoo failed (postinst phase):
-        \ (no error message)
-        \ Note: went back into history(above) and set some grsec via sysctl so the above may not be an issue anymore!
+      * update system
+        * time emerge-webrsync -v -k
+          \ #NEXTTIME
+        * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+          \ #NEXTTIME
+          \ let's do this instead!
+          \ Total: 178 packages (95 upgrades, 56 new, 5 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 3,788 KiB
+          \ i installed glibc manually first, so:
+          \ Total: 177 packages (94 upgrades, 56 new, 5 in new slots, 22 reinstalls, 1 uninstall), Size of downloads: 0 KiB
+          \ duration: 464mins until first fail due to grsec permissions inside chroot!: 
+          \ chmod: changing permissions of ‘/var/tmp/portage/sys-apps/util-linux-2.27/image//bin/mount’: Permission denied
+          \ in sys-apps/util-linux-2.27
+          \ also failed: sys-libs/pam-1.2.1-r1
+          \ with: Setting caps 'cap_dac_override=ep' on file '/sbin/unix_chkpwd' failed:
+          \ also failed: ERROR: net-misc/iputils-20121221-r2::gentoo failed (postinst phase):
+          \ (no error message)
+          \ Note: went back into history(above) and set some grsec via sysctl so the above may not be an issue anymore!
       - ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
       - time emerge -nav dhcpcd
         \ apparently I should already have udhcpc (busybox)
@@ -3322,6 +3342,10 @@
         \ */bin/sh: bc: command not found
         \ *kernel/time/Makefile:30: recipe for target 'kernel/time/timeconst.h' failed
         \ duration: 3m1s
+      * time emerge -nav =app-misc/mc-9999
+        \ midnight commander, because we could use this inside livecd
+        \ 3 packages, dur: 
+        \ cvs? really! FIXME: modify the mc-9999 ebuild to not require cvs package!
       * linux firmware (radeon and amd cpu microcode is here)
         \ https://wiki.gentoo.org/wiki/AMD_microcode
         * time emerge -nav sys-kernel/linux-firmware
@@ -3438,16 +3462,14 @@
       * vim /boot/grub/menu.lst
         \ default 0
         \ timeout 7
-        \ #splashimage=/boot/grub/splash.xpm.gz
         \ 
         \ title=LiveCD
-        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid CPUunderclocking
+        \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid CPUunderclocking ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs
         \ initrd /boot/initrd
         \ 
         \ title=LiveCD ask
         \ kernel /boot/vmlinuz real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs vga=ask initrd udev nodevfs cdroot dodmraid CPUunderclocking
         \ initrd /boot/initrd
-        \ #TODO: fix the loop= for this second entry! left as is for now for whatever reason
       * remove any old modules
         \ there are none the first time you're doing this
         \ #NEXTTIME
@@ -3456,6 +3478,8 @@
         * du -sh *
           \ keep the newly generated one (currently shows only one)
         * otherwise rm -rf other folders
+      * cp --archive -- "/lib/grub/i386-pc/stage2_eltorito" "/boot/grub/"
+        \ needed for mkisofs later, outside of chroot
       * exit chroot
         \ #NEXTTIME
       * cd ${LIVECD}/source
@@ -3466,23 +3490,26 @@
       * hash -r && env-update && source /etc/profile && source ~/.bash_profile
         \ this shouldn't be needed!
       * mkdir -p "${LIVECD}/target/files/source"
-      * rm -rf "${LIVECD}/target/boot/"
+      * rm -rf "${LIVECD}/target/boot/" "/tmp/target/boot/"
         \ #NEXTTIME
       - rsync --delete-after --archive --hard-links --quiet ${LIVECD}/source/boot ${LIVECD}/target/
-      * cp --archive --reflink=always --verbose -- "${LIVECD}/source/boot" "${LIVECD}/target/"
-        \ #NEXTTIME
+      - cp --archive --reflink=always --verbose -- "${LIVECD}/source/boot" "${LIVECD}/target/"
       - time rsync --delete-after --archive --hard-links ${LIVECD}/source/ ${LIVECD}/target/files/source
         \ why am I doing this again?
         \ 12m19s before I C-c it! I mean cmon! fuuuu!
         \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
       * time rm -rf "${LIVECD}/target/files/source"
-        \  1m
+        \  //1m
+        \ 1m20s
         \ #NEXTTIME
       * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
         \ with --verbose, duration: 7m46s
-        \ removed --verbose for next time, duration: 
+        \ removed --verbose for next time, duration: 6m54s
         \ #NEXTTIME
       * cleaning
+        * rm -rf "${LIVECD}/target/files/source/boot/"
+          \ #NEXTTIME
+          \ this is so that we don't get confused, this folder isn't used!
         * cd "${LIVECD}/target/files/source"
           \ #NEXTTIME
         * rm stage3-*.bz2
@@ -3501,7 +3528,8 @@
           \ #NEXTTIME
         * time rm -rf ./usr/portage/
           \ 1.1G
-          \ 1m23s
+          \ //1m23s
+          \ 1m32s
           \ #NEXTTIME
         - rm ./var/run ; mkdir ./var/run
           \ it's a symlink and "iso9660 doesn't handle symbolic links"
@@ -3509,40 +3537,72 @@
           \ oh wait, it's gonna be squashfs-ed so symlinks will work!
         - rm -rf ./etc/portage
           \ 123k, we keep it then
+          \ we also keep the /gpg/ dir this way, which is used to check webrsync sigs
         * 
       * Building the LiveCD
-        * cd "${LIVECD}/target/files"
+        - cd "${LIVECD}/target/files"
           \ #NEXTTIME
-        * rm -f "${LIVECD}/target/livecd.squashfs"
+        * rm -f "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
           \ doesn't already exist, the first time (exit code is still 0 tho)
           \ #NEXTTIME
-        * time mksquashfs source "${LIVECD}/target/livecd.squashfs"
+        * mkdir -p /tmp/target/boot/grub/
+          \ #NEXTTIME
+        * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,grub/} "/tmp/target/boot/"
+          \ #NEXTTIME
+        * time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1
+          \ #NEXTTIME
+          \ into tmpfs
+          \ if dest file exists, it get overwritten(recreated) immediately and without warning!
+          \ SYNTAX:mksquashfs source1 source2 ...  dest [options] [-e list of exclude dirs/files]
+          \ //dur: 9m37s (without any options!)
+          \ //that's 3.5g into 1.1g  and 86778 files into 1 file.
+          \ //Filesystem size 962129.84 Kbytes (939.58 Mbytes) 985,223,168 bytes
+          \ dur: 4m26s 1.1g too (technically about 100meg more with level 1 compr.; filesize: 1,083,478,016 bytes)
+          \ Filesystem size 1058083.02 Kbytes (1033.28 Mbytes) 1,083,478,016 bytes
+          \ //what teh, now it's randomly 2,994,282,496 bytes and took 8m36s, I'm pretty sure the command hasn't changed! oh wait for some reason I've 306922 files; but ofc used the wrong 'source' folder(9.6gig)! fixed now by using absolute path!
+          \ 7m54s Filesystem size 1058082.96 Kbytes (1033.28 Mbytes)
+          \ command used was: time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1
+          \ ---
+          \ 9m51s Filesystem size 950990.44 Kbytes (928.70 Mbytes)
+          \ command used was: time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 9
+        - time mksquashfs source "${LIVECD}/target/livecd.squashfs"
           \ //8m58s
           \ //10m17s
           \ //12m39s
-          \ 11m7s
+          \ //11m7s
+          \ 10m41s
           \ 1.1G file
+        * touch "/tmp/target/livecd"
           \ #NEXTTIME
-        * touch "${LIVECD}/target/livecd"
+        - touch "${LIVECD}/target/livecd"
           \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
           \ already exists on next time(run).
-        * cp --archive -- "${LIVECD}/source/lib/grub/i386-pc/stage2_eltorito" "${LIVECD}/target/boot/grub/"
+        - mkdir -p /tmp/target/boot/grub/
+        - cp --archive -- "${LIVECD}/source/lib/grub/i386-pc/stage2_eltorito" "/tmp/target/boot/grub/"
+        - cp --archive -- "${LIVECD}/source/lib/grub/i386-pc/stage2_eltorito" "${LIVECD}/target/boot/grub/"
           \ assumed sys-boot/grub-static-0.97-r12 is already installed
-          \ #NEXTTIME
           \ need to run this everytime due to an ealier rm -rf on that boot dir.
-        * cd "${LIVECD}"
+        - cd "${LIVECD}"
+        * time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
           \ #NEXTTIME
-        * time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "${LIVECD}/livecd.iso" -x files "${LIVECD}/target"
+          \ into tmpfs
+          \ dur: 3.2s
+        - time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "${LIVECD}/livecd.iso" -x files "${LIVECD}/target"
           \ //17s
           \ //24s
-          \ 48s
-          \ #NEXTTIME
-        * iso cd is at "${LIVECD}/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1051127808 bytes
+          \ //48s
+          \ 28s
+        * iso cd is at "/tmp/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1083975680 bytes
+        - iso cd is at "${LIVECD}/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1051127808 bytes
           \ the whole dir ${LIVECD} currently is at 15G
-        * time scp -P 8822 -4vp root@127.0.0.111:/root/admincd/livecd.iso /tmp
+        * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecd.iso /tmp
           \ wow scp is limited at 10.5MB/s 10.9MB/s max! what the! (not even using compression!) Virtualbox starts using over 220% cpu, ssh using 40%, yep sshd using 190% inside vbox and 34% scp. So I guess ssh was doing compression(or not unless it's going to be enabled by default if not specified by scp; maybe's just encryption that uses that much CPU)!
           \ duration: //2m26s
-          \ 3m40s
+          \ //3m40s
+          \ //1m37s
+          \ 1m56s
+          \ any existing dest file is overwritten without warning! ie. /tmp/livecd.iso
+          \ 1m38s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
