@@ -2987,20 +2987,7 @@
     
   * (rsynced but monitor name may vary)set display resolution on startup (startx)
     \ https://wiki.gentoo.org/wiki/Xorg/Guide#Setting_the_screen_resolution
-
-* bigTODO:
-  - add swap partition, inside LUKS ofc
-    \ why? because compiling chromium (inside virtualbox on 10827M RAM selected in vbox options) will get ld killed! (it used to work before(eg. for 2498 build), barely; but not since 2508 chromium build)
-  * add USE flag binpkg-multi-instance
-    \ added in current installation for testing
-  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
-  - add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
-  - get in that eutils.eclass patch
-    \ notify_when_patches_folder_inaccessible_by_portage.patch
-    \ it's in gentoo/quilt.patches/ 
-    \ apparently no package owns /usr/portage/eclass/eutils.eclass which is kinda odd(?) but then for sure it got there via stage3 or even portage snapshot (via webrsync -v -k)
-    \ FIXME: looks like patching /usr/portage/eclass/eutils.eclass after each emerge-webrsync (via hooks) 'causes the next emerge to rebuild whatever (ebuild.sh depend) everything (portage list of all packages? depends and stuff) which takes like 15mins(I can't remember actually)
-  * build your own iso
+  * build your own admincd iso
     - get catalyst (for building stages and .iso)
       * time emerge -nav dev-util/catalyst
         \ 16 packages, 22m43s; 47m10s on hardened (with youtube playing on background)
@@ -3655,11 +3642,28 @@
           \ any existing dest file is overwritten without warning! ie. /tmp/livecd.iso
           \ 1m38s
           \ 2m2s
+      * to usb stick
+        * time ( sudo dd if=/tmp/livecd.iso of=/dev/sde bs=6M && sync )
+          \ forgot to use time the first time, duration unknown
+          \ 1107855360 bytes (1.1 GB) copied, 211.711 s, 5.2 MB/s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
         \ 16 packages, dur: 
       * wait... maybe we try the vfose variant still.
+
+* bigTODO:
+  - add swap partition, inside LUKS ofc
+    \ why? because compiling chromium (inside virtualbox on 10827M RAM selected in vbox options) will get ld killed! (it used to work before(eg. for 2498 build), barely; but not since 2508 chromium build)
+  * add USE flag binpkg-multi-instance
+    \ added in current installation for testing
+  * should move gcc-5.2.0 compilation at the install stage to cache all compilations, like kernel! or else later when some gcc_colorize.so(which is in kernel tree apparently) needs to be used(for compiling x11-drivers/xf86-video-virtualbox-5.0.2), requires kernel recompilation with gcc 5.2.0 and that can't use the previous ccache due to new gcc version.
+  - add LVM so that I can later on add new HDDs(inside virtualbox) and add them to lvm to increase space (need btrfs resizing too! must look into that)
+  - get in that eutils.eclass patch
+    \ notify_when_patches_folder_inaccessible_by_portage.patch
+    \ it's in gentoo/quilt.patches/ 
+    \ apparently no package owns /usr/portage/eclass/eutils.eclass which is kinda odd(?) but then for sure it got there via stage3 or even portage snapshot (via webrsync -v -k)
+    \ FIXME: looks like patching /usr/portage/eclass/eutils.eclass after each emerge-webrsync (via hooks) 'causes the next emerge to rebuild whatever (ebuild.sh depend) everything (portage list of all packages? depends and stuff) which takes like 15mins(I can't remember actually)
   - see if we can do without dbus! - we can't, we need Restart/Shutdown buttons ungreyed in xfce! can't do without dbus
     * see if shutdown/reboot are enabled in menus after -dbus USE flag and re-emerging @world
   - see if nosuid needs to be removed from /var/tmp/portage  eg. for chromium binary will be suid in order for sandbox to work.
