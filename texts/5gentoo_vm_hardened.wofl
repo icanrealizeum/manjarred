@@ -3737,6 +3737,15 @@
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
+            * sudo blockdev --rereadpt /dev/sde
+            * sudo cfdisk /dev/sde
+              * add extra primary Linux partition(half of left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
+                \ blah blah do it here, get: sde2
+              * time sudo mkfs.ext4 /dev/sde2
+                \ like 30sec
+              * mount it and copy files, then unmount it
+            * sync
+            * sudo eject /dev/sde
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
