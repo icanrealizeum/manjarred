@@ -3579,10 +3579,25 @@
         * rm -f "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
           \ doesn't already exist, the first time (exit code is still 0 tho)
           \ #NEXTTIME
+        * mkdir -p "${LIVECD}/source/boot/isolinux/"
+          * vim "${LIVECD}/source/boot/isolinux/isolinux.cfg"
+            \ DEFAULT go
+            \ PROMPT 1
+            \ TIMEOUT 600
+            \ ONTIMEOUT go
+            \ #F1 f1.txt
+            \
+            \ LABEL go
+            \ MENU LABEL go baby
+            \ KERNEL /boot/vmlinuz
+            \ INITRD /boot/initrd
+            \ APPEND real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs CPUunderclocking
+            \
         * mkdir -p /tmp/target/boot/grub/
           \ #NEXTTIME
-        * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,grub/} "/tmp/target/boot/"
+        * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,isolinux/,grub/} "/tmp/target/boot/"
           \ #NEXTTIME
+          \ TODO: we don't need/use grub anymore, so drop it?
         * touch "/tmp/target/livecd"
           \ #NEXTTIME
         - touch "${LIVECD}/target/livecd"
@@ -3620,10 +3635,11 @@
           \ assumed sys-boot/grub-static-0.97-r12 is already installed
           \ need to run this everytime due to an ealier rm -rf on that boot dir.
         - cd "${LIVECD}"
-        * time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
+        * (works only inside virtualbox, ignore this step!) time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
           \ #NEXTTIME
           \ into tmpfs
           \ dur: 3.2s
+          \ Note: apparently boot.catalog is created by mkisofs and transparently inserted into the iso, so you see no trace of it outside! src: http://www.tldp.org/HOWTO/Bootdisk-HOWTO/cd-roms.html seach for "boot catalog"
         - time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "${LIVECD}/livecd.iso" -x files "${LIVECD}/target"
           \ //17s
           \ //24s
@@ -3651,6 +3667,7 @@
           * time ( sudo dd if=/tmp/livecd.iso of=/dev/sde bs=6M && sync )
             \ forgot to use time the first time, duration unknown
             \ 1107855360 bytes (1.1 GB) copied, 211.711 s, 5.2 MB/s
+            \ dur: 4m8s
           * sudo blockdev --rereadpt /dev/sde
             \ lsblk
             \ looks like this is way different from admincd, as there are no partitions(or partition table!) now! so I can't add/create my own to add the .wofl files
@@ -3660,9 +3677,63 @@
           * sudo blockdev --rereadpt /dev/sde
           * sudo eject /dev/sde
             \ safely remove hardware...
-        * let's do the vfose.ru variant (didn't notice it existed)
+        - let's do the vfose.ru variant (didn't notice it existed)
           * copy script from: http://gentoo-en.vfose.ru/wiki/Build_Your_Own_LiveCD_or_LiveDVD#USB_Stick_drive
           * ...
+        - also see: http://wiki.osdev.org/GRUB_2#Upgrading_from_GRUB_Legacy
+        - arch linux hybrid?
+          * time emerge -nav app-cdr/cdrkit
+            \ install this on host (aka outside of chroot obviously)
+            \ dur:
+            \ oh wait, blocked by app-cdr/cdrtools
+        * arch xorriso method
+          \ #NEXTTIME
+          \ src: https://wiki.archlinux.org/index.php/Remastering_the_Install_ISO#Create_a_new_ISO
+          \ need isolinux, files: isohdpfx.bin isolinux.bin
+          \ already had them on host gentoo as per package syslinux was already installed! apparently
+          - time xorriso -as mkisofs -iso-level 4 -full-iso9660-filenames -volid "labelhere" -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -isohybrid-mbr -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
+            \ incomplete command! gave up
+          * rm -rf /tmp/target/boot/grub/
+            \ TODO: don't need grub anymore
+            \ we do keep initrd and vmlinuz though
+          - rm -rf /tmp/target/isolinux
+            \ this is the second dir, safe to ignore removal, since the first one exists
+            \ //old comment: we make sure there's nothing there or else it will fail to boot! as per: "ISOLINUX will search for the config file directory in the order /boot/isolinux, /isolinux, /. The first directory that exists is used, even if it contains no files. Therefore, please make sure that these directories don't exist if you don't want ISOLINUX to use them. " src: http://www.syslinux.org/wiki/index.php/Doc/isolinux
+          - mkdir -p /tmp/target/boot/isolinux ; 
+            \ already exists
+          * cp --archive -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/
+            \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
+            \ only isolinux.bin is needed in /tmp/target/isolinux/
+            \ isohdpfx.bin just needs to be fullpath specified at xorriso cmdline
+          * time xorriso -as mkisofs -iso-level 3 -full-iso9660-filenames -volid "CUST_GENTOO" -eltorito-boot boot/isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -isohybrid-mbr /tmp/target/boot/isolinux/isohdpfx.bin -eltorito-catalog boot/isolinux/boot.cat -verbose -output "/tmp/livecdhybrid.iso" "/tmp/target"
+            \ #NEXTTIME
+            \ //dur: 8s
+            \ 10.5s
+            \ TODO: iso level 4 ?
+            \ TODO: -rock ?
+            \ not using: -hide-rr-moved  which was used by mkisofs with grub.
+          - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
+            \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
+            * get 'nc' command
+              * time emerge -nav net-analyzer/netcat
+                \ duration: 
+            * forward port in virtualbox(gentoo), Settings for this vm, Network, Port Forward button
+              * name: scp equivalent
+              * proto: tcp
+              * hostip: 127.0.0.111
+              * host port: 8888
+              * guest IP: 10.0.2.15
+              * guest port: 8888
+            * on gentoo
+              * nc -l -p 8888 < "/tmp/livecdhybrid.iso"
+            * on manjaro
+              * time nc 127.0.0.111 8888 > /tmp/livecdhybrid.iso
+                \ returns after 1m18s if server isn't listening!
+                \ dur: 3m55s  and we don't know when it's done this way, heh
+                \ dang it! looks limited to 100mbit or something! scp was faster!
+          * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecdhybrid.iso /tmp
+            \ 
+          * 
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
