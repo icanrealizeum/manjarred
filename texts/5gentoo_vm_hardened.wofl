@@ -3643,18 +3643,26 @@
           \ 1m38s
           \ 2m2s
       * to usb stick
-        * time ( sudo dd if=/tmp/livecd.iso of=/dev/sde bs=6M && sync )
-          \ forgot to use time the first time, duration unknown
-          \ 1107855360 bytes (1.1 GB) copied, 211.711 s, 5.2 MB/s
-        * sudo blockdev --rereadpt /dev/sde
-          \ lsblk
-          \ looks like this is way different from admincd, as there are no partitions(or partition table!) now! so I can't add/create my own to add the .wofl files
-        * sudo cfdisk /dev/sde
-          \ do what?
-        * sync
-        * sudo blockdev --rereadpt /dev/sde
-        * sudo eject /dev/sde
-          \ safely remove hardware...
+        - the syslinux iso mode (see workflowy.wofl)
+          \ fails too, because it reboots instead of showing livecd.iso's grub menu! no idea why/what
+          \ this method also takes a while to load the iso into RAM at startup, a few minutes (maybe 3m30s?)
+        - the dd iso to usbstick and lose all partitions
+          \ fails, doesn't boot at all, black screen and goes on to next device(HDD, which works)
+          * time ( sudo dd if=/tmp/livecd.iso of=/dev/sde bs=6M && sync )
+            \ forgot to use time the first time, duration unknown
+            \ 1107855360 bytes (1.1 GB) copied, 211.711 s, 5.2 MB/s
+          * sudo blockdev --rereadpt /dev/sde
+            \ lsblk
+            \ looks like this is way different from admincd, as there are no partitions(or partition table!) now! so I can't add/create my own to add the .wofl files
+          * sudo cfdisk /dev/sde
+            \ do what?
+          * sync
+          * sudo blockdev --rereadpt /dev/sde
+          * sudo eject /dev/sde
+            \ safely remove hardware...
+        * let's do the vfose.ru variant (didn't notice it existed)
+          * copy script from: http://gentoo-en.vfose.ru/wiki/Build_Your_Own_LiveCD_or_LiveDVD#USB_Stick_drive
+          * ...
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
