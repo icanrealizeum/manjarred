@@ -196,7 +196,7 @@
                   * make these folders(this means sdc1 is mounted)
                     * Boot/ISOs
                     * Boot/Settings
-                  * Copy the needed files to the USB flash drive  - don't forget MEMDISK!!!
+                  * Copy the needed files to the USB flash drive as follows: - don't forget MEMDISK!!!
                     * copy the ISO that you would like to boot to the Boot/ISOs folder, ie. from here: https://www.archlinux.org/download/
                       \ "in my case was: archlinux-2013.11.01-dual.iso"
                     * get the syslinux zip for your version(or latest? didn't test this) from here: https://www.kernel.org/pub/linux/utils/boot/syslinux/
@@ -233,6 +233,7 @@
                       \ in manjaro
                     - sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/mbr.bin of=/dev/sdc
                       \ "note: the mbr.bin is either inside the zip or there in /usr/... in linux mint, note that I took the same version of syslinux in the .zip also"
+                  * sync && sudo eject /dev/sde
                   * done, go boot
                     \ will only work if you select USB HDD  (not on USB FDD, USB CDROM, USB ZIP)  that is the usb card reader with 4g sdpro card on the desktop computer!
                   * note MHDD .iso mhdd32ver4.6.iso can do security erase (fast and slow) ... can't do low level format though (as far as I can tell) but i read that new drives ignore low level format (and the long SMART self-test does the trick)

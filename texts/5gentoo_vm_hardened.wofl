@@ -3650,6 +3650,11 @@
           \ lsblk
           \ looks like this is way different from admincd, as there are no partitions(or partition table!) now! so I can't add/create my own to add the .wofl files
         * sudo cfdisk /dev/sde
+          \ do what?
+        * sync
+        * sudo blockdev --rereadpt /dev/sde
+        * sudo eject /dev/sde
+          \ safely remove hardware...
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
