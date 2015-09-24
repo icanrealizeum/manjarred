@@ -3352,32 +3352,60 @@
           \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System#Host_and_domain_information
         * emerge --ask --noreplace net-misc/netifrc
           \ this adds it to favs.
-        * nano /etc/conf.d/net
+        * (remember we're in chroot!) rm /etc/conf.d/net
+          \ already doesn't exist
+        - vim /etc/conf.d/net
           \ new file!
-          * dhcp  (needs only p2p1, XXX: apparently now it's enp0s3)
+          * dhcp  (needs only p4p1 for my bare metal z575 laptop; in virtualbox is enp0s3)
             \ config_eth0="dhcp"
             \ config_enp0s3="dhcp"
             \ config_p2p1="dhcp"
+            \ config_p4p1="dhcp"
             \ #set them all! one of them will probably work...
           - if static IP
             \ use different IP name here than what you used on liveCD, so that you don't have to edit out the ~/.ssh/known_hosts line due to different fingerprint when ssh-ing later on
             \ The /etc/conf.d/net file does not exist by default, so needs to be created.
-            \ #config_eth0="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
-            \ #routes_eth0="default via 192.168.0.1"
+            \ config_eth0="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
+            \ routes_eth0="default via 192.168.0.1"
             \ config_enp0s3="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
             \ routes_enp0s3="default via 192.168.0.1"
-            \ #config_p2p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
-            \ #routes_p2p1="default via 192.168.0.1"
-            \ turns out these enp2s0 and enp3s0 cards in my desktopPC(not virtualbox!) don't get transformed into p2p1 -like bios names!
-        * cd /etc/init.d
-        * ln -s net.lo net.eth0
-          \ in case the below 2 fail (they did with hardened uclibc)
-        * ln -s net.lo net.enp0s3
-        * ln -s net.lo net.p2p1
-        * rc-update add net.eth0 default
-        * rc-update add net.enp0s3 default
-        * rc-update add net.p2p1 default
-          \ XXX: this p2p1 appears instead of enp0s3 due to sys-apps/biosdevname being installed !
+            \ config_p2p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
+            \ routes_p2p1="default via 192.168.0.1"
+            \ config_p4p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
+            \ routes_p4p1="default via 192.168.0.1"
+            \ turns out these enp2s0 and enp3s0 cards in my former desktopPC(not virtualbox!) don't get transformed into p2p1 -like bios names!
+        - set them up to start on "boot"
+          * cd /etc/init.d
+          * ln -s net.lo net.eth0
+            \ in case the below 2 fail (they did with hardened uclibc)
+          * ln -s net.lo net.enp0s3
+          * ln -s net.lo net.p2p1
+          * ln -s net.lo net.p4p1
+            \ on bare metal
+          * rc-update add net.eth0 default
+          * rc-update add net.enp0s3 default
+          * rc-update add net.p2p1 default
+            \ XXX: this p2p1 appears instead of enp0s3 due to sys-apps/biosdevname being installed !
+            \ XXX: it's p4p1 on my bare metal!
+          * rc-update add net.p4p1 default
+      * autoconfig? this means all the net.* above are not needed
+        * rc-update add autoconfig default
+        - ln -s /etc/init.d/autoconfig /etc/runlevels/default/
+      * done: see what other runlevels are necessary
+        * boot
+          \ device-mapper
+          \ dmcrypt
+          \ lvm
+          \ mdraid
+          * rc-update add device-mapper boot
+          * rc-update add dmcrypt boot
+          * rc-update add lvm boot
+        * default
+          \ fixinittab
+          \ autoconfig
+          \ //syslog-ng
+          \ FIXME: add fixinittab to runlevel default (admincd has it)
+          * rc-update add fixinittab default
       * need eudev for this binary to exist: /sbin/udevd or else it will complain that udev couldn't start(at livecd boot)
         * time emerge -nav '>=sys-fs/eudev-3.1.2'
           \ 2 packages, dur: 9m50s
@@ -3469,7 +3497,7 @@
         \ 2m49s
         * time updatedb
           \ 9s
-      * time emerge -nav sys-boot/grub-static
+      - time emerge -nav sys-boot/grub-static
         \ installs: sys-boot/grub-static-0.97-r12
         \ need that /lib/grub/i386-pc/stage2_eltorito which is 128116 bytes size, sha512: 0506f786634bffed2333c4efe4708f6c4876961bcdf33726228e05b7bcf907072e1831ddec8533d3824e892b62de2bb6707880d219ba57ff370205b3aa1ebe8b
         \ duration: 1m44s
@@ -3478,13 +3506,13 @@
         \ media-libs/freetype-2.6 sys-boot/grub-9999-r1
         \ 19m54s
         \ this is not the version that we want!
-      * vim /etc/default/grub
+      - vim /etc/default/grub
         \ change timeout from 1 to 10:
         \ GRUB_TIMEOUT=10
         \ wait, this has no effect... if we're using menu.lst below, right?
         \ TODO: rm this file
-      * mkdir -p /boot/grub/
-      * vim /boot/grub/menu.lst
+      - mkdir -p /boot/grub/
+      - vim /boot/grub/menu.lst
         \ default 0
         \ timeout 7
         \ 
@@ -3504,7 +3532,7 @@
         * du -sh *
           \ keep the newly generated one (currently shows only one)
         * otherwise rm -rf other folders
-      * cp --archive -- "/lib/grub/i386-pc/stage2_eltorito" "/boot/grub/"
+      - cp --archive -- "/lib/grub/i386-pc/stage2_eltorito" "/boot/grub/"
         \ needed for mkisofs later, outside of chroot
       * exit chroot
         \ #NEXTTIME
@@ -3591,11 +3619,11 @@
             \ MENU LABEL go baby
             \ KERNEL /boot/vmlinuz
             \ INITRD /boot/initrd
-            \ APPEND real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd udev nodevfs cdroot dodmraid ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs CPUunderclocking
-            \
-        * mkdir -p /tmp/target/boot/grub/
+            \ APPEND real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd cdroot ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg="file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs CPUunderclocking
+            \ #removed: udev nodevfs dodmraid
+        * mkdir -p /tmp/target/boot/isolinux/
           \ #NEXTTIME
-        * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,isolinux/,grub/} "/tmp/target/boot/"
+        * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,isolinux/} "/tmp/target/boot/"
           \ #NEXTTIME
           \ TODO: we don't need/use grub anymore, so drop it?
         * touch "/tmp/target/livecd"
@@ -3635,7 +3663,7 @@
           \ assumed sys-boot/grub-static-0.97-r12 is already installed
           \ need to run this everytime due to an ealier rm -rf on that boot dir.
         - cd "${LIVECD}"
-        * (works only inside virtualbox, ignore this step!) time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
+        - (works only inside virtualbox, ignore this step!) time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
           \ #NEXTTIME
           \ into tmpfs
           \ dur: 3.2s
@@ -3645,10 +3673,10 @@
           \ //24s
           \ //48s
           \ 28s
-        * NOTE: iso cd is at "/tmp/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1083975680 bytes
+        - NOTE: iso cd is at "/tmp/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1083975680 bytes
         - iso cd is at "${LIVECD}/livecd.iso" weighing 1.1G (with du -c -s --si -P  so, at most!) 1051127808 bytes
           \ the whole dir ${LIVECD} currently is at 15G
-        * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecd.iso /tmp
+        - time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecd.iso /tmp
           \ TODO: use rsync here and see if there's any difference in speed (shouldn't be since they both use ssh)
           \ wow scp is limited at 10.5MB/s 10.9MB/s max! what the! (not even using compression!) Virtualbox starts using over 220% cpu, ssh using 40%, yep sshd using 190% inside vbox and 34% scp. So I guess ssh was doing compression(or not unless it's going to be enabled by default if not specified by scp; maybe's just encryption that uses that much CPU)!
           \ duration: //2m26s
@@ -3694,7 +3722,7 @@
           - time xorriso -as mkisofs -iso-level 4 -full-iso9660-filenames -volid "labelhere" -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -isohybrid-mbr -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
             \ incomplete command! gave up
           * rm -rf /tmp/target/boot/grub/
-            \ TODO: don't need grub anymore
+            \ done: don't need grub anymore
             \ we do keep initrd and vmlinuz though
           - rm -rf /tmp/target/isolinux
             \ this is the second dir, safe to ignore removal, since the first one exists
@@ -3708,7 +3736,8 @@
           * time xorriso -as mkisofs -iso-level 3 -full-iso9660-filenames -volid "CUST_GENTOO" -eltorito-boot boot/isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -isohybrid-mbr /tmp/target/boot/isolinux/isohdpfx.bin -eltorito-catalog boot/isolinux/boot.cat -verbose -output "/tmp/livecdhybrid.iso" "/tmp/target"
             \ #NEXTTIME
             \ //dur: 8s
-            \ 10.5s
+            \ //10.5s
+            \ 9.3s
             \ TODO: iso level 4 ?
             \ TODO: -rock ?
             \ not using: -hide-rr-moved  which was used by mkisofs with grub.
@@ -3734,16 +3763,24 @@
           * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecdhybrid.iso /tmp
             \ 1m46s
             \ 1m43s
+            \ 1m49s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
+              \ 5m3s  1108705280 bytes (1.1 GB) copied, 300.85 s, 3.7 MB/s
             * sudo blockdev --rereadpt /dev/sde
             * sudo cfdisk /dev/sde
-              * add extra primary Linux partition(half of left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
+              * add extra primary Linux partition(half of the left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
                 \ blah blah do it here, get: sde2
+                \ 6G sde2
               * time sudo mkfs.ext4 /dev/sde2
-                \ like 30sec
-              * mount it and copy files, then unmount it
+                \ 37s
+              * mount it and copy files
+                \ wofl files
+                \ ~/rsync/
+                \ use sudo for copying!
+              * then unmount it
+                \ 17s
             * sync
             * sudo eject /dev/sde
     - let's try a different variant (wait...)
