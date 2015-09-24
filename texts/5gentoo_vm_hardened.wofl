@@ -3140,7 +3140,7 @@
           * TODO: add USE flags: -dbus -consolekit
             \ maybe also add: nls
             \ so to avoid recompiling packages just because of this single flag change!
-      * cp --archive -- /etc/default/grub ./etc/default/
+      - cp --archive -- /etc/default/grub ./etc/default/
         * vim ./etc/default/grub
           * prepend to kernel cmdline: cdroot
           * remove: crypt_root rd.luks.uuid
@@ -3354,9 +3354,15 @@
           \ this adds it to favs.
         * (remember we're in chroot!) rm /etc/conf.d/net
           \ already doesn't exist
-        - vim /etc/conf.d/net
+        * vim /etc/conf.d/net
           \ new file!
-          * dhcp  (needs only p4p1 for my bare metal z575 laptop; in virtualbox is enp0s3)
+          * both
+            \ config_eth0="dhcp"
+            \ config_enp0s3="dhcp"
+            \ config_p2p1="dhcp"
+            \ config_p4p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
+            \ routes_p4p1="default via 192.168.0.1"
+          - dhcp  (needs only p4p1 for my bare metal z575 laptop; in virtualbox is enp0s3)
             \ config_eth0="dhcp"
             \ config_enp0s3="dhcp"
             \ config_p2p1="dhcp"
@@ -3374,22 +3380,28 @@
             \ config_p4p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
             \ routes_p4p1="default via 192.168.0.1"
             \ turns out these enp2s0 and enp3s0 cards in my former desktopPC(not virtualbox!) don't get transformed into p2p1 -like bios names!
-        - set them up to start on "boot"
-          * cd /etc/init.d
-          * ln -s net.lo net.eth0
+        * set them up to start on "boot"
+          - cd /etc/init.d
+          * ln -s /etc/init.d/net.lo /etc/init.d/net.eth0
             \ in case the below 2 fail (they did with hardened uclibc)
-          * ln -s net.lo net.enp0s3
-          * ln -s net.lo net.p2p1
-          * ln -s net.lo net.p4p1
+          * ln -s /etc/init.d/net.lo /etc/init.d/net.enp0s3
+          * ln -s /etc/init.d/net.lo /etc/init.d/net.p2p1
+          * ln -s /etc/init.d/net.lo /etc/init.d/net.p4p1
             \ on bare metal
-          * rc-update add net.eth0 default
-          * rc-update add net.enp0s3 default
-          * rc-update add net.p2p1 default
-            \ XXX: this p2p1 appears instead of enp0s3 due to sys-apps/biosdevname being installed !
-            \ XXX: it's p4p1 on my bare metal!
-          * rc-update add net.p4p1 default
+          * (we set them anyway!) //apparently these aren't(?) needed maybe due to autoconfig using them automatically?(at least that's what it seems like from the official admincd.iso), let's try without them:
+            * rc-update add net.eth0 default
+            * rc-update add net.enp0s3 default
+            * rc-update add net.p2p1 default
+              \ XXX: this p2p1 appears instead of enp0s3 due to sys-apps/biosdevname being installed !
+              \ inside virtualbox
+            * rc-update add net.p4p1 default
+              \ XXX: it's p4p1 on my bare metal! instead of p2p1
+          * rc-status
+            \ to see what we did
       * autoconfig? this means all the net.* above are not needed
         * rc-update add autoconfig default
+          \ this definitely didn't bring up my p4p1 but then again, I didn't have /etc/conf.d/net AND a dhcp server listening to give it IP, so maybe that's why!
+          \ FIXME: this won't start due to /usr/sbin/hwsetup not existing and thus /etc/init.d/hwsetup start  failing.
         - ln -s /etc/init.d/autoconfig /etc/runlevels/default/
       * done: see what other runlevels are necessary
         * boot
@@ -3405,7 +3417,11 @@
           \ autoconfig
           \ //syslog-ng
           \ FIXME: add fixinittab to runlevel default (admincd has it)
-          * rc-update add fixinittab default
+          - rc-update add fixinittab default
+            \ no! this gets autologin as root and clears the screen in prealabil
+          * rc-update del fixinittab default
+          * rc-update del netmount default
+            \ if any
       * need eudev for this binary to exist: /sbin/udevd or else it will complain that udev couldn't start(at livecd boot)
         * time emerge -nav '>=sys-fs/eudev-3.1.2'
           \ 2 packages, dur: 9m50s
@@ -3558,15 +3574,17 @@
         \ //1m20s
         \ //1m9s
         \ 1m3s
+        \ 1m16s
         \ #NEXTTIME
       * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
+        \ #NEXTTIME
         \ //with --verbose, duration: 7m46s
         \ //removed --verbose for next time, duration: 6m54s
         \ dur: 5m47s 306,072 files 9.2G
         \ FIXME: need rsync with reflink! because most of the files we don't want(like over 200k of them! and over 5G)
         \ TODO: maybe just usr rsync the second time, it should shave a ton of minutes even though it will use extra space when compared to cp --reflink
         \ 5m31s
-        \ #NEXTTIME
+        \ 6m26s
       * cleaning
         * rm -rf "${LIVECD}/target/files/source/boot/"
           \ #NEXTTIME
@@ -3581,19 +3599,21 @@
           \ after: 697M
         * time rm -rf ./usr/src/linux*
           \ not /usr/src/debug tho!
+          \ #NEXTTIME
           \ //duration: 38.4s
           \ 36.2s
           \ 1.2G(+3.7G which I make cleaned already)
-          \ #NEXTTIME
+          \ 40s
         * rm -rf ./var/log/*
           \ 66M
           \ #NEXTTIME
         * time rm -rf ./usr/portage/
+          \ #NEXTTIME
           \ 1.1G
           \ //1m23s
           \ //1m32s
           \ 1m28s
-          \ #NEXTTIME
+          \ 1m27s
         - rm ./var/run ; mkdir ./var/run
           \ it's a symlink and "iso9660 doesn't handle symbolic links"
           \ wait, then how teh! what about the ton of symlinks: find . -type l
@@ -3650,6 +3670,7 @@
           \ ---
           \ 8m19s Filesystem size 1268726.89 Kbytes (1238.99 Mbytes)
           \ 12m26s (cpu usage was taken by chromium)
+          \ 7m10s Filesystem size 1064833.43 Kbytes (1039.88 Mbytes)
         - time mksquashfs source "${LIVECD}/target/livecd.squashfs"
           \ //8m58s
           \ //10m17s
@@ -3664,7 +3685,6 @@
           \ need to run this everytime due to an ealier rm -rf on that boot dir.
         - cd "${LIVECD}"
         - (works only inside virtualbox, ignore this step!) time mkisofs -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -iso-level 4 -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
-          \ #NEXTTIME
           \ into tmpfs
           \ dur: 3.2s
           \ Note: apparently boot.catalog is created by mkisofs and transparently inserted into the iso, so you see no trace of it outside! src: http://www.tldp.org/HOWTO/Bootdisk-HOWTO/cd-roms.html seach for "boot catalog"
@@ -3741,6 +3761,7 @@
             \ TODO: iso level 4 ?
             \ TODO: -rock ?
             \ not using: -hide-rr-moved  which was used by mkisofs with grub.
+            \ 9.9s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3764,25 +3785,33 @@
             \ 1m46s
             \ 1m43s
             \ 1m49s
+            \ 1m43s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
               \ 5m3s  1108705280 bytes (1.1 GB) copied, 300.85 s, 3.7 MB/s
+              \ 5m20s
             * sudo blockdev --rereadpt /dev/sde
             * sudo cfdisk /dev/sde
               * add extra primary Linux partition(half of the left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
                 \ blah blah do it here, get: sde2
                 \ 6G sde2
+                \ recreate it even if it seems to already exist from earlier (don't know how big the iso was the second time you overwrite /dev/sde with it!
               * time sudo mkfs.ext4 /dev/sde2
                 \ 37s
+                \ 39s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
                 \ use sudo for copying!
+                * sudo mount /dev/sde2 ~/here
+                * sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/here/
+                * sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
+                * sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
-                \ 17s
-            * sync
-            * sudo eject /dev/sde
+                * time ( sudo umount ~/here && sync && sudo eject /dev/sde )
+                  \ 17s
+                  \ 12s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
