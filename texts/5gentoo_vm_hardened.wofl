@@ -3108,10 +3108,10 @@
       * mkdir proc dev sys run
         \ all already exist!
       * mount points #NEXTTIME
-        * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=1777 tmpfs ./tmp
-        * mount --rbind ./tmp/ ./var/tmp/
-        * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs ./var/tmp/portage/
-        * mount -t proc proc ./proc ; mount --rbind /sys ./sys ; mount --rbind /dev ./dev ; mount --rbind /run ./run
+        * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=1777 tmpfs ./tmp && mount --rbind ./tmp/ ./var/tmp/ && mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs ./var/tmp/portage/ && mount -t proc proc ./proc ; mount --rbind /sys ./sys ; mount --rbind /dev ./dev ; mount --rbind /run ./run && echo done.
+        - mount --rbind ./tmp/ ./var/tmp/
+        - mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs ./var/tmp/portage/
+        - mount -t proc proc ./proc ; mount --rbind /sys ./sys ; mount --rbind /dev ./dev ; mount --rbind /run ./run
         * avoid redownload...
           * mkdir -p ./usr/portage/distfiles
           * mount --rbind /usr/portage/distfiles ./usr/portage/distfiles
@@ -3128,6 +3128,8 @@
           * cp --archive -- /etc/portage/bashrc ./etc/portage/
           * cp --archive -- /etc/portage/patches ./etc/portage/
             \ it's a symlink, remember?
+          * cp --archive -- /etc/portage/postsync.d ./etc/portage/
+            \ needed when you do emerge-webrsync -v -k  inside chroot!
       * set up make.conf
         * cp --archive -- /etc/portage/make.conf ./etc/portage/
           \ overwrite
@@ -3285,6 +3287,7 @@
       * update system
         * time emerge-webrsync -v -k
           \ #NEXTTIME
+          \ 3m22s (with postsync.d)
         * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
           \ #NEXTTIME
           \ let's do this instead!
@@ -3299,32 +3302,35 @@
           \ also failed: ERROR: net-misc/iputils-20121221-r2::gentoo failed (postinst phase):
           \ (no error message)
           \ Note: went back into history(above) and set some grsec via sysctl so the above may not be an issue anymore!
-      - ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
-      - time emerge -nav dhcpcd
-        \ apparently I should already have udhcpc (busybox)
-      * hash -r && env-update && source /etc/profile && source ~/.bash_profile
-      * time perl-cleaner --all
-        \ 12m30s
-      * time emerge @preserved-rebuild
-        \ rebuilds 18 packages
-        \ duration: 127m11s
-      * hash -r && env-update && source /etc/profile && source ~/.bash_profile
-      * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
-        \ rerun this because of the fails earlier, now they're handled
-        \ Total: 19 packages (9 upgrades, 6 new, 1 in new slot, 3 reinstalls), Size of downloads: 0 KiB
-        \ duration: 153m26s
-      * time emerge @preserved-rebuild
-      * time emerge --depclean -av
-        \ this removes gcc 4.8.5 too!
-      * time emerge @preserved-rebuild
-        \ yep this still had 1 package to recompile now after --depclean, it's perl!
-        \ duration: 17m11s
-      * time emerge -nav localepurge genkernel gentoolkit dmraid livecd-tools scripts mingetty
-        \ omitting failing package: memtest86+
-        \ sys-apps/memtest86+-5.01-r1
-        \ Total: 18 packages (18 new), Size of downloads: 309 KiB
-        \ duration: 75m50s
-      * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+        - ln -sf /usr/share/zoneinfo/Europe/Bucharest /etc/localtime
+        - time emerge -nav dhcpcd
+          \ apparently I should already have udhcpc (busybox)
+        * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+        * time perl-cleaner --all
+          \ 12m30s
+        * time emerge @preserved-rebuild
+          \ rebuilds 18 packages
+          \ duration: 127m11s
+        * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+        * time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+          \ rerun this because of the fails earlier, now they're handled
+          \ Total: 19 packages (9 upgrades, 6 new, 1 in new slot, 3 reinstalls), Size of downloads: 0 KiB
+          \ duration: 153m26s
+        * time emerge @preserved-rebuild
+        * time emerge --depclean -av
+          \ this removes gcc 4.8.5 too!
+        * time emerge @preserved-rebuild
+          \ yep this still had 1 package to recompile now after --depclean, it's perl!
+          \ duration: 17m11s
+        * time emerge -nav localepurge genkernel gentoolkit dmraid livecd-tools scripts mingetty
+          \ omitting failing package: memtest86+
+          \ sys-apps/memtest86+-5.01-r1
+          \ Total: 18 packages (18 new), Size of downloads: 309 KiB
+          \ duration: 75m50s
+        * hash -r && env-update && source /etc/profile && source ~/.bash_profile
+      * time emerge -nav sys-apps/hwsetup
+        \ hwsetup is needed for autoconfig to work on boot!
+        \ duration: 3m34.533s
       * time emerge -nav bc
         \ or else, kernel compilation will fail:
         \ */bin/sh: bc: command not found
@@ -3425,12 +3431,12 @@
       * need eudev for this binary to exist: /sbin/udevd or else it will complain that udev couldn't start(at livecd boot)
         * time emerge -nav '>=sys-fs/eudev-3.1.2'
           \ 2 packages, dur: 9m50s
-      * exit out of chroot or get into another terminal and do this outside of chroot:
-        \ as to avoid this: mknod: ‘console’: Operation not permitted
-        \ during genkernel (apparently at end of kernel compilation)
-        * sysctl -w kernel.grsecurity.chroot_deny_mknod=0
-          \ #NEXTTIME
       * kernel
+        * exit out of chroot or get into another terminal and do this outside of chroot:
+          \ as to avoid this: mknod: ‘console’: Operation not permitted
+          \ during genkernel (apparently at end of kernel compilation)
+          * sysctl -w kernel.grsecurity.chroot_deny_mknod=0
+            \ #NEXTTIME
         * cd /usr/src/linux
         * make nconfig
           * General -> File systems
@@ -3466,14 +3472,14 @@
         * time genkernel all --bootdir="/boot" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
           \ yeah /boot already exists with /.keep file inside
           \ #NEXTTIME recompile takes: 7m38s (with zlib option selected for squashfs, since I forgot it!)
-      * do this outside of chroot:
-        * sysctl -w kernel.grsecurity.chroot_deny_mknod=1
+        * do this outside of chroot:
+          * sysctl -w kernel.grsecurity.chroot_deny_mknod=1
+            \ #NEXTTIME
+        * cd /boot
           \ #NEXTTIME
-      * cd /boot
-        \ #NEXTTIME
-        \ get the latest files and copy them as initrd/vmlinuz
-        * cp --archive -- initramfs-genkernel-x86_64-4.1.7-hardened-g45b4b78 initrd
-        * cp --archive -- kernel-genkernel-x86_64-4.1.7-hardened-g45b4b78 vmlinuz
+          \ get the latest files and copy them as initrd/vmlinuz
+          * cp --archive -- initramfs-genkernel-x86_64-4.1.7-hardened-g45b4b78 initrd
+          * cp --archive -- kernel-genkernel-x86_64-4.1.7-hardened-g45b4b78 vmlinuz
       * time emerge -nav vim
         \ need it
         \ duration: 13m46s
@@ -3570,12 +3576,13 @@
         \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
         \ this would've been great for updates tho!
       * time rm -rf "${LIVECD}/target/files/source"
+        \ #NEXTTIME
         \  //1m
         \ //1m20s
         \ //1m9s
         \ 1m3s
         \ 1m16s
-        \ #NEXTTIME
+        \ 1m15s
       * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
         \ #NEXTTIME
         \ //with --verbose, duration: 7m46s
@@ -3585,6 +3592,7 @@
         \ TODO: maybe just usr rsync the second time, it should shave a ton of minutes even though it will use extra space when compared to cp --reflink
         \ 5m31s
         \ 6m26s
+        \ 5m14.264s
       * cleaning
         * rm -rf "${LIVECD}/target/files/source/boot/"
           \ #NEXTTIME
@@ -3604,6 +3612,7 @@
           \ 36.2s
           \ 1.2G(+3.7G which I make cleaned already)
           \ 40s
+          \ 0m39.273s
         * rm -rf ./var/log/*
           \ 66M
           \ #NEXTTIME
@@ -3614,6 +3623,7 @@
           \ //1m32s
           \ 1m28s
           \ 1m27s
+          \ 1m28.175s
         - rm ./var/run ; mkdir ./var/run
           \ it's a symlink and "iso9660 doesn't handle symbolic links"
           \ wait, then how teh! what about the ton of symlinks: find . -type l
@@ -3671,6 +3681,7 @@
           \ 8m19s Filesystem size 1268726.89 Kbytes (1238.99 Mbytes)
           \ 12m26s (cpu usage was taken by chromium)
           \ 7m10s Filesystem size 1064833.43 Kbytes (1039.88 Mbytes)
+          \ 7m59.343s
         - time mksquashfs source "${LIVECD}/target/livecd.squashfs"
           \ //8m58s
           \ //10m17s
@@ -3762,6 +3773,7 @@
             \ TODO: -rock ?
             \ not using: -hide-rr-moved  which was used by mkisofs with grub.
             \ 9.9s
+            \ 0m8.970s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3782,15 +3794,18 @@
                 \ dur: 3m55s  and we don't know when it's done this way, heh
                 \ dang it! looks limited to 100mbit or something! scp was faster!
           * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecdhybrid.iso /tmp
+            \ run this on host(outside of virtualbox)
             \ 1m46s
             \ 1m43s
             \ 1m49s
             \ 1m43s
+            \ 1m38.925s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
               \ 5m3s  1108705280 bytes (1.1 GB) copied, 300.85 s, 3.7 MB/s
               \ 5m20s
+              \ 5m19.371s
             * sudo blockdev --rereadpt /dev/sde
             * sudo cfdisk /dev/sde
               * add extra primary Linux partition(half of the left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
@@ -3800,18 +3815,20 @@
               * time sudo mkfs.ext4 /dev/sde2
                 \ 37s
                 \ 39s
+                \ 0m36.323s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
                 \ use sudo for copying!
                 * sudo mount /dev/sde2 ~/here
-                * sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/here/
-                * sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
-                * sudo cp --archive -- ~/rsync/ ~/here/
+                * sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/here/
+                - sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
+                - sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
                 * time ( sudo umount ~/here && sync && sudo eject /dev/sde )
                   \ 17s
                   \ 12s
+                  \ 0m10.908s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
