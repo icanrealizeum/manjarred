@@ -3331,6 +3331,11 @@
       * time emerge -nav sys-apps/hwsetup
         \ hwsetup is needed for autoconfig to work on boot!
         \ duration: 3m34.533s
+      * time emerge -nav media-sound/alsa-utils
+        \ this is needed for unmute to work(fails by not find alsasound or something) when autoconfig(on boot) is trying to start up
+        \ without this autoconfig just fails
+        \ wait, why is this then not a dependency of autoconfig ? or what am I missing here? autoconfig AND unmute are both part of (equery b /etc/init.d/autoconfig) package: app-misc/livecd-tools-2.0.4  and yep unmute depends on alsasound which doesn't exist as /etc/init.d/alsasound  but looks like  media-sound/alsa-utils definitely installs it! Reported issue: https://bugs.gentoo.org/show_bug.cgi?id=561498
+        \ duration: 15m12s (some other compilation was happing in the background though)
       * time emerge -nav bc
         \ or else, kernel compilation will fail:
         \ */bin/sh: bc: command not found
@@ -3407,7 +3412,7 @@
       * autoconfig? this means all the net.* above are not needed
         * rc-update add autoconfig default
           \ this definitely didn't bring up my p4p1 but then again, I didn't have /etc/conf.d/net AND a dhcp server listening to give it IP, so maybe that's why!
-          \ FIXME: this won't start due to /usr/sbin/hwsetup not existing and thus /etc/init.d/hwsetup start  failing.
+          \ done: this won't start due to /usr/sbin/hwsetup not existing and thus /etc/init.d/hwsetup start  failing.
         - ln -s /etc/init.d/autoconfig /etc/runlevels/default/
       * done: see what other runlevels are necessary
         * boot
@@ -3570,11 +3575,6 @@
         \ #NEXTTIME
       - rsync --delete-after --archive --hard-links --quiet ${LIVECD}/source/boot ${LIVECD}/target/
       - cp --archive --reflink=always --verbose -- "${LIVECD}/source/boot" "${LIVECD}/target/"
-      - time rsync --delete-after --archive --hard-links ${LIVECD}/source/ ${LIVECD}/target/files/source
-        \ why am I doing this again?
-        \ 12m19s before I C-c it! I mean cmon! fuuuu!
-        \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
-        \ this would've been great for updates tho!
       * time rm -rf "${LIVECD}/target/files/source"
         \ #NEXTTIME
         \  //1m
@@ -3583,47 +3583,54 @@
         \ 1m3s
         \ 1m16s
         \ 1m15s
-      * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
-        \ #NEXTTIME
-        \ //with --verbose, duration: 7m46s
-        \ //removed --verbose for next time, duration: 6m54s
-        \ dur: 5m47s 306,072 files 9.2G
-        \ FIXME: need rsync with reflink! because most of the files we don't want(like over 200k of them! and over 5G)
-        \ TODO: maybe just usr rsync the second time, it should shave a ton of minutes even though it will use extra space when compared to cp --reflink
-        \ 5m31s
-        \ 6m26s
-        \ 5m14.264s
+        * choose one of the following! depending on if this is the first time or any subsequent times:
+          * time rsync --verbose --delete-excluded --delete-after --archive --hard-links --exclude="/usr/portage/" --exclude="/usr/src/linux*" --exclude="/var/log/*" --exclude="/boot/" --exclude="stage3-*.bz2" "${LIVECD}/source/" "${LIVECD}/target/files/source"
+            \ run this only #NEXTTIME
+            \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
+            \ dur: 1m1s
+          * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
+            \ run this only first time!
+            \ //with --verbose, duration: 7m46s
+            \ //removed --verbose for next time, duration: 6m54s
+            \ dur: 5m47s 306,072 files 9.2G
+            \ FIXME: need rsync with reflink! because most of the files we don't want(like over 200k of them! and over 5G)
+            \ TODO: maybe just usr rsync the second time, it should shave a ton of minutes even though it will use extra space when compared to cp --reflink
+            \ 5m31s
+            \ 6m26s
+            \ 5m14.264s
       * cleaning
-        * rm -rf "${LIVECD}/target/files/source/boot/"
-          \ #NEXTTIME
+        * rm -vrf "${LIVECD}/target/files/source/boot/"
+          \ //#NEXTTIME (this should find nothing to delete due to rsync)
           \ this is so that we don't get confused, this folder isn't used!
         * cd "${LIVECD}/target/files/source"
           \ #NEXTTIME
-        * rm stage3-*.bz2
-          \ #NEXTTIME
+        * rm -v stage3-*.bz2
+          \ //#NEXTTIME (this should find nothing to delete due to rsync)
           \ yeah keep the DIGEST why not
         - ( cd ./usr/src/linux/ && make clean )
           \ before: 4.3G
           \ after: 697M
-        * time rm -rf ./usr/src/linux*
+        * time rm -vrf ./usr/src/linux*
           \ not /usr/src/debug tho!
-          \ #NEXTTIME
+          \ //#NEXTTIME (this should find nothing to delete due to rsync)
           \ //duration: 38.4s
           \ 36.2s
           \ 1.2G(+3.7G which I make cleaned already)
           \ 40s
           \ 0m39.273s
-        * rm -rf ./var/log/*
+          \ 0s
+        * rm -vrf ./var/log/*
           \ 66M
-          \ #NEXTTIME
-        * time rm -rf ./usr/portage/
-          \ #NEXTTIME
+          \ //#NEXTTIME (this should find nothing to delete due to rsync)
+        * time rm -vrf ./usr/portage/
+          \ //#NEXTTIME (this should find nothing to delete due to rsync)
           \ 1.1G
           \ //1m23s
           \ //1m32s
           \ 1m28s
           \ 1m27s
           \ 1m28.175s
+          \ 0s
         - rm ./var/run ; mkdir ./var/run
           \ it's a symlink and "iso9660 doesn't handle symbolic links"
           \ wait, then how teh! what about the ton of symlinks: find . -type l
@@ -3634,7 +3641,7 @@
         * 
       * Building the LiveCD
         - cd "${LIVECD}/target/files"
-        * rm -f "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
+        * rm -vf "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
           \ doesn't already exist, the first time (exit code is still 0 tho)
           \ #NEXTTIME
         * mkdir -p "${LIVECD}/source/boot/isolinux/"
@@ -3651,7 +3658,7 @@
             \ INITRD /boot/initrd
             \ APPEND real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd cdroot ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg="file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs CPUunderclocking
             \ #removed: udev nodevfs dodmraid
-        * mkdir -p /tmp/target/boot/isolinux/
+        * mkdir -vp /tmp/target/boot/isolinux/
           \ #NEXTTIME
         * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,isolinux/} "/tmp/target/boot/"
           \ #NEXTTIME
@@ -3682,6 +3689,7 @@
           \ 12m26s (cpu usage was taken by chromium)
           \ 7m10s Filesystem size 1064833.43 Kbytes (1039.88 Mbytes)
           \ 7m59.343s
+          \ 8m22s
         - time mksquashfs source "${LIVECD}/target/livecd.squashfs"
           \ //8m58s
           \ //10m17s
@@ -3746,13 +3754,11 @@
             \ dur:
             \ oh wait, blocked by app-cdr/cdrtools
         * arch xorriso method
-          \ #NEXTTIME
+          \ #NEXTTIME (yes do all substeps from here!)
           \ src: https://wiki.archlinux.org/index.php/Remastering_the_Install_ISO#Create_a_new_ISO
           \ need isolinux, files: isohdpfx.bin isolinux.bin
           \ already had them on host gentoo as per package syslinux was already installed! apparently
-          - time xorriso -as mkisofs -iso-level 4 -full-iso9660-filenames -volid "labelhere" -rock -eltorito-boot boot/grub/stage2_eltorito -no-emul-boot -boot-load-size 4 -boot-info-table -isohybrid-mbr -hide-rr-moved -eltorito-catalog boot.catalog -verbose -o "/tmp/livecd.iso" "/tmp/target"
-            \ incomplete command! gave up
-          * rm -rf /tmp/target/boot/grub/
+          * rm -vrf /tmp/target/boot/grub/
             \ done: don't need grub anymore
             \ we do keep initrd and vmlinuz though
           - rm -rf /tmp/target/isolinux
@@ -3774,6 +3780,7 @@
             \ not using: -hide-rr-moved  which was used by mkisofs with grub.
             \ 9.9s
             \ 0m8.970s
+            \ 10.5s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3800,12 +3807,14 @@
             \ 1m49s
             \ 1m43s
             \ 1m38.925s
+            \ 1m57s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
               \ 5m3s  1108705280 bytes (1.1 GB) copied, 300.85 s, 3.7 MB/s
               \ 5m20s
               \ 5m19.371s
+              \ 5m25.839s
             * sudo blockdev --rereadpt /dev/sde
             * sudo cfdisk /dev/sde
               * add extra primary Linux partition(half of the left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
@@ -3816,12 +3825,14 @@
                 \ 37s
                 \ 39s
                 \ 0m36.323s
+                \ 0m36.464s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
                 \ use sudo for copying!
                 * sudo mount /dev/sde2 ~/here
-                * sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/here/
+                * time sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/here/
+                  \ like 2-3 sec
                 - sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
                 - sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
@@ -3829,6 +3840,7 @@
                   \ 17s
                   \ 12s
                   \ 0m10.908s
+                  \ 0m10.434s
     - let's try a different variant (wait...)
       \ http://www.gentoo-wiki.info/HOWTO_build_a_LiveCD_with_Catalyst_for_newbies#Introduction
       * time emerge -nav catalyst
