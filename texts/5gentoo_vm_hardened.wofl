@@ -3477,13 +3477,13 @@
       * need eudev for this binary to exist: /sbin/udevd or else it will complain that udev couldn't start(at livecd boot)
         * time emerge -nav '>=sys-fs/eudev-3.1.2'
           \ 2 packages, dur: 9m50s
-      * no framebuffer attempt on boot
+      - (this doesn't work unless it's on kernel cmdline!) no framebuffer attempt on boot
         \ or use kernel cmdline: radeon.modeset=0
         * vim "/etc/modprobe.d/radeon-kms.conf"
           \ //vim "${LIVECD}/source/etc/modprobe.d/radeon-kms.conf"
           * contents:
             \ options radeon modeset=0
-          * FIXME: this needs kernel recompile if it wasn't set before! so that genkernel can include /etc/modprobe.d/* files into initramfs! (tested to not work, having this file but without running genkernel in prealabil)
+          * doesn'twork: this needs kernel recompile if it wasn't set before! so that genkernel can include /etc/modprobe.d/* files into initramfs! (tested to not work, having this file but without running genkernel in prealabil)
             \ Note: For nVidia based cards, add "nomodeset" to the kernel command line
             \ src: http://kb.digium.com/articles/FAQ/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
       * kernel
@@ -3641,7 +3641,7 @@
           \ if only one driver is available, fb0, adding fbcon=map:1 tells fbcon not to take over the console.
           \ src: kernel/Documents/fb/fbcon.txt
           \ there's also: fbcon=vc:6-7
-          \ the only thing that works(and doesn't just blank like the map one) is the radeon.modeset=0 at kernel cmdline (tested) which means that probably the modprobe.d one also works(untested)  but this will LIKELY need to be set to 1 for X (startx) to be able to get into graphics mode (even though virtualbox is able to do from text to X and back without problems; but that's it's on non-radeon driver)
+          \ the only thing that works(and doesn't just blank like the map one) is the radeon.modeset=0 at kernel cmdline (tested) [the modprobe.d/ conf doesn't work!]  but this will LIKELY need to be set to 1 for X (startx) to be able to get into graphics mode (even though virtualbox is able to do from text to X and back without problems; but that's it's on non-radeon driver)
       * cd "${LIVECD}/source"
         \ already still here.
         \ #NEXTTIME
