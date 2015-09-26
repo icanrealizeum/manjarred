@@ -3336,6 +3336,16 @@
         \ without this autoconfig just fails
         \ wait, why is this then not a dependency of autoconfig ? or what am I missing here? autoconfig AND unmute are both part of (equery b /etc/init.d/autoconfig) package: app-misc/livecd-tools-2.0.4  and yep unmute depends on alsasound which doesn't exist as /etc/init.d/alsasound  but looks like  media-sound/alsa-utils definitely installs it! Reported issue: https://bugs.gentoo.org/show_bug.cgi?id=561498
         \ duration: 15m12s (some other compilation was happing in the background though)
+      * autoconfig needs dhcpcd installed or else it still works but spews an error when trying to execute it and I'm not sure if this has any other side effects (like as if set -e was enabled; apparently this is not happening though)
+        * time emerge -nav net-misc/dhcpcd
+          \ 1m17.236s
+          \ FIXME: maybe need some configuration options to be set!
+          \ so I don't need to have dhcpcd installed for my case since I've enp0s3 script which brings up that interface via some other kind of dhcp - busybox's udhcpc which is exactly this(used): /lib64/netifrc/net/udhcpc.sh
+          \ FIXME: note that kernel cmdline nodhcp is ignored by this autoconfig AND by udhcpc scripts (net.lo symlinks) - OH WAIT, it didn't get passed by syslinux via "go nodhcp" (go is the label)
+      - time emerge -nav virtualbox-guest-additions
+        \ this needs hardened-sources package installed(or else it tries to get gentoo-sources package!) and not just having copied, as I did, /usr/src/linux* folders over.
+        \ I wanted this only for when booting the iso inside virtualbox.
+        \ TODO: maybe some other time.
       * time emerge -nav bc
         \ or else, kernel compilation will fail:
         \ */bin/sh: bc: command not found
@@ -3356,7 +3366,7 @@
           \ Total: 3 packages (3 new), Size of downloads: 0 KiB
           \ 12m32s
       * network
-        \ XXX: this activates enp0s3 only! so ignore that the other 2 fail! eth0 and p2p1! they may work if you boot on bare metal tho! (boot tested only inside virtualbox 5.0.0)
+        \ XXX: this activates enp0s3 only(inside virtualbox)! so ignore that the other 2 fail! eth0 and p2p1! they may work if you boot on bare metal tho! (boot tested only inside virtualbox 5.0.0); p4p1 gets activated on my z575 bare metal!
         * time emerge -nav sys-apps/biosdevname
           \ 2m24s
         * for extra options(like setting domain name to homenetwork) if needed, see:
@@ -3571,23 +3581,19 @@
       - hash -r && env-update && source /etc/profile && source ~/.bash_profile
         \ this shouldn't be needed!
       * mkdir -p "${LIVECD}/target/files/source"
-      * rm -rf "${LIVECD}/target/boot/" "/tmp/target/boot/"
+      * rm -vrf "${LIVECD}/target/boot/" "/tmp/target/boot/"
         \ #NEXTTIME
       - rsync --delete-after --archive --hard-links --quiet ${LIVECD}/source/boot ${LIVECD}/target/
       - cp --archive --reflink=always --verbose -- "${LIVECD}/source/boot" "${LIVECD}/target/"
-      * time rm -rf "${LIVECD}/target/files/source"
-        \ #NEXTTIME
-        \  //1m
-        \ //1m20s
-        \ //1m9s
-        \ 1m3s
-        \ 1m16s
-        \ 1m15s
-        * choose one of the following! depending on if this is the first time or any subsequent times:
-          * time rsync --verbose --delete-excluded --delete-after --archive --hard-links --exclude="/usr/portage/" --exclude="/usr/src/linux*" --exclude="/var/log/*" --exclude="/boot/" --exclude="stage3-*.bz2" "${LIVECD}/source/" "${LIVECD}/target/files/source"
-            \ run this only #NEXTTIME
-            \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
-            \ dur: 1m1s
+      * choose one of the following! depending on if this is the first time or any subsequent times:
+        * firsttime?
+          * time rm -rf "${LIVECD}/target/files/source"
+            \  //1m
+            \ //1m20s
+            \ //1m9s
+            \ 1m3s
+            \ 1m16s
+            \ 1m15s
           * time cp --archive --reflink=always -- "${LIVECD}/source/" "${LIVECD}/target/files/source"
             \ run this only first time!
             \ //with --verbose, duration: 7m46s
@@ -3598,47 +3604,47 @@
             \ 5m31s
             \ 6m26s
             \ 5m14.264s
-      * cleaning
-        * rm -vrf "${LIVECD}/target/files/source/boot/"
-          \ //#NEXTTIME (this should find nothing to delete due to rsync)
-          \ this is so that we don't get confused, this folder isn't used!
-        * cd "${LIVECD}/target/files/source"
-          \ #NEXTTIME
-        * rm -v stage3-*.bz2
-          \ //#NEXTTIME (this should find nothing to delete due to rsync)
-          \ yeah keep the DIGEST why not
-        - ( cd ./usr/src/linux/ && make clean )
-          \ before: 4.3G
-          \ after: 697M
-        * time rm -vrf ./usr/src/linux*
-          \ not /usr/src/debug tho!
-          \ //#NEXTTIME (this should find nothing to delete due to rsync)
-          \ //duration: 38.4s
-          \ 36.2s
-          \ 1.2G(+3.7G which I make cleaned already)
-          \ 40s
-          \ 0m39.273s
-          \ 0s
-        * rm -vrf ./var/log/*
-          \ 66M
-          \ //#NEXTTIME (this should find nothing to delete due to rsync)
-        * time rm -vrf ./usr/portage/
-          \ //#NEXTTIME (this should find nothing to delete due to rsync)
-          \ 1.1G
-          \ //1m23s
-          \ //1m32s
-          \ 1m28s
-          \ 1m27s
-          \ 1m28.175s
-          \ 0s
-        - rm ./var/run ; mkdir ./var/run
-          \ it's a symlink and "iso9660 doesn't handle symbolic links"
-          \ wait, then how teh! what about the ton of symlinks: find . -type l
-          \ oh wait, it's gonna be squashfs-ed so symlinks will work!
-        - rm -rf ./etc/portage
-          \ 123k, we keep it then
-          \ we also keep the /gpg/ dir this way, which is used to check webrsync sigs
-        * 
+          * cleaning
+            * rm -vrf "${LIVECD}/target/files/source/boot/"
+              \ this is so that we don't get confused, this folder isn't used!
+            * cd "${LIVECD}/target/files/source"
+            * rm -v stage3-*.bz2
+              \ yeah keep the DIGEST why not
+            - ( cd ./usr/src/linux/ && make clean )
+              \ before: 4.3G
+              \ after: 697M
+            * time rm -vrf ./usr/src/linux*
+              \ not /usr/src/debug tho!
+              \ //duration: 38.4s
+              \ 36.2s
+              \ 1.2G(+3.7G which I make cleaned already)
+              \ 40s
+              \ 0m39.273s
+              \ 0s
+            * rm -vrf ./var/log/*
+              \ 66M
+            * time rm -vrf ./usr/portage/
+              \ 1.1G
+              \ //1m23s
+              \ //1m32s
+              \ 1m28s
+              \ 1m27s
+              \ 1m28.175s
+              \ 0s
+            - rm ./var/run ; mkdir ./var/run
+              \ it's a symlink and "iso9660 doesn't handle symbolic links"
+              \ wait, then how teh! what about the ton of symlinks: find . -type l
+              \ oh wait, it's gonna be squashfs-ed so symlinks will work!
+            - rm -rf ./etc/portage
+              \ 123k, we keep it then
+              \ we also keep the /gpg/ dir this way, which is used to check webrsync sigs
+            * 
+        * subsequent times?
+          * time rsync --verbose --delete-excluded --delete-after --archive --hard-links --exclude="/usr/portage/" --exclude="/usr/src/linux*" --exclude="/var/log/*" --exclude="/boot/" --exclude="stage3-*.bz2" "${LIVECD}/source/" "${LIVECD}/target/files/source"
+            \ run this only #NEXTTIME
+            \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
+            \ dur: 1m1s
+            \ 1m20.933s
       * Building the LiveCD
         - cd "${LIVECD}/target/files"
         * rm -vf "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
@@ -3690,6 +3696,7 @@
           \ 7m10s Filesystem size 1064833.43 Kbytes (1039.88 Mbytes)
           \ 7m59.343s
           \ 8m22s
+          \ 5m0.862s Filesystem size 1076086.94 Kbytes (1050.87 Mbytes)
         - time mksquashfs source "${LIVECD}/target/livecd.squashfs"
           \ //8m58s
           \ //10m17s
@@ -3739,7 +3746,7 @@
             \ //old comment: we make sure there's nothing there or else it will fail to boot! as per: "ISOLINUX will search for the config file directory in the order /boot/isolinux, /isolinux, /. The first directory that exists is used, even if it contains no files. Therefore, please make sure that these directories don't exist if you don't want ISOLINUX to use them. " src: http://www.syslinux.org/wiki/index.php/Doc/isolinux
           - mkdir -p /tmp/target/boot/isolinux ; 
             \ already exists
-          * cp --archive -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
+          * cp --archive --verbose -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
             \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
             \ only isolinux.bin is needed in /tmp/target/isolinux/
             \ isohdpfx.bin just needs to be fullpath specified at xorriso cmdline
@@ -3754,6 +3761,7 @@
             \ 9.9s
             \ 0m8.970s
             \ 10.5s
+            \ 0m10.074s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3781,6 +3789,7 @@
             \ 1m43s
             \ 1m38.925s
             \ 1m57s
+            \ 2m3.443s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
@@ -3788,6 +3797,7 @@
               \ 5m20s
               \ 5m19.371s
               \ 5m25.839s
+              \ 5m6.545s
             * sudo blockdev --rereadpt /dev/sde
             * sudo cfdisk /dev/sde
               * add extra primary Linux partition(half of the left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
@@ -3799,6 +3809,7 @@
                 \ 39s
                 \ 0m36.323s
                 \ 0m36.464s
+                \ 0m37.171s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
@@ -3807,6 +3818,7 @@
                 * time sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/here/
                   \ like 2-3 sec
                   \ 9.6s
+                  \ 0m3.280s
                 - sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
                 - sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
@@ -3816,6 +3828,7 @@
                   \ 0m10.908s
                   \ 0m10.434s
                   \ 0m6.199s
+                  \ 0m10.784s
         - the syslinux iso mode (see workflowy.wofl)
           \ fails too, because it reboots instead of showing livecd.iso's grub menu! no idea why/what
           \ this method also takes a while to load the iso into RAM at startup, a few minutes (maybe 3m30s?)
