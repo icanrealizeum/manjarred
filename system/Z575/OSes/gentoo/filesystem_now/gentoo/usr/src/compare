@@ -2,6 +2,11 @@
 
 fil='/tmp/kernel_versions.diff'
 
-diff -rup --exclude=*.mod.c --exclude=*.map --exclude=*.S --exclude=config_data.h  -- linux-4.1.6-hardened-r1/ linux-4.1.6-hardened-r2/ |grep -v "Binary " |grep -v "Only in " > "$fil"
+#v1=linux-4.1.6-hardened-r1/
+#v2=linux-4.1.6-hardened-r2/
+v1=linux-4.1.7-hardened/
+v2=linux-4.1.7-hardened-r1/
+
+diff -rup --exclude=*.mod.c --exclude=*.map --exclude=*.S --exclude=config_data.h  -- "$v1" "$v2" |grep -v "Binary " |grep -v "Only in " > "$fil"
 cat "$fil" |colordiff|less
 
