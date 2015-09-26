@@ -3477,12 +3477,15 @@
       * need eudev for this binary to exist: /sbin/udevd or else it will complain that udev couldn't start(at livecd boot)
         * time emerge -nav '>=sys-fs/eudev-3.1.2'
           \ 2 packages, dur: 9m50s
-      * no framebuffer attempt
-        * vim "${LIVECD}/source/etc/modprobe.d/radeon-kms.conf"
-          \ options radeon modeset=0
-          \ TODO: maybe this needs kernel recompile? so that genkernel can include /etc/modprobe.d/* files into initramfs!
-          \ Note: For nVidia based cards, add "nomodeset" to the kernel command line
-          \ src: http://kb.digium.com/articles/FAQ/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
+      * no framebuffer attempt on boot
+        \ or use kernel cmdline: radeon.modeset=0
+        * vim "/etc/modprobe.d/radeon-kms.conf"
+          \ //vim "${LIVECD}/source/etc/modprobe.d/radeon-kms.conf"
+          * contents:
+            \ options radeon modeset=0
+          * FIXME: this needs kernel recompile if it wasn't set before! so that genkernel can include /etc/modprobe.d/* files into initramfs! (tested to not work, having this file but without running genkernel in prealabil)
+            \ Note: For nVidia based cards, add "nomodeset" to the kernel command line
+            \ src: http://kb.digium.com/articles/FAQ/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
           \ as to avoid this: mknod: ‘console’: Operation not permitted
@@ -3858,7 +3861,7 @@
             \ 2m34.106s
             \ 2m28.528s
             \ 2m1.164s
-          * now copy to usbstick losing all the existing data on it
+          * now copy to usbstick(/dev/sde) losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ #NEXTTIME
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
@@ -3953,6 +3956,8 @@
       * wait... maybe we try the vfose variant still.
 
 * bigTODO:
+  * git clone git@github.com:zazdxscf/amdmsrtweaker-lnx.git
+    \ you need to have my ssh key because this clones for write/push access!
   - add swap partition, inside LUKS ofc
     \ why? because compiling chromium (inside virtualbox on 10827M RAM selected in vbox options) will get ld killed! (it used to work before(eg. for 2498 build), barely; but not since 2508 chromium build)
   * add USE flag binpkg-multi-instance
