@@ -3342,6 +3342,10 @@
           \ FIXME: maybe need some configuration options to be set!
           \ so I don't need to have dhcpcd installed for my case since I've enp0s3 script which brings up that interface via some other kind of dhcp - busybox's udhcpc which is exactly this(used): /lib64/netifrc/net/udhcpc.sh
           \ FIXME: note that kernel cmdline nodhcp is ignored by this autoconfig AND by udhcpc scripts (net.lo symlinks) - OH WAIT, it didn't get passed by syslinux via "go nodhcp" (go is the label)
+        * add resolv.conf.tail to have a nameserver selected
+          \ note that since we've installed dhcpcd, it will overwrite /etc/resolv.conf  and so if we use .tail we can replace a line inside with the google dns server.
+          * vim /etc/resolv.conf.tail
+            \ nameserver 8.8.8.8
       - time emerge -nav virtualbox-guest-additions
         \ this needs hardened-sources package installed(or else it tries to get gentoo-sources package!) and not just having copied, as I did, /usr/src/linux* folders over.
         \ I wanted this only for when booting the iso inside virtualbox.
@@ -3580,12 +3584,13 @@
         \ #NEXTTIME
       - hash -r && env-update && source /etc/profile && source ~/.bash_profile
         \ this shouldn't be needed!
-      * mkdir -p "${LIVECD}/target/files/source"
-      * rm -vrf "${LIVECD}/target/boot/" "/tmp/target/boot/"
+      - mkdir -p "${LIVECD}/target/files/source"
+      * rm -vrf "/tmp/target/boot/"
         \ #NEXTTIME
+      - rm -vrf "${LIVECD}/target/boot/" "/tmp/target/boot/"
       - rsync --delete-after --archive --hard-links --quiet ${LIVECD}/source/boot ${LIVECD}/target/
       - cp --archive --reflink=always --verbose -- "${LIVECD}/source/boot" "${LIVECD}/target/"
-      * choose one of the following! depending on if this is the first time or any subsequent times:
+      - choose one of the following! depending on if this is the first time or any subsequent times:
         * firsttime?
           * time rm -rf "${LIVECD}/target/files/source"
             \  //1m
@@ -3645,10 +3650,11 @@
             \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
             \ dur: 1m1s
             \ 1m20.933s
+            \ 1m21.637s  (only one file was added: resolv.conf.tail ; it just takes this long to compute)
       * Building the LiveCD
         - cd "${LIVECD}/target/files"
-        * rm -vf "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
-          \ doesn't already exist, the first time (exit code is still 0 tho)
+        - rm -vf "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
+        * rm -vf "/tmp/target/livecd.squashfs"
           \ #NEXTTIME
         * mkdir -p "${LIVECD}/source/boot/isolinux/"
           * vim "${LIVECD}/source/boot/isolinux/isolinux.cfg"
@@ -3674,8 +3680,11 @@
         - touch "${LIVECD}/target/livecd"
           \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
           \ already exists on next time(run).
-        * time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1
+        * time mksquashfs "${LIVECD}/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1 -e "${LIVECD}/source/usr/portage/" "${LIVECD}/source/usr/src/linux"* "${LIVECD}/source/var/log/"* "${LIVECD}/source/boot/" "${LIVECD}/source/stage3-"*.bz2
           \ #NEXTTIME
+          \ this will skip using an intermediary /target/ source, saves disk space and time! esp. since we can just use exclude here!
+          \ 7m40.532s Filesystem size 1076086.92 Kbytes (1050.87 Mbytes)
+        - (was good with rsync above)time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1
           \ into tmpfs
           \ if dest file exists, it get overwritten(recreated) immediately and without warning!
           \ SYNTAX:mksquashfs source1 source2 ...  dest [options] [-e list of exclude dirs/files]
@@ -3734,19 +3743,21 @@
           \ 2m2s
       * to usb stick
         * arch xorriso method
-          \ #NEXTTIME (yes do all substeps from here!)
           \ src: https://wiki.archlinux.org/index.php/Remastering_the_Install_ISO#Create_a_new_ISO
           \ need isolinux, files: isohdpfx.bin isolinux.bin
           \ already had them on host gentoo as per package syslinux was already installed! apparently
           * rm -vrf /tmp/target/boot/grub/
+            \ #NEXTTIME
             \ done: don't need grub anymore
             \ we do keep initrd and vmlinuz though
+            \ currently doesn't remove anything, because we didn't copy it above!
           - rm -rf /tmp/target/isolinux
             \ this is the second dir, safe to ignore removal, since the first one exists
             \ //old comment: we make sure there's nothing there or else it will fail to boot! as per: "ISOLINUX will search for the config file directory in the order /boot/isolinux, /isolinux, /. The first directory that exists is used, even if it contains no files. Therefore, please make sure that these directories don't exist if you don't want ISOLINUX to use them. " src: http://www.syslinux.org/wiki/index.php/Doc/isolinux
           - mkdir -p /tmp/target/boot/isolinux ; 
             \ already exists
-          * cp --archive --verbose -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
+          * cp --archive --verbose -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive --verbose -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive --verbose -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
+            \ #NEXTTIME
             \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
             \ only isolinux.bin is needed in /tmp/target/isolinux/
             \ isohdpfx.bin just needs to be fullpath specified at xorriso cmdline
@@ -3762,6 +3773,7 @@
             \ 0m8.970s
             \ 10.5s
             \ 0m10.074s
+            \ 0m10.767s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3782,6 +3794,7 @@
                 \ dur: 3m55s  and we don't know when it's done this way, heh
                 \ dang it! looks limited to 100mbit or something! scp was faster!
           * time scp -P 8822 -4vp root@127.0.0.111:/tmp/livecdhybrid.iso /tmp
+            \ #NEXTTIME
             \ run this on host(outside of virtualbox)
             \ 1m46s
             \ 1m43s
@@ -3790,45 +3803,57 @@
             \ 1m38.925s
             \ 1m57s
             \ 2m3.443s
+            \ 1m44.229s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
+              \ #NEXTTIME
               \ 5m26s 1108705280 bytes (1.1 GB) copied, 325.787 s, 3.4 MB/s
               \ 5m3s  1108705280 bytes (1.1 GB) copied, 300.85 s, 3.7 MB/s
               \ 5m20s
               \ 5m19.371s
               \ 5m25.839s
               \ 5m6.545s
+              \ 5m21.346s 1119682560 bytes (1.1 GB) copied, 319.47 s, 3.5 MB/s
             * sudo blockdev --rereadpt /dev/sde
+              \ #NEXTTIME
             * sudo cfdisk /dev/sde
+              \ #NEXTTIME
               * add extra primary Linux partition(half of the left size) where to place this .wofl so that instructions are at hand (and writable for updates!)
                 \ blah blah do it here, get: sde2
                 \ 6G sde2
                 \ recreate it even if it seems to already exist from earlier (don't know how big the iso was the second time you overwrite /dev/sde with it!
               * time sudo mkfs.ext4 /dev/sde2
+                \ #NEXTTIME
                 \ 37s
                 \ 39s
                 \ 0m36.323s
                 \ 0m36.464s
                 \ 0m37.171s
+                \ 0m37.442s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
                 \ use sudo for copying!
                 * sudo mount /dev/sde2 ~/here
+                  \ #NEXTTIME
                 * time sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/here/
+                  \ #NEXTTIME
                   \ like 2-3 sec
                   \ 9.6s
                   \ 0m3.280s
+                  \ 0m3.561s
                 - sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
                 - sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
                 * time ( sudo umount ~/here && sync && sudo eject /dev/sde )
+                  \ last #NEXTTIME
                   \ 17s
                   \ 12s
                   \ 0m10.908s
                   \ 0m10.434s
                   \ 0m6.199s
                   \ 0m10.784s
+                  \ 0m10.192s
         - the syslinux iso mode (see workflowy.wofl)
           \ fails too, because it reboots instead of showing livecd.iso's grub menu! no idea why/what
           \ this method also takes a while to load the iso into RAM at startup, a few minutes (maybe 3m30s?)
