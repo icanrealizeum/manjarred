@@ -3057,6 +3057,7 @@
       * export LIVECD="$HOME/admincd"
         \ #NEXTTIME
       * mkdir -p "$LIVECD/source"
+        \ this will use at least 9.2G(du) of space
       * cd "$LIVECD/source"
         \ #NEXTTIME
       * get a stage3 and unpack in current dir (see #stage3)
@@ -3646,7 +3647,6 @@
             * 
         * subsequent times?
           * time rsync --verbose --delete-excluded --delete-after --archive --hard-links --exclude="/usr/portage/" --exclude="/usr/src/linux*" --exclude="/var/log/*" --exclude="/boot/" --exclude="stage3-*.bz2" "${LIVECD}/source/" "${LIVECD}/target/files/source"
-            \ run this only #NEXTTIME
             \ this is eating space, as opposed to cp --reflink=always which basically doesn't at all.
             \ dur: 1m1s
             \ 1m20.933s
@@ -3658,8 +3658,11 @@
           \ #NEXTTIME
         * mkdir -p "${LIVECD}/source/boot/isolinux/"
           * vim "${LIVECD}/source/boot/isolinux/isolinux.cfg"
-            \ DEFAULT go
+            \ UI menu.c32
             \ PROMPT 1
+            \
+            \ MENU TITLE Boot Menu
+            \ DEFAULT go
             \ TIMEOUT 600
             \ ONTIMEOUT go
             \ #F1 f1.txt
@@ -3668,18 +3671,10 @@
             \ MENU LABEL go baby
             \ KERNEL /boot/vmlinuz
             \ INITRD /boot/initrd
-            \ APPEND real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd cdroot ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg="file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs CPUunderclocking
+            \ APPEND real_root=/dev/loop0 looptype=squashfs loop=/livecd.squashfs initrd cdroot ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg="file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=20000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeon.fastfb=1 radeon.modeset=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 console=tty1 earlyprintk=vga slub_debug=U noefi dolvm dobtrfs CPUunderclocking nofb
             \ #removed: udev nodevfs dodmraid
-        * mkdir -vp /tmp/target/boot/isolinux/
-          \ #NEXTTIME
-        * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,isolinux/} "/tmp/target/boot/"
-          \ #NEXTTIME
-          \ TODO: we don't need/use grub anymore, so drop it?
-        * touch "/tmp/target/livecd"
-          \ #NEXTTIME
-        - touch "${LIVECD}/target/livecd"
-          \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
-          \ already exists on next time(run).
+            \ #removed: radeonfb 
+            \ replaced with nofb !! (testing to see if it works now; definitely doesn't work without nofb so far) we don't want framebuffer due to small scrollback!
         * time mksquashfs "${LIVECD}/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1 -e "${LIVECD}/source/usr/portage/" "${LIVECD}/source/usr/src/linux"* "${LIVECD}/source/var/log/"* "${LIVECD}/source/boot/" "${LIVECD}/source/stage3-"*.bz2
           \ #NEXTTIME
           \ this will skip using an intermediary /target/ source, saves disk space and time! esp. since we can just use exclude here!
@@ -3706,6 +3701,7 @@
           \ 7m59.343s
           \ 8m22s
           \ 5m0.862s Filesystem size 1076086.94 Kbytes (1050.87 Mbytes)
+          \ 8m1.259s Filesystem size 1076086.96 Kbytes (1050.87 Mbytes)
         - time mksquashfs source "${LIVECD}/target/livecd.squashfs"
           \ //8m58s
           \ //10m17s
@@ -3756,8 +3752,18 @@
             \ //old comment: we make sure there's nothing there or else it will fail to boot! as per: "ISOLINUX will search for the config file directory in the order /boot/isolinux, /isolinux, /. The first directory that exists is used, even if it contains no files. Therefore, please make sure that these directories don't exist if you don't want ISOLINUX to use them. " src: http://www.syslinux.org/wiki/index.php/Doc/isolinux
           - mkdir -p /tmp/target/boot/isolinux ; 
             \ already exists
-          * cp --archive --verbose -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive --verbose -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive --verbose -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
+          - cp --archive --verbose -- /usr/share/syslinux/isohdpfx.bin /tmp/target/boot/isolinux/ && cp --archive --verbose -- /usr/share/syslinux/isolinux.bin /tmp/target/boot/isolinux/ && cp --archive --verbose -- /usr/share/syslinux/ldlinux.c32 /tmp/target/boot/isolinux/
+          * mkdir -vp /tmp/target/boot/isolinux/
             \ #NEXTTIME
+          * cp --archive --verbose -- "${LIVECD}/source/boot/"{initrd,vmlinuz,isolinux/} "/tmp/target/boot/"
+            \ #NEXTTIME
+          * touch "/tmp/target/livecd"
+            \ #NEXTTIME
+            \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
+            \ already exists on next time(run).
+          * cp --archive --verbose --target-directory="/tmp/target/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{vesa,c,}menu.c32
+            \ #NEXTTIME
+            \ we copy all menus, although only menu.c32 would be needed!
             \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
             \ only isolinux.bin is needed in /tmp/target/isolinux/
             \ isohdpfx.bin just needs to be fullpath specified at xorriso cmdline
@@ -3774,6 +3780,8 @@
             \ 10.5s
             \ 0m10.074s
             \ 0m10.767s
+            \ 0m10.553s
+            \ 0m11.510s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3804,6 +3812,8 @@
             \ 1m57s
             \ 2m3.443s
             \ 1m44.229s
+            \ 2m34.106s
+            \ 2m28.528s
           * now copy to usbstick losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ #NEXTTIME
@@ -3814,6 +3824,7 @@
               \ 5m25.839s
               \ 5m6.545s
               \ 5m21.346s 1119682560 bytes (1.1 GB) copied, 319.47 s, 3.5 MB/s
+              \ 3m34.484s 1119682560 bytes (1.1 GB) copied, 212.221 s, 5.3 MB/s
             * sudo blockdev --rereadpt /dev/sde
               \ #NEXTTIME
             * sudo cfdisk /dev/sde
@@ -3830,18 +3841,22 @@
                 \ 0m36.464s
                 \ 0m37.171s
                 \ 0m37.442s
+                \ 40s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
                 \ use sudo for copying!
                 * sudo mount /dev/sde2 ~/here
                   \ #NEXTTIME
-                * time sudo cp --archive -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/here/
+                * time sudo cp --archive --verbose --target-directory ~/here/ -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/.ssh/ ~/bin/
                   \ #NEXTTIME
+                  \ ~/bin/ for rsyncy command which is used by ~/rsync/ scripts!
                   \ like 2-3 sec
                   \ 9.6s
                   \ 0m3.280s
                   \ 0m3.561s
+                  \ yes copy my ssh key(s) and known_hosts, will need to git clone git@github.com:zazdxscf/gentooskyline.git with write(push) rights.
+                  \ 0m2.320s
                 - sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
                 - sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
@@ -3854,6 +3869,7 @@
                   \ 0m6.199s
                   \ 0m10.784s
                   \ 0m10.192s
+                  \ 0m11.756s
         - the syslinux iso mode (see workflowy.wofl)
           \ fails too, because it reboots instead of showing livecd.iso's grub menu! no idea why/what
           \ this method also takes a while to load the iso into RAM at startup, a few minutes (maybe 3m30s?)
