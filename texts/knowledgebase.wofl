@@ -283,4 +283,14 @@
   \ on manjaro, it's in package name: extra/cdrkit
   \ on gentoo: app-cdr/cdrtools
 
+* swap sda with sdb?
+  \ src: https://ubuntuforums.org/showthread.php?t=966665&p=6083606#post6083606
+  * udev
+    * created a file called 10-local.rules in /etc/udev/rules.d
+      \ # If the kernel matches a device as sda, change it to sdb.
+      \ KERNEL=="sda", NAME="sdb"
+      \
+      \ # Vice versa.
+      \ KERNEL=="sdb", NAME="sda"
+
 
