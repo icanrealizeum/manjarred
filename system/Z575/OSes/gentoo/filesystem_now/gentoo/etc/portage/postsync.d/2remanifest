@@ -10,7 +10,7 @@ www-client/chromium
 '
 
 for i in $alldirswithoutspaces ; do
-  pushd "/usr/portage/${i}/" && repoman -pv  --digest=y  --ask manifest && popd
+  pushd "/usr/portage/${i}/" && repoman -v  --digest=y  --ask manifest && popd
   #^ this rebuilds the recorded checksum for all packages in current dir.
   #needed because .ebuild files got patched!
 done
