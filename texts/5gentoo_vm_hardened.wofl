@@ -3495,7 +3495,8 @@
           * doesn'twork: this needs kernel recompile if it wasn't set before! so that genkernel can include /etc/modprobe.d/* files into initramfs! (tested to not work, having this file but without running genkernel in prealabil)
             \ Note: For nVidia based cards, add "nomodeset" to the kernel command line
             \ src: http://kb.digium.com/articles/FAQ/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
-      * time USE=alsa emerge -nav media-sound/mpg123
+      - time USE=alsa emerge -nav media-sound/mpg123
+        \ XXX: audio works inside virtualbox, not on bare metal though!
         \ getting this so I can listen to something while installing/compiling (when booted from iso)
         \ Total: 13 packages (13 new), Size of downloads: 851 KiB
         \ duration: 52m33s
@@ -3505,6 +3506,9 @@
           \ an extra : 24m10s
         * mp3 to test
           \ https://archive.org/download/testmp3testfile/mpthreetest.mp3
+          \ mpg123 -a hw:0,0 mpthreetest.mp3
+      * time emerge -nav links
+        \ dur: 15m31.718s
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
           \ as to avoid this: mknod: ‘console’: Operation not permitted
@@ -3635,8 +3639,8 @@
       * exit chroot
         \ #NEXTTIME
       * restore grsec stuff
-        \ #NEXTTIME #RESTORE
         * sysctl -w kernel.grsecurity.chroot_deny_mount=1 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=1 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=1
+          \ #NEXTTIME #RESTORE
       * mkdir -vp "${LIVECD}/source/boot/isolinux/"
         * cp --archive --verbose --target-directory "${LIVECD}/source/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{{vesa,c,}menu,libutil}.c32
           \ XXX: hmm, will not boot at all without libutil.c32 if you have UI menu.c32  in .cfg
@@ -3750,7 +3754,7 @@
           \ no need to remove the already existing(if any) livecd.squashfs file! it gets overwritten (not updated) anyway.
         * mkdir -vp /tmp/target/boot/
           \ #NEXTTIME
-        * time mksquashfs "${LIVECD}/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1 -e "${LIVECD}/source/usr/portage/" "${LIVECD}/source/usr/src/linux"* "${LIVECD}/source/var/log/"* "${LIVECD}/source/boot/" "${LIVECD}/source/stage3-"*.bz2
+        * time mksquashfs "${LIVECD}/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1 -e "${LIVECD}/source/usr/src/linux"* "${LIVECD}/source/var/log/"* "${LIVECD}/source/boot/" "${LIVECD}/source/stage3-"*.bz2 "${LIVECD}/source/usr/portage/"
           \ #NEXTTIME
           \ this will skip using an intermediary /target/ source, saves disk space and time! esp. since we can just use exclude here!
           \ 7m40.532s Filesystem size 1076086.92 Kbytes (1050.87 Mbytes)
