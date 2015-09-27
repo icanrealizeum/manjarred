@@ -3488,10 +3488,11 @@
           * doesn'twork: this needs kernel recompile if it wasn't set before! so that genkernel can include /etc/modprobe.d/* files into initramfs! (tested to not work, having this file but without running genkernel in prealabil)
             \ Note: For nVidia based cards, add "nomodeset" to the kernel command line
             \ src: http://kb.digium.com/articles/FAQ/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
-      * time emerge -nav media-sound/mpg123
+      * time USE=alsa emerge -nav media-sound/mpg123
         \ getting this so I can listen to something while installing/compiling (when booted from iso)
         \ Total: 13 packages (13 new), Size of downloads: 851 KiB
         \ duration: 52m33s
+        \ extra 10m49s with the alsa flag, afterwards.
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
           \ as to avoid this: mknod: ‘console’: Operation not permitted
