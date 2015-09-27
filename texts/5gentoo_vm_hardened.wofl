@@ -3193,10 +3193,10 @@
           \ none                    /dev/shm        tmpfs           defaults             0 0
           \
       * grsec settings to relax chroot for emerge not to fail on some packages!
-        \ #NEXTTIME
-        * sysctl -w kernel.grsecurity.chroot_deny_mount=0
-        * sysctl -w kernel.grsecurity.chroot_deny_chmod=0
-        * sysctl -w kernel.grsecurity.chroot_deny_chroot=0
+        * sysctl -w kernel.grsecurity.chroot_deny_mount=0 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=0 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=0
+          \ #NEXTTIME
+        - sysctl -w kernel.grsecurity.chroot_deny_chmod=0
+        - sysctl -w kernel.grsecurity.chroot_deny_chroot=0
         - sysctl -w kernel.grsecurity.chroot_caps=0
           \ this fixes the frequent : Unable to unshare: EPERM
           \ in dmesg is probably this: [75212.656718] grsec: From 10.0.2.2: use of CAP_SYS_ADMIN in chroot denied for /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:24096] uid/euid:0/0 gid/egid:0/0, parent /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:4652] uid/euid:0/0 gid/egid:0/0
@@ -3292,6 +3292,7 @@
           \ #NEXTTIME
           \ 3m22s (with postsync.d)
           \ 3m18.092s and failed postsync.d remanifest due to newer portage version which I installed last time, that is: 2.2.22 vs 2.2.20.1
+          \ 2m56s
           * time emerge -av =portage-2.2.20.1
             \ downgrading...
             \ duration: 3m20.990s
@@ -3487,6 +3488,10 @@
           * doesn'twork: this needs kernel recompile if it wasn't set before! so that genkernel can include /etc/modprobe.d/* files into initramfs! (tested to not work, having this file but without running genkernel in prealabil)
             \ Note: For nVidia based cards, add "nomodeset" to the kernel command line
             \ src: http://kb.digium.com/articles/FAQ/How-to-disable-the-Linux-frame-buffer-if-it-s-causing-problems
+      * time emerge -nav media-sound/mpg123
+        \ getting this so I can listen to something while installing/compiling (when booted from iso)
+        \ Total: 13 packages (13 new), Size of downloads: 851 KiB
+        \ duration: 52m33s
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
           \ as to avoid this: mknod: ‘console’: Operation not permitted
@@ -3617,6 +3622,12 @@
       * exit chroot
         \ #NEXTTIME
       * mkdir -vp "${LIVECD}/source/boot/isolinux/"
+        * cp --archive --verbose --target-directory "${LIVECD}/source/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{{vesa,c,}menu,libutil}.c32
+          \ XXX: hmm, will not boot at all without libutil.c32 if you have UI menu.c32  in .cfg
+          \ we copy all menus, although only menu.c32 would be needed!
+          \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
+          \ only isolinux.bin is needed in /tmp/target/isolinux/
+          \ isohdpfx.bin just needs to be fullpath specified at xorriso cmdline
         * vim "${LIVECD}/source/boot/isolinux/isolinux.cfg"
           \ UI menu.c32
           \ PROMPT 1
@@ -3717,8 +3728,10 @@
       * Building the LiveCD
         - cd "${LIVECD}/target/files"
         - rm -vf "${LIVECD}/target/livecd.squashfs" "/tmp/target/livecd.squashfs"
-        * rm -vrf "/tmp/target/livecd.squashfs" "/tmp/target/boot/"
+        - rm -vrf "/tmp/target/livecd.squashfs" "/tmp/target/boot/"
+        * rm -vrf "/tmp/target/boot/"
           \ #NEXTTIME
+          \ no need to remove the already existing(if any) livecd.squashfs file! it gets overwritten (not updated) anyway.
         * mkdir -vp /tmp/target/boot/
           \ #NEXTTIME
         * time mksquashfs "${LIVECD}/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1 -e "${LIVECD}/source/usr/portage/" "${LIVECD}/source/usr/src/linux"* "${LIVECD}/source/var/log/"* "${LIVECD}/source/boot/" "${LIVECD}/source/stage3-"*.bz2
@@ -3726,6 +3739,8 @@
           \ this will skip using an intermediary /target/ source, saves disk space and time! esp. since we can just use exclude here!
           \ 7m40.532s Filesystem size 1076086.92 Kbytes (1050.87 Mbytes)
           \ 5m35.290s
+          \ 91849 files, 8m46.679s Filesystem size 1091620.68 Kbytes (1066.04 Mbytes)
+          \ 8m0.917s
         - (was good with rsync above)time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1
           \ into tmpfs
           \ if dest file exists, it get overwritten(recreated) immediately and without warning!
@@ -3807,8 +3822,7 @@
             \ #NEXTTIME
             \ create the required empty livecd file. This file must be on livecd root, because the init script in initramfs uses this file to identify if the CD is mounted or not. 
             \ already exists on next time(run).
-          * cp --archive --verbose --target-directory="/tmp/target/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{{vesa,c,}menu,libutil}.c32
-            \ #NEXTTIME
+          - cp --archive --verbose --target-directory="/tmp/target/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{{vesa,c,}menu,libutil}.c32
             \ XXX: hmm, will not boot at all without libutil.c32 if you have UI menu.c32  in .cfg
             \ we copy all menus, although only menu.c32 would be needed!
             \ // not needed in target, but I wanna make sure it doesn't get modified if I specify its original path! like mkisofs did for ... i forget, maybe stage2_eltorito file ? (not boot.catalog)  ok, no changes detected(with diff) to any of these bin files after xorriso below got executed!)
@@ -3862,6 +3876,7 @@
             \ 2m34.106s
             \ 2m28.528s
             \ 2m1.164s
+            \ 1m40.615s
           * now copy to usbstick(/dev/sde) losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ #NEXTTIME
@@ -3874,6 +3889,7 @@
               \ 5m21.346s 1119682560 bytes (1.1 GB) copied, 319.47 s, 3.5 MB/s
               \ 3m34.484s 1119682560 bytes (1.1 GB) copied, 212.221 s, 5.3 MB/s
               \ 3m34.576s 1119682560 bytes (1.1 GB) copied, 212.483 s, 5.3 MB/s
+              \ 3m35.753s 1134166016 bytes (1.1 GB) copied, 215.454 s, 5.3 MB/s
             * sudo blockdev --rereadpt /dev/sde
               \ #NEXTTIME
             * sudo cfdisk /dev/sde
@@ -3892,13 +3908,14 @@
                 \ 0m37.442s
                 \ 40s
                 \ 0m37.056s
+                \ 0m35.794s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
                 \ use sudo for copying!
                 * sudo mount /dev/sde2 ~/here
                   \ #NEXTTIME
-                * time sudo cp --archive --target-directory ~/here/ -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/.ssh/ ~/bin/
+                * time sudo cp --archive --target-directory ~/here/ -- ~/gentooskyline/texts/*.wofl ~/gentooskyline/texts/workflowy/ ~/rsync/ ~/.ssh/ ~/bin/ ~/mpg123.eq
                   \ #NEXTTIME
                   \ removed --verbose to see any potential errors! (else too much noise)
                   \ ~/bin/ for rsyncy command which is used by ~/rsync/ scripts!
@@ -3909,6 +3926,7 @@
                   \ yes copy my ssh key(s) and known_hosts, will need to git clone git@github.com:zazdxscf/gentooskyline.git with write(push) rights.
                   \ 0m2.320s
                   \ 0m1.776s 0m0.609s
+                  \ 0m0.736s
                 - sudo cp --archive -- ~/gentooskyline/texts/workflowy/ ~/here/
                 - sudo cp --archive -- ~/rsync/ ~/here/
               * then unmount it
@@ -3923,6 +3941,7 @@
                   \ 0m10.192s
                   \ 0m11.756s
                   \ 0m6.902s
+                  \ 0m10.482s
         - the syslinux iso mode (see workflowy.wofl)
           \ fails too, because it reboots instead of showing livecd.iso's grub menu! no idea why/what
           \ this method also takes a while to load the iso into RAM at startup, a few minutes (maybe 3m30s?)
