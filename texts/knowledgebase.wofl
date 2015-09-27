@@ -293,4 +293,11 @@
       \ # Vice versa.
       \ KERNEL=="sdb", NAME="sda"
 
+* to scan/activate all logical volumes
+  \ vgchange -ay
+  \ no extra params needed
+* to deactivate all logical volumes
+  \ vgchange -an
+  \ no extra params needed
+
 
