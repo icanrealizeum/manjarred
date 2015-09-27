@@ -131,13 +131,17 @@
         \ takes lots of minutes to boot! keep it disabled!
 * install gentoo
   * boot from custom made liveCD(instructions are in this same file you're reading from) using no boot params when prompted:
-    - gentoo-nofb ipv6.disable=1 nodhcp   #SECONDBOOT (secondboot=things you need to do if you need to boot from CD again because booting after install failed or you took a break)
+    \ #SECONDBOOT (secondboot=things you need to do if you need to boot from CD again because booting after install failed or you took a break)
+    * to view this file (from your custom iso)
+      * cd ~ && mkdir here && mount /dev/sde2 here
+      * vim here/6gentoo_real_hardened.wofl
+    - gentoo-nofb ipv6.disable=1 nodhcp
       \ XXX: gentoo-nofb is required or else it will lockup with the normal fb one when loading modules! unless using admincd.iso which seems to be working!
       \ XXX: nodhcp so you don't have to pkill dhcpcd due to some bug (but still have to stop it due to another bug; yes ifconfig shows it still got loaded and you got yourself an IP - tested inside virtualbox)
       \ noipv6 is needed for gpg trying to access keyserver via ipv6 addresses
       \ there's no such option: noipv6
       \ use ipv6.disable=1  instead
-    - /etc/init.d/rpcbind stop  #SECONDBOOT
+    - /etc/init.d/rpcbind stop
       \ this kills listening rpcbind (on eg. port 111 and others, nfs related )
     - setup networking (only when NOT using NAT in virtualbox, so do this when using Bridged)
       * /etc/init.d/dhcpcd stop
@@ -163,11 +167,12 @@
         \ nameserver 208.67.222.222
         \ nameserver 208.67.220.220
         \ #nameserver 192.168.1.1
-    * pkill dhcpcd
+    - pkill dhcpcd
+      \ it's not even emerged anymore
     * see if net works  #SECONDBOOT
       * ping google.com
         \ to see it works
-    * start using ssh to facilitate copy/paste operations #SECONDBOOT
+    - start using ssh to facilitate copy/paste operations
       * passwd
         \ to set a root password
       * /etc/init.d/sshd start
@@ -194,14 +199,20 @@
               \ Guest IP: 10.0.2.15
               \ Guest Port: 22
           * ssh -v -p 8822 127.0.0.111 -l root
-    * start this inside vm:
+    - start this inside vm:
       * setterm --blank 0
         \ to avoid blanking the screen after a few mins
       * dmesg -w
       \ and watch for segfaults (apparently cc1plus likes to do that - 3 times so far)
       \ note that you are using ssh terminal now, so putting this inside vm window is ok (or in another ssh session, non-chrooted)
     * partition disk
-      * parted -a optimal /dev/sda
+      \ when booting from cardreader(/usbstick too?) sda is 80G and sdb is 1TB but the 80G is where the dvd-rw was (I mean physically, inside this laptop). Use that lsblk to verify! (74.3G and 931.5G)
+      * lsblk
+      * blkdiscard --verbose --secure -- /dev/sdb
+      * blockdev --rereadpt /dev/sdb
+        \ aka sfdisk -R
+      * lsblk
+      * parted -a optimal /dev/sdb
       * mktable gpt
         \ mklabel=mktable  but mktable is more intuitive
         \ note: destroys all existing partitions (data is lost)
@@ -4009,7 +4020,9 @@
       * wait... maybe we try the vfose variant still.
 
 * bigTODO:
-  - changes to be done inside the iso
+  * changes to be done inside the iso
+    * in inittab make F12 be dmesg (find out how)
+    * need parted and mirrorselect
     - .vimrc changes for virtual console (TERM=linux  and locale is C)
       * change an existing line to:
         \ highlight Comment ctermbg=none ctermfg=darkgray
