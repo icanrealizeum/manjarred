@@ -3373,7 +3373,9 @@
         \ without this autoconfig just fails
         \ wait, why is this then not a dependency of autoconfig ? or what am I missing here? autoconfig AND unmute are both part of (equery b /etc/init.d/autoconfig) package: app-misc/livecd-tools-2.0.4  and yep unmute depends on alsasound which doesn't exist as /etc/init.d/alsasound  but looks like  media-sound/alsa-utils definitely installs it! Reported issue: https://bugs.gentoo.org/show_bug.cgi?id=561498
         \ duration: 15m12s (some other compilation was happing in the background though)
-      * autoconfig needs dhcpcd installed or else it still works but spews an error when trying to execute it and I'm not sure if this has any other side effects (like as if set -e was enabled; apparently this is not happening though)
+      * delete dhcpcd so that autoconfig doesn't use it which in turn messes up my route table on bare metal!
+        * time emerge --depclean -av net-misc/dhcpcd
+      - (don't get dhcpcd!) autoconfig needs dhcpcd installed or else it still works but spews an error when trying to execute it and I'm not sure if this has any other side effects (like as if set -e was enabled; apparently this is not happening though)
         * time emerge -nav net-misc/dhcpcd
           \ 1m17.236s
           \ FIXME: maybe need some configuration options to be set!
@@ -3510,6 +3512,8 @@
           \ mpg123 -a hw:0,0 mpthreetest.mp3
       * time emerge -nav links
         \ dur: 15m31.718s
+      * time emerge -nav colordiff
+        \ need this just in case
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
           \ as to avoid this: mknod: ‘console’: Operation not permitted
@@ -3642,6 +3646,14 @@
       * restore grsec stuff
         * sysctl -w kernel.grsecurity.chroot_deny_mount=1 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=1 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=1
           \ #NEXTTIME #RESTORE
+      * get vim plugins for root too! (notice that ./root/.vim/ doesn't exist!)
+        * cp --archive --verbose -- /home/zazdxscf/.vim ./root/
+        * vim ./root/.vimrc
+          \ .vimrc changes for virtual console (TERM=linux  and locale is C)
+          * change an existing line to:
+            \ highlight Comment ctermbg=none ctermfg=darkgray
+            \ " ^ for .wofl  lines beinning with minus -  to not be white(that 26)
+          * remove the if-end surrounding: execute pathogen#infect()  so that root can use the wofl plugin
       * mkdir -vp "${LIVECD}/source/boot/isolinux/"
         * cp --archive --verbose --target-directory "${LIVECD}/source/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{{vesa,c,}menu,libutil}.c32
           \ XXX: hmm, will not boot at all without libutil.c32 if you have UI menu.c32  in .cfg
@@ -3997,12 +4009,13 @@
       * wait... maybe we try the vfose variant still.
 
 * bigTODO:
-  * changes to be done inside the iso
-    * .vimrc changes for virtual console (TERM=linux  and locale is C)
-      \ highlight Comment ctermbg=none ctermfg=darkgray
-      \ " ^ for .wofl  lines beinning with minus -  to not be white(that 26)
-      \ remove the if-end surrounding: execute pathogen#infect()  so that root can use the wofl plugin
-    * copy /home/emacs/.vim/ folder into /root/  (cp --archive)
+  - changes to be done inside the iso
+    - .vimrc changes for virtual console (TERM=linux  and locale is C)
+      * change an existing line to:
+        \ highlight Comment ctermbg=none ctermfg=darkgray
+        \ " ^ for .wofl  lines beinning with minus -  to not be white(that 26)
+      * remove the if-end surrounding: execute pathogen#infect()  so that root can use the wofl plugin
+    - copy /home/emacs/.vim/ folder into /root/  (cp --archive)
       \ so we have the wofl plugin files! and pathogen... etc.
   * git clone git@github.com:zazdxscf/amdmsrtweaker-lnx.git
     \ you need to have my ssh key because this clones for write/push access!
