@@ -3798,6 +3798,7 @@
           \ 91849 files, 8m46.679s Filesystem size 1091620.68 Kbytes (1066.04 Mbytes)
           \ 8m0.917s
           \ 18m1.903s  (with /usr/portage/) Filesystem size 1520479.09 Kbytes (1484.84 Mbytes) 255796/255796 files with 30222 dups
+          \ 18m23.828s Filesystem size 1520479.13 Kbytes (1484.84 Mbytes) 255796/255796 dups 30223
         - (was good with rsync above)time mksquashfs "${LIVECD}/target/files/source" "/tmp/target/livecd.squashfs" -comp gzip -b 1M -no-exports -xattrs -noappend -exit-on-error -progress -Xcompression-level 1
           \ into tmpfs
           \ if dest file exists, it get overwritten(recreated) immediately and without warning!
@@ -3900,6 +3901,7 @@
             \ 0m10.767s
             \ 0m10.553s
             \ 0m11.510s
+            \ 0m12.564s
           - (use scp instead!it's faster)ok transfer from within virtualbox(gentoo non chrooted) to host(manjaro)
             \ src: http://intermediatesql.com/linux/scrap-the-scp-how-to-copy-data-fast-using-pigz-and-nc/
             * get 'nc' command
@@ -3935,6 +3937,7 @@
             \ 2m1.164s
             \ 1m40.615s
             \ 2m24.138s
+            \ 2m20.902s
           * now copy to usbstick(/dev/sde) losing all the existing data on it
             * time ( sudo dd if=/tmp/livecdhybrid.iso of=/dev/sde bs=6M && sync )
               \ #NEXTTIME
@@ -3949,6 +3952,7 @@
               \ 3m34.576s 1119682560 bytes (1.1 GB) copied, 212.483 s, 5.3 MB/s
               \ 3m35.753s 1134166016 bytes (1.1 GB) copied, 215.454 s, 5.3 MB/s
               \ 6m32.790s 1573978112 bytes (1.6 GB) copied, 390.668 s, 4.0 MB/s
+              \ 6m43.247s
             * sudo blockdev --rereadpt /dev/sde
               \ #NEXTTIME
             * sudo cfdisk /dev/sde
@@ -3969,6 +3973,7 @@
                 \ 0m37.056s
                 \ 0m35.794s
                 \ 0m36.246s
+                \ 0m37.331s
               * mount it and copy files
                 \ wofl files
                 \ ~/rsync/
