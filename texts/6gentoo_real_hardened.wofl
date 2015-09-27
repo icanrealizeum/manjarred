@@ -3661,9 +3661,16 @@
         \ needed for mkisofs later, outside of chroot
       * exit chroot
         \ #NEXTTIME
+      * cd "${LIVECD}/source"
+        \ already still here.
+        \ #NEXTTIME
       * restore grsec stuff
         * sysctl -w kernel.grsecurity.chroot_deny_mount=1 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=1 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=1
           \ #NEXTTIME #RESTORE
+      * prepare resolv.conf
+        * echo 'nameserver 8.8.8.8' > ./etc/resolv.conf
+      * more virtual consoles and dmesg on the 10-12th ones
+        * cp --archive --verbose -- /etc/inittab ./etc/inittab
       * get vim plugins for root too! (notice that ./root/.vim/ doesn't exist!)
         * cp --archive --verbose -- /home/zazdxscf/.vim ./root/
         * vim ./root/.vimrc
@@ -3705,9 +3712,6 @@
           \ src: kernel/Documents/fb/fbcon.txt
           \ there's also: fbcon=vc:6-7
           \ the only thing that works(and doesn't just blank like the map one) is the radeon.modeset=0 at kernel cmdline (tested) [the modprobe.d/ conf doesn't work!]  but this will LIKELY need to be set to 1 for X (startx) to be able to get into graphics mode (even though virtualbox is able to do from text to X and back without problems; but that's it's on non-radeon driver)
-      * cd "${LIVECD}/source"
-        \ already still here.
-        \ #NEXTTIME
       * umount --recursive --verbose --lazy -- ./patches ./ccache ./usr/portage/distfiles ./tmp ./var/tmp/portage/ ./var/tmp/ ./proc ./sys ./dev ./run
         \ #NEXTTIME
       - hash -r && env-update && source /etc/profile && source ~/.bash_profile
@@ -4033,8 +4037,9 @@
 
 * bigTODO:
   * changes to be done inside the iso
-    * in inittab make F12 be dmesg (find out how)
-    * need parted and mirrorselect
+    - resolv.conf must be nameserver 8.8.8.8
+    - in inittab make F12 be dmesg (find out how)
+    - need parted and mirrorselect
     - .vimrc changes for virtual console (TERM=linux  and locale is C)
       * change an existing line to:
         \ highlight Comment ctermbg=none ctermfg=darkgray
