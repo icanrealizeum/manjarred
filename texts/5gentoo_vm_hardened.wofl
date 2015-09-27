@@ -3194,7 +3194,7 @@
           \
       * grsec settings to relax chroot for emerge not to fail on some packages!
         * sysctl -w kernel.grsecurity.chroot_deny_mount=0 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=0 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=0
-          \ #NEXTTIME
+          \ #NEXTTIME also see #RESTORE below
         - sysctl -w kernel.grsecurity.chroot_deny_chmod=0
         - sysctl -w kernel.grsecurity.chroot_deny_chroot=0
         - sysctl -w kernel.grsecurity.chroot_caps=0
@@ -3209,6 +3209,10 @@
           \ if your chrooted apps are having problems performing those kinds of
           \ tasks.  If the sysctl option is enabled, a sysctl option with
           \ name "chroot_caps" is created."
+          \.....
+          \ New: now looks like I'm getting "mount: permission denied" because of this CAP_SYS_ADMIN; I didn't use to get this before! must be the new portage 2.2.22 ?
+          \ [  700.484975] grsec: From 10.0.2.2: exec of /root/admincd/source/bin/mount (mount -t cgroup -o rw,nosuid,nodev,noexec,none,name=portage tmpfs /sys/fs/cgroup/portage ) by /root/admincd/source/bin/mount[emerge:12460] uid/euid:0/0 gid/egid:0/0, parent /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:9821] uid/euid:0/0 gid/egid:0/0
+          \ [  700.503469] grsec: From 10.0.2.2: use of CAP_SYS_ADMIN in chroot denied for /root/admincd/source/bin/mount[mount:12460] uid/euid:0/0 gid/egid:0/0, parent /root/admincd/source/usr/lib64/python-exec/python3.4/emerge[emerge:9821] uid/euid:0/0 gid/egid:0/0
       * get the pub key so that webrsync doesn't fail
         * cp --archive -- /etc/portage/gpg ./etc/portage/
       * get .bashrc in there because it sets some CCACHE vars without which apparently cache miss happens all the time!
@@ -3239,8 +3243,11 @@
           \ should be only 5 items listed!
       * set the system-wide locale settings
         * eselect locale list
-        * Select the en_US.utf8 one:
+        - Select the en_US.utf8 one:
           * eselect locale set 4
+            \ XXX: lsblk is ugly in virtual consoles (TERM=linux) unless this is set to C (aka set 1); also mc is ugly too!
+        * select the C one:
+          * eselect locale set 1
       * env-update && source /etc/profile && source ~/.bash_profile
         \ oh we don't have ~/.bash_profile yet; maybe I'll copy it before running this; who knows; otherwise ignore.
       * emerge --config sys-libs/timezone-data
@@ -3492,7 +3499,12 @@
         \ getting this so I can listen to something while installing/compiling (when booted from iso)
         \ Total: 13 packages (13 new), Size of downloads: 851 KiB
         \ duration: 52m33s
-        \ extra 10m49s with the alsa flag, afterwards.
+        \ extra 10m49s with the alsa flag, afterwards. still not working...
+        * time USE="alsa sdl portaudio oss jack -ipv6" emerge -av mpg123
+          \ Total: 7 packages (6 new, 1 reinstall), Size of downloads: 6,904 KiB
+          \ an extra : 24m10s
+        * mp3 to test
+          \ https://archive.org/download/testmp3testfile/mpthreetest.mp3
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
           \ as to avoid this: mknod: ‘console’: Operation not permitted
@@ -3622,6 +3634,9 @@
         \ needed for mkisofs later, outside of chroot
       * exit chroot
         \ #NEXTTIME
+      * restore grsec stuff
+        \ #NEXTTIME #RESTORE
+        * sysctl -w kernel.grsecurity.chroot_deny_mount=1 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=1 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=1
       * mkdir -vp "${LIVECD}/source/boot/isolinux/"
         * cp --archive --verbose --target-directory "${LIVECD}/source/boot/isolinux/" -- /usr/share/syslinux/isohdpfx.bin /usr/share/syslinux/isolinux.bin /usr/share/syslinux/ldlinux.c32 /usr/share/syslinux/{{vesa,c,}menu,libutil}.c32
           \ XXX: hmm, will not boot at all without libutil.c32 if you have UI menu.c32  in .cfg
