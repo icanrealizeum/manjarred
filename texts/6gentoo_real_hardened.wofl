@@ -271,8 +271,8 @@
               \ set 2 root on
               \ or
               \ set 2 hidden on
-            * make MBR active (NEEDED for bare metal BIOS to see the whole disk as bootable, or else it just skips it and tries next hdd if any)
-              * disk_set pmbr_boot on
+            - make MBR active (NEEDED for bare metal BIOS to see the whole disk as bootable, or else it just skips it and tries next hdd if any)
+              - disk_set pmbr_boot on
                 \ (GPT) - this flag enables the boot flag on the GPT’s protective MBR partition.
                 * fdisk -t dos -l /dev/sdb
                   \ to verify
@@ -280,6 +280,26 @@
                   \ /dev/sdb1  *        1 1953525167 1953525167 931.5G ee GPT
                   \ NOW we're talkin'!
                   \ XXX: Oh man, it still doesn't boot! Thanks Lenovo! :)  (did remove the other (GPT)flags though)
+              - recompute CHS values for the enttries in the protective MBR
+                \ src: http://www.rodsbooks.com/gdisk/bios.html#bios
+                * sgdisk --recompute-chs /dev/sdb
+                  \ before:
+                  \ /dev/sdb1  *        1 1953525167 1953525167 931.5G ee GPT
+                  \ --
+                  \ Geometry: 255 heads, 63 sectors/track, 121601 cylinders
+                  \ Units: cylinders of 16065 * 512 = 8225280 bytes
+                  \ Sector size (logical/physical): 512 bytes / 512 bytes
+                  \ /dev/sdb1  *        1 121602    121602 931.5G ee GPT
+                  \ after: 
+                  \ /dev/sdb1  *        1 1953525167 1953525167 931.5G ee GPT
+                  \ --
+                  \ Geometry: 255 heads, 63 sectors/track, 121601 cylinders
+                  \ Units: cylinders of 16065 * 512 = 8225280 bytes
+                  \ Sector size (logical/physical): 512 bytes / 512 bytes
+                  \ /dev/sdb1  *        1 121602    121602 931.5G ee GPT
+                  \ --- hmm, apparently no effect BUT! man sgdisk says:
+                  \ the GPT specification requires a CHS value of 0xFFFFFF for over-8GiB partitions, but  this  value  is technically  illegal by the usual standards. Some BIOSes hang if they encounter this value. This option  will  recompute  a  more normal  CHS value -- 0xFEFFFF for over-8GiB partitions, enabling these BIOSes to boot.
+                  \ XXX: this has had no effect!
               - set 2 boot on
                 \ it added: boot and esp flags!
                 \ NOPE it doesn't boot still! and I even tried legacy_boot flag on top of those! same effect!
