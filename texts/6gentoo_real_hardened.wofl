@@ -7,7 +7,7 @@
 * location of this: https://github.com/zazdxscf/gentooskyline/blob/master/texts/5gentoo_vm_hardened.wofl
   \ raw: https://raw.githubusercontent.com/zazdxscf/gentooskyline/master/texts/5gentoo_vm_hardened.wofl
   \ the number in front of the filename indicates that's it's a newer iteration and most likely up to date when compared to any previous iteration!
-* get the iso
+- get the iso
   \ eg. links http://gentoo.mirrors.easynews.com/linux/gentoo/releases/amd64/autobuilds/current-admincd-amd64/
   * download
     - this doesn't work(gets robots.txt and stuff) wget -r --level=1 -nd -A 'admincd-amd64-201*.iso' http://gentoo.mirrors.easynews.com/linux/gentoo/releases/amd64/autobuilds/current-admincd-amd64/
@@ -26,7 +26,7 @@
     * sha512sum -c admincd-amd64-2015*.iso.DIGESTS.asc
       \ first one is OK:
       \ admincd-amd64-20150813.iso: OK
-* put iso on usb (if you plan on booting from it on a real computer - not for virtualbox!!)
+- put iso on usb (if you plan on booting from it on a real computer - not for virtualbox!!)
   * overwrite(thus lose!) everything on the usb stick, by writing the iso on the entire device(eg. sde, not on some partition like sde1)
     \ partition is also lost this way! *doh*
     * time sudo dd if=admincd-amd64-20150813.iso of=/dev/sde bs=6M
@@ -51,7 +51,7 @@
       * sudo cp --archive -- ~/build/amdmsrtweaker-lnx ~/here
       * sudo umount here
       * sudo eject /dev/sde
-* make virtualbox VM
+- make virtualbox VM
   * create new virtual machine
     * linux
     * gentoo (64bit)
@@ -129,6 +129,7 @@
         \ DONE: Well you can increase the speed actually, to: 115200  or maybe more, haven't tested with anything other than 9600
         \ for some reason 115200 is slow! possibly just like 9600 or slower!,, actually I can't tell the difference, maybe 115200 is faster than 9600 or same? but it should be visible!!!
         \ takes lots of minutes to boot! keep it disabled!
+* see howtos -> build your own admincd iso, since that's what we're using to install this!
 * install gentoo
   * boot from custom made liveCD(instructions are in this same file you're reading from) using no boot params when prompted:
     \ #SECONDBOOT (secondboot=things you need to do if you need to boot from CD again because booting after install failed or you took a break)
@@ -208,80 +209,86 @@
     * partition disk
       \ when booting from cardreader(/usbstick too?) sda is 80G and sdb is 1TB but the 80G is where the dvd-rw was (I mean physically, inside this laptop). Use that lsblk to verify! (74.3G and 931.5G)
       * lsblk
-      * blkdiscard --verbose --secure -- /dev/sdb
+      * blkdiscard --verbose -- /dev/sdb
+        \ --secure doesn't work: blkdiscard: /dev/sdb: BLKSECDISCARD ioctl failed: Operation not supported
+        \ /dev/sdb: Discarded 1000204886016 bytes from the offset 0
       * blockdev --rereadpt /dev/sdb
         \ aka sfdisk -R
       * lsblk
+        \ sdb    259:786432  0 931.5G  0 disk
       * parted -a optimal /dev/sdb
-      * mktable gpt
-        \ mklabel=mktable  but mktable is more intuitive
-        \ note: destroys all existing partitions (data is lost)
-      * unit mib
-      * creating the partitions
-        \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks#Creating_the_partitions
-        * FIXME: make it inside lvm(is that even possible?) TODO: try/test if works to make a swap partition at the beginning here just in case an accidental dd overwrites the entire device
-          * mkpart primary 1 16385
-            \ 16gig+1meg
-          - mkpart primary 1 32769
-            \ 32gig + 1 meg = 32gig partition
-            \ do twice the RAM + 1 meg that we skipped
-            \ this on bare metal.
-          * name 1 swap_on_luks_part
-          * set 1 swap on
-            \ does this even work??
-          * print
-          * FIXME: adjust sizes accordingly
-        * make a 2MB grub bios partition that will be used by the GRUB2 boot loader later
-          * mkpart primary 1 5
-            \ that's a 4MB one, 5-1=4
-            \ note: a 1 3 aka 2 meg one is enough though!
-          * name 1 gruby
-          * set 1 bios_grub on
-          * print
-        - when /boot isn't inside LVM
-          - make boot
-            * mkpart primary 3 131
+        * mktable gpt
+          \ mklabel=mktable  but mktable is more intuitive
+          \ note: destroys all existing partitions (data is lost)
+        * unit mib
+        * creating the partitions
+          \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Disks#Creating_the_partitions
+          - FIXME: make it inside lvm(is that even possible?) TODO: try/test if works to make a swap partition at the beginning here just in case an accidental dd overwrites the entire device
+            * mkpart primary 1 32769
+              \ 32gig + 1 meg = 32gig partition
+              \ do twice the RAM + 1 meg that we skipped
+              \ this on bare metal.
+            - mkpart primary 1 16385
+              \ 16gig+1meg
+            * name 1 swap_on_luks_part
+            * set 1 swap on
+              \ does this even work??
+            * print
+            * FIXME: adjust sizes accordingly
+          * make a 2MB grub bios partition that will be used by the GRUB2 boot loader later
+            * mkpart primary 1 5
+              \ that's a 4MB one, 5-1=4
+              \ note: a 1 3 aka 2 meg one is enough though!
+            * name 1 gruby
+            * set 1 bios_grub on
+            * print
+          - when /boot isn't inside LVM
+            - make boot
+              * mkpart primary 3 131
+              * name 2 booty
+            - make swap
+              * mkpart primary 131 643
+              * name 3 swap
+            - make root
+              * mkpart primary 131 7000
+                \ using a 12G hdd
+              - mkpart primary 643 -1
+              * name 3 rootfs
+              - name 4 rootfs
+            - make boot partition bootable (apparently needed only for UEFI?)
+              * set 2 booty on
+          - make LVM (with /boot inside lvm, grub can boot from this)
+            * mkpart primary 3 -1
+            * set 2 lvm on
+            * name 2 lvmall
+          * make LUKS partition for /bewt
+            \ done: do I need to set lvm flag here? even though lvm is inside luks? - nope
+            - mkpart primary 5 1029
+            * mkpart primary 5 4101
+              \ those kernels are cummulating...
             * name 2 booty
-          - make swap
-            * mkpart primary 131 643
-            * name 3 swap
-          - make root
-            * mkpart primary 131 7000
-              \ using a 12G hdd
-            - mkpart primary 643 -1
-            * name 3 rootfs
-            - name 4 rootfs
-          - make boot partition bootable (apparently needed only for UEFI?)
-            * set 2 booty on
-        - make LVM (with /boot inside lvm, grub can boot from this)
-          * mkpart primary 3 -1
-          * set 2 lvm on
-          * name 2 lvmall
-        * make LUKS partition for /bewt
-          \ done: do I need to set lvm flag here? even though lvm is inside luks? - nope
-          * mkpart primary 5 1029
-            \ those kernels are cummulating...
-          * name 2 booty
-          - no: maybe set this to root or hidden flag (currently no flag is set) - i dno, this doesn't seem needed
-            \ set 2 root on
-            \ or
-            \ set 2 hidden on
-        * make LUKS partition for /
-          \ this is so we can use different passwords - one at grub menu for mounting /bewt and one for kernel when it wants to mount /
-          * mkpart primary 1029 -1
-          - mkpart primary 1029 998G
-            \ should've probably been GB not G because: now Size: 950740MiB
-          * name 3 lucky
-        - make root partition (/boot is on it too)
-          \ this if you don't need lvm or luks (see 4*.wofl file)
-          * mkpart primary 5 -1
-          * name 2 allin1
-        * print
-        * q
+            - no: maybe set this to root or hidden flag (currently no flag is set) - i dno, this doesn't seem needed
+              \ set 2 root on
+              \ or
+              \ set 2 hidden on
+          * make LUKS partition for /
+            \ this is so we can use different passwords - one at grub menu for mounting /bewt and one for kernel when it wants to mount /
+            - mkpart primary 1029 -1
+            * mkpart primary 4101 -500GiB
+              \ leave exactly 500 gigabytes free space!
+            - mkpart primary 1029 998G
+              \ should've probably been GiB not G because: now Size: 950740MiB
+            * name 3 lucky
+          - make root partition (/boot is on it too)
+            \ this if you don't need lvm or luks (see 4*.wofl file)
+            * mkpart primary 5 -1
+            * name 2 allin1
+          * print
+          * q
     * create filesystems
       * LUKS
         * create
-          * cryptsetup --verbose --verify-passphrase luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 541 --use-random -- /dev/sda2
+          * cryptsetup --verbose --verify-passphrase luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 541 --use-random -- /dev/sdb2
             \ XXX: iter-time reduced from 5401 to 541 (10 times less; miliseconds) 'cause I don't really care! I care more about not wasting 5.4 seconds waiting here :)
             \ to later change the password: cryptsetup --verbose --verify-passphrase --iter-time 502 luksChangeKey /dev/sda2   (note the crappy iter-time used this time around!)
             \ uppercase YES or else: Command failed with code 22: Invalid argument
@@ -292,19 +299,28 @@
             \ Note: cryptsetup: Option --allow-discards is allowed only for open operation.
             \ boot
             \ dmesg: [ 1613.759458] device-mapper: ioctl: unable to remove open device temporary-cryptsetup-14945
-          * cryptsetup --verbose --verify-passphrase luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 541 --use-random -- /dev/sda3
+            \ some errors happen, probably safe to ignore though:
+            \ [ 1389.375462] udevd[14898]: inotify_add_watch(7, /dev/dm-0, 10) failed: No such file or directory
+            \ device-mapper: remove ioctl on temporary-cryptsetup-14876 failed: Device or resource busy
+            \ Command successful.
+          * cryptsetup --verbose --verify-passphrase luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 541 --use-random -- /dev/sdb3
             \ root
             \ iter time set to 10 times less aka 541
           - cryptsetup --verbose isLuks /dev/sda2 || echo no
             \ Command successful.
-          * cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
+          * cryptsetup --verbose --allow-discards luksOpen /dev/sdb2 luks_on_sda2_boot
             \ #SECONDBOOT DO THIS AFTER LVM BELOW:
-          * cryptsetup --verbose --allow-discards luksOpen /dev/sda3 lvm_on_luks_on_sda3_root
+            \ it's gonna be sda but it's not sdb, so.... hmm
+          * cryptsetup --verbose --allow-discards luksOpen /dev/sdb3 lvm_on_luks_on_sda3_root
             \ #SECONDBOOT DO THIS AFTER LVM BELOW:
         * backup header:
-          * cryptsetup --verbose luksHeaderBackup /dev/sda2 --header-backup-file boot.luks.header
-          * cryptsetup --verbose luksHeaderBackup /dev/sda3 --header-backup-file root.luks.header
-          * now use scp to pull it out of vbox into the host i guess... TODO:
+          * mkdir /root/here/luks.headers.backup/
+            \ /root/here should exist already; it's where usbstick writable partition(sde2) was mounted!
+          * cd /root/here/luks.headers.backup/
+          * cryptsetup --verbose luksHeaderBackup /dev/sdb2 --header-backup-file boot.luks.header
+          * cryptsetup --verbose luksHeaderBackup /dev/sdb3 --header-backup-file root.luks.header
+          * cd
+          - now use scp to pull it out of vbox into the host i guess... TODO:
             * on HOST run this:
               \ mkdir luks.headers.backup ; scp -P 8822 -4vp root@127.0.0.20:/root/*.header luks.headers.backup/ ; ls luks.headers.backup/
               \ make sure: debug1: Exit status 0  not 1  (if 1 look above see what failed!)
@@ -319,16 +335,22 @@
             * /etc/init.d/lvm stop ; /etc/init.d/lvmetad stop
               \ #SECONDBOOT
         * set discards #SECONDBOOT
-          * nano -w /etc/lvm/lvm.conf  (vim is available with admincd*.iso)
-            \ NOTE: this is the first occurence in this .wofl file in which we're using an editor to edit a file, when using admincd*.iso 'vim' is available, otherwise use 'nano -w' (eg. when using minimalcd*.iso there's no vim)
-            * Ctrl+W to search, for: issue_d
+          * vim /etc/lvm/lvm.conf
+            \ (vim is available with our custom admincd*.iso but also on theirs! but not on installcd.iso)
+            \ //NOTE: this is the first occurence in this .wofl file in which we're using an editor to edit a file, when using admincd*.iso 'vim' is available, otherwise use 'nano -w' (eg. when using minimalcd*.iso there's no vim)
+            * search for issue_d and set:
               \ issue_discards = 1
-            * Ctrl+W use_lvmetad =
+            - Ctrl+W to search, for: issue_d
+              \ issue_discards = 1
+            * search for use_lvmetad =   and set:
+              \ use_lvmetad = 1
+              \ oops, it's already 1 ! for now.
+            - Ctrl+W use_lvmetad =
               \ Alt+W to next search (not needed if you include the equals above)
               \ use_lvmetad = 1
-          * uncomment: default_data_alignment = 1   <- means 1MB
-            \ and below: data_alignment_detection = 1  which means enabled
-            \ this one is already uncommented!
+            * uncomment: default_data_alignment = 1   <- means 1MB
+              \ and below: data_alignment_detection = 1  which means enabled
+              \ this one is already uncommented!
         - /etc/init.d/lvmetad stop
           \ to disable the warning:
           \ WARNING: lvmetad is running but disabled. Restart lvmetad before enabling it!
@@ -343,7 +365,7 @@
         * start lvmetad (needed for grub, apparently! with luks)
           * /etc/init.d/lvm start
             \ #SECONDBOOT AFTER THIS DO THE cryptsetup luksOpen ABOVE
-            \ starts lvm and lvmetad!
+            \ this starts lvm and lvmetad!
         * create physical volume
           - pvcreate --verbose /dev/sda2
           * pvcreate --verbose /dev/mapper/lvm_on_luks_on_sda3_root
@@ -356,6 +378,7 @@
         * pvdisplay
           \ shows what we did
           \ With the pvdisplay command, an overview of all active physical volumes on the system can be obtained. 
+          \   PV Size               427.51 GiB
         * create vg
           \ A volume group (VG) groups a number of physical volumes and show up as /dev/VG_NAME in the device file system. The name of a volume group is chosen by the administrator.
           * vgcreate --verbose vgall /dev/mapper/lvm_on_luks_on_sda3_root
@@ -365,29 +388,55 @@
         * make logical volumes
           \ Logical volumes are the final meta devices which are made available to the system, usually to create file systems on. They are created and managed in volume groups and show up as /dev/VG_NAME/LV_NAME.
           - lvcreate --verbose --discards passdown -L 512M -n bootlvolbackup vgall
-          * lvcreate --verbose --discards passdown --size 1024M --name bootlvolbackup vgall
+          * lvcreate --verbose --size 4096M --name bootlvolbackup vgall
+            \ yep M is megabytes (so the man says!)
             \ TODO: make use of this backup to save contents probably before running genkernel?
             \ the boot logical volume backup - where we store a copy of the /dev/sda2 partition i guess
-            \ XXX: there's a --discards passdown but seems to have no effect and is not necessary (only tested on non-luks)
-          * lvcreate --verbose --discards passdown -l 100%FREE --name rootlvol vgall
+            \ //XXX: there's a --discards passdown but seems to have no effect and is not necessary (only tested on non-luks)
+            \ New error(and doesn't create anything!):
+            \   --discards is supported only with thins.
+            \  Run `lvcreate --help' for more information.
+            \ apparently I've to add --thin, well it's more complicated! hmm...
+            \ done: removing --discards passdown  for now, to see if discards are passed anyway! it would be messed up if they weren't! I've just gonna drop lvm entirely then! need that trimtest script to test this... ok tested and TRIM works! so, without --discards! still works!
+          * lvcreate --verbose --size 32G --name swaplvol vgall
+            \ swap device
+            \   LV Size                32.00 GiB
+          * lvcreate --verbose --extents 100%FREE --name rootlvol vgall
+            \   LV Size                391.50 GiB
             \ the root+home device
             \ this is how to remove it(even if not in /dev/mapper/): lvremove /dev/vgall/rootlvol
         * lvdisplay
       * boot
-        \ TODO: see mkfs.btrfs --help  and -A option might be needed to align for SSD ?
+        \ done: see mkfs.btrfs --help  and -A option might be needed to align for SSD ? - apparently not! since the lvm is already aligned, start of device for btrfs making seems okay.
         * mkfs.btrfs --metadata single /dev/mapper/luks_on_sda2_boot
-          \ single because ssd, although this isn't needed because it's supposedly detected and set automatically; XXX: maybe not detected when luks (or when no TRIM? supported in .vbox file)
+          \ single because ssd, although this isn't needed because it's supposedly detected and set automatically; XXX: maybe not detected when luks (or when no TRIM? supported in .vbox file) yes, definitely not detected when LUKS!! so always specify that --metadata single
+          \ oh noes, it's not detected: SSD detected:       no
+          \ that's when lvm is on luks and on bare metal.
+          \ Performing full device TRIM (4.00GiB) ...
+          \ Block group profiles:
+          \   Data:             single            8.00MiB
+          \   Metadata:         single            8.00MiB
+          \   System:           single            4.00MiB
+          \ SSD detected:       no
+          \ Incompat features:  extref, skinny-metadata
         - mkfs.btrfs --metadata single /dev/vgall/bootlvolbackup  TODO: do we actually mirror the entire partition contents ? or how else would we be able to detect stuff
         - mkfs.btrfs /dev/sda2
           \ btrfs boot 'cause ext2 is too easy
         - mkfs.ext2 /dev/sda2
-      - swap
-        * mkswap /dev/sda3
-        * swapon /dev/sda3
+      * swap
+        * time mkswap --check --label swaponlvmonluks /dev/mapper/vgall-swaplvol
+          \ we're not playin' here! checking 32GiB for badblocks...
+          \ duration: 6m17s
+          \ 0 bad pages
+          \ LABEL=swaponlvmonluks
+          \ The size in chars of the ^ above label is max, any more and it says: "Label was truncated"
+          \ Setting up swapspace version 1, size = 32 GiB (34359734272 bytes)
+        - swapon /dev/mapper/vgall-swaplvol
+          \ not enabling it!
       * root
         * mkfs.btrfs --metadata single /dev/vgall/rootlvol
-        - mkfs.btrfs --metadata single /dev/sda2
-          \ single because it's SSD, which will be detected as such even when not specified (but just to be sure, I'm specifying it)
+          \ need to specify --metadata single  because SSD is not detected through LUKS
+          \ single because it's SSD, which will be detected as such even when not specified (but just to be sure, I'm specifying it) ; it's not detected due to being inside LUKS! so, yeah good idea for making these kind of defaults explicit, as you can see they can change... defaults are evil because they're implicit and you can thus miss when they change(such as this case)
     * mount filesystems
       - mount -o async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300 /dev/sda2 /mnt/gentoo
         \ when no luks/lvm
@@ -403,8 +452,8 @@
           \ aka(at genkernel shell, prompt): lvm lvchange --verbose -a y
           \ lvscan <- for searches in this file that you're reading right now
           \ #SECONDBOOT XXX: this is not needed if you did LVM first and then LUKS(cryptsetup luksOpen) above!
+      * NOTE: /mnt/gentoo/ already exists even on our custom made iso!
       * mount -o async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300 /dev/vgall/rootlvol /mnt/gentoo
-
         \ #SECONDBOOT
         \ datasum and datacow are implied if compression is enabled; but nodatasum and/or nodatacow disables all compression. So by specifying datacow and datasum(with compress=lzo) we're just explicitly stating our defaults. Using mount will not show datasum and datacow since they are the default.
         \ XXX: not using: discard option(will use fstrim)
@@ -417,74 +466,143 @@
         \ for large database workloads.
       * mkdir /mnt/gentoo/bewt
       - mount -o async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300 /dev/vgall/bootlvol /mnt/gentoo/bewt
-        \ TODO: maybe we should try put boot on lvm here ? even though it's lvm on luks already!
+        \ //oldTODO: maybe we should try put boot on lvm here ? even though it's lvm on luks already!
       * mount -o async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300 /dev/mapper/luks_on_sda2_boot /mnt/gentoo/bewt
         \ #SECONDBOOT
         \ XXX: not using: discard  (will use fstrim)
         \ this is just btrfsboot on luks on sda2  (not btrfsboot on lvm on luks on sda2!)
-    * mkdir -p /mnt/gentoo/etc/lvm && cp -L /etc/lvm/lvm.conf /mnt/gentoo/etc/lvm/lvm.conf
-      \ NIXME: wait, we need lvm2 installed with hardened uclibc - no more uclibc!! too buggy
-      \ but we still need to use this config!
-      \ this remembers to use lvmetad (=1) and discards=1
-      \ fixed: we might need lvmetad to be used in system (not chroot or installCD modes)
+    * copy livecd squashfs contents instead of getting a stage3
+      * time cp --archive --verbose --target-directory="/mnt/gentoo/" -- /mnt/livecd/*
+        \ this copies the iso's squashfs contents into /mnt/gentoo/ to serve as our stage3
+        \ note: there are no . prefixed files/folders in /mnt/livecd/ which would be missed by the above!
+        \ duration: 
+        \ real    7m21.642s
+        \ user    0m4.970s
+        \ sys     4m22.800s
+      - (in rsync)mkdir -p /mnt/gentoo/etc/lvm && cp -vL /etc/lvm/lvm.conf /mnt/gentoo/etc/lvm/lvm.conf
+        \ //NIXME: wait, we need lvm2 installed with hardened uclibc - no more uclibc!! too buggy
+        \ but we still need to use this config!
+        \ this remembers to use lvmetad (=1) and discards=1
+        \ fixed: we might need lvmetad to be used in system (not chroot or installCD modes)
+      - download and unpack stage 3 #stage3
+        * download stage3
+          * links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/20150820/
+            \ need these specific ones or rsync will find newer files and refuse to overwrite them due to --update   and you don't want to overwrite the newer ones because who knows what stuff is in there!
+            * download the exact following:
+              \ by pressing D on file
+              \ //stage3-amd64-nomultilib-20150820.tar.bz2.DIGESTS.asc
+              \ //stage3-amd64-nomultilib-20150820.tar.bz2
+              \ //209MB
+          - execute: links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-hardened+nomultilib/
+            \ yes http not https, but it's okay because gpg signed and will be checked later
+            \ list of mirrors are at: links http://www.gentoo.org/main/en/mirrors.xml (apparently https won't work with links; works with firefox)
+            * download the exact following:
+              \ by pressing D on file
+              \ stage3-amd64-hardened+nomultilib-20150924.tar.bz2.DIGESTS.asc
+              \ stage3-amd64-hardened+nomultilib-20150924.tar.bz2
+              \ 211MB
+          * exit
+            \ q, Enter
+        * verify integrity
+          * get key
+            * gpg --recv-keys 0xBB572E0E2D182910
+              \ that created /root/.gnupg/gpg.conf  which is required for the following* to work(or you'll have to specify --keyserver keys.gnupg.net or subkeys.pgp.net  as the first option to gpg, before --recv-keys):
+            * gpg --recv-keys 0xBB572E0E2D182910
+              \ seems like a good idea to NOT put this in /etc/portage/gpg/ just in case this key gets compromised and used to sign, let's say. On the other hand the keys are probably signed by each other which would ensure higher trust.
+          * check key fingerprint
+            * gpg --fingerprint
+              \ should match with the one here:
+              \ https://www.gentoo.org/proj/en/releng/#doc_chap5
+              \ 13EB BDBE DE7A 1277 5DFD  B1BA BB57 2E0E 2D18 2910
+              \ ^ copy paste that here in vim after pressing / to see if it finds this one above aka matched!
+          * check key sigs
+            * gpg --check-sigs
+              \ should be 1 bad signature the 2009-08-25 one at the end (sig-3)
+              \ 3 good sigs (sig!3)  and 3 not checked!
+              \ sig!3  and sig-3 (the latter is the bad one)
+              \ "The exclamation mark is only produced on --check-sigs, it's absent on 
+              \ --list-sigs so it's an indication that the signature is good. All signatures 
+              \ with --check-sigs should have the ! because signatures made by keys not in 
+              \ your key ring are excluded.
+              \ The digit is the indication of how much verification took place before signing 
+              \ - when you sign a key, GnuPG asks you how carefully you verified the key, 3 
+              \ is the highest level - very careful checking."
+              \ from: http://lists.gnupg.org/pipermail/gnupg-users/2004-July/022910.html
+          * check .asc sig
+            * gpg --verify *.asc
+              \ gpg: Good signature from "Gentoo Linux Release Engineering (Automated Weekly Release Key) <releng@gentoo.org>" [unknown]
+              \ ...
+              \ same key fingerprint from above
+          * check sha512sum of the tar
+            * sha512sum -c *.asc
+            \ first should be OK, second FAILED (because it's whirlpool not sha512)
+            \ stage3-amd64-hardened+nomultilib-20150820.tar.bz2: OK
+            \ stage3-amd64-hardened+nomultilib-20150820.tar.bz2: FAILED
+        * unpack
+          * time tar xvjpf stage3-*.tar.bz2
+            \ p for preserve attributes(& owner)
+            \ real    1m9.554s
+            \ user    0m58.283s
+            \ sys     0m33.443s
     * cd /mnt/gentoo
       \ #SECONDBOOT
-    * download and unpack stage 3 #stage3
-      * download stage3
-        * execute: links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-hardened+nomultilib/
-          \ yes http not https, but it's okay because gpg signed and will be checked later
-          \ list of mirrors are at: links http://www.gentoo.org/main/en/mirrors.xml (apparently https won't work with links; works with firefox)
-        * download:
-          \ by pressing D on file
-          \ stage3-amd64-nomultilib-20150820.tar.bz2.DIGESTS.asc
-          \ stage3-amd64-nomultilib-20150820.tar.bz2
-          \ 209MB
-        * exit
-          \ q, Enter
-      * verify integrity
-        * get key
-          * gpg --recv-keys 0xBB572E0E2D182910
-            \ that created /root/.gnupg/gpg.conf  which is required for the following* to work(or you'll have to specify --keyserver keys.gnupg.net or subkeys.pgp.net  as the first option to gpg, before --recv-keys):
-          * gpg --recv-keys 0xBB572E0E2D182910
-            \ seems like a good idea to NOT put this in /etc/portage/gpg/ just in case this key gets compromised and used to sign, let's say. On the other hand the keys are probably signed by each other which would ensure higher trust.
-        * check key fingerprint
-          * gpg --fingerprint
-            \ should match with the one here:
-            \ https://www.gentoo.org/proj/en/releng/#doc_chap5
-            \ 13EB BDBE DE7A 1277 5DFD  B1BA BB57 2E0E 2D18 2910
-            \ ^ copy paste that here in vim after pressing / to see if it finds this one above aka matched!
-        * check key sigs
-          * gpg --check-sigs
-            \ should be 1 bad signature the 2009-08-25 one at the end (sig-3)
-            \ sig!3  and sig-3 (the latter is the bad one)
-            \ "The exclamation mark is only produced on --check-sigs, it's absent on 
-            \ --list-sigs so it's an indication that the signature is good. All signatures 
-            \ with --check-sigs should have the ! because signatures made by keys not in 
-            \ your key ring are excluded.
-            \ The digit is the indication of how much verification took place before signing 
-            \ - when you sign a key, GnuPG asks you how carefully you verified the key, 3 
-            \ is the highest level - very careful checking."
-            \ from: http://lists.gnupg.org/pipermail/gnupg-users/2004-July/022910.html
-        * check .asc sig
-          * gpg --verify *.asc
-            \ gpg: Good signature from "Gentoo Linux Release Engineering (Automated Weekly Release Key) <releng@gentoo.org>" [unknown]
-            \ ...
-            \ same key fingerprint from above
-        * check sha512sum of the tar
-          * sha512sum -c *.asc
-          \ first should be OK, second FAILED (because it's whirlpool not sha512)
-          \ stage3-amd64-hardened+nomultilib-20150820.tar.bz2: OK
-          \ stage3-amd64-hardened+nomultilib-20150820.tar.bz2: FAILED
-      * unpack
-        * tar xvjpf stage3-*.tar.bz2
-          \ p for preserve attributes(& owner)
+    - (in rsync) add user before rsync-ing:
+      - check /etc/skel/.bash_profile if it has the same include line that we added to /root/.bash_profile
+        * colordiff -up /etc/skel/.bash_profile /root/.bash_profile
+          \ all good
+          \ yeah I've colordiff on custom iso!
+      * chroot /mnt/gentoo useradd --create-home --groups users,wheel,audio,cdrom,video,usb,portage --shell /bin/bash zazdxscf
+      * chroot /mnt/gentoo passwd zazdxscf
+    * rsync transfer some files from usbstick (eg. patches, .vimrc etc.)
+      \ //true for when getting a stage3 from the internet: this rsync stuff is bad tho; some things shouldn't be rsync-ed like in etc! those conf.d or the gcc-config selection(which is a symlink at least)
+      - (already in rsync)run this inside virtualbox:
+        * ln -s /home/zazdxscf/patches/portage/ /etc/portage/patches
+      * on bare metal, where /root/here/rsync/ is on usbstick mounted
+        * pushd /root/here/rsync/
+        * chmod +x 0updateFROMusbstickTObaremetalmntgentoo
+        * PATH="${PATH}:/root/here/bin/" ./0updateFROMusbstickTObaremetalmntgentoo
+          \ path needed for rsyncy command which is there in bin
+          \ this script is set to OVERWRITE any newer destination files!! which should be what we wanted here.
+        * chmod -x 0updateFROMusbstickTObaremetalmntgentoo
+        * popd
+        - cd /mnt/gentoo
+          \ already here
+        * ./2diffdirs
+          \ see the differences...
+        * realize I need to restore some things for now:
+          * vim ./etc/resolv.conf
+            \ nameserver 8.8.8.8
+          * vim ./etc/ld.so.conf.d/05gcc-x86_64-pc-linux-gnu.conf
+            \ remove duplicate entries!
+            \ or maybe I shouldn't? because each if from each gcc variant in gcc-config -l
+            \ left 2 lines (one for each gcc version)
+          * for later: fix hosts, set hostname, fix fstab,
+          * restore the net file which had my static IP on the iso, but not in rsync-ed version
+            * cp --archive --verbose -- ./rsync-backed/etc/conf.d/net ./etc/conf.d/net
+          * restore the newer ca certificates:
+            * cp --archive --verbose -- ./rsync-backed/etc/ca-certificates.conf ./etc/ca-certificates.conf
+              \ need to copy paste this in 2 parts! (gpm!)
+        - clear some things:
+          * rm /mnt/gentoo/var/lib/portage/world
+            \ this file should be empty on new install!
+          * noTODO: gcc-config -l  and need to set the 4.8.5 one which is the only one existing in stage3
+          * ok wait, why am I using a stage3 ? I should just copy the ones from the iso!
+      - run this on host:
+        * cd /home/emacs/rsync/
+          \ or cd /home/zazdxscf/rsync/
+        * ./0updateTOchroot
+          \ run that script... from ~/rsync/ on host!
+        - sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --max-delete=0 --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60   --rsh="ssh -p 8822 -l root" -- ~/rsync/gentoo/ 127.0.0.111:/mnt/gentoo/
+          \ XXX: --no-delete is not recognized, so using --max-delete=0
+          \ NOTE: add --update if you don't want newer files inside virtualbox to get overwritten by potentially older ones on the host's side BEFORE doing the above rsync command. We don't want this because when creating the new user the sekl .bashrc will always be newer inside virtualbox, but that's not the one we wanna keep.
     * config Portage
       * gpg validated snapshots
         \ from: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Features#Pulling_validated_portage_tree_snapshots
         \ Administrators can opt to only update the local portage tree with a cryptographically validated portage tree snapshot as released by the Gentoo infrastructure. This ensures that no rogue rsync mirror is adding unwanted code or packages in the tree that the system is downloading. 
-        * mkdir -p /mnt/gentoo/etc/portage/gpg ; chmod 0700 /mnt/gentoo/etc/portage/gpg
-        * gpg --homedir /mnt/gentoo/etc/portage/gpg --keyserver subkeys.pgp.net --recv-keys 0xDB6B8C1F96D8BF6D
+        - (rsynced) mkdir -p /mnt/gentoo/etc/portage/gpg ; chmod 0700 /mnt/gentoo/etc/portage/gpg
+        - (rsynced) gpg --homedir /mnt/gentoo/etc/portage/gpg --keyserver subkeys.pgp.net --recv-keys 0xDB6B8C1F96D8BF6D
           \ or keys.gnupg.net
+          \ I've to copy/paste the above command in two parts (gpm) else the first part gets run without the --recv-keys one (or I actually didn't copy the --recv one at all! not retested!)
         * gpg --homedir /mnt/gentoo/etc/portage/gpg --fingerprint
           \ DCD0 5B71 EAB9 4199 527F  44AC DB6B 8C1F 96D8 BF6D
           \ pub   4096R/96D8BF6D 2011-11-25 [expires: 2015-11-24]
@@ -493,178 +611,17 @@
           \ sub   4096R/C9189250 2011-11-25 [expires: 2015-11-24]
         * gpg -v --homedir /mnt/gentoo/etc/portage/gpg --check-sigs 0xDB6B8C1F96D8BF6D
           \ gpg: using PGP trust model
-          \ pub   4096R/96D8BF6D 2011-11-25 [expires: 2015-11-24]
-          \ uid       [ unknown] Gentoo Portage Snapshot Signing Key (Automated Signing Key)
-          \ sig!3        96D8BF6D 2011-11-25  Gentoo Portage Snapshot Signing Key (Automated Signing Key)
-          \ sub   4096R/C9189250 2011-11-25 [expires: 2015-11-24]
-          \ sig!         96D8BF6D 2011-11-25  Gentoo Portage Snapshot Signing Key (Automated Signing Key)
+          \ gpg: 2 good signatures
           \ 7 signatures not checked due to missing keys
-        * gpg --homedir /mnt/gentoo/etc/portage/gpg --edit-key 0xDB6B8C1F96D8BF6D trust
+          \ pub   rsa4096/96D8BF6D 2011-11-25 [expires: 2015-11-24]
+          \ uid         [ unknown] Gentoo Portage Snapshot Signing Key (Automated Signing Key)
+          \ sig!3        96D8BF6D 2011-11-25  Gentoo Portage Snapshot Signing Key (Automated Signing Key)
+          \ sub   rsa4096/C9189250 2011-11-25 [expires: 2015-11-24]
+          \ sig!         96D8BF6D 2011-11-25  Gentoo Portage Snapshot Signing Key (Automated Signing Key)
+        - (rsynced)gpg --homedir /mnt/gentoo/etc/portage/gpg --edit-key 0xDB6B8C1F96D8BF6D trust
           \ 5, enter,y, q, enter
-      * vim /mnt/gentoo/etc/portage/make.conf
-        \ I have vim because I'm on admincd and not inside chroot!
-        * :set paste
-      * nano -w /mnt/gentoo/etc/portage/make.conf
-        \ -w means don't wrap long lines
-        \ for example settings see /mnt/gentoo/usr/share/portage/config/make.conf.example
-        - to see what's already in effect, switch to another terminal(or a new ssh session) and
-          \ can't do this yet, only later on inside chroot!
-          \ emerge --info | less
-        - TODO: XXX: this has NO EFFECT!!! fffs! set EPATCH_SOURCE='/patches' to the /etc/portage/patches folder but a different one! and apply the folder path accordingly in the text you'll be reading below(eg. scp).
-          \ also EPATCH_SUFFIX='pech' (instead of 'patch') and rename all files accordingly!
-          \ TODO: add .pech to mc's extension list, so it is properly colored
-          \ set EPATCH_FORCE='no' and use this form for all patches: ??_${ARCH}_foo.${EPATCH_SUFFIX}
-          \ use 'all' for the ${ARCH} part to apply a patch on all architectures (eg. not just amd64)
-          \ XXX: note: EVCS_OFFLINE if non-empty prevents any online operations (eg. git pull) - this is what I need when I don't have internet but I want to re-emerge a -9999 package
-          \ see more: https://devmanual.gentoo.org/eclass-reference/git-r3.eclass/index.html
-          * mkdir -p -- '/patches' && chown root:root /patches && chmod a+rx,a-w,u+w /patches
-            \ what you put inside this dir is eg. app-misc/  instead of portage/app-misc/
-        * replace the USE flags line (Ctrl+K to remove that line): 
-          * USE="3dnow 3dnowext X bindist btrfs crypt cryptsetup cscope dbus device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext  mosh-hardening pie   pulseaudio readline session sse sse2 sse3 ssp startup-notification     strong-security -system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -mudflap -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -gstreamer -gstreamer-0 egl -gmp-autoupdate -tty-helpers -tcpd"
-          \ -tty-helpers  is something that sys-apps/util-linux-2.26.2  said it did automatically!
-          \ online USE flags list+descriptions: https://www.gentoo.org/dyn/use-index.xml#doc_chap1
-          \ XXX: libav was default but was switched to ffmpeg(by either not specifying libav or by -libav); we'll try ffmpeg (aka -libav) in next incarnation
-          \ there's ufed to show and sort flags! TODO: eventually run ufed to tidy up the flags(eg. sort) which breaks them on multiple lines though.
-          \ device-mapper for grub, lvm2 (unsure if needed): "Enable support for device-mapper from sys-fs/lvm2"
-          \ XXX: -libssp keep this disabled!
-          \ -symlink to not update /usr/src/linux symlink to point to most recent kernel sources installed, this way using `eselect kernel list` and `eselect kernel set 2` is the way to change that symlink
-          \ XXX: disabled debug flag because at least vim will create nfa_regexp_{debug,dump,run}.log files in current folder(!) on each vim invocation and append stuff to them. Will enable debug only when needed on a per-package basis.
-          \ see: equery uses seamonkey  (after emerge -a app-portage/gentoolkit ) to see all flags used by seamonkey for example.
-          \ A full description on the available USE flags can be found on the system in /usr/portage/profiles/use.desc
-          \ or this https://www.gentoo.org/dyn/use-index.xml#doc_chap2
-          \ switch terminal Alt+F3 (or get a new ssh session), less /mnt/gentoo/usr/portage/profiles/use.desc
-          - emerge --info | grep ^USE
-            \ to see current (profile's) USE contents
-            \ can't do this yet, only later on inside chroot!
-        * replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -fstack-protector-all -fPIC"
-          \ XXX: added -fPIC because lots of packages complain! and ask for -fPIC; it's ridiculous!
-          \ XXX: don't use -g3  use -ggdb instead; because "There is actually another flag ( -g3 ), but its use is not recommended. It seems to break binary interfaces and might lead to extra crashes. " src: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Backtraces  see that on how to get stack traces!
-          \ XXX: for debug, I have: -g3 -DDEBUG -O1 -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2
-          \ not using -fstack-protector-all because since I don't have hardened, then why bother with this puny protection anyway.
-          \ XXX: don't use -Wstack-protector because when compiling gcc 5.2.0 that warning happens and it's treated as error and thus fails.
-          \ XXX: don't use -DDEBUG or else compiling gnutls and gcc will fail: https://bugs.gentoo.org/show_bug.cgi?id=545316#c12
-          \ XXX: -fsanitize=address" can't include this; fails with some -lasanp or something error whateverrrrr
-          \ never -O0 , but -O1 is good for gdb, -O2 if you want fast!
-          \ TODO: not sure if -ggdb is better than -g3
-          \ don't use any extra spaces, it's known to break
-          \ XXX: # -fstack-protector-strong  apparently breaks compiler (some ./configure says C compiler cannot generate executables).
-          \ More info:
-          \ https://wiki.gentoo.org/wiki/GCC_optimization#Introduction
-          \ https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html#Invoking-GCC
-          \ https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-        * append this: FEATURES="assume-digests binpkg-logs -buildpkg -buildsyspkg -candy -ccache cgroup -clean-logs collision-protect -compress-build-logs -compress-index -compressdebug config-protect-if-modified -digest -distcc -distcc-pump distlocks downgrade-backup binpkg-multi-instance ebuild-locks -fail-clean fakeroot fixlafiles force-mirror -force-prefix -getbinpkg installsources ipc-sandbox -keeptemp -keepwork -lmirror merge-sync -metadata-transfer -mirror multilib-strict network-sandbox news -noauto -noclean -nodoc -noinfo -noman nostrip -notitles parallel-fetch parallel-install prelink-checksums preserve-libs -protect-owned sandbox sfperms -sign -skiprocheck split-elog split-log -splitdebug strict -stricter -suidctl -test -test-fail-continue -unknown-features-filter unknown-features-warn unmerge-backup unmerge-logs -unmerge-orphans userfetch userpriv usersandbox -usersync webrsync-gpg -xattr"
-          \ see all FEATURES flags in man make.conf
-          \ these flags save binary packages: buildpkg buildsyspkg downgrade-backup unmerge-backup 
-          \ When Portage is run as root, FEATURES="userfetch" will allow Portage to drop root privileges while fetching package sources. This is a small security improvement. 
-          \ XXX: didn't add ccache just yet! (Note: ccache command isn't available on livecd(nor in the uncompressed stage3), so we can only add it later on inside chroot)
-          \ FIXME: removed test due to extra requirements like tcl and other stuff that I don't currently understand; for btrfs-progs  lots of things are needed like X libs corefonts truetype etc.
-          \ //FIXME: add back stricter and see what QA_ vars need to be fiddled with, eg. for ncurses to compile. man make.conf
-        * append this: PORTAGE_GPG_DIR="/etc/portage/gpg"
-        * append this: PORT_LOGDIR="/var/log/portage/ebuild.logs/"
-        * append this: PORTAGE_BINHOST=""
-          \ to avoid downloading binary packages by emerge --getbinpkg or --getbinpkgonly (or -gK)
-        * append this: CPU_FLAGS_X86="3dnow 3dnowext mmx mmxext sse sse2 sse3"
-          \ that's my cpu flags in virtualbox, for my lenovo z575 laptop cpu is: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam. 18, aka 12h)
-          \ to get the updated flags(XXX: but this cannot be done right now):
-          \ emerge -1v app-portage/cpuinfo2cpuflags
-          \ cpuinfo2cpuflags-x86
-          * also add them to USE=  for compatibility (for 1 year) - ALREADY added below
-            \ as  eselect news read 9  says
-        * append this: ACCEPT_KEYWORDS="~amd64"
-          \ to use bleeding egde packages
-        - append this: ACCEPT_LICENSE="* -@EULA"
-          \ this is the default which can be seen with emerge --info|less
-        * append: ACCEPT_LICENSE="-* @FREE"
-          \ allow only free software and docs to be installed
-          \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Portage#Licenses
-        * append this: INSTALL_MASK="/lib/systemd /lib32/systemd /lib64/systemd /usr/lib/systemd /usr/lib32/systemd /usr/lib64/systemd /etc/systemd"
-          \ src: http://gentooexperimental.org/~patrick/weblog/archives/2014-02.html
-        * append: USE_PYTHON=2.7
-        * append this to use 4 cores when make: MAKEOPTS="-j4"
-        - disable rsync because it's insecure and can't verify authenticity, by appending in make.conf the following line: SYNC="rsync://127.0.0.3/"
-          \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Portage#Updating_the_portage_tree
-          \ nolonger in effect and we get a warning, at least with current admincd which is 9th july one.
-        * grub, append these two lines:
-          \ # Standard PC (BIOS)
-          \ GRUB_PLATFORMS="pc"
-          \ for uefi on amd64 add: efi-64 (not needed in virtualbox)
-        * append X stuff:
-          \ INPUT_DEVICES="keyboard virtualbox evdev" # synaptics" only on host(not VM) TODO: unsure if vmmouse or even mouse is needed! maybe not needed due to evdev! - apparently not needed, but we'll see on bare metal 
-          \ VIDEO_CARDS="virtualbox"  #radeon
-        * prepare for ccache later on
-          \ add lines:
-          \ #this is the default ccache dir, but it's great to state it, in case we wanna change it later, eg. when firefox compilation happens:
-          \ CCACHE_SIZE="56G"
-          \ 5G seems to be the default if that line doesn't exist
-          \ CCACHE_UMASK="0002"
-          \ ^ https://bugs.gentoo.org/show_bug.cgi?id=492910
-          * choose one, to set ccache into RAM(tmpfs) or on hdd:
-            * tmpfs
-              \ CCACHE_DIR="/var/tmp/ccache"
-              \ i chose this (with virtualbox)
-            * hdd (if not in virtualbox)
-              \ CCACHE_DIR="/ccache"
-              \ CCACHE_SIZE="100G"
-        * ensure git-r3 (git3-src) (well, the ebuild command) updates the git source folder with the right permissions to allow ebuild to be ran as normal user(a normal user that's in the portage group, ofc)
-          \ EVCS_UMASK="0002"
-          * ebuild/emerge will fail with live ebuilds (eg. ebuild somefile.ebuild compile) when ran as normal user, after having been ran as root
-            \ workaroundFIX: # chmod -cR g+w /usr/portage/distfiles/git3-src
-            \ actual fix: need to run git as portage user, otherwise some files get run as the normal user, thus inheriting its user:group
-            \ FIXME: (gentoo issue, well /usr/portage/eclass/git-r3.eclass): this still doesn't solve the problem when running ebuild for the first time as user X and then trying to run as user Y  will fail to update the git folder located at /usr/portage/distfiles/git3-src/ because user X:X owns the folder and others don't have write rights, so Y cannot write. I was thinking of replacing git invocations in git-r3.eclass with su invocations but sudo would be better(except, unlike su, it needs to be already installed) - su is bad because even with --preserve-environment  it will still clear $PATH and $IFS as you can see here:
-            \ # echo $PATH ; su -c 'echo "$PATH"' -- emacs
-            \ /usr/lib/ccache/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.8.3
-            \ /bin:/usr/bin
-            \ workaround: # su -c 'PATH="'"$PATH"'" ; IFS="'"$IFS"'"; echo "$PATH" "$IFS"' --preserve-environment -- emacs
-            \ workaround for the user Y situation: # chown -cR portage:portage /usr/portage/distfiles/git3-src
-        * save
-          \ Ctrl+X, y, enter
-        - nano -w /etc/portage/package.use/pambase  (created new file)
-          \ add line:
-          \ sys-auth/pambase -debug
-          \ sys-libs/pam -debug
-          - nano -w /etc/portage/package.use  (created new file)
-            \ add line:
-            \ sys-auth/pambase -debug
-        * add a gentoo mirror
-          \ by appending this line:
-          \ GENTOO_MIRRORS="http://ftp.romnet.org/gentoo/ http://tux.rainside.sk/gentoo/ http://de-mirror.org/gentoo/ http://gd.tuwien.ac.at/opsys/linux/gentoo/ http://www.las.ic.unicamp.br/pub/gentoo/"
-          \ in /mnt/gentoo/etc/portage/make.conf
-          \ or by running this to manually select mirrors:
-          \ mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
-          \ or better to get the 3 fastest ones:
-          \ time mirrorselect -s3 -D -o   (ok this currently segfaults!)
-          \ this takes a long time,
-          \ that gives the GENTOO_MIRRORS var on stdout, you need to copy it in make.conf
-          \ more info: https://wiki.gentoo.org/wiki/GENTOO_MIRRORS
-        - DON"T add a rsync mirror:
-          \ mirrorselect -i -r -o >> /mnt/gentoo/etc/portage/make.conf
-        * to select a non-rsync mirror:
-          \ mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
-          \ or just without the redirect to get copy pasting in action
-        * mkdir /mnt/gentoo/etc/portage/repos.conf/
-        * nano -w /mnt/gentoo/etc/portage/repos.conf/gentoo.conf
-          \ this doesn't exist!
-          - Comment out the sync-type and sync-uri variables
-            \ # sync-type = rsync
-            \ # sync-uri = ...
-          * write these lines:
-            \ [DEFAULT]
-            \ main-repo = gentoo
-            \
-            \ [gentoo]
-            \ auto-sync = no
-            \ sync-type =
-            \ sync-uri =
-            \
-            \ #XXX: ok, the first two aren't needed, apparently! but just like the next 2 (sync-*) options(which are empty by default) we are making the defaults explicit! in the latter case it means sync-*  disabled! (see: man portage)
-            \ #XXX: actually, due to  eselect news read 10  the default for auto-sync is yes! and sync-type can be webrsync but it will warn(when running cpuinfo2cpuflags-x86 at least) if sync-uri is empty! !!! Repository 'gentoo' has sync-type attribute, but is missing sync-uri attribute
-        * let's get rid of a warning:
-          \ !!! Repository 'x-portage' is missing masters attribute in '/usr/portage/metadata/layout.conf'
-          \ !!! Set 'masters = gentoo' in this file for future compatibility
-          * mkdir -p /mnt/gentoo/usr/portage/metadata/
-          * nano -w /mnt/gentoo/usr/portage/metadata/layout.conf
-            \ masters = gentoo
-    * copy DNS info
+    - (it's good from /mnt/livecd, well it should be next time) copy DNS info
+      \ actually this is bad if it comes from virtualbox made iso, because it points to 10.0.2.3 or something like that!
       * cp -L /etc/resolv.conf /mnt/gentoo/etc/
         \ use the -L option to the cp command. This ensures that, if /etc/resolv.conf is a symbolic link, that the link's target file is copied instead of the symbolic link itself. 
     * mount virtual stuffs into chroot
@@ -706,32 +663,182 @@
       * mount -t proc proc /mnt/gentoo/proc ; mount --rbind /sys /mnt/gentoo/sys ; mount --rbind /dev /mnt/gentoo/dev ; mount --rbind /run /mnt/gentoo/run
         \ #SECONDBOOT
         \ /run is needed for grub to talk to lvmetad
-    * add user before rsync-ing:
-      - check /etc/skel/.bash_profile if it has the same include line that we added to /root/.bash_profile
-        * diff -up /etc/skel/.bash_profile /root/.bash_profile
-          \ all good
-      * chroot /mnt/gentoo useradd --create-home --groups users,wheel,audio,cdrom,video,usb,portage --shell /bin/bash zazdxscf
-      * chroot /mnt/gentoo passwd zazdxscf
-    * rsync transfer some files from host (eg. patches, .vimrc etc.)
-      - (already in rsync)run this inside virtualbox:
-        * ln -s /home/zazdxscf/patches/portage/ /etc/portage/patches
-      * run this on host:
-        * cd /home/emacs/rsync/
-          \ or cd /home/zazdxscf/rsync/
-        * ./0updateTOchroot
-          \ run that script... from ~/rsync/ on host!
-        - sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --max-delete=0 --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60   --rsh="ssh -p 8822 -l root" -- ~/rsync/gentoo/ 127.0.0.111:/mnt/gentoo/
-          \ XXX: --no-delete is not recognized, so using --max-delete=0
-          \ NOTE: add --update if you don't want newer files inside virtualbox to get overwritten by potentially older ones on the host's side BEFORE doing the above rsync command. We don't want this because when creating the new user the sekl .bashrc will always be newer inside virtualbox, but that's not the one we wanna keep.
     - (auto applied after webrsync) apply patch that rsync put it (which portage itself cannot apply automatically via euser_patch)
       * cd /mnt/gentoo/
         \ don't put it in usr/portage/eclass/ because webrsync will delete everything in that folder
       * patch -Np1 -i /mnt/gentoo/home/zazdxscf/patches/webrsync/notify_when_patches_folder_inaccessible_by_portage.patch
         \ XXX: this needs to be applied after every successful emerge-webrsync !!!
         \ done: make a script which calls webrsync AND applies this patch afterwards! - done and put in /etc/portage/postsync.d/  aka the hooks that emerge-webrsync executes (if they are set executable)
-    * vim /etc/portage/make.conf
+    * verify make.conf is okay
+      - nano -w /mnt/gentoo/etc/portage/make.conf
+        \ -w means don't wrap long lines
+      * vim /mnt/gentoo/etc/portage/make.conf
+        \ I have vim because I'm on admincd and not inside chroot!
+        \ for example settings see /mnt/gentoo/usr/share/portage/config/make.conf.example
+        * :set paste
+        - to see what's already in effect, switch to another terminal(or a new ssh session) and
+          \ can't do this yet, only later on inside chroot!
+          \ emerge --info | less
+        - TODO: XXX: this has NO EFFECT!!! fffs! set EPATCH_SOURCE='/patches' to the /etc/portage/patches folder but a different one! and apply the folder path accordingly in the text you'll be reading below(eg. scp).
+          \ also EPATCH_SUFFIX='pech' (instead of 'patch') and rename all files accordingly!
+          \ TODO: add .pech to mc's extension list, so it is properly colored
+          \ set EPATCH_FORCE='no' and use this form for all patches: ??_${ARCH}_foo.${EPATCH_SUFFIX}
+          \ use 'all' for the ${ARCH} part to apply a patch on all architectures (eg. not just amd64)
+          \ XXX: note: EVCS_OFFLINE if non-empty prevents any online operations (eg. git pull) - this is what I need when I don't have internet but I want to re-emerge a -9999 package
+          \ see more: https://devmanual.gentoo.org/eclass-reference/git-r3.eclass/index.html
+          * mkdir -p -- '/patches' && chown root:root /patches && chmod a+rx,a-w,u+w /patches
+            \ what you put inside this dir is eg. app-misc/  instead of portage/app-misc/
+        * (verify!)replace the USE flags line (Ctrl+K to remove that line): 
+          * USE="3dnow 3dnowext X bindist btrfs crypt cryptsetup cscope dbus device-mapper      git gpg gpm gstreamer gtk3 jpeg lock mmx mmxext  mosh-hardening pie   pulseaudio readline session sse sse2 sse3 ssp startup-notification     strong-security -system-cairo system-icu system-jpeg system-libvpx     system-sqlite xcomposite -cdr -cgi -cvs -debug -dvdr -emacs     -firmware-loader -fortran -gnome -ipv6 -java -jit -kde -libssp -mudflap -lua     -luajit -lvm1 -mclib -minimal -network-cron -nls -nopie -nossp -plymouth     qt4 -racket -ruby -samba -static -static-libs -symlink -systemd -tcl     -test -thunar -unicode -vim-pager -wifi -yahoo -filter_audio -libav consolekit policykit extensions -gstreamer -gstreamer-0 egl -gmp-autoupdate -tty-helpers -tcpd popcnt sse4a"
+          \ -tty-helpers  is something that sys-apps/util-linux-2.26.2  said it did automatically!
+          \ online USE flags list+descriptions: https://www.gentoo.org/dyn/use-index.xml#doc_chap1
+          \ XXX: libav was default but was switched to ffmpeg(by either not specifying libav or by -libav); we'll try ffmpeg (aka -libav) in next incarnation
+          \ there's ufed to show and sort flags! TODO: eventually run ufed to tidy up the flags(eg. sort) which breaks them on multiple lines though.
+          \ device-mapper for grub, lvm2 (unsure if needed): "Enable support for device-mapper from sys-fs/lvm2"
+          \ XXX: -libssp keep this disabled!
+          \ -symlink to not update /usr/src/linux symlink to point to most recent kernel sources installed, this way using `eselect kernel list` and `eselect kernel set 2` is the way to change that symlink
+          \ XXX: disabled debug flag because at least vim will create nfa_regexp_{debug,dump,run}.log files in current folder(!) on each vim invocation and append stuff to them. Will enable debug only when needed on a per-package basis.
+          \ see: equery uses seamonkey  (after emerge -a app-portage/gentoolkit ) to see all flags used by seamonkey for example.
+          \ A full description on the available USE flags can be found on the system in /usr/portage/profiles/use.desc
+          \ or this https://www.gentoo.org/dyn/use-index.xml#doc_chap2
+          \ switch terminal Alt+F3 (or get a new ssh session), less /mnt/gentoo/usr/portage/profiles/use.desc
+          - emerge --info | grep ^USE
+            \ to see current (profile's) USE contents
+            \ can't do this yet, only later on inside chroot!
+        * (verify!)replace the  CFLAGS line with: CFLAGS="-O2 -pipe -march=native -ggdb -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2 -fstack-protector-all -fPIC"
+          \ XXX: added -fPIC because lots of packages complain! and ask for -fPIC; it's ridiculous!
+          \ XXX: don't use -g3  use -ggdb instead; because "There is actually another flag ( -g3 ), but its use is not recommended. It seems to break binary interfaces and might lead to extra crashes. " src: https://wiki.gentoo.org/wiki/Project:Quality_Assurance/Backtraces  see that on how to get stack traces!
+          \ XXX: for debug, I have: -g3 -DDEBUG -O1 -fvar-tracking-assignments -fno-omit-frame-pointer -ftrack-macro-expansion=2
+          \ not using -fstack-protector-all because since I don't have hardened, then why bother with this puny protection anyway.
+          \ XXX: don't use -Wstack-protector because when compiling gcc 5.2.0 that warning happens and it's treated as error and thus fails.
+          \ XXX: don't use -DDEBUG or else compiling gnutls and gcc will fail: https://bugs.gentoo.org/show_bug.cgi?id=545316#c12
+          \ XXX: -fsanitize=address" can't include this; fails with some -lasanp or something error whateverrrrr
+          \ never -O0 , but -O1 is good for gdb, -O2 if you want fast!
+          \ TODO: not sure if -ggdb is better than -g3
+          \ don't use any extra spaces, it's known to break
+          \ XXX: # -fstack-protector-strong  apparently breaks compiler (some ./configure says C compiler cannot generate executables).
+          \ More info:
+          \ https://wiki.gentoo.org/wiki/GCC_optimization#Introduction
+          \ https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html#Invoking-GCC
+          \ https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+        * (verify! well ccache is enabled in rsynced...)append this: FEATURES="assume-digests binpkg-logs -buildpkg -buildsyspkg -candy -ccache cgroup -clean-logs collision-protect -compress-build-logs -compress-index -compressdebug config-protect-if-modified -digest -distcc -distcc-pump distlocks downgrade-backup binpkg-multi-instance ebuild-locks -fail-clean fakeroot fixlafiles force-mirror -force-prefix -getbinpkg installsources ipc-sandbox -keeptemp -keepwork -lmirror merge-sync -metadata-transfer -mirror multilib-strict network-sandbox news -noauto -noclean -nodoc -noinfo -noman nostrip -notitles parallel-fetch parallel-install prelink-checksums preserve-libs -protect-owned sandbox sfperms -sign -skiprocheck split-elog split-log -splitdebug strict -stricter -suidctl -test -test-fail-continue -unknown-features-filter unknown-features-warn unmerge-backup unmerge-logs -unmerge-orphans userfetch userpriv usersandbox -usersync webrsync-gpg -xattr"
+          \ see all FEATURES flags in man make.conf
+          \ these flags save binary packages: buildpkg buildsyspkg downgrade-backup unmerge-backup 
+          \ When Portage is run as root, FEATURES="userfetch" will allow Portage to drop root privileges while fetching package sources. This is a small security improvement. 
+          \ // didn't add ccache just yet! (Note: ccache command isn't available on livecd(nor in the uncompressed stage3), so we can only add it later on inside chroot) - ccache is available on our custom iso and thus inside /mnt/gentoo/ since we used this iso's squashfs as stage3!
+          \ FIXME: removed test due to extra requirements like tcl and other stuff that I don't currently understand; for btrfs-progs  lots of things are needed like X libs corefonts truetype etc.
+          \ //FIXME: add back stricter and see what QA_ vars need to be fiddled with, eg. for ncurses to compile. man make.conf
+        * append this: PORTAGE_GPG_DIR="/etc/portage/gpg"
+        * append this: PORT_LOGDIR="/var/log/portage/ebuild.logs/"
+        * append this: PORTAGE_BINHOST=""
+          \ to avoid downloading binary packages by emerge --getbinpkg or --getbinpkgonly (or -gK)
+        * (fixed: for bare metal)append this: CPU_FLAGS_X86="3dnow 3dnowext mmx mmxext sse sse2 sse3 popcnt sse4a"
+          \ that's my cpu flags in virtualbox, for my lenovo z575 laptop cpu is: AMD A6-3400M APU with Radeon(tm) HD Graphics (fam. 18, aka 12h)
+          \ to get the updated flags(XXX: but this cannot be done right now):
+          \ emerge -1v app-portage/cpuinfo2cpuflags
+          \ cpuinfo2cpuflags-x86
+          * also add them to USE=  for compatibility (for 1 year) - ALREADY added below
+            \ as  eselect news read 9  says
+        * append this: ACCEPT_KEYWORDS="~amd64"
+          \ to use bleeding egde packages
+        - append this: ACCEPT_LICENSE="* -@EULA"
+          \ this is the default which can be seen with emerge --info|less
+        * append: ACCEPT_LICENSE="-* @FREE"
+          \ allow only free software and docs to be installed
+          \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Portage#Licenses
+        * append this: INSTALL_MASK="/lib/systemd /lib32/systemd /lib64/systemd /usr/lib/systemd /usr/lib32/systemd /usr/lib64/systemd /etc/systemd"
+          \ src: http://gentooexperimental.org/~patrick/weblog/archives/2014-02.html
+        * append: USE_PYTHON=2.7
+        * append this to use 4 cores when make: MAKEOPTS="-j4"
+        - disable rsync because it's insecure and can't verify authenticity, by appending in make.conf the following line: SYNC="rsync://127.0.0.3/"
+          \ src: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Portage#Updating_the_portage_tree
+          \ nolonger in effect and we get a warning, at least with current admincd which is 9th july one.
+        * grub, append these two lines:
+          \ # Standard PC (BIOS)
+          \ GRUB_PLATFORMS="pc"
+          \ for uefi on amd64 add: efi-64 (not needed in virtualbox)
+        * (NEEDed change!) append X stuff:
+          \ INPUT_DEVICES="keyboard synaptics evdev" #virtualbox evdev" # synaptics" only on host(not VM) TODO: unsure if vmmouse or even mouse is needed! maybe not needed due to evdev! - apparently not needed, but we'll see on bare metal 
+          \ VIDEO_CARDS="radeon" #"virtualbox"  #radeon
+        * prepare for ccache later on
+          \ add lines:
+          \ #this is the default ccache dir, but it's great to state it, in case we wanna change it later, eg. when firefox compilation happens:
+          \ CCACHE_SIZE="200G"
+          \ 5G seems to be the default if that line doesn't exist
+          \ CCACHE_UMASK="0002"
+          \ ^ https://bugs.gentoo.org/show_bug.cgi?id=492910
+          * choose one, to set ccache into RAM(tmpfs) or on hdd:
+            * tmpfs
+              \ CCACHE_DIR="/var/tmp/ccache"
+              \ CCACHE_SIZE="6G"
+              \ i chose this (with virtualbox)
+            * hdd (if not in virtualbox)
+              \ CCACHE_DIR="/ccache"
+              \ CCACHE_SIZE="100G"
+        * ensure git-r3 (git3-src) (well, the ebuild command) updates the git source folder with the right permissions to allow ebuild to be ran as normal user(a normal user that's in the portage group, ofc)
+          \ EVCS_UMASK="0002"
+          * ebuild/emerge will fail with live ebuilds (eg. ebuild somefile.ebuild compile) when ran as normal user, after having been ran as root
+            \ workaroundFIX: # chmod -cR g+w /usr/portage/distfiles/git3-src
+            \ actual fix: need to run git as portage user, otherwise some files get run as the normal user, thus inheriting its user:group
+            \ FIXME: (gentoo issue, well /usr/portage/eclass/git-r3.eclass): this still doesn't solve the problem when running ebuild for the first time as user X and then trying to run as user Y  will fail to update the git folder located at /usr/portage/distfiles/git3-src/ because user X:X owns the folder and others don't have write rights, so Y cannot write. I was thinking of replacing git invocations in git-r3.eclass with su invocations but sudo would be better(except, unlike su, it needs to be already installed) - su is bad because even with --preserve-environment  it will still clear $PATH and $IFS as you can see here:
+            \ # echo $PATH ; su -c 'echo "$PATH"' -- emacs
+            \ /usr/lib/ccache/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.8.3
+            \ /bin:/usr/bin
+            \ workaround: # su -c 'PATH="'"$PATH"'" ; IFS="'"$IFS"'"; echo "$PATH" "$IFS"' --preserve-environment -- emacs
+            \ workaround for the user Y situation: # chown -cR portage:portage /usr/portage/distfiles/git3-src
+        * save
+          \ Ctrl+X, y, enter
+        - nano -w /etc/portage/package.use/pambase  (created new file)
+          \ add line:
+          \ sys-auth/pambase -debug
+          \ sys-libs/pam -debug
+          - nano -w /etc/portage/package.use  (created new file)
+            \ add line:
+            \ sys-auth/pambase -debug
+        * add a gentoo mirror
+          \ by appending this line:
+          \ GENTOO_MIRRORS="http://ftp.romnet.org/gentoo/ http://tux.rainside.sk/gentoo/ http://de-mirror.org/gentoo/ http://gd.tuwien.ac.at/opsys/linux/gentoo/ http://www.las.ic.unicamp.br/pub/gentoo/"
+          \ in /mnt/gentoo/etc/portage/make.conf
+          \ or by running this to manually select mirrors:
+          \ mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
+          \ or better to get the 3 fastest ones:
+          \ time mirrorselect -s3 -D -o   (ok this currently segfaults!)
+          \ this takes a long time,
+          \ that gives the GENTOO_MIRRORS var on stdout, you need to copy it in make.conf
+          \ more info: https://wiki.gentoo.org/wiki/GENTOO_MIRRORS
+        - DON"T add a rsync mirror:
+          \ mirrorselect -i -r -o >> /mnt/gentoo/etc/portage/make.conf
+        * to select a non-rsync mirror:
+          \ mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
+          \ or just without the redirect to get copy pasting in action
+        - (rsynced)mkdir /mnt/gentoo/etc/portage/repos.conf/
+        - (rsynced)nano -w /mnt/gentoo/etc/portage/repos.conf/gentoo.conf
+          \ this doesn't exist!
+          - Comment out the sync-type and sync-uri variables
+            \ # sync-type = rsync
+            \ # sync-uri = ...
+          * write these lines:
+            \ [DEFAULT]
+            \ main-repo = gentoo
+            \
+            \ [gentoo]
+            \ auto-sync = no
+            \ sync-type =
+            \ sync-uri =
+            \
+            \ #XXX: ok, the first two aren't needed, apparently! but just like the next 2 (sync-*) options(which are empty by default) we are making the defaults explicit! in the latter case it means sync-*  disabled! (see: man portage)
+            \ #XXX: actually, due to  eselect news read 10  the default for auto-sync is yes! and sync-type can be webrsync but it will warn(when running cpuinfo2cpuflags-x86 at least) if sync-uri is empty! !!! Repository 'gentoo' has sync-type attribute, but is missing sync-uri attribute
+        - (rsynced)let's get rid of a warning:
+          \ !!! Repository 'x-portage' is missing masters attribute in '/usr/portage/metadata/layout.conf'
+          \ !!! Set 'masters = gentoo' in this file for future compatibility
+          * mkdir -p /mnt/gentoo/usr/portage/metadata/
+          * (rsynced as: "masters =")nano -w /mnt/gentoo/usr/portage/metadata/layout.conf
+            \ masters = gentoo
+    - (rsynced as enabled because we DO have ccache in our iso as stage3; not have only when inet downloaded stage3)vim /etc/portage/make.conf
       * ensure ccache is disabled, so it's: -ccache
         \ because we don't yet have it installed
+    * relax grsec before chrooting!
+      * sysctl -w kernel.grsecurity.chroot_deny_mount=0 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=0 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=0 ; sysctl -w kernel.grsecurity.chroot_caps=0 ; sysctl -w kernel.grsecurity.chroot_deny_mknod=0
     * chroot /mnt/gentoo env-update
       \ needed because of all the changes that rsync did, and before actually chroot logging in!
     * chrooting
@@ -779,12 +886,13 @@
     * get portage
       * download but fail to gpg check:
         * time emerge-webrsync -v -k
-        \ 2min2sec
-        \ 62MB
-        \ this supposedly checks gpg key, but wait there's no gpg inside chroot yet
-        \ emerge-webrsync: error: cannot check signature: gpg binary not found
-        \ can't run this now:
-        \ emerge --ask app-crypt/gnupg
+          \ 1m15.481s
+          \ //2min2sec
+          \ 62MB
+          \ this supposedly checks gpg key, but wait there's no gpg inside chroot yet
+          \ emerge-webrsync: error: cannot check signature: gpg binary not found
+          \ can't run this now:
+          \ emerge --ask app-crypt/gnupg
         - getting some retarded output(with admincd of 9 july 2015): ok this was because I was missing a closing quote from a previous parameter(PORT_LOGDIR)!!!
           \ "/etc/portage/make.conf", line 25: Invalid token 'mmx' (not '=')
           \ !!! Section 'x-portage' in repos.conf has location attribute set to nonexistent directory: '/usr/portage'
@@ -792,7 +900,7 @@
           \ !!! Invalid Repository Location (not a dir): '/usr/portage'
           \ "/etc/portage/make.conf", line 25: Invalid token 'mmx' (not '=')
           \ ok apparently that /usr/portage dir was made after this, and not err next time;
-      * manually check sig from outside chroot
+      - (nolonger in effect)manually check sig from outside chroot
         * switch to another terminal or start a new ssh session to have access to the gpg command, and run this outside chroot:
           \ or exit chroot, checksig and enter chroot back again.
           * gpg --verbose --homedir /mnt/gentoo/etc/portage/gpg --verify /mnt/gentoo/usr/portage/distfiles/portage-201*.tar.xz.gpgsig /mnt/gentoo/usr/portage/distfiles/portage-201*.tar.xz
@@ -811,17 +919,17 @@
             \ gpg:          There is no indication that the signature belongs to the owner.
             \ Primary key fingerprint: DCD0 5B71 EAB9 4199 527F  44AC DB6B 8C1F 96D8 BF6D
             \      Subkey fingerprint: E1D6 ABB6 3BFC FB4B A02F  DF1C EC59 0EEA C918 9250
-      * switch back to the chroot-ed terminal
-      * temporarily remove webrsync-gpg from make.conf
+      - switch back to the chroot-ed terminal
+      - temporarily remove webrsync-gpg from make.conf
         * nano -w /etc/portage/make.conf  (you nolonger have vim here, because chroot-ed!)
           \ Note: there is no vim inside chroot, even though admincd has it(outside of chroot)
           \ Ctrl+W webrsync, to position yourself on it and put a - in front of it
           \ ^ that edited the FEATURES line to NOT have webrsync-gpg or just put a - in front of it(better!)
           \ Ctrl+X, y, Enter
-      * rerun:
+      - rerun:
         * time emerge-webrsync -v -k
           \ 1m41s
-      * put back webrsync-gpg from make.conf
+      - put back webrsync-gpg from make.conf
         \ nano -w /etc/portage/make.conf
         \ edit the FEATURES line to have webrsync-gpg (Ctrl+W to search)
     - fix re-reporting of warnings inside QA Notice block (apparently this got fixed by adding an "| uniq" at the end)
@@ -837,12 +945,14 @@
     * select profile
       \ nothing to do here but look, otherwise u'd need a different stage3 now wouldn't you?!
       * eselect profile list
-        \ already selected:
-        \   [11]  default/linux/amd64/13.0/no-multilib *
-        \ yes, this is bad!! it's normal gentoo no-multilib!
-        \ because of rsync-ed content!
-        \ make sure you select that hardened no-multilib:
-        \   [16]  hardened/linux/amd64/no-multilib
+        \ //already selected:
+        \ //  [11]  default/linux/amd64/13.0/no-multilib *
+        \ //yes, this is bad!! it's normal gentoo no-multilib!
+        \ //because of rsync-ed content!
+        \ //make sure you select that hardened no-multilib:
+        \ //  [16]  hardened/linux/amd64/no-multilib
+        \ new rsync content, already selected:
+        \   [16]  hardened/linux/amd64/no-multilib *
         * eselect profile 16
         * eselect profile list
           \ to be sure
@@ -856,12 +966,17 @@
         \ en_US.UTF-8 UTF-8
       * run: locale-gen
         \ XXX: this doesn't exist in uclibc-hardened version?!
+        \ takes under 10sec
       * locale -a
         \ to verify.
         \ XXX: this doesn't exist in uclibc version?!
       * set the system-wide locale settings
         * eselect locale list
-        * Select the en_US.utf8 one:
+        * select the C one:
+          \   [1]   C *
+          * eselect locale set 1
+            \ already selected by rsync
+        - Select the en_US.utf8 one:
           * eselect locale set 5
       * env-update && source /etc/profile && source ~/.bash_profile
       - Ctrl+R, PS1
@@ -871,21 +986,28 @@
         \ FIXME: this doesn't exist in uclibchardened version?!
         \ sys-libs/timezone-data-2014i-r1 (/usr/share/zoneinfo)
       - (rsyncdone) echo "Europe/Brussels" > /etc/timezone
-      * emerge --config sys-libs/timezone-data
+      * time emerge --config sys-libs/timezone-data
         \ this needs fakeroot - NO it doesn't, but you still get the warning:
         \ !!! FEATURES=fakeroot is enabled, but the fakeroot binary is not installed.
-    - emerge -1v app-portage/cpuinfo2cpuflags
+        \ 0m2.775s
+        \ I just did this anyway
+    * time emerge -nav app-portage/cpuinfo2cpuflags
       \ ran: cpuinfo2cpuflags-x86
       \ refreshed the above CPU_FLAGS and USE flags, so this doesn't have to be run again!
+      \ don't emerge -1  because we do want to have this in favs to get updated just in case new things may get detected who knows...
+      \ duration: 0m50.542s
+      * cpuinfo2cpuflags-x86
+        \ CPU_FLAGS_X86: 3dnow 3dnowext mmx mmxext popcnt sse sse2 sse3 sse4a
+        \ updated above make.conf and thus rsync will do this in the future!
     * get a newer portage (if any)
       \ TODO: do I need the unstable one? currently going with stable one!
-      * time emerge -1avu \>=portage-2.2
-        \ does nothing because 2.2.20 already installed and latest (stable one?) took 1m31s though
+      * time emerge -avu \>=portage-2.2
+        \ does nothing because 2.2.22(unstable!) already installed and latest (stable one?) took 1m31s though
         \ say no to add to favorites hmmm, i added -1 arg so nvm.
         \ NOTE XXX: patches in /etc/portage/patches/ silently ignored when using symlinks to any folder within /root (but not for /home(or /home/user) due to o-rx for /root and o+rx for the /home and /home/user) and userpriv in FEATURES because folder is inaccessible by portage:portage
         \ https://wiki.gentoo.org/index.php?title=%2Fetc%2Fportage%2Fpatches&diff=265028&oldid=200410
         * TODO: add portage patches that I manually edited in with nano above (and who knows what others i forget about at this moment)
-    * install ccache   [yes, before fakeroot]
+    - (already have it installed! customiso)install ccache   [yes, before fakeroot]
       \ docsrc: https://wiki.gentoo.org/wiki/Handbook:AMD64/Working/Features#Caching_compilation_objects
       * time emerge -av \>=ccache-3.2.2
         \ 37s
@@ -913,17 +1035,17 @@
        \ export PATH="${PATH}:~/bin"
       * mkdir ~/bin
         \ will add some scripts later, like dpaste for example.
-    * time emerge --ask --verbose sys-apps/fakeroot
+    - (already have it now)time emerge --ask --verbose sys-apps/fakeroot
       \ fakeroot 1.20 (1m21s with ccache on normal; 5min45s without ccache on hardened)
       \ fakeroot in FEATURES requires fakeroot(8)
       \ in effect only when building as non-root user
       \ TODO: move this for after system is installed!
       \ will get this warning running emerge, until fakeroot is installed:
       \ !!! FEATURES=fakeroot is enabled, but the fakeroot binary is not installed.
-    * debugedit for FEATURES=installsources to work
+    - (already have it now)debugedit for FEATURES=installsources to work
       * time emerge -nav debugedit
         \ 6m38s
-    * reinstall fakeroot to get its sources(since we have debugedit now)
+    - (no need anymore due to above)reinstall fakeroot to get its sources(since we have debugedit now)
       * time emerge -av sys-apps/fakeroot debugedit dev-libs/icu dev-libs/beecrypt
         \ yep also install debugedit and its deps
         \ about 5mins 15sec
@@ -961,16 +1083,17 @@
       \ https://wiki.gentoo.org/wiki/Tmux
       \ TODO: check vim-syntax USE flag, for now know that it pull X libs and vim
       * time emerge --ask -v app-misc/tmux
-    * the btrfs command (equery b btrfs shows which pkg) (3m1s)
+    - (already have it) the btrfs command (equery b btrfs shows which pkg) (3m1s)
       * time emerge -nav sys-fs/btrfs-progs
         \ 4m23s
     * install pfl
       \ https://wiki.gentoo.org/wiki/Pfl
       * time emerge -nav pfl
-        \ 3m38s
+        \ //3m38s
+        \ less than 1 min (time wasted in ask dialog)
         \ use e-file texthere   to find something in any package(even if not already installed)
         \ e-file cmdhere  instead of  equery b cmdhere  to find out which (non-installed!) package provides the command
-    * install equery (38s)
+    - (already have it; customiso)install equery (38s)
       \ https://wiki.gentoo.org/wiki/Equery
       \ needed to run: revdep-rebuild or its replacement time emerge @preserved-rebuild
       * time emerge -nav gentoolkit
@@ -983,12 +1106,12 @@
         * equery files alsa-lib | less
           \ to list all installed files of a package
     * set hostname (needed for nullmailer config; nullmailer gets installed with sudo)
-      * nano -w /etc/conf.d/hostname
+      * vim /etc/conf.d/hostname
         \ ie. tux
         \ this file was rsync-ed
       * hostname tux
       * env-update && source /etc/profile && source ~/.bash_profile
-      * nano -w /etc/hosts   APPEND these NEW lines:
+      * vim /etc/hosts   APPEND these NEW lines:
         \ # This defines the current system and must be set
         \ #127.0.0.1     tux.homenetwork tux localhost
         \ looks like this is already set to localhost, so append the following lines:
@@ -996,9 +1119,17 @@
         \ #^ replace that one with this,  or comment out existing one.
         \ ::1 localhost tux
         \ #^ you must have this ipv6 stuff(even if USE=-ipv6) because `hostname -f` will otherwise ask the dns server everytime you execute hostname -f or eg. startx, mc !!!
+    * get a syslogger (before installing sudo, or else sudo pulls metalog!)
+      * time emerge -n --ask --verbose app-admin/metalog
+        \ 2m43.779s
+      * rc-update add metalog default
+        \ FIXME: shouldn't this be added to boot? or does boot not have mounted the fs yet?
+        \ this was already added (likely due to rsync)
     * time emerge -nav app-admin/sudo
-      \ 11 packages
-      \ 25m26s
+      \ 4 packages (installs metalog(if not already installed) and nullmailer too)
+      \ 4m24.302s
+      \ //11 packages
+      \ //25m26s
       \ //at least 28 mins (failed on gnutls due to -DDEBUG in CFLAGS!!! confirmed to be so, in hardened!)
       \ //14mins after the above fail(then fixed then reran the emerge, but ccache had them so far)
       \ this also gets metalog and other stuff
@@ -1006,7 +1137,7 @@
         * emerge --config =mail-mta/nullmailer-1.13-r5
           \ aka create an initial setup
           \ getting this error twice: hostname: No address associated with name
-          \ (should be fixed) unsure how to fix yet, maybe just need to set hostname first?
+          \ //it's fixed(no error):(should be fixed) unsure how to fix yet, maybe just need to set hostname first?
       - (rsynced) nano -w /etc/sudoers.d/wheel
         \ %wheel ALL=(ALL) ALL
         \ now all users in group wheel can sudo (with their own password)
@@ -1022,6 +1153,9 @@
         \ /sbin/reboot
     * save nano in favs so it won't be removed by emerge --depclean
       \ emerge --noreplace app-editors/nano
+    * check /etc/fstab for any fixes
+      * see if swap is added (if not rsync-ed already)
+        \ done, added now
     - (already in rsync) fstab fixture
       * vim /etc/fstab
         \ just edit the template and add some stuff
@@ -1049,15 +1183,17 @@
           \ rc-update add local default
     * Kernel (part 1)
       \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
-      - time emerge -nav sys-kernel/git-sources
-        \ 4.2-rc3 currently, duration: 5m49s
+      * time emerge -nav sys-kernel/git-sources
+        \ FIXME: postponed, due to one of my patches being outdated
+        \ //4.2-rc3 currently, duration: 5m49s
         \ user patches are already in (rscyn-ed above)
         \ this works with ccache, no PIC error (I mean later when compiling it with genkernel!!)
         \ license: freedist   (use dispatch-conf to apply it)
       * time emerge -nav hardened-sources
         \ that's 4.1.6 at the moment
         \ wants license: freedist   (use dispatch-conf to apply it)
-        \ 5m8s
+        \ //5m8s
+        \ 4m35.385s
         * eselect kernel list
         * eselect kernel set 1
         * eselect kernel list
@@ -1065,7 +1201,10 @@
       \ do we need this?
       \ done: I should install this after getting kernel sources!! and after compiling kernel; because: "Unable to find kernel sources at /usr/src/linux"
       * time emerge -av '>=sys-fs/eudev-3.1.2'
-        \ 3m19s
+        \ //3m19s
+        \ sys-fs/eudev-3.1.2-r10
+        \ 2m53.846s
+        \ url to read: http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames
       - /etc/init.d/udev --nodeps restart
         \ unsure if this is needed at this time, or only when running the system normally (not from within chroot)
       - a test will fail https://github.com/gentoo/eudev/issues/101
@@ -1079,31 +1218,34 @@
       \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/Kernel
       * time emerge -nav '>=sys-apps/gradm-3.1'
         \ that's unstable, so use dispatch-config, u, rerun above
-        \ 38sec
+        \ //38sec
+        \ 0m36.874s sys-apps/gradm-3.1.201507191652
       * time emerge -nav sys-apps/paxctl app-misc/pax-utils app-admin/paxtest
         \ get these other "needed" stuffs for grsecurity
-        \ 29s
+        \ //29s
         \ time paxtest blackhat
-        \ 5m16s (without grsecurity enabled)
+        \ //5m16s (without grsecurity enabled)
+        \ installs only paxtest currently(customiso)
+        \ 0m36.251s
       * compile
         * genkernel (because VM)
           * time emerge -n --ask --verbose '>=sys-kernel/genkernel-3.4.51.2'
-            \ 9 packages
-            \ 27m46s
-            \ (fixed by eselect kernel above): lvm2 and cryptsetup require a kernel in /usr/src/linux/ but supposedly this isn't bad! they just want to get the kernel version!
-            * lvm2
+            \ //9 packages
+            \ //27m46s
+            \ (Fixed by eselect kernel above): lvm2 and cryptsetup require a kernel in /usr/src/linux/ but supposedly this isn't bad! they just want to get the kernel version!
+            - (doesn't apply anymore)lvm2
               \ since it got installed by emerge genkernel above...
               * dispatch-conf (zap new!, because it wants to restore the defaults!)
               * rc-update add lvm boot
                 \ it was NOT already there!
                 \ seen with: rc-status boot
-            * cryptsetup (nothing to do here, go to next step)
+            - (doesn't apply anymore)cryptsetup (nothing to do here, go to next step)
               * TODO: see this example for luks mountpoint configuration: /etc/conf.d/dmcrypt
                 \ TODO: add the /bewt here so we can mount it (aka luksOpen) faster than having to specify
                 \ also use crypt_root=/dev/blah instead of real_root=luks:/dev/blah.
           * XXX: /bewt must be already mounted at this point!!
             \ df /bewt
-            \ should show 1022M total, if it's mounted
+            \ should show size 4.0G total, if it's mounted
           - (already done) eselect kernel list
             \  [1]   linux-4.2-rc4 *
             \ ^ that's the only one in list at this point
@@ -1118,16 +1260,23 @@
           * linux firmware (radeon and amd cpu microcode is here) - this isn't needed for a virtualbox installation
             \ https://wiki.gentoo.org/wiki/AMD_microcode
             * time emerge -nav sys-kernel/linux-firmware
-              \ 1m14s
+              \ //1m14s
+              \ already have it
               \ not bothering to edit that "config"
           * cp /usr/src/.config /usr/src/linux/
             \ that's from rsync
+            \ already had one in for my current kernel version (linux-4.1.7-hardened-r1)
           * cd /usr/src/linux && make nconfig
             \ if needed
           * time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+            \ 18m32.303s until fail to mknod(fixed by sysctl, with grsec)
+            \ + extra 2m25.472s after fix.
+            \ this is why it needs to mknod:
+            \ [11227.213313] grsec: denied mknod of /mnt/gentoo/var/tmp/genkernel/6318.774.12810.22538/initramfs-base-temp/dev/console from chroot by /mnt/gentoo/bin/mknod[mknod:5851] uid/euid:0/0 gid/egid:0/0, parent /mnt/gentoo/usr/bin/genkernel[genkernel:22538] uid/euid:0/0 gid/egid:0/0
+            \ .
             \ removed --menuconfig because make nconfig is better!
             \ looks like genkernel knows to not use ccache ! at least when on hardened now. (and I checked there are no -ccache or so, options in /etc/portage/)
-            \ 22m47s (another compilation was happening in the background though: vim)
+            \ //22m47s (another compilation was happening in the background though: vim)
             \ WARNING: after successfuly running genkernel, you have to re-run grub2-mkconfig (which we do later if you follow this guide thingy) ! (booting the previous kernel still works though, because grub.cfg isn't changed and all previous kernel files are kept in /bewt and are available in a grub submenu called Advanced at boot!)
             \ # --no-postclear won't delete the busybox and lvm2 that were just built every time genkernel is ran.
             \ Once genkernel completes, a kernel, full set of modules and initial ram disk (initramfs) will be created.
@@ -1253,28 +1402,33 @@
       \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System
       * network
         * time emerge -nav sys-apps/biosdevname
-          \ 1m10s
+          \ //1m10s
+          \ already have(customiso)
         * for extra options(like setting domain name to homenetwork) if needed, see:
           \ https://wiki.gentoo.org/wiki/Handbook:AMD64/Installation/System#Host_and_domain_information
         * emerge --ask --noreplace net-misc/netifrc
           \ this adds it to favs.
-        * nano /etc/conf.d/net
-          \ new file!
-          * dhcp  (needs only p2p1, XXX: apparently now it's enp0s3)
+        * vim /etc/conf.d/net
+          \ new file! (only on gentoo's admincd.iso ! not on my customiso)
+          - dhcp  (needs only p2p1, XXX: apparently now it's enp0s3)
             \ #config_eth0="dhcp"
             \ config_enp0s3="dhcp"
             \ #config_p2p1="dhcp"
-          - if static IP
+          * if static IP
             \ use different IP name here than what you used on liveCD, so that you don't have to edit out the ~/.ssh/known_hosts line due to different fingerprint when ssh-ing later on
             \ The /etc/conf.d/net file does not exist by default, so needs to be created.
             \ #config_eth0="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
             \ #routes_eth0="default via 192.168.0.1"
-            \ config_enp0s3="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
-            \ routes_enp0s3="default via 192.168.0.1"
+            \ #config_enp0s3="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
+            \ #routes_enp0s3="default via 192.168.0.1"
             \ #config_p2p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
             \ #routes_p2p1="default via 192.168.0.1"
-            \ turns out these enp2s0 and enp3s0 cards in my desktopPC(not virtualbox!) don't get transformed into p2p1 -like bios names!
+            \ config_p4p1="192.168.0.2 netmask 255.255.255.0 brd 192.168.0.255"
+            \ routes_p4p1="default via 192.168.0.1"
+            \ #p4p1 is the one on my Z575 laptop
+            \ #turns out these enp2s0 and enp3s0 cards in my desktopPC(not virtualbox!) don't get transformed into p2p1 -like bios names!
         * cd /etc/init.d
+        * warning: already rsync-ed the below! but may need to remove some extra interfaces!
         - // ln -s net.lo net.eth0
           \ in case the below 2 fail (they did with hardened uclibc)
         * ln -s net.lo net.enp0s3
@@ -1283,6 +1437,15 @@
         * rc-update add net.enp0s3 default
         - rc-update add net.p2p1 default
           \ XXX: this p2p1 appears instead of enp0s3 due to sys-apps/biosdevname being installed !
+        * remove any useless ones!
+          * by rc-update del 
+            * rc-update del net.enp0s3 default
+            * rc-update del net.eth0 default
+            * rc-update del net.p2p1 default
+          * by rm-ing their symlink! from /etc/init.d/
+          * rc-status
+            \ now doesn't show the rm-ed ones
+            \ BUT they are still there! so rc-update del them before rm-ing their symlinks, or, delete them from /etc/runlevels/default/
       * set root password (inside chroot) - don't skip this
         \ passwd
       * init and boot config
@@ -1295,31 +1458,32 @@
           \ nothing to change
         - vim /etc/conf.d/hwclock
           \ clock="UTC"  (already set)
-        * rc-update add gpm default
+        - (already, in customiso) rc-update add gpm default
           \ ensure gpm starts everytime on startup
       * installing tools
-        * lsof
+        - (already) lsof
           * time emerge -nav sys-process/lsof
             \ 34s
-        * get a syslogger
-          * time emerge -n --ask --verbose app-admin/metalog
-            \ this was already added, by something I installed before; this just adds it to favs.
-          * rc-update add metalog default
-            \ FIXME: shouldn't this be added to boot? or does boot not have mounted the fs yet?
         * get a cron
           * time emerge -nav sys-process/cronie
-            \ 1m11s
+            \ //1m11s
             \ TODO: read how to use it http://www.gentoo.org/doc/en/cron-guide.xml
+            \ 1m7s
           * rc-update add cronie default
+            \ already
         * rc-update add sshd default
           \ to be able to ssh after reboot
+          \ already
         * delete some systemd leftover files from stage3
           * rm -vrf /usr/lib{,64}/systemd /usr/lib64/debug/lib/systemd /usr/lib64/portage/python{2.7,3.3}/install-qa-check.d/*systemd /lib64/netifrc/sh/systemd-wrapper.sh
+            \ there were two(customiso):
+            \ removed '/usr/lib64/portage/python2.7/install-qa-check.d/60systemd'
+            \ removed '/lib64/netifrc/sh/systemd-wrapper.sh'
       * bootloader
-        * set accept flags (apparently this is needed to get the git package aka 9999 , and that ~amd64 thing in make.conf is unstable but not as unstable as the git version)
+        -(rsynced) set accept flags (apparently this is needed to get the git package aka 9999 , and that ~amd64 thing in make.conf is unstable but not as unstable as the git version)
           - mkdir -p /etc/portage/package.accept_keywords
             \ ok well the file with this name already exists(due to us not using ~amd64 in make.conf), so we can just append to it
-          * vim /etc/portage/package.accept_keywords
+          * (rsynced)vim /etc/portage/package.accept_keywords
             \ =sys-boot/grub-9999-r1 **
         - (rsynced) set USE flags (for future emerges too)
           \ src: https://wiki.gentoo.org/wiki//etc/portage/package.use
@@ -1352,9 +1516,12 @@
           * ls -la grub
             \ verify the files are there
           * popd
-        * time emerge -nav --backtrack=30 \>=sys-boot/grub-9999
-          \ 70 packages
-          \ real 148m11s (user 299m46s, sys 41m11s)
+        - time emerge -nav --backtrack=30 \>=sys-boot/grub-9999
+        * time emerge -av --backtrack=30 \>=sys-boot/grub-9999
+          \ installs fuse too, so 2 packages total, fuse is new
+          \ 9m53.618s
+          \ //70 packages
+          \ //real 148m11s (user 299m46s, sys 41m11s)
         - (rsynced) nano /etc/default/grub
           \ #:set paste
           \ only this line exists (uncommented):
@@ -1466,7 +1633,7 @@
               \ # note that hd0,2 is the /bewt /dev/sda2 device, not root / /dev/sda3
               \ while still in vim do: gg=G
               \ to indend whole file
-        * grub2-install --compress=xz --target=i386-pc --recheck --debug --locales= --fonts= --boot-directory=/bewt --no-rs-codes --verbose -- /dev/sda 2>&1
+        * grub2-install --compress=xz --target=i386-pc --recheck --debug --locales= --fonts= --boot-directory=/bewt --no-rs-codes --verbose -- /dev/sdb 2>&1
           \ #GRUBY
           \ dev mode(used to track down bugs):
           \ # time ebuild /usr/portage/sys-boot/grub/grub-9999-r1.ebuild configure
@@ -1510,7 +1677,7 @@
           \ //then after doing that, kernel panics and I cannot scroll up to see exactly why it tries to kill init... and this is why: https://bugzilla.kernel.org/show_bug.cgi?id=90001#c3 aka !! The ramdisk does not support LUKS   (confirmed, for some reason I ran the last genkernel command(seen from ~/.bash_history) with --no-luks
         * need to add root to kernel cmdline
           * find uuid of crypt device by:
-            \ cryptsetup luksDump /dev/sda3 |grep UUID
+            \ cryptsetup luksDump /dev/sdb3 |grep UUID
             \ /dev/sda3 is root partition (not boot one!)
             \ so looks like this: e8b64567-124a-46a7-a167-d3d9c041de35
           * vim /etc/default/grub
@@ -1537,20 +1704,22 @@
           \ -rw-r--r-- 1 root root 2302717 Apr 15 00:32 System.map-genkernel-x86_64-3.18.9-hardened
         * inspect grub.cfg a bit (should've worked if the grub patches were in place!)
           \ vim /bewt/grub/grub.cfg
-          \ see if "set root=" is something of (blkid /dev/sda2 | grep UUID)
+          \ see if "set root=" is something of (blkid /dev/sdb2 | grep UUID)
           \ eg. cryptouuid/e07b18f3310f494d9104a791e4722476
           \ and 1st part of hint has the same uuid eg. cryptouuid/e07b18f3310f494d9104a791e4722476
           \ and 2nd part of hint has the uuid of (blkid /dev/mapper/luks_on_sda2_boot | grep UUID) eg. 3a6305a7-57aa-4712-a6d3-60e10bcee71e
           \ and the root in the 'else' is the same /dev/mapper/luks_on_sda2_boot uuid as reported by blkid eg. 3a6305a7-57aa-4712-a6d3-60e10bcee71e
-          \ and the root= within the linux line is root=/dev/mapper/vgall-rootlvol  and the crypt_root=UUID= on the same line that follows is ofc a totally different id than the above mentioned two because it's the blkid of the / (actual root; not the grub root which to grub is the boot device) eg. it's crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 (aka blkid /dev/sda3  the UUID not the PARTUUID!)
-      * (will close later, outside of chroot!) close /bewt luks
-        - umount /bewt
+          \ and the root= within the linux line is root=/dev/mapper/vgall-rootlvol  and the crypt_root=UUID= on the same line that follows is ofc a totally different id than the above mentioned two because it's the blkid of the / (actual root; not the grub root which to grub is the boot device) eg. it's crypt_root=UUID=e8b64567-124a-46a7-a167-d3d9c041de35 (aka blkid /dev/sdb3  the UUID not the PARTUUID!)
+      * (will also attempt to close later, outside of chroot!) close /bewt luks
+        \ but close it now! so that other programs from emerge don't have access to it!
+        * umount /bewt
           \ DON'T unmount it here, because it was mounted from outside chroot!
-        - cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
+        * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
         * when you wanna mount it later (when sys is running):
-          \ cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot
+          \ cryptsetup --verbose --allow-discards luksOpen /dev/sdb2 luks_on_sda2_boot
+          \ yeh sdb while we're booted from customiso usbstick(/cardread) because this is the order in which bios sets them.
           \ mount /bewt
-      * backup boot ...
+      - (skipped for now) backup boot ...
         * sync; time dd if=/dev/sda2 of=/dev/mapper/vgall-bootlvolbackup bs=100M ; sync
           \ //old: yep 537MB reported is 512M in fact (536870912 bytes (537 MB) copied, 7.76532 s, 69.1 MB/s)
           \ 1073741824 bytes (1.1 GB) copied, 25.8407 s, 41.6 MB/s
@@ -1561,7 +1730,9 @@
           * 
       * disable some services
         * rc-update del netmount
-          \ * service netmount removed from runlevel default
+          \  * rc-update: service `netmount' is not in the runlevel `default'
+          \ yep rsync-ed
+          \ //* service netmount removed from runlevel default
           \ rc-update: service `netmount' is not in the runlevel `sysinit'  (or 'boot')
       - (rsynced) don't clear tty1 on boot (and logout)
         * nano /etc/inittab
@@ -1575,7 +1746,7 @@
             \ new file, append line:
             \ clear
     * time emerge @preserved-rebuild
-      \ 1m41s
+      \ //1m41s
     * rebooting #REBOOT #SHUTDOWN #SECONDBOOT
       * exit
       * cd
@@ -1583,6 +1754,7 @@
       * umount --lazy /mnt/gentoo/{dev/{shm,pts,},sys/}
       * umount /mnt/gentoo/{bewt,proc,var/tmp/portage,var/tmp,tmp,run,}
       * cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
+        \ already done from above
       * close lvm volumes
         * lvm lvchange --verbose -a n vgall
           \ works, tested!
@@ -1595,7 +1767,8 @@
         \ poweroff & exit
         \ ^ is what you do in the future (not from live cd though) to ALSO logout
         \ NOTE: doesn't matter what u had on virtualbox's console running, unless u were chrooted(but you did that yourself!)
-      * remove CD from virtual drive (in virtualbox) OR it will boot from CD!!
+        \ hmm uptime 4 hours 25mins
+      - remove CD from virtual drive (in virtualbox) OR it will boot from CD!!
   * boot from hdd
     - finalizing (after booted in)
       - rm /stage3-*.tar.bz2*
@@ -3534,7 +3707,7 @@
         \ yep not worth it!
       * kernel
         * exit out of chroot or get into another terminal and do this outside of chroot:
-          \ as to avoid this: mknod: ‘console’: Operation not permitted
+          \ as to avoid this: mknod: console: Operation not permitted
           \ during genkernel (apparently at end of kernel compilation)
           * sysctl -w kernel.grsecurity.chroot_deny_mknod=0
             \ #NEXTTIME
@@ -4041,7 +4214,33 @@
       * wait... maybe we try the vfose variant still.
 
 * bigTODO:
+  * remove cpuid module from kernel; maybe also remove msr module  because we don't plan on running amdmsrtweaker-lnx anymore!
   * changes to be done inside the iso
+    * need hdparm command!
+    * need iotop command.
+    * need sudo command.
+    * need ntpdate command.
+      \ time emerge -nav net-misc/ntp
+    * can't emerge anything while booted in the iso, due to: !!! No write access to '/mnt/livecd/usr/portage/distfiles'
+      \ so remove /usr/portage/distfiles/ from being included into the iso.
+      \ there is write access to the empty /usr/portage/distfiles/ dir
+      * fix:
+        * mount -t tmpfs -o rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 tmpfs /usr/portage/distfiles/
+        * now can emerge... but will fail the merge phase(so can't install packages that pull more than just one package(itself): 
+          \ * One or more files installed to this package are set to be installed to
+          \ * read-only filesystems. Please mount the following filesystems as read-
+          \ * write and retry.
+          \ *
+          \ *      /mnt/livecd
+    * set the right values in /etc/lvm/lvm.conf inside the iso before creating it!
+    * need e-file command
+      \ time emerge -nav pfl
+    * there's no card* folder in: /sys/class/drm/
+      \ so can't do this:
+      \ echo 'thermal' > /sys/class/drm/card0/device/power_dpm_state
+      \ there's this tho:
+      \ # cat /sys/class/drm/version
+      \ drm 1.1.0 20060810
     - resolv.conf must be nameserver 8.8.8.8
     - in inittab make F12 be dmesg (find out how)
     - need parted and mirrorselect

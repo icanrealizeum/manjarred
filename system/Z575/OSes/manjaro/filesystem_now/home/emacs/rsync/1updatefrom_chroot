@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./genericupdatefrom '/mnt/gentoo/'
+RSYNC_REMOTEHOST="127.0.0.111" RSYNC_SSH_VAL='ssh -v -p 8822 -i /home/emacs/.ssh/id_ed25519 -l root' ./genericupdateTOfrombasedir '/mnt/gentoo/' '/home/emacs/rsync'
 
