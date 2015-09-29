@@ -301,7 +301,7 @@
                   \ the GPT specification requires a CHS value of 0xFFFFFF for over-8GiB partitions, but  this  value  is technically  illegal by the usual standards. Some BIOSes hang if they encounter this value. This option  will  recompute  a  more normal  CHS value -- 0xFEFFFF for over-8GiB partitions, enabling these BIOSes to boot.
                   \ XXX: this has had no effect!
               - set 2 boot on
-                \ it added: boot and esp flags!
+                \ it added: boot and esp flags! (looks like esp is: EFI System Partition (ESP), which is where an EFI stores its boot loaders. Some EFIs use the presence of an ESP as a clue to favor EFI-mode booting, and so such a partition can interfere with BIOS/CSM/legacy-mode booting. src: http://www.rodsbooks.com/gdisk/bios.html#bios )  LOOKS like I cannot only boot flag on the booty GPT partition! well, anyway they were both off!
                 \ NOPE it doesn't boot still! and I even tried legacy_boot flag on top of those! same effect!
                 \ must be because it's a gpt partition? or it's a grub issue? but for some reason it tries to go graphical (apparently!) but then switches back when it boots from the other(80G) SSD eventually.
                 * print
