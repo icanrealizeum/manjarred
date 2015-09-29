@@ -271,6 +271,21 @@
               \ set 2 root on
               \ or
               \ set 2 hidden on
+            * make MBR active (NEEDED for bare metal BIOS to see the whole disk as bootable, or else it just skips it and tries next hdd if any)
+              * disk_set pmbr_boot on
+                \ (GPT) - this flag enables the boot flag on the GPT’s protective MBR partition.
+                * fdisk -t dos -l /dev/sdb
+                  \ to verify
+                  \ Device     Boot Start        End    Sectors   Size Id Type
+                  \ /dev/sdb1  *        1 1953525167 1953525167 931.5G ee GPT
+                  \ NOW we're talkin'!
+                  \ XXX: Oh man, it still doesn't boot! Thanks Lenovo! :)  (did remove the other (GPT)flags though)
+              - set 2 boot on
+                \ it added: boot and esp flags!
+                \ NOPE it doesn't boot still! and I even tried legacy_boot flag on top of those! same effect!
+                \ must be because it's a gpt partition? or it's a grub issue? but for some reason it tries to go graphical (apparently!) but then switches back when it boots from the other(80G) SSD eventually.
+                * print
+                  \  2      5243kB  4300MB  4295MB               booty  boot, esp
           * make LUKS partition for /
             \ this is so we can use different passwords - one at grub menu for mounting /bewt and one for kernel when it wants to mount /
             - mkpart primary 1029 -1
