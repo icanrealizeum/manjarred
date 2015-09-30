@@ -300,4 +300,17 @@
   \ vgchange -an
   \ no extra params needed
 
+* grub rescue shell commands:
+  \ https://www.gnu.org/software/grub/manual/html_node/GRUB-only-offers-a-rescue-shell.html
+  \ set, ls, set prefix=(hd0,1)/grub, set root=(hd0,1), insmod normal, normal
+  \ https://help.ubuntu.com/community/Grub2/Troubleshooting
+  \ dump, exit, normal, ls, cat, multiboot, chain, help, search, insmod, set, linux, unset
+  \ (help was definitely not available for me! maybe because it couldn't find the grub_bios partition that I've set aside for it? due to my chaning the protective MBR's 0xEE partition type to something else thus not seeing the GPT partitions where grub_bios one is)
+
+* workaround for my Lenovo Z575 BIOS not willing to boot from a disk with GPT
+  \ Device     Boot Start        End    Sectors   Size Id Type
+  \ /dev/sdb1  *        0          0          0     0B 10 OPUS
+  \ /dev/sdb2           1 1953525167 1953525167 931.5G ee GPT
+  \ it boots now!
+
 

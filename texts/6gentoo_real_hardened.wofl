@@ -271,13 +271,15 @@
               \ set 2 root on
               \ or
               \ set 2 hidden on
-            * XXX: OK, so if partition is GPT(so protective MBR has the partition type set to EE aka GPT; and this boot partition we're making is in fact inside GPT so not seen here in protective MBR) then this Lenovo Z575 BIOS will not boot from it (probably because it's expecting something like a fat32 partition inside the GPT? or something GPT related!)
+            - XXX: OK, so if partition is GPT(so protective MBR has the partition type set to EE aka GPT; and this boot partition we're making is in fact inside GPT so not seen here in protective MBR) then this Lenovo Z575 BIOS will not boot from it (probably because it's expecting something like a fat32 partition inside the GPT? or something GPT related!)
               \ tested by changing partition type(of the only partition from protective MBR) with fdisk, from EE to 8E(linux lvm) [83 aka Linux, same effect; also tried: EF which is "EFI(FAT-12/16/" - same]
               \ sudo fdisk -t dos /dev/sdb
               \ ^ with that command from Manjaro.('cause it boots faster than from usbstick(which does in 3m40s))
               \ but GRUB says it cannot find that cryptodisk!! which may be so because it cannot see it's a GPT at all anymore, due to the partition type ID change!
               \ so now what I could do, is teach GRUB that some other partition type is in fact GPT so it treats it as it would if it were of type EE(aka GPT), and this way it could find the cryptodisk; and at the same type being of non-EE type, then this Z575 BIOS won't get confused and not boot from it at all! OH but wait! this means a lot of other programs (even the kernel) I'd have to patch to see partition type 10 (let's say; which is OPUS) as EE (which is GPT), so not just GRUB! So, others might include LVM, grub2, kernel, cryptsetup.
-              \ TODO: see if bootable flag is actually needed at all!
+              \ done: see if bootable flag is actually needed at all! XXX: If bootable flag on the protective MBR is unset then my BIOS ignores that disk and doesn't try to boot from it! Just the same as it does with if the partition is (bootable and) set to GPT(0xEE)
+              \ MBR sector layout and partition table offsets: https://en.wikipedia.org/wiki/Master_boot_record#Sector_layout
+              \ XXX: ok so here's the deal: z575 bios ignores non-bootable(marked) partitions AND bootable 0xEE(aka GPT type) partitions: so the fix is simple! add new dummy bootable-marked 0x10(OPUS, for example) type partition which has startsector/endsector/startCHS/endCHS all 0('cause why bother, since it works this way - tested).
             - make MBR active (NEEDED for bare metal BIOS to see the whole disk as bootable, or else it just skips it and tries next hdd if any)
               - disk_set pmbr_boot on
                 \ (GPT) - this flag enables the boot flag on the GPT’s protective MBR partition.
@@ -327,6 +329,58 @@
             * name 2 allin1
           * print
           * q
+        * use hexedit/dd to add a new dummy partition which will be used to trick Z575 BIOS into booting from this disk. (REQUIRED!)
+          \ without this, you won't be able to boot from this (GPT partition containing) disk!! this BIOS just skips over it.
+          * dd if=/dev/sdb of=sdb.mbr bs=512 count=1
+            \ make a copy of the MBR as is now, into a file
+          * hexedit sdb.mbr
+            * ensure the GPT partition(of this protective MBR) which is the first and only partition, is in fact not marked active! (this would be bad!)
+              \ press Enter
+              \ type: 1be
+              \ that value should get you to the first (of 16) byte of the first partition which should be 00 (or 80 if it's marked active! shouldn't be tho! so if it is, type 00 there) - if it's any other value(than 00 or 80) then you're in the wrong location!! don't change shiet!
+              \ what you see(16 bytes from where you are):
+              \                                              00 00
+              \ 01 00 EE FF  FF FF 01 00  00 00 AF 6D  70 74
+            * copy this first partition as the second via hexedit copy/paste
+              \ press Ctrl+Space to start marking
+              \ //go 15 bytes ahead, the byte you're on now should not be 0 but it could be depending on the end sector number, it's never 0 for my SSD.
+              \ or just press Enter then type 1cd  (to go 15 bytes ahead, +1 with the one you're on; so you've selected 16 bytes)
+              \ now press Alt+W (or Esc, W) to copy to clipboard(or something) this will auto deselect those 16 bytes
+              \ now move one more byte forward, or press Enter and type 1ce  to go to the next partition
+              \ paste here by pressing Ctrl+y
+            * modify first parition to make it a dummy bootable one
+              \ press Enter and type 1be
+              \ press 80 here to set partition active!
+              \ press 00 00 00 10 00 00 00 00 00 00 00 00 00 00 00
+              \ (press those ^ without the spaces!) notice that "10" which means it's of type OPUS (I randomly chose this!)
+              \ what you see if you were at 1be after this:
+              \                                              80 00
+              \ 00 00 10 00  00 00 00 00  00 00 00 00  00 00 00 00
+              \ 01 00 EE FF  FF FF 01 00  00 00 AF 6D  70 74 00 00
+              \ That 00 01 00 is CHS start, the EE is partition type (0xEE is GPT; above is 10 for OPUS, that's for the first partition which is 16 bytes above) then the FFFFFF is what GPT sets for CHS end, then 01000000 is start sector(1), then AF6D7074 is 1953525167(decimal) aka 74706DAF hexa which is the end sector number.
+              \ /dev/sdb2           1 1953525167 1953525167 931.5G ee GPT
+            * exit and save
+              \ press Ctrl+X and press y when asked
+            * copy entire mbr back to the drive
+              \ sudo dd if=./sdb.mbr of=/dev/sdb bs=512 count=1
+              \ NOTE: the sudo part is only needed in Manjaro, which is where I'm doing this from right now; when booted from iso, you're already root (and likely don't have sudo, but should have it on next iso iteration because it's in the todo list; anyway don't use sudo from iso, obviously!)
+            * make kernel reread partition to ensure it can still see it as GPT
+              * sudo blockdev --rereadpt /dev/sdb
+              * lsblk
+                \ should show all 3 partitions (which are the inside GPT partitions!)
+            * observe what fdisk sees now
+              * sudo fdisk -t dos /dev/sdb  -l
+                \ Disk /dev/sdb: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+                \ ...
+                \ Device     Boot Start        End    Sectors   Size Id Type
+                \ /dev/sdb1  *        0          0          0     0B 10 OPUS
+                \ /dev/sdb2           1 1953525167 1953525167 931.5G ee GPT
+              * for kicks, enter fdisk to verify
+                * sudo fdisk -t dos /dev/sdb
+                  \ type p
+                  \ type v
+                  \ notice no complaints/errors!
+                  \ if you swap the partitions, while it still boots ok(if I remember right) fdisk will complain here at the verify step(that v)
     * create filesystems
       * LUKS
         * create
