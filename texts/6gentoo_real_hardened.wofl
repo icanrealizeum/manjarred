@@ -678,6 +678,9 @@
           * restore the newer ca certificates:
             * cp --archive --verbose -- ./rsync-backed/etc/ca-certificates.conf ./etc/ca-certificates.conf
               \ need to copy paste this in 2 parts! (gpm!)
+          * TODO: remove virtualbox-guest-additions from default, AFTER having moved squashfs contents to hdd (to serve as stage3) - so right here
+            \ rc-update del virtualbox-guest-additions default
+            \ I think!
         - clear some things:
           * rm /mnt/gentoo/var/lib/portage/world
             \ this file should be empty on new install!
