@@ -271,6 +271,13 @@
               \ set 2 root on
               \ or
               \ set 2 hidden on
+            * XXX: OK, so if partition is GPT(so protective MBR has the partition type set to EE aka GPT; and this boot partition we're making is in fact inside GPT so not seen here in protective MBR) then this Lenovo Z575 BIOS will not boot from it (probably because it's expecting something like a fat32 partition inside the GPT? or something GPT related!)
+              \ tested by changing partition type(of the only partition from protective MBR) with fdisk, from EE to 8E(linux lvm) [83 aka Linux, same effect; also tried: EF which is "EFI(FAT-12/16/" - same]
+              \ sudo fdisk -t dos /dev/sdb
+              \ ^ with that command from Manjaro.('cause it boots faster than from usbstick(which does in 3m40s))
+              \ but GRUB says it cannot find that cryptodisk!! which may be so because it cannot see it's a GPT at all anymore, due to the partition type ID change!
+              \ so now what I could do, is teach GRUB that some other partition type is in fact GPT so it treats it as it would if it were of type EE(aka GPT), and this way it could find the cryptodisk; and at the same type being of non-EE type, then this Z575 BIOS won't get confused and not boot from it at all! OH but wait! this means a lot of other programs (even the kernel) I'd have to patch to see partition type 10 (let's say; which is OPUS) as EE (which is GPT), so not just GRUB! So, others might include LVM, grub2, kernel, cryptsetup.
+              \ TODO: see if bootable flag is actually needed at all!
             - make MBR active (NEEDED for bare metal BIOS to see the whole disk as bootable, or else it just skips it and tries next hdd if any)
               - disk_set pmbr_boot on
                 \ (GPT) - this flag enables the boot flag on the GPT’s protective MBR partition.
