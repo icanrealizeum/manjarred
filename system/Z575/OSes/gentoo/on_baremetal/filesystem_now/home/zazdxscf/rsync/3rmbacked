@@ -1,0 +1,15 @@
+#!/bin/bash
+
+src='rsync-backed'
+dest="/tmp/${src} $(date)"
+mkdir -p "$dest"
+
+if test "0" -eq "`id -u`"; then
+  sudo=''
+else
+  sudo='sudo'
+fi
+$sudo mv -t "$dest" -- "$src"
+
+#/tmp is tmpfs (aka in RAM)
+

@@ -1,0 +1,16 @@
+put these msgs:
+
+changed ownership of /home/emacs/gentooskyline/system/Z575/OSes/gentoo/filesystem_now/gentoo from root to 1000
+
+inside a file, stored on git, add a script nearby which could restore these ...
+
+
+in other words, have scripts that use rsync  auto apply the perms(so rsync can use the real-world perms), and scripts that use git auto remove the perms(so git can access all files)
+
+instead of how it is now, copying the rsync dir (./gentoo/ from here) into the git location and then resetting perms there to relax them for git to read
+
+--------
+allow sudo to not exist and work ok if already root; fail if not root!
+-----
+
+

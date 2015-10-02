@@ -1,0 +1,79 @@
+#!/bin/bash
+
+remoterootdir="$1"
+if test "$#" -ne "2" ; then #-z "$remoterootdir"; then
+  echo "bad numer of params: '${@}' need: \"dest\" \"basedirsrc\""
+  echo "basedirsrc is the dir containing the /gentoo/ dir! and it's the same dir which contains the /rsync-backed/ dir. Don't end in / !"
+  exit 2
+fi
+#if test -z "$remoterootdir"; then
+#  echo "bad param: '${remoterootdir}'"
+#  exit 2
+#fi
+
+basedir="$2" #'/home/emacs/rsync'
+#where='/tmp/gentoo/'
+#XXX: other scrips depend on the name of these dirs being the same (names: gentoo & rsync-backed)
+where="${basedir}/gentoo/" #where to update (aka destination)
+backupdirfordeletions="${basedir}/rsync-backed/" #dir where deleted/modified files will be moved from $where before being updated! (any new files added in $where that didn't exist in the .list files and at source will be deleted and thus moved here; see the red colored output for these)
+mkdir -p "$where"
+
+declare -a +r -t -x EXTRA_RSYNCY_PARAMS_arr=(
+
+# all paths here are relative to the source dir (which is passed to rsync on cmdline, see --files-from in man rsync for exact explanation on how)
+--files-from='/home/emacs/rsync/rsync_filesfrom.list'
+#^ you cannot put comments inside this .list file!!
+
+#--exclude='*.tmp *~ *.swp'
+#^ this has no effect now, it only has effect from in --exclude-from list!
+
+#commented lines work inside these .list files though:
+#--include-from='/home/emacs/rsync/rsync_include.list' #useless when --files-from is used!
+--exclude-from='/home/emacs/rsync/rsync_exclude.list'
+
+--delete-excluded
+--backup
+#--backup-dir='/home/emacs/rsync/rsync-backed/'
+--backup-dir="${backupdirfordeletions}"
+
+--update  #this was already implied in rsyncy, but just to be extra sure!
+--delete-after #implies --delete
+)
+#XXX: can't export arrays, great!
+#declare -x +a +A +i EXTRA_RSYNCY_PARAMS="${EXTRA_RSYNCY_PARAMS_arr[@]}"
+#export EXTRA_RSYNCY_PARAMS="${EXTRA_RSYNCY_PARAMS_arr[@]}" #making it non-array then.
+#export FOO=1  #this obv. works
+#XXX: impossible to pass these via array or string var! in the latter case, this gets split into two params: --exclude='*.tmp *~'
+#so I have to move it 
+
+if test -n "$RSYNC_SSH_VAL"; then
+  EXTRA_RSYNCY_PARAMS_arr+=( --rsh="$RSYNC_SSH_VAL" )
+fi
+if test -n "$RSYNC_REMOTEHOST"; then
+  RHOST="${RSYNC_REMOTEHOST}:"
+else
+  RHOST=""
+fi
+
+
+  mkdir -p "${where}/"
+#  echo "${EXTRA_RSYNCY_PARAMS[@]}"
+#set -x
+  rsyncy "${RHOST}${remoterootdir}/" "${where}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+
+
+
+#------
+echo "deleted/modified files requiring your attention, are:"
+#du "${backupdirfordeletions}" | egrep -v '^0'$'\t'
+#ignored 0 sized folders (even though empty files may have been deleted/moved there)
+if test "0" -eq "`id -u`"; then
+  sudo=''
+else
+  sudo='sudo'
+fi
+$sudo find "${backupdirfordeletions}" -type f
+
+#------
+
+

@@ -1,0 +1,66 @@
+#!/bin/bash
+
+srcdirname='gentoo' #no . or / pls
+srcdir="./${srcdirname}"  #copies this folder... (backup/archive style)
+destdir='/home/zazdxscf/gentooskyline/system/Z575/OSes/gentoo/on_baremetal/filesystem_now' #... inside this folder! (the end / is ignored anyway, if any)
+
+#--------
+#ensuring no / at the end!
+srcdir=${srcdir%%/}
+destdir=${destdir%%/}
+#echo "$srcdir $destdir"
+#exit 1
+
+
+if test "0" -eq "`id -u`"; then
+  sudo=''
+else
+  sudo='sudo'
+  $sudo --validate
+fi
+
+if test -n "$DEBUG" -a "0$DEBUG" -ne "0"; then
+  verbose='--verbose'
+else
+  verbose=''
+fi
+
+if test -n "$EXTRASAFE"; then
+  extrasafe='--backup=numbered'
+else
+  extrasafe=''
+fi
+
+
+#XXX: we actually remove the entire folder(back it up to tmpfs - aka lost after reboot) so that leftover files which were removed do not hang around
+src="${destdir}/${srcdirname}"
+dest="/tmp/${src//\//_} $(date)" #make sure any paths(subdirs) become only one dir (replacing / with _ )
+echo "Removing '$src' (moving into '$dest')"
+mkdir -p "$dest"
+$sudo mv -t "$dest" -- "$src"
+
+mkdir -p -- "$destdir" #making sure it exists
+
+#--strip-trailing-slashes
+$sudo cp $verbose --archive --reflink=auto --sparse=always $extrasafe -t "$destdir" --strip-trailing-slashes -- "${srcdir}"
+#^ note here: any extra files/dirs are not deleted, but any modified files will be! Maybe I should use rsync --update ? hmm, then I won't need ./reaccess script! because rsync can do the chmod for me.
+#rsync --no-perms --executability --update
+#passing --update to cp is interesting, but I do want to overwrite newer files in destination though! which this does not do!
+
+
+
+#done: invoke the reaccess script here
+
+reaccess_for_git "$destdir"
+#^ this also resets WARNING.txt which is a sibbling of the ./gentoo/ folder there; AND any other files/dirs present there (currently no others)
+
+#rename some certs to be ascii only, 
+set -e
+pushd "${destdir}/gentoo/etc/ssl/certs/"
+#just to see(no changes applied):
+#LC_ALL=C find . -regex '.*[^ -z}{|~].*' -exec bash -c 'echo -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+#apply changes(wit see):
+LC_ALL=C find . -regex '.*[^ -z}{|~].*' -execdir bash -c 'mv --verbose -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+set +e
+popd
+
