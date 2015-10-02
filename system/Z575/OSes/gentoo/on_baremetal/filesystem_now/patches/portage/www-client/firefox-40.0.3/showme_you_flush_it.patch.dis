@@ -1,0 +1,10 @@
+--- orig/gfx/layers/basic/X11BasicCompositor.cpp	2015-09-04 22:21:08.037174995 +0200
++++ patched/gfx/layers/basic/X11BasicCompositor.cpp	2015-09-04 22:21:03.833776657 +0200
+@@ -130,6 +130,7 @@ X11BasicCompositor::EndFrame()
+ {
+   BasicCompositor::EndFrame();
+   XFlush(DefaultXDisplay());
++  fprintf(stderr, "XFlush(DefaultXDisplay())");
+ }
+ 
+ } // namespace layers

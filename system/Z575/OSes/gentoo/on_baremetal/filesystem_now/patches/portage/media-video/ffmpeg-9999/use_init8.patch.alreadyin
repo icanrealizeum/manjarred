@@ -1,0 +1,13 @@
+Index: ffmpeg-9999/libavcodec/aacdec_template.c
+===================================================================
+--- ffmpeg-9999.orig/libavcodec/aacdec_template.c
++++ ffmpeg-9999/libavcodec/aacdec_template.c
+@@ -3122,7 +3122,7 @@ static int aac_decode_frame(AVCodecConte
+     if (INT_MAX / 8 <= buf_size)
+         return AVERROR_INVALIDDATA;
+ 
+-    if ((err = init_get_bits(&gb, buf, buf_size * 8)) < 0)
++    if ((err = init_get_bits8(&gb, buf, buf_size)) < 0)
+         return err;
+ 
+     switch (ac->oc[1].m4ac.object_type) {

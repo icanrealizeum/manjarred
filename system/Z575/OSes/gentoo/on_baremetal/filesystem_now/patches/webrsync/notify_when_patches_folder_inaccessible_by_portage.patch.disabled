@@ -1,0 +1,24 @@
+--- orig/usr/portage/eclass/eutils.eclass	2015-08-17 09:36:17.317993644 +0200
++++ patched/usr/portage/eclass/eutils.eclass	2015-08-17 09:36:27.898245121 +0200
+@@ -696,6 +696,7 @@ epatch_user() {
+ 	local applied="${T}/epatch_user.log"
+ 	[[ -e ${applied} ]] && return 2
+ 
++	local accu=()
+ 	# don't clobber any EPATCH vars that the parent might want
+ 	local EPATCH_SOURCE check base=${PORTAGE_CONFIGROOT%/}/etc/portage/patches
+ 	for check in ${CATEGORY}/{${P}-${PR},${P},${PN}}{,:${SLOT}}; do
+@@ -711,9 +712,13 @@ epatch_user() {
+ 			echo "${EPATCH_SOURCE}" > "${applied}"
+ 			has epatch_user_death_notice ${EBUILD_DEATH_HOOKS} || EBUILD_DEATH_HOOKS+=" epatch_user_death_notice"
+ 			return 0
++		else
++			accu+=("'${EPATCH_SOURCE}'")
+ 		fi
+ 	done
+ 	echo "none" > "${applied}"
++	ewarn "!! Ignoring patches from inaccessible directories(by user `id`), tried: ${accu[@]}"
++	ewarn "!! If you're using symlink(s) please make sure that the parent folders that the symlink points to ie. append /../  have +rx permissions for the above mentioned user ^ or o+rx"
+ 	return 1
+ }
+ # @FUNCTION: epatch_user_death_notice

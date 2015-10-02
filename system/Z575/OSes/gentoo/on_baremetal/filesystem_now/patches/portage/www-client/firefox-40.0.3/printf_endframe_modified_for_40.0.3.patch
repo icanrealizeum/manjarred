@@ -1,0 +1,71 @@
+src: https://bugzilla.mozilla.org/show_bug.cgi?id=1193520#c39
+
+--- orig/gfx/layers/composite/LayerManagerComposite.cpp	2015-09-09 14:08:41.782628731 +0200
++++ patched/gfx/layers/composite/LayerManagerComposite.cpp	2015-09-09 14:12:58.629934209 +0200
+@@ -267,11 +267,13 @@ LayerManagerComposite::EndTransaction(Dr
+                                       void* aCallbackData,
+                                       EndTransactionFlags aFlags)
+ {
++  printf_stderr("LayerManagerComposite::EndTransaction\n");
+   NS_ASSERTION(mInTransaction, "Didn't call BeginTransaction?");
+   NS_ASSERTION(!aCallback && !aCallbackData, "Not expecting callbacks here");
+   mInTransaction = false;
+ 
+   if (!mIsCompositorReady) {
++    printf_stderr(" -- Compositor not ready\n");
+     return;
+   }
+   mIsCompositorReady = false;
+@@ -282,6 +284,7 @@ LayerManagerComposite::EndTransaction(Dr
+ #endif
+ 
+   if (mDestroyed) {
++    printf_stderr(" -- LayerManager destroyed\n");
+     NS_WARNING("Call on destroyed layer manager");
+     return;
+   }
+@@ -297,6 +300,12 @@ LayerManagerComposite::EndTransaction(Dr
+     mInvalidRegion.Or(mInvalidRegion, mRenderBounds);
+   }
+ 
++  if (mInvalidRegion.IsEmpty() && !mTarget) {
++     printf_stderr(" -- empty invalid region\n");
++     // Composition requested, but nothing has changed. Don't do any work.
++     return;
++  }
++
+   if (mRoot && !(aFlags & END_NO_IMMEDIATE_REDRAW)) {
+     if (aFlags & END_NO_COMPOSITE) {
+       // Apply pending tree updates before recomputing effective
+@@ -619,6 +628,7 @@ LayerManagerComposite::PopGroupForLayerE
+ void
+ LayerManagerComposite::Render()
+ {
++  printf_stderr("LayerManagerComposite::Render\n");
+   PROFILER_LABEL("LayerManagerComposite", "Render",
+     js::ProfileEntry::Category::GRAPHICS);
+ 
+@@ -689,6 +699,7 @@ LayerManagerComposite::Render()
+       js::ProfileEntry::Category::GRAPHICS);
+ 
+     if (!mCompositor->GetWidget()->PreRender(this)) {
++      printf_stderr(" -- PreRender returned false\n");
+       return;
+     }
+   }
+@@ -720,6 +731,7 @@ LayerManagerComposite::Render()
+ 
+   if (actualBounds.IsEmpty()) {
+     mCompositor->GetWidget()->PostRender(this);
++    printf_stderr(" -- Empty bounds\n");
+     return;
+   }
+ 
+@@ -767,6 +779,7 @@ LayerManagerComposite::Render()
+     PROFILER_LABEL("LayerManagerComposite", "EndFrame",
+       js::ProfileEntry::Category::GRAPHICS);
+ 
++    printf_stderr(" -- EndFrame\n");
+     mCompositor->EndFrame();
+     mCompositor->SetDispAcquireFence(mRoot);
+   }

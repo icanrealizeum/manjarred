@@ -1,0 +1,11 @@
+--- orig/usr/portage/x11-drivers/xf86-video-virtualbox/xf86-video-virtualbox-5.0.4.ebuild	2015-08-17 12:31:02.000000000 +0300
++++ patched/usr/portage/x11-drivers/xf86-video-virtualbox/xf86-video-virtualbox-5.0.4.ebuild	2015-08-25 09:42:05.344711121 +0300
+@@ -89,6 +89,8 @@ src_prepare() {
+ 	if gcc-specs-now ; then
+ 		epatch "${FILESDIR}/${PN}-4.3.6-link-lazy.patch"
+ 	fi
++
++	epatch_user
+ }
+ 
+ src_configure() {

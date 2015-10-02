@@ -1,0 +1,11 @@
+--- orig/usr/portage/media-plugins/gst-plugins-libav/gst-plugins-libav-1.4.5-r2.ebuild	2015-09-06 09:33:32.431452604 +0200
++++ patched/usr/portage/media-plugins/gst-plugins-libav/gst-plugins-libav-1.4.5-r2.ebuild	2015-09-06 09:33:51.105074720 +0200
+@@ -43,6 +43,8 @@ src_prepare() {
+ 
+ 	# avviddec: Release stream lock while calling avcodec_decode_video2()
+ 	epatch "${FILESDIR}"/${P}-h265-fixes.patch
++
++	epatch_user
+ }
+ 
+ multilib_src_configure() {

@@ -1,0 +1,41 @@
+
+Note:
+the file in srcdir at: src/VBox/Additions/x11/Installer/98vboxadd-xclient
+will be installed as: /usr/bin/VBoxClient-all
+
+--- orig/src/VBox/Additions/x11/Installer/98vboxadd-xclient	2015-09-03 15:34:41.353821403 +0200
++++ patched/src/VBox/Additions/x11/Installer/98vboxadd-xclient	2015-09-03 15:46:44.995012317 +0200
+@@ -21,10 +21,22 @@ for i in $HOME/.vboxclient-*.pid; do
+     test -w $i || rm -f $i
+ done
+ 
+-if test -f /proc/modules && ! grep -q vboxguest /proc/modules 2>/dev/null; then
+-   # Do not start if the kernel module is not present.
+-   notify-send "VBoxClient: the VirtualBox kernel service is not running.  Exiting."
+-elif test -z "${SSH_CONNECTION}"; then
++if test -f /proc/modules ; then
++  if test -r /proc/modules; then
++    if ! grep -q vboxguest /proc/modules 2>/dev/null; then
++     # Do not start if the kernel module is not present.
++     notify-send "VBoxClient: the VirtualBox kernel service is not running.  Exiting."
++     exit 1
++    fi
++  else
++    #unreadable, likely because of grsec
++    notify-send "VBoxClient: /proc/modules is unreadable by the current user ${USER}(`id -u`) likely because of kernel config option CONFIG_GRKERNSEC_PROC and user not being in that custom proc group. Assuming vboxguest module is inserted(lsmod|grep vboxguest) and attempting to start services anyway..."
++  fi
++else
++  notify-send "VBoxClient: /proc/modules does not exist to check if vboxguest module is loaded."
++fi
++
++if test -z "${SSH_CONNECTION}"; then
+    # This script can also be triggered by a connection over SSH, which is not
+    # what we had in mind, so we do not start VBoxClient in that case.  We do
+    # not use "exit" here as this script is "source"d, not executed.
+@@ -33,4 +45,6 @@ elif test -z "${SSH_CONNECTION}"; then
+   /usr/bin/VBoxClient --display
+   /usr/bin/VBoxClient --seamless
+   /usr/bin/VBoxClient --draganddrop
++  notify-send "VBoxClient: done initing."
+ fi
++

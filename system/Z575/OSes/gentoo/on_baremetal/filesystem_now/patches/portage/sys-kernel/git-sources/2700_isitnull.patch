@@ -1,0 +1,28 @@
+to check if this bug was fixed (apparently was):
+https://bugzilla.kernel.org/show_bug.cgi?id=97231#c12
+
+diff --git a/net/netfilter/nf_tables_core.c b/net/netfilter/nf_tables_core.c
+index f153b07..88ead13 100644
+--- a/net/netfilter/nf_tables_core.c
++++ b/net/netfilter/nf_tables_core.c
+@@ -129,6 +129,7 @@ do_chain:
+ 	rule = list_entry(&chain->rules, struct nft_rule, list);
+ next_rule:
+ 	regs.verdict.code = NFT_CONTINUE;
++	BUG_ON(NULL == chain);
+ 	list_for_each_entry_continue_rcu(rule, &chain->rules, list) {
+ 
+ 		/* This rule is not active, skip. */
+@@ -179,7 +180,12 @@ next_rule:
+ 		nft_trace_packet(pkt, chain, rulenum, NFT_TRACE_RULE);
+ 
+ 		chain = regs.verdict.chain;
++    if (NULL != chain) {
+ 		goto do_chain;
++    }else{
++      printk(KERN_DEBUG "avoiding oops, stackptr: %d chain: %p rule: %p rulenum:%d\n", stackptr, chain, rule, rulenum);
++      break;
++    }
+ 	case NFT_CONTINUE:
+ 		rulenum++;
+ 		/* fall through */

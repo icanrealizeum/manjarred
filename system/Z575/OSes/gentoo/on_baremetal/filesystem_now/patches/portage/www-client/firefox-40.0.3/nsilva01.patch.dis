@@ -1,0 +1,133 @@
+# HG changeset patch
+# User Nicolas Silva <nsilva@mozilla.com>
+# Parent  d569f3a23de0c545ac5a71acc82483adce32c6c6
+
+diff --git a/gfx/layers/composite/LayerManagerComposite.cpp b/gfx/layers/composite/LayerManagerComposite.cpp
+--- a/gfx/layers/composite/LayerManagerComposite.cpp
++++ b/gfx/layers/composite/LayerManagerComposite.cpp
+@@ -252,32 +252,35 @@ LayerManagerComposite::ApplyOcclusionCul
+     aOpaqueRegion.Or(aOpaqueRegion, localOpaque);
+   }
+ }
+ 
+ void
+ LayerManagerComposite::EndTransaction(const TimeStamp& aTimeStamp,
+                                       EndTransactionFlags aFlags)
+ {
++  printf_stderr("LayerManagerComposite::EndTransaction\n");
+   NS_ASSERTION(mInTransaction, "Didn't call BeginTransaction?");
+   NS_ASSERTION(!(aFlags & END_NO_COMPOSITE),
+                "Shouldn't get END_NO_COMPOSITE here");
+   mInTransaction = false;
+ 
+   if (!mIsCompositorReady) {
++    printf_stderr(" -- Compositor not ready\n");
+     return;
+   }
+   mIsCompositorReady = false;
+ 
+ #ifdef MOZ_LAYERS_HAVE_LOG
+   MOZ_LAYERS_LOG(("  ----- (beginning paint)"));
+   Log();
+ #endif
+ 
+   if (mDestroyed) {
++    printf_stderr(" -- LayerManager destroyed\n");
+     NS_WARNING("Call on destroyed layer manager");
+     return;
+   }
+ 
+   // Set composition timestamp here because we need it in
+   // ComputeEffectiveTransforms (so the correct video frame size is picked) and
+   // also to compute invalid regions properly.
+   mCompositor->SetCompositionTime(aTimeStamp);
+@@ -289,16 +292,17 @@ LayerManagerComposite::EndTransaction(co
+     mClonedLayerTreeProperties = nullptr;
+ 
+     mInvalidRegion.Or(mInvalidRegion, invalid);
+   } else if (!mTarget) {
+     mInvalidRegion.Or(mInvalidRegion, mRenderBounds);
+   }
+ 
+   if (mInvalidRegion.IsEmpty() && !mTarget) {
++    printf_stderr(" -- empty invalid region\n");
+     // Composition requested, but nothing has changed. Don't do any work.
+     return;
+   }
+ 
+  if (mRoot && !(aFlags & END_NO_IMMEDIATE_REDRAW)) {
+     MOZ_ASSERT(!aTimeStamp.IsNull());
+     // The results of our drawing always go directly into a pixel buffer,
+     // so we don't need to pass any global transform here.
+@@ -619,16 +623,17 @@ LayerManagerComposite::PopGroupForLayerE
+   gfx::Rect clipRectF(aClipRect.x, aClipRect.y, aClipRect.width, aClipRect.height);
+   mCompositor->DrawQuad(Rect(Point(0, 0), Size(mTwoPassTmpTarget->GetSize())), clipRectF, effectChain, 1.,
+                         Matrix4x4());
+ }
+ 
+ void
+ LayerManagerComposite::Render()
+ {
++  printf_stderr("LayerManagerComposite::Render\n");
+   PROFILER_LABEL("LayerManagerComposite", "Render",
+     js::ProfileEntry::Category::GRAPHICS);
+ 
+   if (mDestroyed) {
+     NS_WARNING("Call on destroyed layer manager");
+     return;
+   }
+ 
+@@ -690,16 +695,17 @@ LayerManagerComposite::Render()
+     mLastFrameMissedHWC = !!composer2D;
+   }
+ 
+   {
+     PROFILER_LABEL("LayerManagerComposite", "PreRender",
+       js::ProfileEntry::Category::GRAPHICS);
+ 
+     if (!mCompositor->GetWidget()->PreRender(this)) {
++      printf_stderr(" -- PreRender returned false\n");
+       return;
+     }
+   }
+ 
+   nsIntRegion invalid;
+   if (mTarget) {
+     invalid = mTargetBounds;
+   } else {
+@@ -721,16 +727,17 @@ LayerManagerComposite::Render()
+   } else {
+     gfx::Rect rect;
+     mCompositor->BeginFrame(invalid, nullptr, bounds, &rect, &actualBounds);
+     clipRect = ParentLayerIntRect(rect.x, rect.y, rect.width, rect.height);
+   }
+ 
+   if (actualBounds.IsEmpty()) {
+     mCompositor->GetWidget()->PostRender(this);
++    printf_stderr(" -- Empty bounds\n");
+     return;
+   }
+ 
+   // Allow widget to render a custom background.
+   mCompositor->GetWidget()->DrawWindowUnderlay(this, IntRect(actualBounds.x,
+                                                                actualBounds.y,
+                                                                actualBounds.width,
+                                                                actualBounds.height));
+@@ -768,16 +775,17 @@ LayerManagerComposite::Render()
+ 
+   // Debugging
+   RenderDebugOverlay(actualBounds);
+ 
+   {
+     PROFILER_LABEL("LayerManagerComposite", "EndFrame",
+       js::ProfileEntry::Category::GRAPHICS);
+ 
++    printf_stderr(" -- EndFrame\n");
+     mCompositor->EndFrame();
+     mCompositor->SetDispAcquireFence(mRoot,
+                                      mCompositor->GetWidget()); // Call after EndFrame()
+   }
+ 
+   if (composer2D) {
+     composer2D->Render(mCompositor->GetWidget());
+   }

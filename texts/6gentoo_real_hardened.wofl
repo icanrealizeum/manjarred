@@ -4688,9 +4688,22 @@
       \ this is to compile the extpack  so you don't have to emerge the binary-only one
     - (already) make sure  USE=qt4  so that you get the virtualbox GUI !!!
     - . /etc/profile
-    * time FEATURES=-ccache emerge -nav virtualbox
-      \ duration: 
-      \ without the FEATURES=-ccache!
+    * time emerge -nav virtualbox
+      \ Total: 13 packages (13 new), Size of downloads: 114122 KiB
+      \ duration: 10m43.026s until app-emulation/virtualbox-modules-5.0.4 fails with:
+      \ /var/tmp/portage/app-emulation/virtualbox-modules-5.0.4/work/vboxdrv/linux/SUPDrv-linux.c:1:0: error: code model kernel does not support PIC mode
+      \ which means we need to not use ccache
+      * time CCACHE_DISABLE=1 emerge -nav app-emulation/virtualbox-modules
+        \ dur: 1m49.091s
+        * vim /etc/conf.d/modules
+          \ if I'm using openrc(which I am), then they say I've to add these modules:
+          \ modules="vboxdrv vboxnetflt vboxnetadp"
+          \ TODO: will add later.
+        * time emerge -nav virtualbox
+          \ dur: 10m16.105s until fail:
+          \    ** gcc version 5.2 found, expected gcc 3.x with x>1 or gcc 4.x with 0<x<10 or gcc 5.1!
+          \ added patch, rerunning,
+          \ duration: 
     * gpasswd -a emacs vboxusers
       \ Adding user emacs to group vboxusers
       \ because you must be in vboxusers group to run virtualbox!

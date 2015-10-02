@@ -1,0 +1,11 @@
+--- orig/usr/portage/media-sound/gsm/gsm-1.0.13-r1.ebuild	2015-08-26 22:09:22.686075339 +0300
++++ patched/usr/portage/media-sound/gsm/gsm-1.0.13-r1.ebuild	2015-08-26 22:09:43.476396109 +0300
+@@ -32,7 +32,7 @@ multilib_src_compile() {
+ 	# floats faster than integers, e.g. on a SPARCstation.
+ 	use sparc && append-flags -DUSE_FLOAT_MUL -DFAST
+ 
+-	emake -j1 CCFLAGS="${CFLAGS} -c -DNeedFunctionPrototypes=1" \
++	emake -j1 CCFLAGS="${CFLAGS} -c -fPIC -DNeedFunctionPrototypes=1" \
+ 		LD="$(tc-getCC)" AR="$(tc-getAR)" CC="$(tc-getCC)"
+ }
+ 

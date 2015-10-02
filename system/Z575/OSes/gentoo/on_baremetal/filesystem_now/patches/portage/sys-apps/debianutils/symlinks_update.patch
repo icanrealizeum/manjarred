@@ -1,0 +1,22 @@
+installkernel won't update broken symlinks
+eg. vmlinuz -> hdlsakhdla
+won't be updated because test -f will fail on it
+but test -h won't
+
+This applied to gentoo(didn't exist on manjaro)
+
+here's the patch:
+
+diff --git a/installkernel b/installkernel
+index abfca8c..35c15d7 100644
+--- a/installkernel
++++ b/installkernel
+@@ -42,7 +42,7 @@ updatever () {
+   cat "$2" > "$dir/$1-$ver"
+ 
+   # This section is for backwards compatibility only
+-  if test -f "$dir/$1" ; then
++  if test -f "$dir/$1" || test -h "$dir/$1" ; then
+     # The presence of "$dir/$1" is unusual in modern intallations, and
+     # the results are mostly unused.  So only recreate them if they
+     # already existed.

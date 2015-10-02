@@ -1,0 +1,12 @@
+Index: /var/tmp/portage/www-client/firefox-40.0.3/work/mozilla-release/gfx/layers/composite/LayerManagerComposite.cpp
+===================================================================
+--- .orig/gfx/layers/composite/LayerManagerComposite.cpp
++++ patched/gfx/layers/composite/LayerManagerComposite.cpp
+@@ -619,6 +619,7 @@ LayerManagerComposite::PopGroupForLayerE
+ void
+ LayerManagerComposite::Render()
+ {
++  NS_WARNING("In LayerManagerComposite::Render()");
+   PROFILER_LABEL("LayerManagerComposite", "Render",
+     js::ProfileEntry::Category::GRAPHICS);
+ 

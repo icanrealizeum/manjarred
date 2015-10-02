@@ -1,0 +1,92 @@
+fixes my issue: https://code.google.com/p/chromium/issues/detail?id=529366#c20
+(untested yet)
+
+commit 7d7f7c2e827c36b037e6297733ee60cdf93cf6bb
+Author: dtapuska <dtapuska@chromium.org>
+Date:   Tue Sep 1 07:58:29 2015 -0700
+
+    Revert of Fix out of order key events in Chrome on Linux. (patchset #2 id:20001 of https://codereview.chromium.org/1302373006/ )
+    
+    Reason for revert:
+    This causes a regression in the Save Dialog.
+    
+    See issue 526940
+    
+    Original issue's description:
+    > Fix out of order key events in Chrome on Linux.
+    >
+    > The ibus-gtk layer was using XPutBackEvent which pushes an event to the
+    > top of the X event queue. The problem with this is that if the gtk event
+    > loop processes more than one event before the X event loop executes the
+    > X message pump will see the events in reverse order.
+    >
+    > Fix this by using XSendEvent which sends the event to the display and puts
+    > it at the end of the list. However; it appears that the wire protocol for
+    > XKeyEvent has 16 bits of accuracy defined for the state variable; yet the
+    > struct is 32 bits for that field. While the state variable ends up still
+    > being correct when you use XPutBackEvent because it is just an in process
+    > copy; the XSendEvent is a serialization to the XServer and results in loss
+    > of precision. To get around this pack the high bits that are used into
+    > an empty field that is used.
+    >
+    > BUG=524084
+    >
+    > Committed: https://crrev.com/1c683ec5ef4103a5526e2e1cf43d81f6d4f0b486
+    > Cr-Commit-Position: refs/heads/master@{#346194}
+    
+    TBR=shuchen@chromium.org,sadrul@chromium.org,erg@chromium.org
+    NOPRESUBMIT=true
+    NOTREECHECKS=true
+    NOTRY=true
+    BUG=524084
+    
+    Review URL: https://codereview.chromium.org/1315043007
+    
+    Cr-Commit-Position: refs/heads/master@{#346655}
+
+diff --git a/chrome/browser/ui/libgtk2ui/gtk2_event_loop.cc b/chrome/browser/ui/libgtk2ui/gtk2_event_loop.cc
+index 0974e06..e48c186 100644
+--- a/chrome/browser/ui/libgtk2ui/gtk2_event_loop.cc
++++ b/chrome/browser/ui/libgtk2ui/gtk2_event_loop.cc
+@@ -8,7 +8,6 @@
+ #include <gdk/gdkx.h>
+ #include <gtk/gtk.h>
+ #include <X11/X.h>
+-#include <X11/Xlib.h>
+ 
+ #include "base/memory/singleton.h"
+ #include "ui/gfx/x/x11_types.h"
+@@ -71,15 +70,7 @@ void Gtk2EventLoop::ProcessGdkEventKey(const GdkEventKey& gdk_event_key) {
+   x_event.xkey.keycode = gdk_event_key.hardware_keycode;
+   x_event.xkey.same_screen = true;
+ 
+-  // ibus-gtk uses the top 16 bits of the xkey.state; but Xserver only
+-  // supports 16 bit accuracy on this field over the wire so we pack
+-  // the upper 16 bits into another unused field. (crbug.com/524084)
+-  x_event.xkey.x = x_event.xkey.y = -1;
+-  x_event.xkey.x_root  = gdk_event_key.hardware_keycode;
+-  x_event.xkey.y_root = gdk_event_key.state >> 16;
+-
+-  XSendEvent(x_event.xkey.display, x_event.xkey.window, true, KeyPressMask,
+-             &x_event);
++  XPutBackEvent(x_event.xkey.display, &x_event);
+ }
+ 
+ }  // namespace libgtk2ui
+diff --git a/chrome/browser/ui/libgtk2ui/x11_input_method_context_impl_gtk2.cc b/chrome/browser/ui/libgtk2ui/x11_input_method_context_impl_gtk2.cc
+index 9259fcc..9ea4aba 100644
+--- a/chrome/browser/ui/libgtk2ui/x11_input_method_context_impl_gtk2.cc
++++ b/chrome/browser/ui/libgtk2ui/x11_input_method_context_impl_gtk2.cc
+@@ -240,12 +240,6 @@ GdkEvent* X11InputMethodContextImplGtk2::GdkEventFromNativeEvent(
+   event->key.group = keyboard_group;
+   event->key.is_modifier = IsKeycodeModifierKey(xkey.keycode);
+ 
+-  // See gtk2_event_loop.cc where it packs a GdkEvent into an XEvent for this
+-  // magical decoding.
+-  if (xkey.send_event && xkey.x == -1 && xkey.y == -1 &&
+-      xkey.x_root == static_cast<int>(xkey.keycode))
+-    event->key.state |= (xkey.y_root << 16);
+-
+   char keybits[32] = {0};
+   XQueryKeymap(xkey.display, keybits);
+   if (IsAnyOfKeycodesPressed(meta_keycodes_, keybits, sizeof keybits * 8))
