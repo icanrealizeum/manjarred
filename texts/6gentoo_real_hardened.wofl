@@ -2893,6 +2893,7 @@
               - run this: /usr/bin/ssh-keygen -t ed25519 -a 120 -f /etc/ssh/ssh_host_ed25519_key -b 512
                 \ don't put any passphrase
                 \ 399 bytes, already existed, so don't regen!
+                \ XXX: "Ed25519 keys have a fixed length and the -b flag will be ignored." from man ssh-keygen
               \ LogLevel VERBOSE
               \ LoginGraceTime 30s
               \ PermitRootLogin yes
