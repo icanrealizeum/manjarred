@@ -2205,6 +2205,16 @@
       \ [matroska,webm @ 0x3ab5d60c070] EBML header parsing failed
       \ re-emerging (with USE=-xml), duration: 12m55.745s
       \ yep vids work now, so ignore this: [00000397f18f85d0] core demux error: XML provider not found
+      \ .webm with audio codec opus doesn't play (no audio, no sound), so removed USE flag: vorbis (no effect)
+      \ duration(while compiling virtualbox): 18m19.347s
+      \ disabling flag ogg(no effect):
+      \ duration: 11m51.265s
+      \ next, disabling opus(no good!can't decode) (although I remember this didn't work for .opus files before! and I'm pretty sure ffmpeg had opus support, so vlc wasn't able to fall back to it or something, since it didn't play *.opus)
+      \ duration: 12m2.735s
+      \ yep, cannot even play: Codec not supported:
+      \ VLC could not decode the format "Opus" (Opus Audio)
+      \ rebuilt with more defaults, dur: 11m57.000s  (no effect)
+      \ rebuilt back with initial manually set flags, dur: 15m7.376s
     * time emerge -nav firefox
       \ dur: 13m26.503s  (it was 70min before! this was an emerge(not ebuild) rerun, and thanks to ccache!)
       \ uses 7.1G in /var/tmp/portage/
@@ -4703,14 +4713,20 @@
           \ dur: 10m16.105s until fail:
           \    ** gcc version 5.2 found, expected gcc 3.x with x>1 or gcc 4.x with 0<x<10 or gcc 5.1!
           \ added patch, rerunning,
-          \ duration: 
-    * gpasswd -a emacs vboxusers
+          \ duration: 39m20.348s, user  81m30.770s, sys 19m49.213s
+          \ recompiled for next version 5.0.6, duration: 39m35.131s, user 82m48.156s, sys 19m52.497s
+    * gpasswd -a zazdxscf vboxusers
       \ Adding user emacs to group vboxusers
       \ because you must be in vboxusers group to run virtualbox!
+      \ "You must be in the vboxusers group to use VirtualBox."
+      \ XXX: now this only has effect on next login!
     - time emerge -nav app-emulation/virtualbox-extpack-oracle
+      \ OH WAIT! news: Starting with version 5.0.0, virtualbox no longer has the "additions" and the "extension" USE flag. for the USB2, USB3, VRDP and PXE boot ROM modules, please emerge app-emulation/virtualbox-extpack-oracle
+      \ DANG IT!
       \ WARNING: this installs some precompiled .so files !! it doesn't compile anything! it also uses a different license!
       \ //DON'T use this, set USE=extensions  instead! before compiling source
-      \ damn, this gets installed anyway!
+      \ //damn, this gets installed anyway! - no it doesn't! (anymore?)
+      \ don't install it for now, maybe not needed(for my using).
     - done: find out where is the executable and why isn't it already in the menus and on cmdline!!! because of USE=-qt4
     * make sure these modules are added to autoload
       * vim /etc/conf.d/modules
