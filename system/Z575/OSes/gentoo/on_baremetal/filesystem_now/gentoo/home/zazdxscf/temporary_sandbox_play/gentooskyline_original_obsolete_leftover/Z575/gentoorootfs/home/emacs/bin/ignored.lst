@@ -1,0 +1,44 @@
+#comments begin with # at the beginning of line, no whitespace before # !
+#if your filename begins with # then put whitespace before it; it's not considered a comment!
+#FIXME: backslashes \ gets lost
+
+
+
+path/test
+#path/
+/path
+#/
+
+#/
+#\/
+#^ those two detected as duplicates (when uncommented
+#boo
+backpub
+#two
+\/ \this is not an escaped /m
+  	 emptyfile    
+#three (comment because it's # without whitespace)
+        some file2  
+        some file2 #not a comment, this is part of the filename  
+       somefile3      
+			
+  	# not a comment, this is considered filename because it's a commenttoken aka # being preceeded by whitespace; this is for the case when filename begins with #      
+#two
+backpub 
+#^ has space at end - not a dup
+ backpub
+#^ has space at beginning - not a dup
+#backpub
+#^ would be a dup if it wasn't commented out
+# #a
+# #a
+#^ dup because whitespace before comment is not a comment
+#emptyfile
+#^ excludes all files named emptyfile regardless of their location in the tree!
+*/emptyfile
+#^ excludes all files/dirs named emptyfile
+
+/emptyfile
+#^ excludes only the file in root dir
+
+

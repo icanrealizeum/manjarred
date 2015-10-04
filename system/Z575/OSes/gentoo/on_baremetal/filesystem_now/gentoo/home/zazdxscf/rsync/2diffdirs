@@ -29,8 +29,10 @@ sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep -E -v '^Only in gentoo' | col
 #^ this isn't working due to  it displays the + diffs for all new files as if they didn't exist (which they don't, but I can't see a way to turn it off like diff does)
 
 
+echo "Deleted files:-------------"
 sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "Only in $thedir"
 
+echo "Modified binary files:-------------"
 sudo2 diff -rup "$thedir" gentoo 2>/dev/null |grep --color=tty "^Binary files "
 
 echo "Errors: -------------"

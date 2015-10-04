@@ -1,0 +1,15 @@
+
+# prerequisite:
+# git clone https://github.com/gorhill/uMatrix.git
+pushd ./uMatrix
+
+./tools/update-3rdparties.sh
+./tools/update-checksums.sh
+./tools/make-chromium.sh
+echo Load from: `pwd`/dist/build/uMatrix.chromium/
+
+./tools/make-firefox.sh all
+echo Firefox Load from: `pwd`/dist/build/uMatrix.firefox.xpi
+
+popd
+

@@ -1,0 +1,8 @@
+* restore owner/attributes/
+  * but what if, some dirs/files are inaccessible for emacs, how do I commit them? or even git status detect them; such as /root  being only u+rwx
+    * maybe add a script which relaxes all settings to be rx for my user emacs?
+
+  * what would be better is, keeping all attributes as they are at rsync source, and those in git here should be just normal emacs owner and stuff (they don't even have to be executable - can use a hook to keep them u+r only not even wx) and then when things have to be put back, we can apply the permissions/owner/stuff on the .git and then rsync them back or this may not even have to happen at all (well actually at first time it has to)
+
+
+

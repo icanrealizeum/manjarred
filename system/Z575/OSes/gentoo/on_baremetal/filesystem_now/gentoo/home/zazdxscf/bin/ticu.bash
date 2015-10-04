@@ -4,7 +4,7 @@ __die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
 source funx.bash || __die 100 "funx.bash not in PATH"         
 
 fil="TICUall"
-usr="emacs"
+usr="zazdxscf"
 
-tcmountcontainer.bash "/home/emacs/E/pri vate/${fil}" "/${fil}" "$usr"
+tcmountcontainer.bash "/root/E/pri vate/${fil}" "/${fil}" "$usr"
 

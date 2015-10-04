@@ -1,0 +1,4 @@
+echo "Before: `cat /sys/class/drm/card0/device/power_dpm_state`"
+echo 'thermal' > /sys/class/drm/card0/device/power_dpm_state
+echo "After : `cat /sys/class/drm/card0/device/power_dpm_state`"
+

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#XXX: src dir is in current folder!
 srcdirname='gentoo' #no . or / pls
 srcdir="./${srcdirname}"  #copies this folder... (backup/archive style)
 destdir='/home/zazdxscf/gentooskyline/system/Z575/OSes/gentoo/on_baremetal/filesystem_now' #... inside this folder! (the end / is ignored anyway, if any)
@@ -64,3 +65,12 @@ LC_ALL=C find . -regex '.*[^ -z}{|~].*' -execdir bash -c 'mv --verbose -- "{}" "
 set +e
 popd
 
+echo "-- redacting local IP"
+pushd "${destdir}/gentoo/etc/conf.d/" || echo "FAIL!"
+sed -i ./net -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
+sed -i ./nftables.rules -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
+cat ./net ./nftables.rules | grep --color=always -E -- "(192|redacted)"
+popd
+echo "--"
+
+echo "All done."

@@ -1,0 +1,4 @@
+#auto eject/remove (usb disconnect) the internal card reader RTS5139 upon detection.
+ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="0139", ATTR{remove}="1"
+# thanks to <grawity> on #archlinux freenode irc
+
