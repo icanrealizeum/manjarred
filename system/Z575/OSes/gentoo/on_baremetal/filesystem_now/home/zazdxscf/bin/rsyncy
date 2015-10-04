@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#example usage: rsyncy 'ssh -l root -p 8822' 127.0.0.21:/somedir localdirhere/
+#example usage: rsyncy 127.0.0.21:/somedir localdirhere/ --rsh='ssh -l root -p 8822'
+#//old example usage: rsyncy 'ssh -l root -p 8822' 127.0.0.21:/somedir localdirhere/
 
 #the "-a" arg EXCEPT --devices --specials (aka "-D"), made explicit:
 partialarchive='
@@ -12,8 +13,8 @@ partialarchive='
 update='--update' #prevent overwriting newer(than in $src) files on $dest 
 constbadway='--no-update'
 
-if test "$#" -lt "3" ; then
-  echo "Usage: $0 sshprogandargs srcdir destdir [more_rsync_params_here]"
+if test "$#" -lt "2" ; then
+  echo "Usage: $0 srcdir destdir [more_rsync_params_here]"
   exit 1
 fi
 
@@ -22,10 +23,12 @@ if test -n "$RSYNCY_OVERWRITE_EVEN_WHEN_NEWER_ON_DEST"; then
   #XXX: rsync issue: rsync: --no-update: unknown option
   update=''
 fi
-ssh="$1"
-src="$2"
-dest="$3"
-shift 3
+#ssh="$1"
+#shift
+src="$1"
+shift
+dest="$1"
+shift
 
 
 set -e
@@ -39,13 +42,20 @@ cleanup() {
 }
 trap cleanup EXIT
 
+#deal with inexistence of sudo, but only when already root! else will still fail to find sudo; FIXME: fail cleaner when sudo command isn't found!; FIXME: also when id isn't found! and fix all occurences of this if test (in ~/rsyncy/ mostly!)
+if test "0" -eq "`id -u`"; then
+  sudo=''
+else
+  sudo='sudo'
+fi
 #sudo --validate
 #the actual rsync command:
 set -x
 #echo "${EXTRA_RSYNCY_PARAMS[@]}"
 #echo "$EXTRA_RSYNCY_PARAMS"
 #echo "${FOO[@]}"
-sudo rsync --super --verbose --compress --partial --progress $partialarchive --checksum --delay-updates --no-ignore-errors --no-force --numeric-ids $update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60 --protect-args  --rsh="$ssh" "$@" -- "$src" "$dest" | tee "$tmpout"
+$sudo rsync --super --verbose --compress --partial --progress $partialarchive --checksum --delay-updates --no-ignore-errors --no-force --numeric-ids $update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60 --protect-args "$@" -- "$src" "$dest" | tee "$tmpout"
+#--rsh="$ssh"
 set +x
 #XXX: args that won't be recognized(rsync  version 3.1.1  protocol version 31): --no-update --no-copy-links --no-copy-unsafe-links --no-safe-links --no-fake-super --no-remove-source-files
 #XXX: "The --contimeout option may only be used when connecting to an rsync daemon."  (so it doesn't apply in my case, with ssh, apparently)
