@@ -9,5 +9,12 @@ pre_src_prepare() {
     for name in $names; do
         unset $name
     done
+
+    #unset DEBUG for packages known to break.
+    if test "$PN" = "gsm" -o "$PN" = "libunique"; then
+      unset DEBUG
+    fi
+    #TODO: make a more general thing here, like package.env is, but this one is for overriding even existing env. vars
+    #set >/tmp/set.txt
 }
 
