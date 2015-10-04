@@ -1,0 +1,59 @@
+#!/bin/bash
+
+set -u
+echo "WARNING: this uses enough memory(virt?) to cause OOM to kill virtualbox, sort or both!(had all cases happen!) You will need like (virt)10g ram free"
+read -p -s "Press Enter to continue or C-c to cancel"
+
+#can't using multiple -s params :/
+#kernelmode='-k' # -I"/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"'
+kernelfolder="/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"
+#kernelmode=""
+
+echo "regen cscope database"
+echo
+
+if test "$#" -eq 0; then
+  echo "pass any parameter to also generate for kernel sources, in addition to current folder(except if current folder is kernel folder)"
+  kerneltoo=0
+else
+  echo "in addition to current folder, we gen for kernel folder too: $kernelfolder"
+  kerneltoo=1
+fi
+
+destdir="/home/zazdxscf/cscope" #actually a symlink:
+if [ ! -L "$destdir" ]; then
+  echo "fail"
+  exit 2
+fi
+#creating the folders that this $destdir symlink points to!
+mkdir -p "$(realpath "$destdir")"
+cscopefordir="$(realpath "./")"
+
+cd "$destdir"
+echo "generating cscope for dir: $cscopefordir"
+echo "remember it's cummulative, so run this for every dir you want"
+files='-iname *.h -or -iname *.c -or -iname *.cpp'
+#avoid generating this twice if we are doing this for kernel explicitly
+time ( (
+echo "generating for $cscopefordir" >&2
+find "$cscopefordir" $files ; 
+#also generate for kernel, if we weren't already above
+if test "$kerneltoo" -eq 1 -a "$(realpath "$cscopefordir")" != "$(realpath "$kernelfolder")" ; then
+  echo "also generating for $kernelfolder" >&2
+  find "$kernelfolder" $files 
+else
+  echo "skipping kernel folder for generation" >&2
+  #adding /usr/include then (i guess this wasn't needed for kernel?)
+  find "/usr/include" $files ; #ok this takes like 45 seconds... also /usr/include/linux  is kernel includes....
+fi
+) | cscope -b -q -i- -R -k )
+# $kernelmode -R -s"$cscopefordir"  )
+# http://cscope.sourceforge.net/large_projects.html
+# go gui: cscope -d   (to not regen database)
+echo "all done"
+echo "keys in vim: C-\,s on a symbol to list all occurences"
+echo "C-f on a symbol while in code, will jump to its definition"
+echo "C-t to go back to previous view"
+echo "C-space,s  same as C-\,s but with split view"
+echo "etc."
+

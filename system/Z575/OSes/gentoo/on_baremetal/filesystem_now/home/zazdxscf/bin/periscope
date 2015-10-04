@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#saves and plays (at the same time) the periscope live streams (until they end)
+#the 'vlc' player is used to play(see) and 'livestreamer' program is required(installed) to fetch/save it.
+#you can exit player and start it again later, the stream keeps saving(until the stream ends, or you kill it)
+
+if ! type 'livestreamer'; then
+  echo "you must have livestreamer installed"
+  exit 2
+fi
+
+URL="$1"
+if test -z "$1"; then
+  echo "Please pass the URL of the periscope stream."
+  echo "a periscope.tv or t.co url"
+  exit 64
+fi
+
+if test "$#" -gt "1" ; then
+  echo "You passed too many parameters: '$@'"
+  echo "Maybe you wanted to double or single quote them, to be seen as only one parameter: the URL"
+  exit 64
+fi
+
+minfsizebeforeplaying=400000 #bytes
+
+#file to save stream to:
+file="/tmp/periscope_`date`.mp2t"
+#livestreamer --retry-streams 5 --retry-open 1 --default-stream best -o "$file" -- "$@" &
+#livestreamer --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+#livestreamer --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+livestreamer --stream-url --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+pid="$!"
+
+onint(){
+  echo "killing livestreamer too... pid $pid"
+  kill "$pid"
+  exit 130
+}
+
+trap onint sighup sigint sigabrt sigquit sigkill
+
+showkill() {
+  echo "To end the saving of the stream, do: `tput setaf 3`kill $pid`tput sgr0`"
+}
+
+showkill
+echo "Saving file will be: '$file'"
+
+isfile() {
+  fsize="`stat "-c%s" "$file" 2>/dev/null`"
+  if test -z "$fsize" -o "0$fsize" -lt "$minfsizebeforeplaying"; then
+    return 1 #nope
+  else
+    return 0 #yes
+  fi
+}
+
+while true; do
+  sleep 1
+  if isfile; then
+    vlc "$file"
+    echo "`tput setaf 2`vlc player exited`tput sgr0`"
+    echo "you might want to stop the stream saving, like so:"
+    showkill
+    echo "Or you can just restart the player:"
+    echo "vlc '$file'"
+    break
+  else
+    if ! ps "$pid" 2>&1 >/dev/null ; then
+      echo "`tput setaf 1`stream ended.`tput sgr0`"
+      break;
+    fi
+  fi
+done
+
+echo "Done here."
+

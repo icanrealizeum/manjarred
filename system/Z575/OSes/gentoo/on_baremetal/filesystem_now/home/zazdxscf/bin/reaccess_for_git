@@ -1,0 +1,75 @@
+#!/bin/bash
+
+#this is to be applied to a freshly rsync-ed destination(assumed to be current directory) which is to be made available for git
+#WARNING: this loses all owner information and owner's attributes on files/folders (kinda)
+#I use this on a copy of the rsync-ed destination to make it ready for git commit! so it makes sense!
+
+#FIXME: ensure all commands are available before running; eg. realpath
+
+#params="$@"
+wanteddir="$@"
+if test -z "$wanteddir"; then
+  echo "No params passed. Pass the folder to process."
+  exit 1
+  #echo "No params passed, assuming current dir."
+  #wanteddir='.'
+fi
+
+targetdir="`realpath --physical --canonicalize-existing -- "$wanteddir"`"
+
+if test ! -d "$targetdir"; then
+  echo "Directory '$targetdir' doesn't exist, apparently."
+  exit 2
+fi
+
+if test "$targetdir" = "/"; then
+  echo "Failed lame test for root dir. (aka don't try to do this on root!)"
+  exit 3
+fi
+
+if test -n "$DEBUG" -a "0$DEBUG" -ne "0"; then
+#if test -n "$DEBUG"; then
+  verbose='--changes'
+else
+  verbose=''
+fi
+
+echo "Processing dir '$targetdir'"
+sudo --validate
+echo "---------------"
+
+pushd "$targetdir" >/dev/null #needed for git status - current dir must be that git repo, or fail even when passing it as param!
+
+#safety:
+git status >/dev/null
+if test "$?" -ne "0"; then
+  echo "Current dir doesn't appear to be a git repository. Safety quitting..."
+  exit 128
+fi
+
+#so git can access files/folders as current user!
+userid="`id -u`"  #eg. 1000
+sudo chown $verbose -R "$userid" -- "$targetdir"
+
+#so git can chdir into folders for searching new files to commit
+sudo find "$targetdir" -type d -exec chmod $verbose u+rx {} \;
+
+#so git can read them for commit
+sudo find "$targetdir" -type f -exec chmod $verbose u+r {} \;
+
+echo "---------------"
+echo "Any unreadable files/dirs/links are shown below(if empty, ignore this):"
+#find . '!' -perm /u-r
+find "$targetdir" '!' -perm -u+r
+#ec="$?" #find won't set exitcode if 0 or any results are found!
+#if test "$ec" -ne "0"; then
+#  echo "WARNING: inaccessible files above!"
+#else
+#  echo "All good!"
+#fi
+echo "---------------"
+echo "Done!"
+#Note: symlinks don't have attributes, their pointees do and those are in effect when processing symlinks, or so it seems to me thus far, from my tests.
+
+popd >/dev/null
+

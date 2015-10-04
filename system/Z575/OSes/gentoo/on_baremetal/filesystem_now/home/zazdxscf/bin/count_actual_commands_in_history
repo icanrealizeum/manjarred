@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+
+realcommands="`cat ~/.bash_history | grep -v '^#' | grep -v '^ cd \"' | grep -v '^ PROMPT_COMMAND=' | wc -l`"
+echo "real commands typed in thus far : $realcommands"
+
+bash_history_lines="`cat ~/.bash_history | wc -l`"
+echo "lines in .bash_history : $bash_history_lines"
+
+
+#works only in interactive shell FIXME:
+#reportedcommands="`history | wc -l`"
+#echo "reported history commands : $reportedcommands"
+
+#bash_commands_count="`history | wc -l`"
+#echo "number of commands that bash thinks are in history : $bash_commands_count"
+
+#let 'comments=bash_history_lines - reportedcommands'
+#echo "lines that are comments : $comments"
+
+#let 'diff=reportedcommands - realcommands'
+#echo "difference aka junk : $diff"
+
