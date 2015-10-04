@@ -1,0 +1,25 @@
+# required by virtualbox-guest-additions (argument)
+# /usr/portage/profiles/features/64bit-native/package.mask:
+# AMD64 Team <amd64@gentoo.org>
+# Mask packages that rely on amd64 multilib
+>=app-emulation/virtualbox-guest-additions-5.0.0
+# required by =app-emulation/virtualbox-guest-additions-5.0.2 (argument)
+# /usr/portage/profiles/features/64bit-native/package.mask:
+# AMD64 Team <amd64@gentoo.org>
+# Mask packages that rely on amd64 multilib
+=app-emulation/virtualbox-guest-additions-5.0.2
+# required by >=sys-devel/gcc-5.2 (argument)
+# /etc/portage/package.mask/gcc:
+=sys-devel/gcc-5.2.0
+# required by >=chromium-47 (argument)
+# /usr/portage/profiles/package.mask:
+# Pawel Hajdan, Jr. <phajdan.jr@gentoo.org> (28 Jul 2015)
+# Dev channel releases are only for people who are developers or want more
+# experimental features and accept a more unstable release.
+>=www-client/chromium-47.0.2498.0
+
+# required by virtualbox (argument)
+# /usr/portage/profiles/features/64bit-native/package.mask:
+# AMD64 Team <amd64@gentoo.org>
+# Mask packages that rely on amd64 multilib
+>=app-emulation/virtualbox-5.0.4

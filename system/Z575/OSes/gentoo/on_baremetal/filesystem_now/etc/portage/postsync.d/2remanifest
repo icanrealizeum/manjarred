@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#disabled:
+#sys-apps/debianutils
+#x11-drivers/xf86-video-virtualbox
+#app-emulation/virtualbox-guest-additions
+#media-plugins/gst-plugins-libav/
+alldirswithoutspaces='
+media-sound/gsm
+www-client/chromium
+'
+
+for i in $alldirswithoutspaces ; do
+  pushd "/usr/portage/${i}/" && repoman -v  --digest=y  --ask manifest && popd
+  #^ this rebuilds the recorded checksum for all packages in current dir.
+  #needed because .ebuild files got patched!
+done
+
+

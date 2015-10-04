@@ -1,0 +1,37 @@
+# required by gcc:5.1 (argument)
+=sys-devel/gcc-5.1.0 **
+# required by =ffmpeg-9999 (argument)
+#=media-video/ffmpeg-9999 **
+# required by >=sys-devel/gcc-5.2 (argument)
+=sys-devel/gcc-5.2.0 **
+# required by media-gfx/zgv (argument)
+=media-gfx/zgv-5.9 **
+# required by media-gfx/zgv-5.9::gentoo
+# required by media-gfx/zgv (argument)
+=media-libs/svgalib-1.9.25-r4 **
+# required by =app-misc/mc-9999 (argument)
+=app-misc/mc-9999 **
+# required by =x11-libs/cairo-9999 (argument)
+#=x11-libs/cairo-9999 **
+=sys-boot/grub-9999-r1 **
+
+# required by =x11-libs/cairo-9999 (argument)
+#=x11-libs/cairo-9999 **
+# required by dev-libs/libpcre-8.37-r2::gentoo[readline]
+# required by net-misc/wget-1.16.3-r2::gentoo[pcre,-static]
+# required by @system
+# required by @world (argument)
+=sys-libs/readline-7.0_alpha **
+# required by =bash-4.4_alpha-r1 (argument)
+=app-shells/bash-4.4_alpha-r1 **
+# required by net-im/utox-9999::tox-overlay
+# required by utox (argument)
+=net-libs/tox-9999 **
+# required by utox (argument)
+=net-im/utox-9999 **
+# required by =vlc-9999 (argument)
+=media-video/vlc-9999 **
+# required by =ffmpeg-9999 (argument)
+#=media-video/ffmpeg-9999 **
+#XXX: ^ don't unmask this or gst-libav-plugins will fail to compile!
+
