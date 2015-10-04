@@ -3,6 +3,7 @@
 remoterootdir="$1"
 if test "$#" -ne "2" ; then #-z "$remoterootdir"; then
   echo "bad numer of params: '${@}' need: \"dest\" \"basedirsrc\""
+  echo "WARNING: the destination which will be updated(TO) is basedirsrc (not dest) the dest is FROM; FIXME: confusion"
   echo "basedirsrc is the dir containing the /gentoo/ dir! and it's the same dir which contains the /rsync-backed/ dir. Don't end in / !"
   exit 2
 fi
@@ -21,7 +22,7 @@ mkdir -p "$where"
 declare -a +r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 
 # all paths here are relative to the source dir (which is passed to rsync on cmdline, see --files-from in man rsync for exact explanation on how)
---files-from='/home/emacs/rsync/rsync_filesfrom.list'
+--files-from="${basedir}/rsync_filesfrom.list"
 #^ you cannot put comments inside this .list file!!
 
 #--exclude='*.tmp *~ *.swp'
@@ -29,7 +30,7 @@ declare -a +r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 
 #commented lines work inside these .list files though:
 #--include-from='/home/emacs/rsync/rsync_include.list' #useless when --files-from is used!
---exclude-from='/home/emacs/rsync/rsync_exclude.list'
+--exclude-from="${basedir}/rsync_exclude.list"
 
 --delete-excluded
 --backup
