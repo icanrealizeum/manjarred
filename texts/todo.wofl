@@ -693,12 +693,20 @@
     \ this, in subshell.c 
     \ " PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'pwd>&%d;kill -STOP $$'\n"
     \ the %d is subshell_pipe[WRITE]
+    \ https://github.com/MidnightCommander/mc/blob/21060c8ea73df21f45f51492a688142a21473c91/src/subshell.c#L881
     \ this isn't from my patch, but maybe what I changed affected this, let's see...
     \ re-emerging without my patch, duration: 3m55s
     \ ok now without my patch the same thing still happens!
     \ ok it happens even when PROMPT_COMMAND is unset!
     \ zazdxscf 10869  0.0  0.0  12008  2484 pts/15   T+   11:41   0:00 bash -c pwd>&8;kill -STOP $$
-
+    * the funny thing is, that while I strace the emerge, if I C-c early, then mc executes the same command (with fd 8) and it doesn't fail; also the same emerge with 2>somefile  doesn't get the error
+      * emerge --pretend coreutils 2>/tmp/stderr
+        \ doesn't err and the file has 0 bytes! XXX: #workaround 2>/dev/null although this might be bad... if something says something to stderr
+      * emerge --pretend coreutils
+        \ errs
+      * emerge --pretend coreutils 1>/tmp/stderr
+        \ errs! on any number except 2
+      * gave up for now
 
 
 
@@ -708,6 +716,9 @@
   \ EF 23 0B D5 6A 5A D7 E5 CF B7 32 44 3D 4F F8 B8 32 67 3F 1D
   \ EF23 0BD5 6A5A D7E5 CFB7 3244 3D4F F8B8 3267 3F1D
   \ EF230BD56A5AD7E5CFB732443D4FF8B832673F1D
+  \ https://i.imgur.com/NtkF6bX.png
+  \ changed 06 to 00 after some commands: https://i.imgur.com/sFNERcC.png
+  \ 
 
 * consider setting this sysctl oom_kill_allocating_task to non-zero, as to avoid killing the running virtualbox!!
   \ src: linux-git/Documentation/sysctl/vm.txt
