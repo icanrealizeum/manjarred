@@ -729,8 +729,10 @@
 * fix agetty (or login) so there's no delay between entering username and being prompted for the password; delay which allows for chars to be echoed before the "Password:" prompt!
   \ ffs
 
-* get udev rules.d from manjaro, into gentoo
-* get /etc/hosts from manjaro into gentoo
+- get udev rules.d from manjaro, into gentoo
+* fix /etc/udev/rules.d/75-mac-spoof.rules to work on gentoo, currently has no effect!
+
+- get /etc/hosts from manjaro into gentoo
 
 * investigate kernel scrollback bug
   \ when being switched to a vt (vc2) on second screen(eg. vim) then the first console vc1 being on first screen(not in vim, but on like bash command line) is losing scrollback that appeared while focus was on vc2
@@ -743,7 +745,8 @@
 
 - make piped command show exitcodes of 0 as black not as red! (in bash with my .bashrc PROMPT!)
 
-* fix touchpad tap doesn't work as LMB in X, bare metal, gentoo
+- fix touchpad tap doesn't work as LMB in X, bare metal, gentoo
+  \ works now, the default is to not allow tap to act as LMB (has setting in gui)
 
 - fix sensor doesn't have all the other sensors... or doesn't have access to them; except the ACPI one which is the battery and the read-once-startup-only temps!
   \ fixed by adding lm_sensors USE flag, but not needed lm_sensors on startup because it doesn't create any config! (due to all kernel modules required are built into kernel, so they're not modules at all)
@@ -753,9 +756,13 @@
   * TODO: actually fix it!
 
 * fix X's priority or else keyboard lag when compiling; on gentoo bare metal
+  * temp fix for now:
+    \ kernel.grsecurity.chroot_restrict_nice=0
+    \ in /etc/sysctl.d/99-sysctl.conf
 
-* echo 'thermal' > /sys/class/drm/card0/device/power_dpm_state 
+- echo 'thermal' > /sys/class/drm/card0/device/power_dpm_state 
   \ on startup
+  * done: /etc/local.d/110_thermal_radeon.start
   * see what did this on manjaro
 
 * get urxvt in gentoo
@@ -771,13 +778,16 @@
   \ does say 60.0 when viewed though.
 
 * see what (pulse?) did /.config/ folder and apparently still using it!
+  * see if it's made again (apparently wasn't remade since 30 sept.2015)
 
-* find out who's making this: /etc/.pwd.lock
+- find out who's making this: /etc/.pwd.lock
   \ if it happens again (last time was: 20.08.2015, and I just carried it with me)
 
 * use /etc/kernel/postinst.d/  to emerge @modules or something, after kernel compilation
   \ this may only be needed inside virtualbox ?
   \ oh wait, there are virtualbox modules that depend on kernel, even when you're running virtualbox on host, not just for the guest-additions for the OS within the virtualbox;
+  * time emerge -av @module-rebuild
+    \ wants to emerge only this: app-emulation/virtualbox-modules-5.0.6::gentoo
 
 
 * /etc/inputrc  and ~/inputrc (?)

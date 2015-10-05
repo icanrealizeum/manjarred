@@ -1,0 +1,29 @@
+$include /etc/inputrc
+
+
+# already in /etc/inputrc
+"\e[1;5C": forward-word     # Ctrl+right  => forward word
+"\e[1;5D": backward-word    # Ctrl+left   => backward word
+
+# urxvt:
+"\eOc": forward-word     # Ctrl+right  => forward word
+"\eOd": backward-word    # Ctrl+left   => backward word
+#"\e[6~": #keypad_PgDn, same code as PgDn
+#"\e[5~": #keypad_PgUp, same code as PgUp
+#ok, had to use xmodmap for these numpadkeys to work under vim with urxvt
+
+# this is the default anyway: "the terminal now echoes ^C after Ctrl+C is pressed"
+# src: https://wiki.archlinux.org/index.php/Readline#Disabling_control_echo
+set echo-control-characters on
+
+#TODO: disable flowcontrol instead, via: stty -ixon
+"\C-y": forward-search-history
+
+# fix numHome and numEnd for my Z575 laptop  (these are in effect in emacs mode, wtw that is; as per global inputrc in /etc/ )
+#"\e[1~": beginning-of-line
+#"\e[4~": end-of-line
+# ^ no effect, this is supposed to work in less; works everywhere else without this though! maybe it's xfce4-terminal? right, I've to use lesskey to set the keys
+# ok numHome and numEnd work fine if TERM=linux but not at all if TERM=xterm  and xfce4-terminal doesn't work with TERM=linux (cannot load stuff from /etc/termcap)
+#
+
+
