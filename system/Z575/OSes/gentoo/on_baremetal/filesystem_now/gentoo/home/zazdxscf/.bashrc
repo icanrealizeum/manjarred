@@ -98,7 +98,8 @@ unset CDPATH
 #alias mc="declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1"
 alias cls='tput clear' #\e[H\e[2J for rxvt-unicode-256color
 alias cls2='echo -ne "\e[H\e[J"'
-. /usr/libexec/mc/mc.sh
+#. /usr/libexec/mc/mc.sh
+alias mc='. /usr/libexec/mc/mc-wrapper.sh --nomouse --subshell'
 #alias mc="lefil=\"\$(mktemp -u --tmpdir=\"/tmp\" -t -- \"mc.pwd.\$\$.XXXXX\")\" && if [[ -n \"\$lefil\" ]]; then
 ##--slow
 #/usr/bin/mc --nomouse --subshell --printwd=\"\$lefil\" # 2>/tmp/mooe2
@@ -108,7 +109,8 @@ alias cls2='echo -ne "\e[H\e[J"'
 #cd \"\$lastwd\"
 #fi
 #"
-alias cm="mc --nomouse --subshell"
+#alias cm="mc --nomouse --subshell"
+alias cm=mc
 #alias mp3='time mpg123 -C --loop -100 --cpu x86-64 --gapless --buffer 1024 --smooth --control --title --stereo --equalizer ~/mpg123.eq'
 #alias mp3='time gst123 --repeat'
 mp3dir(){
