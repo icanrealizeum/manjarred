@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#requirements:
+#git clone https://github.com/NickBelhomme/firestorageplus
+#this also needs Firebug! extension to actually work when installed.
+
+pushd firestorageplus/xpi
+destfile='firestorageplus.xpi'
+rm -v -- "$destfile"
+zip -v -9 -r -T firestorageplus.xpi -- *
+echo "Load in firefox from: `realpath "$destfile"`"
+popd
+
