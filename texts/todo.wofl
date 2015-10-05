@@ -712,13 +712,15 @@
 
 
 
-* investigate why trustdb.gpg gets modified at some point during installation, maybe by portage or by emerge-webrsync and the following key seems to be added (in unknown(to me) trust state)
+- investigate why trustdb.gpg gets modified at some point during installation, maybe by portage or by emerge-webrsync and the following key seems to be added (in unknown(to me) trust state)
   \ EF 23 0B D5 6A 5A D7 E5 CF B7 32 44 3D 4F F8 B8 32 67 3F 1D
   \ EF23 0BD5 6A5A D7E5 CFB7 3244 3D4F F8B8 3267 3F1D
   \ EF230BD56A5AD7E5CFB732443D4FF8B832673F1D
   \ https://i.imgur.com/NtkF6bX.png
   \ changed 06 to 00 after some commands: https://i.imgur.com/sFNERcC.png
-  \ 
+  \ DONE: thanks to K_F and tomreyn on #gnupg 
+  \ it's the result of --check-trustdb  which adds that extra stuff(40 bytes of 0D entry, not 0C which is the key) (I am guessing shadowing/checksumming that key)
+  \ this is like an example of (my)knowing more than nothing but not enough, being worse than knowing nothing :)
 
 * consider setting this sysctl oom_kill_allocating_task to non-zero, as to avoid killing the running virtualbox!!
   \ src: linux-git/Documentation/sysctl/vm.txt
