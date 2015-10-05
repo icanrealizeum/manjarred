@@ -645,6 +645,63 @@
   \ output gets stuck at this:
   \ bash: 7: Bad file descriptor
   \ then I can C-c out
+  \
+  \ can also get:
+  \ bash: 8: Bad file descriptor
+  \ this apparently happens right at exit, before exit, and C-c shows:
+  \ bash: 8: Bad file descriptor
+  \ ^C
+  \ ====================================
+  \ Error in portage.process.run_exitfuncs
+  \ 
+  \   File "/usr/lib64/python3.4/site-packages/portage/process.py", line 164, in run_exitfuncs
+  \     func(*targs, **kargs)
+  \   File "/usr/lib64/python3.4/site-packages/_emerge/actions.py", line 3057, in emergeexit
+  \     xtermTitleReset()
+  \   File "/usr/lib64/python3.4/site-packages/portage/output.py", line 287, in xtermTitleReset
+  \     2: sys.__stderr__.fileno()
+  \   File "/usr/lib64/python3.4/site-packages/portage/process.py", line 363, in spawn
+  \     retval = os.waitpid(pid, 0)[1]
+  \   File "/usr/lib64/python3.4/site-packages/portage/__init__.py", line 338, in __call__
+  \     rval = self._func(*args, **kwargs)
+  \ ====================================
+  \ 
+  \ Error in atexit._run_exitfuncs:
+  \ Traceback (most recent call last):
+  \   File "/usr/lib64/python3.4/site-packages/portage/process.py", line 164, in run_exitfuncs
+  \     func(*targs, **kargs)
+  \   File "/usr/lib64/python3.4/site-packages/_emerge/actions.py", line 3057, in emergeexit
+  \     xtermTitleReset()
+  \   File "/usr/lib64/python3.4/site-packages/portage/output.py", line 287, in xtermTitleReset
+  \     2: sys.__stderr__.fileno()
+  \   File "/usr/lib64/python3.4/site-packages/portage/process.py", line 363, in spawn
+  \     retval = os.waitpid(pid, 0)[1]
+  \   File "/usr/lib64/python3.4/site-packages/portage/__init__.py", line 338, in __call__
+  \     rval = self._func(*args, **kwargs)
+  \ KeyboardInterrupt
+  * can reproduce this by having already emerge hexedit , then running
+    \ set -x ; time emerge --debug -nav hexedit ; set +x
+    \ the set x is optional
+    \ usually this will just exit quickly (because it's already emerged, and -n)
+    \...
+    \ this:
+    \ root     22215  0.0  0.0  12008  2520 pts/7    T+   11:26   0:00 bash -c __earlyec=("${PIPESTATUS[@]}"); pwd>&8;kill -STOP $$
+    \ is because of my:
+    \ export PROMPT_COMMAND='__earlyec=("${PIPESTATUS[@]}")'
+    \ in ~/.bashrc
+    \ but the pwd and kill -STOP is from within mc! my patch
+    \ this, in subshell.c 
+    \ " PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }'pwd>&%d;kill -STOP $$'\n"
+    \ the %d is subshell_pipe[WRITE]
+    \ this isn't from my patch, but maybe what I changed affected this, let's see...
+    \ re-emerging without my patch, duration: 3m55s
+    \ ok now without my patch the same thing still happens!
+    \ ok it happens even when PROMPT_COMMAND is unset!
+    \ zazdxscf 10869  0.0  0.0  12008  2484 pts/15   T+   11:41   0:00 bash -c pwd>&8;kill -STOP $$
+
+
+
+
 
 
 * investigate why trustdb.gpg gets modified at some point during installation, maybe by portage or by emerge-webrsync and the following key seems to be added (in unknown(to me) trust state)
