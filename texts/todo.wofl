@@ -795,7 +795,8 @@
 
 * find out who's making this: /etc/.pwd.lock
   \ if it happens again (last time was: 20.08.2015, and I just carried it with me)
-  * something during genkernel apparently!
+  * created by passwd(ran as root!), after entered the verify password
+    \ passwd: password updated successfully
     \ -rw------- 1 root root 0 06.10.2015 00:00 /etc/.pwd.lock
     \ that's 1h24m ago tho!
     \ /usr/src/debug/sys-libs/glibc-2.21-r1/glibc-2.21/shadow/lckpwdf.c:32:#define PWD_LOCKFILE "/etc/.pwd.lock"
