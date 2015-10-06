@@ -110,6 +110,7 @@ alias mc='. /usr/libexec/mc/mc-wrapper.sh --nomouse --subshell'
 #fi
 #"
 #alias cm="mc --nomouse --subshell"
+alias fox='pushd /tmp && firefox ; popd'
 alias cm=mc
 #alias mp3='time mpg123 -C --loop -100 --cpu x86-64 --gapless --buffer 1024 --smooth --control --title --stereo --equalizer ~/mpg123.eq'
 #alias mp3='time gst123 --repeat'

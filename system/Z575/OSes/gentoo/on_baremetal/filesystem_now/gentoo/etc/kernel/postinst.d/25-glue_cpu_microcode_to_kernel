@@ -1,0 +1,33 @@
+#!/bin/bash
+
+bootdir='/bewt'
+initramfsfname="initramfs"
+initramfs="$( realpath -- "/${bootdir}/${initramfsfname}" )"
+vmlinuz="/${bootdir}/kernel"
+
+prepend_microcode () {
+  echo "prepending CPU microcode to ${initramfs}"
+  local destfirst="/tmp/initrd/"
+  local destmc="${destfirst}/kernel/x86/microcode/"
+#  mkdir -p "${destmc}"
+	install -dm644 "${destmc}"
+
+  #this will replace the symlink /bewt/initramfs (on gentoo) with the file!
+  #but this makes genkernel fail as such: 
+  #ln: failed to create symbolic link 'initramfs.old' -> '': No such file or directory
+  #even though it doesn't touch the .old file!
+  # so to fix this, we'll use realpath above!
+
+  ( cp -f "/lib/firmware/amd-ucode/microcode_amd.bin" "${destmc}/AuthenticAMD.bin" && cd "${destfirst}" && find . | cpio -o -H newc > "../ucode.cpio" 2>/dev/null && cd .. && cat "ucode.cpio" "${initramfs}" > "/tmp/${initramfsfname}" && chmod a-rwx "/tmp/${initramfsfname}" && mv -f "/tmp/${initramfsfname}" "${initramfs}" )
+	local ec=$?
+	if [[ $ec -eq 0 ]]; then
+		echo "success."
+	else
+		#TODO: make errors be red so it's more obvious
+		echo "failed!"
+	fi
+	return $ec
+}
+
+prepend_microcode
+

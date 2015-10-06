@@ -590,29 +590,41 @@
 
 
 * check out claws-mail.org as a thunderbird replacement
-* check out if we should also get this addon(for firefox and chromium)
+- check out if we should also get this addon(for firefox and chromium)
   \ https://addons.mozilla.org/en-US/firefox/addon/disconnect/
   \ https://github.com/disconnectme/disconnect
+  \ fac it
 
 
-* todo: no encryption, wherever possible - certainly no dmcrypt/LUKS!!!
+- todo: no encryption, wherever possible - certainly no dmcrypt/LUKS!!!
+  \ XXX: well, nevermind!!
   \ why? because, why make life harder for whoever is trying to access that data, even if they want to do it for evil reasons; and most importantly because denying accessibility like that(by using encryption/LUKS) will breed into my life and just like any type of hiding, supposedly, will prevent me from progressing!
   \ this also implies that I will do only what I want to do, not what my subconscious wants me to do while it feels under the protection veil of privacy.
   * will think more about how to protect stuff like .ssh/key  and keepassx passwords ...
-  * let the browser user agent be normal (don't spoof/hide it)
-  * don't use proxy for reading arstechnica (although this means no ads then? proxy would load them tho)
-  * ssh/key already has a password, maybe make it be stronger or longer; since there won't be LUKS on underlaying storage
+  - let the browser user agent be normal (don't spoof/hide it)
+    \ already in effect
+  - don't use proxy for reading arstechnica (although this means no ads then? proxy would load them tho)
+    \ done, not reading it anymore because it has to go http instead of https
+  - ssh/key already has a password, maybe make it be stronger or longer; since there won't be LUKS on underlaying storage
+    \ done
   * hmm, I guess all that grsecurity santitizing or memory/stack will slow down the system more than LUKS would have! so no gains there, unless I disable that. Maybe I should... maybe simpler is better, until I achieve my goal(my program).
-  * I think I have to erase some/all git history from coostomhuston because i don't want all those eg. instagram/youtube links to creep into the future - giving up on all of that!
+    \ nevermind
+  - I think I have to erase some/all git history from coostomhuston because i don't want all those eg. instagram/youtube links to creep into the future - giving up on all of that!
+    \ removed coostomhuston completely, started anew as: gentooskyline
 
 * remove stuff from /etc/hosts  and find a way to deny all by default, and only allow those in a list...
+  * see some grsec options(maybe RBAC needed?) for the deny all outgoing...
+  * there's also that overriding of glibc 
+    \ /home/zazdxscf/gentooskyline/system/Z575/OSes/manjaro/filesystem_now/home/emacs/temporary_sandbox_play/c/outbound_firewall/fake_connect.c
 
 
 
-* media-plugins/gst-plugins-libav needs a gentoo git ebuild, to fix firefox crashing when watching youtube videos
+- media-plugins/gst-plugins-libav needs a gentoo git ebuild, to fix firefox crashing when watching youtube videos
   \ apparently it doesn't crash anymore with firefox 40.0.2 (only with 39.0.3)
+  * I added the specific padding patch (no crashes yet!)
+    \ 626152dd6f2164537b7788c885f8570155e7f6dc..30a4a28793f2e0ff08aaea368b7c14317ac2ca21.patch
 
-* in gentoo(vm/bare) need to move /etc/portage/patches symlink to a root folder or something not in /home/usernamehere/patches 
+- in gentoo(vm/bare) need to move /etc/portage/patches symlink to a root folder or something not in /home/usernamehere/patches 
   * see gentoo/etc/portage/postsync.d/repatch1 which needs a path change when this changes!
 
 - chromium
@@ -781,15 +793,33 @@
 * see what (pulse?) did /.config/ folder and apparently still using it!
   * see if it's made again (apparently wasn't remade since 30 sept.2015)
 
-- find out who's making this: /etc/.pwd.lock
+* find out who's making this: /etc/.pwd.lock
   \ if it happens again (last time was: 20.08.2015, and I just carried it with me)
+  * something during genkernel apparently!
+    \ -rw------- 1 root root 0 06.10.2015 00:00 /etc/.pwd.lock
+    \ that's 1h24m ago tho!
+    \ /usr/src/debug/sys-libs/glibc-2.21-r1/glibc-2.21/shadow/lckpwdf.c:32:#define PWD_LOCKFILE "/etc/.pwd.lock"
 
-* use /etc/kernel/postinst.d/  to emerge @modules or something, after kernel compilation
+- use /etc/kernel/postinst.d/  to emerge @modules or something, after kernel compilation
   \ this may only be needed inside virtualbox ?
   \ oh wait, there are virtualbox modules that depend on kernel, even when you're running virtualbox on host, not just for the guest-additions for the OS within the virtualbox;
   * time emerge -av @module-rebuild
     \ wants to emerge only this: app-emulation/virtualbox-modules-5.0.6::gentoo
+  * XXX: genkernel totally ignores any executable files in /etc/kernel/postinst.d/
+    \ -rwxr-xr-x 1 root root  31 05.10.2015 23:53 50-rebuild_modules*
+    \
+    * right then I make genkernel script which does execute those:
+      \ in ~/bin/regenkernel
+      \ done!
+  
+* the boot time in gentoo is 37 sec, compared to like 12 sec in Manjaro
+  * use something other than genkernel!!!
+    \ which means: need to make my own scripts to make kernel, modules, append cpu microcode, mount and cp to /bewt/ , regen grub via grub2-mkconfig
 
+* need to ensure kernel loads cpu microcode
+  * cat /proc/cpuinfo | grep microcode
+    \ if it's 0x3000014  then it's not loaded!
+    \ should end in 27 I believe
 
 - /etc/inputrc  and ~/inputrc (?)
 
