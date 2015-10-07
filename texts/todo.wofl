@@ -1,15 +1,17 @@
 * check AppArmor
 * remember tlp and powertop when installing in arch(arch=archlinux but we're going gentoo now instead!)
   \ systemctl status tlp    if not enabled, enable it!
+  * tlp is a bunch of scripts for arch or manjaro; doesn't exist on gentoo
 * find out what other errors happen on reboot
-  * find a way to delay/stop(wait for Enter to be pressed) the rebooting action at the end, so to can read the msgs!
+  * find a way to delay/stop(wait for Enter to be pressed) the rebooting action at the end, so to can read the msgs!(since they won't hit the disk due to mounted ro)
 
-* investigate why mc (midnight commander) doesn't flush output from commands like ls -laR / and find a way to reproduce this
-  * so far it seems to do it only after a while of using it, not on first start
+- investigate why mc (midnight commander) doesn't flush output from commands like ls -laR / and find a way to reproduce this
+  - so far it seems to do it only after a while of using it, not on first start
+    \ https://github.com/MidnightCommander/mc/pull/48
 * note the mc macrovariables like %D %d %p %p etc
   \ http://www.softpanorama.org/OFM/MC/macrovariables.shtml
-* investigate a way to rsync some chosen files from my system into a specific folder (which is excluded from any kind of rsync) in my home dir possibly, and this folder is a git repo which I can git commit and push to github
-  * don't include passwords or stuff like that!
+- investigate a way to rsync some chosen files from my system into a specific folder (which is excluded from any kind of rsync) in my home dir possibly, and this folder is a git repo which I can git commit and push to github
+  - don't include passwords or stuff like that!
 * acpidump corrupted double linked list
   * test the new version to see if it's fixed
 * add that acpi_debug.txt patch to kernel PKGBUILD to avoid getting dmesg spam
@@ -34,7 +36,7 @@
     * allow only root to do it
       * maybe expose it in /sys/class/vtconsole/
   * printk when console scrollbuffer is being allocated (aside from first time, which is already printed)
-* find a way to enable SysRq+B which says it's disabled! this supposedly reboots
+- find a way to enable SysRq+B which says it's disabled! this supposedly reboots
 * see if we can use this bash history audit thing
   \ http://www.pointsoftware.ch/howto-bash-audit-command-logger/
 * use set -e
@@ -575,6 +577,7 @@
 - get audio from manjaro vbox to work in gentoo vbox  eg. lsmod
 
 * modify sshd and ssh(client) to can auth using BOTH password and key(signature auth) so that first the pass is asked, then the key is used; if either fails, don't let it in; but if pass is ok, and if key fails then maybe give some other error(as to not alert whoever else is trying this, that a key was also tried and failed) like maybe say the pwd was wrong.
+  \ yeah can't really do this, because their ssh client(with debug on) will show that it's trying with a key too! unless!!! there's an error that the pwd was wrong so that their ssh client will try next thing(the key) - even if the pwd was right! SO, this can still work! heh
 
 - (nevermind! C-c won't work) stop using urxvt and use xfce4-terminal instead
   \ because urxvt github version isn't updated and the real one uses cvs! and it's bugged! even though xfce4-terminal does that make file in /tmp and unlink it thing which makes it "easy" to spy on the window's contents!
@@ -616,6 +619,11 @@
   * see some grsec options(maybe RBAC needed?) for the deny all outgoing...
   * there's also that overriding of glibc 
     \ /home/zazdxscf/gentooskyline/system/Z575/OSes/manjaro/filesystem_now/home/emacs/temporary_sandbox_play/c/outbound_firewall/fake_connect.c
+  * firewall?
+    * iptables
+      \ https://wiki.gentoo.org/wiki/Iptables#Installation
+      \ with ipset? https://forums.gentoo.org/viewtopic-t-863121.html
+      \ too much work!
 
 
 
@@ -734,6 +742,7 @@
   \ DONE: thanks to K_F and tomreyn on #gnupg 
   \ it's the result of --check-trustdb  which adds that extra stuff(40 bytes of 0D entry, not 0C which is the key) (I am guessing shadowing/checksumming that key)
   \ this is like an example of (my)knowing more than nothing but not enough, being worse than knowing nothing :)
+  \ oh and the --check-trustdb happens automatically even when just verifying!
 
 * consider setting this sysctl oom_kill_allocating_task to non-zero, as to avoid killing the running virtualbox!!
   \ src: linux-git/Documentation/sysctl/vm.txt
@@ -744,6 +753,7 @@
 
 - get udev rules.d from manjaro, into gentoo
 * fix /etc/udev/rules.d/75-mac-spoof.rules to work on gentoo, currently has no effect!
+  \ or just get rid of it entirely!
 
 - get /etc/hosts from manjaro into gentoo
 
@@ -793,7 +803,7 @@
 * see what (pulse?) did /.config/ folder and apparently still using it!
   * see if it's made again (apparently wasn't remade since 30 sept.2015)
 
-* find out who's making this: /etc/.pwd.lock
+- find out who's making this: /etc/.pwd.lock
   \ if it happens again (last time was: 20.08.2015, and I just carried it with me)
   * created by passwd(ran as root!), after entered the verify password
     \ passwd: password updated successfully
@@ -817,7 +827,7 @@
   * use something other than genkernel!!!
     \ which means: need to make my own scripts to make kernel, modules, append cpu microcode, mount and cp to /bewt/ , regen grub via grub2-mkconfig
 
-* need to ensure kernel loads cpu microcode
+- need to ensure kernel loads cpu microcode
   * cat /proc/cpuinfo | grep microcode
     \ if it's 0x3000014  then it's not loaded!
     \ should end in 27 I believe
@@ -829,4 +839,9 @@
 * get ssh (not sshd, which is already there) config file in /etc/ssh/ssh_config
 
 * see /etc/updatedb.conf if we wanna allow some paths or like sysfs
+
+* see why VirtualBox fails to start
+  \ VMSetError: Failed to reserve physical memory (0x1004 -> 0x1000; VMMDev Heap)
+
+* get rust
 
