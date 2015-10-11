@@ -4691,7 +4691,7 @@
     * untested!
   - (maybe we don't do this) add "minimal -dbus" to firefox, before emerging! (don't add to global USE, because both are toggled there!), see: equery u firefox    for what those use flags do for firefox.
   * get virtualbox(only do this on bare metal computer, not inside a virtualbox guest OS already)
-    \ TODO: this may need to switch to vanilla gcc, we'll see; but it definitely needs switching OFF ccache!
+    \ done: this may need to switch to vanilla gcc, we'll see; but it definitely needs switching OFF ccache! - needs none anymore
     \ 9 packages
     \ NOTE: you can't run virtualbox inside a virtualbox guest due to this error: AMD-V is not available. (VERR_SVM_NO_SVM).  and the Acceleration tab is disabled so, impossible?
     - (already there) make sure USE=extensions  is set, in /etc/portage/make.conf
@@ -4732,6 +4732,44 @@
       * vim /etc/conf.d/modules
         \ modules="vboxdrv vboxnetadp vboxnetflt"
         \ the modules=  line must not exist multiple times in this file!
+  * get Qemu/KVM instead of VirtualBox since it wouldn't need to relax PAX/grsecurity flags
+    \ using: https://wiki.gentoo.org/wiki/QEMU
+    * grep --color -E "vmx|svm" /proc/cpuinfo
+      \ got svm
+    * ensure kernel config
+      \ [*] Virtualization  --->
+      \    <M>   Kernel-based Virtual Machine (KVM) support
+      \ that adds module: kvm
+      \    <M>   KVM for AMD processors support
+      \ that adds module: kvm_amd
+      \    <M>   Host kernel accelerator for virtio net
+      \ that adds module: vhost_net
+      \ [*] Networking support  --->
+      \    Networking options  --->
+      \      <M> The IPv6 protocol
+      \ this adds module: ipv6
+      \      <M> 802.1d Ethernet Bridging
+      \ this adds module: bridge
+      \ Device Drivers  --->
+      \    [*] Network device support  --->
+      \        [*]   Network core driver support
+      \        <M>   Universal TUN/TAP device driver support
+      \ this adds module: tun
+      * other stuff that's already selected (for me) 
+        \ Kernel hacking  --->
+        \        Compile-time checks and compiler options  --->
+        \                    [*] Debug Filesystem
+      * python USE flag is needed for file capabilities support
+        * vim /etc/portage/package.use/qemu
+          \ app-emulation/qemu python filecaps
+        * time emerge -nav qemu
+          \ Total: 7 packages (7 new), Size of downloads: 29066 KiB
+          \ dur:
+        - vim /etc/portage/make.conf
+          \ USE=python
+        - time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+          \ Total: 27 packages (7 new, 20 reinstalls), Size of downloads: 83416 KiB
+          \ yeah let's not do this globally!
   * use something else(dracut maybe?) instead of genkernel so that we can fully control the boot process and image generation! eg. using custom scripts for boot process and knowing exactly how the image gets generated (like mkcpio stuff)
   * epic emerge conflicts? add --backtrack=30
     \ eg.

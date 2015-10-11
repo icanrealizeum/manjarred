@@ -842,6 +842,17 @@
 
 * see why VirtualBox fails to start
   \ VMSetError: Failed to reserve physical memory (0x1004 -> 0x1000; VMMDev Heap)
+  * look into Qemu/KVM
+    \ this article: https://www.proteansec.com/linux/running-virtualboxvmware-hardened-gentoo/
+    \ says that "In order to be able to boot virtualization software like VirtualBox/Vmware, we have to disable some PaX/Grsecurity options. Note that I didn't have any problems with all of the options enabled when using Qemu/KVM, which runs without any problems despite having all of the PaX/Grsecurity features mentioned below enabled."
+    \ https://wiki.gentoo.org/wiki/Comparison_of_virtual_machines
+    \ so ... I'd rather not use Virtualbox then.
+    * hmm maybe I don't need any virtual machine software anymore...
+      * look into using thunderbird on host instead!
+        * maybe keep datadir inside a tcplay container?
 
 * get rust
+
+* use google docs instead of libreoffice
+
 

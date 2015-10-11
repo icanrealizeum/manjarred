@@ -15,7 +15,7 @@ depend()
 start()
 {
 	# Mount local filesystems in /etc/fstab.
-	local types="noproc" x= no_netdev=
+	local types="noproc" x= no_netdev= rc=
 	for x in $net_fs_list $extra_net_fs_list; do
 		types="${types},no${x}"
 	done
@@ -29,9 +29,11 @@ start()
 	ebegin "Mounting local filesystems"
 	mount -at "$types" $no_netdev
 	eend $? "Some local filesystem failed to mount"
-
-	# Always return 0 - some local mounts may not be critical for boot
-	return 0
+	rc=$?
+	if [ "$RC_UNAME" != Linux ]; then
+		rc=0
+	fi
+	return $rc
 }
 
 stop()
@@ -70,17 +72,19 @@ stop()
 			sync
 		fi
 
-		local aufs_branch aufs_mount_dir aufs_mount_point aufs_si_dir aufs_si_id
-		for aufs_si_dir in /sys/fs/aufs/*; do
-			aufs_mount_dir=${aufs_si_dir#/sys/fs/aufs/}
-			aufs_si_id="$(printf "%s" $aufs_mount_dir | sed 's/_/=/g')"
+		local aufs_branch aufs_mount_point aufs_si_id aufs_br_id branches
+		for aufs_si_dir in /sys/fs/aufs/si*; do
+			[ -d "${aufs_si_dir}" ] || continue
+			aufs_si_id="si=${aufs_si_dir#/sys/fs/aufs/si_}"
 			aufs_mount_point="$(mountinfo -o ${aufs_si_id})"
-			for x in $aufs_si_dir/br[0-9][0-9][0-9]; do
+			branches="$aufs_si_dir/br[0-9] $aufs_si_dir/br[0-9][0-9] $aufs_si_dir/br[0-9][0-9][0-9]"
+			for x in $branches; do
+				[ -e "${x}" ] || continue
 				aufs_branch=$(sed 's/=.*//g' $x)
 				eindent
 				if ! mount -o "remount,del:$aufs_branch" "$aufs_mount_point" > /dev/null 2>&1; then
 					ewarn "Failed to remove branch $aufs_branch from aufs \
-						$aufs_mount_point"
+					$aufs_mount_point"
 				fi
 				eoutdent
 				sync

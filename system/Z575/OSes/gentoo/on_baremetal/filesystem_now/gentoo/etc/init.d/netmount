@@ -27,7 +27,10 @@ start()
 		rc=$?
 	fi
 	ewend $rc "Could not mount all network filesystems"
-	return 0
+	if [ "$RC_UNAME" != Linux ]; then
+		rc=0
+	fi
+	return $rc
 }
 
 stop()

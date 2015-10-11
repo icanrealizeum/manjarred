@@ -469,8 +469,8 @@ export FFREPORT=1
 #src: https://www.ffmpeg.org/bugreports.html
 
 
-dmesg|grep 'clocking to' | grep -v 48000 |grep -v grsec| grep 'clocking to'
-true
+#dmesg|grep 'clocking to' | grep -v 48000 |grep -v grsec| grep 'clocking to'
+#true
 
 
 #for grub 'To avoid automounting and auto(un)installing with /boot'

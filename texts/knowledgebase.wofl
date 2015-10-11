@@ -319,4 +319,18 @@
 * no audio (no sound) in vlc on a .webm or .mkv file? then re-emerge vlc with USE=matroska  (yes really!)
   \ https://github.com/rg3/youtube-dl/issues/7048
 
+* libreoffice
+  \ Total: 42 packages (41 new, 1 in new slot), Size of downloads: 257501 KiB
+  \ duration: mother of god this takes ages, wth! 
+  \ real  514m10.578s
+  \ user  1272m39.346s
+  \ sys 304m11.872s
+  \ until out of memory fail!!! 14G of tmpfs used!
+  \ tmpfs                        14G   14G   68M 100% /var/tmp/portage
+  \ re-emerging on disk(not tmpfs), naturally using ccache, 
+  \ duration: 51m27s (disk space used during compilation, in /var/tmp/portage/ : 21G)
+  \ NEXT-time emerge the git version, this way, ccache can be re-used during versions!
+  * TODO: or even better, don't use this at all!
+    * switch to using google docs
+
 

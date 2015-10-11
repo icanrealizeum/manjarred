@@ -23,13 +23,13 @@
 #/dev/BOOT		/boot		ext2		noauto,noatime	1 2
 #/dev/ROOT		/		ext3		noatime		0 1
 #/dev/sdb1		none		swap		sw		0 0
-/dev/mapper/vgall-swaplvol  none  swap  sw,discard  0 0
+/dev/mapper/vgall-swaplvol  none  swap  sw,discard,auto  0 0
 ###/dev/mapper/vgall-bootlvolbackup		none		swap		sw		0 0
 /dev/cdrom		/mnt/cdrom	auto		noauto,ro	0 0
 /dev/fd0		/mnt/floppy	auto		noauto		0 0
 
-tmpfs                   /tmp            tmpfs           rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
-tmpfs                   /var/tmp        tmpfs rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
-tmpfs                   /var/tmp/portage        tmpfs   rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 0 0
+tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+tmpfs                   /var/tmp        tmpfs auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+tmpfs                   /var/tmp/portage        tmpfs   auto,rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 0 0
 
 
