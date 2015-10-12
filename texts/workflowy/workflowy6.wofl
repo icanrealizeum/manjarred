@@ -865,6 +865,31 @@
               \ security.ssl3.rsa_rc4_128_sha
               \ security.ssl3.ecdhe_ecdsa_rc4_128_sha
               \ security.ssl3.ecdhe_rsa_rc4_128_sha
+              \ security.tls.unrestricted_rc4_fallback false
+              \ XXX: you need to deselect all options from Calomel's Cipher Rrstrictions! or else, after FF restart, these options will be reset to the default of true (except the fallback which sticks)
+              \ security.tls.insecure_fallback_hosts.use_static_list false
+              \ ensure this is empty: security.tls.insecure_fallback_hosts
+              \ security.ssl3.ecdh_ecdsa_rc4_128_sha
+              \ security.ssl3.ecdh_rsa_rc4_128_sha
+            * referrer stuff
+              * network.http.sendRefererHeader 2 (default:2)
+                \    0 - never send the referring URL.
+                \    1 - send only when links are clicked.
+                \    2 - send for links and images (default).
+              * network.http.referer.XOriginPolicy 1 (default:2)
+                \    0 - always send referrer (default).
+                \    1 - only send if base domains match.
+                \    2 - only send if hosts match.
+              * network.http.referer.spoofSource false (default:false)
+                \ false - send the referrer (default).
+                \ true - spoof the referrer and use the target URI instead
+              * network.http.referer.trimmingPolicy 0 (default:0)
+                \    0 - send full URI (default).
+                \    1 - scheme, host, port and path.
+                \    2 - scheme, host and port.
+              * network.http.sendSecureXSiteReferrer false (default:true)
+                \ true - Send the Referer header when navigating from a https site to another https site. (Default) 
+                \ false - Don't send the Referer header when navigating from a https site to another https site.
             * make new: plugins.notifyMissingFlash  (so firefox doesn't bother you when flash is needed but you don't have it installed) but also install flashblock or else you see placeholder with Install Flash button
               \ "false"
             * set cache in /tmp  (it's good to have the cache, rather than in memory)
