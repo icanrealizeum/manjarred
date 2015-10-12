@@ -415,9 +415,9 @@ eval `dircolors`
 
 #cd "/home/emacs/build/kernel/linuxgit/makepkg/linux-git/src/linux-git"&& vim kernel/smp.c 
 #cd "/home/emacs/build/kernel/linuxnet/makepkg/linux-net/src/linux-net/"
-cat <<EOF
-/var/tmp/portage/www-client/firefox-40.0.3/work/mozilla-release/gfx/layers/basic/X11BasicCompositor.cpp
-EOF
+#cat <<EOF
+#/var/tmp/portage/www-client/firefox-40.0.3/work/mozilla-release/gfx/layers/basic/X11BasicCompositor.cpp
+#EOF
 alias mountmsproduo='sudo mount /dev/sdc1 ~/here -o uid=1000,gid=100'
 alias ejectmsproduo='sudo umount here ; sync && sudo eject /dev/sdc'
 

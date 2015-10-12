@@ -4613,6 +4613,13 @@
       * wait... maybe we try the vfose variant still.
 
 * bigTODO:
+  * time emerge -nav rust
+    \ duration(until out of space fail): real  93m7.779s, user  193m16.869s, sys 17m29.623s
+    \ space needed: over 14G !! so umount /var/tmp/portage and /var/tmp so they're not tmpfs!
+    \ re-emerging, duration: real 79m27.754s, user  99m31.626s, sys 15m24.870s; do yep, no ccache!
+    \ note the helper script for running gdb: /usr/bin/rust-gdb-1.3.0
+    * time emerge -nav app-vim/rust-mode
+      \ for vim
   * remove cpuid module from kernel; maybe also remove msr module  because we don't plan on running amdmsrtweaker-lnx anymore!
     \ this is needed for /usr/sbin/sensors-detect  apparently
   * changes to be done inside the iso
