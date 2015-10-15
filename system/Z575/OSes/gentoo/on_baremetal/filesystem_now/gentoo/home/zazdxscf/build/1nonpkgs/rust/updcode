@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pushd rust
+git pull && make clean
+# yes they say I should do a make clean after a git pull, so... there:)
+
+popd

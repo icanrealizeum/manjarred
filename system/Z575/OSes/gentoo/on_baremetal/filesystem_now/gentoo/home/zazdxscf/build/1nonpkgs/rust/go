@@ -15,7 +15,8 @@ cores=1 #use this until this error doesn't happen: /bin/sh: x86_64-unknown-linux
 what=all
 #what=
 set -x
-time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm -Z          unstable-options -C llvm-args=\"-verify-debug-info -verify-dom-info -verify-loop-info -verify-regalloc -verify-region-info -verify-scev\"" && time make check )
+#time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm -Z          unstable-options -C llvm-args=\"-verify-debug-info -verify-dom-info -verify-loop-info -verify-regalloc -verify-region-info -verify-scev\"" && time make check )
+time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm " && time make check )
 set +x
 #XXX: so -verify-each fails because it's passed to 'llc' instead of to 'opt' and llc for some reason doesn't have it! Actually, both llc and then opt need to be run, since llc generates a .bc file which is fed to opt.
 # fail: RUSTFLAGS="--verbose -C llvm-args=\"--emit llvm-bc -verify-each\""
