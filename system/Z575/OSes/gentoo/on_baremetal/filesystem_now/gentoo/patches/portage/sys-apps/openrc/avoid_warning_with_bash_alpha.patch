@@ -1,0 +1,15 @@
+--- orig/sh/init.sh.Linux.in	2015-09-21 10:56:09.000000000 +0200
++++ patched/sh/init.sh.Linux.in	2015-10-01 15:50:23.309819667 +0200
+@@ -16,7 +16,11 @@
+ mountproc=true
+ f=/proc/self/environ
+ if [ -e $f ]; then
+-	if [ "$(VAR=a cat $f)" = "$(VAR=b cat $f)" ]; then
++  cat "$f" | tr '\000' '\n'
++  #the tr part avoids this warning:
++  #/lib64/rc/sh/init.sh: line 19: warning: command substitution: ignored null byte in input
++  #that is for bash(sh): GNU bash, version 4.4.0(1)-alpha (x86_64-pc-linux-gnu)
++	if test "$(VAR=a cat $f | tr -d '\000')" = "$(VAR=b cat $f | tr -d '\000')" ; then
+ 		eerror "You have cruft in /proc that should be deleted"
+ 	else
+ 		einfo "/proc is already mounted"
