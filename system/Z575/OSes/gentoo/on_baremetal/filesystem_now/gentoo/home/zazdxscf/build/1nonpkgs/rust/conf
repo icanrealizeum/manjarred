@@ -30,9 +30,9 @@ declare -ar args=(
 --enable-debug-jemalloc
 
 --disable-llvm-version-check
-#--disable-local-rust
---enable-local-rust
---local-rust-root="/usr"
+--disable-local-rust
+#--enable-local-rust
+#--local-rust-root="/usr"
 #--enable-fast-make
 
 --llvm-root=/usr  #will fail in make (at some Bool step of what seems to be a configure step)
@@ -46,6 +46,7 @@ declare -ar args=(
 
 time ./configure "${args[@]}"
 
+set +x
 #make docs NO_REBUILD=1
 
 popd

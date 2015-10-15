@@ -334,3 +334,20 @@
     * switch to using google docs
 
 
+* when emerge --update cannot find some files to download
+  \ either download them manually by finding them on google
+  \ OR some other you cannot find like openrc, from https://dev.gentoo.org/~williamh/dist/
+
+* fstrim on btrfs will trim less than free space reported by df
+  \ time sudo fstrim -v --all
+  \ /: 2.3 GiB (2464907264 bytes) trimmed
+  \ which is the diff between 67 and 65 in:
+  \ sudo btrfs filesystem df /
+  \ Data, single: total=67.01GiB, used=65.43GiB
+  \ System, single: total=4.00MiB, used=16.00KiB
+  \ Metadata, single: total=3.01GiB, used=1.29GiB
+  \ GlobalReserve, single: total=448.00MiB, used=0.00B
+  \ even though df reports:
+  \ /dev/mapper/vgall-rootlvol  392G   68G  324G  18% /
+
+

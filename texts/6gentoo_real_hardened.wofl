@@ -1261,10 +1261,11 @@
         \ XXX: do not use discard in fstab or mount(or tunee2fs) because deleting a ton of files is expensive! use fstrim instead!! (also don't use fstrim for now, because vm is set to not support TRIM currently by having discard="false" or just not having discard="true" in .vbox file! did it so that it won't shrink the .vdi file because that costs writes on my host's SSD aka the real SSD)
         \ XXX: for btrfs fs_passno(last field) should be 0
         \ looks like this:
-        \ #for normal gentoo#/dev/sda2               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300         0 0
+        \ #XXX: removed autodefrag which was meant for HDDs not for SSDs! without it, it should avoid some unnecessary writes.
+        \ #for normal gentoo#/dev/sda2               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress=lzo,datasum,datacow,space_cache,commit=300         0 2
         \ #for luks:
-        \ /dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300  1 0
-        \ /dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300
+        \ /dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,compress=lzo,datasum,datacow,space_cache,commit=300  0 2
+        \ /dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress=lzo,datasum,datacow,space_cache,commit=300 0 1
         \ # XXX: do not add errors=remount-ro  because btrfs says: unrecognized mount option
         \ #/dev/SWAP              none            swap            sw              0 0
         \ /dev/cdrom              /mnt/cdrom      auto            noauto,ro       0 0
