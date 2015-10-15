@@ -1,7 +1,7 @@
 #!/bin/bash
 
 logfile='/bewt/grub2-mkconfig_lasttime.log'
-grub2-mkconfig -o /bewt/grub/grub.cfg > "$logfile=" 2>&1
+grub2-mkconfig -o /bewt/grub/grub.cfg > "$logfile" 2>&1
 ec="$?"
 cat "$logfile"
 echo "!! exit code: $ec"
