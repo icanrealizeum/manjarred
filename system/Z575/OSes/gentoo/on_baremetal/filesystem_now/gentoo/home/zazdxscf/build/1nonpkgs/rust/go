@@ -15,7 +15,7 @@ cores=1 #use this until this error doesn't happen: /bin/sh: x86_64-unknown-linux
 what=all
 #what=
 set -x
-time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -C llvm-args=-verify-each" && time make check )
+time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm -Z          unstable-options -C llvm-args=-verify-each" && time make check )
 set +x
 # fail: RUSTFLAGS="--verbose -C llvm-args=\"--emit llvm-bc -verify-each\""
 #time ( time make -j4 all && time make check )
