@@ -1,0 +1,54 @@
+#!/bin/bash
+
+set -e
+set -x
+
+pushd rust
+
+declare -ar args=(
+--prefix="/home/zazdxscf/build/1nonpkgs/rust/usr/local"
+--disable-rpath
+#--disable-verify-install #nolonger exists
+--enable-manage-submodules
+--disable-clang
+--enable-ccache
+--enable-dist-host-only
+--disable-valgrind
+--disable-helgrind
+--disable-valgrind-rpass
+--python="/usr/bin/python2"
+
+--enable-optimize
+--enable-optimize-cxx
+--enable-optimize-llvm
+
+--enable-debug
+--enable-debuginfo
+--enable-debug-assertions
+--enable-debuginfo-tests
+--enable-llvm-assertions
+--enable-debug-jemalloc
+
+--disable-llvm-version-check
+#--disable-local-rust
+--enable-local-rust
+--local-rust-root="/usr"
+#--enable-fast-make
+
+--llvm-root=/usr  #will fail in make (at some Bool step of what seems to be a configure step)
+
+
+
+#--disable-libcpp
+#--disable-jemalloc
+)
+
+
+time ./configure "${args[@]}"
+
+#make docs NO_REBUILD=1
+
+popd
+
+echo "!! Done."
+
