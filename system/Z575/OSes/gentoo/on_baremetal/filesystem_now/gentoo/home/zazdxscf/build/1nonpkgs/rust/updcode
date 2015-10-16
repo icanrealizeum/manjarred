@@ -4,4 +4,8 @@ pushd rust
 git pull && make clean
 # yes they say I should do a make clean after a git pull, so... there:)
 
+#here for good measure, I do this:
+git clean -dfx
 popd
+./conf
+
