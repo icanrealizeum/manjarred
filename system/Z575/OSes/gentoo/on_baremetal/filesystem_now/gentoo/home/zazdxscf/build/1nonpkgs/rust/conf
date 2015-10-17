@@ -10,7 +10,10 @@ declare -ar args=(
 --disable-rpath
 #--disable-verify-install #nolonger exists
 --enable-manage-submodules
---disable-clang
+
+#--disable-clang
+--enable-clang
+
 --enable-ccache
 --enable-dist-host-only
 --disable-valgrind

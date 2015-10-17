@@ -855,6 +855,24 @@
   * get git rust
     * make it work with non-default ./configure options
       \ https://github.com/rust-lang/rust/issues/28947
+      * ok, compile a rust stage0 with llvm 3.8.0 (llvm-9999) with --disable-debuginfo
+        \ so that the above issue is not in effect
+        * need to fix all errors that compiling rust with llvm 3.8.0 generate
+          * with clang (cannot use clang) due to issue 28714
+            * error0
+              \ compile: x86_64-unknown-linux-gnu/rustllvm/ExecutionEngineWrapper.o
+              \ x86_64-pc-linux-gnu-clang-3.8: error: unknown argument: '-fvar-tracking-assignments'
+              \ x86_64-pc-linux-gnu-clang-3.8: error: unknown argument: '-ftrack-macro-expansion=2'
+              \ /home/zazdxscf/build/1nonpkgs/rust/rust/mk/rustllvm.mk:60: recipe for target 'x86_64-unknown-linux-gnu/rustllvm/ExecutionEngineWrapper.o' failed
+              \ make: *** [x86_64-unknown-linux-gnu/rustllvm/ExecutionEngineWrapper.o] Error 1
+              \ I'm not sure how it got the CFLAGS from make.conf though
+              \ https://github.com/rust-lang/rust/issues/28714#issuecomment-148864891
+          * with gcc
+            * error1
+              \ https://github.com/llvm-mirror/llvm/commit/6f565c0e974e7b420697eba15c16095813ae3d67
+            * error2
+              \ https://github.com/llvm-mirror/llvm/commit/aa50fa7c2f6a22d97a11336d7281377dcfcafc9d
+      * then, recompile rust with --enable-debuginfo using that rustc from stage0 (or is it stage1 now? hopefully a statically linked one)
 
 * use google docs instead of libreoffice
 
