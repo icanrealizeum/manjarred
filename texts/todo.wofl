@@ -868,10 +868,14 @@
               \ I'm not sure how it got the CFLAGS from make.conf though
               \ https://github.com/rust-lang/rust/issues/28714#issuecomment-148864891
           * with gcc
-            * error1
-              \ https://github.com/llvm-mirror/llvm/commit/6f565c0e974e7b420697eba15c16095813ae3d67
-            * error2
-              \ https://github.com/llvm-mirror/llvm/commit/aa50fa7c2f6a22d97a11336d7281377dcfcafc9d
+            * with 3.7.0 and the issue patch
+              * error
+                \ https://github.com/rust-lang/rust/issues/28947#issuecomment-148924925
+            * with 3.8.0
+              * error1
+                \ https://github.com/llvm-mirror/llvm/commit/6f565c0e974e7b420697eba15c16095813ae3d67
+              * error2
+                \ https://github.com/llvm-mirror/llvm/commit/aa50fa7c2f6a22d97a11336d7281377dcfcafc9d
       * then, recompile rust with --enable-debuginfo using that rustc from stage0 (or is it stage1 now? hopefully a statically linked one)
 
 * use google docs instead of libreoffice

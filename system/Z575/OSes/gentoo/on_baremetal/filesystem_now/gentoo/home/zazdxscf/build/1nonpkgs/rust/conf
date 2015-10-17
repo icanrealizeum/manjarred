@@ -11,8 +11,8 @@ declare -ar args=(
 #--disable-verify-install #nolonger exists
 --enable-manage-submodules
 
-#--disable-clang
---enable-clang
+--disable-clang
+#--enable-clang
 
 --enable-ccache
 --enable-dist-host-only
@@ -39,8 +39,8 @@ declare -ar args=(
 #--local-rust-root="/usr" #fails with not finding crate for std
 #--enable-fast-make
 
-#--disable-llvm-version-check
-#--llvm-root=/usr  #will fail in make (at some Bool step of what seems to be a configure step)
+--disable-llvm-version-check
+--llvm-root=/usr  #will fail in make (at some Bool step of what seems to be a configure step)
 
 
 

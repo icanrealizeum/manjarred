@@ -3,27 +3,27 @@
 set -e
 
 pushd rust
-git checkout .gitmodules
+#a#git checkout .gitmodules
 git pull #|| git update-server-info && git pull
 make clean
 # yes they say I should do a make clean after a git pull, so... there:)
 
 #here for good measure, I do this:
 git clean -dfx
-patch -Np1 -i ../62ad301_and_patch_for_rust_issue_28947.patch
-currentremote="`cd .git/modules/src/llvm && git remote -v show | head -1 |cut -f2 -d$'\x9'|cut -f1 -d' '`"
-#yields: https://github.com/zazdxscf/llvm.git
-newremote="`cat .gitmodules |grep llvm\.git|cut -f3 -d' '`"
-#yields: https://github.com/zazdxscf/llvm.git
-if test -z "$currentremote" -o -z "$newremote"; then
-  echo "something went wrong: old:'$currentremote' new:'$newremote'"
-  exit 1
-fi
-if test -n "$currentremote" -a -n "$newremote" -a "$currentremote" != "$newremote"; then
-  echo "!! Removing old llvm .git due to remote change; old: $currentremote new: $newremote"
-  rm -rf .git/modules/src/llvm
-  rm -rf src/llvm
-fi
+#a#patch -Np1 -i ../62ad301_and_patch_for_rust_issue_28947.patch
+#a#currentremote="`cd .git/modules/src/llvm && git remote -v show | head -1 |cut -f2 -d$'\x9'|cut -f1 -d' '`"
+#a##yields: https://github.com/zazdxscf/llvm.git
+#a#newremote="`cat .gitmodules |grep llvm\.git|cut -f3 -d' '`"
+#a##yields: https://github.com/zazdxscf/llvm.git
+#a#if test -z "$currentremote" -o -z "$newremote"; then
+#a#  echo "something went wrong: old:'$currentremote' new:'$newremote'"
+#a#  exit 1
+#a#fi
+#a#if test -n "$currentremote" -a -n "$newremote" -a "$currentremote" != "$newremote"; then
+#a#  echo "!! Removing old llvm .git due to remote change; old: $currentremote new: $newremote"
+#a#  rm -rf .git/modules/src/llvm
+#a#  rm -rf src/llvm
+#a#fi
 
 popd
 ./conf
