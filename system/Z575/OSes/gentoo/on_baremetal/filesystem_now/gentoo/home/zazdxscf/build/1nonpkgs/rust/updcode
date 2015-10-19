@@ -4,6 +4,7 @@ set -e
 
 pushd rust
 #a#git checkout .gitmodules
+git checkout configure #to undo patch
 git pull #|| git update-server-info && git pull
 #make clean
 # yes they say I should do a make clean after a git pull, so... there:)

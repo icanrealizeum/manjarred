@@ -16,7 +16,7 @@ what=all
 #what=
 set -x
 #time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm -Z          unstable-options -C llvm-args=\"-verify-debug-info -verify-dom-info -verify-loop-info -verify-regalloc -verify-region-info -verify-scev\"" && time make check )
-time ( time LD_LIBRARY_PATH='/tmp/1/x86_64-unknown-linux-gnu/lib' make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS="--verbose -Z verbose -Z print-link-args" RUST_BACKTRACE=1 && time make check )
+time ( time LD_LIBRARY_PATH='/home/zazdxscf/build/1nonpkgs/rust/tmp_stage0/x86_64-unknown-linux-gnu/lib' make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS="--verbose -Z verbose -Z print-link-args" RUST_BACKTRACE=1 && time make check )
 #-Z debug-llvm
 set +x
 #takes 9m35.569s from ./updcode until the issue https://github.com/rust-lang/rust/issues/28947
