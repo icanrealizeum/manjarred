@@ -5,7 +5,7 @@ set -e
 pushd rust
 #a#git checkout .gitmodules
 git pull #|| git update-server-info && git pull
-make clean
+#make clean
 # yes they say I should do a make clean after a git pull, so... there:)
 
 #here for good measure, I do this:
@@ -24,7 +24,7 @@ git clean -dfx
 #a#  rm -rf .git/modules/src/llvm
 #a#  rm -rf src/llvm
 #a#fi
-
+patch -Np1 -i ../local_rust_libfix.patch
 popd
 ./conf
 

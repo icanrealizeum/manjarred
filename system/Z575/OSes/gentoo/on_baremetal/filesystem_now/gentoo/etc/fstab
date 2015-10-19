@@ -15,8 +15,8 @@
 
 # NOTE: If your BOOT partition is ReiserFS, add the notail option to opts.
 #/dev/sda2               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300         0 0
-/dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,compress=lzo,datasum,datacow,space_cache,commit=300,enospc_debug  0 2
-/dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress=lzo,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug 0 1
+/dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,compress=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard  0 2
+/dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress=lzo,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard 0 1
 #/dev/sdb               /vmb2               btrfs           async,relatime,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300,auto         0 0
 # XXX: do not add errors=remount-ro  because btrfs says: unrecognized mount option
 

@@ -438,7 +438,7 @@ export CCACHE_SLOPPINESS=include_file_mtime
 #export CCACHE_COMPRESS=""
 #undefined and thus compression is disabled:
 unset CCACHE_COMPRESS
-export CCACHE_NOCOMPRESS=""
+export CCACHE_NOCOMPRESS=1
 #set ^ CCACHE_NOCOMPRESS to force no compression
 #uncomment to log when unusual errors happen or too many cache misses
 #export CCACHE_LOGFILE="/tmp/ccache.log"

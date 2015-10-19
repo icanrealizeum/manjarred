@@ -27,20 +27,21 @@ declare -ar args=(
 
 #--disable-debug
 --enable-debug #fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.
---disable-debuginfo #this doesn't cause that issue:
-#--enable-debuginfo #yep this one causes that issue: https://github.com/rust-lang/rust/issues/28947 in other words, this: ./configure --disable-debug --enable-debuginfo --enable-optimize --llvm-root=/usr && make -j1 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 'RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm '
+#--disable-debuginfo #this doesn't cause that issue:
+--enable-debuginfo #yep this one causes that issue: https://github.com/rust-lang/rust/issues/28947 in other words, this: ./configure --disable-debug --enable-debuginfo --enable-optimize --llvm-root=/usr && make -j1 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 'RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm '
 --enable-debug-assertions
 --enable-debuginfo-tests
 --enable-llvm-assertions
 --enable-debug-jemalloc
 
---disable-local-rust
-#--enable-local-rust
-#--local-rust-root="/usr" #fails with not finding crate for std
+#--disable-local-rust
+--enable-local-rust
+--local-rust-root="/tmp/1/x86_64-unknown-linux-gnu/" #this is a stage0 compiled(not the static one from bin! that's the downloaded one) it's the one from /home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/lib/rustlib/ which has this folder there: x86_64-unknown-linux-gnu/  that I moved into /tmp/1/
+#^ with /usr it fails with not finding crate for std - so can't readily use the gentoo-installed rust
 #--enable-fast-make
 
---disable-llvm-version-check
---llvm-root=/usr  #will fail in make (at some Bool step of what seems to be a configure step)
+#--disable-llvm-version-check
+#--llvm-root=/usr  #will fail in make (at some Bool step of what seems to be a configure step)
 
 
 
