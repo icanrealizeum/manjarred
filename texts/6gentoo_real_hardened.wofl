@@ -3831,8 +3831,11 @@
         - Select the en_US.utf8 one:
           * eselect locale set 4
             \ XXX: lsblk is ugly in virtual consoles (TERM=linux) unless this is set to C (aka set 1); also mc is ugly too!
+            \ changing from the C to utf8 one requires restarting X, or just relogging (not enough to just source /etc/profile again) - tested to see the change in vim: it showed up as two rhomboid '?', but after exiting X and logging out, then logging in, startx, vim, the 'a' with accent char  showed okay. (also in git diff)
         * select the C one:
           * eselect locale set 1
+            \ the downside of this is that you cannot paste or type chars like 'a' with accent inside vim for example, it shows up as '?'; although you can see it okay inside firefox. You can type it in mousepad though, but still can't see it in vim(shows up as a different char than '?' this way, and git diff reports it as <C3><A1> ).
+            \ TODO: remember to switch to the utf8 one later on when you're using X !!
       * env-update && source /etc/profile && source ~/.bash_profile
         \ oh we don't have ~/.bash_profile yet; maybe I'll copy it before running this; who knows; otherwise ignore.
       * emerge --config sys-libs/timezone-data

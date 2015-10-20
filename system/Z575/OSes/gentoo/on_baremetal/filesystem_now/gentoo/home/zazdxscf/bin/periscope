@@ -29,7 +29,7 @@ file="/tmp/periscope_`date`.mp2t"
 #livestreamer --retry-streams 5 --retry-open 1 --default-stream best -o "$file" -- "$@" &
 #livestreamer --retry-open 1 --default-stream best -o "$file" -- "$URL" &
 #livestreamer --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
-livestreamer --stream-url --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
+livestreamer --stream-url --http-header "User-Agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.5.17 (KHTML, like Gecko) Version/8.0.5 Safari/600.5.17; Cookie=CloudFront-Signature=IfKJLfiFPqMtOiPm5si255wFt9-Ez1BGF9qBD060gX3lg1sPXS2iI~VZV2zZrKRhdMrynN6IXpgvZmZ~-JzoPIdxkkvTwToIfHjy7Zrx~QLx28O2F3HkOVPKggef94IY6LreTQpEEhzkPIQ4~eFdD5ScG7HGKQBwaM7DQvFAEWLZBazJ3Bpc8pCE2122AAWCswe0d-fsvYcI3MceUOl6zhR3ugihr9ixKALNoLFBR0MrNnJ7q-6iS~QJiUtudS7CcAHMtrC0niXo8KFC63MVAlYEc5v46IzEGBjYLLCznioAd2L9iuMSkI6j31exmXGb1dVogKKkbtAFEGPe7IOZeA__; CloudFront-Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9yZXBsYXkucGVyaXNjb3BlLnR2L3VaYzJOZ1Q5Q1puZ05TR29Hcy1VM1VmcU05RkZMdW9QbldYZHdPVjJqeGtnQzRmdk1LY29HUmxZcnYxOEpfU0pieVRFTlg1VnBZOFFxQVhLLUgyM2JBPT0qIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNDQ1MjQ1OTk4fX19XX0_; CloudFront-Key-Pair-Id=APKAIHCXHHQVRTVSFRWQ" --retry-open 1 --default-stream best -o "$file" -- "$URL" &
 pid="$!"
 
 onint(){
