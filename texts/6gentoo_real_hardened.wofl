@@ -2363,7 +2363,7 @@
         \ //failed after 160m30s  with '** gcc version 5.2 found, expected gcc 3.x with x>1 or gcc 4.x with 0<x<10 or gcc 5.1!'  for x11-drivers/xf86-video-virtualbox-5.0.0
         - FIXME: virtualbox-guest-additions(to make copy/pasting to/from guest OS)
           - (only with hardened) temporarily switch gcc to vanilla 4.9.2 (4.8.3 will fail to compile this) [for vboxvideo]
-            \ is it because of the undefined symbol vgaHWFreeHWRec ? on startx in /var/log/Xorg.0.log ? yep!! so this is why you need vanilla!
+            \ is it because of the undefined symbol vgaHWFreeHWRec ? on startx in /var/log/Xorg.0.log ? yep!! so this is why you need vanilla! - now fixed: https://bugs.gentoo.org/show_bug.cgi?id=546362
             * gcc-config -l
             * gcc-config 10
               \  [10] x86_64-pc-linux-gnu-4.9.2-vanilla *
@@ -2408,8 +2408,8 @@
           \ to avoid this error when compiling x11-drivers/xf86-video-virtualbox-5.0.2
           \ cc1: error: cannot load plugin ./tools/gcc/colorize_plugin.so
           \ this was likely because kernel was compiled with gcc 4.8.4 at the installation stage and ofc its built .so files were left there in build dir.
-        * need to use vanilla kernel due to 'undefined symbol vgaHWFreeHWRec' later on when startx happens (even tho compilation is successful!)
-          \ FIXME: find a way to compile hardened still!
+        - NO!! old:need to use vanilla kernel due to 'undefined symbol vgaHWFreeHWRec' later on when startx happens (even tho compilation is successful!)
+          \ FIXed: find a way to compile hardened still! fixed: https://bugs.gentoo.org/show_bug.cgi?id=546362  (untested yet)
           * gcc-config -l
           * gcc-config 10
             \ vanilla!
@@ -2447,7 +2447,7 @@
             \ XXX: 5.2.0 is not allowed at configure step.
             \ XXX: need ccache disabled due to that PIC error when using hardened gentoo.
             \ fails with 4.8.5 with: /usr/src/linux/include/linux/compiler.h:221:29: error: can't set 'no_instrument_function' attribute after definition
-        * switch back to hardened gcc 
+        - switch back to hardened gcc 
           * gcc-config -l
           * gcc-config 6
             \ eg.  [6] x86_64-pc-linux-gnu-5.2.0

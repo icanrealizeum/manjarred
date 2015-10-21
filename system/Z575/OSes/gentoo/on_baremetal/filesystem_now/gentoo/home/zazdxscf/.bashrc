@@ -480,3 +480,5 @@ alias bt='echo 0 | gdb -batch-silent -ex "run" -ex "set logging overwrite on" -e
 #usage: bt crashed_program_filename
 #src: https://blog.cryptomilk.org/2010/12/23/gdb-backtrace-to-file/
 
+export RUST_BACKTRACE=1
+
