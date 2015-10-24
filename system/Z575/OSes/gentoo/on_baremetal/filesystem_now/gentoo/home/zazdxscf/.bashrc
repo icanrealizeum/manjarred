@@ -482,3 +482,5 @@ alias bt='echo 0 | gdb -batch-silent -ex "run" -ex "set logging overwrite on" -e
 
 export RUST_BACKTRACE=1
 
+export MAKEFLAGS='-j4 '
+

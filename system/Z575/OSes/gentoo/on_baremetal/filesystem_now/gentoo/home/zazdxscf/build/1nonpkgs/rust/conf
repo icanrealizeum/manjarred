@@ -7,7 +7,8 @@ pushd rust
 
 declare -ar args=(
 --prefix="/home/zazdxscf/build/1nonpkgs/rust/usr/local"
---disable-rpath
+#--disable-rpath
+--enable-rpath #so you don't have to prefix the rustc exe with LD_LIBRARY_PATH to avoid failure to load its .so libs
 #--disable-verify-install #nolonger exists
 --enable-manage-submodules
 
@@ -21,17 +22,23 @@ declare -ar args=(
 --disable-valgrind-rpass
 --python="/usr/bin/python2"
 
+#--disable-optimize
+#--disable-optimize-cxx
 --enable-optimize
 --enable-optimize-cxx
---enable-optimize-llvm
+--enable-optimize-llvm  #I didn't test the disable one here!
 
 #--disable-debug
---enable-debug #fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.
+--enable-debug #//fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.
 #--disable-debuginfo #this doesn't cause that issue:
---enable-debuginfo #yep this one causes that issue: https://github.com/rust-lang/rust/issues/28947 in other words, this: ./configure --disable-debug --enable-debuginfo --enable-optimize --llvm-root=/usr && make -j1 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 'RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm '
+--enable-debuginfo #yep this one causes that issue: https://github.com/rust-lang/rust/issues/28947 in other words, this: ./configure --disable-debug --enable-debuginfo --enable-optimize --llvm-root=/usr && make -j1 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 'RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm '   got fixed
+#--disable-debug-assertions
 --enable-debug-assertions
+#--disable-debuginfo-tests
 --enable-debuginfo-tests
 --enable-llvm-assertions
+#--disable-llvm-assertions
+#--disable-debug-jemalloc
 --enable-debug-jemalloc
 
 --disable-local-rust
@@ -47,6 +54,13 @@ declare -ar args=(
 
 #--disable-libcpp
 #--disable-jemalloc
+--release-channel=dev
+
+#without one or more of the following you get rustc trying to build for powerpc too for example (and others)
+--host=x86_64-unknown-linux-gnu
+--target=x86_64-unknown-linux-gnu
+--build=x86_64-unknown-linux-gnu
+
 )
 
 

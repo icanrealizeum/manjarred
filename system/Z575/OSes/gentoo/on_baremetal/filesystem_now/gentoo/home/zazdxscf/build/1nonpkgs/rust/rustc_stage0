@@ -2,6 +2,10 @@
 
 loc='/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/lib/rustlib/x86_64-unknown-linux-gnu'
 
+set -e
+set -x
 LD_LIBRARY_PATH="$loc/lib" "$loc/bin/rustc" --verbose "$@"
+set +x
+
 
 
