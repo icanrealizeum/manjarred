@@ -23,6 +23,13 @@ set -x
 #make: *** [doc/not_found.html] Error 127
 
 time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS="--verbose -Z print-link-args -Z print-llvm-passes -C debug-assertions=y" RUST_BACKTRACE=1 && time make -j${cores} check VERBOSE=1 )
+#compiling rust took:
+#real 142m40.702s
+#user  182m12.126s
+#sys 6m52.090s
+# make check took:
+#...
+
 #XXX: do not use: -Z verbose   or you get ICE in stage1 https://github.com/rust-lang/rust/issues/29239  but if you do get, you can just rerun make without it, to get past it, then you can re-enable and you're off the hook.
 #-C debug-assertions=y
 #-Ccodegen-units=${cores} #will core dump https://github.com/rust-lang/rust/issues/29270
