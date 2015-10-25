@@ -27,6 +27,11 @@ time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=1 
 #real 142m40.702s
 #user  182m12.126s
 #sys 6m52.090s
+#next time:
+#real 145m21.377s
+#user  189m41.699s
+#sys 11m31.180s
+
 # make check took:
 #...
 
@@ -43,6 +48,7 @@ set +x
 #echo "you need to git clone rust.vim to get the vim goodies"
 #echo "cd /home/emacs/.vim/bundle/ && ln -s `pwd`/../rust.vim/"
 
+#these are old:
 #with -j1
 #tests:
 #real 28m36.582s

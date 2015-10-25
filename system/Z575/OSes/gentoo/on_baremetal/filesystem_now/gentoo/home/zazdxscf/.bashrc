@@ -484,3 +484,7 @@ export RUST_BACKTRACE=1
 
 export MAKEFLAGS='-j4 '
 
+#temporary rustc path
+export PATH="${PATH}:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage2/bin"
+
+

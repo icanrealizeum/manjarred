@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -e
+set -x
+
+pushd cargo
+
+declare -ar args=(
+--prefix="/home/zazdxscf/build/1nonpkgs/cargo/usr/local"
+
+#--disable-optimize
+--enable-optimize
+
+#--disable-debug
+--enable-debug
+
+#--disable-cross-tests
+
+#--disable-verify-install
+
+#--enable-nightly
+
+#--local-cargo=
+
+--local-rust-root='/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage2/'
+
+--host=x86_64-unknown-linux-gnu
+--target=x86_64-unknown-linux-gnu
+--build=x86_64-unknown-linux-gnu
+
+)
+
+
+time ./configure "${args[@]}"
+
+set +x
+
+popd
+
+echo "!! Done."
+

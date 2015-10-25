@@ -5,6 +5,7 @@ loc='/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/lib
 set -e
 set -x
 LD_LIBRARY_PATH="$loc/lib" "$loc/bin/rustc" --verbose "$@"
+#XXX: it's not necessary to use LD_LIBRARY_PATH when ./configure --enable-rpath  was used.
 set +x
 
 

@@ -938,5 +938,39 @@
 * make kpEnter work in less while searching via /
   \ that .less file maybe can add this feat, or in .inputrc?
 
+* xfce4-sensors is spamming the log like crazy
+  \ this: /usr/lib64/xfce4/panel-plugins/xfce4-sensors-plugin
+  \ which gets respawned(if killed) until you do: pkill xfce4-sensors and get a desktop notification that to restart it!
+  \ workaround: keep refresh at 60 sec (instead of 5)
+  \ relavant spam code: vim /usr/src/linux-4.2.3-hardened-r5/drivers/acpi/ec.c +676
+  \ like:
+  \ [202502.953646] ACPI : EC: 2: Increase command
+  \ [202502.953653] ACPI : EC: ***** Command(RD_EC) started *****
+  \ [202502.953656] ACPI : EC: ===== TASK (3) =====
+  \ [202502.953712] ACPI : EC: EC_SC(R) = 0x00 SCI_EVT=0 BURST=0 CMD=0 IBF=0 OBF=0
+  \ [202502.953714] ACPI : EC: EC_SC(W) = 0x80
+  \ [202502.954426] ACPI : EC: ===== IRQ (3) =====
+  \ [202502.954434] ACPI : EC: EC_SC(R) = 0x08 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=0
+  \ [202502.954436] ACPI : EC: EC_DATA(W) = 0x92
+  \ [202502.955521] ACPI : EC: ===== IRQ (3) =====
+  \ [202502.955529] ACPI : EC: EC_SC(R) = 0x01 SCI_EVT=0 BURST=0 CMD=0 IBF=0 OBF=1
+  \ [202502.955533] ACPI : EC: EC_DATA(R) = 0x00
+  \ [202502.955561] ACPI : EC: ***** Command(RD_EC) stopped *****
+  \ [202502.955563] ACPI : EC: 1: Decrease command
+  \ [202502.955805] ACPI : EC: 2: Increase command
+  \ [202502.955806] ACPI : EC: ***** Command(RD_EC) started *****
+  \ [202502.955808] ACPI : EC: ===== TASK (3) =====
+  \ [202502.955860] ACPI : EC: EC_SC(R) = 0x00 SCI_EVT=0 BURST=0 CMD=0 IBF=0 OBF=0
+  \ [202502.955861] ACPI : EC: EC_SC(W) = 0x80
+  \ [202502.956649] ACPI : EC: ===== IRQ (3) =====
+  \ [202502.956656] ACPI : EC: EC_SC(R) = 0x08 SCI_EVT=0 BURST=0 CMD=1 IBF=0 OBF=0
+  \ [202502.956657] ACPI : EC: EC_DATA(W) = 0x92
+  \ [202502.957395] ACPI : EC: ===== TASK (3) =====
+  \ [202502.957449] ACPI : EC: EC_SC(R) = 0x02 SCI_EVT=0 BURST=0 CMD=0 IBF=1 OBF=0
+  \ [202502.958000] ACPI : EC: ===== IRQ (3) =====
+  \ [202502.958007] ACPI : EC: EC_SC(R) = 0x01 SCI_EVT=0 BURST=0 CMD=0 IBF=0 OBF=1
+  \ [202502.958010] ACPI : EC: EC_DATA(R) = 0x00
+  \ [202502.958025] ACPI : EC: ***** Command(RD_EC) stopped *****
+  \ [202502.958027] ACPI : EC: 1: Decrease command
 
 
