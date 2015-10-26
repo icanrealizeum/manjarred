@@ -26,8 +26,8 @@ declare -ar args=(
 #--disable-optimize-cxx
 --enable-optimize
 --enable-optimize-cxx
-#--enable-optimize-llvm  #I didn't test the disable one here!
---disable-optimize-llvm  #disable this so llvm has debug symbols! FIXME: find a way to keep optimize too!  XXX: DON'T EVER USE THIS! it will take at least half-aday to compile! especially stage2! (still compiling now, started: 2015/10/25 21:13:27 , now is: 2015/10/26 09:05:39  (but I've had cpu governor conservative for a long time, which kept cpu at 800Mhz(lowest) even though rustc was using 100% cpu, but was only 1 rustc.)  switched to ondemand gov. for the past 4 hours, which keeps it at max.
+--enable-optimize-llvm  #I didn't test the disable one here!
+#--disable-optimize-llvm  #disable this so llvm has debug symbols! FIXME: find a way to keep optimize too!  XXX: DON'T EVER USE THIS! it will take at least half-aday to compile! especially stage2! (still compiling now, started: 2015/10/25 21:13:27 , now is: 2015/10/26 09:05:39  (but I've had cpu governor conservative for a long time, which kept cpu at 800Mhz(lowest) even though rustc was using 100% cpu, but was only 1 rustc.)  switched to ondemand gov. for the past 4 hours, which keeps it at max.  (took 974min! of which 10min were tests which failed)
 
 #--disable-debug
 --enable-debug #//fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.

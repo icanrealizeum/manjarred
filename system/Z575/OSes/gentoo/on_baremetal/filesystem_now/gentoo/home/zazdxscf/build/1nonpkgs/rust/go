@@ -23,6 +23,7 @@ set -x
 #make: *** [doc/not_found.html] Error 127
 
 time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS="--verbose -Z print-link-args -Z print-llvm-passes -C debug-assertions=y" RUST_BACKTRACE=1 && time make -j${cores} check VERBOSE=1 )
+# adding SHELL='$$SHELL -x' to make doesn't work:  make: $SHELL: Command not found
 #compiling rust took:
 #real 142m40.702s
 #user  182m12.126s
