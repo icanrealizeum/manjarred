@@ -3,7 +3,10 @@
 pushd rust
 #//Run only ignored (broken) tests: 
 unset TIME_PASSES
-time make -j4 check NO_REBUILD=1 TIME_LLVM_PASSES=1
+unset RUST_BACKTRACE #issue: https://github.com/rust-lang/rust/issues/29293
+time make check NO_REBUILD=1 TIME_LLVM_PASSES=1 RUST_TEST_TASKS=1
+#RUST_TEST_TASKS=1 will run without parallelism; also don't add -j4 to make, it will do like 4x4 then.
+#https://github.com/rust-lang/rust-wiki-backup/blob/master/Note-testsuite.md
 #time make -j${cores} check VERBOSE=1
 
 #more info: https://github.com/rust-lang/rust/wiki/Note-testsuite

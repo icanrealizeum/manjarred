@@ -29,7 +29,8 @@ git pull #|| git update-server-info && git pull
 
 patch -Np1 -i ../local_rust_libfix.patch
 patch -Np1 -i ../llvm_only_x86_64.patch
-#patch -Np1 -i ../29272.patch
+#patch -Np1 -i ../llvm_yes_debug.patch
+patch -Np1 -i ../llvm_extra_debug_when_no_optimize.patch
 popd
 ./conf
 

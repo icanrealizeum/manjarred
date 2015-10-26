@@ -1,0 +1,19 @@
+diff --git a/configure b/configure
+index 60d3661..6b522c8 100755
+--- a/configure
++++ b/configure
+@@ -1448,12 +1484,12 @@ do
+         LLVM_BUILD_DIR=${CFG_BUILD_DIR}$t/llvm
+         if [ -n "$CFG_DISABLE_OPTIMIZE_LLVM" ]
+         then
+-            LLVM_DBG_OPTS="--enable-debug-symbols --disable-optimized"
++            LLVM_DBG_OPTS="--enable-debug-symbols --disable-optimized --enable-debug-runtime"
+             # Just use LLVM straight from its build directory to
+             # avoid 'make install' time
+             LLVM_INST_DIR=$LLVM_BUILD_DIR/Debug
+         else
+-            LLVM_DBG_OPTS="--enable-optimized"
++            LLVM_DBG_OPTS="--enable-optimized"
+             LLVM_INST_DIR=$LLVM_BUILD_DIR/Release
+         fi
+         if [ -z "$CFG_ENABLE_LLVM_ASSERTIONS" ]

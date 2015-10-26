@@ -26,7 +26,8 @@ declare -ar args=(
 #--disable-optimize-cxx
 --enable-optimize
 --enable-optimize-cxx
---enable-optimize-llvm  #I didn't test the disable one here!
+#--enable-optimize-llvm  #I didn't test the disable one here!
+--disable-optimize-llvm  #disable this so llvm has debug symbols! FIXME: find a way to keep optimize too!
 
 #--disable-debug
 --enable-debug #//fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.
