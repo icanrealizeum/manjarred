@@ -42,11 +42,13 @@ gdb_get_backtrace() {
     echo "${#qcmd[@]} ${qcmd[@]}"
 #exit 1 
         #--batch \
+          set -x
     gdb ${exe} \
         --core ${core} \
         --quiet \
         "${btcmd[@]}" \
         "${qcmd[@]}"
+    set +x
 }
 
 gdb_get_backtrace "$@"
