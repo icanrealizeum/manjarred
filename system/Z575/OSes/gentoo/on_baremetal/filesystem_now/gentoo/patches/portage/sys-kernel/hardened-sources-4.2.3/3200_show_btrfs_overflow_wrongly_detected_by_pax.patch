@@ -1,0 +1,19 @@
+--- /usr/src/linux-4.2.4-hardened/fs/btrfs/file.c.orig	2015-08-30 20:34:09.000000000 +0200
++++ /usr/src/linux-4.2.4-hardened/fs/btrfs/file.c	2015-10-27 00:36:36.720322259 +0100
+@@ -1859,6 +1859,8 @@ static int start_ordered_ops(struct inod
+  * important optimization for directories because holding the mutex prevents
+  * new operations on the dir while we write to disk.
+  */
++#define EPRINTF(fmt, args...) do { printk(KERN_EMERG "%s:%d:%s " fmt, __FILE__, __LINE__, __func__, ##args); } while (0)
++
+ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ {
+ 	struct dentry *dentry = file->f_path.dentry;
+@@ -1869,6 +1871,7 @@ int btrfs_sync_file(struct file *file, l
+ 	int ret = 0;
+ 	bool full_sync = 0;
+ 	const u64 len = end - start + 1;
++  EPRINTF("start:%lli end:%lli len:%llu\n", start, end, len);
+ 
+ 	trace_btrfs_sync_file(file, datasync);
+ 
