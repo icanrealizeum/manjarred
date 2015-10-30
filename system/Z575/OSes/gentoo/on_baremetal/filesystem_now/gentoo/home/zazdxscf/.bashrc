@@ -488,3 +488,15 @@ export MAKEFLAGS='-j4 '
 export PATH="${PATH}:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage2/bin:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage1/bin:/home/zazdxscf/build/1nonpkgs/cargo/cargo/target/x86_64-unknown-linux-gnu/release:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/lib/rustlib/x86_64-unknown-linux-gnu/bin/:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/bin/"
 
 
+#workaround for ugly graphics (eg. on lsblk and mc) on virtual consoles
+#if test "$TERM" = "linux"; then
+#  #export TERM=xterm
+#  #^ nevermind that doesn't work, so only locale set to C works!
+#  export LC_ALL=C
+#elif test "$LC_ALL" = "C"; then
+#    export -n LC_ALL
+#    unset LC_ALL
+#    #XXX: for some reason lsblk inside X is still acting as if LC_ALL=C so it shows lots of '?'  probably because startx was run with LC_ALL=C
+#fi
+
+
