@@ -3,6 +3,9 @@
 __die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
 source funx.bash || __die 100 "funx.bash not in PATH"         
 
+#TERMINAL_PROGRAM=urxvt
+TERMINAL_PROGRAM=xfce4-terminal
+
 #NOTE: to make a new truecrypt container:
 #sudo tcplay -c -d /dev/sdc --pbkdf-prf=SHA512 --cipher=SERPENT-256-XTS,TWOFISH-256-XTS,AES-256-XTS
 #or /dev/sdc can be /dev/loop0 which you create with sudo losetup `losetup -f` /tmp/crap  where crap is a file made with dd eg. 5meg file: dd if=/dev/zero of=/tmp/crap bs=1M count=5
@@ -92,10 +95,11 @@ tcmountcontainerfunc() {
   pushd .
   cd "$mountdir"
   if test "$succ" -eq "0" ; then
-    su "$usr" -c urxvt
+    su "$usr" -c "$TERMINAL_PROGRAM"
   fi
   popd
-  safepromptkey "press a key when done, to unmount"
+  safepromptkey "press a key when done, to unmount 1/2"
+  safepromptkey "press a key when done, to unmount 2/2"
   echo -e "\033[0m" >&2
   execute umount "$devmapperfullpath"
   #execute dmsetup remove "$devmappername"
