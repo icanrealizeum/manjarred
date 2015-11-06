@@ -98,8 +98,10 @@ tcmountcontainerfunc() {
     su "$usr" -c "$TERMINAL_PROGRAM"
   fi
   popd
-  safepromptkey "press a key when done, to unmount 1/2"
-  safepromptkey "press a key when done, to unmount 2/2"
+  safepromptkey "press a key when done, to unmount (will check if not in use!)"
+  while lsof "$mountdir"; do  #this is ran as root! because we're root while doing things in this script.
+    safepromptkey "(something's still using "$mountdir") press a key when done, to unmount (will recheck)"
+  done
   echo -e "\033[0m" >&2
   execute umount "$devmapperfullpath"
   #execute dmsetup remove "$devmappername"
