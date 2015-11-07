@@ -1,0 +1,32 @@
+#!/bin/bash
+
+cargobasedir='/home/zazdxscf/build/1nonpkgs/cargo/cargo/target/x86_64-unknown-linux-gnu/release'
+
+#for rustc
+basedir='/home/zazdxscf/build/1nonpkgs/rust/rust/'
+#XXX: order matters!
+searchdirs=(
+"$basedir"'/x86_64-unknown-linux-gnu/stage'{2,1}'/bin/'
+"$basedir"'/x86_64-unknown-linux-gnu/stage0/lib/rustlib/x86_64-unknown-linux-gnu/bin/'
+"$basedir"'/x86_64-unknown-linux-gnu/stage0/bin/'
+
+"$cargobasedir"'/target/x86_64-unknown-linux-gnu/release/'
+)
+
+#this will work even if array elements contain spaces! (ofc, why didn't I think of this)
+#src: https://unix.stackexchange.com/questions/2227/array-of-string-expanded-to-path
+
+fname="${0##*/}"
+for i in "${searchdirs[@]}"; do
+  exe="${i}/${fname}"
+  if test -x "${exe}"; then
+    echo "!! executing '$exe'"
+    exec -- $exe "$@"
+    echo "!! unreachable!"
+    exit 111
+  fi
+done
+
+echo "!! not found '$fname' in search any of dirs: '${searchdirs[@]}'"
+
+
