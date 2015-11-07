@@ -1,0 +1,63 @@
+#!/bin/bash
+
+cargobasedir='/home/zazdxscf/build/1nonpkgs/cargo/cargo/target/x86_64-unknown-linux-gnu/release'
+
+#for rustc
+basedir='/home/zazdxscf/build/1nonpkgs/rust/rust/'
+#XXX: order matters!
+searchdirs=(
+"$basedir"'/x86_64-unknown-linux-gnu/stage'{2,1}'/bin/'
+"$basedir"'/x86_64-unknown-linux-gnu/stage0/lib/rustlib/x86_64-unknown-linux-gnu/bin/'
+"$basedir"'/x86_64-unknown-linux-gnu/stage0/bin/'
+)
+
+cargosearchdirs=(
+"$cargobasedir"'/target/x86_64-unknown-linux-gnu/release/'
+)
+
+searchdirstopath=''
+#this will work even if array elements contain spaces! (ofc, why didn't I think of this)
+#src: https://unix.stackexchange.com/questions/2227/array-of-string-expanded-to-path
+for i in "${searchdirs[@]}"; do
+  searchdirstopath+=":${i}"
+done
+for i in "${cargosearchdirs[@]}"; do
+  cargosearchdirstopath+=":${i}"
+done
+
+function fail_if_has_space()
+{
+  count=0;
+  for i in "$@"; do
+    let 'count++'
+    leftside="$i"
+    rightside="${i//[[:space:]]/}"
+    if test "$leftside" != "$rightside"; then
+      echo "!! dirs should not contain spaces! arg number: $count" >&2
+      echo "Replacing spaces with SPACE for visibility, before showing you:"
+      echo "${leftside//[[:space:]]/SPACE}" |grep --color=always "SPACE" >&2
+#      #TODO: make func.
+#      leftsidefile="`mktemp --tmpdir=/tmp -t -- fail_if_has_space.leftside.XXXXXX.tmp`"
+#      rightsidefile="`mktemp --tmpdir=/tmp -t -- fail_if_has_space.rightside.XXXXXX.tmp`"
+#      echo "$leftside" > "$leftsidefile"
+#      echo "$rightside" > "$rightsidefile"
+#      git diff --color-words "$leftsidefile" "$rightsidefile"
+##TODO: delete temp files, via trap on exit
+
+      exit 1
+    fi
+  done
+}
+
+#check if any spaces in results!
+fail_if_has_space "$searchdirstopath" "$cargosearchdirstopath"
+
+#echo "$PATH" >/tmp/1.tmp
+
+#FIXME:infinite loop, ofc :)
+PATH="${PATH}${searchdirstopath}${cargosearchdirstopath}" rustc -Vv
+#echo "$PATH" >/tmp/2.tmp
+#echo "$PATH"
+#git wdiff /tmp/{1,2}.tmp
+
+
