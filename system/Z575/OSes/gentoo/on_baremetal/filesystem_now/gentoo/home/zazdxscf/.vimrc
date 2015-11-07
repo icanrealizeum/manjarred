@@ -317,7 +317,10 @@ nmap <c-f> :cs find g <c-r>=expand("<cword>")<cr><cr>
 " set directory=/tmp/vim
 " ^ that folder must exist! currently .bashrc makes sure of this
 " !mkdir --mode=700 --parents -- /tmp/vim/
-" TODO: ok, I need vim to make .swp files with mode 600 always!
+" done: ok, I need vim to make .swp files with mode 600 always!
+" XXX: do not use /tmp/vim/ because it's in tmpfs and sometimes system locks
+" up due to video card driver failures(in linux/kernel) and we do need the
+" .swp files to recover! ssd write count is not as important!
 
 " http://vimdoc.sourceforge.net/htmldoc/options.html#%27maxmem%27
 set maxmem=300000

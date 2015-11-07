@@ -1,1 +1,1 @@
-/home/emacs/build/rust.vim
+/home/zazdxscf/build/1nonpkgs/rust.vim/rust.vim/

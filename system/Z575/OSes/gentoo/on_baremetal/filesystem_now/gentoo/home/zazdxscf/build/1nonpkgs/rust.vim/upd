@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -ev
+
+pushd rust.vim
+git pull
+#git reset --hard #this clears any modifications!
+
+#manually undo the following applied patches:
+git checkout syntax_checkers/rust/rustc.vim
+
+#these applied patches:
+patch -Np1 -i ../20_personal_vim.patch
+patch -Np1 -i ../40_vim_no-trans_is_better.patch
+popd
+
+echo "All good!"
+
