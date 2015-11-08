@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if test -z "$@"; then
+  echo "do specify the output filename(with extension eg. .ogg)" >&2
+  exit 1
+fi
+
+pacat --fix-format --fix-rate --fix-channels --record --no-remix -d alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo -v | sox -t raw --rate 44100 --encoding signed-integer --endian little --bits 16 --channels 2 - -- "$@"
+
+

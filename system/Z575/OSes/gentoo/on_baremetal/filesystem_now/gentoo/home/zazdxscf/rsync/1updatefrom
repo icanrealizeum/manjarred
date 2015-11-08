@@ -3,11 +3,4 @@
 #updates ./rsync/gentoo/  from /
 RSYNC_REMOTEHOST="" RSYNC_SSH_VAL='' ./genericupdateTOfrombasedir '/' '/home/zazdxscf/rsync'
 
-set -e
-pushd ~/gentooskyline/texts/trello/
-#XXX: very important to anonymously export this, or else the emails which you could post to board/cardscomments are exposed otherwise!
-#no: wget --no-cache --no-cookies -- https://trello.com/b/9etGtJrT.json
-#yes:
-curl --ipv4 --output self.json -- https://trello.com/b/9etGtJrT.json
-popd
 
