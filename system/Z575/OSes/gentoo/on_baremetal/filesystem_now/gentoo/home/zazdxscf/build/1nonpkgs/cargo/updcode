@@ -3,6 +3,7 @@
 set -e
 
 pushd cargo
+#rm -vrf ./target/  #this will cause a lot of redownloading/recompiling... which is otherwise skipped via the git clean below because it's seen as a repository
 git clean -dfx
 git reset --hard
 time git pull

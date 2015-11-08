@@ -16,6 +16,11 @@ if test -e "$filename"; then
   exit 3
 fi
 
-pacat --fix-format --fix-rate --fix-channels --record --no-remix -d alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo -v | sox -t raw --rate 44100 --encoding signed-integer --endian little --bits 16 --channels 2 - -- "$1"
+#bad --fix-format --fix-rate --fix-channels with pacat because sometimes it's 44100 and sometimes it's 48000 ! so the piping sox must know for sure! but it was set at 44100 so... fixing now
+time pacat --rate=48000 --format=s16le --channels=2 --record --raw --no-remix -d alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo -v | sox -t raw --rate 48000 --encoding signed-integer --endian little --bits 16 --channels 2 - -- "$1"
+
+#credit: http://www.funwithelectronics.com/?id=95
+#found my device via: pacmd list|grep -i input
+#TODO: find the device that has mic in and pc speaker output mixed together! (or is that available only on the mic-side where the headphones jack goes in? in the Yeti)
 
 
