@@ -1,0 +1,18 @@
+#!/bin/bash
+
+pushd cargo
+time make -j4 VERBOSE=1 test
+popd
+
+#duration:
+
+#test result: FAILED. 485 passed; 28 failed; 0 ignored; 0 measured
+#
+#
+#Makefile:93: recipe for target 'test-unit-x86_64-unknown-linux-gnu' failed
+#make: *** [test-unit-x86_64-unknown-linux-gnu] Error 101
+#
+#real  25m24.240s
+#user  78m4.580s
+#sys 4m30.393s
+
