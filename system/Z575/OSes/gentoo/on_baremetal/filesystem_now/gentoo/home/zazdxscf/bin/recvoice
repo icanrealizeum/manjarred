@@ -5,6 +5,17 @@ if test -z "$@"; then
   exit 1
 fi
 
-pacat --fix-format --fix-rate --fix-channels --record --no-remix -d alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo -v | sox -t raw --rate 44100 --encoding signed-integer --endian little --bits 16 --channels 2 - -- "$@"
+if test "$#" -gt "1"; then
+  echo "too many args, maybe you forgot double quotes around the filename/path?"
+  exit 2
+fi
+
+filename="$1"
+if test -e "$filename"; then
+  echo "'$filename' already exists!"
+  exit 3
+fi
+
+pacat --fix-format --fix-rate --fix-channels --record --no-remix -d alsa_input.usb-Blue_Microphones_Yeti_Stereo_Microphone_REV8-00.analog-stereo -v | sox -t raw --rate 44100 --encoding signed-integer --endian little --bits 16 --channels 2 - -- "$1"
 
 
