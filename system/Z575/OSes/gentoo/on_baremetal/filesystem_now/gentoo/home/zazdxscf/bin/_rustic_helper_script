@@ -21,7 +21,7 @@ for i in "${searchdirs[@]}"; do
   exe="${i}/${fname}"
   if test -x "${exe}"; then
     echo "!! executing '$exe' with args: '$@'" >&2  #careful, don't output to stdout, or else: https://github.com/rust-lang/cargo/issues/2124
-    exec -- $exe "$@"
+    exec -- "$exe" "$@"
     echo "!! unreachable!"
     exit 111
   fi
