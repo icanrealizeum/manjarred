@@ -2,6 +2,7 @@
 # prerequisite:
 # git clone https://github.com/gorhill/uMatrix.git
 pushd ./uMatrix
+git checkout assets
 git pull
 
 ./tools/update-3rdparties.sh

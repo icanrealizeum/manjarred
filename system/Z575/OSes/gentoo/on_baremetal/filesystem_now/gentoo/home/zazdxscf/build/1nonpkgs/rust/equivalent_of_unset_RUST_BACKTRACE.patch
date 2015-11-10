@@ -11,7 +11,7 @@ index 3c84783..54aeefc 100644
  
      let val = match env::var_os("RUST_BACKTRACE") {
 -        Some(..) => 2,
-+        Some(x) => if x.eq("disabled") {1} else {2},
++        Some(x) => if x.eq("disabled") { 1 } else { 2 },
          None => 1,
      };
      ENABLED.store(val, Ordering::SeqCst);
