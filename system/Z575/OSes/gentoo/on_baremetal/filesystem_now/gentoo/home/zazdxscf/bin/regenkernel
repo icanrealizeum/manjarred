@@ -40,6 +40,17 @@ else
   echo "!! /bewt already mounted, moving on..."
 fi
 
+echo "!! stripping localversion (leftover from git)"
+#(nevermind this has no effect): this assumes this is already set: CONFIG_LOCALVERSION_AUTO=y
+#otherwise you get nothing appended to kernel version - this is what should happen!!!
+#sed -e 's/CONFIG_LOCALVERSION=.*$//g' -i /usr/src/linux/.config
+sed -e '/^CONFIG_LOCALVERSION=.*$/d' -i /usr/src/linux/.config
+ec="$?"
+if test "$ec" -ne 0; then
+  echo "!! sed failed! exit code: $ec"
+  exit "$ec"
+fi
+
 echo "!! Running genkernel..."
 time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
 ec="$?"
@@ -49,6 +60,7 @@ if test "$ec" -ne "0"; then
 fi
 echo "!! Done genkernel"
 
+#TODO: what was supposed to be executing those in postinst.d ? we're clearly doing it manually here.
 list=( `find /etc/kernel/postinst.d -type f -executable | sort  --general-numeric-sort` )
 echo "!! Found executables: ${list[@]}"
 for i in ${list[@]}; do
