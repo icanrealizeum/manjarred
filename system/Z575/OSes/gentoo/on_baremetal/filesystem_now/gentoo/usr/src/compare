@@ -6,10 +6,31 @@ fil='/tmp/kernel_versions.diff'
 #v2=linux-4.1.6-hardened-r2/
 #v1=linux-4.1.7-hardened/
 #v2=linux-4.1.7-hardened-r1/
-what=linux-4.2.5-hardened
-v1=${what}-r2/
-v2=linux-4.2.6-hardened
+what=linux-4.2.6-hardened
+v1=${what}/
+v2=${what}-r1/
 
-diff -rup --exclude=*.mod.c --exclude=*.map --exclude=*.S --exclude=config_data.h  -- "$v1" "$v2" |grep -v "Binary " |grep -v "Only in " > "$fil"
+time ( diff -rup \
+  --exclude='*.mod.c' \
+  --exclude='*.map' \
+  --exclude='*.S' \
+  --exclude='config_data.h' \
+  --exclude='zoffset.h' \
+  --exclude='vmlinux.lds' \
+  --exclude='vdso32.lds' \
+  --exclude='vdso.lds' \
+  --exclude='realmode.lds' \
+  --exclude='randomize_layout_hash.h' \
+  --exclude='utsrelease.h' \
+  --exclude='randomize_layout_seed.h' \
+  --exclude='.version' \
+  --exclude='asm-offsets.'{h,s} \
+  --exclude='auto.'{conf,cmd} \
+  --exclude='auto.conf.cmd' \
+  --exclude='autoconf.h' \
+  --exclude='compile.h' \
+  --exclude='kernel.release' \
+  --exclude='tristate.conf' \
+  -- "$v1" "$v2" |grep -v "Binary " |grep -v "Only in " > "$fil" )
 cat "$fil" |colordiff|less
 

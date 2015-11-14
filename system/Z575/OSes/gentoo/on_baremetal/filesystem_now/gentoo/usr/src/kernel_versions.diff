@@ -1,0 +1,246 @@
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/arch/x86/include/uapi/asm/svm.h linux-4.2.6-hardened-r1/arch/x86/include/uapi/asm/svm.h
+--- linux-4.2.6-hardened/arch/x86/include/uapi/asm/svm.h	2015-08-30 20:34:09.000000000 +0200
++++ linux-4.2.6-hardened-r1/arch/x86/include/uapi/asm/svm.h	2015-11-14 04:35:05.787267256 +0100
+@@ -100,6 +100,7 @@
+ 	{ SVM_EXIT_EXCP_BASE + UD_VECTOR,       "UD excp" }, \
+ 	{ SVM_EXIT_EXCP_BASE + PF_VECTOR,       "PF excp" }, \
+ 	{ SVM_EXIT_EXCP_BASE + NM_VECTOR,       "NM excp" }, \
++	{ SVM_EXIT_EXCP_BASE + AC_VECTOR,       "AC excp" }, \
+ 	{ SVM_EXIT_EXCP_BASE + MC_VECTOR,       "MC excp" }, \
+ 	{ SVM_EXIT_INTR,        "interrupt" }, \
+ 	{ SVM_EXIT_NMI,         "nmi" }, \
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/arch/x86/kvm/svm.c linux-4.2.6-hardened-r1/arch/x86/kvm/svm.c
+--- linux-4.2.6-hardened/arch/x86/kvm/svm.c	2015-11-12 05:34:48.474116727 +0100
++++ linux-4.2.6-hardened-r1/arch/x86/kvm/svm.c	2015-11-14 04:35:05.950599693 +0100
+@@ -1106,6 +1106,8 @@ static void init_vmcb(struct vcpu_svm *s
+ 	set_exception_intercept(svm, PF_VECTOR);
+ 	set_exception_intercept(svm, UD_VECTOR);
+ 	set_exception_intercept(svm, MC_VECTOR);
++	set_exception_intercept(svm, AC_VECTOR);
++	set_exception_intercept(svm, DB_VECTOR);
+ 
+ 	set_intercept(svm, INTERCEPT_INTR);
+ 	set_intercept(svm, INTERCEPT_NMI);
+@@ -1641,20 +1643,13 @@ static void svm_set_segment(struct kvm_v
+ 	mark_dirty(svm->vmcb, VMCB_SEG);
+ }
+ 
+-static void update_db_bp_intercept(struct kvm_vcpu *vcpu)
++static void update_bp_intercept(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+ 
+-	clr_exception_intercept(svm, DB_VECTOR);
+ 	clr_exception_intercept(svm, BP_VECTOR);
+ 
+-	if (svm->nmi_singlestep)
+-		set_exception_intercept(svm, DB_VECTOR);
+-
+ 	if (vcpu->guest_debug & KVM_GUESTDBG_ENABLE) {
+-		if (vcpu->guest_debug &
+-		    (KVM_GUESTDBG_SINGLESTEP | KVM_GUESTDBG_USE_HW_BP))
+-			set_exception_intercept(svm, DB_VECTOR);
+ 		if (vcpu->guest_debug & KVM_GUESTDBG_USE_SW_BP)
+ 			set_exception_intercept(svm, BP_VECTOR);
+ 	} else
+@@ -1760,7 +1755,6 @@ static int db_interception(struct vcpu_s
+ 		if (!(svm->vcpu.guest_debug & KVM_GUESTDBG_SINGLESTEP))
+ 			svm->vmcb->save.rflags &=
+ 				~(X86_EFLAGS_TF | X86_EFLAGS_RF);
+-		update_db_bp_intercept(&svm->vcpu);
+ 	}
+ 
+ 	if (svm->vcpu.guest_debug &
+@@ -1795,6 +1789,12 @@ static int ud_interception(struct vcpu_s
+ 	return 1;
+ }
+ 
++static int ac_interception(struct vcpu_svm *svm)
++{
++	kvm_queue_exception_e(&svm->vcpu, AC_VECTOR, 0);
++	return 1;
++}
++
+ static void svm_fpu_activate(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -3369,6 +3369,7 @@ static int (*const svm_exit_handlers[])(
+ 	[SVM_EXIT_EXCP_BASE + PF_VECTOR]	= pf_interception,
+ 	[SVM_EXIT_EXCP_BASE + NM_VECTOR]	= nm_interception,
+ 	[SVM_EXIT_EXCP_BASE + MC_VECTOR]	= mc_interception,
++	[SVM_EXIT_EXCP_BASE + AC_VECTOR]	= ac_interception,
+ 	[SVM_EXIT_INTR]				= intr_interception,
+ 	[SVM_EXIT_NMI]				= nmi_interception,
+ 	[SVM_EXIT_SMI]				= nop_on_interception,
+@@ -3756,7 +3757,6 @@ static void enable_nmi_window(struct kvm
+ 	 */
+ 	svm->nmi_singlestep = true;
+ 	svm->vmcb->save.rflags |= (X86_EFLAGS_TF | X86_EFLAGS_RF);
+-	update_db_bp_intercept(vcpu);
+ }
+ 
+ static int svm_set_tss_addr(struct kvm *kvm, unsigned int addr)
+@@ -4382,7 +4382,7 @@ static struct kvm_x86_ops svm_x86_ops =
+ 	.vcpu_load = svm_vcpu_load,
+ 	.vcpu_put = svm_vcpu_put,
+ 
+-	.update_db_bp_intercept = update_db_bp_intercept,
++	.update_db_bp_intercept = update_bp_intercept,
+ 	.get_msr = svm_get_msr,
+ 	.set_msr = svm_set_msr,
+ 	.get_segment_base = svm_get_segment_base,
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/arch/x86/kvm/vmx.c linux-4.2.6-hardened-r1/arch/x86/kvm/vmx.c
+--- linux-4.2.6-hardened/arch/x86/kvm/vmx.c	2015-11-12 05:34:48.477450042 +0100
++++ linux-4.2.6-hardened-r1/arch/x86/kvm/vmx.c	2015-11-14 04:35:05.953933008 +0100
+@@ -1567,7 +1567,7 @@ static void update_exception_bitmap(stru
+ 	u32 eb;
+ 
+ 	eb = (1u << PF_VECTOR) | (1u << UD_VECTOR) | (1u << MC_VECTOR) |
+-	     (1u << NM_VECTOR) | (1u << DB_VECTOR);
++	     (1u << NM_VECTOR) | (1u << DB_VECTOR) | (1u << AC_VECTOR);
+ 	if ((vcpu->guest_debug &
+ 	     (KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP)) ==
+ 	    (KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_SW_BP))
+@@ -5129,6 +5129,9 @@ static int handle_exception(struct kvm_v
+ 		return handle_rmode_exception(vcpu, ex_no, error_code);
+ 
+ 	switch (ex_no) {
++	case AC_VECTOR:
++		kvm_queue_exception_e(vcpu, AC_VECTOR, error_code);
++		return 1;
+ 	case DB_VECTOR:
+ 		dr6 = vmcs_readl(EXIT_QUALIFICATION);
+ 		if (!(vcpu->guest_debug &
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/.config linux-4.2.6-hardened-r1/.config
+--- linux-4.2.6-hardened/.config	2015-11-12 12:50:46.816053791 +0100
++++ linux-4.2.6-hardened-r1/.config	2015-11-14 04:50:01.042354592 +0100
+@@ -1,6 +1,6 @@
+ #
+ # Automatically generated file; DO NOT EDIT.
+-# Linux/x86 4.2.6-hardened Kernel Configuration
++# Linux/x86 4.2.6-hardened-r1 Kernel Configuration
+ #
+ CONFIG_64BIT=y
+ CONFIG_X86_64=y
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/drivers/net/ethernet/realtek/r8169.c linux-4.2.6-hardened-r1/drivers/net/ethernet/realtek/r8169.c
+--- linux-4.2.6-hardened/drivers/net/ethernet/realtek/r8169.c	2015-11-12 05:34:49.257445762 +0100
++++ linux-4.2.6-hardened-r1/drivers/net/ethernet/realtek/r8169.c	2015-11-14 04:35:06.723928783 +0100
+@@ -7361,6 +7361,9 @@ process_pkt:
+ 
+ 			rtl8169_rx_vlan_tag(desc, skb);
+ 
++			if (skb->pkt_type == PACKET_MULTICAST)
++				dev->stats.multicast++;
++
+ 			napi_gro_receive(&tp->napi, skb);
+ 
+ 			u64_stats_update_begin(&tp->rx_stats.syncp);
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/fs/binfmt_elf.c linux-4.2.6-hardened-r1/fs/binfmt_elf.c
+--- linux-4.2.6-hardened/fs/binfmt_elf.c	2015-11-12 05:34:49.714109923 +0100
++++ linux-4.2.6-hardened-r1/fs/binfmt_elf.c	2015-11-14 04:35:07.173926314 +0100
+@@ -1127,16 +1127,16 @@ static int load_elf_binary(struct linux_
+ 			 */
+ 			would_dump(bprm, interpreter);
+ 
+-			retval = kernel_read(interpreter, 0, bprm->buf,
+-					     BINPRM_BUF_SIZE);
+-			if (retval != BINPRM_BUF_SIZE) {
++			/* Get the exec headers */
++			retval = kernel_read(interpreter, 0,
++					     (void *)&loc->interp_elf_ex,
++					     sizeof(loc->interp_elf_ex));
++			if (retval != sizeof(loc->interp_elf_ex)) {
+ 				if (retval >= 0)
+ 					retval = -EIO;
+ 				goto out_free_dentry;
+ 			}
+ 
+-			/* Get the exec headers */
+-			loc->interp_elf_ex = *((struct elfhdr *)bprm->buf);
+ 			break;
+ 		}
+ 		elf_ppnt++;
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/fs/btrfs/inode.c linux-4.2.6-hardened-r1/fs/btrfs/inode.c
+--- linux-4.2.6-hardened/fs/btrfs/inode.c	2015-11-12 05:34:49.727443183 +0100
++++ linux-4.2.6-hardened-r1/fs/btrfs/inode.c	2015-11-14 04:34:58.060642989 +0100
+@@ -5632,7 +5632,6 @@ static int btrfs_real_readdir(struct fil
+ 	char *name_ptr;
+ 	int name_len;
+ 	int is_curr = 0;	/* ctx->pos points to the current index? */
+-	bool emitted;
+ 
+ 	/* FIXME, use a real flag for deciding about the key type */
+ 	if (root->fs_info->tree_root == root)
+@@ -5661,7 +5660,6 @@ static int btrfs_real_readdir(struct fil
+ 	if (ret < 0)
+ 		goto err;
+ 
+-	emitted = false;
+ 	while (1) {
+ 		leaf = path->nodes[0];
+ 		slot = path->slots[0];
+@@ -5741,7 +5739,6 @@ skip:
+ 
+ 			if (over)
+ 				goto nopos;
+-			emitted = true;
+ 			di_len = btrfs_dir_name_len(leaf, di) +
+ 				 btrfs_dir_data_len(leaf, di) + sizeof(*di);
+ 			di_cur += di_len;
+@@ -5759,15 +5756,6 @@ next:
+ 			goto nopos;
+ 	}
+ 
+-	/*
+-	 * If we haven't emitted any dir entry, we must not touch ctx->pos as
+-	 * it was was set to the termination value in previous call. We assume
+-	 * that "." and ".." were emitted if we reach this point and set the
+-	 * termination value as well for an empty directory.
+-	 */
+-	if (ctx->pos > 2 && !emitted)
+-		goto nopos;
+-
+ 	/* Reached end of directory/root. Bump pos past the last item. */
+ 	ctx->pos++;
+ 
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/fs/debugfs/inode.c linux-4.2.6-hardened-r1/fs/debugfs/inode.c
+--- linux-4.2.6-hardened/fs/debugfs/inode.c	2015-11-12 05:34:49.767442963 +0100
++++ linux-4.2.6-hardened-r1/fs/debugfs/inode.c	2015-11-14 04:35:07.220592724 +0100
+@@ -271,8 +271,12 @@ static struct dentry *start_creating(con
+ 		dput(dentry);
+ 		dentry = ERR_PTR(-EEXIST);
+ 	}
+-	if (IS_ERR(dentry))
++
++	if (IS_ERR(dentry)) {
+ 		mutex_unlock(&d_inode(parent)->i_mutex);
++		simple_release_fs(&debugfs_mount, &debugfs_mount_count);
++	}
++
+ 	return dentry;
+ }
+ 
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/Makefile linux-4.2.6-hardened-r1/Makefile
+--- linux-4.2.6-hardened/Makefile	2015-11-12 05:34:57.370734574 +0100
++++ linux-4.2.6-hardened-r1/Makefile	2015-11-14 04:35:14.963883567 +0100
+@@ -1,7 +1,7 @@
+ VERSION = 4
+ PATCHLEVEL = 2
+ SUBLEVEL = 6
+-EXTRAVERSION = -hardened
++EXTRAVERSION = -hardened-r1
+ NAME = Hurr durr I'ma sheep
+ 
+ # *DOCUMENTATION*
+diff -rup '--exclude=*.mod.c' '--exclude=*.map' '--exclude=*.S' '--exclude=config_data.h' '--exclude=zoffset.h' '--exclude=vmlinux.lds' '--exclude=vdso32.lds' '--exclude=vdso.lds' '--exclude=realmode.lds' '--exclude=randomize_layout_hash.h' '--exclude=utsrelease.h' '--exclude=randomize_layout_seed.h' '--exclude=.version' '--exclude=asm-offsets.h' '--exclude=asm-offsets.s' '--exclude=auto.conf' '--exclude=auto.cmd' '--exclude=auto.conf.cmd' '--exclude=autoconf.h' '--exclude=compile.h' '--exclude=kernel.release' '--exclude=tristate.conf' -- linux-4.2.6-hardened/net/ipv4/netfilter/nf_nat_pptp.c linux-4.2.6-hardened-r1/net/ipv4/netfilter/nf_nat_pptp.c
+--- linux-4.2.6-hardened/net/ipv4/netfilter/nf_nat_pptp.c	2015-08-30 20:34:09.000000000 +0200
++++ linux-4.2.6-hardened-r1/net/ipv4/netfilter/nf_nat_pptp.c	2015-11-14 04:35:08.097254580 +0100
+@@ -45,7 +45,7 @@ static void pptp_nat_expected(struct nf_
+ 	struct net *net = nf_ct_net(ct);
+ 	const struct nf_conn *master = ct->master;
+ 	struct nf_conntrack_expect *other_exp;
+-	struct nf_conntrack_tuple t;
++	struct nf_conntrack_tuple t = {};
+ 	const struct nf_ct_pptp_master *ct_pptp_info;
+ 	const struct nf_nat_pptp *nat_pptp_info;
+ 	struct nf_nat_range range;
