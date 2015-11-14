@@ -927,6 +927,11 @@
               \ "http://askubuntu.com/questions/404737/horizontal-scrolling-in-firefox-to-shiftmouse-scroll-instead-of-back-forward"
               * mousewheel.with_shift.action
                 \ "1" (was 2)
+            * network.tcp.keepalive.enabled
+              \ false
+              * network.http.keep-alive.timeout
+                \ from 115 to 0
+                \ src: https://www.reddit.com/r/firefox/comments/3rrl16/why_is_firefox_slower_than_chrome_in_linux/cwqo9r5
             - places.history.enabled   (actually I need this in linux, else it won't cache the urls that I visited; just remember that bug https://bugzilla.mozilla.org/show_bug.cgi?id=1015001 )
               \ "false"
               \ actually setting this to false may be a good idea to avoid the epic slowdown after a few months of a few seconds when loading any page (had to get a new firefox profile to get rid of it) - YES let's do this!
@@ -935,8 +940,8 @@
               * 0. enabled by default: Edit->Preferences->Advanced->General->Use hardware acceleration when available
               * 1. Check if Hardware acceleration is actually enabled in Firefox by visiting about:support looking for "GPU Accelerated Windows 1/1 OpenGL (OMTC)" under graphics. If this shows 1/1 you can stop right here, you not need this tweak. But if it shows 0/1 you can force it on ...
               * 2. Open about:config in Firefox (url bar)
-              * 3. Set layers.acceleration.force-enabled and layers.offmainthreadcomposition.enabled to true
-              * 4. start firefox like this: MOZ_USE_OMTC=1 firefox
+              * 3. Set layers.acceleration.force-enabled and //not needed anymore(default is true): layers.offmainthreadcomposition.enabled to true
+              - //not required anymore: 4. start firefox like this: MOZ_USE_OMTC=1 firefox
                 \ or put this in ~/.xinitrc
                 \ export MOZ_USE_OMTC=1
               * test hardware acceleration FPS

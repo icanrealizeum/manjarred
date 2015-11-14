@@ -94,6 +94,8 @@ unset CDPATH
 ##alias cargo='LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/" PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/:$PATH" /home/emacs/build/cargo/target/x86_64-unknown-linux-gnu/cargo'
 #----------
 
+alias sync='time sync'
+
 #alias mc="(declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1 )"
 #alias mc="declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1"
 alias cls='tput clear' #\e[H\e[2J for rxvt-unicode-256color
@@ -137,7 +139,7 @@ mp3dir(){
 #made it a file/script because mc wouldn't see it with completion
 #alias zipwithpwd='zip -v -9 -r -T -e'  #follows: archive.zip *
 alias bc='bc -l' #decimals!
-UA='Mozilla/5.0 (X11; Linux x86_64; rv:41.0) Gecko/20100101 Firefox/41.0'
+UA='Mozilla/5.0 (X11; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0'
 alias downmp3="time youtube-dl --user-agent \"${UA}\" --extract-audio --audio-format mp3"
 alias downaudio="time youtube-dl --user-agent \"${UA}\" --extract-audio"
 alias downvideo="time youtube-dl --user-agent \"${UA}\""

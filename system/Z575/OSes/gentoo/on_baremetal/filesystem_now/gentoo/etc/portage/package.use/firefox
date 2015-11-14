@@ -1,4 +1,16 @@
-www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu -system-cairo system-libvpx system-sqlite -wifi -debug
+www-client/firefox -gmp-autoupdate gstreamer pulseaudio system-jpeg system-icu system-libvpx system-sqlite -wifi -debug -egl system-cairo
 #with debug it fails on startup with this: https://bugzilla.mozilla.org/show_bug.cgi?id=994859
+
 >=x11-libs/cairo-1.10.0 opengl #svg
+
+# required by www-client/firefox-42.0-r1::mozilla[system-cairo]
+# required by @selected
+# required by @world (argument)
+>=x11-libs/cairo-1.14.4 xcb
+
+#XXX: use -egl to enable hwaccel in firefox (9fps vs 5fps without accel) this was with system-cairo and firefox 42.0 (not -r1)
+#XXX: system-cairo makes it slower! 9fps with accel(5fps w/o)  versus 16fps without accel!
+
+#XXX: with -egl -system-cairo 42.0-r1 is 5fps with hwaccel ! and 16fps without! (toggled from Preferences)
+
 
