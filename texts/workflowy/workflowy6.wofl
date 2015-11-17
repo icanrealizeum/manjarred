@@ -935,6 +935,7 @@
             - places.history.enabled   (actually I need this in linux, else it won't cache the urls that I visited; just remember that bug https://bugzilla.mozilla.org/show_bug.cgi?id=1015001 )
               \ "false"
               \ actually setting this to false may be a good idea to avoid the epic slowdown after a few months of a few seconds when loading any page (had to get a new firefox profile to get rid of it) - YES let's do this!
+            * disable/untick "Use hardware acceleration when available" because otherwise you get 5fps, instead of the 16fps you get with this disabled! (also ensure USE=-system-cairo or else you get 9fps when hwaccel is enabled, and 5fps if it's disabled)
             - enable 3D hardware acceleration: (it's slower with this than just software acceleration, so avoid)
               \ http://askubuntu.com/questions/491750/force-enable-hardware-acceleration-in-firefox
               * 0. enabled by default: Edit->Preferences->Advanced->General->Use hardware acceleration when available
