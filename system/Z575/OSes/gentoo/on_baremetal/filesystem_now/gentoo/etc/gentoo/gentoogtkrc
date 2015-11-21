@@ -1,0 +1,22 @@
+/* GTK+ 3.x styling for gentoo.
+ *
+ * Created in May 2012 by Emil Brink.
+ *
+ * See <http://gnomejournal.org/article/107/styling-gtk-with-css> for information.
+*/
+
+
+/* Here's some intricate styling to make the headers of the current pane stand
+ * out a bit. Note that doing the obvious, i.e. setting background-color,
+ * doesn't work.
+*/
+GtkWindow#gentoo * #pane-current column-header .button {
+	font-weight: bold;
+	color: @selected_bg_color;
+}
+
+
+/* Make the text viewer use a fixed-width font. */
+#txvText, #cstPreview {
+	font: Monospace;
+}
