@@ -190,25 +190,25 @@
 
 #YOUTUBE
 #blocked by uMatrix and uBlock:  (this actually prevents youtube history from working - videos are not added to it, even tho it's unpaused!) But remember you have to whitelist the entire host not just images in uMatrix, for this to work!
-127.0.0.3 s.youtube.com
+#127.0.0.3 s.youtube.com
 #^ might as well block it, since uBlock was blocking it anyway (uMatrix wasn't, by my manually set choice)
 #this one seems to be ok to block:
 127.0.0.3 gg.google.com
 #following line is needed for youtube-dl  the entire channel; on linux!
-127.0.0.3	gdata.youtube.com
-127.0.0.3	youtube-nocookie.com
-127.0.0.3	accounts.youtube.com
-127.0.0.3	upload.youtube.com
+#127.0.0.3	gdata.youtube.com
+#127.0.0.3	youtube-nocookie.com
+#127.0.0.3	accounts.youtube.com
+#127.0.0.3	upload.youtube.com
 #next 4 lines needed to see youtube videos
-127.0.0.3	youtube.com
-127.0.0.3	googlevideo.com
-127.0.0.3	www.youtube.com
-127.0.0.3	ytimg.com
+#127.0.0.3	youtube.com
+#127.0.0.3	googlevideo.com
+#127.0.0.3	www.youtube.com
+#127.0.0.3	ytimg.com
 #needed for seeing youtube comments:
-127.0.0.3	apis.google.com
-127.0.0.3	googleusercontent.com
-127.0.0.3	plus.googleapis.com
-127.0.0.3	yt3.ggpht.com
+#127.0.0.3	apis.google.com
+#127.0.0.3	googleusercontent.com
+#127.0.0.3	plus.googleapis.com
+#127.0.0.3	yt3.ggpht.com
 #end comments
 
 #Disabling chat features for your entire network, src: https://support.google.com/chat/answer/161980?hl=en
@@ -218,6 +218,7 @@
 
 127.0.0.3	vine.co
 127.0.0.3	instagram.com
+127.0.0.3	www.instagram.com
 
 #TWITTER
 #just read tweets, see pics (no twittervids, but gifs[mp4] work if scripts are on):
