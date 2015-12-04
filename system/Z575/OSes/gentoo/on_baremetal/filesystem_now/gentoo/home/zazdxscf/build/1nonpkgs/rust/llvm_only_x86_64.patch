@@ -23,19 +23,20 @@ index 60d3661..7cf274e 100755
          LLVM_HOST="--host=$gnu_t"
          LLVM_TARGET="--target=$gnu_t"
 diff --git a/mk/main.mk b/mk/main.mk
-index 1cd491a..463c21b 100644
+index 3e3b821..ca819e5 100644
 --- a/mk/main.mk
 +++ b/mk/main.mk
-@@ -277,7 +277,8 @@ endif
+@@ -276,8 +276,8 @@ endif
+ # LLVM macros
  ######################################################################
  
- # FIXME: x86-ism
 -LLVM_COMPONENTS=x86 arm aarch64 mips powerpc ipo bitreader bitwriter linker asmparser mcjit \
+-                interpreter instrumentation
 +#LLVM_COMPONENTS=x86 arm aarch64 mips powerpc ipo bitreader bitwriter linker asmparser mcjit interpreter instrumentation
-+LLVM_COMPONENTS=x86 ipo bitreader bitwriter linker asmparser mcjit \
-                 interpreter instrumentation
++LLVM_COMPONENTS=x86 ipo bitreader bitwriter linker asmparser mcjit interpreter instrumentation
  
  # Only build these LLVM tools
+ LLVM_TOOLS=bugpoint llc llvm-ar llvm-as llvm-dis llvm-mc opt llvm-extract
 diff --git a/mk/llvm.mk b/mk/llvm.mk
 index 1cbf4a9..f8d5387 100644
 --- a/mk/llvm.mk
