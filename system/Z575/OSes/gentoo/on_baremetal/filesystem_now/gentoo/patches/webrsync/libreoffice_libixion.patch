@@ -1,0 +1,11 @@
+--- orig/usr/portage/dev-libs/liborcus/liborcus-9999.ebuild	2015-12-10 12:27:10.900915332 +0100
++++ patched/usr/portage/dev-libs/liborcus/liborcus-9999.ebuild	2015-12-10 12:27:27.330825174 +0100
+@@ -22,7 +22,7 @@ IUSE="static-libs"
+ 
+ RDEPEND="
+ 	>=dev-libs/boost-1.51.0:=
+-	=dev-libs/libixion-0.9*:=
++	=dev-libs/libixion-9999:=
+ 	sys-libs/zlib:=
+ "
+ DEPEND="${RDEPEND}
