@@ -371,4 +371,18 @@
   \ because 16fps is fastest (than 5 or 9 fps with hwaccel)
   \ and because it may crash the radeon driver (like vlc does!)
 
+* fix this: The following REQUIRED_USE flag constraints are unsatisfied: exactly-one-of ( python_single_target_python3_4 python_single_target_python3_5 ) when emerging libreoffice-9999
+  \ this temp fix works:
+  \ # time PYTHON_SINGLE_TARGET="python3_4" emerge -nav =libreoffice-9999
+  \ But the permanent fix for this is: 
+  \ # vim /etc/portage/package.env
+  \ =app-office/libreoffice-9999 libreoffice.conf
+  \ 
+  \ # vim /etc/portage/env/libreoffice.conf
+  \ PYTHON_SINGLE_TARGET="python3_4"
+
+* rust.vim needs syntastic vim plugin!
+  \ # time PYTHON_SINGLE_TARGET="python3_4" emerge -nav =libreoffice-9999
+
+
 
