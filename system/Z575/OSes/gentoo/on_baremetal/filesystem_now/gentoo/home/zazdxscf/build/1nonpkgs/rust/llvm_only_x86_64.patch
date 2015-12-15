@@ -22,21 +22,6 @@ index 60d3661..7cf274e 100755
          LLVM_BUILD="--build=$gnu_t"
          LLVM_HOST="--host=$gnu_t"
          LLVM_TARGET="--target=$gnu_t"
-diff --git a/mk/main.mk b/mk/main.mk
-index 3e3b821..ca819e5 100644
---- a/mk/main.mk
-+++ b/mk/main.mk
-@@ -276,8 +276,8 @@ endif
- # LLVM macros
- ######################################################################
- 
--LLVM_COMPONENTS=x86 arm aarch64 mips powerpc ipo bitreader bitwriter linker asmparser mcjit \
--                interpreter instrumentation
-+#LLVM_COMPONENTS=x86 arm aarch64 mips powerpc ipo bitreader bitwriter linker asmparser mcjit interpreter instrumentation
-+LLVM_COMPONENTS=x86 ipo bitreader bitwriter linker asmparser mcjit interpreter instrumentation
- 
- # Only build these LLVM tools
- LLVM_TOOLS=bugpoint llc llvm-ar llvm-as llvm-dis llvm-mc opt llvm-extract
 diff --git a/mk/llvm.mk b/mk/llvm.mk
 index 1cbf4a9..f8d5387 100644
 --- a/mk/llvm.mk
@@ -77,25 +62,16 @@ index fe84cff..851b349 100644
      pub fn LLVMRustAddPass(PM: PassManagerRef, Pass: *const c_char) -> bool;
      pub fn LLVMRustCreateTargetMachine(Triple: *const c_char,
                                         CPU: *const c_char,
-diff --git a/src/librustc_trans/back/write.rs b/src/librustc_trans/back/write.rs
-index 1fbbf82..933a262 100644
---- a/src/librustc_trans/back/write.rs
-+++ b/src/librustc_trans/back/write.rs
-@@ -967,7 +967,7 @@ pub unsafe fn configure_llvm(sess: &Session) {
-     llvm::LLVMInitializeX86AsmPrinter();
-     llvm::LLVMInitializeX86AsmParser();
+diff --git a/mk/main.mk b/mk/main.mk
+index f2ff4f1..1b7a064 100644
+--- a/mk/main.mk
++++ b/mk/main.mk
+@@ -276,7 +276,7 @@ endif
+ # LLVM macros
+ ######################################################################
  
--    llvm::LLVMInitializeARMTargetInfo();
-+/*    llvm::LLVMInitializeARMTargetInfo();
-     llvm::LLVMInitializeARMTarget();
-     llvm::LLVMInitializeARMTargetMC();
-     llvm::LLVMInitializeARMAsmPrinter();
-@@ -990,7 +990,7 @@ pub unsafe fn configure_llvm(sess: &Session) {
-     llvm::LLVMInitializePowerPCTargetMC();
-     llvm::LLVMInitializePowerPCAsmPrinter();
-     llvm::LLVMInitializePowerPCAsmParser();
--
-+*/
-     llvm::LLVMRustSetLLVMOptions(llvm_args.len() as c_int,
-                                  llvm_args.as_ptr());
- }
+-LLVM_OPTIONAL_COMPONENTS=x86 arm aarch64 mips powerpc
++LLVM_OPTIONAL_COMPONENTS=x86
+ LLVM_REQUIRED_COMPONENTS=ipo bitreader bitwriter linker asmparser mcjit \
+                 interpreter instrumentation
+ 
