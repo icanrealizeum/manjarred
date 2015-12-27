@@ -1,0 +1,38 @@
+avoid black screen(for the entire boot session) when starting X with radeon DRM 
+when things are built as modules
+by automatically loading fbcon module when DRM is selected (CONFIG_DRM) because
+fbcon is a requirement (ie. can't have old text mode consoles and X, they must be framebuffer consoles before X is started) according to knowledgeable people on #radeon /freenode
+
+
+diff -pru5 -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/gpu/drm/drm_fb_helper.c linux-3.16-rc7/drivers/gpu/drm/drm_fb_helper.c
+--- linux-3.16-rc7.orig/drivers/gpu/drm/drm_fb_helper.c	2014-07-28 22:09:20.000000000 +0200
++++ linux-3.16-rc7/drivers/gpu/drm/drm_fb_helper.c	2014-07-29 15:39:28.177091927 +0200
+@@ -1652,11 +1652,11 @@ EXPORT_SYMBOL(drm_fb_helper_hotplug_even
+ 
+ /* The Kconfig DRM_KMS_HELPER selects FRAMEBUFFER_CONSOLE (if !EXPERT)
+  * but the module doesn't depend on any fb console symbols.  At least
+  * attempt to load fbcon to avoid leaving the system without a usable console.
+  */
+-#if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && !defined(CONFIG_EXPERT)
++#if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && ( !defined(CONFIG_EXPERT) || defined(CONFIG_DRM_MODULE) || defined(CONFIG_DRM) )
+ static int __init drm_fb_helper_modinit(void)
+ {
+ 	const char *name = "fbcon";
+ 	struct module *fbcon;
+ 
+diff -pru5 -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/gpu/drm/Kconfig linux-3.16-rc7/drivers/gpu/drm/Kconfig
+--- linux-3.16-rc7.orig/drivers/gpu/drm/Kconfig	2014-07-28 22:09:20.000000000 +0200
++++ linux-3.16-rc7/drivers/gpu/drm/Kconfig	2014-07-29 15:26:09.748320566 +0200
+@@ -38,11 +38,11 @@ config DRM_KMS_HELPER
+ 
+ config DRM_KMS_FB_HELPER
+ 	bool
+ 	depends on DRM_KMS_HELPER
+ 	select FB
+-	select FRAMEBUFFER_CONSOLE if !EXPERT
++	select FRAMEBUFFER_CONSOLE
+ 	select FRAMEBUFFER_CONSOLE_DETECT_PRIMARY if FRAMEBUFFER_CONSOLE
+ 	help
+ 	  FBDEV helpers for KMS drivers.
+ 
+ config DRM_LOAD_EDID_FIRMWARE
