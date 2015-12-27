@@ -138,6 +138,7 @@ mp3dir(){
 }
 #made it a file/script because mc wouldn't see it with completion
 #alias zipwithpwd='zip -v -9 -r -T -e'  #follows: archive.zip *
+alias sl='ls'
 alias bc='bc -l' #decimals!
 UA='Mozilla/5.0 (X11; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0'
 alias downmp3="time youtube-dl --user-agent \"${UA}\" --extract-audio --audio-format mp3"
