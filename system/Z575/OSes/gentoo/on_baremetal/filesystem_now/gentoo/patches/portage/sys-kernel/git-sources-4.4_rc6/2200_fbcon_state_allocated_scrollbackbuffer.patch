@@ -1,0 +1,30 @@
+fbcon scrollback buffer can use vmalloc instead of kmalloc but it'd not needed
+4096k is plenty, the problem is that this needs to be built in kernel, not as a module, to allow for fbcon=scrollback:4096k kernel cmdline parameter to be in effect (and any other params as well, like font: )
+
+diff --git a/drivers/video/console/fbcon.c b/drivers/video/console/fbcon.c
+index eb976ee..26c9368 100644
+--- a/drivers/video/console/fbcon.c
++++ b/drivers/video/console/fbcon.c
+@@ -968,15 +968,20 @@ static const char *fbcon_startup(void)
+ 			if (!softback_buf) {
+ 				softback_buf =
+ 				    (unsigned long)
+-				    kmalloc(fbcon_softback_size,
++//				    vmalloc(fbcon_softback_size);
++				    kmalloc(fbcon_softback_size, //limited to kernel PAGE_SIZE ( sudo getconf PAGE_SIZE ) if above, it will fail!
+ 					    GFP_KERNEL);
+ 				if (!softback_buf) {
++          printk(KERN_WARNING "fbcon: failed to allocate %d bytes of memory for scrollback (maybe value was too high, must not be higher than kernel PAGE_SIZE, see: sudo getconf PAGE_SIZE ). Using NO scrollback. Equivalent kernel paramet  er: fbcon=scrollback:%d\n", fbcon_softback_size, fbcon_softback_size);
+ 					fbcon_softback_size = 0;
+ 					softback_top = 0;
+-				}
++				} else {
++          printk(KERN_WARNING "fbcon: allocated %d bytes of memory for scrollback. Equivalent kernel parameter: fbcon=scrollback:%d\n", fbcon_softback_size, fbcon_softback_size);
++        }
+ 			}
+ 		} else {
+ 			if (softback_buf) {
++//				vfree((void *) softback_buf);
+ 				kfree((void *) softback_buf);
+ 				softback_buf = 0;
+ 				softback_top = 0;
