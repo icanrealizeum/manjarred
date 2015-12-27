@@ -23,16 +23,12 @@ diff -pru5 -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/li
 diff -pru5 -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/gpu/drm/Kconfig linux-3.16-rc7/drivers/gpu/drm/Kconfig
 --- linux-3.16-rc7.orig/drivers/gpu/drm/Kconfig	2014-07-28 22:09:20.000000000 +0200
 +++ linux-3.16-rc7/drivers/gpu/drm/Kconfig	2014-07-29 15:26:09.748320566 +0200
-@@ -38,11 +38,11 @@ config DRM_KMS_HELPER
- 
- config DRM_KMS_FB_HELPER
+@@ -35,7 +35,7 @@ config DRM_KMS_FB_HELPER
  	bool
  	depends on DRM_KMS_HELPER
  	select FB
 -	select FRAMEBUFFER_CONSOLE if !EXPERT
 +	select FRAMEBUFFER_CONSOLE
  	select FRAMEBUFFER_CONSOLE_DETECT_PRIMARY if FRAMEBUFFER_CONSOLE
- 	help
- 	  FBDEV helpers for KMS drivers.
- 
- config DRM_LOAD_EDID_FIRMWARE
+ 	select FB_SYS_FOPS
+ 	select FB_SYS_FILLRECT

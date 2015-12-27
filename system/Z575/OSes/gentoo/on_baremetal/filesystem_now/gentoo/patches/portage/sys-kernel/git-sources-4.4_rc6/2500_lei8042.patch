@@ -232,18 +232,20 @@ index cb5ece7..395ee0f 100644
  						str = last_str;
  						break;
  					}
-@@ -528,16 +680,116 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+@@ -687,16 +687,118 @@ static irqreturn_t i8042_interrupt(int i
  	port = &i8042_ports[port_no];
  	serio = port->exists ? port->serio : NULL;
  
--	dbg("%02x <- i8042 (interrupt, %d, %d%s%s)\n",
--	    data, port_no, irq,
+-	filter_dbg(port->driver_bound, data, "<- i8042 (interrupt, %d, %d%s%s)\n",
+-		   port_no, irq,
 +  /*
-+	dbg("%02x %02d <- i8042 (interrupt, %d, %d%s%s)\n",
-+	    data, data, port_no, irq,
- 	    dfl & SERIO_PARITY ? ", bad parity" : "",
- 	    dfl & SERIO_TIMEOUT ? ", timeout" : "");
-+      */
++	filter_dbg(port->driver_bound, data, " (%02x %02d) <- i8042 (interrupt, %d, %d%s%s)\n",
++		   data,data,
++       port_no, irq,
+ 		   dfl & SERIO_PARITY ? ", bad parity" : "",
+ 		   dfl & SERIO_TIMEOUT ? ", timeout" : "");
++       */
++
 +
 +  if (data == 0x58) {
 +    udbg("------------------------%lu\n",jiffies);
