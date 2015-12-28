@@ -1,0 +1,58 @@
+* this is a working attempt to offload gfx operation to the discrete card(tested on manjaro) which works but it's still slower than just using the integrated card alone because apparently there's no way to have it offload stuff at 60fps and not more! so I'm assuming it's using too much bandwidth and stuff and it's as a result slower fps(in a wine game for example) when using DIS card to offload like this.
+
+
+# cat  /sys/kernel/debug/vgaswitcheroo/switch
+0:IGD:+:Pwr:0000:00:01.0
+1:DIS: :DynPwr:0000:01:00.0
+
+$ xrandr --listproviders
+Providers: number : 2
+Provider 0: id: 0x8a cap: 0xf, Source Output, Sink Output, Source Offload, Sink Offload crtcs: 2 outputs: 3 associated providers: 0 name:radeon
+Provider 1: id: 0x55 cap: 0xf, Source Output, Sink Output, Source Offload, Sink Offload crtcs: 6 outputs: 0 associated providers: 0 name:radeon
+
+$ xrandr --setprovideroffloadsink 0x55 0x8a
+
+//without having run the above:
+$ DRI_PRIME=1 glxinfo | grep "OpenGL renderer"
+OpenGL renderer string: Gallium 0.4 on AMD SUMO (DRM 2.43.0, LLVM 3.7.0)
+
+//with having run the above:
+$ DRI_PRIME=1 glxinfo | grep "OpenGL renderer"
+OpenGL renderer string: Gallium 0.4 on AMD TURKS (DRM 2.43.0, LLVM 3.7.0)
+$ glxinfo | grep "OpenGL renderer"
+OpenGL renderer string: Gallium 0.4 on AMD SUMO (DRM 2.43.0, LLVM 3.7.0)
+
+//src: https://xpressrazor.wordpress.com/2013/10/08/enable-and-use-open-source-radeon-drivers-in-a-muxless-hybrid-graphics-intelamd-setup/
+
+//watch the IGD:
+$ sudo radeontop
+
+//watch the DIS:
+$ sudo radeontop --bus 1
+
+//check both cards' set performance level:
+$ cat /sys/class/drm/card{0,1}/device/power_dpm_state
+
+
+$ DRI_PRIME=1 glxgears
+Running synchronized to the vertical refresh.  The framerate should be
+approximately the same as the monitor refresh rate.
+1957 frames in 5.0 seconds = 391.330 FPS
+2152 frames in 5.0 seconds = 430.304 FPS
+2295 frames in 5.0 seconds = 458.922 FPS
+2126 frames in 5.0 seconds = 425.142 FPS
+1943 frames in 5.0 seconds = 388.492 FPS
+1875 frames in 5.0 seconds = 374.952 FPS
+2004 frames in 5.0 seconds = 400.760 FPS
+2110 frames in 5.0 seconds = 421.950 FPS
+2101 frames in 5.0 seconds = 420.089 FPS
+2152 frames in 5.0 seconds = 430.381 FPS
+
+//ok so here's the problem, the above doesn't run in vsync mode!! so, apparently that's why it(the DIS) is slower than IGD when running the actual game (oddly enough)
+$ glxgears
+Running synchronized to the vertical refresh.  The framerate should be
+approximately the same as the monitor refresh rate.
+299 frames in 5.0 seconds = 59.789 FPS
+^C
+
+
