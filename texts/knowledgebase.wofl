@@ -213,6 +213,7 @@
   \ so it's not a matter of cpu usage (unless it's btrfs lzma taking all cpu slices, or something like cli-sti during the compression, so to speak)
   \ it's also not a matter of disk writing/syncing, since it happens between tmpfs drives (even just copying 23M of a package like cairo)
   \ XXX: apparently works fine now, the next day that is.
+  \ may or may not be related to RCU which was supposedly disabled? which is good(?) - or rather, expert rcu settings was disabled.
 
 * copy/pasting into youtube comments not working in firefox?
   * set dom.event.clipboardevents.enabled false

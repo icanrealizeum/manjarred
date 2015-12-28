@@ -810,6 +810,9 @@
                 \ "https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc"
         * setup firefox
           * in about:config
+            * xpinstall.signatures.required
+              \ false
+              \ or else, you can't use umatrix+ublock from git sources as firefox will reject them with "some extensions could not be verified"
             * dom.event.clipboardevents.enabled
               \ false
               \ so pasting in youtube comments works! also so pages don't know when and what you're copy/pasting! ffs (RightToClick didn't seems to work when I had this selected!)
