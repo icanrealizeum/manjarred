@@ -361,7 +361,9 @@
   \ equery l *-9999*
   \ for these you need to emerge -av !
   * actually updating them all like this works nicely! (equery piped output changes to be nice, at the expense of not being able to grep search the original unpiped one which is useful in other cases(different args to equery, eg. equery u vim , can't grep that for descriptions, well, nevermind there's --no-pipe))
-    \ time emerge -av `equery l *-9999*`
+    \ //time emerge -av `equery l *-9999*`
+    \ //well, that doesn't work since it needs and '=' in front of each atom!! else, eg. !!! 'app-editors/vim-9999' is not a valid package atom.
+    \ so this works: time emerge -av `equery l *-9999*| sed -e 's/^/=/g'`
   * update anything else(as root ofc)
     \ time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
     \ DON'T forget this is a prerequisite: time emerge-webrsync -v -k
