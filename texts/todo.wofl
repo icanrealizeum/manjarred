@@ -1011,4 +1011,12 @@
 * emerge libreoffice-9999
   \ https://bugs.gentoo.org/show_bug.cgi?id=567926
 
+- didn't have xmodmap command thus far, maybe that's why less was failing with certain keys!
+  \ vim /etc/X11/xinit/xinitrc +39
+  \ vim ~/.Xmodmap
+  \ less ~/.less   (yeah this fixed less! but maybe after xmodmap is reinstated, this won't be needed?!)
+  \ vim /tmp/.xinitrc.log   (shows that xmodmap command was not found)
+  \ time emerge -nav x11-apps/xmodmap
+  \ done, untested
+
 

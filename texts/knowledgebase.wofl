@@ -373,6 +373,7 @@
 * keeping this deselected in firefox: Use hardware acceleration when available
   \ because 16fps is fastest (than 5 or 9 fps with hwaccel)
   \ and because it may crash the radeon driver (like vlc does!)
+  \ also tested with non-hardened profile+kernel and firefox 43.0(recompiled with vanilla non-hardened(at this point) gcc)
 
 * fix this: The following REQUIRED_USE flag constraints are unsatisfied: exactly-one-of ( python_single_target_python3_4 python_single_target_python3_5 ) when emerging libreoffice-9999
   \ this temp fix works:
