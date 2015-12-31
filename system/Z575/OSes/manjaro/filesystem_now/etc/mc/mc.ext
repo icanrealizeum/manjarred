@@ -604,8 +604,8 @@ regex/i/\.djvu?$
 regex/i/\.cb[zr]$
 	Open=/usr/lib/mc/ext.d/doc.sh open comic
 
-# Epub
-shell/i/.epub
+# Epub & mobi
+regex/i/\.(epub|mobi)$
 	Open=/usr/lib/mc/ext.d/doc.sh open epub
 	View=%view{ascii} /usr/lib/mc/ext.d/doc.sh view epub
 
@@ -653,8 +653,12 @@ shell/i/.glade
 	Open=/usr/lib/mc/ext.d/misc.sh open glade
 
 # Gettext Catalogs
-shell/.mo
+regex/\.g?mo$
 	View=%view{ascii} /usr/lib/mc/ext.d/misc.sh view mo
+
+# po
+shell/.po
+	Open=/usr/lib/mc/ext.d/misc.sh open po
 
 # lyx
 shell/i/.lyx
@@ -691,7 +695,7 @@ type/i/^zip\ archive
 	View=%view{ascii} /usr/lib/mc/ext.d/archive.sh view zip
 
 # jar(zip)
-type/i/^Java\ Jar\ file\ data\ \(zip\)
+type/i/^Java\ (Jar\ file|archive)\ data\ \((zip|JAR)\)
 	Open=%cd %p/uzip://
 	View=%view{ascii} /usr/lib/mc/ext.d/archive.sh view zip
 

@@ -11,8 +11,8 @@ flush ruleset
 
 #XXX: for inspiration for ppp0 firewall, see: https://wiki.gentoo.org/wiki/Nftables/Examples
 
-define gw_ip=192.168.219.235
-define self_ip=192.168.219.8
+define gw_ip=192.168.0.1
+define self_ip=192.168.0.2
 define localhost_ip=127.0.0.1
 define localhost_net=127.0.0.1/8
 define localproxy_ip=127.0.0.8
@@ -334,7 +334,7 @@ table ip filterous {
      #^ yes that one triggers
      meta skuid == dnsmasq oif != lo ip daddr != 8.8.4.4 udp dport != $dns_port counter log prefix "dnsmasq tried out on non-lo non-8.8.4.4:53 DROP " goto cdrop
      #FIXME: ^ this isn't triggering, but the above one is.
-     #the above triggers with this: [ 4130.528364] dnsmasq tried out on non-lo DROP IN= OUT=net0 SRC=192.168.219.8 DST=8.8.8.8 LEN=64 TOS=0x00 PREC=0x00 TTL=64 ID=5211 DF PROTO=UDP SPT=17998 DPT=53 LEN=44 
+     #the above triggers with this: [ 4130.528364] dnsmasq tried out on non-lo DROP IN= OUT=net0 SRC=192.168.0.2 DST=8.8.8.8 LEN=64 TOS=0x00 PREC=0x00 TTL=64 ID=5211 DF PROTO=UDP SPT=17998 DPT=53 LEN=44 
      #
      
 #     meta skuid != emacs counter log prefix "different user out DROP1 " goto cdrop

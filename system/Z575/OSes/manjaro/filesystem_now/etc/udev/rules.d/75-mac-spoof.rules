@@ -13,7 +13,10 @@ IMPORT{builtin}="net_setup_link"
 # ^ shows lots more, like: ID_MODEL_ID=0x8136 which we can't seem to be able to match on!
 
 #rename enp1s0 (actually eth0 since this runs before 80-net-setup-link.rules) to net0
-ENV{ID_NET_DRIVER}=="r8169", RUN+="/usr/bin/ip link set dev %k address 28:05:9c:52:bf:a9"
+ENV{ID_NET_DRIVER}=="r8169", RUN+="/usr/bin/ip link set dev $name address 28:05:9c:52:bf:a9"
+#^ this doesn't currently work(with %k instead of $name): [   13.106878] systemd-udevd[2422]: Process '/usr/bin/ip link set dev eth0 address 28:05:9c:52:bf:a9' failed with exit code 1.
+#it's maybe net0 by now? not eth0; ok changed from %k to $name
+
 #the following won't match[unless I typoed something when testing] (and can't find built-in which provides them):
 #ENV{ID_MODEL_ID}==0x8136, NAME="net0"
 #ENV{ID_MODEL_ID}=="0x8136", NAME="net0"
