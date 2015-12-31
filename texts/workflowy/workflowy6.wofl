@@ -810,6 +810,12 @@
                 \ "https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc"
         * setup firefox
           * in about:config
+            * looks like, in gentoo, this is the file that's in effect(with prefs being set as defaults - eg. Reset will set to this values)
+              \ /usr/portage/www-client/firefox-bin/files/firefox-bin-prefs.js
+            * app.update.auto
+              \ false
+            * app.update.enabled
+              \ false (already by default)
             * xpinstall.signatures.required
               \ false
               \ or else, you can't use umatrix+ublock from git sources as firefox will reject them with "some extensions could not be verified"
