@@ -465,7 +465,10 @@ test -d "$vimdir" || mkdir --parents --mode=700 -- "$vimdir"
 
 
 
-export DEBUG=1
+#export DEBUG=1
+#delete:
+export -n DEBUG
+unset DEBUG
 
 #You can use the -report option or define the FFREPORT environment variable (to any value) to get the exact command line and the full verbose console output in a file named ffmpeg-*.log in the current directory.
 export FFREPORT=1
@@ -483,7 +486,9 @@ alias bt='echo 0 | gdb -batch-silent -ex "run" -ex "set logging overwrite on" -e
 #usage: bt crashed_program_filename
 #src: https://blog.cryptomilk.org/2010/12/23/gdb-backtrace-to-file/
 
-export RUST_BACKTRACE=1
+#export RUST_BACKTRACE=1
+export -n RUST_BACKTRACE
+unset RUST_BACKTRACE
 
 export MAKEFLAGS='-j4 '
 

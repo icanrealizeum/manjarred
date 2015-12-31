@@ -8,7 +8,7 @@ pushd rust
 declare -ar args=(
 --prefix="/home/zazdxscf/build/1nonpkgs/rust/usr/local"
 #--disable-rpath
---enable-rpath #so you don't have to prefix the rustc exe with LD_LIBRARY_PATH to avoid failure to load its .so libs
+--enable-rpath #so that you don't have to prefix the rustc exe with LD_LIBRARY_PATH to avoid failure to load its .so libs
 #--disable-verify-install #nolonger exists
 --enable-manage-submodules
 
@@ -29,18 +29,18 @@ declare -ar args=(
 --enable-optimize-llvm  #I didn't test the disable one here!
 #--disable-optimize-llvm  #disable this so llvm has debug symbols! FIXME: find a way to keep optimize too!  XXX: DON'T EVER USE THIS! it will take at least half-aday to compile! especially stage2! (still compiling now, started: 2015/10/25 21:13:27 , now is: 2015/10/26 09:05:39  (but I've had cpu governor conservative for a long time, which kept cpu at 800Mhz(lowest) even though rustc was using 100% cpu, but was only 1 rustc.)  switched to ondemand gov. for the past 4 hours, which keeps it at max.  (took 974min! of which 10min were tests which failed)
 
-#--disable-debug
---enable-debug #//fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.
-#--disable-debuginfo #this doesn't cause that issue:
---enable-debuginfo #yep this one causes that issue: https://github.com/rust-lang/rust/issues/28947 in other words, this: ./configure --disable-debug --enable-debuginfo --enable-optimize --llvm-root=/usr && make -j1 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 'RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm '   got fixed
-#--disable-debug-assertions
---enable-debug-assertions
-#--disable-debuginfo-tests
---enable-debuginfo-tests
---enable-llvm-assertions
-#--disable-llvm-assertions
-#--disable-debug-jemalloc
---enable-debug-jemalloc
+--disable-debug
+#--enable-debug #//fail: https://github.com/rust-lang/rust/issues/28947 ACTUALLY this issue still happens even without --enable-debug(and with --disable-debug!) because --enable-debug implies --enable-debuginfo and the latter was also manually specified below.
+--disable-debuginfo #this doesn't cause that issue:
+#--enable-debuginfo #yep this one causes that issue: https://github.com/rust-lang/rust/issues/28947 in other words, this: ./configure --disable-debug --enable-debuginfo --enable-optimize --llvm-root=/usr && make -j1 -- all NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 'RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm '   got fixed
+--disable-debug-assertions
+#--enable-debug-assertions
+--disable-debuginfo-tests
+#--enable-debuginfo-tests
+#--enable-llvm-assertions
+--disable-llvm-assertions
+--disable-debug-jemalloc
+#--enable-debug-jemalloc
 
 --disable-local-rust
 #--enable-local-rust
