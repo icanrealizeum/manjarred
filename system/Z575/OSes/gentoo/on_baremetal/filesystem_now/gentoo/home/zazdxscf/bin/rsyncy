@@ -35,7 +35,7 @@ set -e
 
 tmpout="`mktemp --dry-run --tmpdir="/tmp" -t -- XXXXXXXXXX`"
 cleanup() {
-  rm "$tmpout" && if test "x$DEBUG" -eq "x1"; then 
+  rm "$tmpout" && if test "0$DEBUG" -eq "01"; then 
       echo "`tput setaf 7`Cleaned output file ${tmpout}`tput sgr0`"
       #7 is darker than normal text color, at least on urxvt
     fi

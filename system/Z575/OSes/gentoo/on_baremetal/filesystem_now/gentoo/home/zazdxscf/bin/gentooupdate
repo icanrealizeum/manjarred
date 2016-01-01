@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+time sudo emaint sync --repo gentoo
+
+time sudo emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+

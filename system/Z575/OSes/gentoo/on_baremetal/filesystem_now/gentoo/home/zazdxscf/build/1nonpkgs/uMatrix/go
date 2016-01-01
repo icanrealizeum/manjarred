@@ -11,7 +11,9 @@ git pull
 echo Load from: `pwd`/dist/build/uMatrix.chromium/
 
 ./tools/make-firefox.sh all
-echo Firefox Load from: `pwd`/dist/build/uMatrix.firefox.xpi
+echo "Firefox Load from: `pwd`/dist/build/uMatrix.firefox.xpi"
+echo "Attempting autoload:"
+firefox "`pwd`/dist/build/uMatrix.firefox.xpi"
 
 popd
 

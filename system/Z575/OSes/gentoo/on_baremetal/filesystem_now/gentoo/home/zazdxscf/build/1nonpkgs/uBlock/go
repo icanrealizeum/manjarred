@@ -13,6 +13,8 @@ git pull
 echo "chromium: Load from dir: `pwd`/dist/build/uBlock0.chromium/"
 ./tools/make-firefox.sh all
 echo "firefox: Load from file: `pwd`/dist/build/uBlock0.firefox.xpi"
+echo "firefox: attempting autoinstall:"
+firefox "`pwd`/dist/build/uBlock0.firefox.xpi"
 
 popd
 

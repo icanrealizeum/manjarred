@@ -5,7 +5,7 @@ pushd /
 (
 for i in /patches/webrsync/*.patch ; do 
   #patch -Np1 -i /home/zazdxscf/patches/webrsync/notify_when_patches_folder_inaccessible_by_portage.patch
-  patch -Np1 -i "$i"
+  patch --reject-file=- -Np1 -i "$i"
   ec="$?"
   if test "$ec" -ne "0"; then
     echo "FAILED!" | grep --color=tty "FAIL"
@@ -17,7 +17,8 @@ done
 #ok after 'Completed installing' emerge msg, I measured(with the above df) 21G
 #CHECKREQS_DISK_BUILD="25G"
 #/usr/portage/www-client/chromium/chromium-*.ebuild
-sed -e 's/CHECKREQS_DISK_BUILD="25G"/CHECKREQS_DISK_BUILD="22G"/g' --in-place=.sed /usr/portage/www-client/chromium/chromium-*.ebuild
+sed -e 's/CHECKREQS_DISK_BUILD="25G"/CHECKREQS_DISK_BUILD="22G"/g' --in-place -- /usr/portage/www-client/chromium/chromium-*.ebuild
+#removed .sed backups! aka  --in-place=.sed
 
 popd
 :

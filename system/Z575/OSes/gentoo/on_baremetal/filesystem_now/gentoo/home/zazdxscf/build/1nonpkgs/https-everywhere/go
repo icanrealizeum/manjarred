@@ -5,5 +5,7 @@
 
 pushd https-everywhere/
 ./makexpi.sh
+echo "attempting autoinstall:"
+firefox 'pkg/https-everywhere-5.1.1~600bb08-amo.xpi'
 popd
 
