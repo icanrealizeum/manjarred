@@ -68,7 +68,8 @@ set +H
 export HISTSIZE=-1
 export HISTFILESIZE=${HISTSIZE}
 #export HISTCONTROL=ignoreboth
-unset HISTCONTROL
+export HISTCONTROL=ignorespace
+#unset HISTCONTROL
 #^ XXX: changing dirs in mc causes a ' cd dirhere' (notice first space) to be saved in history! so we should at least use ignorespace; UNLESS we wanna know which folder we were in when we executed the specified command hmmm, maybe that's a good idea actually! leave it for now!
 unset HISTIGNORE
 export HISTTIMEFORMAT='%F %T '

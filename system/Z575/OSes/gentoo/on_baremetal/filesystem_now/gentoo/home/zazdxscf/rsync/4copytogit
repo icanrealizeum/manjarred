@@ -74,4 +74,11 @@ cat ./net ./nftables.rules | grep --color=always -E -- "(192|redacted)"
 popd
 echo "--"
 
+echo "-- removing ticuhost"
+pushd "${destdir}/gentoo/etc/" || echo "FAIL!"
+sed -i ./hosts -re 's/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+.*ticuhost.*$//g'
+cat ./hosts | grep --color=always -- 'ticuhost'
+popd
+echo "--"
+
 echo "All done."
