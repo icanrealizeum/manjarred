@@ -9,10 +9,12 @@ Patch by EmanueL Czirai.
 
 reported issue: https://github.com/MidnightCommander/mc/issues/44#issuecomment-60467020
 
+UPdate: subshell.c location changed with commit: 974ab368ec30fcd68e595252668d1542a5352619
+
 diff --git a/src/subshell.c b/src/subshell.c
 index a85b258..f722396 100644
---- a/src/subshell.c
-+++ b/src/subshell.c
+--- a/src/subshell/common.c
++++ b/src/subshell/common.c
 @@ -464,17 +464,15 @@ feed_subshell (int how, int fail_on_error)
      int i;                      /* Loop counter */
  

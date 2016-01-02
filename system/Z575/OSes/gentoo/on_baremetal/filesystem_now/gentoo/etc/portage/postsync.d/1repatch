@@ -4,7 +4,6 @@
 pushd /
 (
 for i in /patches/webrsync/*.patch ; do 
-  #patch -Np1 -i /home/zazdxscf/patches/webrsync/notify_when_patches_folder_inaccessible_by_portage.patch
   patch --reject-file=- -Np1 -i "$i"
   ec="$?"
   if test "$ec" -ne "0"; then
