@@ -754,7 +754,7 @@
         - sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --max-delete=0 --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60   --rsh="ssh -p 8822 -l root" -- ~/rsync/gentoo/ 127.0.0.111:/mnt/gentoo/
           \ XXX: --no-delete is not recognized, so using --max-delete=0
           \ NOTE: add --update if you don't want newer files inside virtualbox to get overwritten by potentially older ones on the host's side BEFORE doing the above rsync command. We don't want this because when creating the new user the sekl .bashrc will always be newer inside virtualbox, but that's not the one we wanna keep.
-    * rsync transfer some files from this gentoo installation that you're in, to /mnt/gentoo/ (eg. patches, .vimrc etc.)
+    - rsync transfer some files from this gentoo installation that you're in, to /mnt/gentoo/ (eg. patches, .vimrc etc.)
       \ //true for when getting a stage3 from the internet: this rsync stuff is bad tho; some things shouldn't be rsync-ed like in etc! those conf.d or the gcc-config selection(which is a symlink at least)
       * pushd '/home/zazdxscf/rsync'
       * chmod +x 0updateFROMthisgentoosystemTObaremetalmntgentoo
