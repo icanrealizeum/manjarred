@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cpupower frequency-info|grep --color=always 'The governor '
+cpupower frequency-info|grep --color=always -E '(The governor |current CPU frequency is )'
 
