@@ -388,5 +388,16 @@
 * rust.vim needs syntastic vim plugin!
   \ # time PYTHON_SINGLE_TARGET="python3_4" emerge -nav =libreoffice-9999
 
+* emerging app-office/libreoffice-5.0.9999  (without debugging symbols! and non-hardened stuff) takes about 4.1gig in /var/tmp/portage
+  \ duration (with previous ccache hits):
+  \ real  42m19.836s
+  \ user  36m22.286s
+  \ sys 82m24.550s
+
+* xfdesktop without thunar USE flag won't be able to display desktop icons (only the ones from the minimized windows instead!)
+  \ untested! but believed to be so!
+  \ besides, I don't have thunar installed, only have pcmanfm instead! and this will make xfdesktop not work in the sense of displaying launcher icons on desktop!
+  \ apparently works only after a restart (that is, once set that option)
+
 
 
