@@ -509,3 +509,6 @@ export MAKEFLAGS='-j4 '
 #fi
 
 
+cat /proc/cpuinfo |grep -i 'cpu cores'|grep 4 >/dev/null || echo 'Fail cpu cores is not 4! Kernel not patched?'
+
+
