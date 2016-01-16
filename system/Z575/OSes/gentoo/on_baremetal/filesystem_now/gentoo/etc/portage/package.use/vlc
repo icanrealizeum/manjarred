@@ -1,6 +1,7 @@
 #>=media-video/vlc-9999 X opus dbus debug -optimisememory -run-as-root -lua -httpd -vnc -lirc -samba -sftp -gnome -cddb -aalib -libcaca pulseaudio -skins -upnp qt4 -qt5 -libav ffmpeg -kde -alsa -xml vorbis vpx -bidi avcodec avformat
 #no effect ^ webm still no sound!
 
+#still locks up my entire system(in radeon driver no doubt!) but due to radeon.lockup_timeout=999000 it doesn't lock up my mouse so I can still sysrq sync, umount and reboot (S,U,B) but man I'm pissed because I lost a file I was editing with mousepad!! thus, removing vlc for good! fuck ASMR videos!
 #disabled(on 16th jan 2016): live dvd bluray opengl v4l rdp rtsp ncurses mtp gcrypt gnutls gme dvb
 #added(on 16 jan 2016): -encode -dvbpsi
 #can't remove postproc without removing ffmpeg too!
