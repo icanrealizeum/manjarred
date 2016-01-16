@@ -211,6 +211,10 @@ shell/i/.cpio
 	Open=%cd %p/ucpio://
 	View=%view{ascii} /usr/libexec/mc/ext.d/archive.sh view cpio
 
+# initrd
+regex/^(initramfs.*\.img|initrd\.img(-.+)?)$
+	Open=%cd %p/ucpio://
+
 # 7zip archives (they are not man pages)
 shell/i/.7z
 	Open=%cd %p/u7z://
@@ -224,6 +228,10 @@ regex/\.(diff|patch)(\.bz2)$
 regex/\.(diff|patch)(\.(gz|Z))$
 	Open=%cd %p/patchfs://
 	View=%view{ascii} /usr/libexec/mc/ext.d/archive.sh view gz
+
+regex/\.(diff|patch)(\.xz)$
+    Open=%cd %p/patchfs://
+    View=%view{ascii} /usr/libexec/mc/ext.d/archive.sh view xz
 
 # ls-lR
 regex/(^|\.)ls-?lR(\.gz|Z|bz2)$
@@ -630,15 +638,15 @@ shell/.class
 	View=%view{ascii} /usr/libexec/mc/ext.d/misc.sh view javaclass
 
 # Makefile
-regex/[Mm]akefile$
+regex/^[Mm]akefile$
 	Open=make -f %f %{Enter parameters}
 
 # Imakefile
 shell/Imakefile
-	Open=/usr/libexec/mc/ext.d/misc.sh open imakefile
+	Open=xmkmf -a
 
 # Makefile.PL (MakeMaker)
-regex/^Makefile.(PL|pl)$
+regex/^Makefile\.(PL|pl)$
 	Open=%var{PERL:perl} %f
 
 # sqlite3.db
