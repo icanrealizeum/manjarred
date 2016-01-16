@@ -141,6 +141,18 @@ set history=9999
 " ^ set by archlinux.vim but to a different value
 " apparently higher than 4 digits is error invalid value
 
+" Suffixes that get lower priority when doing tab completion for filenames.
+" These are files we are not likely to want to edit or read.
+set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.ilg,.inx,.out,.toc,.png,.jpg,.obj,.lo
+" ^ from archlinux.vim + added .obj and .lo from current gentoo value (eg: 'set suffixes?')
+
+if has('gui_running')
+  " Make shift-insert work like in Xterm
+  map <S-Insert> <MiddleMouse>
+  map! <S-Insert> <MiddleMouse>
+endif
+" ^ from archlinux.vim
+
 " Always display the status line, even if only one window is displayed
 set laststatus=2
 

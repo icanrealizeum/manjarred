@@ -1,20 +1,37 @@
 pre_src_prepare() {
-    if ! type epatch_user > /dev/null 2>&1; then
-        local names="epatch_user epatch evar_push evar_push_set evar_pop estack_push estack_pop"
-        source <(awk "/^# @FUNCTION: / { p = 0 } /^# @FUNCTION: (${names// /|})\$/ { p = 1; } p { print  }" /usr/portage/eclass/eutils.eclass)
-    fi
+  local ec=-1
+  if ! type epatch_user > /dev/null 2>&1; then
+#    local names="epatch_user epatch evar_push evar_push_set evar_pop estack_push estack_pop"
+#    set -evx
+#    source <(awk "/^# @FUNCTION: / { p = 0 } /^# @FUNCTION: (${names// /|})\$/ { p = 1; } p { print  }" /usr/portage/eclass/eutils.eclass)
+    local names="EPATCH_USER_SOURCE epatch_user epatch evar_push evar_push_set evar_pop estack_push estack_pop"
+    source <(awk "/^# @(FUNCTION|VARIABLE): / { p = 0 } /^# @(FUNCTION|VARIABLE): (${names// /|})\$/ { p = 1 } p { print }" ${PORTDIR}/eclass/eutils.eclass)
 
     epatch_user
+    ec="$?"
+#    set +evx
 
     for name in $names; do
-        unset $name
+      unset $name
     done
+  else
+    epatch_user
+    ec="$?"
+  fi
 
-    #unset DEBUG for packages known to break.
-    if test "$PN" = "gsm" -o "$PN" = "libunique"; then
-      unset DEBUG
-    fi
-    #TODO: make a more general thing here, like package.env is, but this one is for overriding even existing env. vars
-    #set >/tmp/set.txt
+  if test "$ec" -ne "0"; then #TODO: test for 0,1 and 2 see: /usr/portage/eclass/eutils.eclass
+    ewarn "NO USER PATCHES (re)APPLIED!!!"
+  else
+    ewarn "user patches applied"
+  fi
+
+
+  #unset DEBUG for packages known to break.
+  if test "$PN" = "gsm" -o "$PN" = "libunique"; then
+    unset DEBUG
+  fi
+  #TODO: make a more general thing here, like package.env is, but this one is for overriding even existing env. vars
+  #set >/tmp/set.txt
 }
+
 

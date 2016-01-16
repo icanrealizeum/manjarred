@@ -1,0 +1,23 @@
+app-emulation/wine -udisks threads -staging truetype -realtime -pulseaudio png ssl xcomposite -xml opengl ncurses lcms jpeg gecko fontconfig alsa X -s3tc mono mp3 openal
+
+
+#second try:
+#disabled: pulseaudio realtime
+#enabled: s3tc
+#audio works (also enabled EAX in winecfg btw)
+
+#third try: let's disable staging which requires removal of s3tc too! (this seems to have worked with the hiccups!)
+
+#//nope, can't disable: fourth try: disabled: threads
+
+#fourth try, because hiccups seem to be back!!, added(enabled): mono mp3 openal opencl osmesa staging s3tc
+#NOTE: mono was not needed!
+#not opencl and osmesa which cause llvm rebuilds(at least!) which I don't want to do right now!
+
+#XXX: OH WAIT, it's the full duplex of audio that causes hiccups!!! select: Audio Stereo Output instead of Audio Stereo Duplex!!
+
+#thus, re-enabling: staging and s3tc in fourth try above!!
+
+#fifth try(works but out of adapter memory is annoying): disabling: staging s3tc
+
+

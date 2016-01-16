@@ -1,0 +1,15 @@
+fixes this:
+install: cannot stat ‘doc/intf-vcd.txt’: No such file or directory
+!!! dodoc: doc/intf-vcd.txt does not exist
+
+--- orig/usr/portage/media-video/vlc/vlc-9999.ebuild	2016-01-16 03:42:43.614753169 +0100
++++ patched/usr/portage/media-video/vlc/vlc-9999.ebuild	2016-01-16 03:42:59.404554664 +0100
+@@ -462,7 +462,7 @@ src_test() {
+ 	Xemake check-TESTS
+ }
+ 
+-DOCS="AUTHORS THANKS NEWS README doc/fortunes.txt doc/intf-vcd.txt"
++DOCS="AUTHORS THANKS NEWS README doc/fortunes.txt"
+ 
+ src_install() {
+ 	default

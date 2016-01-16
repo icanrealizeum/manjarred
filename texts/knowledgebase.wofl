@@ -20,6 +20,17 @@
 * to force kernel to reread partition (sfdisk -R  doesn't work anymore)
   \ sudo blockdev --rereadpt /dev/sde
 
+* when dd-ing manjaro iso to the usb stick card reader(on the 4g sd ms pro duo):
+  \ $ time sudo dd if=./manjaro-xfce-15.12-x86_64.iso of=/dev/sdc bs=6M
+  \ Password: 
+  \ 244+1 records in
+  \ 244+1 records out
+  \ 1537474560 bytes (1.5 GB) copied, 289.137 s, 5.3 MB/s
+  \
+  \ real  5m18.005s
+  \ user  0m0.030s
+  \ sys 0m23.307s
+
 * when dd-ing the gentoo admincd iso to the usb stick or card reader:
   * $ sudo dd if=admincd-amd64-20150910.iso of=/dev/sde bs=6M
     \ 404750336 bytes (405 MB) copied, 75.8235 s, 5.3 MB/s

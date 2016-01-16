@@ -1,0 +1,20 @@
+also show rule number when
+$ sudo nft -a list ruleset
+
+diff --git a/src/rule.c b/src/rule.c
+index 7114380..66c23a0 100644
+--- a/src/rule.c
++++ b/src/rule.c
+@@ -449,9 +449,12 @@ static void chain_print(const struct chain *chain)
+ 		       hooknum2str(chain->handle.family, chain->hooknum),
+ 		       chain->priority, chain_policy2str(chain->policy));
+ 	}
++  unsigned int c=0;
+ 	list_for_each_entry(rule, &chain->rules, list) {
+ 		printf("\t\t");
+ 		rule_print(rule);
++	  if (handle_output > 0)
++      printf(" rule:%u", ++c); //helps identify rule from TRACE: outputs in logs (ie. when using: meta nftrace set 1)
+ 		if (rule->handle.comment)
+ 			printf(" comment \"%s\"\n", rule->handle.comment);
+ 		else

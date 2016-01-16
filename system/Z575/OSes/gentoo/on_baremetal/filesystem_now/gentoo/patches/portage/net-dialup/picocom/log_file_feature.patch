@@ -1,0 +1,116 @@
+this patch is from https://code.google.com/p/picocom/issues/detail?id=24
+slightly modified
+
+Index: picocom.c
+===================================================================
+--- picocom.c	(revision 31)
++++ picocom.c	(working copy)
+@@ -153,6 +153,7 @@
+ 	int imap;
+ 	int omap;
+ 	int emap;
++	char *log_filename;
+ } opts = {
+ 	.port = "",
+ 	.baud = 9600,
+@@ -172,10 +173,12 @@
+ 	.receive_cmd = "rz -vv",
+ 	.imap = M_I_DFL,
+ 	.omap = M_O_DFL,
+-	.emap = M_E_DFL
++	.emap = M_E_DFL,
++	.log_filename = NULL
+ };
+ 
+ int tty_fd;
++int log_fd;
+ 
+ /**********************************************************************/
+ 
+@@ -324,7 +327,9 @@
+ #ifdef UUCP_LOCK_DIR
+ 	uucp_unlock();
+ #endif
+-	
++	free(opts.log_filename);
++	close(log_fd);
++
+ 	exit(EXIT_FAILURE);
+ }
+ 
+@@ -858,6 +863,8 @@
+ 
+ 			do {
+ 				n = read(tty_fd, &c, 1);
++				if(opts.log_filename)
++					write(log_fd, &c, 1);
+ 			} while (n < 0 && errno == EINTR);
+ 			if (n == 0) {
+ 				fatal("term closed");
+@@ -949,6 +956,7 @@
+ 	printf("  --imap <map> (input mappings)\n");
+ 	printf("  --omap <map> (output mappings)\n");
+ 	printf("  --emap <map> (local-echo mappings)\n");
++	printf("  --logfile <filename>\n");
+ 	printf("  --<h>elp\n");
+ 	printf("<map> is a comma-separated list of one or more of:\n");
+ 	printf("  crlf : map CR --> LF\n");
+@@ -984,6 +992,7 @@
+ 		{"baud", required_argument, 0, 'b'},
+ 		{"parity", required_argument, 0, 'p'},
+ 		{"databits", required_argument, 0, 'd'},
++		{"logfile", required_argument, 0, 'g'},
+ 		{"help", no_argument, 0, 'h'},
+ 		{0, 0, 0, 0}
+ 	};
+@@ -996,7 +1005,7 @@
+ 		/* no default error messages printed. */
+ 		opterr = 0;
+ 
+-		c = getopt_long(argc, argv, "hirlcv:s:r:e:f:b:p:d:",
++		c = getopt_long(argc, argv, "hirlcv:s:r:e:f:b:p:d:g:",
+ 						longOptions, &optionIndex);
+ 
+ 		if (c < 0)
+@@ -1109,6 +1118,10 @@
+ 				break;
+ 			}
+ 			break;
++		case 'g':
++			opts.log_filename = malloc(strlen(optarg)*sizeof(char));
++			strcpy(opts.log_filename, optarg);
++			break;
+ 		case 'h':
+ 			show_usage(argv[0]);
+ 			exit(EXIT_SUCCESS);
+@@ -1146,6 +1159,7 @@
+ 	printf("imap is        : "); print_map(opts.imap);
+ 	printf("omap is        : "); print_map(opts.omap);
+ 	printf("emap is        : "); print_map(opts.emap);
++	printf("log file is    : %s\n", opts.log_filename?opts.log_filename:"none");
+ 	printf("\n");
+ }
+ 
+@@ -1171,6 +1185,12 @@
+ 		fatal("cannot lock %s: %s", opts.port, strerror(errno));
+ #endif
+ 
++	if (opts.log_filename) {
++		log_fd = open(opts.log_filename, O_CREAT | O_RDWR | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
++		if (log_fd < 0)
++			fatal("cannot open %s: %s", opts.log_filename, strerror(errno));
++	}
++
+ 	tty_fd = open(opts.port, O_RDWR | O_NONBLOCK | O_NOCTTY);
+ 	if (tty_fd < 0)
+ 		fatal("cannot open %s: %s", opts.port, strerror(errno));
+@@ -1218,6 +1238,9 @@
+ 	/* wait a bit for output to drain */
+ 	sleep(1);
+ 
++	free(opts.log_filename);
++	close(log_fd);
++
+ #ifdef UUCP_LOCK_DIR
+ 	uucp_unlock();
+ #endif

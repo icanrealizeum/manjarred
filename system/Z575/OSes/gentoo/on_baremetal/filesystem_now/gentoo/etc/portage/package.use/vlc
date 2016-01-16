@@ -1,8 +1,11 @@
 #>=media-video/vlc-9999 X opus dbus debug -optimisememory -run-as-root -lua -httpd -vnc -lirc -samba -sftp -gnome -cddb -aalib -libcaca pulseaudio -skins -upnp qt4 -qt5 -libav ffmpeg -kde -alsa -xml vorbis vpx -bidi avcodec avformat
 #no effect ^ webm still no sound!
 
+#disabled(on 16th jan 2016): live dvd bluray opengl v4l rdp rtsp ncurses mtp gcrypt gnutls gme dvb
+#added(on 16 jan 2016): -encode -dvbpsi
+#can't remove postproc without removing ffmpeg too!
 #XXX: disabled 'debug' (28 dec 2015)
->=media-video/vlc-9999 X avcodec ffmpeg avformat dbus -debug -optimisememory -run-as-root -lua -httpd -vlm -vnc -dc1394 -ieee1394 -linsys -lirc live dvd bluray -opencv opengl -samba -sftp v4l -gnome -vcdx -cddb rdp rtsp faad -aalib -libcaca pulseaudio libsamplerate -chromaprint -skins -libtar matroska ncurses ogg opus -projectm -udev -upnp gnutls x264 x265 xv -zeroconf -zvbi -wma-fixed vpx -vorbis -vlm -vdpau -vaapi -twolame -truetype -tremor theora -taglib swscale -svg -speex -sid -shout sdl sdl-image -schroedinger qt4 -qt5 postproc png -omxil -musepack mtp modplug mp3 mpeg -libtiger libnotify -libav -libass -kde -kate jpeg -jack -growl gme gcrypt -fontconfig -fluidsynth flac -fdk dvb -directfb cpu_flags_x86_mmx cpu_flags_x86_sse -cdda -bidi -audioqueue -atmo -alsa a52 -xml
+>=media-video/vlc-9999 X avcodec ffmpeg avformat dbus -debug -optimisememory -run-as-root -lua -httpd -vlm -vnc -dc1394 -ieee1394 -linsys -lirc -live -dvd -bluray -opencv -opengl -samba -sftp -v4l -gnome -vcdx -cddb -rdp -rtsp faad -aalib -libcaca pulseaudio libsamplerate -chromaprint -skins -libtar matroska -ncurses ogg opus -projectm -udev -upnp -gnutls x264 x265 xv -zeroconf -zvbi -wma-fixed vpx -vorbis -vlm -vdpau -vaapi -twolame -truetype -tremor theora -taglib swscale -svg -speex -sid -shout sdl sdl-image -schroedinger qt4 -qt5 postproc png -omxil -musepack -mtp modplug mp3 mpeg -libtiger libnotify -libav -libass -kde -kate jpeg -jack -growl -gme -gcrypt -fontconfig -fluidsynth flac -fdk -dvb -directfb cpu_flags_x86_mmx cpu_flags_x86_sse -cdda -bidi -audioqueue -atmo -alsa a52 -xml -encode -dvbpsi
 
 
 #do I really need vdpau? or only on manjaro!!

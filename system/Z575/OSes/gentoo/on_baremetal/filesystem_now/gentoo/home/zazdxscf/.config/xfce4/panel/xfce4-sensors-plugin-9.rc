@@ -6,7 +6,6 @@ Show_Colored_Bars=true
 Scale=0
 Font_Size=medium
 Font_Size_Numerical=2
-Font=Sans 12
 Lines_Size=3
 Update_Interval=5
 Exec_Command=true
@@ -15,9 +14,9 @@ Small_Spacings=false
 Command_Name=xfce4-sensors
 Number_Chips=5
 Suppress_Hddtemp_Message=false
-Suppress_Tooltip=true
-Preferred_Width=922
-Preferred_Height=366
+Suppress_Tooltip=false
+Preferred_Width=427
+Preferred_Height=358
 
 [Chip0]
 Name=acpitz-0
@@ -30,7 +29,7 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=49.00
+Max=50.00
 
 [Chip0_Feature1]
 Id=-1
@@ -39,7 +38,7 @@ Name=MOBO temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=46.00
+Max=44.00
 
 [Chip1]
 Name=radeon-8
@@ -52,7 +51,7 @@ Name=gfx card
 Color=#00B000
 Show=true
 Min=0.00
-Max=51.00
+Max=54.00
 
 [Chip2]
 Name=k10temp-c3
@@ -65,7 +64,7 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=49.12
+Max=51.88
 
 [Chip3]
 Name=Hard disks
@@ -91,12 +90,12 @@ Name=L09S6Y02
 Color=#0000B0
 Show=true
 Min=0.00
-Max=27460.00
+Max=27180.00
 
 [Chip4_Feature1]
 Id=1
 Address=1
-Name=startup0
+Name=thermal_zone0
 Color=#0000B0
 Show=true
 Min=20.00
@@ -105,7 +104,7 @@ Max=60.00
 [Chip4_Feature2]
 Id=2
 Address=2
-Name=startup1
+Name=thermal_zone1
 Color=#0000B0
 Show=true
 Min=20.00

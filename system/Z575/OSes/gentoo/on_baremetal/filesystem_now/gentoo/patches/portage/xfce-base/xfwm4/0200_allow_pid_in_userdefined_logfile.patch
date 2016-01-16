@@ -1,0 +1,16 @@
+ie. export XFWM4_LOG_FILE="/tmp/xfwm4-debug-%d.log"
+in ~/.xinitrc
+
+diff --git a/src/main.c b/src/main.c
+index c041ade..43ee353 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -107,7 +107,7 @@ setupLog (void)
+     str = g_getenv ("XFWM4_LOG_FILE");
+     if (str)
+     {
+-        logfile = g_strdup (str);
++        logfile = g_strdup_printf (str, (int) getpid ());
+     }
+     else
+     {
