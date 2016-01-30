@@ -810,6 +810,8 @@
                 \ "https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc"
         * setup firefox
           * in about:config
+            * don't trim urls in urlbar (src: SN#542)
+              \ browser.urlbar.trimURLs false
             * looks like, in gentoo, this is the file that's in effect(with prefs being set as defaults - eg. Reset will set to this values)
               \ /usr/portage/www-client/firefox-bin/files/firefox-bin-prefs.js
             * app.update.auto
