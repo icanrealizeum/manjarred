@@ -1030,3 +1030,8 @@
 * sys-auth/polkit-0.113-r1 should depend on dev-util/gtk-doc or else it will fail to emerge because missing command: gtkdoc-scan
 
 
+* see why, when emerging new kernel(git-sources), and user patches are applied, the /etc/portage/bashrc script detects it as * NO USER PATCHES (re)APPLIED!!!
+  \ maybe something related to exit code of calling epatch_user (which is actually not called by bashrc script in this case!)
+
+
+
