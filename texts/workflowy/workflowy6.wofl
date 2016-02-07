@@ -836,7 +836,10 @@
                 * replace 'client=firefox' with 'hl=en'
                 * add line at the end of other lines like it:
                   \ <Param name="hl" value="en"/>
-                * unsure if this works because of the above, or some cookie got set! but make sure you select only Google2
+                * required one more line (or else it will still redir!):
+                  \ <Param name="gws_rd" value="cr"/>
+                  \ rd=redir, cr=country or country redirect
+                  \ although this does the opposite of country redirect and just keeps this on google.com instead of going to eg. google.hu
             * don't trim urls in urlbar (src: SN#542)
               \ browser.urlbar.trimURLs false
             * looks like, in gentoo, this is the file that's in effect(with prefs being set as defaults - eg. Reset will set to this values)
