@@ -21,7 +21,7 @@ Authors
 License
 -------
 
-Copyright (C) 2014-2015 EmanueL Czirai
+Copyright (C) 2014-2016 EmanueL Czirai
 
 Any code created by me is licensed under the terms of Apache License, Version 2.0  
 ie. http://www.apache.org/licenses/LICENSE-2.0  

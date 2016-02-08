@@ -142,7 +142,7 @@ mp3dir(){
 #alias zipwithpwd='zip -v -9 -r -T -e'  #follows: archive.zip *
 alias sl='ls'
 alias bc='bc -l' #decimals!
-UA='Mozilla/5.0 (X11; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0'
+UA='Mozilla/5.0 (X11; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0'
 alias downmp3="time youtube-dl --user-agent \"${UA}\" --extract-audio --audio-format mp3"
 alias downaudio="time youtube-dl --user-agent \"${UA}\" --extract-audio"
 alias downvideo="time youtube-dl --user-agent \"${UA}\""
@@ -473,7 +473,10 @@ export -n DEBUG
 unset DEBUG
 
 #You can use the -report option or define the FFREPORT environment variable (to any value) to get the exact command line and the full verbose console output in a file named ffmpeg-*.log in the current directory.
-export FFREPORT=1
+#export FFREPORT=ffmpeg-any-value-here-will-do-and-creates-ff*.log-files
+#ok disabling this:
+export -n FFREPORT
+unset FFREPORT
 #src: https://www.ffmpeg.org/bugreports.html
 
 

@@ -3,9 +3,17 @@
 #requirements:
 # time emerge -nav dev-python/lxml
 
+set -ex
+
 pushd https-everywhere/
+git reset HEAD makexpi.sh
+git checkout makexpi.sh
+git checkout master
+git pull
+git merge --no-commit HEAD makexpi_nofail_when_no_translations
+rm pkg/*.xpi
 ./makexpi.sh
 echo "attempting autoinstall:"
-firefox 'pkg/https-everywhere-5.1.1~600bb08-amo.xpi'
+firefox pkg/https-everywhere-*-amo.xpi
 popd
 

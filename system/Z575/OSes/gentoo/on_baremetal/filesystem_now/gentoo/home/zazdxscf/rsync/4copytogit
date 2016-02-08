@@ -81,4 +81,12 @@ cat ./hosts | grep --color=always -- 'ticuhost'
 popd
 echo "--"
 
+echo "-- removing permmac"
+pushd "${destdir}/gentoo/etc/local.d/" || echo "FAIL!"
+thisarpfn='./010_arp.start'
+sed -i "$thisarpfn" -re 's/[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]/xx:xx:xx:xx:xx:xx/g'
+cat "$thisarpfn" | grep --color=always -E -- "[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]" && echo "FAIL!!" #FIXME: need the whole script to fail! don't just echo it!, also above ^
+popd
+echo "--"
+
 echo "All done."

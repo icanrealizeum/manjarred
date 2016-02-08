@@ -1,7 +1,9 @@
 #>=media-video/vlc-9999 X opus dbus debug -optimisememory -run-as-root -lua -httpd -vnc -lirc -samba -sftp -gnome -cddb -aalib -libcaca pulseaudio -skins -upnp qt4 -qt5 -libav ffmpeg -kde -alsa -xml vorbis vpx -bidi avcodec avformat
 #no effect ^ webm still no sound!
 
-#still locks up my entire system(in radeon driver no doubt!) but due to radeon.lockup_timeout=999000 it doesn't lock up my mouse so I can still sysrq sync, umount and reboot (S,U,B) but man I'm pissed because I lost a file I was editing with mousepad!! thus, removing vlc for good! fuck ASMR videos!
+#still locked up with just having disabled 'Accelerated video output(Overlay)' in Video in Prferences, but seems to be not locking up(YET! 1st feb 2016) with also selecting Output: X11 video output(XCB) instead of the 'Automatic' which was on previously.
+#//re-added(25th jan 2016): live (no effect on .mp4 pericope files gotten via youtube-dl)
+#still locks up my entire system(in radeon driver no doubt!) but due to radeon.lockup_timeout=999000 it doesn't lock up my mouse so I can still sysrq sync, umount and reboot (S,U,B) but man I'm pissed because I lost a file I was editing with mousepad!! thus, removing vlc for good! (ok let's be fair, with this attitude I won't get anywhere...)
 #disabled(on 16th jan 2016): live dvd bluray opengl v4l rdp rtsp ncurses mtp gcrypt gnutls gme dvb
 #added(on 16 jan 2016): -encode -dvbpsi
 #can't remove postproc without removing ffmpeg too!

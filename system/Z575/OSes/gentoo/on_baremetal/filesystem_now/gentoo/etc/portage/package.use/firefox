@@ -1,6 +1,8 @@
+#disabled using system's libvpx due to crash in youtube vid (2 feb 2016), set: -system-libvpx
+#//re-enabled: gstreamer (24 jan 2016) dis: 31st jan 2016 and youtube still works(with gstreamer disabled and uninstalled! maybe because it's using media-plugins/gst-plugins-libav ? )
 #//re-enabled: gstreamer (5 jan 2016)
 #disabled 'gstreamer' and 'hwaccel' (31 dec 2015 and 13 jan 2016)
-www-client/firefox -gmp-autoupdate -gstreamer pulseaudio system-jpeg system-icu system-libvpx system-sqlite -wifi -debug -egl -system-cairo -hwaccel
+www-client/firefox -gmp-autoupdate -gstreamer pulseaudio system-jpeg system-icu -system-libvpx system-sqlite -wifi -debug -egl -system-cairo -hwaccel
 #with debug it fails on startup with this: https://bugzilla.mozilla.org/show_bug.cgi?id=994859
 
 >=x11-libs/cairo-1.10.0 opengl #svg
@@ -10,9 +12,10 @@ www-client/firefox -gmp-autoupdate -gstreamer pulseaudio system-jpeg system-icu 
 # required by @world (argument)
 >=x11-libs/cairo-1.14.4 xcb
 
-#XXX: use -egl to enable hwaccel in firefox (9fps vs 5fps without accel) this was with system-cairo and firefox 42.0 (not -r1)
+#XXX: use -egl to CAN enable hwaccel in firefox (9fps vs 5fps without accel) this was with system-cairo and firefox 42.0 (not -r1)
 #XXX: system-cairo makes it slower! 9fps with accel(5fps w/o)  versus 16fps without accel!
 
 #XXX: with -egl -system-cairo 42.0-r1 is 5fps with hwaccel ! and 16fps without! (toggled from Preferences)
 
-
+#Don't install the Cisco System openh264 plugin in firefox
+media-libs/openh264 -plugin

@@ -1,4 +1,4 @@
-app-emulation/wine -udisks threads -staging truetype -realtime -pulseaudio png ssl xcomposite -xml opengl ncurses lcms jpeg gecko fontconfig alsa X -s3tc mono mp3 openal
+app-emulation/wine -udisks threads staging truetype -realtime -pulseaudio png ssl xcomposite -xml opengl ncurses lcms jpeg gecko fontconfig alsa X s3tc mono mp3 openal
 
 
 #second try:
@@ -19,5 +19,8 @@ app-emulation/wine -udisks threads -staging truetype -realtime -pulseaudio png s
 #thus, re-enabling: staging and s3tc in fourth try above!!
 
 #fifth try(works but out of adapter memory is annoying): disabling: staging s3tc
+
+# 6th try enabling staging and s3tc again (ooam still occurrs with them disabled! or only when they're disabled?)
+# ok now it doesn't freeze/crash anymore! (with EAX and the other one for gfx improv. perf. set in winecfg too!)
 
 

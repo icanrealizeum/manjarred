@@ -15,27 +15,29 @@
 id:3:initdefault:
 
 # System initialization, mount local filesystems, etc.
-si::sysinit:/sbin/rc sysinit
+si::sysinit:/sbin/openrc sysinit
 
 # Further system initialization, brings up the boot runlevel.
-rc::bootwait:/sbin/rc boot
+rc::bootwait:/sbin/openrc boot
 
-l0:0:wait:/sbin/rc shutdown 
+l0:0:wait:/sbin/openrc shutdown 
 l0s:0:wait:/sbin/halt -dhp
-l1:1:wait:/sbin/rc single
-l2:2:wait:/sbin/rc nonetwork
-l3:3:wait:/sbin/rc default
-l4:4:wait:/sbin/rc default
-l5:5:wait:/sbin/rc default
-l6:6:wait:/sbin/rc reboot
+l1:1:wait:/sbin/openrc single
+l2:2:wait:/sbin/openrc nonetwork
+l3:3:wait:/sbin/openrc default
+l4:4:wait:/sbin/openrc default
+l5:5:wait:/sbin/openrc default
+l6:6:wait:/sbin/openrc reboot
 l6r:6:wait:/sbin/reboot -dk
 #z6:6:respawn:/sbin/sulogin
+#^ in l6r and l0s I'm not adding -n arg as the new sysvinit pkg wants to! which would mean do not sync
 
 # new-style single-user
-su0:S:wait:/sbin/rc single
+su0:S:wait:/sbin/openrc single
 su1:S:wait:/sbin/sulogin
 
 # TERMINALS
+#don't know why this would be needed: x1:12345:respawn:/sbin/agetty 38400 console linux
 #c1:12345:respawn:/sbin/agetty 38400 --noclear --autologin zazdxscf tty1 linux
 c1:12345:respawn:/sbin/agetty 38400 --noclear tty1 linux
 c2:2345:respawn:/sbin/agetty 38400 --noclear tty2 linux
@@ -63,4 +65,5 @@ ca:12345:ctrlaltdel:/sbin/shutdown -r now
 # info. Do NOT remove, as this will start nothing
 # extra at boot if /etc/init.d/xdm is not added
 # to the "default" runlevel.
-x:a:once:/etc/X11/startDM.sh
+#removed muahahahaaaaaaaaaaa  x:a:once:/etc/X11/startDM.sh
+

@@ -1,7 +1,10 @@
 this was applied on top of kernel 4.2.rc4.r0.gcbfe8fa-1
 and 4.3.rc1.r217.g00ade1f-1
+also tested on 4.4 and 4.5 kernels, specifically up until 4.5-rc2
 
 this patch will undervolt and at the same time overclock my CPU on the Z575 laptop
+
+https://github.com/aoaaxy/amdmsrtweaker-lnx/tree/kerneltry1
 
 diff -upr a/kernel/smp.c b/kernel/smp.c
 --- a/kernel/smp.c	2015-09-19 21:50:21.820631272 +0200
