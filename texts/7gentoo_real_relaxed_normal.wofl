@@ -1311,7 +1311,8 @@
         \ 127.0.0.1 localhost tux
         \ #^ replace that one with this,  or comment out existing one.
         \ ::1 localhost tux
-        \ #^ you must have this ipv6 stuff(even if USE=-ipv6) because `hostname -f` will otherwise ask the dns server everytime you execute hostname -f or eg. startx, mc !!!
+        \ #^ you must have this ipv6 stuff(even if USE=-ipv6) because `hostname -f` will otherwise ask the dns server everytime you execute hostname -f or eg. startx, mc !!! XXX: looks like even lacking this entire line doesn't cause that request to happen anymore!! but see what this comment says with wireshark: https://fedorahosted.org/sssd/ticket/922#comment:4
+        \ "Disabling IPv6 does not disable AAAA queries. The use of AF_UNSPEC unconditionally enables the dual query." src: http://arstechnica.com/security/2016/02/extremely-severe-bug-leaves-dizzying-number-of-apps-and-devices-vulnerable/
     * get a syslogger (before installing sudo, or else sudo pulls metalog!)
       * time emerge -n --ask --verbose app-admin/metalog
         \ 2m43.779s
