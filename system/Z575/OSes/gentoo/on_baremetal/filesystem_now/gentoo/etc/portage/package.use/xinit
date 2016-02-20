@@ -1,1 +1,8 @@
 x11-apps/xinit minimal
+# required by x11-libs/libxkbcommon-0.5.0::gentoo[X]
+# required by x11-libs/libxkbcommon (argument)
+>=x11-libs/libxcb-1.11.1 xkb
+# required by dev-qt/qtcore-5.5.1-r1::gentoo
+# required by dev-qt/qtdbus-5.5.1::gentoo
+# required by dev-qt/qtdbus (argument)
+>=dev-libs/libpcre-8.38 pcre16
