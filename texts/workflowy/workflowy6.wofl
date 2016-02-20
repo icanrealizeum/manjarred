@@ -1016,7 +1016,7 @@
               \ false
             * set security.tls.version.min to 2 to allow only tls v1.1 and 1.2 (not 1.0 or ssl3)
               \ calomel can do this from a setting!
-              \ this break gnu.org which can do only tls v1.0
+              \ this breaks gnu.org which can do only tls v1.0
           - add startpage by visiting it: Add to firefox - make default engine
           - remove all search engines from the toolbar (left click)
           - add this as homepage (preferences embedded in url, so cookie independent)
@@ -1045,11 +1045,12 @@
                   * Warn me when websites try to redirect or reload the page
                     \ mainly to prevent really quick(flood-like) page-reloads due to some bugs or lacking their expectes scripts (noscript-caused)
                 * Browsing (vertical label)
-                  - untick Use hardware acceleration when available
+                  * untick Use hardware acceleration when available
               * Data Choices
                 * untick Firefox Health Report
           * addons(aka extensions)
             \ "about:addons"
+            * javascript deobfuscator can show events (activate and watch from Tools->WebDeveloper->JavaScript Deobfuscator, just make sure u have this addon installed first! addon by Wladimir Palant)
             - privacy badger by EFF - nevermind disabled because couldn't post youtube comments(even after disabling it haha, but wtw)
               \ good because it seems to at least block cookies on sites which I allow for images for example with policeman.
             - NOT 'https by default'
@@ -1214,12 +1215,15 @@
             * refcontrol
               * default for sites not listed: block (3rd party)
             - session manager (can use 
-            * tree style tab
+            * tab tree
+              \ https://addons.mozilla.org/en-US/firefox/addon/tab-tree/
+              \ has github source too!
+            - tree style tab
               \ "by Piro (piro_or)"
               \ https://addons.mozilla.org/en-us/firefox/addon/tree-style-tab/
             - Unplug (for downloading videos from ie. youtube, tho it's kinda bugged need to open in new tab instead of Download where you see the option)
               \ "by h2g2bob"
-            * RightToClick (if I want to be able to rightclick on pages and prevent javascript from blocking it)
+            - RightToClick (if I want to be able to rightclick on pages and prevent javascript from blocking it)
               \ "by IKRG"
             - youtube all html5  - Play all videos on youtube without flash in your preferred size using only HTML5.
               \ "https://addons.mozilla.org/en-US/firefox/addon/youtube-all-html5/"
@@ -1229,8 +1233,8 @@
               * fix volume bug
               * youtube loading method: emulate internet explorer (default) !
             * Wired-Marker 4. (for marking text within pages)
-            * DNS Flusher 3.1.1
-          * add a dictionary or spellchecker won't work (apparently; 35.0.1 on a new profile)
+            - DNS Flusher 3.1.1
+          * add a dictionary or spellchecker won't work (apparently; 35.0.1 on a new profile; seems ok on eg. 44.0)
             \ US: https://addons.mozilla.org/en-US/firefox/addon/united-states-english-spellche/
             \ UK: https://addons.mozilla.org/en-US/firefox/addon/british-english-dictionary/
           * when all done
