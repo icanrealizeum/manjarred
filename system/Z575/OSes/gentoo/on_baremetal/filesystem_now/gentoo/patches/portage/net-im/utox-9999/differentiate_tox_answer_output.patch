@@ -1,0 +1,20 @@
+--- orig/src/tox.c	2016-02-21 18:06:33.748961886 +0100
++++ patched/src/tox.c	2016-02-21 18:09:04.322068926 +0100
+@@ -1145,7 +1145,7 @@ static void tox_thread_message(Tox *tox,
+                         TOXAV_ERR_ANSWER ans_error = 0;
+                         toxav_answer(av, param1, UTOX_DEFAULT_BITRATE_A, v_bitrate, &ans_error);
+                         if (error) {
+-                            debug("uTox:\tError trying to toxav_answer error (%i)\n", error);
++                            debug("uTox:\tError trying to toxav_answer1 error (%i)\n", error);
+                         } else {
+                             postmessage_utoxav(UTOXAV_OUTGOING_CALL_ACCEPTED, param1, param2, NULL);
+                         }
+@@ -1190,7 +1190,7 @@ static void tox_thread_message(Tox *tox,
+             toxav_answer(av, param1, UTOX_DEFAULT_BITRATE_A, v_bitrate, &error);
+ 
+             if (error) {
+-                debug("uTox:\tError trying to toxav_answer error (%i)\n", error);
++                debug("uTox:\tError trying to toxav_answer2 error (%i)\n", error);
+             } else {
+                 postmessage_utoxav(UTOXAV_INCOMING_CALL_ANSWER, param1, param2, NULL);
+             }
