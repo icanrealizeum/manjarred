@@ -1,3 +1,3 @@
 #!/bin/bash
 
-time curl --silent -- wttr.in | grep -v "^Follow "
+time curl --silent --insecure -- https://wttr.in | grep -v "^Follow "
