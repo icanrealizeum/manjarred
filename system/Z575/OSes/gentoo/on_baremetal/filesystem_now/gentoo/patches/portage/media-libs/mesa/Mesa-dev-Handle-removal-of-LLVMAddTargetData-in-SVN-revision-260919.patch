@@ -1,0 +1,34 @@
+diff --git a/src/gallium/auxiliary/gallivm/lp_bld_init.c b/src/gallium/auxiliary/gallivm/lp_bld_init.c
+index 96aba73..8c81170 100644
+--- a/src/gallium/auxiliary/gallivm/lp_bld_init.c
++++ b/src/gallium/auxiliary/gallivm/lp_bld_init.c
+@@ -112,6 +112,7 @@ create_pass_manager(struct gallivm_state *gallivm)
+    gallivm->passmgr = LLVMCreateFunctionPassManagerForModule(gallivm->module);
+    if (!gallivm->passmgr)
+       return FALSE;
++#if HAVE_LLVM < 0x0309
+    /*
+     * TODO: some per module pass manager with IPO passes might be helpful -
+     * the generated texture functions may benefit from inlining if they are
+@@ -120,6 +121,7 @@ create_pass_manager(struct gallivm_state *gallivm)
+ 
+    // Old versions of LLVM get the DataLayout from the pass manager.
+    LLVMAddTargetData(gallivm->target, gallivm->passmgr);
++#endif
+ 
+    /* Setting the module's DataLayout to an empty string will cause the
+     * ExecutionEngine to copy to the DataLayout string from its target
+diff --git a/src/gallium/drivers/radeon/radeon_llvm_util.c b/src/gallium/drivers/radeon/radeon_llvm_util.c
+index 0dfd9ad..ee21437 100644
+--- a/src/gallium/drivers/radeon/radeon_llvm_util.c
++++ b/src/gallium/drivers/radeon/radeon_llvm_util.c
+@@ -77,7 +77,9 @@ static void radeon_llvm_optimize(LLVMModuleRef mod)
+ 		}
+ 	}
+ 
++#if HAVE_LLVM < 0x0309
+ 	LLVMAddTargetData(TD, pass_manager);
++#endif
+ 	LLVMAddAlwaysInlinerPass(pass_manager);
+ 	LLVMPassManagerBuilderPopulateModulePassManager(builder, pass_manager);
+ 
