@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo smartctl --all /dev/sdb|grep Total_LBAs_Written | awk '{print $10}'
