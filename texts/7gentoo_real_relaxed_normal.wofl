@@ -4,7 +4,7 @@
   \ //comment; indicates old obsolete comment left there to give you an idea of what was tried/happened.
   - indicates disabled item, do not do;
   * indicates enabled item, for you to do;
-* location of this: not online!
+* location of this: https://github.com/aoaaxy/gentooskyline/blob/master/texts/7gentoo_real_relaxed_normal.wofl
   \ the number in front of the filename indicates that's it's a newer iteration and most likely up to date when compared to any previous iteration!
 - get the iso
   \ eg. links http://gentoo.mirrors.easynews.com/linux/gentoo/releases/amd64/autobuilds/current-admincd-amd64/
@@ -582,7 +582,7 @@
       * mkdir -p /mnt/gentoo
         \ doesn't already exist (this is a gentoo system, not an iso or wtw else)
       * mount -o async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard /dev/sda2 /mnt/gentoo
-        \ no autodefrag! (forgot why, but no!)
+        \ no autodefrag! (forgot why, but no! probably because it's SSD!)
         \ added enospc_debug,discard  (don't want to use fstrim)
         \      ZLIB -- slower, higher compression ratio (uses zlib level 3 setting, you can see the zlib level difference between 1 and 6 in zlib sources).
         \   LZO -- faster compression and decompression than zlib, worse compression ratio, designed to be fast 
@@ -619,13 +619,15 @@
         \ but we still need to use this config!
         \ this remembers to use lvmetad (=1) and discards=1
         \ fixed: we might need lvmetad to be used in system (not chroot or installCD modes)
+    * cd /mnt/gentoo
+      \ #SECONDBOOT
     * download and unpack stage 3 #stage3
       * download stage3
-        * links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/20151229/
+        * links http://mirrors.xservers.ro/gentoo/releases/amd64/autobuilds/current-stage3-amd64-nomultilib/
           * download the following:
             \ by pressing D on file
-            \ stage3-amd64-nomultilib-20151229.tar.bz2
-            \ stage3-amd64-nomultilib-20151229.tar.bz2.DIGESTS.asc
+            \ stage3-amd64-nomultilib-20160225.tar.bz2
+            \ stage3-amd64-nomultilib-20160225.tar.bz2.DIGESTS.asc
             \ 229MB
         * exit
           \ q, Enter
@@ -673,8 +675,41 @@
           \ real  1m22.687s
           \ user  1m5.747s
           \ sys 0m33.007s
-    * cd /mnt/gentoo
-      \ #SECONDBOOT
+          \
+          \ real  1m22.357s
+          \ user  1m5.321s
+          \ sys 0m37.984s
+    * add user
+      - check /etc/skel/.bash_profile if it has the same include line that we added to /root/.bash_profile
+        * colordiff -up /etc/skel/.bash_profile /root/.bash_profile
+          \ all good
+          \ yeah I've colordiff on custom iso!
+      * chroot /mnt/gentoo useradd --create-home --groups users,wheel,audio,cdrom,video,usb,portage --shell /bin/bash aoaaxy
+      * chroot /mnt/gentoo passwd aoaaxy
+    * here's the hard part - what do we copy over to dest?!!
+      \
+      * what to ignore:
+        \ /dev /run /sys /tmp /var/tmp /mnt /media /rsync-backed/ /boot /bewt /proc /usbstick 
+        * also ignore the following(because we shouldn't be overwriting the ones unpacked from stage3 just like that! but allow emerge to update gracefully!):
+          \ /bin /lib64 /opt /sbin /usr /var
+      * what to copy(via mc):
+        \ //some stuff from /etc then... but not eg. the gcc chain files
+        \ //stuff from /home  but we should create user first!
+        * /patches/
+        - install -dm0755 -o1000 -g1000 /mnt/gentoo/home/aoaaxy/.cache && cp -a -- /home/zazdxscf/.cache/sessions /mnt/gentoo/home/aoaaxy/.cache/
+          \ it's a symlink
+        - ln -s /tmp/ /mnt/gentoo/home/aoaaxy/.cache/sessions
+        - ln -s /tmp/ /mnt/gentoo/home/aoaaxy/.cache/thumbnails
+        - ln -s /tmp/ /mnt/gentoo/home/aoaaxy/.cache/mozilla
+        - ln -s /tmp/ /mnt/gentoo/home/aoaaxy/.cache/chromium
+        * make some symlinks
+          * pushd home/aoaaxy
+          * ln -s /tmp/ .cache
+          * ln -s /tmp/ .cargo
+          * ln -s /tmp/ .pki
+          * ln -s /tmp/ .thumbnails
+          * ln -s /tmp/ .links
+          * popd
     - copy some folders/files from currently running gentoo system into /mnt/gentoo
       \ we're in current folder: /mnt/gentoo
       * create some empty ones first! (with the right attributes and permissions)
@@ -700,15 +735,9 @@
       * see what you want to copy from /home/zazdxscf and /root  ! into their respective directories.
         *
     - run mc and manually copy some folders/files from currently running gentoo
+      \ just make sure you're not compiling anything(emerge) or else /ccache can be corrupted on dest  if copied)
       \ /ccache
       \
-    - (this IS NOT in rsync) add user before rsync-ing:
-      - check /etc/skel/.bash_profile if it has the same include line that we added to /root/.bash_profile
-        * colordiff -up /etc/skel/.bash_profile /root/.bash_profile
-          \ all good
-          \ yeah I've colordiff on custom iso!
-      * chroot /mnt/gentoo useradd --create-home --groups users,wheel,audio,cdrom,video,usb,portage --shell /bin/bash zazdxscf
-      * chroot /mnt/gentoo passwd zazdxscf
     - rsync transfer some files from usbstick (eg. patches, .vimrc etc.)
       \ //true for when getting a stage3 from the internet: this rsync stuff is bad tho; some things shouldn't be rsync-ed like in etc! those conf.d or the gcc-config selection(which is a symlink at least)
       - (already in rsync)run this inside virtualbox:
