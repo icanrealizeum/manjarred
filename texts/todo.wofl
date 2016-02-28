@@ -1038,4 +1038,25 @@
   \ https://www.khronos.org/vulkan/
 
 
+* for 7*.wofl
+  * set root password!
+  * fix fstab
+  * install colordiff soon after chroot!
+  * add user to vboxusers!
+    \ ignore tpe_group
+  * what does 'x' mean in gshadow
+    \ sshd:x::
+    \ changed from '!'
+    \ If the password field contains some string that is not a valid
+		\ result of crypt(3), for instance ! or *, users will not be able to
+		\ use a unix password to access the group (but group members do not
+		\ need the password).
+	* rediff /etc after all updates are done!
+    \ /mnt/gentoo # colordiff -rup -- /etc/ ./etc/|less
+		* see which of those 'Only in' i need to copy over
+      \ /mnt/gentoo # colordiff -rup -- /etc/ ./etc/|grep 'Only in ' |LC_ALL=C sort -k3 -d |less
+  * get latest unstable gcc !
+
+
+
 

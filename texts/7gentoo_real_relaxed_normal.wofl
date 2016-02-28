@@ -686,6 +686,8 @@
           \ yeah I've colordiff on custom iso!
       * chroot /mnt/gentoo useradd --create-home --groups users,wheel,audio,cdrom,video,usb,portage --shell /bin/bash aoaaxy
       * chroot /mnt/gentoo passwd aoaaxy
+      * chmod a-rwx,g+rx,u+rwx home/aoaaxy
+        \ remember that current dir is: /mnt/gentoo
     * here's the hard part - what do we copy over to dest?!!
       \
       * what to ignore:
@@ -696,6 +698,7 @@
         \ //some stuff from /etc then... but not eg. the gcc chain files
         \ //stuff from /home  but we should create user first!
         * /patches/
+          \ yes, copy that folder!
         - install -dm0755 -o1000 -g1000 /mnt/gentoo/home/aoaaxy/.cache && cp -a -- /home/zazdxscf/.cache/sessions /mnt/gentoo/home/aoaaxy/.cache/
           \ it's a symlink
         - ln -s /tmp/ /mnt/gentoo/home/aoaaxy/.cache/sessions
@@ -710,6 +713,45 @@
           * ln -s /tmp/ .thumbnails
           * ln -s /tmp/ .links
           * popd
+      * what to copy (via cp):
+        * cp -a --target-directory='etc/conf.d/' -- /etc/conf.d/bootmisc /etc/conf.d/dmesg /etc/conf.d/modules 
+          \ current dir is /mnt/gentoo/
+        * cp -a /etc/env.d/00manpager ./etc/env.d/00manpager
+        * cp -a --target-directory='etc/' -- /etc/dispatch-conf.conf /etc/fstab /etc/host.conf /etc/hosts /etc/inittab /etc/locale.gen /etc/login.defs /etc/rc.conf
+        * cp -a --recursive --target-directory='etc/portage/' -- /etc/portage/*
+          \ that star * is required, or else it will copy into subdir portage ie. copy /etc/portage/ dir as /etc/portage/portage/
+        * cp -a -- /etc/security/limits.conf etc/security/limits.conf
+          \ 0:               soft    core            unlimited
+        * cp -a --target-directory='/etc/ssh/' -- /etc/ssh/ssh_config /etc/ssh/sshd_config
+        * cp -a --target-directory='/etc/udev/' -- /etc/udev/udev.conf
+        - all those cps did this(not updated):
+          \ overwrite all
+          \ this is for applying new settings:
+          \ previous_dmesg=yes
+          \ dmesg_level="5"
+          \ modules="vboxdrv vboxnetflt vboxnetadp"
+          \ diff="colordiff -Nu '%s' '%s'"
+          \ less-opts="--RAW-CONTROL-CHARS --no-init --quit-if-one-screen"
+          \ #MANPAGER=manpager
+          \ /dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,compress-force=zlib,datasum,datacow,space_cache,commit=300,enospc_debug,discard  0 0
+          \ /dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress-force=zlib,datasum,datacow,space_cache,commit=300,enospc_debug,discard 0 1
+          \ #^ those two need to be fixed later!
+          \ tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+          \ tmpfs                   /var/tmp        tmpfs auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+          \ tmpfs                   /var/tmp/portage        tmpfs   auto,rw,nosuid,relatime,nodev,size=90%,mode=775,uid=portage,gid=portage,x-mount.mkdir=775 0 0
+          \ multi off
+          \ ...
+          \ en_US ISO-8859-1
+          \ en_US.UTF-8 UTF-8
+          \ CREATE_HOME yes
+          \ rc_start_wait=1000
+          \ unicode="NO"
+      * what to change:
+        * vim /etc/conf.d/hostname
+          \ ie. hostname="tux"
+          \ good to have it set before chroot!
+          * vim /etc/hosts
+            \ change the host here too!
     - copy some folders/files from currently running gentoo system into /mnt/gentoo
       \ we're in current folder: /mnt/gentoo
       * create some empty ones first! (with the right attributes and permissions)
@@ -1063,6 +1105,8 @@
       * sysctl -w kernel.grsecurity.chroot_deny_mount=0 ; sysctl -w kernel.grsecurity.chroot_deny_chmod=0 ; sysctl -w kernel.grsecurity.chroot_deny_chroot=0 ; sysctl -w kernel.grsecurity.chroot_caps=0 ; sysctl -w kernel.grsecurity.chroot_deny_mknod=0
     * chroot /mnt/gentoo env-update
       \ needed because of all the changes that rsync did, and before actually chroot logging in!
+      \ it's like a: env-update && source /etc/profile && source ~/.bash_profile
+      \ that you'd do if you were already chroot-ed
     * chrooting
       - nano -w /mnt/gentoo/root/.bash_profile
         \ [[ -f ~/.bashrc ]] && . ~/.bashrc
@@ -1221,6 +1265,9 @@
       * cpuinfo2cpuflags-x86
         \ CPU_FLAGS_X86: 3dnow 3dnowext mmx mmxext popcnt sse sse2 sse3 sse4a
         \ updated above make.conf and thus rsync will do this in the future!
+      * see if they're good:
+        * grep '3dnow 3dnowext mmx mmxext popcnt sse sse2 sse3 sse4a' /etc/portage/make.conf
+          \ should be in two places: USE=  and CPU_FLAGS_X86=
     * get a newer portage (if any)
       \ TODO: do I need the unstable one? currently going with stable one!
       * time emerge -avu \>=portage-2.2
@@ -1329,7 +1376,7 @@
           \ to list all installed files of a package
     * set hostname (needed for nullmailer config; nullmailer gets installed with sudo)
       * vim /etc/conf.d/hostname
-        \ ie. tux
+        \ ie. hostname="tux"
         \ this file was rsync-ed
       * hostname tux
       * env-update && source /etc/profile && source ~/.bash_profile
