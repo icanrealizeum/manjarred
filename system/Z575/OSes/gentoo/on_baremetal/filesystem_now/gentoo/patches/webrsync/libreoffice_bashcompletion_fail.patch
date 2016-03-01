@@ -1,0 +1,11 @@
+--- orig/usr/portage/app-office/libreoffice/libreoffice-9999.ebuild	2016-03-01 15:47:29.283617208 +0100
++++ patched/usr/portage/app-office/libreoffice/libreoffice-9999.ebuild	2016-03-01 15:48:11.120091252 +0100
+@@ -529,7 +529,7 @@ src_install() {
+ 	make DESTDIR="${D}" distro-pack-install -o build -o check || die
+ 
+ 	# Fix bash completion placement
+-	newbashcomp "${ED}"etc/bash_completion.d/libreoffice.sh ${PN}
++	newbashcomp "${ED}"usr/share/bash-completion/completions/libreoffice.sh ${PN}
+ 	bashcomp_alias \
+ 		libreoffice \
+ 		unopkg loimpress lobase localc lodraw lomath lowriter lofromtemplate loweb loffice
