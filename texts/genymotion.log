@@ -1,0 +1,160 @@
+//here is work towards getting a way to see snapchat(s)
+//current status: got genymotion to work, but gave up on trying to get snapchat cuz f-it!
+
+# time emerge -nav virtualenv
+//using virtualenv to avoid installing pysnap library globally!
+
+pysnap is here: https://github.com/martinp/pysnap
+
+//https://virtualenv.pypa.io/en/latest/userguide.html
+//We'll not need activation; we'll use direct PATH (tho, relative to current dir tho!) to pip and python from scripts!
+
+$ virtualenv ENV
+//Where ENV is a directory to place the new virtual environment.
+//XXX: remove the ENV dir and recreate it if you you change its location eg. /home/a/ENV to /home/someelse/ENV
+
+$ git clone https://github.com/martinp/pysnap.git
+$ cd pysnap
+$ ../ENV/bin/python setup.py install
+//to install pysnap in ENV virtualenv!
+$ cd ..
+$ git clone git@github.com:aoaaxy/snapception.git
+
+
+//get genymotion in gentoo
+
+//ok nevermind this section:
+//go to this webpage: https://gpo.zugaina.org/app-emulation/genymotion
+//where you see Download which is this: https://gpo.zugaina.org/AJAX/Ebuild/14718467
+//that gives you the .ebuild which is genymotion-2.6.0.ebuild
+$ wget https://gpo.zugaina.org/AJAX/Ebuild/14718467
+//ok wget saves it as: 14718467
+$ mv 14718467 genymotion-2.6.0.ebuild
+//oops this doesn't work: $ time ebuild ./genymotion-2.6.0.ebuild merge
+
+//get genymotion from https://genymotion.com after creating an account first(else you can't see the download link! and you need account to download VMs anyway!) which is: http://files2.genymotion.com/genymotion/genymotion-2.6.0/genymotion-2.6.0-ubuntu15_x64.bin
+$ chmod u+x ./genymotion-2.6.0-ubuntu15_x64.bin
+$ GENYMOTION_INSTALLDIR="`realpath .`" ./genymotion-2.6.0-ubuntu15_x64.bin 
+//run genymotion:
+$ time LD_LIBRARY_PATH="`realpath .`" ./genymotion
+//fail: ./genymotion: error while loading shared libraries: libpng12.so.0: cannot open shared object file: No such file or directory
+
+//FAILED fix attempt:
+$ ln -s /usr/lib64/libpng.so libpng12.so.0
+$ ln -s /usr/lib64/libjpeg.so libjpeg.so.8
+//./genymotion: error while loading shared libraries: libgstreamer-1.0.so.0: cannot open shared object file: No such file or directory
+# time emerge -nav1 media-libs/gstreamer
+//./genymotion: error while loading shared libraries: libgstapp-1.0.so.0: cannot open shared object file: No such file or directory
+# time emerge -nav1 media-libs/gst-plugins-base
+//./genymotion: error while loading shared libraries: libdouble-conversion.so.1: cannot open shared object file: No such file or directory
+# time emerge -nav1 dev-libs/double-conversion
+
+//FAIL:
+$ time LD_LIBRARY_PATH="`realpath .`" ./genymotion 
+./genymotion: /home/zazdxscf/Downloads/genymotion/libpng12.so.0: version `PNG12_0' not found (required by /home/zazdxscf/Downloads/genymotion/libQt5Gui.so.5)
+./genymotion: /home/zazdxscf/Downloads/genymotion/libpng12.so.0: version `PNG12_0' not found (required by /home/zazdxscf/Downloads/genymotion/libQt5WebKit.so.5)
+./genymotion: /home/zazdxscf/Downloads/genymotion/libjpeg.so.8: version `LIBJPEG_8.0' not found (required by /home/zazdxscf/Downloads/genymotion/libQt5WebKit.so.5)
+
+$ rm libjpeg.so.8
+# time emerge -nav1 media-libs/jpeg:8
+$ rm libpng12.so.0
+# time emerge -nav media-libs/libpng:1.2
+$ mkdir ~/.Genymotion
+//nope, no effect: # time emerge -nav1 x11-misc/xcb
+
+$ time LD_LIBRARY_PATH="`realpath .`" ./genymotion 
+Logging activities to file: /home/zazdxscf/.Genymobile/genymotion.log
+Aborted (core dumped)
+
+real	0m0.215s
+user	0m0.022s
+sys	0m0.166s
+
+$ cat /home/zazdxscf/.Genymobile/genymotion.log
+Feb 18 23:49:29 [Genymotion] [Fatal] This application failed to start because it could not find or load the Qt platform plugin "xcb".
+
+Available platform plugins are: xcb.
+
+Reinstalling the application may fix this problem.
+Feb 18 23:51:55 [Genymotion] [Fatal] This application failed to start because it could not find or load the Qt platform plugin "xcb".
+
+Available platform plugins are: xcb.
+
+Reinstalling the application may fix this problem.
+Feb 18 23:54:01 [Genymotion] [Fatal] This application failed to start because it could not find or load the Qt platform plugin "xcb".
+
+Available platform plugins are: xcb.
+
+Reinstalling the application may fix this problem.
+Feb 19 00:00:08 [Genymotion] [Fatal] This application failed to start because it could not find or load the Qt platform plugin "xcb".
+
+Available platform plugins are: xcb.
+
+Reinstalling the application may fix this problem.
+
+//Well well well: https://stackoverflow.com/questions/17106315/failed-to-load-platform-plugin-xcb-while-launching-qt5-app-on-linux-without
+
+$ ldd platforms/libqxcb.so |grep 'not fou'
+ldd: warning: you do not have execution permission for `platforms/libqxcb.so'
+	libxcb-xkb.so.1 => not found
+	libxkbcommon-x11.so.0 => not found
+	libxkbcommon.so.0 => not found
+	libQt5DBus.so.5 => not found
+	libQt5Gui.so.5 => not found
+	libQt5Core.so.5 => not found
+
+//already have 1.11 $ time sudo emerge -nav1 x11-libs/libxcb
+//can't, conflicts: $ time sudo emerge -nav1 =x11-libs/libxcb-1.10
+
+//good:
+$ time sudo emerge -nav1 x11-libs/libxkbcommon
+$ sudo dispatch-conf
+$ time sudo emerge -nav1 x11-libs/libxkbcommon
+//5m41.603s
+
+//not better: $ time USE=xkb emerge -av1 --changed-use x11-libs/libxcb
+
+$ time sudo emerge -nav1 dev-qt/qtdbus
+$ sudo dispatch-conf
+$ time sudo emerge -nav1 dev-qt/qtdbus
+//22m0.803s
+
+$ time sudo emerge -nav1 dev-qt/qtgui:5
+//13m9.747s
+
+//works now, I just didn't test it right away after doing the above:
+$ time LD_LIBRARY_PATH="`realpath .`" ./genymotion 
+
+
+---
+//on the specific phone VM do Settings and select 'Use virtual keyboard for text input' (to get around some old bug - didn't test if it's still present or not now)
+
+---
+Ok it won't start the virtual device
+
+Maybe due to these:
+libGL error: unable to load driver: r600_dri.so
+libGL error: driver pointer missing
+libGL error: failed to load driver: r600
+libGL error: unable to load driver: swrast_dri.so
+libGL error: failed to load driver: swrast
+
+//Oh what do we have here?
+$ glxgears 
+libGL error: unable to load driver: r600_dri.so
+libGL error: driver pointer missing
+libGL error: failed to load driver: r600
+libGL error: unable to load driver: swrast_dri.so
+libGL error: failed to load driver: swrast
+X Error of failed request:  BadValue (integer parameter out of range for operation)
+  Major opcode of failed request:  154 (GLX)
+  Minor opcode of failed request:  3 (X_GLXCreateContext)
+  Value in failed request:  0x0
+  Serial number of failed request:  36
+  Current serial number in output stream:  38
+
+//apparently due to my failed mesa compilation... trying with patch: https://patchwork.freedesktop.org/patch/73910/
+//yup that patch fixed it! fyi: sys-devel/llvm-9999 media-libs/mesa-11.1.2-r1
+---
+
+
