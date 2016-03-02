@@ -14,9 +14,10 @@ git checkout makexpi.sh
 git checkout master
 git pull
 git submodule update --init
-git merge --no-commit HEAD makexpi_nofail_when_no_translations
+#git merge --no-commit HEAD makexpi_nofail_when_no_translations
+patch -Np1 -i ../cp.patch
 #^ not necessary if you do the submodule init above. https://github.com/EFForg/https-everywhere/pull/4168/files
-rm pkg/*.xpi
+rm pkg/*.xpi || true
 ./makexpi.sh
 echo "attempting autoinstall:"
 firefox pkg/https-everywhere-*-amo.xpi
