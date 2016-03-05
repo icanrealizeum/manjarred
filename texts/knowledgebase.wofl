@@ -361,6 +361,19 @@
   \ GlobalReserve, single: total=448.00MiB, used=0.00B
   \ even though df reports:
   \ /dev/mapper/vgall-rootlvol  392G   68G  324G  18% /
+  * this is not true when not using hardened and/or pax kernel!
+    \ time sudo fstrim -v --all
+    \ /: 356.2 GiB (382485479424 bytes) trimmed
+    \ real  0m32.533s
+    \ user  0m0.004s
+    \ sys 0m15.555s
+    \ sudo btrfs filesystem df /
+    \ Data, single: total=95.00GiB, used=41.52GiB
+    \ System, single: total=32.00MiB, used=16.00KiB
+    \ Metadata, single: total=3.00GiB, used=1.10GiB
+    \ GlobalReserve, single: total=384.00MiB, used=0.00B
+
+
 
 
 * fresh hardened-kernel compilation time
