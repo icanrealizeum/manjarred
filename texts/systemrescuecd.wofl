@@ -1,0 +1,13 @@
+* boot options
+  \ altker64
+  \ //or use their normal one: rescue64
+  \ src: https://www.system-rescue-cd.org/Sysresccd-manual-en_Booting_the_CD-ROM
+  * kernel options to hardwire
+    * what you want
+      * setkmap=us
+      * initscript=
+        \ because vmtoold uses 100% cpu at all times after startx (part of vmware tools)
+    * what you optionally may want
+      \ docache
+    * what you don't want
+      \ lowmem

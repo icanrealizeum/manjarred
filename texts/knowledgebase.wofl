@@ -431,4 +431,9 @@
   \ up/down keys don't work as they should while in / mode - they gen ESCOA, ESCOB
   * auto-downgraded from 482 to 481 and it's fixed now!
 
+* make any iso bootable with isohybrid (that is, bootable from USB; since it was already bootable from CD/DVD)
+  \ just run: isohybrid file.iso
+  \ and it's modified in place to be bootable from USB
+  \ FIXME: doesn't work for memtest86+*.iso
+
 
