@@ -435,5 +435,37 @@
   \ just run: isohybrid file.iso
   \ and it's modified in place to be bootable from USB
   \ FIXME: doesn't work for memtest86+*.iso
+  * get memtest86+ bootable from USB from Linux (UNTESTED!!! I only used it from system-rescue-disc iso)
+    \ http://forum.canardpc.com/threads/28875-Linux-HOWTO-Boot-Memtest-on-USB-Drive
+
+
+* memtest86+ freezes at test 7 from 4096-6144(or something like that) address but only when using 2 cores (SMP)! (so it doesn't freeze in failsafe mode for example) - should work when using SMP with round robin cores (a setting there)
+  \ src: http://forum.canardpc.com/threads/84663-Memtest86-is-freezing-while-running-test-7
+  \ it's apparently memtest86+'s fault!!!
+  - (nope)possible fix(untested tho):
+    \ - Memtest freezes or my system crashes/reboots.
+    \ Check that you have USB legacy support disabled in your BIOS setup. Some
+    \ BIOSes have a bug in them that reports the reserved memory areas
+    \ incorrectly in the e820 memory map. This causes memtest to write over the
+    \ memory area used by the USB legacy support resulting in freezes or reboots.
+    * unfortunately I need that to boot memtest86+ !
+
+* syslinux's altmbr.bin files explanation
+  \ is here: https://github.com/yoshi314/multi-live-usb-configs/
+
+* unetbootin is once again proving to be a piece of junk!
+  \ no copying of .c32 files, nor updating/writing the mbr
+  \ who knows what else it didn't do!
+
+* how to crash chromium - Aw, Snap!
+  \ Received signal 8 FPE_INTDIV 7fe5168a5200
+  \ #10 0x7fe5166ba9f9 vpx_codec_decode
+  \ view this video: https://www.youtube.com/watch?v=2pbEarwdusc
+
+
+* how to add another IP:
+  \ ifconfig eth0:1 192.168.0.3
+  \ now you have eth0 192.168.0.2(supposedly) and eth0:1 192.168.0.3 !
+  \ src: man pure-ftpd
 
 

@@ -1,3 +1,12 @@
 #!/bin/bash
 
+if test -z "$COLUMNS"; then
+  COLUMNS="`tput cols`"
+fi
+
+if test "0$COLUMNS" -lt 125; then
+  echo "Window too small, try maximizing it! columns=$COLUMNS"
+  exit 1
+fi
 time curl --silent --insecure -- https://wttr.in | grep -v "^Follow "
+time curl --silent --insecure -- https://wttr.in/Moon | grep -v "^Follow "

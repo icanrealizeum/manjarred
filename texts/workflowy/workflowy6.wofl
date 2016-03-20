@@ -160,7 +160,7 @@
                 \ "https://wiki.archlinux.org/index.php/Installation_Guide#Mount_the_partitions"
                 * ok, not doing this due to lack of tools like gdisk inside chroot, or updated cryptsetup outside of it(and none inside it)
             - installing arch(this is for when on real - also outdated)  (if virtualbox then set the network interface to bridged)
-              * boot from live cd or in my case from fz100 (as usb device) via memdisk
+              * boot from live cd or in my case from fz100 (as usb device) via memdisk CAVEATS: won't work for Windows 7 (trial) .iso because after you press the key(when prompted) it will just blank and stay there. (works for memtest86+ though)
                 * prepare the fz100 SD card
                   * either have fz100 format it (tested) or use your current OS (linux mint in my case) to format it
                     * fz100 format does this: /dev/sdc1   *        8192    30865407    15428608    c  W95 FAT32 (LBA)  that means 4MB free before the partition starts
@@ -202,9 +202,11 @@
                     * get the syslinux zip for your version(or latest? didn't test this) from here: https://www.kernel.org/pub/linux/utils/boot/syslinux/
                       \ "syslinux --version"
                       * in my case was 4.05
-                      * copy ./bios/memdisk/memdisk (from the downloaded .zip) to the Boot/Settings folder on your USB flash drive.
+                      * REQUIRED: copy ./bios/memdisk/memdisk (from the downloaded .zip) to the Boot/Settings folder on your USB flash drive.
                         \ "it's like 26Kb"
-                        * in version 6.03 is 25372 bytes in /usr/lib/syslinux/bios/memdisk
+                        * on gentoo: /usr/share/syslinux/memdisk 26140 bytes sys-boot/syslinux-6.03
+                          \ sudo cp /usr/share/syslinux/memdisk Boot/Settings/
+                        - in(Manjaro?) version 6.03 is 25372 bytes in /usr/lib/syslinux/bios/memdisk
                     * note: you already have a syslinux (executable) on your linux mint installation (hence you did syslinux --version above)
                   * Create the configuration file
                     * navigate to the USB flash drive, /boot/Settings and create a syslinux.cfg file, with this contents
@@ -228,9 +230,11 @@
                       * press a for  toggle a bootable flag, then 1 to choose first(and only) partition from SD card
                       * press p to see if it worked, should be a star * under Boot
                       * then w to  write table to disk and exit
-                  * write the mbr code without overwriting partition(yeah it works, tested) [required!]
-                    * sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/bios/mbr.bin of=/dev/sde
+                  * REQUIRED: write the mbr code without overwriting partition(yeah it works, tested) [required!]
+                    - sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/bios/mbr.bin of=/dev/sde
                       \ in manjaro
+                    * time sudo dd bs=440 count=1 conv=notrunc if=/usr/share/syslinux/mbr.bin of=/dev/sdc
+                      \ in gentoo (NOTE: sdc is usb stick in gentoo! not sde)
                     - sudo dd bs=440 count=1 conv=notrunc if=/usr/lib/syslinux/mbr.bin of=/dev/sdc
                       \ "note: the mbr.bin is either inside the zip or there in /usr/... in linux mint, note that I took the same version of syslinux in the .zip also"
                   * sync && sudo eject /dev/sde
