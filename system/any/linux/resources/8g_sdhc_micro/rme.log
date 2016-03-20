@@ -1,0 +1,12 @@
+$ sudo fdisk --unit=cylinders -l /dev/sdf
+Disk /dev/sdf: 7.4 GiB, 7948206080 bytes, 15523840 sectors
+Geometry: 81 heads, 10 sectors/track, 1021 cylinders
+Units: cylinders of 810 * 512 = 414720 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x00000000
+
+Device     Boot Start   End Cylinders  Size Id Type
+/dev/sdf1          11 19166     19156  7.4G  b W95 FAT32
+
