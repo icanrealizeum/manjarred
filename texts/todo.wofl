@@ -1076,16 +1076,4 @@
 
 
 
-* so, should I report/focus on that? (bugs)
-  * github issue, sorta.
-    \ if I'm on this page: https://github.com/chriskrycho/newrustacean.com/blob/gh-pages/src/show_notes/src/e001.rs.html
-    \ then switch branch to master I get 404 because it's trying to access the same path/file on the master branch!
-    \ but maybe it should fall back to master's root instead!
-  * broken links:
-    \ https://www.newrustacean.com/show_notes/e001/index.html#notes
-    \ those two links there, are 404-ing because they are missing an extra subfolder "/src" eg. https://www.newrustacean.com/src/show_notes/src/e001.rs.html instead of https://www.newrustacean.com/src/show_notes/e001.rs.html
-    \ other chapters are affected the same way! 1,2,3 tested ; note that [src] at top right works just fine!
-    \ also this one's broken too: https://www.newrustacean.com/src/NewRustacean/e001/mod.rs.html in here: https://github.com/chriskrycho/newrustacean.com/blob/master/src/e001.rs seen as: /// [source]: /src/NewRustacean/e001/mod.rs.html
-    \ no idea which mod.rs was meant to be used there (and I checked!)
-  * wasting too much time already hmmm...
 
