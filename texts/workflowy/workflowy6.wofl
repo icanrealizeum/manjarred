@@ -633,6 +633,14 @@
             \ :zeof
             \ pause"
         * setup chromium
+          * disable sslv3 by passing this to cmdline:
+            \ --ssl-version-min=tls1
+            \ src: http://disablessl3.com/#chrome
+            * or create /etc/chromium/disable-sslv3 with content:
+              \ CHROMIUM_FLAGS="${CHROMIUM_FLAGS} -ssl-version-min=tls1"
+              \ well, I already had the setting in /etc/chromium/default
+          * chromium command line flags explained:
+            \ http://peter.sh/experiments/chromium-command-line-switches/
           * issues:
             * 3 random DNS queries (well, http requests actually, with original user agent - umatrix cannot spoof this one)
               \ https://code.google.com/p/chromium/issues/detail?id=47262
