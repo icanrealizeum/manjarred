@@ -468,4 +468,27 @@
   \ now you have eth0 192.168.0.2(supposedly) and eth0:1 192.168.0.3 !
   \ src: man pure-ftpd
 
+* how to dual push when 'git push' happens = push to two repositories when a git push happens!
+  \ src: https://stackoverflow.com/questions/14290113/git-pushing-code-to-two-remotes
+  * ensure you have an origin remote already
+    \ git remove -v show
+    \ eg. git@github.com:respeccing/hsts-everywhere-chrome.git
+  * re-add the same origin remote
+    \ eg. git remote set-url --add --push origin git@github.com:respeccing/hsts-everywhere-chrome.git
+    \ now  git remote -v show   will show the same thing as before! (this is expected/good!)
+    \ origin  git@github.com:respeccing/hsts-everywhere-chrome.git (fetch)
+    \ origin  git@github.com:respeccing/hsts-everywhere-chrome.git (push)
+  * add the new url(s) to the same origin remote
+    \ eg. git remote set-url --add --push origin git@notabug.org:respeccing/hsts-everywhere-chrome.git
+    \ now  git remote -v show  will show this url too:
+    \ origin  git@github.com:respeccing/hsts-everywhere-chrome.git (fetch)
+    \ origin  git@github.com:respeccing/hsts-everywhere-chrome.git (push)
+    \ origin  git@notabug.org:respeccing/hsts-everywhere-chrome.git (push)
+  * now git push will push to both
+    \ ssh key password will be requested twice!
+    * recommended command to use the first time(after repo(s) creation) git push -u --all
+      \ then: git push --tags
+    * subsequently use command: git push
+
+
 
