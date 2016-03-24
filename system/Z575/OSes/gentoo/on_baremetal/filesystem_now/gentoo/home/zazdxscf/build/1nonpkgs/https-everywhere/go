@@ -19,6 +19,7 @@ patch -Np1 -i ../cp.patch
 #^ not necessary if you do the submodule init above. https://github.com/EFForg/https-everywhere/pull/4168/files
 rm pkg/*.xpi || true
 ./makexpi.sh
+./makecrx.sh
 echo "attempting autoinstall:"
 firefox pkg/https-everywhere-*-amo.xpi
 popd

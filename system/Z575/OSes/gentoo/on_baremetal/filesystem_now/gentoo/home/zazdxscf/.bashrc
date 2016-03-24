@@ -142,7 +142,7 @@ mp3dir(){
 #alias zipwithpwd='zip -v -9 -r -T -e'  #follows: archive.zip *
 alias sl='ls'
 alias bc='bc -l' #decimals!
-UA='Mozilla/5.0 (X11; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0'
+UA='Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101 Firefox/45.0'
 alias downmp3="time youtube-dl --user-agent \"${UA}\" --extract-audio --audio-format mp3"
 alias downaudio="time youtube-dl --user-agent \"${UA}\" --extract-audio"
 alias downvideo="time youtube-dl --user-agent \"${UA}\""
@@ -516,3 +516,6 @@ export MAKEFLAGS='-j4 '
 cat /proc/cpuinfo |grep -i 'cpu cores'|grep 4 >/dev/null || echo 'Fail cpu cores is not 4! Kernel not patched?'
 
 
+if test -d "/usr/lib64/nsbrowser/plugins"; then
+  echo "WARNING: /usr/lib64/nsbrowser/plugins/ folder exists! chromium may have some new plugins! see: chrome://plugins" | grep --color=always "WARN"
+fi
