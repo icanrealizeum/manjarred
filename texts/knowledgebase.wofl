@@ -490,5 +490,12 @@
       \ then: git push --tags
     * subsequently use command: git push
 
+* check if site is enabling HSTS
+  \ curl -SsI "https://grc.com"
+  \ -S show error if fail
+  \ -s silent
+  \ -I only header
+  \ HSTS is supposedly set only for when talking https, not http! eg. try curl -SsI "grc.com" and you don't see it! src: https://www.chromium.org/hsts
+  * use chrome extension: https://github.com/redpois0n/hsts-everywhere-chrome (or my fork of it, if you're me and plan on using http only with firefox, never with chromium!)
 
 
