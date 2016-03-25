@@ -527,4 +527,5 @@ if test "$ec" -ne "0"; then
   echo "non-zero exit code: $ec"
 fi
 ) &
+#^ C-c can still interrupt the above! and 0</dev/null wouldn't mitigate it!
 

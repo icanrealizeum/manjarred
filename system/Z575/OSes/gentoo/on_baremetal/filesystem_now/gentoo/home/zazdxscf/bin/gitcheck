@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#TODO: required commands: 'stat grep test declare echo exit return if pwd git'
 
 gitcheck() {
   if test "$#" -ne "1"; then
@@ -7,7 +8,7 @@ gitcheck() {
     exit 15
   fi
   greptext="$1"
-  git status|grep -q "$greptext"
+  git status 2>/dev/null |grep -q "$greptext"
   declare -a pipes=("${PIPESTATUS[@]}")
   grepec="${pipes[1]}"
   gitec="${pipes[0]}"
@@ -25,13 +26,24 @@ gitcheck() {
   fi
 }
 
-gitcheckindir() {
+
+_gitcheckinassumedaccessibledir() {
   if test "$#" -ne "2"; then
     echo "too little/many args($#): $@"
     exit 13
   fi
   dir="$1"
   greptext="$2"
+  if test ! -d "$dir"; then
+    echo "Dir '$dir' is not a dir!"
+    return 18
+  fi
+  if ! test -r "$dir" -a -x "$dir"; then
+    echo "Dir '$dir' is not accessible!" | grep --color=always 'not accessible'
+    return 22
+  fi
+
+  #begin
   pushd "$dir" >/dev/null
   ec="$?"
   if test "$ec" -ne "0"; then
@@ -54,21 +66,63 @@ gitcheckindir() {
   #==1 if not changed
 }
 
-gitchangedcheck() {
+gitcheckindir() {
+  if test "$#" -ne "2"; then
+    echo "too little/many args($#): $@"
+    exit 13
+  fi
   dir="$1"
-  if test -z "$dir"; then
-    echo "no dir passed as arg"
-    exit 12
-  fi
+  greptext="$2"
   if test ! -d "$dir"; then
-    echo "Passed dir arg '$dir' doesn't exist!" | grep --color=always "doesn't exist"
-    return 14
+    echo "Dir '$dir' is not a dir!"
+    return 18
   fi
+#  set -x
+  if ! test -r "$dir" -a -x "$dir"; then
+    #attempt to temporarily make accessible
+    #decl. local read-only var:
+    declare +g -r backupattrs="`stat --format="%a" -- "$dir"`" # eg. 755
+    if test -z "$backupattrs"; then
+      echo "stat failed on '$dir'"
+      return 19
+    fi
+    chmod u+rx -- "$dir" 2>/dev/null
+    local ecc="$?"
+#    local faiul=0
+    local rt=1
+    if test "$ecc" -ne "0"; then
+      echo "Dir '$dir' is not accessible and failed to temporarily make it accessible!" | grep --color=always 'not accessible'
+#      echo "failed to make accessible dir '$dir'" | grep -i --color=always "fail"
+#      faiul=1
+      rt=22
+##      return 23 #don't return, let it try to restore attrs
+    else
+      #do work
+      _gitcheckinassumedaccessibledir "$dir" "$greptext"
+      rt="$?"
+      #done
+    fi
+    #FIXME: restore attrs even if C-c stopped the script!
+    chmod "$backupattrs" -- "$dir" 2>/dev/null
+    declare +g -r restoredattrs="`stat --format="%a" -- "$dir"`" # eg. 755
+    if test -z "$restoredattrs"; then
+      echo "'stat' failed on '$dir' or 'stat' command not found"
+      return 20
+    fi
+    if test "$backupattrs" != "$restoredattrs"; then
+      echo "Failed to restore dir's attrs! orig:${backupattrs} current:${restoredattrs}" | grep -i --color=always "fail"
+    fi
+#    set +x
+    return "$rt"
+  fi
+#  set +x
 
-  if gitcheckindir "$dir" 'Changes not staged for commit:'; then
-    echo "git changed in dir: '$dir'" | grep --color=always 'git changed'
-  fi
+  _gitcheckinassumedaccessibledir "$dir" "$greptext"
+#  return "$?" #extranous
+  #==0 if changed
+  #==1 if not changed
 }
+
 
 git_moo_check() {
   dir="$1"
@@ -93,12 +147,15 @@ git_moo_check() {
     exit 17
   fi
 
-  if gitcheckindir "$dir" "$greptext"; then
+  gitcheckindir "$dir" "$greptext"
+  ec="$?"
+  if test "$ec" -eq "0"; then
     echo "git $explanation in dir: '$dir'" | grep --color=always "$explanation" 
 #    if test "1${PIPESTATUS[1]}" -eq "10"; then
 #      echo "^ ${greptext}." | grep --color=always "${greptext}"
 #    fi
   fi
+  return "$ec"
 }
 
 
@@ -110,6 +167,7 @@ declare -ar gitdirlist=(
 "/home/zazdxscf/gentooskyline"
 "/home/zazdxscf/build/1nonpkgs/respeccing"
 "/home/zazdxscf/build/1nonpkgs/dcqs"
+"/home/zazdxscf/ticu"
 "/home/zazdxscf/build/1nonpkgs/hsts-everywhere-chrome"
 "/home/zazdxscf/build/1nonpkgs/rustLearnage"
 "/home/zazdxscf/build/1nonpkgs/footab-code"
@@ -121,7 +179,7 @@ for i in "${gitdirlist[@]}"; do
 #  echo "$?"
   #gitaheadcheck "$i"
   git_moo_check "$i" 'Changes not staged for commit:' "MODified"
-  if test "$?" -ne "14"; then
+  if test "$?" -ne "14" -a "$?" -ne "22"; then
     git_moo_check "$i" "Your branch is ahead of" "unpushed"
     git_moo_check "$i" "Untracked files:" "NEWfiles"
     git_moo_check "$i" "Changes to be committed:" "stageduncommited"
