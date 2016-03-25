@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dig @208.67.222.220 myip.opendns.com +short
+dig @208.67.222.220 myip.opendns.com +short | tee /tmp/myip.log
 
 #also works:
 #dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short
