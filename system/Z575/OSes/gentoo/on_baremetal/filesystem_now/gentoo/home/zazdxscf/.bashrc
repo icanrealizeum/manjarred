@@ -519,3 +519,43 @@ cat /proc/cpuinfo |grep -i 'cpu cores'|grep 4 >/dev/null || echo 'Fail cpu cores
 if test -d "/usr/lib64/nsbrowser/plugins"; then
   echo "WARNING: /usr/lib64/nsbrowser/plugins/ folder exists! chromium may have some new plugins! see: chrome://plugins" | grep --color=always "WARN"
 fi
+
+
+gitchanged() {
+  git status|grep -q 'Changes not staged for commit:'
+  #ec != 0 (==1) means not changed!
+  #ec == 0 means changed!
+}
+
+gitchangedindir() {
+  if test "$#" -ne "1"; then
+    echo "too many args: $@"
+    exit 13
+  fi
+  pushd "$1" >/dev/null
+  if gitchanged; then
+    rt=0
+  else
+    rt=1
+  fi
+  popd >/dev/null
+  return "$rt"
+  #==0 if changed
+  #==1 if not changed
+}
+
+gitchangedcheck() {
+  dir="$1"
+  if gitchangedindir "$dir"; then
+    echo "git changed in dir: '$dir'" | grep --color=always 'git changed'
+  fi
+}
+
+gitchangedcheck "/home/zazdxscf/gentooskyline"
+gitchangedcheck "/home/zazdxscf/build/1nonpkgs/respeccing"
+gitchangedcheck "/home/zazdxscf/build/1nonpkgs/dcqs"
+gitchangedcheck "/home/zazdxscf/build/1nonpkgs/hsts-everywhere-chrome"
+gitchangedcheck "/home/zazdxscf/build/1nonpkgs/rustLearnage"
+gitchangedcheck "/home/zazdxscf/build/1nonpkgs/footab-code"
+
+
