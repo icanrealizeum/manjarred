@@ -520,9 +520,11 @@ if test -d "/usr/lib64/nsbrowser/plugins"; then
   echo "WARNING: /usr/lib64/nsbrowser/plugins/ folder exists! chromium may have some new plugins! see: chrome://plugins" | grep --color=always "WARN"
 fi
 
-~/bin/gitcheck
+
+( ~/bin/gitcheck
 ec="$?"
 if test "$ec" -ne "0"; then
   echo "non-zero exit code: $ec"
 fi
+) &
 
