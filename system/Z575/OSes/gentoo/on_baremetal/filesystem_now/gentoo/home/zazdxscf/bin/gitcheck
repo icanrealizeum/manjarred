@@ -124,6 +124,7 @@ for i in "${gitdirlist[@]}"; do
   if test "$?" -ne "14"; then
     git_moo_check "$i" "Your branch is ahead of" "unpushed"
     git_moo_check "$i" "Untracked files:" "NEWfiles"
+    git_moo_check "$i" "Changes to be committed:" "stageduncommited"
   fi
 done
 
