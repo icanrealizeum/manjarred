@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #TODO: required commands: 'stat grep test declare echo exit return if pwd git'
+logfile="/tmp/gitcheck.chmod.log"
+echo "----- Start `date`" >> "$logfile"
 
 gitcheck() {
   if test "$#" -ne "1"; then
@@ -82,11 +84,12 @@ gitcheckindir() {
     #attempt to temporarily make accessible
     #decl. local read-only var:
     declare +g -r backupattrs="`stat --format="%a" -- "$dir"`" # eg. 755
+    echo "$backupattrs '$dir'" >> "$logfile"
     if test -z "$backupattrs"; then
       echo "stat failed on '$dir'"
       return 19
     fi
-    chmod u+rx -- "$dir" 2>/dev/null
+    chmod -c u+rx -- "$dir" 2>&1 >> "$logfile"
     local ecc="$?"
 #    local faiul=0
     local rt=1
@@ -103,7 +106,7 @@ gitcheckindir() {
       #done
     fi
     #FIXME: restore attrs even if C-c stopped the script!
-    chmod "$backupattrs" -- "$dir" 2>/dev/null
+    chmod -c "$backupattrs" -- "$dir" 2>&1 >> "$logfile"
     declare +g -r restoredattrs="`stat --format="%a" -- "$dir"`" # eg. 755
     if test -z "$restoredattrs"; then
       echo "'stat' failed on '$dir' or 'stat' command not found"
@@ -171,6 +174,7 @@ declare -ar gitdirlist=(
 "/home/zazdxscf/build/1nonpkgs/hsts-everywhere-chrome"
 "/home/zazdxscf/build/1nonpkgs/rustLearnage"
 "/home/zazdxscf/build/1nonpkgs/footab-code"
+"/home/zazdxscf/SAVED/balance"
 )
 
 for i in "${gitdirlist[@]}"; do
