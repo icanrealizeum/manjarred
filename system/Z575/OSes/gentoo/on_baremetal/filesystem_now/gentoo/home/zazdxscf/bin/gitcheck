@@ -3,6 +3,11 @@
 #TODO: required commands: 'stat grep test declare echo exit return if pwd git'
 logfile="/tmp/gitcheck.chmod.log"
 echo "----- Start `date`" >> "$logfile"
+onint() {
+  echo "${0}: Ignored C-c!"
+}
+trap onint sigint
+#FIXME: make onint parse a hashmap of $dir -> $original_attrs  to chmod restore on: EXIT sigint
 
 gitcheck() {
   if test "$#" -ne "1"; then
@@ -105,7 +110,7 @@ gitcheckindir() {
       rt="$?"
       #done
     fi
-    #FIXME: restore attrs even if C-c stopped the script!
+    #FIXME: restore attrs even if C-c stopped the script! (that's "trap 'cmd' sigint")
     chmod -c "$backupattrs" -- "$dir" 2>&1 >> "$logfile"
     declare +g -r restoredattrs="`stat --format="%a" -- "$dir"`" # eg. 755
     if test -z "$restoredattrs"; then
