@@ -1,6 +1,0 @@
-#!/bin/bash
-
-sudo cpupower frequency-set --related --governor conservative --min 800MHz --max 800MHz
-cpupower frequency-info | grep --color=always 'current policy:' | logger
-
-

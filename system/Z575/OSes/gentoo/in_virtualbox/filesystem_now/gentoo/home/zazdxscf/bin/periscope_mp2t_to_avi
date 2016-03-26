@@ -1,7 +1,0 @@
-#!/bin/bash
-
-echo "this will make it .avi so seeking works with vlc  (using copy codecs)"
-echo "just pass the input file .mp2t"
-echo "expect file size increase by about 18%"
-ffmpeg -i "$@" -acodec copy -vcodec copy "${@}.avi"
-

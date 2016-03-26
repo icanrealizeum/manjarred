@@ -1,8 +1,0 @@
-#!/bin/bash
-
-echo "shows current folder's each dir's size (except the .. one, but including . which means total)"
-( for i in * .*; do 
-  if test -d "$i" -a "$i" != ".."; then
-    du -P -s -- "$i" 2>/dev/null
-  fi
-done ) | sort -n -k 1

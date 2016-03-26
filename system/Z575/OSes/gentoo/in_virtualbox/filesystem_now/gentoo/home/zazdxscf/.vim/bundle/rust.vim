@@ -1,1 +1,0 @@
-/home/emacs/build/rust.vim
