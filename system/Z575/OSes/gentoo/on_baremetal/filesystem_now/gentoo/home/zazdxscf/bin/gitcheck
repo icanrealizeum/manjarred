@@ -180,6 +180,8 @@ declare -ar gitdirlist=(
 "/home/zazdxscf/build/1nonpkgs/rustLearnage"
 "/home/zazdxscf/build/1nonpkgs/footab-code"
 "/home/zazdxscf/SAVED/balance"
+"/home/zazdxscf/build/1nonpkgs/rust-playpen"
+#"/home/zazdxscf/build/1nonpkgs/rust/rust"
 )
 
 for i in "${gitdirlist[@]}"; do
@@ -194,6 +196,8 @@ for i in "${gitdirlist[@]}"; do
     git_moo_check "$i" "Changes to be committed:" "stageduncommited"
   fi
 done
+
+
 
 exit 0
 

@@ -3,6 +3,7 @@
 set -e
 
 pushd rust
+git checkout master
 #a#git checkout .gitmodules
 git clean -dfx
 #git checkout configure #to undo patch, or git reset --hard

@@ -365,3 +365,12 @@ set viminfo='99999,f1,<500,s10,h
 "set foldlevel=0
 
 
+" src: https://github.com/rust-lang/rust.vim/pull/76/files
+" use -Zno-trans
+let g:rustc_syntax_only = 0
+"let g:syntastic_mode_map = {
+" 		\ "mode": "active",
+" 		\ "active_filetypes": [],
+" 		\ "passive_filetypes": ["rust"] }
+
+

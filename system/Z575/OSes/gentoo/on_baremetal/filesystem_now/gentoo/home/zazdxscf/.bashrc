@@ -480,6 +480,7 @@ unset FFREPORT
 #src: https://www.ffmpeg.org/bugreports.html
 
 
+#XXX: for when running within virtualbox! this will warn you that the audio is slower in pitch!
 #dmesg|grep 'clocking to' | grep -v 48000 |grep -v grsec| grep 'clocking to'
 #true
 
