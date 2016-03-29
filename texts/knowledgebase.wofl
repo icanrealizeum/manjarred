@@ -509,4 +509,14 @@
   \ emerge it: # emerge -nav app-laptop/tp_smapi
   \ emerge last one: # emerge -nav =app-laptop/tp_smapi-0.41-r1
 
+* test an in-progress pull request from github, on your locally cloned repo.
+  * first time
+    \ git clone therepo
+    \ cd therepo
+    \ git fetch origin pull/191/head
+    \ git checkout -b branchnamehere FETCH_HEAD
+  * for subsequent updates
+    \ git fetch origin pull/191/head && git merge FETCH_HEAD
+
+
 
