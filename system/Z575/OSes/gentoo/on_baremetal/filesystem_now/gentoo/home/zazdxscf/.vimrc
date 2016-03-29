@@ -368,6 +368,9 @@ set viminfo='99999,f1,<500,s10,h
 " src: https://github.com/rust-lang/rust.vim/pull/76/files
 " use -Zno-trans
 let g:rustc_syntax_only = 0
+" the following is inactive even tho it says active! see:
+" https://github.com/scrooloose/syntastic/blob/master/doc/syntastic.txt
+" ^ search for: g:syntastic_mode_map ^
 "let g:syntastic_mode_map = {
 " 		\ "mode": "active",
 " 		\ "active_filetypes": [],

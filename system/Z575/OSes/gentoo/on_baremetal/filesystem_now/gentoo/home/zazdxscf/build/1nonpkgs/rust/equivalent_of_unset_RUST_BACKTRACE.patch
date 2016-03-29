@@ -1,19 +1,20 @@
-either unset RUST_BACKTRACE or set it to: "0"
+either unset RUST_BACKTRACE or set it to: "0"|"n"|"no"|"off" (case-sensitive though)
 to get the same effect!
 Some programs(vim's syntactic used by rust.vim) cannot unset this! but can set it to some value, and I needed this to avoid issue: https://github.com/rust-lang/rust/issues/29293
 
 see PR: https://github.com/rust-lang/rust/pull/32549
 
 diff --git a/src/libstd/sys/common/backtrace.rs b/src/libstd/sys/common/backtrace.rs
-index 3c84783..7545e6a 100644
+index 3c84783..2775016 100644
 --- a/src/libstd/sys/common/backtrace.rs
 +++ b/src/libstd/sys/common/backtrace.rs
-@@ -36,7 +36,7 @@ pub fn log_enabled() -> bool {
+@@ -36,7 +36,8 @@ pub fn log_enabled() -> bool {
      }
  
      let val = match env::var_os("RUST_BACKTRACE") {
 -        Some(..) => 2,
-+        Some(x) => if &x == "0" { 1 } else { 2 },
++        Some(x) => if &x == "0" || &x == "n"
++            || &x == "no" || &x == "off" { 1 } else { 2 },
          None => 1,
      };
      ENABLED.store(val, Ordering::SeqCst);
