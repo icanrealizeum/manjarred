@@ -519,4 +519,24 @@
     \ git fetch origin pull/191/head && git merge FETCH_HEAD
 
 
+* check manjaro iso sig
+  * get *.iso and *.sig
+  * get key
+    \ gpg --no-default-keyring --keyring vendors.gpg --keyserver pgp.mit.edu --recv-key 11C7F07E
+    \ that creates:
+    \ gpg: keybox '/home/zazdxscf/.gnupg/vendors.gpg' created
+    \ gpg: /home/zazdxscf/.gnupg/trustdb.gpg: trustdb created
+  * check key
+    \ gpg --verify --verbose --keyring vendors.gpg manjaro-xfce-16.06-pre1-x86_64.iso.sig
+    \ that will check the sig for the file manjaro-xfce-16.06-pre1-x86_64.iso
+    \ output:
+    \ gpg: assuming signed data in 'manjaro-xfce-16.06-pre1-x86_64.iso'
+    \ gpg: Signature made Sun Mar  6 11:57:51 2016 CET using RSA key ID 11C7F07E
+    \ gpg: using PGP trust model
+    \ gpg: Good signature from "Philip M�ller (Called Little) <philm@manjaro.org>" [unknown]
+    \ gpg: WARNING: This key is not certified with a trusted signature!
+    \ gpg:          There is no indication that the signature belongs to the owner.
+    \ Primary key fingerprint: E4CD FE50 A2DA 85D5 8C8A  8C70 CAA6 A596 11C7 F07E
+    \ gpg: binary signature, digest algorithm SHA256, key algorithm rsa2048
+
 
