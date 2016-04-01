@@ -1,0 +1,124 @@
+https://bugzilla.kernel.org/show_bug.cgi?id=72701
+allows system to not freeze when radeon.runpm=1 (not when -1 or 0 though)
+with this patch:
+when 0, echo 'OFF' > /sys/kernel/debug/vgaswitcheroo/switch  will freeze the system
+when -1, the system freezes 10 seconds after boot
+when 1, the echo OFF has no effect and looks like this:
+
+sudo cat /sys/kernel/debug/vgaswitcheroo/switch
+0:IGD:+:Pwr:0000:00:01.0
+1:DIS: :DynPwr:0000:01:00.0
+
+Also use radeon.dpm=1  so that when idle it will switch to lower cpu/mem frequencies instead of keeping max speeds with dpm=0
+
+without this patch:
+runpm=0, freezes only when echo OFF
+runpm=1, freezes 10 seconds right after boot
+runpm=-1, can't remember, but probably like runpm=1
+
+sudo cat /sys/kernel/debug/vgaswitcheroo/switch
+0:IGD:+:Pwr:0000:00:01.0
+1:DIS: :Pwr:0000:01:00.0
+
+
+this patch was originally made by Alex Deucher here: https://bugzilla.kernel.org/show_bug.cgi?id=72701#c14
+
+diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/radeon_device.c
+index ea26769..9c9462b 100644
+--- a/drivers/gpu/drm/radeon/radeon_device.c
++++ b/drivers/gpu/drm/radeon/radeon_device.c
+@@ -141,6 +141,14 @@ bool radeon_is_px(struct drm_device *dev)
+ 	return false;
+ }
+ 
++bool radeon_is_igp(struct drm_device *dev)
++{
++  struct radeon_device *rdev = dev->dev_private;
++  if (rdev->flags & RADEON_IS_IGP)
++    return true;
++  return false;
++}
++
+ static void radeon_device_handle_px_quirks(struct radeon_device *rdev)
+ {
+ 	struct radeon_px_quirk *p = radeon_px_quirk_list;
+@@ -1392,8 +1400,14 @@ int radeon_device_init(struct radeon_device *rdev,
+ 	 * ignore it */
+ 	vga_client_register(rdev->pdev, rdev, NULL, radeon_vga_set_decode);
+ 
+-	if ((rdev->flags & RADEON_IS_PX) && radeon_has_atpx_dgpu_power_cntl())
++//	if ((rdev->flags & RADEON_IS_PX) && radeon_has_atpx_dgpu_power_cntl())
++//		runtime = true;
++
++	if ( (( -1 == radeon_runtime_pm ) || ( 1 == radeon_runtime_pm))
++              && (rdev->flags & RADEON_IS_PX) &&
++		((rdev->flags & RADEON_IS_IGP) == 0))
+ 		runtime = true;
++
+ 	vga_switcheroo_register_client(rdev->pdev, &radeon_switcheroo_ops, runtime);
+ 	if (runtime)
+ 		vga_switcheroo_init_domain_pm_ops(rdev->dev, &rdev->vga_pm_domain);
+diff --git a/drivers/gpu/drm/radeon/radeon_drv.c b/drivers/gpu/drm/radeon/radeon_drv.c
+index dcffa30..33eabce 100644
+--- a/drivers/gpu/drm/radeon/radeon_drv.c
++++ b/drivers/gpu/drm/radeon/radeon_drv.c
+@@ -124,6 +124,7 @@ extern int radeon_get_crtc_scanoutpos(struct drm_device *dev, int crtc,
+ 				      int *vpos, int *hpos, ktime_t *stime,
+ 				      ktime_t *etime);
+ extern bool radeon_is_px(struct drm_device *dev);
++extern bool radeon_is_igp(struct drm_device *dev);
+ extern const struct drm_ioctl_desc radeon_ioctls_kms[];
+ extern int radeon_max_kms_ioctl;
+ int radeon_mmap(struct file *filp, struct vm_area_struct *vma);
+@@ -443,6 +444,12 @@ static int radeon_pmops_runtime_suspend(struct device *dev)
+ 		return -EBUSY;
+ 	}
+ 
++	if ((radeon_runtime_pm == -1) && radeon_is_px(drm_dev) &&
++		    radeon_is_igp(drm_dev)) {
++			pm_runtime_forbid(dev);
++			return -EBUSY;
++	}
++
+ 	drm_dev->switch_power_state = DRM_SWITCH_POWER_CHANGING;
+ 	drm_kms_helper_poll_disable(drm_dev);
+ 	vga_switcheroo_set_dynamic_switch(pdev, VGA_SWITCHEROO_OFF);
+@@ -466,6 +473,10 @@ static int radeon_pmops_runtime_resume(struct device *dev)
+ 	if (!radeon_is_px(drm_dev))
+ 		return -EINVAL;
+ 
++	if ((radeon_runtime_pm == -1) && radeon_is_px(drm_dev) &&
++		    radeon_is_igp(drm_dev))
++		return -EINVAL;
++
+ 	drm_dev->switch_power_state = DRM_SWITCH_POWER_CHANGING;
+ 
+ 	pci_set_power_state(pdev, PCI_D0);
+@@ -493,6 +504,12 @@ static int radeon_pmops_runtime_idle(struct device *dev)
+ 		return -EBUSY;
+ 	}
+ 
++	if ((radeon_runtime_pm == -1) && radeon_is_px(drm_dev) &&
++		    radeon_is_igp(drm_dev)) {
++		pm_runtime_forbid(dev);
++		return -EBUSY;
++	}
++
+ 	list_for_each_entry(crtc, &drm_dev->mode_config.crtc_list, head) {
+ 		if (crtc->enabled) {
+ 			DRM_DEBUG_DRIVER("failing to power off - crtc active\n");
+diff --git a/drivers/gpu/drm/radeon/radeon_kms.c b/drivers/gpu/drm/radeon/radeon_kms.c
+index 8309b11..0cbec59 100644
+--- a/drivers/gpu/drm/radeon/radeon_kms.c
++++ b/drivers/gpu/drm/radeon/radeon_kms.c
+@@ -142,7 +142,9 @@ int radeon_driver_load_kms(struct drm_device *dev, unsigned long flags)
+ 				"Error during ACPI methods call\n");
+ 	}
+ 
+-	if (radeon_is_px(dev)) {
++	//if ((radeon_is_px(dev)) ||
++	    if ((radeon_runtime_pm == -1) && radeon_is_px(dev) &&
++		     ((rdev->flags & RADEON_IS_IGP) == 0)) {
+ 		pm_runtime_use_autosuspend(dev->dev);
+ 		pm_runtime_set_autosuspend_delay(dev->dev, 5000);
+ 		pm_runtime_set_active(dev->dev);

@@ -27,7 +27,7 @@ fi
 if ! mount |grep -- /bewt ; then
   echo "!! Mounting /bewt"
   #set -e #not working!
-  cryptsetup --verbose --allow-discards luksOpen /dev/sdb2 luks_on_sda2_boot && mount /bewt
+  cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot && mount /bewt
   #set +e
   #FIXME: must check each value of ${PIPESTATUS[@]} or will miss the mount fail for example:
   ec="$?"

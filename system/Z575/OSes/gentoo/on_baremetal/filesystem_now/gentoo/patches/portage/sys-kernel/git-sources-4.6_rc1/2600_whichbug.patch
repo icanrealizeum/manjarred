@@ -1,0 +1,29 @@
+ok it's this BUG
+https://bugzilla.kernel.org/show_bug.cgi?id=97231#c6
+
+diff --git a/arch/sh/mm/fault.c b/arch/sh/mm/fault.c
+index a58fec9..1ba4e30 100644
+--- a/arch/sh/mm/fault.c
++++ b/arch/sh/mm/fault.c
+@@ -208,7 +208,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long address)
+ 	if (!oops_may_print())
+ 		return;
+ 
+-	printk(KERN_ALERT "BUG: unable to handle kernel ");
++	printk(KERN_ALERT "BUG2: unable to handle kernel ");
+ 	if (address < PAGE_SIZE)
+ 		printk(KERN_CONT "NULL pointer dereference");
+ 	else
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index ede025f..bc8229c 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -604,7 +604,7 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code,
+ 			printk(smep_warning, from_kuid(&init_user_ns, current_uid()));
+ 	}
+ 
+-	printk(KERN_ALERT "BUG: unable to handle kernel ");
++	printk(KERN_ALERT "BUGGY: unable to handle kernel ");
+ 	if (address < PAGE_SIZE)
+ 		printk(KERN_CONT "NULL pointer dereference");
+ 	else

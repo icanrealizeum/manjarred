@@ -1,0 +1,381 @@
+diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
+index ec876b5..ced4af8 100644
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -379,7 +379,7 @@ static irqreturn_t atkbd_interrupt(struct serio *serio, unsigned char data,
+ 	int value;
+ 	unsigned short keycode;
+ 
+-	dev_dbg(&serio->dev, "Received %02x flags %02x\n", data, flags);
++//	dev_dbg(&serio->dev, "Received %02x flags %02x\n", data, flags);
+ 
+ #if !defined(__i386__) && !defined (__x86_64__)
+ 	if ((flags & (SERIO_FRAME | SERIO_PARITY)) && (~flags & SERIO_TIMEOUT) && !atkbd->resend && atkbd->write) {
+@@ -503,9 +503,10 @@ static irqreturn_t atkbd_interrupt(struct serio *serio, unsigned char data,
+ 			/* Workaround Toshiba laptop multiple keypress */
+ 			value = time_before(jiffies, atkbd->time) && atkbd->last == code ? 1 : 2;
+ 		} else {
+-			value = 1;
+-			atkbd->last = code;
+ 			atkbd->time = jiffies + msecs_to_jiffies(dev->rep[REP_DELAY]) / 2;
++	    dev_dbg(&serio->dev, "Well %02x flags %02x keycode:%02x %02d value:%02d last:%02d time:%lu\n", data, flags, keycode, keycode, value, atkbd->last, atkbd->time);
++			value = 1;
++			atkbd->last = code;//ok so this is only set(to non-zero) if it wasn't already released before the next press happened
+ 		}
+ 
+ 		input_event(dev, EV_KEY, keycode, value);
+@@ -518,6 +519,8 @@ static irqreturn_t atkbd_interrupt(struct serio *serio, unsigned char data,
+ 		}
+ 	}
+ 
++	dev_dbg(&serio->dev, "Received %02x flags %02x keycode: %02x %02d\n", data, flags, keycode, keycode);
++
+ 	if (atkbd->scroll) {
+ 		if (click != -1)
+ 			input_report_key(dev, BTN_MIDDLE, click);
+diff --git a/drivers/input/serio/i8042.c b/drivers/input/serio/i8042.c
+index cb5ece7..395ee0f 100644
+--- a/drivers/input/serio/i8042.c
++++ b/drivers/input/serio/i8042.c
+@@ -435,13 +440,13 @@ static bool i8042_filter(unsigned char data, unsigned char str,
+ 		if ((~str & I8042_STR_AUXDATA) &&
+ 		    (data == 0xfa || data == 0xfe)) {
+ 			i8042_suppress_kbd_ack--;
+-			dbg("Extra keyboard ACK - filtered out\n");
++			udbg("Extra keyboard ACK - filtered out\n");
+ 			return true;
+ 		}
+ 	}
+ 
+ 	if (i8042_platform_filter && i8042_platform_filter(data, str, serio)) {
+-		dbg("Filtered out by platform filter\n");
++		udbg("Filtered out by platform filter\n");
+ 		return true;
+ 	}
+ 
+@@ -464,6 +469,152 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+ 	unsigned int port_no;
+ 	bool filtered;
+ 	int ret = 1;
++  static unsigned long lastdoubletime=0;
++	static unsigned long doubletime=0;
++	static unsigned long lastjiffies=0;
++	static unsigned long jiffies_snapshot=0;
++	static unsigned long jdiff=0;
++  static unsigned long skd=0;//same key diff, eg. between last release and this press; or between last press and this release
++	static unsigned long ppdiff=0;//jdiff between key presses (ignoring key releases, but assumed one happens in between!)
++//	static unsigned char olddata=0;
++//store the jiffies of the last time that key was released, to be compared to the next time that key gets pressed:
++//  const static char* release_jiffie[0x80]={ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
++  static unsigned long pr_jiffie[256]={ 
++    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++    ,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
++  };
++  const static char* named[0x80]={
++  "#000", //0
++  "Esc", //1
++  "1", //2
++  "2", //3
++  "3", //4
++  "4", //5
++  "5", //6
++  "6", //7
++  "7", //8
++  "8", //9
++  "9", //10
++  "0", //11
++  "-", //12
++  "=", //13
++  "Backspace", //14
++  "Tab", //15
++  "q", //16
++  "w", //17
++  "e", //18
++  "r", //19
++  "t", //20
++  "y", //21
++  "u", //22
++  "i", //23
++  "o", //24
++  "p", //25
++  "[", //26
++  "]", //27
++  "Enter", //28 that's normalEnter; keypad Enter is like RightCtrl
++  "Ctrl", //29  the RightCtrl has an extra 0e 224 after the 1d 029, the left doesn't
++  "a", //30
++  "s", //31
++  "d", //32
++  "f", //33
++  "g", //34
++  "h", //35
++  "j", //36
++  "k", //37
++  "l", //38
++  ";", //39
++  "'", //40
++  "`", //41
++  "LeftShift", //42
++  "\\", //43
++  "z", //44
++  "x", //45
++  "c", //46
++  "v", //47
++  "b", //48
++  "n", //49
++  "m", //50
++  ",", //51
++  ".", //52
++  "/", //53 that is the key near RightShift; the keypad/ acts like RightCtrl
++  "RightShift", //54
++  "Keypad*", //55
++  "Alt", //56 RightAlt is same as RightCtrl
++  "Space", //57
++  "CapsLock", //58
++  "F1", //59
++  "F2", //60
++  "F3", //61
++  "F4", //62
++  "F5", //63
++  "F6", //64
++  "F7", //65
++  "F8", //66
++  "F9", //67
++  "F10", //68
++  "NumLock", //69 Fn+Home = Pause also triggers this and more codes
++  "ScrollLock", //70 Fn+End = Break also triggers this and more codes
++  "Home", //71 this is keypad Home, normalHome acts like RightCtrl
++  "UpArrow", //72 this is keypad 8, normal UpArrow acts like RightCtrl
++  "PageUp", //73 this is keypad PgUp, normalPgUp acts like RightCtrl
++  "KeyPad-", //74
++  "LeftArrow", //75 this is keypad 4 , normal LeftArrow acts like RightCtrl
++  "Keypad5", //76
++  "RightArrow", //77 this is keypad 6, normal RightArrow acts like RightCtrl
++  "Keypad+", //78
++  "End", //79 this is keypad End, normalEnd acts like RightCtrl
++  "DownArrow", //80 this is keypad 2, normal DownArrow acts like RightCtrl
++  "PageDown", //81 this is keypad PgDn, normalPgDn acts like RightCtrl
++  "Insert", //82  that's keypad insert; normalInsert is like RightCtrl
++  "Del", //83 that's keypad delete key; normalDelete is like RightCtrl
++  "#084", //84
++  "#085", //85
++  "<>", //86 that weird key near left shift which produces "<" and when shifted: ">"
++  "F11", //87
++  "F12", //88 Fn+PrtSc = SysRq also triggers this and then just PrintScreen (if held)
++  "#089", //89
++  "#090", //90
++  "WinStartL", //91
++  "#092", //92
++  "RightWKey", //93
++  "#094", //94
++  "#095", //95
++  "#096", //96
++  "#097", //97
++  "#098", //98
++  "#099", //99
++  "#100", //100
++  "#101", //101
++  "#102", //102
++  "#103", //103
++  "#104", //104
++  "#105", //105
++  "#106", //106
++  "#107", //107
++  "#108", //108
++  "#109", //109
++  "#110", //110
++  "#111", //111
++  "#112", //112
++  "#113", //113
++  "#114", //114
++  "#115", //115
++  "#116", //116
++  "#117", //117
++  "#118", //118
++  "#119", //119
++  "#120", //120
++  "#121", //121
++  "#122", //122
++  "#123", //123
++  "#124", //124
++  "#125", //125
++  "#126", //126
++  "#127", //127
++//  "128", //128
++  };
++  bool isRepeat;//set later; true if current key(press) is likely physically repeating, so to ignore it.
+ 
+ 	spin_lock_irqsave(&i8042_lock, flags);
+ 
+@@ -471,7 +622,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+ 	if (unlikely(~str & I8042_STR_OBF)) {
+ 		spin_unlock_irqrestore(&i8042_lock, flags);
+ 		if (irq)
+-			dbg("Interrupt %d, without any data\n", irq);
++			udbg("Interrupt %d, without any data\n", irq);
+ 		ret = 0;
+ 		goto out;
+ 	}
+@@ -484,7 +635,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+ 
+ 		dfl = 0;
+ 		if (str & I8042_STR_MUXERR) {
+-			dbg("MUX error, status is %02x, data is %02x\n",
++			udbg("MUX error, status is %02x, data is %02x\n",
+ 			    str, data);
+ /*
+  * When MUXERR condition is signalled the data register can only contain
+@@ -502,6 +653,7 @@ static irqreturn_t i8042_interrupt(int irq, void *dev_id)
+ 			switch (data) {
+ 				default:
+ 					if (time_before(jiffies, last_transmit + HZ/10)) {
++            doubletime++;
+ 						str = last_str;
+ 						break;
+ 					}
+@@ -687,16 +687,118 @@ static irqreturn_t i8042_interrupt(int i
+ 	port = &i8042_ports[port_no];
+ 	serio = port->exists ? port->serio : NULL;
+ 
+-	filter_dbg(port->driver_bound, data, "<- i8042 (interrupt, %d, %d%s%s)\n",
+-		   port_no, irq,
++  /*
++	filter_dbg(port->driver_bound, data, " (%02x %02d) <- i8042 (interrupt, %d, %d%s%s)\n",
++		   data,data,
++       port_no, irq,
+ 		   dfl & SERIO_PARITY ? ", bad parity" : "",
+ 		   dfl & SERIO_TIMEOUT ? ", timeout" : "");
++       */
++
++
++  if (data == 0x58) {
++    udbg("------------------------%lu\n",jiffies);
++  }
++
++  isRepeat=false;
++  if (irq == 1) {//only keyboard press/release/repeats - not touchpad/mouse events
++    jiffies_snapshot=jiffies;
++    jdiff=jiffies_snapshot-lastjiffies;
++    if (jdiff != 0) {
++      lastjiffies=jiffies_snapshot;
++    }
++    //3,4,5,6,7,8,9,10,11,13,14,15,17
++    //those jdiff can cause unwanted key repeats if that's the jdiff between key release and key press (same key) not necessarily consecutive events! but same key! which means needs array of all keys
++
++    if (data>=256) {
++      udbg("!!!!!!!!!EPIC ERROR!!!!!!!!!!! data is over 255!! data=%d", data);
++    } else {
++      //is it a key press?
++      if (data<0x80) {
++        //key pressed
++        //skd is now the diff between this key press and the last key release (for same key)
++        skd=jiffies_snapshot - pr_jiffie[data+0x80]; //assumed jiffies don't wrap around, or this becomes negative!
++        //XXX: assumed jiffies don't ever wrap around, if they do then this will be negative hmm, maybe should use abs() or whatever it is called in c
++        ppdiff= jiffies_snapshot - pr_jiffie[data];// the diff between the last press and current press (ignoring releases!)
++          //possible key duplication detected
++          //either way, drop a message that we detected this! for now! later TODO: actually drop this keypress! and its next keyrelease!
++      }else{
++        //this is a key release
++        //skd is now the diff between this key release and the last key press (for same key)
++        skd=jiffies_snapshot - pr_jiffie[data % 0x80]; //assumed jiffies don't wrap around, or this becomes negative!
++        ppdiff=0;//because we're in the release key currently, there's no press-press diff
++      }
++  
++      isRepeat=((data<0x80) && (skd <= 14));
++      if ((data<0x80) && (skd <= 20)) {//potential repeats
++  	    udbg("j:%lu jdiff:%4ld '%s%02x %03d %10s %s%s' %d skd:%8ld pp:%8ld%s\n",
++    	    jiffies_snapshot, jdiff,//this will be 4.2 billion the first time!(= to jiffies)
++          data > 0x80? "\x1b[48;5;7m":"\x1b[48;5;2m", //start color (released:pressed); tput setab 7 : tput setab 2  (white:green)
++          data, data, 
++          named[data%0x80],
++          data > 0x80? "r":"P", //in case u can't see colors, also show state as text
++          "\x1b[m\x1b(B", //stop color: tput sgr0
++          port_no,// irq, we know irq is always 1 here
++          skd,
++          ppdiff,//the diff between the keypresses of the same key
++          ( isRepeat ?" \x1b[48;5;1mREPEAT!\x1b[m\x1b(B":"")//actual repeats!
++        );
++      }
++      pr_jiffie[data] = jiffies_snapshot;
++    }//if data <256
++  }
++  if (
++      (irq != 12) //not mouse
++//      (irq == 1) //keyboard only
++//      (olddata == data)||
++//      ((jdiff <= 2)&&(irq!=12)&&(data != 0x5b)&&(data!=0xdb)&&(data != 0x4d)&&(data != 0x4b)&&(data!=0xcb)&&(data != 0xcd)&&(data != 0x48)&&(data!=0xc8)&&(data!=0x50)&&(data!=0xd0))
++      && ((lastdoubletime != doubletime) || (dfl & SERIO_PARITY) || (dfl & SERIO_TIMEOUT))
++      ) {
++//nvm    static char binary [65];//binary src: https://stackoverflow.com/questions/6373093/how-to-print-binary-number-via-printf
++//      itoa (dfl,binary,2); implicit declaration - i didn't include #include <stdio.h> #include <stdlib.h> maybe? don't wanna try
++//        printf ("binary: %s\n",buffer);
++//    jdiff=jiffies-lastjiffies;
++  	udbg("%lu jdiff:%8ld '%s%02x %03d %10s %s%s' %d %d%s%s dfl:%3u %s:%lu\n",
++	    jiffies, jdiff,//this will be 4.2 billion the first time!(= to jiffies)
++      data > 0x80? "\x1b[48;5;7m":"\x1b[48;5;2m", //start color (released:pressed); tput setab 7 : tput setab 2  (white:green)
++      data, data, 
++      named[data%0x80],
++      data > 0x80? "r":"P", //in case u can't see colors, also show state as text
++      "\x1b[m\x1b(B", //stop color: tput sgr0
++      port_no, irq,
++	    dfl & SERIO_PARITY ? ", bad parity" : "",
++	    dfl & SERIO_TIMEOUT ? ", timeout" : "",
++      dfl,//binary, aka %8s
++      lastdoubletime!=doubletime?"doubletime":"no",
++      doubletime
++       );
++
++/*      if (jdiff != 0) {
++        lastjiffies=jiffies;
++      }*/
++  }
++/*  if ((data<0x80) && (olddata != data)) {
++    olddata=data;
++  }*/
++
++  if (lastdoubletime!=doubletime) {
++    lastdoubletime=doubletime;
++  }
+ 
+ 	filtered = i8042_filter(data, str, serio);
+ 
+ 	spin_unlock_irqrestore(&i8042_lock, flags);
+ 
+-	if (likely(port->exists && !filtered))
++  //FIXME: filter out the released key too(which will happen on next call)
++  //FIXME: what about composite keys (eg. DownArrow)
++  //[20317.161802] i8042: j:4300972445 jdiff:   2 '50 080  DownArrow P' 0 skd:       5 pp:      38 REPEAT!
++  //[20317.463088] atkbd serio0: Unknown key released (translated set 2, code 0xe0 on isa0060/serio0).
++  //[20317.463104] atkbd serio0: Use 'setkeycodes e060 <keycode>' to make it known.
++  //that's in drivers/input/keyboard/atkbd.c +468
++  //that means that DownArrow pressed also generates a #96 key release(aka 96+128=224 aka E0); also downarrow released generates the same extra E0. Actually I stand corrected!!! E0 is first then there's the DownArrow press(or release!)
++  //ok that's "escaped scancodes e0 xx (8+7 bits)" see: man 8 setkeycodes
++  //FIXME: for some reason, Shift+PgUp (L/R Shift) detects the shift as the repeat instead of the PgUp which is odd! and breaks scrolling up (it gets me back to prompt while I was somewhere up scrolling as if I pressed just PgUp) - maybe this only happens because of my failed way of dropping repeats currently, let's stop that until fixed properly:
++	if ((likely(port->exists && !filtered)) )//&& (!isRepeat))
+ 		serio_interrupt(serio, data, dfl);
+ 
+  out:
+diff --git a/drivers/input/serio/serio.c b/drivers/input/serio/serio.c
+index a05a517..439243a 100644
+--- a/drivers/input/serio/serio.c
++++ b/drivers/input/serio/serio.c
+@@ -996,6 +996,12 @@ void serio_close(struct serio *serio)
+ }
+ EXPORT_SYMBOL(serio_close);
+ 
++#define udbg(format, arg...)              \
++  do {                  \
++      printk(KERN_DEBUG KBUILD_MODNAME ": " format, \
++             ##arg);  \
++  } while (0)
++
+ irqreturn_t serio_interrupt(struct serio *serio,
+ 		unsigned char data, unsigned int dfl)
+ {
+@@ -1007,6 +1013,7 @@ irqreturn_t serio_interrupt(struct serio *serio,
+         if (likely(serio->drv)) {
+                 ret = serio->drv->interrupt(serio, data, dfl);
+ 	} else if (!dfl && device_is_registered(&serio->dev)) {
++    udbg("serio_rescan dfl:%u data:%02x %02d %c\n",dfl, data,data,data);
+ 		serio_rescan(serio);
+ 		ret = IRQ_HANDLED;
+ 	}
