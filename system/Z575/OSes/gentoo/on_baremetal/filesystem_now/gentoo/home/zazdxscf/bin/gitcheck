@@ -2,6 +2,7 @@
 
 #TODO: required commands: 'stat grep test declare echo exit return if pwd git'
 logfile="/tmp/gitcheck.chmod.log"
+lockfile="/tmp/gitcheck.lock"
 echo "----- Start `date`" >> "$logfile"
 onint() {
   echo "${0}: Ignored C-c!"
@@ -167,6 +168,7 @@ git_moo_check() {
 }
 
 
+main() {
 #XXX: no spaces in paths here! unless they are within double quotes "" - then it's okay
 declare -ar gitdirlist=(
 #eg. "/tmp/a b"  #works fine! (assuming it was 'git init'-ed)
@@ -197,7 +199,19 @@ for i in "${gitdirlist[@]}"; do
   fi
 done
 
+}
 
 
-exit 0
+
+(
+  set -e
+  #locking from, src: http://www.kfirlavi.com/blog/2012/11/06/elegant-locking-of-bash-program/
+  #200 is the file descriptor for the lock file - can't use a var, apparently!
+  flock --wait 10 --exclusive --verbose 200
+  set +e
+  main
+  exit 0
+) 200>${lockfile}
+
+
 
