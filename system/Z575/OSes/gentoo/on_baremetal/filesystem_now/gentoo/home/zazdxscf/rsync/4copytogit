@@ -89,4 +89,10 @@ cat "$thisarpfn" | grep --color=always -E -- "[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F]
 popd
 echo "--"
 
+#updating smartctl info!
+pushd '/home/zazdxscf/gentooskyline/system/Z575/OSes/manjaro/random\ logs/ssd/1tb/smarttools' >/dev/null
+./refresh
+#the other ssd isn't plugged in
+popd >/dev/null
+
 echo "All done."

@@ -20,8 +20,9 @@
 #XXX: 24th feb 2016, compress-force=lzo  became: compress=no
 #XXX: 27th feb 2016, compress=no  became: compress-force=lzo  and remounted then executed: time btrfs filesystem defragment -r -v -clzo /
 #XXX: 30 march 2016, compress-force=zlib becomes: compress=no  because it's using too much cpu, when saving virtualbox snapshots! (except for boot!, that's zlib! just in case, tho it would prolly end up using more space! f-it, compress=no it is!)
-/dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,compress=no,datasum,datacow,space_cache,commit=300,enospc_debug,discard  0 0
-/dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress=no,datasum,datacow,space_cache,commit=300,enospc_debug,discard 0 1
+#XXX: 2 april 2016, compress=no becomes compress-force=lzo  just in case ssd firmare has DRM features or something eviler(like trigger some action if certain text is read/written) + datasum/datacow are enabled only when compress?(if I remember correctly - check man page)
+/dev/mapper/luks_on_sda2_boot               /bewt           btrfs            async,relatime,noauto,rw,nosuid,nodev,noexec,nouser,loud,ssd,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard  0 0
+/dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard 0 1
 #/dev/vgall/rootlvol               /               btrfs           async,relatime,noauto,rw,suid,dev,exec,nouser,loud,ssd,compress=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard 0 1
 #/dev/sdb               /vmb2               btrfs           async,relatime,rw,suid,dev,exec,nouser,loud,ssd,autodefrag,compress=lzo,datasum,datacow,space_cache,commit=300,auto         0 0
 # XXX: do not add errors=remount-ro  because btrfs says: unrecognized mount option
