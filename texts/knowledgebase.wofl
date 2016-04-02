@@ -388,7 +388,7 @@
     \ //time emerge -av `equery l '*9999*'`
     \ //well, that doesn't work since it needs an '=' in front of each atom!! else, eg. !!! 'app-editors/vim-9999' is not a valid package atom.
     \ so this works: time emerge -av `equery l '*9999*' | sed -e 's/^/=/g'`
-  * update anything else(as root ofc)
+  * update anything else(as root ofc)  - gentoo system update (for searches)
     \ time emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
     \ DON'T forget this is a prerequisite: time emerge-webrsync -v -k
 
