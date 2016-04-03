@@ -207,7 +207,7 @@ done
   set -e
   #locking from, src: http://www.kfirlavi.com/blog/2012/11/06/elegant-locking-of-bash-program/
   #200 is the file descriptor for the lock file - can't use a var, apparently!
-  flock --wait 10 --exclusive --verbose 200
+  flock --wait 10 --exclusive 200
   set +e
   main
   exit 0

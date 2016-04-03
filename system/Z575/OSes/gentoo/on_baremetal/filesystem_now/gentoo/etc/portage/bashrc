@@ -22,7 +22,15 @@ pre_src_prepare() {
   fi
 
   if test "$ec" -ne "0"; then #TODO: test for 0,1 and 2 see: /usr/portage/eclass/eutils.eclass
-    ewarn "NO USER PATCHES (re)APPLIED!!!"
+    if test "$ec" -eq "2"; then
+      ewarn "USER PATCHES already APPLIED by ebuild, above!"
+    else
+      if test "$ec" -eq "1"; then
+        ewarn "NO USER PATCHES APPLIED!!!"
+      else
+        ewarn "epatch_user - unknown exit code: $ec  probably NO PATCHES APPLIED"
+      fi
+    fi
   else
     ewarn "user patches applied"
   fi
