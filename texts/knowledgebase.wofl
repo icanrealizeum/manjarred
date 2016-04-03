@@ -518,6 +518,61 @@
   * for subsequent updates
     \ git fetch origin pull/191/head && git merge FETCH_HEAD
 
+* in arch/manjaro pacstrap is in package arch-install-scripts (needed for playpen)
+  \ https://github.com/thestinger/playpen
+  * git clone https://github.com/thestinger/playpen.git
+  * sudo pacman -S arch-install-scripts
+  * git clone https://github.com/rust-lang/rust-playpen.git
+  * get .vimrc
+    * git clone https://github.com/respeccing/gentooskyline.git
+    * cd gentooskyline/
+    * cp './system/Z575/OSes/gentoo/on_baremetal/filesystem_now/gentoo/home/zazdxscf/.vimrc' ~/.vimrc
+  * compile playpen
+    * cd playpen 
+    * make
+    * cd ..
+  * cd rust-playpen
+    * init
+      * sudo ./init.sh
+    * run
+      * ./web.py
+  * get rust-playpen requirements for running web.py
+    * sudo pacman -S community/python-bottle community/python-pygments community/python-cherrypy
+  * get pull request as patch - DON'T FORGET TO MAKE A NEW BRANCH FIRST!
+    \ wget https://github.com/rust-lang/rust-playpen/pull/143.patch
+    * ensure git is configured - needed for git am
+      \ git config --global user.email "you@example.com"
+      \ git config --global user.name "Your Name"
+    * apply
+      \ git am 143.patch
+      * if failed
+        * look at failed patch
+          \ vim .git/rebase-apply/patch
+          \ :set syntax=diff
+        * see if it's only a matter of tabs vs spaces
+          \ %s/ctrl+i/    /g
+          \ worked for me
+          \ patch -Np1 -i .git/rebase-apply/patch
+        * git add the changes!
+          \ git add static/web.css static/web.js
+        * then continue
+          \ git am --continue
+      * oops forgot to make a new branch, make it now
+        \ git branch hyperlinklinenumbers d841097
+        \ d841097 is the latest commit!
+        \ src: https://stackoverflow.com/questions/2816715/branch-from-a-previous-commit-using-git
+  * run web.py
+    \ as root, else cannot listen on port 80
+    * PATH="$PATH:../playpen/" sudo ./web.py
+  * git remote
+    * gen key
+      \ ssh-keygen -t ed25519 -a 100
+    * upload pub key to github
+    * remote add
+      \ git remote add upstream git@github.com:respeccing/rust-playpen.git
+    * push up
+      \ git push -u upstream hyperlinklinenumbers
+
 
 * check manjaro iso sig
   * get *.iso and *.sig
