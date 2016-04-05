@@ -1,0 +1,28 @@
+From 9693a49335861a1fd6714f10c41261f114dc37d5 Mon Sep 17 00:00:00 2001
+From: Emanuel Czirai <res.pe.cing+commits@gmail.com>
+Date: Tue, 5 Apr 2016 16:23:34 +0200
+Subject: [PATCH] rustdoc --help for --markdown-playground-url
+
+hopefully this will save someone else some time
+
+Relevant PR: https://github.com/rust-lang/rust/pull/14700/files#diff-3f13e5874e2b666556367d0f173cc0f7R88
+---
+ src/librustdoc/lib.rs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/librustdoc/lib.rs b/src/librustdoc/lib.rs
+index a35fe20..feee312 100644
+--- a/src/librustdoc/lib.rs
++++ b/src/librustdoc/lib.rs
+@@ -184,7 +184,10 @@ pub fn opts() -> Vec<getopts::OptGroup> {
+                  Markdown file or generated documentation",
+                  "FILES"),
+         optopt("", "markdown-playground-url",
+-               "URL to send code snippets to", "URL"),
++               "URL to send code snippets to. \
++                In effect only when <input> file has .md or .markdown extension! \
++                For .rs files(eg. via `cargo doc`) use an inner attribute: \
++                #![doc(html_playground_url = \"https://play.rust-lang.org/\")]", "URL"),
+         optflag("", "markdown-no-toc", "don't include table of contents")
+     )
+ }
