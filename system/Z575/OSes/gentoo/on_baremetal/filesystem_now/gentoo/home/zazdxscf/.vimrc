@@ -172,6 +172,9 @@ set visualbell
 
 " Enable use of the mouse for all modes
 " set mouse=a
+" set mouse=nv
+" disable mouse:
+set mouse=
 
 " Set the command window height to 2 lines, to avoid many cases of having to
 " "press <Enter> to continue"
@@ -276,10 +279,10 @@ set fileformats=unix
 " displayed color of things like ^M or if dy is set to uhex as above then <0d>
 highlight SpecialKey ctermfg=5
 
-	
-		
+
+
 " to display tabs as spaces instead of ^I or <09>:
-" set listchars=eol:$,tab:\ \ 
+" set listchars=eol:$,tab:\ \  " comment to prevent eol removal
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 highligh NonText ctermfg=6 guifg=gray
 " src: https://stackoverflow.com/questions/903934/unable-to-make-gray-eol-character-by-vimrc/912543#912543
@@ -317,7 +320,7 @@ highlight Comment ctermbg=none ctermfg=darkgray
 "To use the RustRun commands, you may need to insert this line in your ~/.vimrc:
 filetype plugin on
 
-" Now just press Ctrl+F on the function call to see its definition(s). 
+" Now just press Ctrl+F on the function call to see its definition(s).
 nmap <c-f> :cs find g <c-r>=expand("<cword>")<cr><cr>
 
 " let g:NERDTreeWinSize = 60
@@ -376,4 +379,12 @@ let g:rustc_syntax_only = 0
 " 		\ "active_filetypes": [],
 " 		\ "passive_filetypes": ["rust"] }
 
+
+
+" only works after - so, not in .vimrc! ffs
+" :CurrentLineWhitespaceOn
+
+" workaround for vim-better-whitespace, src: https://github.com/ntpeters/vim-better-whitespace/issues/40#issuecomment-160100081
+autocmd VimEnter * DisableWhitespace
+autocmd VimEnter * EnableWhitespace
 

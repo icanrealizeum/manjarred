@@ -595,4 +595,8 @@
     \ Primary key fingerprint: E4CD FE50 A2DA 85D5 8C8A  8C70 CAA6 A596 11C7 F07E
     \ gpg: binary signature, digest algorithm SHA256, key algorithm rsa2048
 
+* systemd nixos rules for boot.loader.grub.device
+  \ src: https://stackoverflow.com/questions/28339702/install-grub-on-a-disk-drive-by-uuid
+  \ XXX: but do use /dev/disk/by-id/  for now! The above is just for future usage; eg. template for systemd auto-creation of wtws:)
+
 

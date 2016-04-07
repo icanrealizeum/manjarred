@@ -1,6 +1,11 @@
 
 # prerequisite:
 # git clone https://github.com/gorhill/uBlock.git
+# git clone https://github.com/uBlockOrigin/uAssets.git
+
+pushd ./uAssets
+git pull
+popd
 
 pushd ./uBlock/
 #for subsequent updates, use:
