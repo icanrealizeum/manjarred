@@ -4,6 +4,7 @@
 logfile="/tmp/gitcheck.chmod.log"
 lockfile="/tmp/gitcheck.lock"
 echo "----- Start `date`" >> "$logfile"
+chmod a-rwx,u+rw -- "$logfile"
 onint() {
   echo "${0}: Ignored C-c!"
 }
@@ -213,5 +214,6 @@ done
   exit 0
 ) 200>${lockfile}
 
+#rm -- "$lockfile"
 
 
