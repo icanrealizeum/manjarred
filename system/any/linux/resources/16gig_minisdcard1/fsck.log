@@ -1,0 +1,64 @@
+//check for bad sectors = 52mins
+
+# time fsck.vfat -v -f -V -w -t /dev/sdd1
+fsck.fat 3.0.28 (2015-05-16)
+Checking we can access the last sector of the filesystem
+Boot sector contents:
+System ID "        "
+Media byte 0xf8 (hard disk)
+       512 bytes per logical sector
+     32768 bytes per cluster
+       598 reserved sectors
+First FAT starts at byte 306176 (sector 598)
+         2 FATs, 32 bit entries
+   1944064 bytes per FAT (= 3797 sectors)
+Root directory start at cluster 2 (arbitrary size)
+Data area starts at byte 4194304 (sector 8192)
+    485936 data clusters (15923150848 bytes)
+63 sectors/track, 255 heads
+      8192 hidden sectors
+  31108096 sectors total
+Starting check/repair pass.
+Checking for bad clusters.
+Reclaiming unconnected clusters.
+Checking free cluster summary.
+Starting verification pass.
+Checking for unused clusters.
+/dev/sdd1: 1040 files, 104131/485936 clusters
+
+real  52m27.358s
+user  0m2.918s
+sys 1m9.877s
+
+
+
+//don't check for bad sectors = 3sec
+# time fsck.vfat -v -f -V -w /dev/sdd1
+fsck.fat 3.0.28 (2015-05-16)
+Checking we can access the last sector of the filesystem
+Boot sector contents:
+System ID "        "
+Media byte 0xf8 (hard disk)
+       512 bytes per logical sector
+     32768 bytes per cluster
+       598 reserved sectors
+First FAT starts at byte 306176 (sector 598)
+         2 FATs, 32 bit entries
+   1944064 bytes per FAT (= 3797 sectors)
+Root directory start at cluster 2 (arbitrary size)
+Data area starts at byte 4194304 (sector 8192)
+    485936 data clusters (15923150848 bytes)
+63 sectors/track, 255 heads
+      8192 hidden sectors
+  31108096 sectors total
+Starting check/repair pass.
+Reclaiming unconnected clusters.
+Checking free cluster summary.
+Starting verification pass.
+Checking for unused clusters.
+/dev/sdd1: 1040 files, 104131/485936 clusters
+
+real	0m3.845s
+user	0m0.138s
+sys	0m0.227s
+
