@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#src: https://superuser.com/questions/355676/tell-git-which-private-key-to-use-for-a-user-without-home-folder/355696#355696
+
+#XXX: must not echo anything?!!!! eg.
+#/home/zazdxscf/bin/sshgit:17+ echo /home/z...
+#fatal: protocol error: bad line length character: /hom
+
+set -e -u
+
+identfile=~/".../koe"
+#XXX: create key with: ssh-keygen -t ed25519 -a 110 -f "$identfile"
+lockfile="/tmp/sshgit.lock"
+
+cleanup() {
+  chmod --silent -- a-rwx "$identfile" 2>&1 >/dev/null
+  trap - EXIT SIGINT
+}
+
+main() {
+  trap cleanup EXIT SIGINT
+  chmod --silent -- a-rwx,u+r "$identfile" 2>&1 >/dev/null
+  echo /usr/bin/ssh -i "$identfile" "$@" 1>&2 #XXX: echo to stderr is okay
+  /usr/bin/ssh -i "$identfile" "$@"
+  local ec="$?"
+  cleanup
+  return "$ec"
+}
+
+#echo "$identfile"
+#ls -la "$identfile"
+#exit 1
+
+(
+  set -e
+  #locking from, src: http://www.kfirlavi.com/blog/2012/11/06/elegant-locking-of-bash-program/
+  #201 is the file descriptor for the lock file - can't use a var, apparently!
+  flock --wait 10 --exclusive 201 2>&1 >/dev/null
+  set +e
+  main "$@"
+) 201>"${lockfile}"
+

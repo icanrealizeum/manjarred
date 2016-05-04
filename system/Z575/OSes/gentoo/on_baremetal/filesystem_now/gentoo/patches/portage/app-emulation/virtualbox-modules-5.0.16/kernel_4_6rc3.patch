@@ -1,0 +1,23 @@
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=09cbfeaf1a5a67bfb3201e0c83c810cecb2efa5a
+
+
+--- orig/vboxdrv/r0drv/linux/memobj-r0drv-linux.c	2016-04-12 17:17:53.485270360 +0200
++++ patch/vboxdrv/r0drv/linux/memobj-r0drv-linux.c	2016-04-12 17:18:08.346083535 +0200
+@@ -578,7 +578,7 @@ DECLHIDDEN(int) rtR0MemObjNativeFree(RTR
+                 {
+                     if (!PageReserved(pMemLnx->apPages[iPage]))
+                         SetPageDirty(pMemLnx->apPages[iPage]);
+-                    page_cache_release(pMemLnx->apPages[iPage]);
++                    put_page(pMemLnx->apPages[iPage]);
+                 }
+ 
+                 if (pTask && pTask->mm)
+@@ -1081,7 +1081,7 @@ DECLHIDDEN(int) rtR0MemObjNativeLockUser
+         {
+             if (!PageReserved(pMemLnx->apPages[rc]))
+                 SetPageDirty(pMemLnx->apPages[rc]);
+-            page_cache_release(pMemLnx->apPages[rc]);
++            put_page(pMemLnx->apPages[rc]);
+         }
+ 
+         up_read(&pTask->mm->mmap_sem);

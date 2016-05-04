@@ -4,11 +4,11 @@
 #TODO: maybe apply the sed on all files? but ensure it won't mod something else!
 
 
-exec 1>/dev/console                                                             
+exec 1>/dev/console
 exec 2>/dev/console
 
 ip_of_gw="`route -n |head -3|tail -n1|awk '{print $2}'`"
-if test -n "$ip_of_gw"; then
+if test -n "$ip_of_gw" -a "192.168.1.1" != "$ip_of_gw"; then
   arp -s "$ip_of_gw" xx:xx:xx:xx:xx:xx
 fi
 

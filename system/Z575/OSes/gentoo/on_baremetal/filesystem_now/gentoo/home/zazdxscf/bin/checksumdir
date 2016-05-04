@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#src: www.shell-fu.org/lister.php?id=850
+
+directory="$1"
+if test -z "$directory"; then
+  directory='./'
+fi
+
+IFS='
+'
+time for i in $(find "$directory" -type f -print);do sha256sum "$i";done > directory.SHA256SUM
+time sha256sum -c directory.SHA256SUM
+

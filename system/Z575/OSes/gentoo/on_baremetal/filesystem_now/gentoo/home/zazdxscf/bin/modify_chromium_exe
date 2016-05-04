@@ -46,6 +46,7 @@ if test "$1" = "restore"; then
   fi
   echo "restoring backup $backup"
   sudo -- install -D -m 755 -o root -- "$backup" "$exe"
+  sudo -K
   exit 0
 fi
 
@@ -129,5 +130,6 @@ else
 fi
 #this will always ask for pwd now:
 sudo -- install -D -m 755 -o root -- "$result" "$exe"
+sudo -K
 exit $ec
 

@@ -533,3 +533,5 @@ function geetcheck(){
 geetcheck &
 #fixed! //^ C-c can still interrupt the above! and 0</dev/null wouldn't mitigate it!
 
+export GIT_SSH=~/bin/sshgit
+

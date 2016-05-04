@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e -u
+
+#XXX: actually, don't run this until emerge's unpack completed, else unpack will fail!
+#Usage: watch -n 1 -d --errexit -- ./chromaze
+
+destdir='/var/tmp/portage/www-client/chromium-51.0.2704.7/work/chromium-51.0.2704.7/third_party/ffmpeg'
+if ! test -d "$destdir"; then
+  echo "dir doesn't yet exist!"
+  exit 0
+fi
+
+pushd "$destdir"
+rm -rf -- libavcodec libavdevice libavfilter libavformat libavresample libavutil
+cp -a -r -t ./ -- /usr/include/{libavcodec,libavdevice,libavfilter,libavformat,libavresample,libavutil}
+
+popd
+
+
+exit 1

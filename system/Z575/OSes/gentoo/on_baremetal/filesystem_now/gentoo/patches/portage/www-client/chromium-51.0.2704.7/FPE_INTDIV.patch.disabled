@@ -1,0 +1,82 @@
+workaround for https://bugs.chromium.org/p/chromium/issues/detail?id=599899
+
+tested/applied on www-client/chromium-51.0.2704.7 and .19
+
+I don't know how correct this is, but works for me(=Emanuel Czirai)
+Someone feel free to suggest the right fix!
+Possible solutions: https://www.securecoding.cert.org/confluence/display/c/INT30-C.+Ensure+that+unsigned+integer+operations+do+not+wrap
+
+Actual problematic line: https://chromium.googlesource.com/webm/libvpx/+/master/vpx_dsp/prob.h#69
+
+Received signal 8 FPE_INTDIV 55ba5184b62b
+#0 0x55ba4d5be9ee base::debug::StackTrace::StackTrace()
+#1 0x55ba4d5bed99 base::debug::(anonymous namespace)::StackDumpSignalHandler()
+#2 0x7ff43247ff40 <unknown>
+#3 0x55ba5184b62b vp9_adapt_coef_probs
+#4 0x55ba517f5565 vp9_decode_frame
+#5 0x55ba517fa599 vp9_receive_compressed_data
+#6 0x55ba517ad745 frame_worker_hook
+#7 0x55ba517b1dd7 execute
+#8 0x55ba517ae00c decode_one.isra.8
+#9 0x55ba517ae8bd decoder_decode
+#10 0x55ba517af043 vpx_codec_decode
+#11 0x55ba516f8edb media::VpxVideoDecoder::VpxDecode()
+#12 0x55ba516f9440 media::VpxVideoDecoder::DecodeBuffer()
+#13 0x55ba516f96dd media::VpxVideoDecoder::Decode()
+#14 0x55ba5172b131 media::DecoderStream<>::Decode()
+#15 0x55ba5172dc10 media::DecoderStream<>::OnBufferReady()
+#16 0x55ba5172a3ef base::internal::Invoker<>::Run()
+#17 0x55ba516cc333 _ZN4base8internal7InvokerINS_13IndexSequenceIJLm0ELm1EEEENS0_9BindStateINS_8CallbackIFvN5media13DemuxerStream6StatusERK13scoped_refptrINS6_13DecoderBufferEEELNS0_8CopyModeE1EEESE_JRS8_SD_EEENS0_12InvokeHelperILb0EvSG_EEFvvEE3RunEPNS0_13BindStateBaseE
+#18 0x55ba4d62685d base::debug::TaskAnnotator::RunTask()
+#19 0x55ba4d5dbfdb base::MessageLoop::RunTask()
+#20 0x55ba4d5dcb88 base::MessageLoop::DeferOrRunPendingTask()
+#21 0x55ba4d5dce93 base::MessageLoop::DoWork()
+#22 0x55ba4d5de949 base::MessagePumpDefault::Run()
+#23 0x55ba4d5f3dd7 base::RunLoop::Run()
+#24 0x55ba4d5db1f5 base::MessageLoop::Run()
+#25 0x55ba4d60c13a base::Thread::ThreadMain()
+#26 0x55ba4d60872d base::(anonymous namespace)::ThreadFunc()
+#27 0x7ff432476484 start_thread
+#28 0x7ff4321bde7d __clone
+  r8: 0000000000000080  r9: 00007ff422e10250 r10: 0000073a1f0dab6e r11: 0000073a1da3011c
+ r12: 0000000000000018 r13: 00000000aaaaaaab r14: 0000000000000100 r15: 0000000000000070
+  di: 0000000000000000  si: 000000000000006d  bp: 0000073a1da31e5c  bx: 0000073a2133026e
+  dx: 0000000000000000  ax: 0000000000000000  cx: 0000000000000000  sp: 00007ff422e10238
+  ip: 000055ba5184b62b efl: 0000000000010296 cgf: 002b000000000033 erf: 0000000000000000
+ trp: 0000000000000000 msk: 0000000000000000 cr2: 0000000000000000
+[end of stack trace]
+
+Actual issue:
+665 Integer Divide Instruction May Cause Unpredictable Behavior
+Description
+Under a highly specific and detailed set of internal timing conditions, the processor core may abort a
+speculative DIV or IDIV integer divide instruction (due to the speculative execution being redirected,
+for example due to a mispredicted branch) but may hang or prematurely complete the first instruction
+of the non-speculative path.
+Potential Effect on System
+Unpredictable system behavior, usually resulting in a system hang.
+Suggested Workaround
+BIOS should set MSRC001_1029[31].
+This workaround alters the DIV/IDIV instruction latency specified in the Software Optimization
+Guide for AMD Family 10h and 12h Processors, order# 40546. With this workaround applied, the
+DIV/IDIV latency for AMD Family 12h Processors are similar to the DIV/IDIV latency for
+AMD Family 10h Processors.
+Fix Planned
+No
+
+
+Mitigation: use single channel RAM (one DIMM) instead of two, src: https://www.passmark.com/forum/showthread.php?3656-AMD-llano-A-series-benchmark-and-CPU-bug
+Actually, also this: "However running more than 4Gb or any amount in dual channel you hit this wall of problems."
+src: https://www.passmark.com/forum/showthread.php?3656-AMD-llano-A-series-benchmark-and-CPU-bug
+
+--- orig/third_party/libvpx/source/libvpx/vpx_dsp/prob.h	2016-04-20 09:38:34.825483265 +0200
++++ patched/third_party/libvpx/source/libvpx/vpx_dsp/prob.h	2016-04-20 09:38:51.635271938 +0200
+@@ -66,7 +66,7 @@ static INLINE vpx_prob merge_probs(vpx_p
+                                    unsigned int max_update_factor) {
+   const vpx_prob prob = get_binary_prob(ct[0], ct[1]);
+   const unsigned int count = VPXMIN(ct[0] + ct[1], count_sat);
+-  const unsigned int factor = max_update_factor * count / count_sat;
++  const unsigned int factor = (int64_t)max_update_factor * count / count_sat;
+   return weighted_prob(pre_prob, prob, factor);
+ }
+ 

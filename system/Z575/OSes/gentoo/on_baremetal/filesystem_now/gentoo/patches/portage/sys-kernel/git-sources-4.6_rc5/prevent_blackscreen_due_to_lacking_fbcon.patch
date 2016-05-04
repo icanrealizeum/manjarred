@@ -1,0 +1,30 @@
+avoid black screen(for the entire boot session) when starting X with radeon DRM 
+when things are built as modules
+by automatically loading fbcon module when DRM is selected (CONFIG_DRM) because
+fbcon is a requirement (ie. can't have old text mode consoles and X, they must be framebuffer consoles before X is started) according to knowledgeable people on #radeon /freenode
+
+
+--- orig/drivers/gpu/drm/drm_fb_helper.c	2016-04-01 23:02:17.353196549 +0200
++++ patched/drivers/gpu/drm/drm_fb_helper.c	2016-04-01 23:02:32.032012012 +0200
+@@ -2194,7 +2194,7 @@ EXPORT_SYMBOL(drm_fb_helper_hotplug_even
+  */
+ int __init drm_fb_helper_modinit(void)
+ {
+-#if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && !defined(CONFIG_EXPERT)
++#if defined(CONFIG_FRAMEBUFFER_CONSOLE_MODULE) && ( !defined(CONFIG_EXPERT) || defined(CONFIG_DRM_MODULE) || defined(CONFIG_DRM) )
+ 	const char *name = "fbcon";
+ 	struct module *fbcon;
+ 
+
+diff -pru5 -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/gpu/drm/Kconfig linux-3.16-rc7/drivers/gpu/drm/Kconfig
+--- linux-3.16-rc7.orig/drivers/gpu/drm/Kconfig	2014-07-28 22:09:20.000000000 +0200
++++ linux-3.16-rc7/drivers/gpu/drm/Kconfig	2014-07-29 15:26:09.748320566 +0200
+@@ -35,7 +35,7 @@ config DRM_KMS_FB_HELPER
+ 	bool
+ 	depends on DRM_KMS_HELPER
+ 	select FB
+-	select FRAMEBUFFER_CONSOLE if !EXPERT
++	select FRAMEBUFFER_CONSOLE
+ 	select FRAMEBUFFER_CONSOLE_DETECT_PRIMARY if FRAMEBUFFER_CONSOLE
+ 	select FB_SYS_FOPS
+ 	select FB_SYS_FILLRECT

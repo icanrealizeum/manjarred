@@ -384,7 +384,9 @@ let g:rustc_syntax_only = 0
 " only works after - so, not in .vimrc! ffs
 " :CurrentLineWhitespaceOn
 
-" workaround for vim-better-whitespace, src: https://github.com/ntpeters/vim-better-whitespace/issues/40#issuecomment-160100081
-autocmd VimEnter * DisableWhitespace
-autocmd VimEnter * EnableWhitespace
+if $HOME != "/root"
+  " workaround for vim-better-whitespace, src: https://github.com/ntpeters/vim-better-whitespace/issues/40#issuecomment-160100081
+  autocmd VimEnter * DisableWhitespace
+  autocmd VimEnter * EnableWhitespace
+endif
 

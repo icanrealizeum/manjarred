@@ -73,7 +73,7 @@ for i in ${list[@]}; do
     if test "$ec" -ne "0"; then
       echo "!! something went wrong, fix it then press Enter to retry executing '$i' or press C-c now."
       #exit $ec
-      time read -p -s "!! Press Enter to re-execute that  or C-c to cancel"
+      time read -s -p '!! Press Enter to re-execute that  or C-c to cancel'
     fi
   done
 done
