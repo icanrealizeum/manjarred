@@ -486,7 +486,14 @@
     \ origin  git@notabug.org:respeccing/hsts-everywhere-chrome.git (push)
   * now git push will push to both
     \ ssh key password will be requested twice!
-    * recommended command to use the first time(after repo(s) creation) git push -u --all
+    * recommended command to use the first time(after repo(s) creation):
+      \ git push -u --all
+      \ you see something like this(for that -u --all combination!):
+      \ ..
+      \ Branch kerneltry1 set up to track remote branch kerneltry1 from origin.
+      \ Branch master set up to track remote branch master from origin.
+      \ Branch test_kernel_s_msr_write set up to track remote branch test_kernel_s_msr_write from origin.
+      \ ...
       \ then: git push --tags
     * subsequently use command: git push
 
