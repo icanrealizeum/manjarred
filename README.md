@@ -21,16 +21,16 @@ Authors
 License
 -------
 
-Copyright (C) 2014-2016 EmanueL Czirai
+Any code created by me is licensed under the terms of UNLICENSE (ie. public domain)
+unless when this license cannot be applied due to incompatibility and requirement that the code/patch must be licensed under the same license than the code that I'm patching, then that license is considered to be applied also (ie. dual license) for that specific code/patch. (assuming that works, wtw! look, just do it, okay?!).  
 
-Any code created by me is licensed under the terms of Apache License, Version 2.0  
-ie. http://www.apache.org/licenses/LICENSE-2.0  
-unless when this license cannot be applied due to incompatibility and requirement that the code/patch must be licensed under the same license than the code that I'm patching, then that license is considered to be applied also (ie. dual license) for that specific code/patch.
+Look, all I want is that whatever code I produce, be public domain, under UNLICENSE. Why is this so hard?! :P
 
 Any non-code created by me is licensed under the terms of Attribution 4.0 International (CC BY 4.0)  
 ie. https://creativecommons.org/licenses/by/4.0/  
+FIXME: I need the equivalent of unlicense for non-code here!  
 
-Anything else that is not created by me is copyright by their respective authors. Reproduced here for reference only.
+Anything else that is not created by me is copyright(or may even be public domain already) by their respective authors. Reproduced here for reference only.
 
 Please note that code created by me, as well as code taken from somewhere else, may not always be annotated as such.
 
