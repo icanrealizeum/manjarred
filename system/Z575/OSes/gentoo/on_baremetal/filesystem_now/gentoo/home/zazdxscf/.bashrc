@@ -100,6 +100,7 @@ alias sync='time sync'
 
 #alias mc="(declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1 )"
 #alias mc="declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1"
+alias xz='xz --keep'
 alias cls='tput clear' #\e[H\e[2J for rxvt-unicode-256color
 alias cls2='echo -ne "\e[H\e[J"'
 #. /usr/libexec/mc/mc.sh
