@@ -607,4 +607,8 @@
   \ also: https://github.com/NixOS/nixos/blob/master/modules/programs/virtualbox.nix
   \ XXX: but do use /dev/disk/by-id/  for now! The above is just for future usage; eg. template for systemd auto-creation of wtws:)
 
+* use raw usb stick or harddrive (eg. partitioned) in virtualbox, as is:
+  \ VBoxManage internalcommands createrawvmdk -filename /tmp/guix.vmdk -rawdisk /tmp/guixsd-usb-install-0.10.0.x86_64-linux
+  \ src: https://agnipulse.com/2009/07/boot-your-usb-drive-in-virtualbox/
+
 
