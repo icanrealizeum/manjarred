@@ -390,3 +390,6 @@ if $HOME != "/root"
   autocmd VimEnter * EnableWhitespace
 endif
 
+" https://github.com/junegunn/fzf
+set rtp+=~/build/1nonpkgs/fzf
+

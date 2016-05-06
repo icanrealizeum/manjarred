@@ -95,6 +95,7 @@ unset CDPATH
 ##alias cargo='LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/" PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/:$PATH" /home/emacs/build/cargo/target/x86_64-unknown-linux-gnu/cargo'
 #----------
 
+alias l='ls -rlact'
 alias cd..='cd ..' #windows-like
 alias sync='time sync'
 
@@ -535,4 +536,6 @@ geetcheck &
 #fixed! //^ C-c can still interrupt the above! and 0</dev/null wouldn't mitigate it!
 
 export GIT_SSH=~/bin/sshgit
+
+export GOPATH=~/"build/1nonpkgs/gopath"
 
