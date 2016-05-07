@@ -1097,4 +1097,16 @@
   * https://github.com/junegunn/fzf
   * https://github.com/sorin-ionescu/prezto
 
+* emacs
+  - find out emacs's dot file
+    \ ~/.emacs
+  * rebind <Delete> to delete-forward-char
+  * FIXME: pressing M-q to auto-fill (in M-x auto-fill-mode) twice, should detect no changes and not make a new undo step (for when C-/ (or C-_) is pressed to undo)
+  * bind to keys: scroll-up-line and scroll-down-line to scroll in emacs like in less
+    * rebind to M-n and M-p but M-n(in major mode Info, not in Text) is bound to clone-buffer, something that duplicates the current window in a new one and focuses it; C-x 2 can be used for that though without the focus part.
+  * rebind C-M-shift-V to scroll down(text goes up) in the bottom window (whilst C-M-v scrolls up(text goes up)) bound to scroll-other-window so, apparently there wouldn't be an opposite scroll!
+  \ C-M-shift-v (C-M-V) does the same thing as C-M-v  - does emacs make any difference, in general?
+  * how to get into one recursive editing level
+    \ get out via: <ESC> <ESC> <ESC>
+
 
