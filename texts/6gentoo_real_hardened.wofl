@@ -2796,7 +2796,7 @@
             * to start it in current X to share its desktop
               \ run: x11vnc
               \ this is the better command:
-              * x11vnc -localhost -no6 -noipv6 -nap -ping 5
+              * x11vnc -localhost -no6 -noipv6 -nap -ping 5 -rfbport 5900
             - to start it with the xfce session
               * go to Session and Startup -> Application Autostart
                 * make new: Add
@@ -2809,9 +2809,12 @@
               * ssh -p 8822 -L 55900:localhost:5900 127.0.0.20
                 \ this is ssh forwarding
                 \ ssh to port 8822 to remote 127.0.0.20
-                \ and keep port 55900 open on localhost(aka 127.0.0.1)
-                \ and whoever connects to this localhost:55900 will be forwarded through ssh(tunnel) to remote's port 5900(seen on remote as locally(on remote) connecting 127.0.0.1(of remote) to its(remote's) port 5900)
-                \ so you vnc to localhost:55900
+                \ and keep port 55900 open on 127.0.0.1(this IP is fixed!)
+                \ and whoever connects to this 127.0.0.1:55900 will be forwarded through ssh(tunnel) to remote's port 5900 on localhost[as specified on cmdline](seen on remote as locally(on remote) connecting 127.0.0.1(of remote) to its(remote's) port 5900)
+                \ so you vnc to 127.0.0.1:55900
+                \
+                \ eg. ssh -p 8822 -L 55900:127.0.1.2:5900 127.0.0.20
+                \ that ^ connects to remote's 127.0.1.2:5900 when you connect to 127.0.0.1:55900 on your local
                 * vncviewer 127.0.0.1:55900
                   \ and this goes through ssh so it's protected!
           - get vnc (vino)

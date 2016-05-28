@@ -610,11 +610,106 @@
 * use raw usb stick or harddrive (eg. partitioned) in virtualbox, as is:
   \ VBoxManage internalcommands createrawvmdk -filename /tmp/guix.vmdk -rawdisk /tmp/guixsd-usb-install-0.10.0.x86_64-linux
   \ src: https://agnipulse.com/2009/07/boot-your-usb-drive-in-virtualbox/
+  * alternative way:
+    \ src: https://lists.gnu.org/archive/html/guix-devel/2015-02/msg00260.html
+    * convertfromraw gnu-usb-install-version-linux-i686 gnu.vdi --format vdi
+      \ untested!
 
 * in emacs
   * how to insert a numeric X number of times via M-num or C-u, num  and then the numeric X char; works for non numeric X
     \ M-88 C-u 0  (thanks to unkn2000)
   * can't type C-g after having pressed Esc (aka meta), to cancel it; it only works because M-C-g is undefined.
 
+
+* guix:
+  * WARNING: use only 1 core in virtualbox or you'll get guest kernel hangs!(eg. with 2 or 4 cores tested to hang! which makes me question their kernel!!)
+* virtualbox boots faster 
+  \ actually(with KVM in 4.6_rc7 kernel), virtualboxed NixOS boots in 53sec(with X too) with 1 core, and in 38sec with 4 cores! and 39sec with 2 cores - note: there's an issue in nixos(unknown) and for some reason X or xfce4 hangs on a black screen for a while.
+  \ but without KVM it was slower with 1 and 4 cores than with 2 and 3. (can't remember the numbers!)
+  \ GuixSD boots in 21.65sec with 1 core! 18.44sec with 2 cores; 16.55 with 3 core; 16.36sec with 4 cores; and again 1 core in 18.68sec, and 2 cores in - note the time it takes for me to enter user/pwd is all those extra seconds difference...
+  \ ok GuixSD with auto cat-ing /proc/uptime after I enter user/pass fast:
+  \ 4 cores 14.36sec, 13.40sec
+  \
+
+* /proc/uptime
+  \ "This file contains two numbers: the uptime of the system (seconds), and the amount of time spent in idle process (seconds)."
+  \ src: https://www.linuxquestions.org/questions/linux-general-1/2-numbers-in-proc-uptime-217046/
+
+* avoid grsecurity kernels
+  \ why: https://www.reddit.com/r/programming/comments/4gn0dr/hector_martin_on_twitter_how_to_panic_a_current/d2j21xn
+
+* generate that sha256 from NixOS (nix) in gentoo (without getting nix)
+  - time sudo emerge -nav dev-python/zbase32
+    \ nevermind this
+  - git clone https://github.com/tv42/zbase32
+  - go shiet
+    * cd "$GOPATH"
+    * go get github.com/tv42/zbase32
+    * cd src/github.com/tv42/zbase32
+    * go build -v cmd/zbase32-decode/*.go
+    * go build -v cmd/zbase32-encode/*.go
+    * echo 13m0s2m0zg304w86yvcmxgbjl41c4kc420044avi8rnr1xwcscsq | ./decode
+      \ decode: decoding input: "13m0s2m0zg304w86yvcmxgbjl41c4kc420044avi8rnr1xwcscsq": illegal z-base-32 data at input byte 3
+  * nix-hash
+    \ src: https://github.com/NixOS/nix/blob/451ebf24ce532f8d59f929efd486104fcebf1aa6/src/libutil/hash.cc#L119
+    * base32 sha256 to normal hexa(aka base16) sha256:
+      \ nix-hash --type sha256 --to-base32 5833cd780fd96614b722040041d8242c102ad7eb956d6f102760bc0faad0a08e
+    * normal sha256 to base32 sha256:
+      \ nix-hash --type sha256 --to-base16 13m0s2m0zg304w86yvcmxgbjl41c4kc420044avi8rnr1xwcscsq
+
+* xfce4-terminal search(ctrl+shift+F) Previous is broken, it skips existing ones that Next doesn't skip!
+  \ eg. execute the above 2 nix-hash commands, then search Previous for 13m0s2m0zg304w86yvcmxgbjl41c4kc420044avi8rnr1xwcscsq
+
+* atelierPC (the celeron)
+  * booting from USB (nixos and manjaro tested)
+    \ isolinux.bin missing or corrupt
+  * CAN boot from CD though!
+  *
+
+* boot any iso from HDD if you already have a working GRUB and linux OS
+  \ src: http://www.howtogeek.com/196933/how-to-boot-linux-iso-images-directly-from-your-hard-drive/
+  \ src: https://www.system-rescue-cd.org/Sysresccd-manual-en_Easy_install_SystemRescueCd_on_harddisk#Boot_the_ISO_image_from_the_disk_using_Grub2
+  * put iso somewhere
+    \ eg. /home/z/a.iso
+  * sudo fdisk -l
+    \ see which partition has that file
+    \ /dev/sda3 or in grub speak hd(0,3) which works even if it's (the /boot but) under LUKS
+  * sudo vim /boot/grub/grub.cfg
+    \ for manjaro and others see src: https://gist.github.com/gorhill/6561765
+    \ add grub entry:
+    * for system rescue CD iso
+      \ menuentry "sysrescd ISO" {
+      \ set isofile="/home/z/a.iso"
+      \ loopback loop (hd0,3)$isofile #won't work with LUKS
+      \ #loopback loop /$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks device where iso is stored
+      \ linux (loop)/isolinux/rescue64 isoloop=$isofile setkmap=us dns=8.8.8.8 dostartx rootpass=/ nocache
+      \ initrd (loop)/isolinux/initram.igz
+      \ }
+      \
+      \ right, so setkmap=us to not get the prompt for keyboard
+      \ nocache to can easily change to docache if wanted via 'e' key at grub prompt! but my test shows docache has no effect in this case!
+      \ rootpass is the root password
+    * for Manjaro
+      \ for img_dev=/dev/sda3  can be /dev/disk/by-label/wtwlabelsda3hashere or /dev/mapper/luks_on_sda2_boot  where sda3 is the device which contains the .iso file
+      \ XXX: you take the line with misolabel=MJRO1606 from inside the .iso under /isolinux/isolinux.cfg
+      \
+      \ menuentry "manjaro ISO" {
+      \ set isofile="/manjaro-xfce-16.06-rc1-x86_64.iso"
+      \ loopback loop (hd0,3)$isofile #won't work with LUKS
+      \ #loopback loop /$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks device where iso is stored
+      \ linux (loop)/manjaro/boot/x86_64/manjaro setkmap=us img_dev=/dev/sda3 img_loop=$isofile misobasedir=manjaro misolabel=MJRO1606 nouveau.modeset=1 i915.modeset=1 radeon.modeset=1 logo.nologo overlay=free showopts timezone=Europe/Bucharest locale.LANG=en_US.utf8
+      \ initrd (loop)/manjaro/boot/x86_64/manjaro.img
+      \ }
+  * reboot
+    \ grub2-mkconfig obviously NOT needed to be run! it will overwrite grub.cfg!
+
+* ssh port forward
+  \ eg. ssh -p 8822 -L 55900:127.0.1.2:5900 127.0.0.20 -l user
+  \ first it ssh-es to remote's port 8822 (where remote is: 127.0.0.20) and connects are user 'user'
+  \ the port forward connects to remote's 127.0.1.2:5900 when you connect to 127.0.0.1:55900 on your local
+
+* are you getting RCU stalls?
+  \ ensure BIOS setting AMD C1E Support is Disabled or Auto (not Enabled!)
+  \ on the desktopPC!
 
 

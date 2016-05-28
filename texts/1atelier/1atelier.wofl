@@ -1,0 +1,242 @@
+* Manjaro on atelier PC
+  \ on btrfs partition
+  \ sda1 is 3G swap
+  \ sda2 is 1M BIOS boot (because GPT)
+  \ sda3 is boot&root partition, btrfs
+  \ self IP is 192.168.1.246
+  * change from EFI System (set partition) to Linux filesystem!
+    \ //else it won't be able to mount the sysrescd.iso - nope, it's something else; manjaro iso(booting it from HDD that is) worked fine!
+    * sudo cfdisk
+      \ sda3 is EFI System partition, change to Linux filesystem!
+      \ this was set by the Thus installer! (Calamares one just closed for no reason)
+  * set Options for Add/Remove Programs
+    * DON'T set 'Remove unrequired dependencies' (because this removes qt4 when trying to remove cups, and vlc can optionally use it; and I just realized I don't have 'mc' anymore(supposedly I've had it?) else this setting removed it when I didn't notice)
+  * remove icedtea and all java
+    \ search for: java
+  * remove flash player
+    \ search for: flash
+  * remove cups
+    \ this removes: cups-pdf and manjaro-printer
+    \ if it wants to remove more, restart it (ensure 'Remove unrequired dependencies' is not set though!)
+    \ this has effect on restart, apparently the systemd services still remain until then.
+  * cannot remove avahi! can only disable it
+    * sudo systemctl stop avahi-daemon.service avahi-daemon.socket
+    * sudo systemctl disable avahi-daemon.service avahi-daemon.socket
+  * set the network in UI, in xfce's Network Manager in systray
+    \ IPv6 ignore
+    \ IPv4 manual ...
+    \ the network interface is: enp1s5
+  * add chromium, vim, mc and colordiff
+    \ if mc wasn't already!
+  * add AUR and stuff, but not by default!
+  * sshd
+    \ curiously sudo systemctl --all  does not list anything with ssh (case insensitive even)
+    * sudo vim /etc/ssh/sshd_config
+      \ Port 35791
+    * sudo systemctl enable sshd.service
+    * sudo systemctl start sshd.service
+    - sudo systemctl restart sshd
+      \ there's no message
+  * fstab
+    * settings for the btrfs root:
+      * backup /etc/fstab with .ORIG extension (via cp -a --)
+      * set the btrfs options in fstab, replace with:
+        \ async,relatime,rw,suid,dev,exec,autodefrag,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug
+        \ nouser is unrecognized!
+        \ noauto is ignored!
+        \ don't use loud because it's a HDD which we want to go slow/sleep
+      * mount / -o remount
+        \ it now has all the new options!
+      * time btrfs filesystem defragment -r -v -clzo /
+        \ 6m36.682s (total 40 failures)
+        \ down from: 5828772 to: 3854828
+    * tmpfs-es
+      \ add these lines in /etc/fstab (there's no such thing there already! but /tmp is already 50% tmpfs!)
+      \ tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+      \ tmpfs                   /var/tmp        tmpfs auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+  * from Power Manager->Display (in UI) set display to never turn off, or it will never wake up (it's black screen!) - set Display power management to Off (this disabled sleep and turn off settings! leaves blank one enabled)
+    \ blank works though
+    \ ensure 'Switch off after' is Never
+    \ the other two from above(blank and sleep) can remain! - they both work!
+    \ set them to 20 and 21 mins
+    \ well that's great something else locked it up now!
+    * set System power saving under System tab to Never!
+  * right click Start Menu->Properties->Behaviour, Ignore Favorites, Display by default, 50
+    \ to show recently used instead of favorites!
+  * edit /etc/hosts
+    \ add the hostname(atelier) to both 127.0.0.1 and ::1  to avoid that outgoing DNS request
+    * also append this after you remove the 127 entries:
+      \ wget -N -- http://winhelp2002.mvps.org/hosts.txt
+      \ vim hosts.txt
+      \ su -
+      \ # cat /home/a/hosts.txt >>/etc/hosts
+  * sudo vim /etc/default/grub
+    * GRUB_DEFAULT=0
+    * GRUB_SAVEDEFAULT=false
+      \ due to btrfs to avoid that message: "error: sparse file not allowed. Press any key to continue ..."
+    * replace this: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+      \ with:
+      \ GRUB_CMDLINE_LINUX_DEFAULT=""
+    * replace this: GRUB_CMDLINE_LINUX=""
+      \ with:
+      \ GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" rd.debug rd.udev.debug rd.memdebug=3 console=tty1 earlyprintk=vga slub_debug=U pax_sanitize_slab=full noefi"
+    * this true and should be false:
+      \ GRUB_DISABLE_RECOVERY=false
+    * make grub be text mode not graphical
+      \ uncomment:
+      \ GRUB_TERMINAL_OUTPUT=console
+      \ at some point it does go gfx mode right before startx happens
+    * set color(because green is bad on this broken monitor)
+      \ replace this line:
+      \ GRUB_COLOR_HIGHLIGHT="green/black"
+      \ with this:
+      \ GRUB_COLOR_HIGHLIGHT="green/white"
+      \ much better!
+    * time sudo update-grub
+      \ 6s
+      \ nice! it even has /boot/intel-ucode.img (this is a Celeron processor!)
+  * sudo vim /etc/resolvconf.conf
+    \ append this line:
+    \ resolv_conf_options="ndots:1 timeout:3 attempts:1 rotate"
+    \
+    \ this has effect on next reboot: cat /etc/resolv.conf to check! worked!
+      \ loopback loop (hd0,3)$isofile
+  * grub iso entries
+    * sudo mv -- 40_custom{,.ORIG}
+    * sudo chmod a-x 40_custom.ORIG
+    * place our new file inplace
+      \ //nope, root can't login: scp -4vp -P 46802 etc/grub.d/40_custom root@192.168.1.246:/etc/grub.d/
+      \ scp -4vp -P 46802 etc/grub.d/40_custom a@192.168.1.246:/tmp
+      \ ssh -v -p 46802 192.168.1.246 -l a
+      \ sudo mv 40_custom /etc/grub.d/
+      \ cd /etc/grub.d/
+      \ sudo chown root:root 40_custom
+    * edit to match
+      \ sudo vim 40_custom
+    * refresh our locally stored copy:
+      \ scp -4vp -P 46802 a@192.168.1.246:/etc/grub.d/40_custom etc/grub.d/40_custom
+    * copy iso files and make sure they're in place!
+      \ ensure /tmp has enough space! 1.8G it does after: sudo mount /tmp -o remount
+      \ scp -4vp -P 46802 ~/Downloads/isos/manjaro/manjaro-xfce* a@192.168.1.246:/tmp
+      \ (that's the .gpg, an iso and a sig)
+      \ ssh to it and verify, just in case: cd /tmp; gpg --import manjaro.gpg; gpg2 --verify *.sig
+      \ E4CD FE50 A2DA 85D5 8C8A  8C70 CAA6 A596 11C7 F07E
+      \ time sudo mv -- manjaro.gpg manjaro-xfce* /
+      \ 31sec
+      \ sudo chown root:root -- /manjaro*
+      \ sudo chmod a-wx -- /manjaro*
+      \
+      \ copy sysrescd iso:
+      \ scp -4vp -P 46802 ~/Downloads/isos/sysrcd/systemrescuecd-x86-4.7.2.iso* a@192.168.1.246:/tmp
+      \ time sha256sum -c *.SHA256SUM
+      \ 3sec
+      \ sudo mv -- systemrescuecd* /
+      \ sudo chown root:root -- /systemrescuecd*
+      \ sudo chmod a-wx -- /systemrescuecd*
+      \ //DO NOT DO THIS(with the '/' in the iso): sudo ln -s /systemrescuecd*iso /sysrescd.iso
+      \ DO THIS(without the '/' in the iso): cd / && sudo ln -s systemrescuecd*iso /sysrescd.iso
+      \ or else sysrescd itself won't find the iso on boot!
+    * time sudo update-grub
+      \ 8s
+    * sync
+      \ then reboot to test! well, reboot got stuck!! ffs had to hard reset! ssh would get stuck on login too!
+      \ May 27 18:36:32 atelier kernel: BUG: unable to handle kernel NULL pointer dereference at 0000000000000008
+      \ May 27 18:36:33 atelier kernel: IP: [<ffffffffa04ad1d5>] intel_fb_obj_invalidate+0x15/0xf0 [i915]
+      \ apparently this bug: https://bugzilla.kernel.org/show_bug.cgi?id=112891
+  * set UXA acceleration instead of the default SNA to avoid black screens and other stuff
+    \ src: https://wiki.archlinux.org/index.php/Intel_graphics#SNA_issues
+    - copy our 95-uxa.conf into /etc/X11/xorg.conf.d/95-uxa.conf
+      \ overriding it this way won't work! the first one in 90-mhwd.conf has effect!(which is 'sna')
+    * sudo cp -aL /etc/X11/xorg.conf.d/90-mhwd.conf{,.ORIG}
+      \ because it's a symlink!
+    * sudo vim /etc/X11/xorg.conf.d/90-mhwd.conf
+      \ replace this line:
+      \ Option      "AccelMethod" "sna"
+      \ with this line:
+      \ Option      "AccelMethod" "uxa"
+      \ NOTE: this file may be regenerated at some point, I know of no way to override these options since this isn't Arch Linux!
+  * blacklist nfs module
+    \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
+    \ add line:
+    \ blacklist nfs
+  * x11vnc
+    \ open Session and Startup from Start button(search for it)
+    \ go to tab named Application Autostart
+    * untick Blueman Applet (bluetooth)
+    * untick Clipman
+    * untick Print Queue Applet
+    - click Add (actually, NO, I'll run this manually after ssh-ing!)
+      \ Name: x11vnc
+      \ Description:
+      \ Command: /home/a/bin/vncstart
+    * install x11vnc (from Add Remove Programs)
+    - sudo vim /etc/hosts
+      \ optionally add this entry:
+      \ 192.168.1.246 self
+    * mkdir ~/bin
+      \ exists (forgot if I created it, or the installer?)
+    * copy vncstart from local
+      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.246:/home/a/bin/
+      \ it's already executable!
+    * start it
+      \ ~/bin/vncstart
+      \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
+    * to connect from client
+      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 atelier
+      \ where atelier points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.246 atelier
+      \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
+  * sudo systemctl enable ufw
+    \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
+    * set rules from X! (search for Firewall from Start menu)
+      * UDP 53 out for 8.8.8.8 8.8.4.4
+      * 80 and 443 tcp out
+      * 46802 tcp in
+      * 21 tcp out
+      * 46801 tcp in on lo
+        \ x11vnc
+  - there is video in firefox but not in chromium
+    \ nevermind, it was uMatrix!
+  * chromium
+    \ disable plugins except pdf(it has 2 subs if you click Details, they're both needed!)!
+    \ extensions:
+    \ uMatrix with * * * allow
+    \ uBlock Origin
+    \ https everywhere
+  * firefox
+    \ disable plugins (well it's just one)
+    \ addons: uBlock Origin, https everywhere
+  * disable ntpd, use updclock instead (this will make sure the clock is up to date by also sync-ing it to the hardware!)
+    * sudo systemctl stop ntpd
+    * sudo systemctl disable ntpd
+    * this was still on after reboot, so wtf!!!
+      \ did it again!, rebooted! yep, it's still ON!!!!11111111
+    * NetworkManager is starting this!
+      * sudo chmod a-rwx /etc/NetworkManager/dispatcher.d/10-ntpd
+    * set crond to use updclock, weekly
+      * scp -4vp -P 46802 filesystem/home/a/bin/updclock a@atelier:/home/a/bin/
+        \ run that from host
+      * sudo cp -a -- /home/a/bin/updclock /etc/cron.weekly/
+      * sudo chown root:root /etc/cron.weekly/updclock
+      * sudo chmod a-w /etc/cron.weekly/updclock
+      * sudo cp -aL -- /etc/systemd/system/multi-user.target.wants/cronie.service{,.ORIG}
+        \ made a backup, that's a symlink btw! to /usr/lib/systemd/system/cronie.service
+      * sudo vim /etc/systemd/system/multi-user.target.wants/cronie.service
+        \ add: -s  arg to crond!
+        \ looks like:
+        \ ExecStart=/usr/bin/crond -n -s
+      * sudo systemctl daemon-reload
+        \ because: Warning: cronie.service changed on disk. Run 'systemctl daemon-reload' to reload units.
+      * sudo systemctl restart cronie.service
+        \ verify with: ps axuw|grep -i crond
+        \ has -s done!
+        \ btw, crond was already running! (aka this service!)
+  * 
+
+
+* TODO/DONE:
+  - explicitly mount /tmp as tmpfs with the size= parameter!!
+    \ see how to do this by looking in gentooskyline
+  * put descent(d1x-rebirth,d2x-rebirth),lotus,dosbox
+  * get into router and tcp port forward 46802 to 192.168.1.246:46802
+    \ inc port +1 for ohome 1.210:46802 (same local port!)
+
