@@ -1,3 +1,12 @@
+hmm, seems to be working with 4.6.0-rc7 so far!
+CONFIG_MTRR=y (was set already)
+these are new:
+CONFIG_MTRR_SANITIZER=y
+CONFIG_MTRR_SANITIZER_ENABLE_DEFAULT=0
+CONFIG_MTRR_SANITIZER_SPARE_REG_NR_DEFAULT=1
+CONFIG_X86_PAT=y
+
+----------
 OK DON'T SET PAT !!!! because radeon is giving blackscreens of lockup on startup, right at luks password when it's changing mode, unless radeon.modeset=0 at kernel cmdline  in which case you remain in vga textonly mode and startx aka X won't start! also sysrq won't work! (or numlock, obviously)
 sometimes it works, sometimes it locks up; last time I couldn't boot at all - it would always lock up on blackscreen!! so, go away!
 ---no:

@@ -709,7 +709,31 @@
   \ the port forward connects to remote's 127.0.1.2:5900 when you connect to 127.0.0.1:55900 on your local
 
 * are you getting RCU stalls?
+  \ INFO: rcu_sched self-detected stall on CPU
+  \ INFO: rcu_sched detected stalls on CPUs/tasks:
+  \
+  \ something about amd_e400_idle
+  \
+  \ fix:
   \ ensure BIOS setting AMD C1E Support is Disabled or Auto (not Enabled!)
   \ on the desktopPC!
+
+* sunxi_debug
+  \ https://github.com/allwinner-zh/linux-3.4-sunxi/blob/e5b270c05bf45557233f54ccb5a5e4de8f67123a/arch/arm/mach-sunxi/sunxi-debug.c
+
+* Lessons In Electric Circuits
+  \ free
+  \ https://www.ibiblio.org/kuphaldt/electricCircuits/
+
+* Recoll is a good alternative to Everything(which runs on Windows) or, if you will, Google Desktop
+  \ https://www.lesbonscomptes.com/recoll/features.html
+
+* looks like CONFIG_X86_PAT can be enabled in kernel config now (tested on kernel 4.6.0-rc7 in gentoo non-hardened, on Z575)
+  \ CONFIG_MTRR=y (was set already)
+  \ these are new:
+  \ CONFIG_MTRR_SANITIZER=y
+  \ CONFIG_MTRR_SANITIZER_ENABLE_DEFAULT=0
+  \ CONFIG_MTRR_SANITIZER_SPARE_REG_NR_DEFAULT=1
+  \ CONFIG_X86_PAT=y
 
 

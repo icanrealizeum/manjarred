@@ -160,19 +160,25 @@
     \ add line:
     \ blacklist nfs
   * x11vnc
-    \ open Session and Startup from Start button(search for it)
-    \ go to tab named Application Autostart
-    * untick Blueman Applet (bluetooth)
-    * untick Clipman
-    * untick Print Queue Applet
-    - click Add (actually, NO, I'll run this manually after ssh-ing!)
-      \ Name: x11vnc
-      \ Description:
-      \ Command: /home/a/bin/vncstart
-    * install x11vnc (from Add Remove Programs)
+    * install it
+      * open Session and Startup from Start button(search for it)
+      * go to tab named Application Autostart
+      * untick Blueman Applet (bluetooth)
+      * untick Clipman
+      * untick Print Queue Applet
+      - click Add (actually, NO, I'll run this manually after ssh-ing!)
+        \ Name: x11vnc
+        \ Description:
+        \ Command: /home/a/bin/vncstart
+      * install x11vnc (from Add Remove Programs)
     - sudo vim /etc/hosts
       \ optionally add this entry:
       \ 192.168.1.246 self
+    * open Power Manager
+      \ Security tab
+      \ untick 'Lock screen when system is going for sleep'
+      \ set 'Automatically lock the session' Never
+      \ otherwise vnc-ing to this, will require someone physically being there to unlock it by typing in the password (screen which cannot be seen from vnc!)
     * mkdir ~/bin
       \ exists (forgot if I created it, or the installer?)
     * copy vncstart from local
@@ -230,7 +236,26 @@
         \ verify with: ps axuw|grep -i crond
         \ has -s done!
         \ btw, crond was already running! (aka this service!)
-  * 
+  * install recoll and iotop and evince(for pdf viewing from recoll's search result links)
+    \ from Add/Remove Programs
+    \ poppler is already installed(for pdf indexing)
+    * set to realtime indexing and also start daemon now but don't start it from that button(let the daemon do it; else it will want to kill it first!)
+    * go to Preferences->Index configuration, add Stemming Languages-> romanian
+    * select Preferences->(all languages)
+  * open Window Manager (from Start, search for it)
+    * switch theme from Vertex-Maia to Variation (to can see the top right buttons: minimize, maximize etc.)
+  * install qTox (not uTox! because this is too bugged!)
+    * untick General->Connection Settings->Enable IPv6
+      \ click Reconnect!
+    * in Firewall, Add Rule in Simple mode
+      \ Name: qTox
+      \ Policy: Allow
+      \ Direction: Both
+      \ Protocol: Both
+      \ Port: 33445
+      \ Add! (this actually adds 2 rules)
+      \ TODO: see if these can be relaxed? can't really test unless I'm on a different real IP!
+      \ btw, the status goes green regardless or the existence of this rule, even though I've had Deny on incoming/outgoing both!
 
 
 * TODO/DONE:
