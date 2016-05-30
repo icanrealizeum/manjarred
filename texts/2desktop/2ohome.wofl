@@ -1,34 +1,41 @@
-* Manjaro on atelier PC
+* Manjaro on desktop PC (ohome)
   \ on btrfs partition
-  \ sda1 is 3G swap
-  \ sda2 is 1M BIOS boot (because GPT)
-  \ sda3 is boot&root partition, btrfs
-  \ self IP is 192.168.1.246
-  * change from EFI System (set partition) to Linux filesystem!
-    \ //else it won't be able to mount the sysrescd.iso - nope, it's something else; manjaro iso(booting it from HDD that is) worked fine!
-    * sudo cfdisk
-      \ sda3 is EFI System partition, change to Linux filesystem!
-      \ this was set by the Thus installer! (Calamares one just closed for no reason)
+  \ sda1 is 12G swap
+  \ sda2 is 8M BIOS boot (because GPT) [8M was minimum in Calamares installer!]
+  \ sda3 is boot&root partition, btrfs (900000MB(878.9G), free space 900+MB(972G))
+  \ self IP is 192.168.1.210
+  \ there's a Freespace first partition 2048->2048 0 sectores, 0B size! dno wtf is that about!(Calamares!)
   * set Options for Add/Remove Programs
     * DON'T set 'Remove unrequired dependencies' (because this removes qt4 when trying to remove cups, and vlc can optionally use it; and I just realized I don't have 'mc' anymore(supposedly I've had it?) else this setting removed it when I didn't notice)
+    * add AUR and stuff, but not by default!
   * remove icedtea and all java
     \ search for: java
+    \ removed: icedtea-web jre8-openjdk jre8-openjdk-headless java-runtime-common
   * remove flash player
     \ search for: flash
+    \ removed: flashplugin
   * remove cups
-    \ this removes: cups-pdf and manjaro-printer
+    \ this removes: cups-pdf and manjaro-printer cups
     \ if it wants to remove more, restart it (ensure 'Remove unrequired dependencies' is not set though!)
     \ this has effect on restart, apparently the systemd services still remain until then.
+    * remove cups-filters too
+      \ removes: hplip foomatic-db-engine cups-filters
+    * remove cups-pk-helper
+      \ removes: cups-pk-helper
+    * remove system-config-printer
+    * remove python-pycups
+    * remove splix
   * cannot remove avahi! can only disable it
     * sudo systemctl stop avahi-daemon.service avahi-daemon.socket
     * sudo systemctl disable avahi-daemon.service avahi-daemon.socket
   * set the network in UI, in xfce's Network Manager in systray
     \ IPv6 ignore
     \ IPv4 manual ...
-    \ the network interface is: enp1s5
+    \ the network interface is: enp2s0
+    \ enp2s0 is the used one (the lower socket on the back!)
+    \ enp3s0 is unused(likely the higher socket on the back) - set ipv4 to Disabled and ipv6 to ignored!
   * add chromium, vim, mc and colordiff
-    \ if mc wasn't already!
-  * add AUR and stuff, but not by default!
+    \ yep mc wasn't already!
   * sshd
     \ curiously sudo systemctl --all  does not list anything with ssh (case insensitive even)
     * sudo vim /etc/ssh/sshd_config
@@ -37,6 +44,40 @@
     * sudo systemctl start sshd.service
     - sudo systemctl restart sshd
       \ there's no message
+  * x11vnc
+    * install it
+      * install x11vnc (from Add Remove Programs)
+    * remove stuff from startup
+      * open Session and Startup from Start button(search for it)
+      * go to tab named Application Autostart
+      * untick Blueman Applet (bluetooth)
+      * untick Clipman
+      - untick Print Queue Applet
+        \ this package got removed
+      - click Add (actually, NO, I'll run this manually after ssh-ing!)
+        \ Name: x11vnc
+        \ Description:
+        \ Command: /home/a/bin/vncstart
+    - sudo vim /etc/hosts
+      \ optionally add this entry:
+      \ 192.168.1.210 self
+    * open Power Manager
+      \ Security tab
+      \ untick 'Lock screen when system is going for sleep'
+      \ set 'Automatically lock the session' Never
+      \ otherwise vnc-ing to this, will require someone physically being there to unlock it by typing in the password (screen which cannot be seen from vnc!)
+    * mkdir ~/bin
+      \ exists (forgot if I created it, or the installer?)
+    * copy vncstart from local
+      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.210:/home/a/bin/
+      \ it's already executable!
+    * start it
+      \ ~/bin/vncstart
+      \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
+    * to connect from client
+      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 atelier
+      \ where atelier points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.210 atelier
+      \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
   * fstab
     * settings for the btrfs root:
       * backup /etc/fstab with .ORIG extension (via cp -a --)
@@ -48,8 +89,8 @@
       * mount / -o remount
         \ it now has all the new options!
       * time btrfs filesystem defragment -r -v -clzo /
-        \ 6m36.682s (total 40 failures)
-        \ down from: 5828772 to: 3854828
+        \ 2m47.869s (total 61 failures)
+        \ down from: 5149984 to: 3346204
     * tmpfs-es
       \ add these lines in /etc/fstab (there's no such thing there already! but /tmp is already 50% tmpfs!)
       \ tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
@@ -74,12 +115,12 @@
     * GRUB_DEFAULT=0
     * GRUB_SAVEDEFAULT=false
       \ due to btrfs to avoid that message: "error: sparse file not allowed. Press any key to continue ..."
-    * replace this: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+    * replace this: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=52fe25fa-e76a-4595-bb3a-00c4c82f9209"
       \ with:
       \ GRUB_CMDLINE_LINUX_DEFAULT=""
     * replace this: GRUB_CMDLINE_LINUX=""
       \ with:
-      \ GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" rd.debug rd.udev.debug rd.memdebug=3 console=tty1 earlyprintk=vga slub_debug=U pax_sanitize_slab=full noefi"
+      \ GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" rd.debug rd.udev.debug rd.memdebug=3 console=tty1 earlyprintk=vga slub_debug=U pax_sanitize_slab=full noefi resume=UUID=52fe25fa-e76a-4595-bb3a-00c4c82f9209"
     * this true and should be false:
       \ GRUB_DISABLE_RECOVERY=false
     * make grub be text mode not graphical
@@ -100,24 +141,24 @@
     \ resolv_conf_options="ndots:1 timeout:3 attempts:1 rotate"
     \
     \ this has effect on next reboot: cat /etc/resolv.conf to check! worked!
-      \ loopback loop (hd0,3)$isofile
   * grub iso entries
+    * cd /etc/grub.d/
     * sudo mv -- 40_custom{,.ORIG}
     * sudo chmod a-x 40_custom.ORIG
     * place our new file inplace
-      \ //nope, root can't login: scp -4vp -P 46802 etc/grub.d/40_custom root@192.168.1.246:/etc/grub.d/
-      \ scp -4vp -P 46802 etc/grub.d/40_custom a@192.168.1.246:/tmp
-      \ ssh -v -p 46802 192.168.1.246 -l a
+      \ //nope, root can't login: scp -4vp -P 46802 etc/grub.d/40_custom root@192.168.1.210:/etc/grub.d/
+      \ scp -4vp -P 46802 etc/grub.d/40_custom a@192.168.1.210:/tmp
+      \ ssh -v -p 46802 192.168.1.210 -l a
       \ sudo mv 40_custom /etc/grub.d/
       \ cd /etc/grub.d/
       \ sudo chown root:root 40_custom
     * edit to match
       \ sudo vim 40_custom
     * refresh our locally stored copy:
-      \ scp -4vp -P 46802 a@192.168.1.246:/etc/grub.d/40_custom etc/grub.d/40_custom
+      \ scp -4vp -P 46802 a@192.168.1.210:/etc/grub.d/40_custom etc/grub.d/40_custom
     * copy iso files and make sure they're in place!
       \ ensure /tmp has enough space! 1.8G it does after: sudo mount /tmp -o remount
-      \ scp -4vp -P 46802 ~/Downloads/isos/manjaro/manjaro-xfce* a@192.168.1.246:/tmp
+      \ scp -4vp -P 46802 ~/Downloads/isos/manjaro/manjaro-xfce* a@192.168.1.210:/tmp
       \ (that's the .gpg, an iso and a sig)
       \ ssh to it and verify, just in case: cd /tmp; gpg --import manjaro.gpg; gpg2 --verify *.sig
       \ E4CD FE50 A2DA 85D5 8C8A  8C70 CAA6 A596 11C7 F07E
@@ -127,7 +168,7 @@
       \ sudo chmod a-wx -- /manjaro*
       \
       \ copy sysrescd iso:
-      \ scp -4vp -P 46802 ~/Downloads/isos/sysrcd/systemrescuecd-x86-4.7.2.iso* a@192.168.1.246:/tmp
+      \ scp -4vp -P 46802 ~/Downloads/isos/sysrcd/systemrescuecd-x86-4.7.2.iso* a@192.168.1.210:/tmp
       \ time sha256sum -c *.SHA256SUM
       \ 3sec
       \ sudo mv -- systemrescuecd* /
@@ -159,38 +200,6 @@
     \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
     \ add line:
     \ blacklist nfs
-  * x11vnc
-    * install it
-      * open Session and Startup from Start button(search for it)
-      * go to tab named Application Autostart
-      * untick Blueman Applet (bluetooth)
-      * untick Clipman
-      * untick Print Queue Applet
-      - click Add (actually, NO, I'll run this manually after ssh-ing!)
-        \ Name: x11vnc
-        \ Description:
-        \ Command: /home/a/bin/vncstart
-      * install x11vnc (from Add Remove Programs)
-    - sudo vim /etc/hosts
-      \ optionally add this entry:
-      \ 192.168.1.246 self
-    * open Power Manager
-      \ Security tab
-      \ untick 'Lock screen when system is going for sleep'
-      \ set 'Automatically lock the session' Never
-      \ otherwise vnc-ing to this, will require someone physically being there to unlock it by typing in the password (screen which cannot be seen from vnc!)
-    * mkdir ~/bin
-      \ exists (forgot if I created it, or the installer?)
-    * copy vncstart from local
-      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.246:/home/a/bin/
-      \ it's already executable!
-    * start it
-      \ ~/bin/vncstart
-      \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
-    * to connect from client
-      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 atelier
-      \ where atelier points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.246 atelier
-      \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
   * sudo systemctl enable ufw
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
     * set rules from X! (search for Firewall from Start menu)
@@ -262,6 +271,6 @@
   - explicitly mount /tmp as tmpfs with the size= parameter!!
     \ see how to do this by looking in gentooskyline
   * put descent(d1x-rebirth,d2x-rebirth),lotus,dosbox
-  * get into router and tcp port forward 46802 to 192.168.1.246:46802
+  * get into router and tcp port forward 46802 to 192.168.1.210:46802
     \ inc port +1 for ohome 1.210:46802 (same local port!)
-
+  * remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
