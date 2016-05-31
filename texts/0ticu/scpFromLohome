@@ -1,0 +1,19 @@
+#!/bin/bash
+
+fromremotepath="$1"
+tolocalpath="$2"
+
+if test -z "$tolocalpath"; then
+  tolocalpath="/tmp/"
+fi
+
+if test -z "$fromremotepath"; then
+  echo "empty source arg"
+  exit 2
+fi
+
+set -x
+time scp -i ~/ticu/dns/lekeyofhss/privk -4vp -P 46802 root@lohome:"$fromremotepath" "$tolocalpath"
+set +x
+
+

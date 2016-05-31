@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#1st time ssh
+
+ssh -i ~/ticu/dns/lekeyofhss/privk -v -p 46802 -l root -L 5900:127.0.1.2:46801 lohome
+

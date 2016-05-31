@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#FIXME: last arg should be remote(or first? but then all cmds should have remote be first!) so we can use wildcards for source files!
+
+fromlocalpath="$1"
+toremotepath="$2"
+
+if test -z "$fromlocalpath" -o -z "$toremotepath"; then
+  echo "empty args?"
+  exit 2
+fi
+
+set -x
+time scp -i ~/ticu/dns/lekeyofhss/privk -4vp -r -P 46802 "$fromlocalpath" root@lohome:"$toremotepath"
+set +x
+
+

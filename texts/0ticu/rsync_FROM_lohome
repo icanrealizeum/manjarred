@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+#-L 5900:127.0.1.2:46801
+RSYNC_REMOTEHOST='lohome' RSYNC_SSH_VAL='ssh -i /home/zazdxscf/ticu/dns/lekeyofhss/privk -p 46802 -l root' /home/zazdxscf/rsync/genericupdateTOfrombasedir '/' '/home/zazdxscf/ohome'
+
+#this is what above ^ executed:
+#sudo rsync --super --verbose --compress --partial --progress --recursive --links --perms --times --group --owner --no-devices --no-specials --no-hard-links --no-acls --no-xattrs --checksum --delay-updates --no-ignore-errors --no-force --numeric-ids --update --info=SYMSAFE,DEL,NAME,SKIP,STATS --no-munge-links --preallocate --sparse --one-file-system --no-prune-empty-dirs --timeout=60 --protect-args --files-from=/home/zazdxscf/ohome/rsync_filesfrom.list --exclude-from=/home/zazdxscf/ohome/rsync_exclude.list --delete-excluded --backup --backup-dir=/home/zazdxscf/ohome/rsync-backed/ --update --delete-after '--rsh=ssh -i /home/zazdxscf/ticu/dns/lekeyofhss/privk -v -p 46802 -l root' -- lohome:// /home/zazdxscf/ohome/gentoo//
+
