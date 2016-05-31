@@ -44,6 +44,9 @@
     * sudo systemctl start sshd.service
     - sudo systemctl restart sshd
       \ there's no message
+    * scp root/.ssh/authorized_keys to can login as root via key
+    * add atelier's auth key:
+      \ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHfDYACL9Tq0+74/VhdGXN8k2KoWyG+KPma9Duhswr7Y root@atelier
   * x11vnc
     * install it
       * install x11vnc (from Add Remove Programs)
@@ -154,7 +157,7 @@
       \ sudo chown root:root 40_custom
     * edit to match
       \ sudo vim 40_custom
-    * refresh our locally stored copy:
+    * refresh our locally stored copy(if needed!):
       \ scp -4vp -P 46802 a@192.168.1.210:/etc/grub.d/40_custom etc/grub.d/40_custom
     * copy iso files and make sure they're in place!
       \ ensure /tmp has enough space! 1.8G it does after: sudo mount /tmp -o remount
@@ -175,7 +178,7 @@
       \ sudo chown root:root -- /systemrescuecd*
       \ sudo chmod a-wx -- /systemrescuecd*
       \ //DO NOT DO THIS(with the '/' in the iso): sudo ln -s /systemrescuecd*iso /sysrescd.iso
-      \ DO THIS(without the '/' in the iso): cd / && sudo ln -s systemrescuecd*iso /sysrescd.iso
+      \ DO THIS(without the '/' in the iso; also can't do this with cd while inside mc): cd / && sudo ln -s systemrescuecd*iso /sysrescd.iso
       \ or else sysrescd itself won't find the iso on boot!
     * time sudo update-grub
       \ 8s
@@ -184,24 +187,14 @@
       \ May 27 18:36:32 atelier kernel: BUG: unable to handle kernel NULL pointer dereference at 0000000000000008
       \ May 27 18:36:33 atelier kernel: IP: [<ffffffffa04ad1d5>] intel_fb_obj_invalidate+0x15/0xf0 [i915]
       \ apparently this bug: https://bugzilla.kernel.org/show_bug.cgi?id=112891
-  * set UXA acceleration instead of the default SNA to avoid black screens and other stuff
-    \ src: https://wiki.archlinux.org/index.php/Intel_graphics#SNA_issues
-    - copy our 95-uxa.conf into /etc/X11/xorg.conf.d/95-uxa.conf
-      \ overriding it this way won't work! the first one in 90-mhwd.conf has effect!(which is 'sna')
-    * sudo cp -aL /etc/X11/xorg.conf.d/90-mhwd.conf{,.ORIG}
-      \ because it's a symlink!
-    * sudo vim /etc/X11/xorg.conf.d/90-mhwd.conf
-      \ replace this line:
-      \ Option      "AccelMethod" "sna"
-      \ with this line:
-      \ Option      "AccelMethod" "uxa"
-      \ NOTE: this file may be regenerated at some point, I know of no way to override these options since this isn't Arch Linux!
   * blacklist nfs module
     \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
     \ add line:
     \ blacklist nfs
   * sudo systemctl enable ufw
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
+    - apparently something set ENABLED=yes in /etc/ufw/ufw.conf but wasn't the systemctl! or the UI(?!)
+      \ needed a reboot after upgrading packages!!! - works now!
     * set rules from X! (search for Firewall from Start menu)
       * UDP 53 out for 8.8.8.8 8.8.4.4
       * 80 and 443 tcp out
@@ -209,11 +202,13 @@
       * 21 tcp out
       * 46801 tcp in on lo
         \ x11vnc
+        \ apparently works even without this!
   - there is video in firefox but not in chromium
     \ nevermind, it was uMatrix!
   * chromium
     \ disable plugins except pdf(it has 2 subs if you click Details, they're both needed!)!
     \ extensions:
+    \ Sync-ing takes care of adding these same extensions!
     \ uMatrix with * * * allow
     \ uBlock Origin
     \ https everywhere
@@ -228,7 +223,7 @@
     * NetworkManager is starting this!
       * sudo chmod a-rwx /etc/NetworkManager/dispatcher.d/10-ntpd
     * set crond to use updclock, weekly
-      * scp -4vp -P 46802 filesystem/home/a/bin/updclock a@atelier:/home/a/bin/
+      * scp -4vp -P 46802 filesystem/home/a/bin/updclock a@lohome:/home/a/bin/
         \ run that from host
       * sudo cp -a -- /home/a/bin/updclock /etc/cron.weekly/
       * sudo chown root:root /etc/cron.weekly/updclock
@@ -265,6 +260,17 @@
       \ Add! (this actually adds 2 rules)
       \ TODO: see if these can be relaxed? can't really test unless I'm on a different real IP!
       \ btw, the status goes green regardless or the existence of this rule, even though I've had Deny on incoming/outgoing both!
+    * in Fireall, also add rule(or see spam in logs):
+      \ Advanced,
+      \ From Port: 33445
+      \ Allow Out, any interface
+  * remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
+    - (NOPE! this is for root user only!) vim /etc/sudoers
+      \ comment out line:
+      \ root ALL=(ALL) ALL
+    * vim /etc/sudoers.d/10-installer
+      \ comment out this line:
+      \ %wheel ALL=(ALL) ALL
 
 
 * TODO/DONE:
@@ -273,4 +279,7 @@
   * put descent(d1x-rebirth,d2x-rebirth),lotus,dosbox
   * get into router and tcp port forward 46802 to 192.168.1.210:46802
     \ inc port +1 for ohome 1.210:46802 (same local port!)
-  * remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
+  * fail2ban
+
+
+

@@ -37,6 +37,10 @@
     * sudo systemctl start sshd.service
     - sudo systemctl restart sshd
       \ there's no message
+    * scp root/.ssh/authorized_keys to can login as root via key
+    * scp sshd_config and restart sshd
+    * add ohome's auth key
+      \ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrE3BSaf3g1WbUs63fnQRI7d4uYAiT5qyH2Jz+jTJm4 root@ohome
   * fstab
     * settings for the btrfs root:
       * backup /etc/fstab with .ORIG extension (via cp -a --)

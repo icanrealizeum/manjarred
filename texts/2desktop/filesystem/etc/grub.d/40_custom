@@ -19,7 +19,7 @@ menuentry "sysrescd ISO" {
   set isofile="/sysrescd.iso"
 #  loopback loop (hd0,2)$isofile #won't work with LUKS
   loopback loop (hd0,3)$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks /boot where iso is stored
-  linux (loop)/isolinux/rescue64 isoloop=$isofile setkmap=us dns=8.8.8.8 dostartx rootpass=/ gateway=192.168.1.1 eth0=192.168.1.246 nodhcp nocache
+  linux (loop)/isolinux/rescue64 isoloop=$isofile setkmap=us dns=8.8.8.8 dostartx rootpass=/ gateway=192.168.1.1 eth0=192.168.1.210 nodhcp nocache
   initrd (loop)/isolinux/initram.igz
 }
 
