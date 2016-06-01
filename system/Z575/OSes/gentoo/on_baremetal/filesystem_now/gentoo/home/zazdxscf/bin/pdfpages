@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if test "$#" -ne "1"; then
+  echo "pass only one arg: filenamecontainingurlsoneperline"
+  exit 2
+fi
+
+inputfname="$1"
+
+for url in `cat "$inputfname"` ; do #FIXME: urls with spaces in them?
+  sanitize="${url//\//_}"
+  sanitize="${sanitize//:/_}"
+  sanitize="${sanitize//./_}"
+  sanitize="${sanitize//%/_}"
+  pdfoutfname="${url##*/}_${sanitize}.pdf"
+  echo "$pdfoutfname"
+  pdfpage "$url" "$pdfoutfname"
+done
+

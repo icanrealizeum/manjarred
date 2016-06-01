@@ -37,13 +37,22 @@ start()
 	ebegin "Mounting network filesystems"
 	mount -at $fs
 	rc=$?
-	if [ "$RC_UNAME" = Linux ]; then
+	if [ "$RC_UNAME" = Linux ] && [ $rc = 0 ]; then
 		mount -a -O _netdev
 		rc=$?
 	fi
 	ewend $rc "Could not mount all network filesystems"
-	if [ "$RC_UNAME" != Linux ]; then
+	if [ -z "$critical_mounts" ]; then
 		rc=0
+	else
+		for x in ${critical_mounts}; do
+		fstabinfo -q $x || continue
+		if ! mountinfo -q $x; then
+			critical=x
+			eerror "Failed to mount $x"
+		fi
+		done
+		[ -z "$critical" ] && rc=0
 	fi
 	return $rc
 }
@@ -72,7 +81,7 @@ stop()
 	retval=$?
 
 	eoutdent
-	if [ "$RC_UNAME" = Linux ]; then
+	if [ "$RC_UNAME" = Linux ] && [ $retval = 0 ]; then
 		umount -a -O _netdev
 		retval=$?
 	fi

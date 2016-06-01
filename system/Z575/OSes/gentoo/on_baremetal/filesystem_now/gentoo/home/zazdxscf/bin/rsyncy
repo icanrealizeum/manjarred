@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#XXX: WARNING! Do not pass arg '-v' to ssh because this will break pipe when keepalive happens! - nevermind, it's something else!!!! broken pipe happens after a short while regardless of -v; it's due to [sender] io timeout after 60 seconds -- exiting  hmm https://bugzilla.samba.org/show_bug.cgi?id=7757#c3  so, using --no-compress as fix!
 #example usage: rsyncy 127.0.0.21:/somedir localdirhere/ --rsh='ssh -l root -p 8822'
 #//old example usage: rsyncy 'ssh -l root -p 8822' 127.0.0.21:/somedir localdirhere/
 
@@ -54,7 +55,7 @@ set -x
 #echo "${EXTRA_RSYNCY_PARAMS[@]}"
 #echo "$EXTRA_RSYNCY_PARAMS"
 #echo "${FOO[@]}"
-$sudo rsync --super --verbose --compress --partial --progress $partialarchive --checksum --delay-updates --no-ignore-errors --no-force --numeric-ids $update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60 --protect-args "$@" -- "$src" "$dest" | tee "$tmpout"
+time $sudo rsync --super --verbose --no-compress --partial --progress $partialarchive --checksum --delay-updates --no-ignore-errors --no-force --numeric-ids $update --info=SYMSAFE,DEL,NAME,SKIP,STATS  --no-munge-links  --preallocate --sparse --one-file-system  --no-prune-empty-dirs  --timeout=60 --protect-args "$@" -- "$src" "$dest" | tee "$tmpout"
 #--rsh="$ssh"
 set +x
 #XXX: args that won't be recognized(rsync  version 3.1.1  protocol version 31): --no-update --no-copy-links --no-copy-unsafe-links --no-safe-links --no-fake-super --no-remove-source-files

@@ -17,6 +17,12 @@
 ::1		localhost gobaby
 #^ without that, `hostname -f` will DNS request it as `AAAA? hostname` where hostname is `uname -n` (or `hostname`)     
 
+#l=local, r=remote (the r should be changed by a script! depending on the real IP)
+192.168.1.246 latelier
+192.168.1.246 ratelier
+192.168.1.210 lohome
+192.168.1.210 rohome
+192.168.1.233 lmighty4
 
 #
 # Imaginary network.
@@ -236,6 +242,13 @@
 127.0.0.3 chatenabled.mail.google.com
 127.0.0.3 talk.google.com
 127.0.0.3 talkx.l.google.com
+
+#nopenopenopenopenope
+127.0.0.3 gnu.org
+127.0.0.3 www.gnu.org
+127.0.0.3 savannah.gnu.org
+127.0.0.3 git.savannah.gnu.org
+127.0.0.3 debbugs.gnu.org
 
 127.0.0.3	vine.co
 127.0.0.3	instagram.com

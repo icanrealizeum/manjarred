@@ -22,5 +22,7 @@
 # You should consult your kernel documentation and configuration
 # for a list of modules and their options.
 
-modules="vboxdrv vboxnetflt vboxnetadp"
+#XXX: no more virtualbox needed! 28may2016 modules="vboxdrv vboxnetflt vboxnetadp kvm-amd" #good! no guru meditation! (4.6.0-rc7)
+#modules="vboxdrv vboxnetflt vboxnetadp" #bad will guru meditation after a while! (4.6.0-rc7)
+
 

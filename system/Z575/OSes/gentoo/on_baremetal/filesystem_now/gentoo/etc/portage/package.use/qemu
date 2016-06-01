@@ -1,5 +1,9 @@
-app-emulation/qemu python filecaps -xfs -xen xattr -vte vnc -virtfs vhost-net -vde uuid -usbredir -usb -tls threads -tci -systemtap -static-user -static-softmmu -static -ssh -spice -snappy -smartcard seccomp -sdl2 -sdl -sasl -rbd pulseaudio png pin-upstream-blobs opengl -numa -nls -nfs ncurses -lzo jpeg -iscsi -infiniband -gtk2 -gtk -glusterfs fdt -debug curl caps -bluetooth -alsa aio -accessibility
+app-emulation/qemu python filecaps -xfs -xen xattr vte vnc virtfs vhost-net -vde uuid -usbredir -usb gnutls tls threads -tci -systemtap -static-user -static-softmmu -static -ssh -spice -snappy -smartcard seccomp -sdl2 sdl sdl2 -sasl -rbd pulseaudio png pin-upstream-blobs opengl -numa -nls -nfs ncurses lzo jpeg -iscsi -infiniband gtk2 gtk -glusterfs fdt -debug curl caps -bluetooth -alsa aio -accessibility qemu_user_targets_x86_64
 
 
-#too slow? maybe try with tci enabled, see if it speeds up or down
+#XXX: 11 may 2016
+#toggled to: vte gtk gtk2 lzo sdl virtfs
+#added: gnutls qemu_user_targets_x86_64 sdl2
+
+#XXX: too slow? maybe try with tci enabled, see if it speeds up or down
 

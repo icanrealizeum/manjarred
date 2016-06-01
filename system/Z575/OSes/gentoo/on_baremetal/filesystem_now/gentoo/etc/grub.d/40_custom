@@ -15,3 +15,19 @@ menuentry "System restart" {
 }
 
 
+menuentry "sysrescd ISO" {
+  set isofile="/sysrescd.iso"
+#  loopback loop (hd0,2)$isofile #won't work with LUKS
+  loopback loop /$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks /boot where iso is stored
+  linux (loop)/isolinux/rescue64 isoloop=$isofile setkmap=us nocache
+  initrd (loop)/isolinux/initram.igz
+}
+
+menuentry "manjaro ISO" {
+  set isofile="/manjaro-xfce-16.06-rc1-x86_64.iso"
+#  loopback loop (hd0,2)$isofile #won't work with LUKS
+  loopback loop /$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks device where iso is stored
+  linux (loop)/manjaro/boot/x86_64/manjaro setkmap=us img_dev=/dev/mapper/luks_on_sda2_boot img_loop=$isofile misobasedir=manjaro misolabel=MJRO1606 nouveau.modeset=1 i915.modeset=1 radeon.modeset=1 logo.nologo overlay=free showopts timezone=Europe/Bucharest locale.LANG=en_US.utf8
+  initrd (loop)/manjaro/boot/x86_64/manjaro.img
+}
+

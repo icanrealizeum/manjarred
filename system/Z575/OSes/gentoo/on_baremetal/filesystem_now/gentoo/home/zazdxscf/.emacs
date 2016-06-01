@@ -248,5 +248,15 @@
       helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-ff-file-name-history-use-recentf t)
 
+(set-default 'truncate-lines nil)
+(setq truncate-partial-width-windows nil)
+;src: https://www.emacswiki.org/emacs/TruncateLines
+
+
 (helm-mode 1)
 
+;something else above is making this work! and if I enable the below too then it never works, keeps returning to the same exact position
+;(setq save-place-file "~/.emacs.d/saveplace") ;; keep my ~/ clean
+;(setq-default save-place t)                   ;; activate it for all buffers
+;(require 'saveplace)                          ;; get the package
+;src: https://emacs-fu.blogspot.com/2009/05/remembering-your-position-in-file.html
