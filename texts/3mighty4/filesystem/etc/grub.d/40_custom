@@ -1,0 +1,33 @@
+#!/bin/sh
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+menuentry "System shutdown" {
+   echo "System shutting down..."
+   halt
+}
+
+menuentry "System restart" {
+   echo "System rebooting..."
+   reboot
+}
+
+
+menuentry "sysrescd ISO" {
+  set isofile="/sysrescd.iso"
+#  loopback loop (hd0,2)$isofile #won't work with LUKS
+  loopback loop (hd0,3)$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks /boot where iso is stored
+  linux (loop)/isolinux/rescue64 isoloop=$isofile setkmap=us dns=8.8.8.8 dostartx rootpass=/ gateway=192.168.1.1 eth0=192.168.1.233 nodhcp nocache
+  initrd (loop)/isolinux/initram.igz
+}
+
+menuentry "manjaro ISO" {
+  set isofile="/manjaro-xfce-16.06-rc1-x86_64.iso"
+#  loopback loop (hd0,2)$isofile #won't work with LUKS
+  loopback loop (hd0,3)$isofile #works with LUKS but only half-way! iso's initram needs to be able to open luks device where iso is stored
+  linux (loop)/manjaro/boot/x86_64/manjaro setkmap=us img_dev=/dev/disk/by-label/myroot img_loop=$isofile misobasedir=manjaro misolabel=MJRO1606 nouveau.modeset=1 i915.modeset=1 radeon.modeset=1 logo.nologo overlay=free showopts timezone=Europe/Bucharest locale.LANG=en_US.utf8
+  initrd (loop)/manjaro/boot/x86_64/manjaro.img
+}
+

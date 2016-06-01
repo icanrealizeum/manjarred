@@ -1,10 +1,9 @@
-* Manjaro on desktop PC (ohome)
+* Manjaro on mighty4
   \ on btrfs partition
-  \ sda1 is 12G swap
-  \ sda2 is 8M BIOS boot (because GPT) [8M was minimum in Calamares installer!]
+  \ sda1 is 9G swap
+  \ sda2 is 1M BIOS boot (because GPT) [leftover from nixos/guixsd attempt]
   \ sda3 is boot&root partition, btrfs (900000MB(878.9G), free space 900+MB(972G))
-  \ self IP is 192.168.1.210
-  \ there's a Freespace first partition 2048->2048 0 sectores, 0B size! dno wtf is that about!(Calamares!)
+  \ self IP is 192.168.1.233
   * set Options for Add/Remove Programs
     * DON'T set 'Remove unrequired dependencies' (because this removes qt4 when trying to remove cups, and vlc can optionally use it; and I just realized I don't have 'mc' anymore(supposedly I've had it?) else this setting removed it when I didn't notice)
     * add AUR and stuff, but not by default!
@@ -31,22 +30,20 @@
   * set the network in UI, in xfce's Network Manager in systray
     \ IPv6 ignore
     \ IPv4 manual ...
-    \ the network interface is: enp2s0
-    \ enp2s0 is the used one (the lower socket on the back!)
-    \ enp3s0 is unused(likely the higher socket on the back) - set ipv4 to Disabled and ipv6 to ignored!
+    \ the network interface is: enp0s25
   * add chromium, vim, mc and colordiff
     \ yep mc wasn't already!
+  * virtualbox
+    \ install packages: virtualbox and (not yet)virtualbox-host-dkms and linux44-virtualbox-host-modules (uname -a should tell you kernel is 4.4.11-1-MANJARO)
   * sshd
     \ curiously sudo systemctl --all  does not list anything with ssh (case insensitive even)
     * sudo vim /etc/ssh/sshd_config
-      \ Port 46802
+      \ Port 802
     * sudo systemctl enable sshd.service
     * sudo systemctl start sshd.service
     - sudo systemctl restart sshd
       \ there's no message
     * scp root/.ssh/authorized_keys to can login as root via key
-    * add atelier's auth key:
-      \ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHfDYACL9Tq0+74/VhdGXN8k2KoWyG+KPma9Duhswr7Y root@atelier
   * x11vnc
     * install it
       * install x11vnc (from Add Remove Programs)
@@ -63,7 +60,7 @@
         \ Command: /home/a/bin/vncstart
     - sudo vim /etc/hosts
       \ optionally add this entry:
-      \ 192.168.1.210 self
+      \ 192.168.1.233 self
     * open Power Manager
       \ Security tab
       \ untick 'Lock screen when system is going for sleep'
@@ -72,28 +69,27 @@
     * mkdir ~/bin
       \ exists (forgot if I created it, or the installer?)
     * copy vncstart from local
-      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.210:/home/a/bin/
+      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.233:/home/a/bin/
       \ it's already executable!
     * start it
       \ ~/bin/vncstart
       \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
     * to connect from client
-      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 atelier
-      \ where atelier points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.210 atelier
+      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 lmighty4
+      \ where lmighty4 points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.233 lmighty4
       \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
   * fstab
     * settings for the btrfs root:
       * backup /etc/fstab with .ORIG extension (via cp -a --)
       * set the btrfs options in fstab, replace with:
-        \ async,relatime,rw,suid,dev,exec,autodefrag,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug
+        \ async,relatime,rw,suid,dev,exec,loud,ssd,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard
         \ nouser is unrecognized!
         \ noauto is ignored!
-        \ don't use loud because it's a HDD which we want to go slow/sleep
       * mount / -o remount
         \ it now has all the new options!
       * time btrfs filesystem defragment -r -v -clzo /
-        \ 2m47.869s (total 61 failures)
-        \ down from: 5149984 to: 3346204
+        \ 2m46.722s (total ? failures, redirected 2>/dev/null so I dno)
+        \ down from: 6416480 to: 4895356
     * tmpfs-es
       \ add these lines in /etc/fstab (there's no such thing there already! but /tmp is already 50% tmpfs!)
       \ tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
@@ -108,7 +104,7 @@
   * right click Start Menu->Properties->Behaviour, Ignore Favorites, Display by default, 50
     \ to show recently used instead of favorites!
   * edit /etc/hosts
-    \ add the hostname(atelier) to both 127.0.0.1 and ::1  to avoid that outgoing DNS request
+    \ add the hostname to both 127.0.0.1 and ::1  to avoid that outgoing DNS request
     * also append this after you remove the 127 entries:
       \ wget -N -- http://winhelp2002.mvps.org/hosts.txt
       \ vim hosts.txt
@@ -137,6 +133,8 @@
       \ GRUB_COLOR_HIGHLIGHT="green/white"
       \ much better!
     * time sudo update-grub
+      \ 1.1s
+      \ nice! it even has /boot/intel-ucode.img (this is an Intel processor!)
   * sudo vim /etc/resolvconf.conf
     \ append this line:
     \ resolv_conf_options="ndots:1 timeout:3 attempts:1 rotate"
@@ -155,6 +153,7 @@
       \ sudo chown root:root 40_custom
     * edit to match
       \ sudo vim 40_custom
+      \ only the IP to: 192.168.1.233
     * refresh our locally stored copy(if needed!):
       \ scp -4vp -P 46802 a@192.168.1.210:/etc/grub.d/40_custom etc/grub.d/40_custom
     * copy iso files and make sure they're in place!
@@ -204,11 +203,12 @@
   - there is video in firefox but not in chromium
     \ nevermind, it was uMatrix!
   * chromium
-    \ disable plugins except pdf(it has 2 subs if you click Details, they're both needed!)!
+    \ disable plugins
     \ extensions:
-    \ Sync-ing takes care of adding these same extensions!
-    \ uMatrix with * * * allow
+    \ Sync-ing takes care of adding these same extensions!(if logged into google from chromium)
+    \ uMatrix
     \ uBlock Origin
+    \ uBlock Origin Websockets
     \ https everywhere
   * firefox
     \ disable plugins (well it's just one)
@@ -241,9 +241,10 @@
   * install recoll and iotop and evince(for pdf viewing from recoll's search result links)
     \ from Add/Remove Programs
     \ poppler is already installed(for pdf indexing)
-    * set to realtime indexing and also start daemon now but don't start it from that button(let the daemon do it; else it will want to kill it first!)
     * go to Preferences->Index configuration, add Stemming Languages-> romanian
     * select Preferences->(all languages)
+      \ new langs can be seen only after recoll restart
+    * set to realtime indexing and also start daemon now but don't start it from that button(let the daemon do it; else it will want to kill it first!)
   * open Window Manager (from Start, search for it)
     * switch theme from Vertex-Maia to Variation (to can see the top right buttons: minimize, maximize etc.)
   * install qTox (not uTox! because this is too bugged!)
@@ -261,8 +262,8 @@
     * in Fireall, also add rule(or see spam in logs):
       \ Advanced,
       \ From Port: 33445
-      \ Allow Out, any interface
-  * remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
+      \ Allow Out, any interface, UDP
+  - remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
     - (NOPE! this is for root user only!) vim /etc/sudoers
       \ comment out line:
       \ root ALL=(ALL) ALL
@@ -274,9 +275,6 @@
 * TODO/DONE:
   - explicitly mount /tmp as tmpfs with the size= parameter!!
     \ see how to do this by looking in gentooskyline
-  * put descent(d1x-rebirth,d2x-rebirth),lotus,dosbox
-  * get into router and tcp port forward 46802 to 192.168.1.210:46802
-    \ inc port +1 for ohome 1.210:46802 (same local port!)
   * fail2ban
 
 

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if test "$1" == "killall"; then
+  pkill vncstart
+#  sleep 1
+fi
+
+while true; do
+  pkill x11vnc
+  #sudo vim /etc/hosts must contain the entry, eg. 192.168.1.2 self
+#  DISPLAY=:0 x11vnc -listen 127.0.0.1 -no6 -noipv6 -nap -ping 5 -rfbport 46802
+#  DISPLAY=:0 x11vnc -localhost -no6 -noipv6 -nap -ping 5 -rfbport 46802
+#  x11vnc -display :0 -localhost -no6 -noipv6 -nap -ping 5 -rfbport 46802
+  x11vnc -display :0 -listen 127.0.1.2 -no6 -noipv6 -nap -ping 5 -nodpms -rfbport 46801 "$@"
+#fail(tiny img): -ncache 10 -ncache_cr
+done
+
