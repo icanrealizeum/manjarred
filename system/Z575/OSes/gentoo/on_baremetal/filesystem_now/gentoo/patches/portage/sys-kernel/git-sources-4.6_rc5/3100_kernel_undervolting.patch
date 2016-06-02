@@ -1,10 +1,12 @@
 this was applied on top of kernel 4.2.rc4.r0.gcbfe8fa-1
 and 4.3.rc1.r217.g00ade1f-1
 also tested on 4.4 and 4.5 kernels, specifically up until 4.5-rc2
+also tested on 4.5.0-rc7
+also tested on 4.6.0-rc7
 
-this patch will undervolt and at the same time overclock my CPU on the Z575 laptop
+This patch will undervolt and at the same time overclock my CPU on the Z575 laptop
 
-https://github.com/aoaaxy/amdmsrtweaker-lnx/tree/kerneltry1
+re-released under UNLICENSE
 
 diff -upr a/kernel/smp.c b/kernel/smp.c
 --- a/kernel/smp.c	2015-09-19 21:50:21.820631272 +0200
@@ -30,7 +32,7 @@ diff -upr a/kernel/smp.c b/kernel/smp.c
 +}
 +#define CPUUSTR "CPUunderclocking"
 +early_param(CPUUSTR, CPUunderclocking);
-+//redefinging because this patch is supposed to be independent of the EHCI-fix one.
++//redefining because this patch is supposed to be independent of the EHCI-fix one.
 +#define _prik2(fmt, a...) printk(fmt " {%s %s:%i}\n", ##a, __func__, __FILE__, __LINE__ )
 +//KERN_* from: include/linux/kern_levels.h
 +#define _prik3(type, fmt, a...) _prik2( type CPUUSTR ": " fmt, ##a)

@@ -1,4 +1,4 @@
-#!/sbin/runscript
+#!/sbin/openrc-run
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
@@ -12,6 +12,19 @@ depend()
 	need sysfs dev-mount
 	before checkfs fsck
 	keyword -lxc -systemd-nspawn -vserver
+}
+
+get_udevd_binary() {
+	local bins="/sbin/udevd /lib/systemd/systemd-udevd /usr/lib/systemd/systemd-udevd"
+	for f in ${bins}; do
+		if [ -x "$f" -a ! -L "$f" ]; then
+			command="$f"
+		fi
+	done
+	if [ -z "$command" ]; then
+		eerror "Unable to find udev executable."
+		return 1
+	fi
 }
 
 start_pre()
@@ -45,29 +58,15 @@ start_pre()
 		fi
 	fi
 
-	bins="/sbin/udevd /lib/systemd/systemd-udevd /usr/lib/systemd/systemd-udevd"
-	for f in ${bins}; do
-		if [ -x "$f" -a ! -L "$f" ]; then
-			command="$f"
-		fi
-	done
-	if [ -z "$command" ]; then
-		eerror "Unable to find udev executable."
-		return 1
-	fi
+	get_udevd_binary || return 1
 
 	if [ -e /proc/sys/kernel/hotplug ]; then
 		echo "" >/proc/sys/kernel/hotplug
 	fi
 
-	local stderr=/dev/null
-
 	if yesno "${udev_debug:-NO}"; then
-		command_args="${command_args} --debug"
-		stderr=/run/udevdebug.log
+		command_args="${command_args} --debug 2> /run/udevdebug.log"
 	fi
-
-	command_args="${command_args} < /dev/null > /dev/null 2> ${stderr}"
 
 	return 0
 }
@@ -80,8 +79,9 @@ stop()
 	rc=$?
 	if [ $rc -ne 0 ]; then
 		eend $rc "Failed to stop $RC_SVCNAME using udevadm"
+		get_udevd_binary || return 1
 		ebegin "Trying with start-stop-daemon"
-		start-stop-daemon --stop --exec /sbin/udevd
+		start-stop-daemon --stop --exec ${command}
 		rc=$?
 	fi
 	eend $rc "Failed to stop $RC_SVCNAME"

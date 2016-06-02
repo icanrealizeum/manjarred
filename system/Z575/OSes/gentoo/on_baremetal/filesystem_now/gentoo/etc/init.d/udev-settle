@@ -4,9 +4,9 @@
 
 depend()
 {
-need udev
-after udev-trigger
-provide dev-settle
+	need udev
+	after udev-trigger
+	provide dev-settle
 	keyword -lxc -systemd-nspawn -vserver
 }
 

@@ -16,6 +16,12 @@
 ::1		localhost gobaby
 #^ without that, `hostname -f` will DNS request it as `AAAA? hostname` where hostname is `uname -n` (or `hostname`)     
 
+#l=local, r=remote (the r should be changed by a script! depending on the real IP)
+192.168.1.246 latelier
+192.168.1.246 ratelier
+192.168.1.210 lohome
+192.168.1.210 rohome
+192.168.1.233 lmighty4
 
 #
 # Imaginary network.
@@ -39,6 +45,13 @@
 
 #first, after localhost
 127.0.0.3	hostBlocked
+
+#fast
+23.7.205.232 download.lenovo.com
+#slow: 2.21.161.122
+
+#computrace? see: http://www.coresecurity.com/corelabs-research/publications/deactivate-rootkit
+127.0.0.3 search.namequery.com
 
 127.0.0.3 www.bing.com
 127.0.0.3 bing.com
@@ -65,7 +78,7 @@
 #chromium built in:
 127.0.0.3 i18napis.appspot.com
 #accessed as http instead of https, from chromium (app_sync...test)
-127.0.0.3 clients2.google.com
+#127.0.0.3 clients2.google.com
 
 #
 #
@@ -84,6 +97,19 @@
 127.0.0.3	wms.zoho.com
 127.0.0.3	video.zoho.com
 
+#167.114.175.4 dl.apkpure.com
+
+#works fine:
+#64.71.168.203 users.rust-lang.org
+#currently can't connect to:
+#64.71.168.202 users.rust-lang.org
+
+#twitter;
+#doesn't work:
+#104.244.43.135 wildcard.twimg.com
+#works:
+#104.244.43.167 wildcard.twimg.com
+
 #noscript shiet
 127.0.0.3	secure.informaction.com
 127.0.0.3 noscript.net
@@ -92,7 +118,7 @@
 127.0.0.3 picsee.net
 127.0.0.3 scache.vzw.com
 127.0.0.3 cache.vzw.com
-#127.0.0.3 sony-europe.com
+127.0.0.3 sony-europe.com
 #127.0.0.3 amazonaws.com
 127.0.0.3 hp-ww.com
 127.0.0.3 yandex.st
@@ -112,7 +138,7 @@
 #127.0.0.3	ajax.googleapis.com
 #127.0.0.3	picasaweb.google.com
 #127.0.0.3	ggpht.com
-#127.0.0.3	fonts.googleapis.com
+127.0.0.3	fonts.googleapis.com
 #127.0.0.3	maps.googleapis.com
 #127.0.0.3	plus.google.com
 
@@ -163,7 +189,7 @@
 127.0.0.3	google-analytics.com
 127.0.0.3	googlecommerce.com
 #127.0.0.3	googlegroups.com
-127.0.0.3	translate.googleapis.com
+#127.0.0.3	translate.googleapis.com
 #127.0.0.3	mail-attachment.googleusercontent.com
 127.0.0.3	talkgadget.google.com
 #127.0.0.3	sites.google.com
@@ -195,8 +221,8 @@
 #this one seems to be ok to block:
 127.0.0.3 gg.google.com
 #following line is needed for youtube-dl  the entire channel; on linux!
-#127.0.0.3	gdata.youtube.com
-#127.0.0.3	youtube-nocookie.com
+127.0.0.3	gdata.youtube.com
+127.0.0.3	youtube-nocookie.com
 #127.0.0.3	accounts.youtube.com
 #127.0.0.3	upload.youtube.com
 #next 4 lines needed to see youtube videos
@@ -216,9 +242,16 @@
 127.0.0.3 talk.google.com
 127.0.0.3 talkx.l.google.com
 
-#127.0.0.3	vine.co
-#127.0.0.3	instagram.com
-#127.0.0.3	www.instagram.com
+#nopenopenopenopenope
+127.0.0.3 gnu.org
+127.0.0.3 www.gnu.org
+127.0.0.3 savannah.gnu.org
+127.0.0.3 git.savannah.gnu.org
+127.0.0.3 debbugs.gnu.org
+
+127.0.0.3	vine.co
+127.0.0.3	instagram.com
+127.0.0.3	www.instagram.com
 
 #TWITTER
 #just read tweets, see pics (no twittervids, but gifs[mp4] work if scripts are on):
@@ -254,7 +287,6 @@
 127.0.0.3	zoho.com
 127.0.0.3	mail.zoho.com
 127.0.0.3	tumblr.com
-127.0.0.3	youtube-mp3.org
 127.0.0.3	accounts.zoho.com
 127.0.0.3	calendar.zoho.com
 127.0.0.3	contacts.zoho.com
@@ -262,6 +294,8 @@
 127.0.0.3	js.zohostatic.com
 127.0.0.3	s.yimg.com
 127.0.0.3	www.zoho.com
+
+127.0.0.3	youtube-mp3.org
 
 #comodo firewall spysends
 127.0.0.3	accounts.comodo.com
@@ -292,12 +326,13 @@
 127.0.0.3 news-bbc.podzone.org
 
 
-# some github hosts that I don't seemingly need to use
+# some github hosts that I seemingly don't need to use
 127.0.0.3 collector-cdn.github.com
-127.0.0.3 live.github.com
+#127.0.0.3 live.github.com
 
 127.0.0.3 self-repair.mozilla.org
 #firefox, some stuff from about:config  , search for http
+127.0.0.3 detectportal.firefox.com
 127.0.0.3 incoming.telemetry.mozilla.org
 127.0.0.3 input.mozilla.org
 #127.0.0.3 support.mozilla.org
@@ -306,30 +341,30 @@
 127.0.0.3 snippets.mozilla.com
 127.0.0.3 snippets.cdn.mozilla.net
 127.0.0.3 add.my.yahoo.com
-127.0.0.3 www.mozilla.org
+#127.0.0.3 www.mozilla.org
 127.0.0.3 tiles.services.mozilla.com
 #firefox's safe browsing google
-127.0.0.3 sb-ssl.google.com
+#127.0.0.3 sb-ssl.google.com
 #used by firefox to check for web forgeries and malware sites
-127.0.0.3	safebrowsing.google.com
-127.0.0.3 en.phish-error.mozilla.com
-127.0.0.3 en-US.phish-error.mozilla.com
-127.0.0.3 en_us.phish-error.mozilla.com
-127.0.0.3 en.phish-report.mozilla.com
-127.0.0.3 en-US.phish-report.mozilla.com
-127.0.0.3 en_us.phish-report.mozilla.com
-127.0.0.3 en.malware-error.mozilla.com
-127.0.0.3 en-US.malware-error.mozilla.com
-127.0.0.3 en_us.malware-error.mozilla.com
-127.0.0.3 en.malware-report.mozilla.com
-127.0.0.3 en-US.malware-report.mozilla.com
-127.0.0.3 en_us.malware-report.mozilla.com
+#127.0.0.3	safebrowsing.google.com
+#127.0.0.3 en.phish-error.mozilla.com
+#127.0.0.3 en-US.phish-error.mozilla.com
+#127.0.0.3 en_us.phish-error.mozilla.com
+#127.0.0.3 en.phish-report.mozilla.com
+#127.0.0.3 en-US.phish-report.mozilla.com
+#127.0.0.3 en_us.phish-report.mozilla.com
+#127.0.0.3 en.malware-error.mozilla.com
+#127.0.0.3 en-US.malware-error.mozilla.com
+#127.0.0.3 en_us.malware-error.mozilla.com
+#127.0.0.3 en.malware-report.mozilla.com
+#127.0.0.3 en-US.malware-report.mozilla.com
+#127.0.0.3 en_us.malware-report.mozilla.com
 127.0.0.3 tracking.services.mozilla.com
 #health report
 127.0.0.3 fhr.cdn.mozilla.net
 127.0.0.3 fhr.cdn.mozilla.com
 #devtools crap
-127.0.0.3 mozilla.org
+#127.0.0.3 mozilla.org
 #127.0.0.3 ajax.googleapis.com
 #127.0.0.3 cdnjs.cloudflare.com
 127.0.0.3 ftp.mozilla.org
@@ -390,6 +425,7 @@
 ##(Error code: ssl_error_no_cypher_overlap)
 127.0.0.3 www.requestpolicy.com
 
+127.0.0.3 check4change.com
 
 # * Downloading mirrorselect-test files from each mirror... [80 of 183]
 #deeptime(): md5sum error for file: mirrorselect-test

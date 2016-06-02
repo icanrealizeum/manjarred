@@ -48,9 +48,9 @@ start_post()
 			start-stop-daemon --stop --pidfile "${udevmonitor_pid}" \
 				--exec /bin/udevadm
 		fi
-		fi
-		display_hotplugged_services
-		return 0
+	fi
+	display_hotplugged_services
+	return 0
 }
 
 # This is here because some software expects /dev/root to exist.
