@@ -2,5 +2,8 @@
 
 #1st time ssh
 
-ssh -i ~/.../koe -v -p 802 -l root -L 5900:127.0.1.2:46801 lmighty4
+k=~/.../koe
+chmod u+r -- "$k"
+(sleep 10 && chmod u-r -- "$k") &
+ssh -i "$k" -v -p 802 -l root -L 5900:127.0.1.2:46801 lmighty4
 
