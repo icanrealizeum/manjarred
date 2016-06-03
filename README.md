@@ -14,7 +14,7 @@ What is this ?
 Authors
 -------
 
-* Emanuel Czirai
+* @ActualizeInMaterial
 * programs made by other authors are included for reference, they are copyright by their respective authors
 * I've every intention of giving credit where possible (see "src:") if even just for connectivity's sake.
 
