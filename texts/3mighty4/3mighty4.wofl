@@ -94,6 +94,8 @@
       \ add these lines in /etc/fstab (there's no such thing there already! but /tmp is already 50% tmpfs!)
       \ tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
       \ tmpfs                   /var/tmp        tmpfs auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+    - change the discard flag for swap into discard=pages
+      \ otherwise it will also do discard=once which is at swapon, and it seems like a bad idea, UNLESS! eg. on reboot or swapoff, no discard is done for the already allocated hmm...
   * from Power Manager->Display (in UI) set display to never turn off, or it will never wake up (it's black screen!) - set Display power management to Off (this disabled sleep and turn off settings! leaves blank one enabled)
     \ blank works though
     \ ensure 'Switch off after' is Never

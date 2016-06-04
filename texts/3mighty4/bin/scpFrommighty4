@@ -13,7 +13,10 @@ if test -z "$fromremotepath"; then
 fi
 
 set -x
-time scp -i ~/.../koe -vp4 -P 802 -- root@lmighty4:"$fromremotepath" "$tolocalpath"
+k=~/.../koe
+chmod u+r -- "$k"
+(sleep 10 && chmod u-r -- "$k") &
+time scp -i "$k" -vp4 -P 802 -- root@lmighty4:"$fromremotepath" "$tolocalpath"
 set +x
 
 
