@@ -240,6 +240,13 @@
         \ verify with: ps axuw|grep -i crond
         \ has -s done!
         \ btw, crond was already running! (aka this service!)
+    * add Firewall rule
+      \ Advanced,
+      \ From Port: 123
+      \ To Port: 123
+      \ Protocol: UDP
+      \ Log: Log
+      \ Allow OUT, all interfaces
   * install recoll and iotop and evince(for pdf viewing from recoll's search result links)
     \ from Add/Remove Programs
     \ poppler is already installed(for pdf indexing)
