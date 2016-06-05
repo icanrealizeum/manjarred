@@ -277,7 +277,16 @@
 * TODO/DONE:
   - explicitly mount /tmp as tmpfs with the size= parameter!!
     \ see how to do this by looking in gentooskyline
-  * fail2ban
+  - fail2ban
+    \ ok nevermind then: https://wiki.archlinux.org/index.php/fail2ban
+    * install fail2ban
+    * sudo systemctl enable fail2ban
+      \ else, it's disabled, as can be seen via:
+      \ systemctl list-unit-files
+    * put jail.d/sshd.conf
+      \ bin/scptomighty4 ./filesystem/etc/fail2ban/jail.d/sshd.conf /etc/fail2ban/jail.d/sshd.conf
+      \ there's a path inside sshd.conf to where sshd is actually spewing its logs (that should be already set correctly for Manjaro, though - not yet done!)
+    * sudo systemctl start fail2ban
 
 
 
