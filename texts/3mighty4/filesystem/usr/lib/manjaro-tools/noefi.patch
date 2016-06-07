@@ -1,0 +1,17 @@
+--- orig//usr/lib/manjaro-tools/util-iso.sh	2016-05-29 13:07:41.000000000 +0300
++++ patched//usr/lib/manjaro-tools/util-iso.sh	2016-06-07 13:03:47.708015361 +0300
+@@ -614,10 +614,10 @@ prepare_images(){
+ 		run_safe "make_image_mhwd"
+ 	fi
+ 	run_safe "make_image_boot"
+-	if [[ "${arch}" == "x86_64" ]]; then
+-		run_safe "make_efi"
+-		run_safe "make_efiboot"
+-	fi
++#	if [[ "${arch}" == "x86_64" ]]; then
++#		run_safe "make_efi"
++#		run_safe "make_efiboot"
++#	fi
+ 	run_safe "make_isolinux"
+ 	run_safe "make_isomounts"
+ 	show_elapsed_time "${FUNCNAME}" "${timer}"
