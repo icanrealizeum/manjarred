@@ -1,0 +1,217 @@
+--- TLP 0.8 --------------------------------------------
+
++++ Configured Settings: /etc/default/tlp
+TLP_ENABLE=1
+TLP_DEFAULT_MODE=AC
+DISK_IDLE_SECS_ON_AC=600
+DISK_IDLE_SECS_ON_BAT=60
+MAX_LOST_WORK_SECS_ON_AC=600
+MAX_LOST_WORK_SECS_ON_BAT=60
+SCHED_POWERSAVE_ON_AC=0
+SCHED_POWERSAVE_ON_BAT=1
+NMI_WATCHDOG=0
+DISK_DEVICES="sda sdb"
+DISK_APM_LEVEL_ON_AC="254 254"
+DISK_APM_LEVEL_ON_BAT="128 128"
+DISK_IOSCHED="noop noop"
+SATA_LINKPWR_ON_AC=min_power
+SATA_LINKPWR_ON_BAT=min_power
+PCIE_ASPM_ON_AC=powersave
+PCIE_ASPM_ON_BAT=powersave
+RADEON_POWER_PROFILE_ON_AC=low
+RADEON_POWER_PROFILE_ON_BAT=low
+RADEON_DPM_STATE_ON_AC=battery
+RADEON_DPM_STATE_ON_BAT=battery
+RADEON_DPM_PERF_LEVEL_ON_AC=low
+RADEON_DPM_PERF_LEVEL_ON_BAT=low
+WIFI_PWR_ON_AC=5
+WIFI_PWR_ON_BAT=5
+WOL_DISABLE=Y
+SOUND_POWER_SAVE_ON_AC=1
+SOUND_POWER_SAVE_ON_BAT=1
+SOUND_POWER_SAVE_CONTROLLER=Y
+BAY_POWEROFF_ON_BAT=1
+BAY_DEVICE="sr0"
+RUNTIME_PM_ON_AC=auto
+RUNTIME_PM_ON_BAT=auto
+RUNTIME_PM_ALL=1
+USB_AUTOSUSPEND=1
+USB_BLACKLIST_WWAN=0
+USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN=0
+RESTORE_DEVICE_STATE_ON_STARTUP=0
+START_CHARGE_THRESH_BAT0=40
+STOP_CHARGE_THRESH_BAT0=50
+START_CHARGE_THRESH_BAT1=40
+STOP_CHARGE_THRESH_BAT1=50
+
++++ System Info
+System         = LENOVO ThinkPad T400 64741AG
+BIOS           = 7UET94WW (3.24 )
+Release        = "Manjaro Linux"
+Kernel         = 4.5.6-1-MANJARO #1 SMP PREEMPT Thu Jun 2 17:33:22 UTC 2016 x86_64
+/proc/cmdline  = BOOT_IMAGE=/boot/vmlinuz-4.5-x86_64 root=UUID=2888d969-3bfb-4f5e-9144-2e0261dd457b rw ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 "dyndbg=file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" rd.debug rd.udev.debug rd.memdebug=3 console=tty1 earlyprintk=vga slub_debug=U pax_sanitize_slab=full noefi resume=UUID=d29dfcdd-e381-43e3-b7bf-676aa0ed7bf0
+Init system    = systemd
+
++++ System Status
+TLP power save = enabled
+power source   = AC
+
++++ Processor
+CPU Model      = Intel(R) Core(TM)2 Duo CPU     T9400  @ 2.53GHz
+
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_driver    = acpi-cpufreq
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor  = ondemand
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq  =   800000 [kHz]
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq  =  2534000 [kHz]
+/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies = 2534000 2533000 1600000 800000 [kHz]
+
+/sys/devices/system/cpu/cpu1/cpufreq/scaling_driver    = acpi-cpufreq
+/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor  = ondemand
+/sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq  =   800000 [kHz]
+/sys/devices/system/cpu/cpu1/cpufreq/scaling_max_freq  =  2534000 [kHz]
+/sys/devices/system/cpu/cpu1/cpufreq/scaling_available_frequencies = 2534000 2533000 1600000 800000 [kHz]
+
+/sys/devices/system/cpu/cpufreq/boost                  = (not available)
+
+x86_energy_perf_policy: program not installed.
+
+/proc/sys/kernel/nmi_watchdog                          = 0
+
++++ Undervolting
+PHC kernel not available.
+
++++ Temperatures
+/proc/acpi/ibm/thermal = 40 37 32 -128 33 -128 32 -128 35 39 37 -128 -128 -128 -128 -128 [°C]
+/proc/acpi/ibm/fan     =     0 [/min]
+
++++ File System
+/proc/sys/vm/laptop_mode               =   600
+/proc/sys/vm/dirty_writeback_centisecs = 60000
+/proc/sys/vm/dirty_expire_centisecs    = 60000
+/proc/sys/vm/dirty_ratio               =    20
+/proc/sys/vm/dirty_background_ratio    =    10
+/proc/sys/fs/xfs/age_buffer_centisecs  = (not available)
+/proc/sys/fs/xfs/xfssyncd_centisecs    = (not available)
+/proc/sys/fs/xfs/xfsbufd_centisecs     = (not available)
+
++++ Storage Devices
+/dev/sda:
+          Model     = INTEL SSDSA2M080G2GC                    
+          Firmware  = 2CV102M3
+          APM Level = none/disabled
+          Status    = active/idle
+          TRIM      = supported
+          Scheduler = noop
+
+        SMART info:
+            4 Start_Stop_Count          =        0 
+            5 Reallocated_Sector_Ct     =       22 
+            9 Power_On_Hours            =    24799 [h]
+          225 Host_Writes_32MiB         =   10.417 [TB]
+          232 Available_Reservd_Space   =      100 [%]
+          233 Media_Wearout_Indicator   =       97 [%]
+
+
++++ SATA Aggressive Link Power Management
+/sys/class/scsi_host/host0/link_power_management_policy  = min_power
+/sys/class/scsi_host/host1/link_power_management_policy  = min_power
+/sys/class/scsi_host/host2/link_power_management_policy  = min_power
+/sys/class/scsi_host/host3/link_power_management_policy  = min_power
+
++++ PCIe Active State Power Management
+/sys/module/pcie_aspm/parameters/policy = default (using bios preferences)
+
++++ Intel Graphics
+/sys/module/i915/parameters/powersave        = (not available)
+/sys/module/i915/parameters/enable_rc6       =  0 (disabled)
+/sys/module/i915/parameters/enable_fbc       = -1 (use per-chip default)
+/sys/module/i915/parameters/lvds_downclock   = (not available)
+/sys/module/i915/parameters/semaphores       = -1 (use per-chip default)
+
++++ Wireless
+bluetooth = none (no device)
+wifi      = none (no device)
+wwan      = none (no device)
+
++++ Audio
+/sys/module/snd_hda_intel/parameters/power_save            = 1
+/sys/module/snd_hda_intel/parameters/power_save_controller = Y
+
++++ Docks and Device Bays
+/sys/devices/platform/dock.0: battery_bay   = no battery 
+/sys/devices/platform/dock.1: ata_bay       = drive present
+/sys/devices/platform/dock.2: dock_station  = docked
+
++++ Runtime Power Management
+device classes   = all
+device blacklist = (not configured)
+driver blacklist = (not configured)
+
+/sys/bus/pci/devices/0000:00:00.0/power/control = auto (0x060000, Host bridge, agpgart-intel)
+/sys/bus/pci/devices/0000:00:02.0/power/control = auto (0x030000, VGA compatible controller, i915)
+/sys/bus/pci/devices/0000:00:02.1/power/control = auto (0x038000, Display controller, no driver)
+/sys/bus/pci/devices/0000:00:03.0/power/control = auto (0x078000, Communication controller, mei_me)
+/sys/bus/pci/devices/0000:00:19.0/power/control = auto (0x020000, Ethernet controller, e1000e)
+/sys/bus/pci/devices/0000:00:1a.0/power/control = auto (0x0c0300, USB controller, uhci_hcd)
+/sys/bus/pci/devices/0000:00:1a.1/power/control = auto (0x0c0300, USB controller, uhci_hcd)
+/sys/bus/pci/devices/0000:00:1a.2/power/control = auto (0x0c0300, USB controller, uhci_hcd)
+/sys/bus/pci/devices/0000:00:1a.7/power/control = auto (0x0c0320, USB controller, ehci-pci)
+/sys/bus/pci/devices/0000:00:1b.0/power/control = auto (0x040300, Audio device, snd_hda_intel)
+/sys/bus/pci/devices/0000:00:1c.0/power/control = auto (0x060400, PCI bridge, pcieport)
+/sys/bus/pci/devices/0000:00:1c.2/power/control = auto (0x060400, PCI bridge, pcieport)
+/sys/bus/pci/devices/0000:00:1d.0/power/control = auto (0x0c0300, USB controller, uhci_hcd)
+/sys/bus/pci/devices/0000:00:1d.1/power/control = auto (0x0c0300, USB controller, uhci_hcd)
+/sys/bus/pci/devices/0000:00:1d.2/power/control = auto (0x0c0300, USB controller, uhci_hcd)
+/sys/bus/pci/devices/0000:00:1d.7/power/control = auto (0x0c0320, USB controller, ehci-pci)
+/sys/bus/pci/devices/0000:00:1e.0/power/control = auto (0x060401, PCI bridge, no driver)
+/sys/bus/pci/devices/0000:00:1f.0/power/control = auto (0x060100, ISA bridge, lpc_ich)
+/sys/bus/pci/devices/0000:00:1f.2/power/control = auto (0x010601, SATA controller, ahci)
+/sys/bus/pci/devices/0000:00:1f.3/power/control = auto (0x0c0500, SMBus, i801_smbus)
+/sys/bus/pci/devices/0000:04:00.0/power/control = auto (0x058000, Memory controller, no driver)
+/sys/bus/pci/devices/0000:15:00.0/power/control = auto (0x060700, CardBus bridge, yenta_cardbus)
+/sys/bus/pci/devices/0000:15:00.2/power/control = auto (0x080500, SD Host controller, sdhci-pci)
+/sys/bus/pci/devices/0000:15:00.4/power/control = auto (0x088000, System peripheral, r592)
+/sys/bus/pci/devices/0000:15:00.5/power/control = auto (0x088000, System peripheral, r852)
+
++++ USB
+autosuspend        = enabled
+device whitelist   = (not configured)
+device blacklist   = (not configured)
+wwan blacklist     = disabled
+
+Bus 003 Device 001 ID 1d6b:0002 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 2.0 root hub (hub)
+Bus 008 Device 001 ID 1d6b:0001 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 1.1 root hub (hub)
+Bus 007 Device 001 ID 1d6b:0001 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 1.1 root hub (hub)
+Bus 006 Device 001 ID 1d6b:0001 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 1.1 root hub (hub)
+Bus 001 Device 004 ID 17ef:1004 control = auto, autosuspend_delay_ms =  2000 -- Lenovo Integrated Webcam (uvcvideo)
+Bus 001 Device 003 ID 04b3:4485 control = auto, autosuspend_delay_ms =     0 -- IBM Corp. ThinkPad Dock Hub (hub)
+Bus 001 Device 001 ID 1d6b:0002 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 2.0 root hub (hub)
+Bus 005 Device 001 ID 1d6b:0001 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 1.1 root hub (hub)
+Bus 004 Device 002 ID 08ff:2810 control = auto, autosuspend_delay_ms =  2000 -- AuthenTec, Inc. AES2810 (no driver)
+Bus 004 Device 001 ID 1d6b:0001 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 1.1 root hub (hub)
+Bus 002 Device 001 ID 1d6b:0001 control = auto, autosuspend_delay_ms =     0 -- Linux Foundation 1.1 root hub (hub)
+
++++ ThinkPad Extended Battery Functions
+tp-smapi   = active
+tpacpi-bat = inactive (unsupported hardware)
+
++++ ThinkPad Battery Status: BAT0 (Main / Internal)
+/sys/devices/platform/smapi/BAT0/manufacturer               = LGC
+/sys/devices/platform/smapi/BAT0/model                      = 42T4653
+/sys/devices/platform/smapi/BAT0/manufacture_date           = 2011-07-25
+/sys/devices/platform/smapi/BAT0/first_use_date             = 2011-12-16
+/sys/devices/platform/smapi/BAT0/cycle_count                =    117
+/sys/devices/platform/smapi/BAT0/design_capacity            =  56160 [mWh]
+/sys/devices/platform/smapi/BAT0/last_full_capacity         =  60740 [mWh]
+/sys/devices/platform/smapi/BAT0/remaining_capacity         =  41610 [mWh]
+/sys/devices/platform/smapi/BAT0/remaining_percent          =     69 [%]
+/sys/devices/platform/smapi/BAT0/remaining_running_time_now = not_discharging [min]
+/sys/devices/platform/smapi/BAT0/remaining_charging_time    = not_charging [min]
+/sys/devices/platform/smapi/BAT0/power_now                  =      0 [mW]
+/sys/devices/platform/smapi/BAT0/power_avg                  =      0 [mW]
+/sys/devices/platform/smapi/BAT0/state                      = idle
+
+/sys/devices/platform/smapi/BAT0/start_charge_thresh        =     40 [%]
+/sys/devices/platform/smapi/BAT0/stop_charge_thresh         =     50 [%]
+/sys/devices/platform/smapi/BAT0/force_discharge            =      0
+
