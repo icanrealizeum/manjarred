@@ -279,6 +279,21 @@
     * vim /etc/sudoers.d/10-installer
       \ comment out this line:
       \ %wheel ALL=(ALL) ALL
+  * battery tweaks
+    \ https://wiki.archlinux.org/index.php/TLP
+    * install tp_smapi and acpi_call
+      \ powertop is already installed!
+    * install tlp
+      \ for powersaving features
+      * tlp start
+        \ run this every time a change in /etc/default/tlp is made!
+        \ there's no tlp restart !
+    * install acpi
+      \ for the acpi command
+      \ # acpi -b -i
+      \ Battery 0: Unknown, 95%
+      \ Battery 0: design capacity 4655 mAh, last full capacity 5035 mAh = 100%
+
 
 
 * TODO/DONE:
