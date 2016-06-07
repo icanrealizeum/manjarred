@@ -1,3 +1,12 @@
+#!/bin/bash
+
+#vm.dirty_writeback_centisecs is how often the pdflush/flush/kdmflush processes wake up and check to see if work needs to be done.
+#600 secs (10mins)
 echo 60000 > /proc/sys/vm/dirty_writeback_centisecs
+
+#vm.dirty_expire_centisecs is how long something can be in cache before it needs to be written. In this case it’s 30 seconds. When the pdflush/flush/kdmflush processes kick in they will check to see how old a dirty page is, and if it’s older than this value it’ll be written asynchronously to disk. Since holding a dirty page in memory is unsafe this is also a safeguard against data loss.
+#3600 secs (1 hour)
 echo 360000 > /proc/sys/vm/dirty_expire_centisecs
+
+#descriptions from: https://lonesysadmin.net/2013/12/22/better-linux-disk-caching-performance-vm-dirty_ratio/
 
