@@ -1,0 +1,17 @@
+Patch for pacman to not err on warnings
+diff -upr5 a/configure.ac b/configure.ac
+--- a/configure.ac	2014-08-27 00:38:49.398883515 +0200
++++ b/configure.ac	2014-08-27 00:48:17.319100416 +0200
+@@ -401,11 +401,11 @@ if test "x$debug" = "xyes" ; then
+ 	AC_DEFINE([PACMAN_DEBUG], , [Enable debug code])
+ 	# Check for -fstack-protector availability
+ 	GCC_STACK_PROTECT_LIB
+ 	GCC_STACK_PROTECT_CC
+ 	GCC_FORTIFY_SOURCE_CC
+-	WARNING_CFLAGS="-g -Wall -Werror"
++	WARNING_CFLAGS="-g -Wall"
+ else
+ 	AC_MSG_RESULT(no)
+ 	WARNING_CFLAGS="-Wall"
+ fi
+ 

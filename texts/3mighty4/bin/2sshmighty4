@@ -5,5 +5,6 @@
 k=~/.../koe
 chmod u+r -- "$k"
 (sleep 10 && chmod u-r -- "$k") &
-ssh -i "$k" -v -p 802 -l root lmighty4
+ssh -i "$k" -p 802 -l root lmighty4
+#-v
 

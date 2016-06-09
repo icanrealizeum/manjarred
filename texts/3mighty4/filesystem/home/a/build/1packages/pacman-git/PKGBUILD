@@ -1,0 +1,122 @@
+# Maintainer: Dave Reisner <d@falconindy.com>
+# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Contributor: godane <slaxemulator@gmail.com.com>
+# Contributor: Andres Perera <aepd87@gmail.com>
+
+pkgname=pacman-git
+pkgver=4.1.2.460.ga0cfed7
+pkgrel=1
+pkgdesc="A library-based package manager with dependency support. git version."
+arch=('i686' 'x86_64')
+url="http://www.archlinux.org/pacman/"
+license=('GPL')
+depends=('bash' 'curl' 'gpgme' 'libarchive' 'pacman-mirrorlist')
+makedepends=('git' 'asciidoc')
+optdepends=('fakeroot: for makepkg usage as normal user')
+checkdepends=('python2' 'fakechroot')
+provides=("pacman=$pkgver" 'pacman-contrib' 'libalpm.so')
+#provides=("pacman=$pkgver" 'libalpm.so') # dno why i removed that here
+conflicts=('pacman' 'pacman-contrib')
+options=('!libtool' '!strip')
+#emacs1of2: comment these so it doesn't rename existing ones to pacsave on install!
+#backup=("etc/pacman.conf"
+#        "etc/makepkg.conf")
+lepatch="pacman_incremental.patch"
+warnspatch="pacman_warnings_arent_errors.patch"
+sudopatch="persistent_sudo.patch"
+selectablenamespatch="selectable_packagenames.patch"
+dstfolder="${pkgname}"
+source=(
+"${dstfolder}::git+https://git.archlinux.org/pacman.git"
+"${lepatch}"
+"${warnspatch}"
+"${sudopatch}"
+"${selectablenamespatch}"
+)
+sha512sums=('SKIP'
+            'c60291cb858ca4394e66920e6251e69fc9b7aebef7e04a8986c5fab798b737f6e38d6adff14f7fda18d42998ca460ff713842ed8c50b3f641432315e11e25b8b'
+            'e0b8b45dd95e19d60d0aa6c74365bf903c2d688d7ef76b5780530b83b7693979beb948fd2db3c18851b3e3122726ff49294d7907f1154e70834f1d14adc7602e'
+            '016ed5bcf077845d3c25858bd2cf6f2f3dc733f178af4acdcc54631dcb850c7d2f9d9f8f4b54eb6098c37fb605e107fc7c04f33c80115f63405e0b8adaa2c6ea'
+            '3582c3cba11ecf1d5351f699a61b0d82a34f795e6dd702f1fb072426e8c215151cbd6c3466a80ed005f1469b3721d45a17b1bc7dfefe1612540f94acd78d66a8')
+
+pkgver() {
+  cd "${dstfolder}"
+  git describe | sed 's/^v//;s/-/./g'
+}
+
+prepare() {
+  cd "${srcdir}/${dstfolder}"
+  patch -p1 -i "${srcdir}/${lepatch}"
+  patch -p1 -i "${srcdir}/${warnspatch}"
+  patch -p1 -i "${srcdir}/${sudopatch}"
+  patch -p1 -i "${srcdir}/${selectablenamespatch}"
+}
+
+build() {
+  cd "${srcdir}/${dstfolder}"
+
+  ./autogen.sh
+  #here because those files are to be updated with git and update will fail because they are already changed locally
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-doc \
+    --enable-git-version \
+    --enable-debug \
+    --with-scriptlet-shell=/usr/bin/bash \
+    --with-ldconfig=/usr/bin/ldconfig
+
+  make ${MAKEFLAGS}
+  make ${MAKEFLAGS} -C contrib
+}
+
+check() {
+  make -C "${dstfolder}" check
+}
+
+package() {
+  cd "${srcdir}/${dstfolder}"
+
+  make DESTDIR="$pkgdir" install
+
+  # set things correctly in the default conf file
+  case $CARCH in
+    i686)
+      mychost="i686-pc-linux-gnu"
+      myflags="-march=i686 "
+      ;;
+    x86_64)
+      mychost="x86_64-unknown-linux-gnu"
+      myflags="-march=x86-64 "
+      ;;
+  esac
+
+#this nolonger applies, also makepkg.conf's CARCH is set to a different value(eg. unknown=pc)
+#  sed -i "$pkgdir/etc/makepkg.conf" \
+#    -e "s|@CARCH[@]|$CARCH|g" \
+#    -e "s|@CHOST[@]|$mychost|g" \
+#    -e "s|@CARCHFLAGS[@]|$myflags|g"
+
+  # contrib
+  make DESTDIR="$pkgdir" -C contrib install
+
+  install -Dm644 "contrib/PKGBUILD.vim" "$pkgdir/usr/share/vim/vimfiles/syntax/PKGBUILD.vim"
+  install -dm755 "$pkgdir/usr/share/vim/vimfiles/ftdetect"
+  echo "au BufNewFile,BufRead PKGBUILD set filetype=PKGBUILD" \
+    >"$pkgdir/usr/share/vim/vimfiles/ftdetect/PKGBUILD.vim"
+
+  # install completion files
+  rm -r "$pkgdir/etc/bash_completion.d"
+  install -Dm644 "contrib/bash_completion" "$pkgdir/usr/share/bash-completion/completions/pacman"
+  for f in makepkg pacman-key; do
+    ln -s pacman "$pkgdir/usr/share/bash-completion/completions/$f"
+  done
+
+  install -Dm644 "contrib/zsh_completion" "$pkgdir/usr/share/zsh/site-functions/_pacman"
+
+  #emacs2of2: don't wanna bother with these when --force is required to install (manjaro!)
+  rm -r "${pkgdir}/etc"
+}
+
+# vim: set ts=2 sw=2 et:
