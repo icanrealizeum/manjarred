@@ -1,5 +1,22 @@
 T400 undervolting:
 todo: https://wiki.archlinux.org/index.php/PHC
+
+* get PHC
+  * time yaourt -S phc-intel
+* find safe voltages
+  * get mprime first
+    \ $ time yaourt -S mprime
+  * read?
+    \ https://bbs.archlinux.org/viewtopic.php?pid=1141702#p1141702
+  * wget https://bitbucket.org/stqn/shell-tools/raw/master/mprime-phc-setup
+  * chmod +x mprime-phc-setup
+  * load PHC module, somehow
+    - reboot - no effect
+    * FIXME: must make dkms build it! (package says it should/would, but doesn't!)
+  * sync
+  * # time ./mprime-phc-setup
+    \ as root
+
 -------
 
 might need Windows:
