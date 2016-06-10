@@ -21,9 +21,9 @@ makedepends=('git' 'asciidoc')
 #optdepends=('fakeroot: for makepkg usage as normal user') #this is somehow embedded now
 optdepends=('haveged: for pacman-init.service')
 checkdepends=('python2' 'fakechroot')
-#provides=("pacman=$pkgver" 'pacman-contrib' 'libalpm.so')
+provides=("pacman=$pkgver" 'pacman-contrib' 'pacman-init') #'libalpm.so')
 #provides=("pacman=$pkgver" 'libalpm.so') # dno why i removed that here
-provides=('pacman-contrib' 'pacman-init')
+#provides=('pacman-contrib' 'pacman-init')
 #conflicts=('pacman' 'pacman-contrib')
 conflicts=('pacman-contrib' 'pacman-init')
 replaces=('pacman-contrib' 'pacman-init')
