@@ -8,18 +8,25 @@
 
 pkgname=pacman-git
 pkgver=5.0.1.35.g839417e
-pkgrel=1
-pkgdesc="A library-based package manager with dependency support. git version."
+pkgrel=4
+pkgdesc="A library-based package manager with dependency support.Manjaro+Arch git version."
 arch=('i686' 'x86_64')
 url="http://www.archlinux.org/pacman/"
 license=('GPL')
-depends=('bash' 'curl' 'gpgme' 'libarchive' 'pacman-mirrorlist')
+groups=('base' 'base-devel')
+depends=('bash>=4.2.042-2' 'glibc>=2.17-2' 'libarchive>=3.1.2' 'curl>=7.39.0'
+         'gpgme' 'pacman-mirrorlist>=20130418' 'archlinux-keyring' 'manjaro-keyring')
+#depends=('bash' 'curl' 'gpgme' 'libarchive' 'pacman-mirrorlist')
 makedepends=('git' 'asciidoc')
-optdepends=('fakeroot: for makepkg usage as normal user')
+#optdepends=('fakeroot: for makepkg usage as normal user') #this is somehow embedded now
+optdepends=('haveged: for pacman-init.service')
 checkdepends=('python2' 'fakechroot')
-provides=("pacman=$pkgver" 'pacman-contrib' 'libalpm.so')
+#provides=("pacman=$pkgver" 'pacman-contrib' 'libalpm.so')
 #provides=("pacman=$pkgver" 'libalpm.so') # dno why i removed that here
-conflicts=('pacman' 'pacman-contrib')
+provides=('pacman-contrib' 'pacman-init')
+#conflicts=('pacman' 'pacman-contrib')
+conflicts=('pacman-contrib' 'pacman-init')
+replaces=('pacman-contrib' 'pacman-init')
 options=('!libtool' '!strip')
 #emacs1of2: comment these so it doesn't rename existing ones to pacsave on install!
 #nevermind, they get renamed anyways upon pacman removal, before installing pacman-git ie.
@@ -29,6 +36,8 @@ options=('!libtool' '!strip')
 #(1/1) installing pacman-git                        [######################] 100%
 backup=("etc/pacman.conf"
         "etc/makepkg.conf")
+install=pacman.install
+
 #lepatch="pacman_incremental.patch" #nolonger needed! see git.sh.in
 warnspatch="pacman_warnings_arent_errors.patch"
 sudopatch="persistent_sudo.patch"
@@ -40,12 +49,24 @@ source=(
 "${warnspatch}"
 "${sudopatch}"
 "${selectablenamespatch}"
+"pacman-sync-first-option.patch"
+"makepkg.conf"
+"pacman.conf"
+"etc-pacman.d-gnupg.mount"
+"pacman-init.service"
 )
 sha512sums=('SKIP'
 #            'c60291cb858ca4394e66920e6251e69fc9b7aebef7e04a8986c5fab798b737f6e38d6adff14f7fda18d42998ca460ff713842ed8c50b3f641432315e11e25b8b'
             'e0b8b45dd95e19d60d0aa6c74365bf903c2d688d7ef76b5780530b83b7693979beb948fd2db3c18851b3e3122726ff49294d7907f1154e70834f1d14adc7602e'
             '016ed5bcf077845d3c25858bd2cf6f2f3dc733f178af4acdcc54631dcb850c7d2f9d9f8f4b54eb6098c37fb605e107fc7c04f33c80115f63405e0b8adaa2c6ea'
-            '3582c3cba11ecf1d5351f699a61b0d82a34f795e6dd702f1fb072426e8c215151cbd6c3466a80ed005f1469b3721d45a17b1bc7dfefe1612540f94acd78d66a8')
+            '3582c3cba11ecf1d5351f699a61b0d82a34f795e6dd702f1fb072426e8c215151cbd6c3466a80ed005f1469b3721d45a17b1bc7dfefe1612540f94acd78d66a8'
+  '76b30991b70fcbe3308fb1e0888528f575fbd72c9b69af44209dbe052860db57a5049f6a4d009b5709e286b80a6e18783ef9cf75ed7835faa632656f5f6e3f3f'
+'f0e5b0a96ad7cc5da3c889fb66eb3a98922572abe5909273bdad39cf14e1d69b6c3bc95f43b2726f9fc9eec14179b597871351408950d3f3efeebe3029d2f665'
+'41ee5ec32ced3ba01e59959c2babbb16d3cbcc0d1169483f0c175dd5a0716780cb145b2a2c8ceb27a653d9ecd6844637546ef7b7d6c89d8220410216215b7627'
+'1e34f407774a1453f55f9ce5e789b3dbbc0f7c60c5da8f273d96b636b97e301243ccb4b23d2f15d7bae7298c44481f56fe10c4c04a0fe04fd4d1772d3bd384b7'
+'08e53897a707763100cf8721e8124b9358944de774a163ef34d28189821da0ed01668f63f03c1894189bf546275457498c4252b0eb08bc4b8cad0f8e8afe35e2'
+
+)
 
 pkgver() {
   cd "${dstfolder}"
@@ -54,6 +75,11 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/${dstfolder}"
+
+  # Manjaro patches
+  patch -p1 -i "${srcdir}/pacman-sync-first-option.patch"
+  #patch -p1 -i $srcdir/pacman-updated-locales.patch
+
 #  patch -p1 -i "${srcdir}/${lepatch}"
   patch -p1 -i "${srcdir}/${warnspatch}"
   patch -p1 -i "${srcdir}/${sudopatch}"
@@ -87,27 +113,13 @@ package() {
   cd "${srcdir}/${dstfolder}"
 
   make DESTDIR="$pkgdir" install
-
-  # set things correctly in the default conf file
-  case $CARCH in
-    i686)
-      mychost="i686-pc-linux-gnu"
-      myflags="-march=i686 "
-      ;;
-    x86_64)
-      mychost="x86_64-unknown-linux-gnu"
-      myflags="-march=x86-64 "
-      ;;
-  esac
-
-#this nolonger applies, also makepkg.conf's CARCH is set to a different value(eg. unknown=pc)
-#  sed -i "$pkgdir/etc/makepkg.conf" \
-#    -e "s|@CARCH[@]|$CARCH|g" \
-#    -e "s|@CHOST[@]|$mychost|g" \
-#    -e "s|@CARCHFLAGS[@]|$myflags|g"
-
   # contrib
   make DESTDIR="$pkgdir" -C contrib install
+
+  # install Arch specific stuff
+  install -dm755 -- "$pkgdir/etc"
+  install -m644 "$srcdir/makepkg.conf" "$pkgdir/etc/"
+  install -m644 -- "$srcdir/pacman.conf" "$pkgdir/etc/pacman.conf"
 
   install -Dm644 "contrib/PKGBUILD.vim" "$pkgdir/usr/share/vim/vimfiles/syntax/PKGBUILD.vim"
   install -dm755 "$pkgdir/usr/share/vim/vimfiles/ftdetect"
@@ -123,8 +135,17 @@ package() {
 
   install -Dm644 "contrib/zsh_completion" "$pkgdir/usr/share/zsh/site-functions/_pacman"
 
-  #emacs2of2: don't wanna bother with these when --force is required to install (manjaro!)
-  rm -r "${pkgdir}/etc"
+  # replace rankmirrors
+  rm "$pkgdir/usr/bin/rankmirrors"
+  ln -sfv "/usr/bin/pacman-mirrors" "$pkgdir/usr/bin/rankmirrors"
+
+  # install pacman-init
+  install -dm755 "$pkgdir/usr/lib/systemd/system/"
+  install -m644 "$srcdir/etc-pacman.d-gnupg.mount" "$pkgdir/usr/lib/systemd/system/etc-pacman.d-gnupg.mount"
+  install -m644 "$srcdir/pacman-init.service" "$pkgdir/usr/lib/systemd/system/pacman-init.service"
+
+  #emacs2of2: don't wanna bother with these when --force is required to install (manjaro!) - hmm, nevermind! allowing for now, let's see what happens
+#  rm -r "${pkgdir}/etc"
 }
 
 # vim: set ts=2 sw=2 et:
