@@ -22,8 +22,13 @@ provides=("pacman=$pkgver" 'pacman-contrib' 'libalpm.so')
 conflicts=('pacman' 'pacman-contrib')
 options=('!libtool' '!strip')
 #emacs1of2: comment these so it doesn't rename existing ones to pacsave on install!
-#backup=("etc/pacman.conf"
-#        "etc/makepkg.conf")
+#nevermind, they get renamed anyways upon pacman removal, before installing pacman-git ie.
+#(2/2) removing pacman                              [######################] 100%
+#warning: /etc/pacman.conf saved as /etc/pacman.conf.pacsave
+#warning: /etc/makepkg.conf saved as /etc/makepkg.conf.pacsave
+#(1/1) installing pacman-git                        [######################] 100%
+backup=("etc/pacman.conf"
+        "etc/makepkg.conf")
 #lepatch="pacman_incremental.patch" #nolonger needed! see git.sh.in
 warnspatch="pacman_warnings_arent_errors.patch"
 sudopatch="persistent_sudo.patch"
