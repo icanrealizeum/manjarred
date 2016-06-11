@@ -247,13 +247,19 @@
       \ Protocol: UDP
       \ Log: Log
       \ Allow OUT, all interfaces
-  * install recoll and iotop and evince(for pdf viewing from recoll's search result links)
+  * install iotop and evince(for pdf viewing from recoll's search result links)
+  - install recoll
     \ from Add/Remove Programs
     \ poppler is already installed(for pdf indexing)
     * go to Preferences->Index configuration, add Stemming Languages-> romanian
     * select Preferences->(all languages)
       \ new langs can be seen only after recoll restart
     * set to realtime indexing and also start daemon now but don't start it from that button(let the daemon do it; else it will want to kill it first!)
+    * REMOVE recoll
+      * pkill recollindex
+      * sudo pacman -Rs recoll
+      * rm -rf ~/.recoll
+        \ that's 1.7G currently!
   * open Window Manager (from Start, search for it)
     * switch theme from Vertex-Maia to Variation (to can see the top right buttons: minimize, maximize etc.)
   * install qTox (not uTox! because this is too bugged!)
