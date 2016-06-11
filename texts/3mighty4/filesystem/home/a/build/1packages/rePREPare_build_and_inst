@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo 'this is obsolete! just run ./1 and ./2'
+
+exit 1
+
+source ./common.bash
+
+echo "this doesn't remove existing folder before prepare"
+time makepkg -s --install --force 
+#"${useincremental[@]}" "$@"
+

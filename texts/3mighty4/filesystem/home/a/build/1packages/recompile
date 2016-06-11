@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#source ./common.bash
+
+#1. rebuild unconditionally, reusing existing srcdir
+#2. create pkg file, using existing srcdir but removing existing pkgdir(which is normal)
+
+time makepkg -s --noprepare --force --noextract "$@"
+#"${useincremental[@]}" "$@"
+
