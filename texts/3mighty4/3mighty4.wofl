@@ -295,10 +295,26 @@
       \ Battery 0: Unknown, 95%
       \ Battery 0: design capacity 4655 mAh, last full capacity 5035 mAh = 100%
   * remove plymouth
+    \ hmm, this disables startx by breaking this link:
+    \ /etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/lightdm-plymouth.service
+    \ so display-manager.service shows as bad
     * pacman -Rs plymouth plymouth-theme-manjaro-elegant
     * ensure /etc/mkinitcpio.conf doesn't have plymouth in HOOKS
       \ has now eg.
       \ HOOKS="base udev autodetect modconf block keyboard keymap resume filesystems"
+    * enable lightdm (or you have to manually startx now)
+      * rm /etc/systemd/system/display-manager.service
+        \ because broken symlink! due to plymouth above being removed!
+      * systemctl enable lightdm
+        \ this works now!
+        \ without removing the above symlink, you get:
+        \ systemctl enable lightdm
+        \ Failed to execute operation: File exists
+  * a stop job is running for ....
+    * vim /etc/systemd/system.conf
+      \ add these two lines (presumably the entries don't already exist!)
+      \ DefaultTimeoutStartSec=30s
+      \ DefaultTimeoutStopSec=30s
 
 
 
