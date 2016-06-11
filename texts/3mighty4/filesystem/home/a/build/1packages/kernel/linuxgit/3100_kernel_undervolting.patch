@@ -1,0 +1,489 @@
+this was applied on top of kernel 4.2.rc4.r0.gcbfe8fa-1
+and 4.3.rc1.r217.g00ade1f-1
+also tested on 4.4 and 4.5 kernels, specifically up until 4.5-rc2
+also tested on 4.5.0-rc7
+also tested on 4.6.0-rc7
+
+This patch will undervolt and at the same time overclock my CPU on the Z575 laptop
+
+re-released under UNLICENSE
+
+diff -upr a/kernel/smp.c b/kernel/smp.c
+--- a/kernel/smp.c	2015-09-19 21:50:21.820631272 +0200
++++ b/kernel/smp.c	2015-09-20 00:02:22.979396879 +0200
+@@ -507,6 +507,9 @@ EXPORT_SYMBOL(smp_call_function);
+ unsigned int setup_max_cpus = NR_CPUS;
+ EXPORT_SYMBOL(setup_max_cpus);
+ 
++/* to apply underclocking or not */
++bool activate_underclocking = false;
++EXPORT_SYMBOL(activate_underclocking);
+ 
+ /*
+  * Setup routine for controlling SMP activation
+@@ -531,6 +534,457 @@ static int __init nosmp(char *str)
+ 
+ early_param("nosmp", nosmp);
+ 
++static int __init CPUunderclocking(char *str)
++{
++	activate_underclocking = true;
++	return 0;
++}
++#define CPUUSTR "CPUunderclocking"
++early_param(CPUUSTR, CPUunderclocking);
++//redefining because this patch is supposed to be independent of the EHCI-fix one.
++#define _prik2(fmt, a...) printk(fmt " {%s %s:%i}\n", ##a, __func__, __FILE__, __LINE__ )
++//KERN_* from: include/linux/kern_levels.h
++#define _prik3(type, fmt, a...) _prik2( type CPUUSTR ": " fmt, ##a)
++//NOTE: do not include your own \n when using these:
++#define printka(fmt, a...) _prik3(KERN_ALERT, fmt, ##a)
++#define printkw(fmt, a...) _prik3(KERN_WARNING, fmt, ##a)
++#define printkn(fmt, a...) _prik3(KERN_NOTICE, fmt, ##a)
++#define printki(fmt, a...) _prik3(KERN_INFO, fmt, ##a)
++#define printkd(fmt, a...) _prik3(KERN_DEBUG, fmt, ##a)
++#define BUGIFNOT(a) BUG_ON(!(a))
++
++// special divisors for family 0x12 (aka 18 in decimal)
++static const double DIVISORS_12[] = { 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0, 12.0, 16.0, 0.0 };
++//XXX: that 1.5 is needed for the 14.0 multi for example. (5+16)/1.5 = 14
++
++//top voltage, fixed value used for calculating VIDs and stuff, do not change!!!
++#define V155 1.55
++#define V1325 1.325 //my original turbo state voltage!
++
++#define DEFAULTREFERENCECLOCK 100 //MHz
++#define REFERENCECLOCK DEFAULTREFERENCECLOCK //for my CPU, is the same 100MHz (unused)
++
++#define NUMPSTATES 8
++#define NUMCPUCORES 4 //4 cores, for my CPU
++#define CPUFAMILY 0x12
++#define CPUMODEL 0x1
++#define CPUMINMULTI 1.0
++#define CPUMAXMULTI 40.0 //24+16
++#define CPUVIDSTEP 0.0125 //fixed; default step for pre SVI2 platforms
++
++#define CPUMINVID 88 //1.55 - 88*0.0125 = 0.450
++#define CPUMINVOLTAGE 0.4500
++
++#define CPUMAXVID 18 //1.55 - 18*0.0125 = 1.325; multi 23x, fid 30, did 2, vid 18, pstate0 (highest) normal clocked
++#define CPUMAXVOLTAGE 1.3250 //multi 23x, fid 30, did 2, vid 18, pstate0 (highest) normal clocked
++
++#define CPUMAXVIDunderclocked 37 //1.0875V fid:6 did:0 multi:22.00 vid:37
++#define CPUMAXVOLTAGEunderclocked 1.0875 //1.55 - 37*0.0125 = 1.0875; fid:6 did:0 multi:22.00 vid:37
++
++#define CPUMINMULTIunderclocked 8 //multi 8x, fid 0, did 2 vid 67, pstate7(lowest) underclocked
++#define CPUMAXMULTIunderclocked 22 //1.0875V fid:6 did:0 multi:22.00 vid:37
++
++#define CPUMINVIDunderclocked 67 //multi 8x, fid 0, did 2 vid 67, pstate7(lowest) underclocked
++#define CPUMINVOLTAGEunderclocked 0.7125 //1.55 - 67*0.0125 = .7125
++
++struct PStateInfo {
++  u32 fid;//frequency identifier (was deduced from multi)
++  u32 did;//divisor index (was deduced from multi)
++//  double multi; //multiplier ( multiply with the reference clock of 100Mhz eg. multi*REFERENCECLOCK)
++  u32 multi;
++  double strvid; //real life voltage eg. 1.325V as a double
++  int VID; //vid, eg. 18 (for 1.325V) or 67 (for 1.0875V)
++  u32 regIndex;
++  u32 datahi;
++  u32 datalo;
++};
++
++const struct PStateInfo bootdefaults_psi[NUMPSTATES]={//XXX: fyi only, do not use this!
++  {30, 2, 23.0, 1.3250, 18, 0xc0010064, 0x8000017d, 0x000025e2}, //P0, boost
++  {26, 3, 14.0, 1.0625, 39, 0xc0010065, 0x80000140, 0x00004fa3}, //P1, normal
++  {23, 3, 13.0, 1.0250, 42, 0xc0010066, 0x80000137, 0x00005573},
++  {20, 3, 12.0, 0.9875, 45, 0xc0010067, 0x80000132, 0x00005b43},
++  {17, 3, 11.0, 0.9750, 46, 0xc0010068, 0x8000012e, 0x00005d13},
++  {14, 3, 10.0, 0.9625, 47, 0xc0010069, 0x8000012b, 0x00005ee3},
++  {11, 3,  9.0, 0.9500, 48, 0xc001006a, 0x80000127, 0x000060b3},
++  {16, 4,  8.0, 0.9250, 50, 0xc001006b, 0x80000125, 0x00006504}  //P7, normal
++};
++//bootdefaults_psi;//prevent -Wunused-variable warning; nvm, got statement has no effect  warning. What I actually need is:  __attribute__((unused))  src: https://stackoverflow.com/questions/15053776/how-do-you-disable-the-unused-variable-warnings-coming-out-of-gcc
++const struct PStateInfo allpsi[NUMPSTATES]={//stable underclocking for my CPU:
++  {6, 0, 22.0, 1.0875, 37, 0xc0010064, 0x8000017d, 0x00004a60}, //P0, boost
++  {4, 0, 20.0, 1.0250, 42, 0xc0010065, 0x80000140, 0x00005440}, //P1, normal
++  {2, 0, 18.0, 0.9625, 47, 0xc0010066, 0x80000137, 0x00005e20},
++  {1, 0, 17.0, 0.9375, 49, 0xc0010067, 0x80000132, 0x00006210},
++  {0, 0, 16.0, 0.9000, 52, 0xc0010068, 0x8000012e, 0x00006800},
++  {5, 1, 14.0, 0.8625, 55, 0xc0010069, 0x8000012b, 0x00006e51},
++  {2, 1, 12.0, 0.8125, 59, 0xc001006a, 0x80000127, 0x00007621},
++  {0, 2,  8.0, 0.7125, 67, 0xc001006b, 0x80000125, 0x00008602}  //P7, normal
++};
++
++static u32 __init GetBits(u64 value, unsigned char offset, unsigned char numBits) {
++    const u64 mask = (((u64)1 << numBits) - (u64)1); // 2^numBits - 1; after right-shift
++    return (u32)((value >> offset) & mask);
++}
++
++static u64 __init SetBits(u64 value, u32 bits, unsigned char offset, unsigned char numBits) {
++    const u64 mask = (((u64)1 << numBits) - (u64)1) << offset; // 2^numBits - 1, shifted by offset to the left
++    value = (value & ~mask) | (((u64)bits << offset) & mask);
++    return value;
++}
++
++
++static int __init Wrmsr(const u32 regIndex, const u64 value) {
++//  const u64 value=*ref2value;
++  const u32 data_lo=(u32)(value & 0xFFFFFFFF);
++  const u32 data_hi=(u32)(value >> 32);
++  int firsterr = 0;
++  int err;
++  int tmp;
++  bool safe=false;
++  u32 cpucore;
++  if (setup_max_cpus < NUMCPUCORES) {// setup_max_cpus is 64
++    printka("Unexpected number of cores. Expected: NUMCPUCORES=%d. Found: setup_max_cpus=%d. Continuing.", NUMCPUCORES, setup_max_cpus);
++  }
++  for (cpucore = 0; cpucore < NUMCPUCORES; cpucore++) {
++    printkd("  !! Wrmsr(before write): core:%d/%d idx:%x valx:%08x%08x ... ",
++        cpucore, setup_max_cpus,
++        regIndex,
++        data_hi,
++        data_lo);
++    //safety check:
++//    BUG_ON(allpsi[);
++    safe=false;
++    for (tmp=0; tmp < NUMPSTATES; tmp++) {
++      if (
++          ((allpsi[tmp].regIndex == regIndex) && (allpsi[tmp].datahi == data_hi) && (allpsi[tmp].datalo == data_lo))
++          ||
++          ((bootdefaults_psi[tmp].regIndex == regIndex) && (bootdefaults_psi[tmp].datahi == data_hi) && (bootdefaults_psi[tmp].datalo == data_lo))
++          ||
++          ( (0xc0010062 == regIndex) && (0 == data_hi) && (data_lo>=0) && (data_lo <=6) ) //change current pstate = allowed
++         )
++      {
++        safe=true;
++        break;
++      }
++    }
++    if (!safe) {
++      printka("    !! Wrmsr(before write): not allowing msr write with those values. (this was meant to indicate a bug in code) core:%d/%d idx:%x valx:%08x%08x ... ",
++          cpucore, setup_max_cpus,
++          regIndex,
++          data_hi,
++          data_lo);
++      return 1;
++    }
++    BUGIFNOT(safe);
++    err = wrmsr_safe_on_cpu(cpucore, regIndex, data_lo, data_hi);
++    if (err) {
++      printka("    !! Wrmsr(after write): failed, err:%d on core:%d/%d idx:%x valx:%08x%08x. Continuing.",
++          err,
++          cpucore, setup_max_cpus,
++          regIndex,
++          data_hi,
++          data_lo);
++      //break;
++      if (!firsterr) {
++        firsterr=err;
++      }
++    }else{
++      printkd("    !! Wrmsr(after write): done.");
++    }
++  }
++  return firsterr;//0 on success
++}
++
++static u64 __init Rdmsr(const u32 regIndex) {
++  u64 result[NUMCPUCORES]={0,0,0,0};
++  int firsterr = 0;
++  int err;
++  u32 data_lo;
++  u32 data_hi;
++  int cpucore;//for the 'for'
++  int tmp;
++  bool safe=false;
++  if (setup_max_cpus < NUMCPUCORES) {
++    printka("Unexpected number of cores. Expected: NUMCPUCORES=%d. Found: setup_max_cpus=%d. Continuing.", NUMCPUCORES, setup_max_cpus);
++  }
++
++  for (cpucore = 0; cpucore < NUMCPUCORES; cpucore++) {
++    printkd("  !! Rdmsr(1of2): core:%d idx:%x ...", cpucore, regIndex);
++    data_lo=0;//not needed to init them, but just in case there's an err, they shouldn't be equal to prev core's values!
++    data_hi=0;
++    err = rdmsr_safe_on_cpu(cpucore, regIndex, &data_lo, &data_hi);
++    if (err) {
++      printka("    !! Rdmsr(2of2): failed, err:%d on core:%d/%d idx:%x resultx:%08x%08x. Continuing.",
++          err,
++          cpucore, setup_max_cpus,
++          regIndex,
++          data_hi,
++          data_lo);
++      if (!firsterr) {
++        firsterr=err;
++      }
++    }else {
++      result[cpucore]=(u64)( ((u64)data_hi << 32) + data_lo);
++      printkd("    !! Rdmsr(2of2): core:%d idx:%x done. (resultx==%08x%08x hi:%08x lo:%08x)", cpucore, regIndex, (u32)(result[cpucore] >> 32), (u32)(result[cpucore] & 0xFFFFFFFF), data_hi, data_lo);//just in case unsigned int gets more than 32 bits for wtw reason in the future! leave the & there.
++      BUG_ON((u32)(result[cpucore] >> 32) != data_hi);
++      BUG_ON((u32)(result[cpucore] & 0xFFFFFFFF) != data_lo);
++      if (cpucore > 0) {
++        if (result[cpucore-1] != result[cpucore]) {
++          printkw("    !! Rdmsr(3of2): different results for cores(this is expected to be so, depending on load) core[%d] != core[%d] (see above KERN_DEBUG msgs)", cpucore-1, cpucore);
++        }
++      }
++      //validate msr reads: they must be within range (otherwise we're probably inside virtualbox and we shouldn't get to Wrmsr later)
++      safe=false;
++      for (tmp=0; tmp < NUMPSTATES; tmp++) {
++        if (
++            ((allpsi[tmp].regIndex == regIndex) && (allpsi[tmp].datahi == data_hi) && (allpsi[tmp].datalo == data_lo))
++            ||
++            ((bootdefaults_psi[tmp].regIndex == regIndex) && (bootdefaults_psi[tmp].datahi == data_hi) && (bootdefaults_psi[tmp].datalo == data_lo))
++            ||
++            ( (0xc0010062 == regIndex) && (0 == data_hi) && (data_lo>=0) && (data_lo <=6) ) //change current pstate = allowed  (0..6 only)
++            ||
++            ( (0xc0010063 == regIndex) && (0 == data_hi) && (data_lo>=0) && (data_lo <=6) ) //change current pstate = allowed (0..6 only)
++            ||
++            ( (0xc0010071 == regIndex) && (result[cpucore] != 0))//eg. 003160975a078602 this is definitely not 0 here! unless maybe inside virtualbox? if I remember correctly
++           )
++        {
++          safe=true;
++          break;
++        }
++      }
++      if (!safe) {
++        printka("    !! Rdmsr(after read): not allowing msr read with those values. (this was meant to indicate an unexpected case scenario, eg. running inside virtualbox?) core:%d/%d idx:%x valx:%08x%08x ... ",
++            cpucore, setup_max_cpus,
++            regIndex,
++            data_hi,
++            data_lo);
++        return 0;//0 on error
++      }
++      BUGIFNOT(safe);
++    }
++  }
++
++  if (firsterr) {
++    return 0;//return 0 on error
++  } else {//return the actual value(for core0) on success
++    return result[0];//return only the core0 result
++  }
++}
++
++/*void __init multifromfidndid(double *dest_multi, const int fid, const int did) {//kernel/smp.c:702:1: error: SSE register return with SSE disabled   (that's due to the use of type:  double)
++
++  double multi= (fid + 16) / DIVISORS_12[did];
++
++  BUG_ON(NULL == dest_multi);
++
++  if ((multi < CPUMINMULTI) || (multi > CPUMAXMULTI)) {
++    printka("!! unexpected multiplier, you're probably running inside virtualbox fid:%d  did:%d multi:%f",
++      fid, did, multi);
++  }
++  BUGIFNOT(multi>=CPUMINMULTI);
++  BUGIFNOT(multi<=CPUMAXMULTI);
++//  return multi;
++  *dest_multi=multi;
++}
++
++static void __init FindFraction(double value, const double* divisors,
++    int *numerator, int *divisorIndex,
++    const int minNumerator, const int maxNumerator) {
++  // limitations: non-negative value and divisors
++
++  int i;
++  double bestValue;
++  // count the null-terminated and ascendingly ordered divisors
++  int numDivisors = 0;
++
++  BUG_ON(NULL == divisors);
++  BUG_ON(NULL == numerator);
++  BUG_ON(NULL == divisorIndex);
++
++  for (; divisors[numDivisors] > 0; numDivisors++) { }
++
++  // make sure the value is in a valid range
++  value = max(minNumerator / divisors[numDivisors-1], min(maxNumerator / divisors[0], value));
++
++  // search the best-matching combo
++  bestValue = -1.0; // numerator / divisors[divisorIndex]
++  for (i = 0; i < numDivisors; i++) {
++    const double d = divisors[i];
++    const int n = max(minNumerator, min(maxNumerator, (int)(value * d)));
++    const double myValue = n / d;
++
++    if (myValue <= value && myValue > bestValue) {
++      *numerator = n;
++      *divisorIndex = i;
++      bestValue = myValue;
++
++      if (bestValue == value)
++        break;
++    }
++  }
++}
++
++inline void __init multi2fidndid(const double multi, int *fid, int *did) {
++
++  const int minNumerator = 16; // numerator: 0x10 = 16 as fixed offset
++  const int maxNumerator = 31 + minNumerator; // 5 bits => max 2^5-1 = 31
++
++  int numerator, divisorIndex;
++
++  BUG_ON( NULL == fid);
++  BUG_ON( NULL == did);
++  BUGIFNOT(multi>=CPUMINMULTI);
++  BUGIFNOT(multi<CPUMAXMULTI);
++
++  FindFraction(multi, DIVISORS_12, &numerator, &divisorIndex, minNumerator, maxNumerator);
++
++  *fid = numerator - minNumerator;
++  *did = divisorIndex;
++}*/
++
++
++static bool __init WritePState(const u32 numpstate, const struct PStateInfo *info) {//FIXME: so what if I'm passing the entire struct? or should I leave it as pointer? but don't want struct's contents modified!
++  /*const*/ u32 regIndex;//kernel/smp.c:780:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
++  u64 msr;
++  int fidbefore;
++  int didbefore;
++//  double Multi;
++  int VID;
++  int fid, did;
++  bool ret;
++
++  BUG_ON(NULL == info);
++  BUGIFNOT(numpstate >=0);//done: BUG_ON is the reverse of assert!!
++  BUGIFNOT(numpstate < NUMPSTATES);
++
++  regIndex = 0xc0010064 + numpstate;//kernel/smp.c:788:12: error: assignment of read-only variable ‘regIndex’
++  //XXX: see? that's what ISO C90 does, prevents me from const-ifying a var if I've to do an assert/BUG_ON before assigning its initial value! AND makes me put vars at top which I should otherwise not have access to until later on in code, thus allowing me the opportunity to typo or misused a different but similarly names var and thus introduce a bug.
++  msr = Rdmsr(regIndex);
++  fidbefore = GetBits(msr, 4, 5);
++  didbefore = GetBits(msr, 0, 4);
++//  multifromfidndid(&Multi, fidbefore, didbefore); FIXME: find a way to make double work, or do fixed-point arithmethic(fpa) somehow
++  VID = GetBits(msr, 9, 7);
++
++//  printkd("!! Write PState(1of2) read : fid:%d did:%d vid:%d Multi:%f\n", fidbefore, didbefore, VID, Multi);
++  printkd("!! Write(1of3) PState%d read : fid:%d did:%d vid:%d Multi:N/A", 
++      numpstate, fidbefore, didbefore, VID);//FIXME:
++
++  if (0 == msr) {
++    printka("!! Write(1of3 part2) PState%d msr read failed to read expected values - probably due to being inside virtualbox. Aborting write.", numpstate);
++    return false;
++  }
++
++
++  BUG_ON(0 == msr);
++
++  BUGIFNOT(info->multi >= CPUMINMULTIunderclocked);//FIXME: smp.c:809: undefined reference to `__gedf2'  due to double no doubt!
++  BUGIFNOT(info->multi <= CPUMAXMULTIunderclocked);
++
++  //multi2fidndid(info->multi, &fid, &did);//FIXME:
++  fid=info->fid;
++  did=info->did;
++
++  if ((fid != fidbefore) || (did != didbefore)) {
++    msr=SetBits(msr, fid, 4, 5);
++    msr=SetBits(msr, did, 0, 4);
++
++    BUGIFNOT(info->VID >= CPUMAXVIDunderclocked);
++    BUGIFNOT(info->VID <= CPUMINVIDunderclocked);
++    msr=SetBits(msr, info->VID, 9, 7);
++
++    printkd("!! Write(2of3) PState%d write:%d did:%d vid:%d "//"(multi:%02.2f)"
++        "(multi:%d)"
++        " ..."
++        ,numpstate, fid, did, info->VID, info->multi);
++    ret=Wrmsr(regIndex, msr);
++    printkd("!! Write(3of3) PState%d done. status:%d (0=success)", numpstate, ret);
++    return true;
++  } else {
++    printkd("!! Write(3of3) PState%d no write needed: same values. Done.", numpstate);
++    return false;
++  }
++}
++
++int __init GetCurrentPState(void) {
++  const u64 msr = Rdmsr(0xc0010071);
++  const int i = GetBits(msr, 16, 3);//0..7
++  return i;
++}
++
++void __init SetCurrentPState(int numpstate) {
++  u32 regIndex = 0xc0010062;
++  u64 msr;
++  int i=-1;
++  int j=-1;
++  int maxtries=10;//10 is plenty!
++
++  BUG_ON(numpstate < 0);
++  BUG_ON(numpstate >= NUMPSTATES);
++//    throw ExceptionWithMessage("P-state index out of range");
++
++  // //so excluding the turbo state, however! isn't P0 the turbo state? unless this means that pstates here start from 0 to 7  and represent P7 to P0 in this order! (need to FIXME: verify this!) nope, P0 is turbo state here too, confirmed by http://review.coreboot.org/gitweb?p=coreboot.git;a=commitdiff;h=363010694dba5b5c9132e78be357a1098bdc0aba which says "/* All cores: set pstate 0 (1600 MHz) early to save a few ms of boot time */"
++  //ok so I got it: https://github.com/johkra/amdmsrtweaker-lnx/commit/11a4fe2f486a6686bd5e64bc0e6859145a890ef2#commitcomment-13245640
++  //decrease the turbo state(s) because index=0 is P1 ... and there is no way to select turbo state! (I may still be wrong, but this explanation makes sense why this was originally coded this way)
++  numpstate -= 1;//NumBoostStates;//XXX: no idea why decrease by 1 here then.
++  if (numpstate < 0)
++    numpstate = 0;
++
++  msr = Rdmsr(regIndex);//returns 0..7? or 0..6 unsure
++  msr=SetBits(msr, numpstate, 0, 3);
++  if (0 == Wrmsr(regIndex, msr)) {//written ... (0=success)
++    //Next, wait for the new pstate to be set, code from: https://chromium.googlesource.com/chromiumos/third_party/coreboot/+/c02b4fc9db3c3c1e263027382697b566127f66bb/src/cpu/amd/model_10xxx/fidvid.c line 367
++    regIndex=0xc0010063;
++    do {
++      maxtries--;
++      msr = Rdmsr(regIndex);
++      i = GetBits(msr, 0, 16);
++      j = GetBits(msr, 0, 64);
++      printkd("Waiting for PState to settle at wanted. Current: i(16bits)=%d j(64bits)=%d wantedpstate=%d tries left:%d",i,j,numpstate, maxtries);//gets to only be printed once, because it's already set by the time this gets reached, apparently.
++    } while ((i != numpstate)&&(maxtries > 0));// || (0 == msr);
++    if (maxtries<=0) {
++      printka("maxtries exhausted, giving up...");
++    }
++  }else{
++    printkd("Current PState was not set due to Wrmsr having failed.");
++  }
++}
++
++
++
++static void __init apply_underclocking_if_needed(void)
++{
++  bool modded=false;
++  u32 i;
++  int currentPState;
++  int lastpstate;
++  int tempPState;
++
++  printki("activating(?)=%d", activate_underclocking);
++  if (activate_underclocking) {
++    printki("activating...");
++    for (i = 0; i < NUMPSTATES; i++) {
++      modded=WritePState(i, &allpsi[i]) | modded;
++    }
++
++    if (modded) {
++      printkd("Switching to another p-state temporarily so to ensure that the current one uses newly applied values");
++
++      currentPState = GetCurrentPState();
++
++      //we switch to another pstate temporarily, then back again so that it takes effect (apparently that's why, unsure, it's not my coding)
++      lastpstate= NUMPSTATES - 1;//aka the lowest speed one
++      tempPState = (currentPState == lastpstate ? 0 : lastpstate);
++      //    const int tempPState = ((currentPState + 1) % NUMPSTATES);//some cores may already be at current+1 pstate; so don't use this variant
++      printkd("!! currentpstate:%d temppstate:%d", currentPState, tempPState);
++      SetCurrentPState(tempPState);
++      printkd("!! currentpstate:%d", GetCurrentPState());
++      SetCurrentPState(currentPState);
++      printkd("!! currentpstate:%d", GetCurrentPState());
++    }
++  }
++  printki("done.");
++}
++
+ /* this is hard limit */
+ static int __init nrcpus(char *str)
+ {
+@@ -905,6 +1359,7 @@ void __init smp_init(void)
+ 
+ 	/* Any cleanup work */
+ 	smp_announce();
++  apply_underclocking_if_needed();
+ 	smp_cpus_done(setup_max_cpus);
+ }
+ 

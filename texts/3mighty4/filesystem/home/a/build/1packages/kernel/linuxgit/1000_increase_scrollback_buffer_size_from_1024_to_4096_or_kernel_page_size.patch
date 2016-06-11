@@ -1,0 +1,72 @@
+[PATCH] vgacon: increase scrollback buffer size from 1024 to 4096 (=getconf PAGE_SIZE)
+also makes sure that's capped to PAGE_SIZE (which for me it's 4096, so 4MB)
+created for kernel 3.16-rc7 by EmanueL Czirai
+
+diff -u3pr -- a/drivers/video/console/Kconfig c/drivers/video/console/Kconfig
+--- a/drivers/video/console/Kconfig	2014-06-08 20:19:54.000000000 +0200
++++ c/drivers/video/console/Kconfig	2014-08-01 05:20:58.327223451 +0200
+@@ -40,13 +40,18 @@ config VGACON_SOFT_SCROLLBACK
+ config VGACON_SOFT_SCROLLBACK_SIZE
+        int "Scrollback Buffer Size (in KB)"
+        depends on VGACON_SOFT_SCROLLBACK
+-       range 1 1024
++       range 1 4096
+        default "64"
+        help
+          Enter the amount of System RAM to allocate for the scrollback
+ 	 buffer.  Each 64KB will give you approximately 16 80x25
+ 	 screenfuls of scrollback buffer
+ 
++	 This will be capped to kernel page size 
++	 or else memory allocation will fail.
++	 to get this value run: /usr/bin/getconf PAGE_SIZE
++	 which is 4096 on x86_64 
++
+ config MDA_CONSOLE
+ 	depends on !M68K && !PARISC && ISA
+ 	tristate "MDA text console (dual-headed)"
+diff -u3pr -- a/drivers/video/console/vgacon.c c/drivers/video/console/vgacon.c
+--- a/drivers/video/console/vgacon.c	2014-07-28 13:21:18.000000000 +0200
++++ c/drivers/video/console/vgacon.c	2014-08-01 05:12:46.000000000 +0200
+@@ -51,6 +51,16 @@
+ #include <video/vga.h>
+ #include <asm/io.h>
+ 
++#ifdef CONFIG_VGACON_SOFT_SCROLLBACK_SIZE
++	#if ( CONFIG_VGACON_SOFT_SCROLLBACK_SIZE > PAGE_SIZE )
++		//must not exceed kernel page size (4096) ie. getconf PAGE_SIZE
++		//or else it will fail to alloc and you're left with no scrollback buffer
++		#undef CONFIG_VGACON_SOFT_SCROLLBACK_SIZE
++		#define CONFIG_VGACON_SOFT_SCROLLBACK_SIZE (int)(PAGE_SIZE)
++	  //why the (int) cast? because otherwise the type is seen as "long unsigned int" after this define, but when it's "4096" is seen as just "int" and thus the print format %d cannot be used without getting a warning that would require using %lu  and yet we cannot use %lu because then we'd have to always redefine CONFIG_VGACON_SOFT_SCROLLBACK_SIZE and apply cast to (long unsigned int)
++	#endif
++#endif
++
+ static DEFINE_RAW_SPINLOCK(vga_lock);
+ static int cursor_size_lastfrom;
+ static int cursor_size_lastto;
+@@ -182,6 +192,8 @@ static inline void vga_set_mem_top(struc
+ 
+ #ifdef CONFIG_VGACON_SOFT_SCROLLBACK
+ /* software scrollback */
++
++
+ static void *vgacon_scrollback;
+ static int vgacon_scrollback_tail;
+ static int vgacon_scrollback_size;
+@@ -207,6 +219,15 @@ static void vgacon_scrollback_init(int p
+ static void vgacon_scrollback_startup(void)
+ {
+ 	vgacon_scrollback = kcalloc(CONFIG_VGACON_SOFT_SCROLLBACK_SIZE, 1024, GFP_NOWAIT);
++	if (!vgacon_scrollback) {
++		printk(KERN_WARNING "vgacon: failed to allocate %d bytes of memory for scrollback. CONFIG_VGACON_SOFT_SCROLLBACK_SIZE=%d\n", 
++				CONFIG_VGACON_SOFT_SCROLLBACK_SIZE*1024, 
++				CONFIG_VGACON_SOFT_SCROLLBACK_SIZE);
++	} else {
++		printk(KERN_INFO "vgacon: allocated %d bytes of memory for scrollback. CONFIG_VGACON_SOFT_SCROLLBACK_SIZE=%d\n", 
++				CONFIG_VGACON_SOFT_SCROLLBACK_SIZE*1024, 
++				CONFIG_VGACON_SOFT_SCROLLBACK_SIZE);
++	}
+ 	vgacon_scrollback_init(vga_video_num_columns * 2);
+ }
+ 

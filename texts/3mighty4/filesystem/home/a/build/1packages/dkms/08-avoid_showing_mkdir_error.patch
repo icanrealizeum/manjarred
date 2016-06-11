@@ -1,0 +1,11 @@
+avoid showing mkdir error which happens when rebuilding
+
+--- "archlinux version!_dkms-2.2.0.3-15-any/dkms"	2014-11-05 11:51:54.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/dkms"	2014-11-05 12:06:26.342732248 +0100
+@@ -1245,5 +1245,5 @@ do_build()
+ 
+     # Save a copy of the new module
+-    mkdir "$base_dir/module" >/dev/null
++    mkdir "$base_dir/module" >/dev/null 2>&1
+     for ((count=0; count < ${#built_module_name[@]}; count++)); do
+ 	[[ ${strip[$count]} != no ]] && strip -g "$dkms_tree/$module/$module_version/build/${built_module_location[$count]}${built_module_name[$count]}$module_suffix"
