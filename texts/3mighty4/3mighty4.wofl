@@ -294,6 +294,11 @@
       \ # acpi -b -i
       \ Battery 0: Unknown, 95%
       \ Battery 0: design capacity 4655 mAh, last full capacity 5035 mAh = 100%
+  * remove plymouth
+    * pacman -Rs plymouth plymouth-theme-manjaro-elegant
+    * ensure /etc/mkinitcpio.conf doesn't have plymouth in HOOKS
+      \ has now eg.
+      \ HOOKS="base udev autodetect modconf block keyboard keymap resume filesystems"
 
 
 
