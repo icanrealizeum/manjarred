@@ -1,0 +1,66 @@
+==> Prepare [drivers repository] (mhwd-image)
+ --> aufs mount: [/var/lib/manjaro-tools/buildiso/xfce/x86_64/mhwd-image]
+ --> Restoring [/var/lib/manjaro-tools/buildiso/xfce/x86_64/mhwd-image/etc/pacman.conf] ...
+Root      : /
+Conf File : /etc/pacman.conf
+DB Path   : /var/lib/pacman/
+Cache Dirs: /var/cache/pacman/pkg/  
+Hook Dirs : /usr/share/libalpm/hooks/  /etc/pacman.d/hooks/  
+Lock File : /var/lib/pacman/db.lck
+Log File  : /var/log/pacman.log
+GPG Dir   : /etc/pacman.d/gnupg/
+Targets   : xf86-video-apm  xf86-video-ark  xf86-video-ati  xf86-video-amdgpu  xf86-video-chips  xf86-video-dummy  xf86-video-fbdev  xf86-video-glint  xf86-video-i128  xf86-video-i740  xf86-video-intel  xf86-video-mach64  xf86-video-neomagic  xf86-video-nouveau  xf86-video-nv  xf86-video-openchrome  xf86-video-r128  xf86-video-rendition  xf86-video-s3  xf86-video-s3virge  xf86-video-savage  xf86-video-siliconmotion  xf86-video-sis  xf86-video-sisusb  xf86-video-tdfx  xf86-video-trident  xf86-video-tseng  xf86-video-vesa  xf86-video-vmware  xf86-video-voodoo  bumblebee  primus  lib32-primus  catalyst-utils  linux-git-catalyst  nvidia-utils  linux-git-nvidia  nvidia-340xx-utils  linux-git-nvidia-340xx  nvidia-304xx-utils  linux-git-nvidia-304xx  lib32-catalyst-utils  lib32-nvidia-utils  lib32-nvidia-304xx-utils  lib32-nvidia-340xx-utils  virtualbox-guest-utils  linux-git-virtualbox-guest-modules  libxaw  libxpm  libxvmc  pangox-compat  lib32-libxvmc  open-vm-tools  xf86-input-vmmouse
+:: Synchronizing package databases...
+ core                     135.6 KiB   729K/s 00:00 [######################] 100%
+ extra                   1906.2 KiB  1682K/s 00:01 [######################] 100%
+ community                  3.8 MiB  1698K/s 00:02 [######################] 100%
+ multilib                 186.9 KiB  1699K/s 00:00 [######################] 100%
+error: failed retrieving file 'online-repo.db' from disk : Couldn't open file /home/a/online-repo/x86_64/online-repo.db
+error: failed to update online-repo (download library error)
+error: failed to synchronize all databases
+error: target not found: linux-git-catalyst
+error: target not found: linux-git-nvidia
+error: target not found: linux-git-nvidia-340xx
+error: target not found: linux-git-nvidia-304xx
+error: target not found: linux-git-virtualbox-guest-modules
+  -> Copying mhwd package cache ...
+building file list ... done
+
+sent 16 bytes  received 12 bytes  56.00 bytes/sec
+total size is 0  speedup is 0.00
+==> ERROR: File '/var/lib/manjaro-tools/buildiso/xfce/x86_64/mhwd-image/opt/live/pkgs/*pkg*z' not found.
+==> Creating updated database file '/var/lib/manjaro-tools/buildiso/xfce/x86_64/mhwd-image/opt/live/pkgs/gfx-pkgs.db.tar.gz'
+==> WARNING: No packages remain, creating empty database.
+==> WARNING: No packages remain, creating empty database.
+ --> Configuring mwwd db ...
+  -> Disabling Catalyst driver
+  -> Disabling Nvidia driver
+  -> Disabling Nvidia Bumblebee driver
+  -> Disabling Nvidia 304xx driver
+  -> Disabling Nvidia 340xx driver
+  -> Disabling AMD gpu driver
+  -> Cleaning [mhwd-image]
+==> Done [drivers repository] (mhwd-image)
++ [[ ! -e /var/lib/manjaro-tools/buildiso/xfce/x86_64/build.make_image_boot ]]
++ msg 'Prepare [%s/boot]' manjaro
++ local 'mesg=Prepare [%s/boot]'
++ shift
++ printf '==> Prepare [%s/boot]\n' manjaro
+==> Prepare [manjaro/boot]
++ local path_iso=/var/lib/manjaro-tools/buildiso/xfce/x86_64/iso/manjaro/boot
++ mkdir -p /var/lib/manjaro-tools/buildiso/xfce/x86_64/iso/manjaro/boot/x86_64
++ cp /var/lib/manjaro-tools/buildiso/xfce/x86_64/root-image/boot/memtest86+/memtest.bin /var/lib/manjaro-tools/buildiso/xfce/x86_64/iso/manjaro/boot/x86_64/memtest
++ cp /var/lib/manjaro-tools/buildiso/xfce/x86_64/root-image/boot/vmlinuz-linux-git /var/lib/manjaro-tools/buildiso/xfce/x86_64/iso/manjaro/boot/x86_64/manjaro
++ local path=/var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
++ mkdir -p /var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
++ mount_image_select /var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
++ [[ -f /usr/share/manjaro-tools/iso-profiles/official/xfce/Packages-Xfce ]]
++ mount_image_custom /var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
++ IMAGE_ACTIVE_MOUNTS=()
++ track_image -t aufs -o br=/var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image:/var/lib/manjaro-tools/buildiso/xfce/x86_64/xfce-image=ro:/var/lib/manjaro-tools/buildiso/xfce/x86_64/root-image=ro none /var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
++ info '%s mount: [%s]' aufs /var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
++ local 'mesg=%s mount: [%s]'
++ shift
++ printf ' --> %s mount: [%s]\n' aufs /var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image
+ --> aufs mount: [/var/lib/manjaro-tools/buildiso/xfce/x86_64/boot-image]
+
