@@ -302,7 +302,7 @@ make_image_mhwd() {
 }
 
 make_image_boot() {
-set -xe
+set -x
 	if [[ ! -e ${work_dir}/build.${FUNCNAME} ]]; then
 		msg "Prepare [%s/boot]" "${iso_name}"
 		local path_iso="${work_dir}/iso/${iso_name}/boot"
