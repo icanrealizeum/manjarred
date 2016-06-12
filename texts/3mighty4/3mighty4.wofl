@@ -338,5 +338,23 @@
       \ there's a path inside sshd.conf to where sshd is actually spewing its logs (that should be already set correctly for Manjaro, though - not yet done!)
     * sudo systemctl start fail2ban
 
+* INFO
+  * interesting commands for buildiso
+    - repo-add custom.db.tar.gz *.pkg.tar.*
+      \ in dir: /home/a/online-repo/x86_64
+    * in dir: /home/a/online-repo/x86_64
+      \ repo-add online-repo.db.tar.gz *.pkg.tar.*
+    * Whereas file: /usr/share/manjaro-tools/pacman-multilib.conf
+      \ try2 is online-repo hopefully does what they say: "Custom online repositories will get removed automatically from this file before it gets copied over to the installed system, whereas custom non-online repositories will be kept. This means AUR packages are best installed from a custom online repository (as demonstrated by [online-repo] in this tutorial). " src: https://wiki.manjaro.org/index.php?title=Buildiso_with_AUR_packages:_Using_buildpkg
+      - contains(try1 - fails later on):
+        \ [custom]
+        \ SigLevel = Optional TrustAll
+        \ Server = file:///home/a/online-repo/$arch
+      * contains(try2):
+        \ [online-repo]
+        \ SigLevel = Optional TrustAll
+        \ Server = file:///home/a/online-repo/$arch
+    * # cd /usr/share/manjaro-tools/ && time buildiso -p xfce -b stable
+
 
 
