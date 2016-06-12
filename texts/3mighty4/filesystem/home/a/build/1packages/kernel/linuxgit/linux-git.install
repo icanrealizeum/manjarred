@@ -14,7 +14,7 @@ prepend_microcode () {
   local destmc="${destfirst}/kernel/x86/microcode/"
 #  mkdir -p "${destmc}"
 	install -dm644 "${destmc}"
-  ( cp -f "/lib/firmware/amd-ucode/microcode_amd.bin" "${destmc}/AuthenticAMD.bin" && cd "${destfirst}" && find . | cpio -o -H newc > "../ucode.cpio" 2>/dev/null && cd .. && cat "ucode.cpio" "${initramfs}" > "/tmp/${initramfsfname}" && mv -f "/tmp/${initramfsfname}" "${initramfs}")
+  ( cp -f "/lib/firmware/amd-ucode/microcode_amd.bin" "${destmc}/AuthenticAMD.bin" && cd "${destfirst}" && find . | cpio -o -H newc > "../ucode.cpio" 2>/dev/null && cd .. && cat "ucode.cpio" "${initramfs}" > "/tmp/${initramfsfname}" && chmod a-rwx "/tmp/${initramfsfname}" && mv -f "/tmp/${initramfsfname}" "${initramfs}" )
 	local ec=$?
 	if [[ $ec -eq 0 ]]; then
 		echo "success."
@@ -88,7 +88,7 @@ update_grub () {
       update-grub
   else
       echo "WARNING: It seems that grub is not installed - Your system might not boot."
-      echo "Add followed initramfs files to your bootloader config:"
+      echo "Add the following initramfs files to your bootloader config:"
       echo ">> linux	${vmlinuz}"
       echo ">> initrd	${initramfs}"
   fi
