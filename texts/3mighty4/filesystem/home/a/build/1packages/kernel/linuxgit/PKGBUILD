@@ -292,7 +292,7 @@ depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=0.7' 'cpio')
 #"${pkgbase}-headers")
 optdepends=('crda: to set the correct wireless channels of your country')
 #provides=("linux=${pkgver}")
-provides=("linux${_kernelname}=${pkgver}")
+provides=("linux${_kernelname}=${pkgver}" "linux=${pkgver}")
 conflicts=("linux${_kernelname}")
 replaces=("linux${_kernelname}")
 backup=("etc/mkinitcpio.d/${presetfile}")
@@ -383,7 +383,7 @@ package_linux-git-headers() {
 #pkgdesc="Header files and scripts for building modules for ${pkgbase/linux/Linux} kernel"
 #provides=("linux-headers=$pkgver")
 pkgdesc="Header files and scripts for building modules for Linux kernel (git version)"
-provides=("linux${_kernelname}-headers=${pkgver}")
+provides=("linux${_kernelname}-headers=${pkgver}" "linux-headers=$pkgver")
 conflicts=("linux${_kernelname}-headers")
 replaces=("linux${_kernelname}-headers")
 
@@ -529,7 +529,7 @@ rm -rf "${pkgdir}/usr/lib/modules/${_kernver}/build/Documentation/kbuild"
 
 package_linux-git-docs() {
 pkgdesc="Kernel hackers manual - HTML documentation that comes with the Linux kernel (git version)"
-provides=("kernel${_kernelname}-docs=${pkgver}")
+provides=("kernel${_kernelname}-docs=${pkgver}" "kernel-docs=$pkgver")
 conflicts=("kernel${_kernelname}-docs")
 replaces=("kernel${_kernelname}-docs")
 
