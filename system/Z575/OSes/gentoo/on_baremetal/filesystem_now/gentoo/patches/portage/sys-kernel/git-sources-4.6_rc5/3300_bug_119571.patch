@@ -1,0 +1,30 @@
+see: https://bugzilla.kernel.org/show_bug.cgi?id=119571
+
+From 5fdb2e43b42baca3736f1c18c4987033e7982741 Mon Sep 17 00:00:00 2001
+From: Nicholas Krause <xerofoify@gmail.com>
+Date: Thu, 9 Jun 2016 21:35:07 -0400
+Subject: [PATCH] Use after free test patch
+
+Signed-off-by: Nicholas Krause <xerofoify@gmail.com>
+---
+ mm/percpu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 0c59684..22e7c16 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -1236,9 +1236,8 @@ void free_percpu(void __percpu *ptr)
+ 	if (!ptr)
+ 		return;
+ 
+-	kmemleak_free_percpu(ptr);
+-
+ 	addr = __pcpu_ptr_to_addr(ptr);
++	kmemleak_free_percpu(ptr);
+ 
+ 	spin_lock_irqsave(&pcpu_lock, flags);
+ 
+-- 
+2.7.4
+

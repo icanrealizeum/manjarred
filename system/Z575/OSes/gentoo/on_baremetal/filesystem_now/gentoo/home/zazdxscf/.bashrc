@@ -144,7 +144,10 @@ mp3dir(){
 #alias zipwithpwd='zip -v -9 -r -T -e'  #follows: archive.zip *
 alias sl='ls'
 alias bc='bc -l' #decimals!
-UA='Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
+#estimated firefox:
+#UA='Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
+#chromium now:
+UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2756.0 Safari/537.36,gzip(gfe),gzip(gfe)'
 alias downmp3="time youtube-dl --user-agent \"${UA}\" --extract-audio --audio-format mp3"
 alias downaudio="time youtube-dl --user-agent \"${UA}\" --extract-audio"
 alias downvideo="time youtube-dl --user-agent \"${UA}\""
