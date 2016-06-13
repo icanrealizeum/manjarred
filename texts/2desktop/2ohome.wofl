@@ -265,10 +265,11 @@
       \ Add! (this actually adds 2 rules)
       \ TODO: see if these can be relaxed? can't really test unless I'm on a different real IP!
       \ btw, the status goes green regardless or the existence of this rule, even though I've had Deny on incoming/outgoing both!
-    * in Fireall, also add rule(or see spam in logs):
+    * in Firewall, also add rule(or see spam in logs):
       \ Advanced,
       \ From Port: 33445
       \ Allow Out, any interface
+  * uninstall thunderbird
   * remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
     - (NOPE! this is for root user only!) vim /etc/sudoers
       \ comment out line:
@@ -276,7 +277,6 @@
     * vim /etc/sudoers.d/10-installer
       \ comment out this line:
       \ %wheel ALL=(ALL) ALL
-
   * get whatismyip to work
     - replace dig with drill in script
     * add firewall rule to allow DNS to 208.67.222.220
@@ -287,7 +287,7 @@
   - explicitly mount /tmp as tmpfs with the size= parameter!!
     \ see how to do this by looking in gentooskyline
   * put descent(d1x-rebirth,d2x-rebirth),lotus,dosbox
-  * get into router and tcp port forward 46802 to 192.168.1.210:46802
+  * get into router and tcp port forward 46803 to 192.168.1.210:46802
     \ inc port +1 for ohome 1.210:46802 (same local port!)
 
 

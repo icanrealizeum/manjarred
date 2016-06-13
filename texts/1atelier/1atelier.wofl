@@ -11,14 +11,23 @@
       \ this was set by the Thus installer! (Calamares one just closed for no reason)
   * set Options for Add/Remove Programs
     * DON'T set 'Remove unrequired dependencies' (because this removes qt4 when trying to remove cups, and vlc can optionally use it; and I just realized I don't have 'mc' anymore(supposedly I've had it?) else this setting removed it when I didn't notice)
+    * add AUR and stuff, but not by default!
   * remove icedtea and all java
     \ search for: java
+    \ removed: icedtea-web jre8-openjdk jre8-openjdk-headless java-runtime-common
   * remove flash player
     \ search for: flash
   * remove cups
-    \ this removes: cups-pdf and manjaro-printer
+    \ this removes: cups-pdf and manjaro-printer cups
     \ if it wants to remove more, restart it (ensure 'Remove unrequired dependencies' is not set though!)
     \ this has effect on restart, apparently the systemd services still remain until then.
+    * remove cups-filters too
+      \ removes: hplip foomatic-db-engine cups-filters
+    * remove cups-pk-helper
+      \ removes: cups-pk-helper
+    * remove system-config-printer
+    * remove python-pycups
+    * remove splix
   * cannot remove avahi! can only disable it
     * sudo systemctl stop avahi-daemon.service avahi-daemon.socket
     * sudo systemctl disable avahi-daemon.service avahi-daemon.socket
@@ -41,6 +50,38 @@
     * scp sshd_config and restart sshd
     * add ohome's auth key
       \ ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINrE3BSaf3g1WbUs63fnQRI7d4uYAiT5qyH2Jz+jTJm4 root@ohome
+  * x11vnc
+    * install it
+      * open Session and Startup from Start button(search for it)
+      * go to tab named Application Autostart
+      * untick Blueman Applet (bluetooth)
+      * untick Clipman
+      * untick Print Queue Applet
+      - click Add (actually, NO, I'll run this manually after ssh-ing!)
+        \ Name: x11vnc
+        \ Description:
+        \ Command: /home/a/bin/vncstart
+      * install x11vnc (from Add Remove Programs)
+    - sudo vim /etc/hosts
+      \ optionally add this entry:
+      \ 192.168.1.246 self
+    * open Power Manager
+      \ Security tab
+      \ untick 'Lock screen when system is going for sleep'
+      \ set 'Automatically lock the session' Never
+      \ otherwise vnc-ing to this, will require someone physically being there to unlock it by typing in the password (screen which cannot be seen from vnc!)
+    * mkdir ~/bin
+      \ exists (forgot if I created it, or the installer?)
+    * copy vncstart from local
+      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.246:/home/a/bin/
+      \ it's already executable!
+    * start it
+      \ ~/bin/vncstart
+      \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
+    * to connect from client
+      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 atelier
+      \ where atelier points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.246 atelier
+      \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
   * fstab
     * settings for the btrfs root:
       * backup /etc/fstab with .ORIG extension (via cp -a --)
@@ -98,7 +139,7 @@
       \ much better!
     * time sudo update-grub
       \ 6s
-      \ nice! it even has /boot/intel-ucode.img (this is a Celeron processor!)
+      \ Nice: it even has /boot/intel-ucode.img (this is a Celeron processor!)
   * sudo vim /etc/resolvconf.conf
     \ append this line:
     \ resolv_conf_options="ndots:1 timeout:3 attempts:1 rotate"
@@ -138,7 +179,7 @@
       \ sudo chown root:root -- /systemrescuecd*
       \ sudo chmod a-wx -- /systemrescuecd*
       \ //DO NOT DO THIS(with the '/' in the iso): sudo ln -s /systemrescuecd*iso /sysrescd.iso
-      \ DO THIS(without the '/' in the iso): cd / && sudo ln -s systemrescuecd*iso /sysrescd.iso
+      \ DO THIS(without the '/' in the iso; also can't do this with cd while inside mc): cd / && sudo ln -s systemrescuecd*iso /sysrescd.iso
       \ or else sysrescd itself won't find the iso on boot!
     * time sudo update-grub
       \ 8s
@@ -163,38 +204,6 @@
     \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
     \ add line:
     \ blacklist nfs
-  * x11vnc
-    * install it
-      * open Session and Startup from Start button(search for it)
-      * go to tab named Application Autostart
-      * untick Blueman Applet (bluetooth)
-      * untick Clipman
-      * untick Print Queue Applet
-      - click Add (actually, NO, I'll run this manually after ssh-ing!)
-        \ Name: x11vnc
-        \ Description:
-        \ Command: /home/a/bin/vncstart
-      * install x11vnc (from Add Remove Programs)
-    - sudo vim /etc/hosts
-      \ optionally add this entry:
-      \ 192.168.1.246 self
-    * open Power Manager
-      \ Security tab
-      \ untick 'Lock screen when system is going for sleep'
-      \ set 'Automatically lock the session' Never
-      \ otherwise vnc-ing to this, will require someone physically being there to unlock it by typing in the password (screen which cannot be seen from vnc!)
-    * mkdir ~/bin
-      \ exists (forgot if I created it, or the installer?)
-    * copy vncstart from local
-      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.246:/home/a/bin/
-      \ it's already executable!
-    * start it
-      \ ~/bin/vncstart
-      \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
-    * to connect from client
-      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 atelier
-      \ where atelier points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.246 atelier
-      \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
   * sudo systemctl enable ufw
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
     * set rules from X! (search for Firewall from Start menu)
@@ -204,6 +213,7 @@
       * 21 tcp out
       * 46801 tcp in on lo
         \ x11vnc
+        \ apparently works even without this!
   - there is video in firefox but not in chromium
     \ nevermind, it was uMatrix!
   * chromium
@@ -240,6 +250,13 @@
         \ verify with: ps axuw|grep -i crond
         \ has -s done!
         \ btw, crond was already running! (aka this service!)
+    * add Firewall rule
+      \ Advanced,
+      \ From Port: 123
+      \ To Port: 123
+      \ Protocol: UDP
+      \ Log: Log
+      \ Allow OUT, all interfaces
   * install recoll and iotop and evince(for pdf viewing from recoll's search result links)
     \ from Add/Remove Programs
     \ poppler is already installed(for pdf indexing)
@@ -260,7 +277,23 @@
       \ Add! (this actually adds 2 rules)
       \ TODO: see if these can be relaxed? can't really test unless I'm on a different real IP!
       \ btw, the status goes green regardless or the existence of this rule, even though I've had Deny on incoming/outgoing both!
+    * in Firewall, also add rule(or see spam in logs):
+      \ Advanced,
+      \ From Port: 33445
+      \ Allow Out, any interface
   * uninstall thunderbird
+  * remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
+    - (NOPE! this is for root user only!) vim /etc/sudoers
+      \ comment out line:
+      \ root ALL=(ALL) ALL
+    * vim /etc/sudoers.d/10-installer
+      \ comment out this line:
+      \ %wheel ALL=(ALL) ALL
+  * get whatismyip to work
+    - replace dig with drill in script
+    * add firewall rule to allow DNS to 208.67.222.220
+    * pacman -S xsel
+      \ to install xsel
 
 
 * TODO/DONE:
