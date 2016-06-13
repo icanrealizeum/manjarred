@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#dig @208.67.222.220 myip.opendns.com +short | xsel -i ; xsel -o
+drill @208.67.222.220 myip.opendns.com | grep '^myip.opendns.com'| cut -f 5 | xsel -i ; xsel -o
+
+read -s -p "da enter"
+
