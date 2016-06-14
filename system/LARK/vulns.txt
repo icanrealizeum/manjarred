@@ -1,0 +1,29 @@
+device: LARK Evolution x2 7 3G GPS
+Android version: 4.4.2
+Baseband version: MOLY.WR8.W1315.MD.WG.MP.V72,2014/11/13 11:27
+Kernel version: 3.4.67
+mid04@MID-Along #4
+Tue Jun 16 16:27:00 CST 2015
+Build number: 8312c_V001
+Custom build version: 1434166806 (this is a timestamp = Sat Jun 13 05:40:06
+CEST 2015 )
+
+---
+Serial number: 0123456789ABCDEF
+(lol?)
+----
+vulnerabilities, there are 5:
+https://www.cvedetails.com/vulnerability-list/vendor_id-1224/product_id-19997/version_id-177949/Google-Android-4.4.2.html
+one is DoS remote code execution! libstagefright in mediaserver!
+Another view of them:
+https://www.cvedetails.com/version/177949/Google-Android-4.4.2.html
+
+patch?
+https://android.googlesource.com/platform%2Fframeworks%2Fav/+/50270d98e26fa18b20ca88216c3526667b724ba7
+
+-----
+
+Test if this vuln is in effect for me:
+http://www.ghacks.net/2014/09/17/test-if-your-android-device-is-affected-by-recent-sop-vulnerability/
+-----
+

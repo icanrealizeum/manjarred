@@ -1,0 +1,55 @@
+SOLUTION: class 4 instead of class 10!
+https://code.google.com/p/android/issues/detail?id=2500#c293
+http://forums.androidcentral.com/verizon-droid-charge/213468-droid-charge-damaged-sd-card-error-won-t-mount-fix-8.html#post5126775
+
+---------
+SYNC!!!
+https://code.google.com/p/android/issues/detail?id=2500#c290
+-------
+https://code.google.com/p/android/issues/detail?id=2500
+---------
+well.... fml
+but see tweet chain from here:
+https://twitter.com/respeccing/status/718804856463572992
+
+looks like it corrupts the sdcard, maybe becuase it lacks a sync!!! even tho
+it does execute umount!
+OR the sdcard internally postpones the sync, but android cuts power too
+soon!(esp. during reboot! and when switching between 'USB Storage' and 'Media...
+(MTP)')
+
+----------
+can only fix it by mounting it on the computer as RW, deleting something like
+LOST.DIR(even tho it was empty) and then umount, eject; put in phone works!
+//well looks like that only works sometimes!!!!!!!!
+* reboot phone and it's back to fucked again!
+  * test: if unmount first works! (tested it once but didn't work, but maybe
+    mount does some damage anyway! didn't test if remount works, without first
+    rebooting!)
+* test: don't reboot phone, unmount, replug, works; or unmount, unplug, plug, works!
+* running fsck.vfat -v -f -V /dev/sdd1  without mounting it as rw(or ro) still
+  yields damaged SD card when put in phone!
+* just mounting it as rw(on linux), then umount, then eject - still damaged!
+* fix: must mount and write something(ie. delete LOST.DIR which fsck created!)
+  on it before umount! - nope, that didn't do it this time! still damaged!
+  re-plugging in PC, running a fsck(as above), twice!... nope, still damaged
+  (tho, there's not LOST.DIR anymore!) - replug, mount rw, delete dir
+  '/backup', umount, eject; still damaged; replugged, now fsck! reports an
+  error: Reclaimed 4 unused clusters (131072 bytes) in 4 chains.
+* still damaged shiet... and yet it works just fine on PC (via card reader..)
+
+-----
+this happened even when Quick Boot is off!!! just a reboot will do!
+----
+doing a lark reboot, while having Fast Boot selected(maybe even if not!) will
+not unmount external sdcard safely and thus it's detected as damaged and
+unmountable on next boot!
+
+fucking great job Android!!!
+
+Fast Boot is named Quick Boot, is under Accessibility (in Settings)
+
+
+Looks like plugging the card in the laptop worked fine! no errors! So it
+must've been the Quick Boot! it probably works if I plug it back in again now!
+

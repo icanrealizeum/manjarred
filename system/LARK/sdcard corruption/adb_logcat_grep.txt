@@ -1,0 +1,2503 @@
+
+/home/zazdxscf $ adb logcat |grep -i fsck
+- waiting for device -
+V/SettingsProvider(  659): call(global:dropbox:SYSTEM_FSCK) for 0
+D/SettingsProvider(  659): lookupValue table global cache contains Key dropbox:SYSTEM_FSCK , value = null
+D/SettingsProvider(  659): lookupValue table global cache.fullyMatchesDisk() dropbox:SYSTEM_FSCK
+V/Provider/Settings(  659): from db cache, name = dropbox:SYSTEM_FSCK , value = null
+I/BootReceiver(  659): Checking for fsck errors
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 1838): checkfilesys start
+I/FSCK    ( 1838): readboot() :
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 1838):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 2450 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 2450 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/FSCK    ( 1905): checkfilesys start
+I/FSCK    ( 1905): readboot() :
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 1905):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 1960 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 1960 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 1913): checkfilesys start
+I/FSCK    ( 1913): readboot() :
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 1913):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 4412 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 4412 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/FSCK    ( 1915): checkfilesys start
+I/FSCK    ( 1915): readboot() :
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 1915):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 5854 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 5854 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+-----------
+zazdxscf@gobaby 2016/04/09 23:44:46 -bash4.3.42 t:7 j:0 d:5 pp:9797 p:21042
+!48287 55 0 0  4.6.0-rc2 #1 SMP PREEMPT Sun Apr 3 21:19:20 CEST 2016
+/home/zazdxscf
+/home/zazdxscf $ adb logcat |grep -i fsck
+I/FSCK    ( 1915): checkfilesys start
+I/FSCK    ( 1915): readboot() :
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 1915):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 5854 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 5854 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2001): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 2001): readboot() :
+I/FSCK    ( 2001):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 8523 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 8523 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+-----------
+zazdxscf@gobaby 2016/04/09 23:45:24 -bash4.3.42 t:7 j:0 d:5 pp:9797 p:21042
+!48288 56 0 0  4.6.0-rc2 #1 SMP PREEMPT Sun Apr 3 21:19:20 CEST 2016
+/home/zazdxscf
+/home/zazdxscf $ adb logcat |grep -i fsck
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/FSCK    ( 2058): checkfilesys start
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 2058): readboot() :
+I/FSCK    ( 2058):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 7059 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 7059 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2081): checkfilesys start
+I/FSCK    ( 2081): readboot() :
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 2081):  - could not read boot block.
+I/fsck_msdos(  137): could not read boot block: I/O error
+I/fsck_msdos(  137): Total fsck time took 6626 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 6626 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/FSCK    ( 2106): checkfilesys start
+I/FSCK    ( 2106): readboot() :
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 2106): This is FAT32! Now check some FAT32-specific features.
+I/fsck_msdos(  137): Invalid FAT32 Extended BIOS Parameter Block
+I/fsck_msdos(  137): Total fsck time took 4779 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 4779 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/FSCK    ( 2129): checkfilesys start
+I/FSCK    ( 2129): readboot() :
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/fsck_msdos(  137): ** /dev/block/vold/179:96
+I/FSCK    ( 2129): This is FAT32! Now check some FAT32-specific features.
+I/fsck_msdos(  137): Invalid FAT32 Extended BIOS Parameter Block
+I/fsck_msdos(  137): Total fsck time took 5066 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 5066 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2166): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2166): readboot() :
+I/FSCK    ( 2166): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2166):  - Read FS-Info block.
+I/FSCK    ( 2166):  - Compare backup..
+I/FSCK    ( 2166):  - fill other info to struct bootblock
+I/FSCK    ( 2166): readfat()
+I/FSCK    ( 2166):  - readFATsec = 3797
+I/FSCK    ( 2166):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 268180 kB, Cached: 364868 kB 
+I/fsck_msdos(  137): readfat: read FAT error: Success
+I/fsck_msdos(  137): Fatal error during readfat()
+I/fsck_msdos(  137): Total fsck time took 344622 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 1020833194 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 344622 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2209): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2209): readboot() :
+I/FSCK    ( 2209): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2209):  - Read FS-Info block.
+I/FSCK    ( 2209):  - Compare backup..
+I/FSCK    ( 2209):  - fill other info to struct bootblock
+I/FSCK    ( 2209): readfat()
+I/FSCK    ( 2209):  - readFATsec = 3797
+I/FSCK    ( 2209):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 265776 kB, Cached: 364868 kB 
+I/fsck_msdos(  137): readfat: read FAT error: Success
+I/fsck_msdos(  137): Fatal error during readfat()
+I/fsck_msdos(  137): Total fsck time took 329392 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 1036569551 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 329392 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2259): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2259): readboot() :
+I/FSCK    ( 2259): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2259):  - Read FS-Info block.
+I/FSCK    ( 2259):  - Compare backup..
+I/FSCK    ( 2259):  - fill other info to struct bootblock
+I/FSCK    ( 2259): readfat()
+I/FSCK    ( 2259):  - readFATsec = 3797
+I/FSCK    ( 2259):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 265824 kB, Cached: 364868 kB 
+I/fsck_msdos(  137): readfat: read FAT error: Success
+I/fsck_msdos(  137): Fatal error during readfat()
+I/fsck_msdos(  137): Total fsck time took 489835 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 1049400442 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 489835 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2309): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2309): readboot() :
+I/FSCK    ( 2309): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2309):  - Read FS-Info block.
+I/FSCK    ( 2309):  - Compare backup..
+I/FSCK    ( 2309):  - fill other info to struct bootblock
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/FSCK    ( 2309): readfat()
+I/FSCK    ( 2309):  - readFATsec = 3797
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 264468 kB, Cached: 364868 kB 
+I/FSCK    ( 2309):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137): readfat: read FAT error: Success
+I/fsck_msdos(  137): Fatal error during readfat()
+I/fsck_msdos(  137): Total fsck time took 574421 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 1070638969 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 574421 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2359): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2359): readboot() :
+I/FSCK    ( 2359): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2359):  - Read FS-Info block.
+I/FSCK    ( 2359):  - Compare backup..
+I/FSCK    ( 2359):  - fill other info to struct bootblock
+I/FSCK    ( 2359): readfat()
+I/FSCK    ( 2359):  - readFATsec = 3797
+I/FSCK    ( 2359):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 265556 kB, Cached: 364868 kB 
+I/FSCK    ( 2359): 1st FAT, check media-type and dirty-bits
+I/FSCK    ( 2359):  - Read next-value to fatEntry[] 2 ~ 76a32
+I/FSCK    ( 2359): readfat()
+I/FSCK    ( 2359):  - readFATsec = 3797
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 255504 kB, Cached: 364860 kB 
+I/FSCK    ( 2359):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137): readfat: read FAT error: Success
+I/fsck_msdos(  137): Fatal error during readfat() for comparison
+I/fsck_msdos(  137): ***** FSFATAL *****
+I/fsck_msdos(  137): Total fsck time took 596296 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 1086197993 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 596296 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2409): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2409): readboot() :
+I/FSCK    ( 2409): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2409):  - Read FS-Info block.
+I/FSCK    ( 2409):  - Compare backup..
+I/FSCK    ( 2409):  - fill other info to struct bootblock
+I/FSCK    ( 2409): readfat()
+I/FSCK    ( 2409):  - readFATsec = 3797
+I/FSCK    ( 2409):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 265044 kB, Cached: 364868 kB 
+I/FSCK    ( 2409): 1st FAT, check media-type and dirty-bits
+I/FSCK    ( 2409):  - Read next-value to fatEntry[] 2 ~ 76a32
+I/FSCK    ( 2409): readfat()
+I/FSCK    ( 2409):  - readFATsec = 3797
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 255000 kB, Cached: 364884 kB 
+I/FSCK    ( 2409):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137): readfat: read FAT error: Success
+I/fsck_msdos(  137): Fatal error during readfat() for comparison
+I/fsck_msdos(  137): ***** FSFATAL *****
+I/fsck_msdos(  137): Total fsck time took 526922 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 1102316538 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 0 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 0 usecs.
+I/fsck_msdos(  137): Total fsck tooks 526922 usecs.
+I/fsck_msdos(  137): fsck_msdos terminated by exit(8)
+I/fsck_msdos(  137): The fsck_msdos options input by caller :
+I/fsck_msdos(  137):  -p
+I/fsck_msdos(  137):  -f
+I/FSCK    ( 2461): checkfilesys start
+I/fsck_msdos(  137): ** /dev/block/vold/179:97
+I/FSCK    ( 2461): readboot() :
+I/FSCK    ( 2461): This is FAT32! Now check some FAT32-specific features.
+I/FSCK    ( 2461):  - Read FS-Info block.
+I/FSCK    ( 2461):  - Compare backup..
+I/FSCK    ( 2461):  - fill other info to struct bootblock
+I/FSCK    ( 2461): readfat()
+I/FSCK    ( 2461):  - readFATsec = 3797
+I/FSCK    ( 2461):  - Try to allocate buffer/fat.
+I/fsck_msdos(  137):  OEM name and version : '        ' 
+I/fsck_msdos(  137):  MTK_VFAT_MAX_FILE_SIZE:4294967295, fat_entry_max_len:131072, bytes per cluster:32768
+I/fsck_msdos(  137): ** Phase 1 - Read and Compare FATs
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 264096 kB, Cached: 364868 kB 
+I/FSCK    ( 2461): 1st FAT, check media-type and dirty-bits
+I/FSCK    ( 2461):  - Read next-value to fatEntry[] 2 ~ 76a32
+I/FSCK    ( 2461): readfat()
+I/FSCK    ( 2461):  - readFATsec = 3797
+I/fsck_msdos(  137): Attempting to allocate 1898 KB for FAT 
+I/fsck_msdos(  137): Allocate for fatEntry (485938 x 16) = 7592 KB 
+I/fsck_msdos(  137): System MemFree: 253820 kB, Cached: 364860 kB 
+I/FSCK    ( 2461):  - Try to allocate buffer/fat.
+I/FSCK    ( 2461): 1st FAT, check media-type and dirty-bits
+I/FSCK    ( 2461):  - Read next-value to fatEntry[] 2 ~ 76a32
+I/fsck_msdos(  137): Phase#1 took 366724 usecs
+I/fsck_msdos(  137): ** Phase 2 - Check Cluster Chains
+I/FSCK    ( 2461): checkfat()
+I/FSCK    ( 2461):  - Figure out the cluster chains.
+I/FSCK    ( 2461):  - Check for crosslinked chains
+I/fsck_msdos(  137): Phase#2 took 41454 usecs
+I/fsck_msdos(  137): ** Phase 3 - Checking Directories
+I/FSCK    ( 2461): resetDosDirSection()
+I/FSCK    ( 2461): resetDosDirSection() .. this is FAT32!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#7628 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/LOST.DIR)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#762a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/backup)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14aa6 is used!
+I/FSCK    ( 2461):  - chain start from cl#14aaa is used!
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14a9f is used!
+I/FSCK    ( 2461):  - chain start from cl#14ed8 is used!
+I/FSCK    ( 2461):  - chain start from cl#14ed2 is used!
+I/FSCK    ( 2461):  - chain start from cl#14aa0 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/.)
+I/FSCK    ( 2461):  - gather more info for dir(/1/..)
+I/FSCK    ( 2461):  - chain start from cl#197d8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1964e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1500f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#22b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14a95 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/DCIM)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#c87c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/HedgeDict)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#730d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/mp3)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#3 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/ffxpi)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14fe6 is used!
+I/FSCK    ( 2461):  - chain start from cl#14a40 is used!
+I/FSCK    ( 2461):  - chain start from cl#149a1 is used!
+I/FSCK    ( 2461):  - chain start from cl#149f4 is used!
+I/FSCK    ( 2461):  - chain start from cl#149a0 is used!
+I/FSCK    ( 2461):  - chain start from cl#762b is used!
+I/FSCK    ( 2461):  - chain start from cl#19488 is used!
+I/FSCK    ( 2461):  - chain start from cl#14557 is used!
+I/FSCK    ( 2461):  - chain start from cl#14556 is used!
+I/FSCK    ( 2461):  - chain start from cl#14555 is used!
+I/FSCK    ( 2461):  - chain start from cl#14554 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#3 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/ffxpi/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/ffxpi/..)
+I/FSCK    ( 2461):  - chain start from cl#4 is used!
+I/FSCK    ( 2461):  - chain start from cl#35 is used!
+I/FSCK    ( 2461):  - chain start from cl#6b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/ffxpi/old)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#d3 is used!
+I/FSCK    ( 2461):  - chain start from cl#d9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b is used!
+I/FSCK    ( 2461):  - chain start from cl#1dd is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#6b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/ffxpi/old/.)
+I/FSCK    ( 2461):  - chain start from cl#3 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/ffxpi/old/..)
+I/FSCK    ( 2461):  - chain start from cl#6c is used!
+I/FSCK    ( 2461):  - chain start from cl#a2 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#730d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/mp3/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/mp3/..)
+I/FSCK    ( 2461):  - chain start from cl#730e is used!
+I/FSCK    ( 2461):  - chain start from cl#735c is used!
+I/FSCK    ( 2461):  - chain start from cl#73fd is used!
+I/FSCK    ( 2461):  - chain start from cl#745f is used!
+I/FSCK    ( 2461):  - chain start from cl#74db is used!
+I/FSCK    ( 2461):  - chain start from cl#755a is used!
+I/FSCK    ( 2461):  - chain start from cl#759f is used!
+I/FSCK    ( 2461):  - chain start from cl#7638 is used!
+I/FSCK    ( 2461):  - chain start from cl#76d0 is used!
+I/FSCK    ( 2461):  - chain start from cl#7737 is used!
+I/FSCK    ( 2461):  - chain start from cl#77ba is used!
+I/FSCK    ( 2461):  - chain start from cl#783f is used!
+I/FSCK    ( 2461):  - chain start from cl#787c is used!
+I/FSCK    ( 2461):  - chain start from cl#7905 is used!
+I/FSCK    ( 2461):  - chain start from cl#7be4 is used!
+I/FSCK    ( 2461):  - chain start from cl#7c1c is used!
+I/FSCK    ( 2461):  - chain start from cl#7ca9 is used!
+I/FSCK    ( 2461):  - chain start from cl#7d11 is used!
+I/FSCK    ( 2461):  - chain start from cl#7d68 is used!
+I/FSCK    ( 2461):  - chain start from cl#7dc2 is used!
+I/FSCK    ( 2461):  - chain start from cl#7e30 is used!
+I/FSCK    ( 2461):  - chain start from cl#7e87 is used!
+I/FSCK    ( 2461):  - chain start from cl#7ed6 is used!
+I/FSCK    ( 2461):  - chain start from cl#7f5d is used!
+I/FSCK    ( 2461):  - chain start from cl#7ffe is used!
+I/FSCK    ( 2461):  - chain start from cl#8080 is used!
+I/FSCK    ( 2461):  - chain start from cl#810f is used!
+I/FSCK    ( 2461):  - chain start from cl#81da is used!
+I/FSCK    ( 2461):  - chain start from cl#8220 is used!
+I/FSCK    ( 2461):  - chain start from cl#82bb is used!
+I/FSCK    ( 2461):  - chain start from cl#832d is used!
+I/FSCK    ( 2461):  - chain start from cl#83e1 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/..)
+I/FSCK    ( 2461):  - chain start from cl#8ab4 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/pdf reader)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8cea is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9293 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firewall)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#92ca is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#98d5 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/ide)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9d24 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9f6b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/task manager)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9ff6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/totalcommander)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a033 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/vlc)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a1e3 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/guitar)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a43e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/voice recorder)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a4bf is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/flexisketch)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a4ca is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/knowledgebase)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a5b6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/logger)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a67d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/permissions)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#c791 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/dictionars)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#bbaa is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/maps)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#c298 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#bbaa is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/maps/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/maps/..)
+I/FSCK    ( 2461):  - chain start from cl#d620 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/maps/maps downloaded already)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14552 is used!
+I/FSCK    ( 2461):  - chain start from cl#14551 is used!
+I/FSCK    ( 2461):  - chain start from cl#14553 is used!
+I/FSCK    ( 2461):  - chain start from cl#11bfb is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#d620 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/maps/maps downloaded already/.)
+I/FSCK    ( 2461):  - chain start from cl#bbaa is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/maps/maps downloaded already/..)
+I/FSCK    ( 2461):  - chain start from cl#de6e is used!
+I/FSCK    ( 2461):  - chain start from cl#e8e9 is used!
+I/FSCK    ( 2461):  - chain start from cl#ed4d is used!
+I/FSCK    ( 2461):  - chain start from cl#1007f is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#c791 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/dictionars/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/dictionars/..)
+I/FSCK    ( 2461):  - chain start from cl#c792 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/dictionars/dex)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#c792 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/dictionars/dex/.)
+I/FSCK    ( 2461):  - chain start from cl#c791 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/dictionars/dex/..)
+I/FSCK    ( 2461):  - chain start from cl#c793 is used!
+I/FSCK    ( 2461):  - chain start from cl#c87a is used!
+I/FSCK    ( 2461):  - chain start from cl#c87b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a67d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/permissions/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/permissions/..)
+I/FSCK    ( 2461):  - chain start from cl#a67e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/permissions/orig)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#a6ce is used!
+I/FSCK    ( 2461):  - chain start from cl#a71c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a67e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/permissions/orig/.)
+I/FSCK    ( 2461):  - chain start from cl#a67d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/permissions/orig/..)
+I/FSCK    ( 2461):  - chain start from cl#a67f is used!
+I/FSCK    ( 2461):  - chain start from cl#a6cd is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a5b6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/logger/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/logger/..)
+I/FSCK    ( 2461):  - chain start from cl#a5b7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/logger/atimelogger)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a5b7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/logger/atimelogger/.)
+I/FSCK    ( 2461):  - chain start from cl#a5b6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/logger/atimelogger/..)
+I/FSCK    ( 2461):  - chain start from cl#a5b8 is used!
+I/FSCK    ( 2461):  - chain start from cl#a5b9 is used!
+I/FSCK    ( 2461):  - chain start from cl#a67c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a4ca is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/knowledgebase/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/knowledgebase/..)
+I/FSCK    ( 2461):  - chain start from cl#a4cb is used!
+I/FSCK    ( 2461):  - chain start from cl#a4cc is used!
+I/FSCK    ( 2461):  - chain start from cl#a4cd is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a4bf is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/flexisketch/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/flexisketch/..)
+I/FSCK    ( 2461):  - chain start from cl#a4c0 is used!
+I/FSCK    ( 2461):  - chain start from cl#a4c1 is used!
+I/FSCK    ( 2461):  - chain start from cl#a4c9 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a43e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/voice recorder/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/voice recorder/..)
+I/FSCK    ( 2461):  - chain start from cl#a43f is used!
+I/FSCK    ( 2461):  - chain start from cl#a440 is used!
+I/FSCK    ( 2461):  - chain start from cl#a441 is used!
+I/FSCK    ( 2461):  - chain start from cl#a442 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a1e3 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/guitar/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/guitar/..)
+I/FSCK    ( 2461):  - chain start from cl#a1e4 is used!
+I/FSCK    ( 2461):  - chain start from cl#a1e5 is used!
+I/FSCK    ( 2461):  - chain start from cl#a1e6 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#a033 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/vlc/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/vlc/..)
+I/FSCK    ( 2461):  - chain start from cl#a034 is used!
+I/FSCK    ( 2461):  - chain start from cl#a035 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9ff6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/totalcommander/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/totalcommander/..)
+I/FSCK    ( 2461):  - chain start from cl#9ff7 is used!
+I/FSCK    ( 2461):  - chain start from cl#9ff8 is used!
+I/FSCK    ( 2461):  - chain start from cl#a032 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9f6b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/task manager/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/task manager/..)
+I/FSCK    ( 2461):  - chain start from cl#9f6c is used!
+I/FSCK    ( 2461):  - chain start from cl#9f6d is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9d24 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/..)
+I/FSCK    ( 2461):  - chain start from cl#9d25 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/2013 one)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9e44 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/2015 another one)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9e44 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/2015 another one/.)
+I/FSCK    ( 2461):  - chain start from cl#9d24 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/2015 another one/..)
+I/FSCK    ( 2461):  - chain start from cl#9e45 is used!
+I/FSCK    ( 2461):  - chain start from cl#9e46 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9d25 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/2013 one/.)
+I/FSCK    ( 2461):  - chain start from cl#9d24 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/piano/2013 one/..)
+I/FSCK    ( 2461):  - chain start from cl#9d26 is used!
+I/FSCK    ( 2461):  - chain start from cl#9d27 is used!
+I/FSCK    ( 2461):  - chain start from cl#9e43 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/..)
+I/FSCK    ( 2461):  - chain start from cl#9cee is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/cpu-z)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#9d1b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/droid examiner)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9d1b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/droid examiner/.)
+I/FSCK    ( 2461):  - chain start from cl#9ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/droid examiner/..)
+I/FSCK    ( 2461):  - chain start from cl#9d1c is used!
+I/FSCK    ( 2461):  - chain start from cl#9d1d is used!
+I/FSCK    ( 2461):  - chain start from cl#9d1e is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9cee is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/cpu-z/.)
+I/FSCK    ( 2461):  - chain start from cl#9ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/info/cpu-z/..)
+I/FSCK    ( 2461):  - chain start from cl#9cef is used!
+I/FSCK    ( 2461):  - chain start from cl#9cf0 is used!
+I/FSCK    ( 2461):  - chain start from cl#9cf1 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#98d5 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/ide/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/ide/..)
+I/FSCK    ( 2461):  - chain start from cl#98d6 is used!
+I/FSCK    ( 2461):  - chain start from cl#9cec is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#92ca is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/..)
+I/FSCK    ( 2461):  - chain start from cl#92cb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/terminal-ide)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#98c0 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/terminal emulator)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#98c0 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/terminal emulator/.)
+I/FSCK    ( 2461):  - chain start from cl#92ca is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/terminal emulator/..)
+I/FSCK    ( 2461):  - chain start from cl#98c1 is used!
+I/FSCK    ( 2461):  - chain start from cl#98c2 is used!
+I/FSCK    ( 2461):  - chain start from cl#98c3 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#92cb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/terminal-ide/.)
+I/FSCK    ( 2461):  - chain start from cl#92ca is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/terminal/terminal-ide/..)
+I/FSCK    ( 2461):  - chain start from cl#92cc is used!
+I/FSCK    ( 2461):  - chain start from cl#98be is used!
+I/FSCK    ( 2461):  - chain start from cl#98bf is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#9293 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firewall/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firewall/..)
+I/FSCK    ( 2461):  - chain start from cl#9294 is used!
+I/FSCK    ( 2461):  - chain start from cl#9295 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8cea is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/..)
+I/FSCK    ( 2461):  - chain start from cl#8ceb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8ceb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/.)
+I/FSCK    ( 2461):  - chain start from cl#8cea is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/..)
+I/FSCK    ( 2461):  - chain start from cl#8cec is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8d90 is used!
+I/FSCK    ( 2461):  - chain start from cl#8d91 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8cec is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/.)
+I/FSCK    ( 2461):  - chain start from cl#8ceb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/..)
+I/FSCK    ( 2461):  - chain start from cl#8ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/noscript)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8cf7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/uBlock)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8d2a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8d2a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/.)
+I/FSCK    ( 2461):  - chain start from cl#8cec is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/..)
+I/FSCK    ( 2461):  - chain start from cl#8d2b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/requestpolicy)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8d39 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/privacybadger)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8d5c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/noscript4desktop)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8d70 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/disconnect)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8d70 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/disconnect/.)
+I/FSCK    ( 2461):  - chain start from cl#8d2a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/disconnect/..)
+I/FSCK    ( 2461):  - chain start from cl#8d71 is used!
+I/FSCK    ( 2461):  - chain start from cl#8d72 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8d5c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/noscript4desktop/.)
+I/FSCK    ( 2461):  - chain start from cl#8d2a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/noscript4desktop/..)
+I/FSCK    ( 2461):  - chain start from cl#8d5d is used!
+I/FSCK    ( 2461):  - chain start from cl#8d5e is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8d39 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/privacybadger/.)
+I/FSCK    ( 2461):  - chain start from cl#8d2a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/privacybadger/..)
+I/FSCK    ( 2461):  - chain start from cl#8d3a is used!
+I/FSCK    ( 2461):  - chain start from cl#8d3b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8d2b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/requestpolicy/.)
+I/FSCK    ( 2461):  - chain start from cl#8d2a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/doesnt work on android/requestpolicy/..)
+I/FSCK    ( 2461):  - chain start from cl#8d2c is used!
+I/FSCK    ( 2461):  - chain start from cl#8d2d is used!
+I/FSCK    ( 2461):  - chain start from cl#8d2e is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8cf7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/uBlock/.)
+I/FSCK    ( 2461):  - chain start from cl#8cec is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/uBlock/..)
+I/FSCK    ( 2461):  - chain start from cl#8cf8 is used!
+I/FSCK    ( 2461):  - chain start from cl#8cf9 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/noscript/.)
+I/FSCK    ( 2461):  - chain start from cl#8cec is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/noscript/..)
+I/FSCK    ( 2461):  - chain start from cl#8cee is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/noscript/for android works)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8cf6 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8cee is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/noscript/for android works/.)
+I/FSCK    ( 2461):  - chain start from cl#8ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/firefox/beta/addons/noscript/for android works/..)
+I/FSCK    ( 2461):  - chain start from cl#8cef is used!
+I/FSCK    ( 2461):  - chain start from cl#8cf0 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8ab4 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/pdf reader/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab2 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/pdf reader/..)
+I/FSCK    ( 2461):  - chain start from cl#8ab5 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/pdf reader/foxit)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#8ab5 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/pdf reader/foxit/.)
+I/FSCK    ( 2461):  - chain start from cl#8ab4 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/apksall/pdf reader/foxit/..)
+I/FSCK    ( 2461):  - chain start from cl#8ab6 is used!
+I/FSCK    ( 2461):  - chain start from cl#8ab7 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#c87c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/HedgeDict/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/HedgeDict/..)
+I/FSCK    ( 2461):  - chain start from cl#c87d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/HedgeDict/snd)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#11ee6 is used!
+I/FSCK    ( 2461):  - chain start from cl#11ee7 is used!
+I/FSCK    ( 2461):  - chain start from cl#1216d is used!
+I/FSCK    ( 2461):  - chain start from cl#12488 is used!
+I/FSCK    ( 2461):  - chain start from cl#126cf is used!
+I/FSCK    ( 2461):  - chain start from cl#12862 is used!
+I/FSCK    ( 2461):  - chain start from cl#12a03 is used!
+I/FSCK    ( 2461):  - chain start from cl#12ee5 is used!
+I/FSCK    ( 2461):  - chain start from cl#13de9 is used!
+I/FSCK    ( 2461):  - chain start from cl#140d9 is used!
+I/FSCK    ( 2461):  - chain start from cl#1427f is used!
+I/FSCK    ( 2461):  - chain start from cl#145e8 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#c87d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/HedgeDict/snd/.)
+I/FSCK    ( 2461):  - chain start from cl#c87c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/HedgeDict/snd/..)
+I/FSCK    ( 2461):  - chain start from cl#c87e is used!
+I/FSCK    ( 2461):  - chain start from cl#c87f is used!
+I/FSCK    ( 2461):  - chain start from cl#cfe9 is used!
+I/FSCK    ( 2461):  - chain start from cl#10e6d is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#14a95 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/DCIM/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/DCIM/..)
+I/FSCK    ( 2461):  - chain start from cl#14a96 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/DCIM/Camera)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#14a96 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/DCIM/Camera/.)
+I/FSCK    ( 2461):  - chain start from cl#14a95 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/DCIM/Camera/..)
+I/FSCK    ( 2461):  - chain start from cl#14fed is used!
+I/FSCK    ( 2461):  - chain start from cl#14fe7 is used!
+I/FSCK    ( 2461):  - chain start from cl#14fef is used!
+I/FSCK    ( 2461):  - chain start from cl#14ff1 is used!
+I/FSCK    ( 2461):  - chain start from cl#14ff3 is used!
+I/FSCK    ( 2461):  - chain start from cl#14ff6 is used!
+I/FSCK    ( 2461):  - chain start from cl#14ff9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15001 is used!
+I/FSCK    ( 2461):  - chain start from cl#15008 is used!
+I/FSCK    ( 2461):  - chain start from cl#1979d is used!
+I/FSCK    ( 2461):  - chain start from cl#197a6 is used!
+I/FSCK    ( 2461):  - chain start from cl#197b0 is used!
+I/FSCK    ( 2461):  - chain start from cl#197b6 is used!
+I/FSCK    ( 2461):  - chain start from cl#197b9 is used!
+I/FSCK    ( 2461):  - chain start from cl#197bb is used!
+I/FSCK    ( 2461):  - chain start from cl#197be is used!
+I/FSCK    ( 2461):  - chain start from cl#197c7 is used!
+I/FSCK    ( 2461):  - chain start from cl#197cf is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#22b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/..)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#152d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14aaf is used!
+I/FSCK    ( 2461):  - chain start from cl#14f1a is used!
+I/FSCK    ( 2461):  - chain start from cl#14f69 is used!
+I/FSCK    ( 2461):  - chain start from cl#14fb5 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#152d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/.)
+I/FSCK    ( 2461):  - chain start from cl#22b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/..)
+I/FSCK    ( 2461):  - chain start from cl#152e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/floats)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1694 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#7303 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/deterministic builds)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#730a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/rust)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#730a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/rust/.)
+I/FSCK    ( 2461):  - chain start from cl#152d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/rust/..)
+I/FSCK    ( 2461):  - chain start from cl#730b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#7303 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/deterministic builds/.)
+I/FSCK    ( 2461):  - chain start from cl#152d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/deterministic builds/..)
+I/FSCK    ( 2461):  - chain start from cl#7304 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/deterministic builds/Deterministic Builds Part One_ Cyberwar and Global Compromise _ The Tor Blog_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#7308 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#7304 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/deterministic builds/Deterministic Builds Part One_ Cyberwar and Global Compromise _ The Tor Blog_files/.)
+I/FSCK    ( 2461):  - chain start from cl#7303 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/deterministic builds/Deterministic Builds Part One_ Cyberwar and Global Compromise _ The Tor Blog_files/..)
+I/FSCK    ( 2461):  - chain start from cl#7305 is used!
+I/FSCK    ( 2461):  - chain start from cl#7306 is used!
+I/FSCK    ( 2461):  - chain start from cl#7307 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1694 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/.)
+I/FSCK    ( 2461):  - chain start from cl#152d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/..)
+I/FSCK    ( 2461):  - chain start from cl#1695 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#7264 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/1)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#7264 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/1/.)
+I/FSCK    ( 2461):  - chain start from cl#1694 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/1/..)
+I/FSCK    ( 2461):  - chain start from cl#7265 is used!
+I/FSCK    ( 2461):  - chain start from cl#726c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/1/Absolute Computrace Revisited - Securelist_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#7302 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#726c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/1/Absolute Computrace Revisited - Securelist_files/.)
+I/FSCK    ( 2461):  - chain start from cl#7264 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/1/Absolute Computrace Revisited - Securelist_files/..)
+I/FSCK    ( 2461):  - chain start from cl#726d is used!
+I/FSCK    ( 2461):  - chain start from cl#726e is used!
+I/FSCK    ( 2461):  - chain start from cl#726f is used!
+I/FSCK    ( 2461):  - chain start from cl#7275 is used!
+I/FSCK    ( 2461):  - chain start from cl#7276 is used!
+I/FSCK    ( 2461):  - chain start from cl#7279 is used!
+I/FSCK    ( 2461):  - chain start from cl#727b is used!
+I/FSCK    ( 2461):  - chain start from cl#727e is used!
+I/FSCK    ( 2461):  - chain start from cl#727f is used!
+I/FSCK    ( 2461):  - chain start from cl#7282 is used!
+I/FSCK    ( 2461):  - chain start from cl#728f is used!
+I/FSCK    ( 2461):  - chain start from cl#7290 is used!
+I/FSCK    ( 2461):  - chain start from cl#7291 is used!
+I/FSCK    ( 2461):  - chain start from cl#7292 is used!
+I/FSCK    ( 2461):  - chain start from cl#72a0 is used!
+I/FSCK    ( 2461):  - chain start from cl#72a5 is used!
+I/FSCK    ( 2461):  - chain start from cl#72a6 is used!
+I/FSCK    ( 2461):  - chain start from cl#72a7 is used!
+I/FSCK    ( 2461):  - chain start from cl#72ab is used!
+I/FSCK    ( 2461):  - chain start from cl#72ae is used!
+I/FSCK    ( 2461):  - chain start from cl#72af is used!
+I/FSCK    ( 2461):  - chain start from cl#72bd is used!
+I/FSCK    ( 2461):  - chain start from cl#72be is used!
+I/FSCK    ( 2461):  - chain start from cl#72bf is used!
+I/FSCK    ( 2461):  - chain start from cl#72c0 is used!
+I/FSCK    ( 2461):  - chain start from cl#72c6 is used!
+I/FSCK    ( 2461):  - chain start from cl#72c9 is used!
+I/FSCK    ( 2461):  - chain start from cl#72ca is used!
+I/FSCK    ( 2461):  - chain start from cl#72cb is used!
+I/FSCK    ( 2461):  - chain start from cl#72ce is used!
+I/FSCK    ( 2461):  - chain start from cl#72d1 is used!
+I/FSCK    ( 2461):  - chain start from cl#72d2 is used!
+I/FSCK    ( 2461):  - chain start from cl#72d4 is used!
+I/FSCK    ( 2461):  - chain start from cl#72d5 is used!
+I/FSCK    ( 2461):  - chain start from cl#72d6 is used!
+I/FSCK    ( 2461):  - chain start from cl#72d8 is used!
+I/FSCK    ( 2461):  - chain start from cl#72da is used!
+I/FSCK    ( 2461):  - chain start from cl#72dd is used!
+I/FSCK    ( 2461):  - chain start from cl#72de is used!
+I/FSCK    ( 2461):  - chain start from cl#72ef is used!
+I/FSCK    ( 2461):  - chain start from cl#72f0 is used!
+I/FSCK    ( 2461):  - chain start from cl#72f6 is used!
+I/FSCK    ( 2461):  - chain start from cl#72f7 is used!
+I/FSCK    ( 2461):  - chain start from cl#72fb is used!
+I/FSCK    ( 2461):  - chain start from cl#72fc is used!
+I/FSCK    ( 2461):  - chain start from cl#72fe is used!
+I/FSCK    ( 2461):  - chain start from cl#72ff is used!
+I/FSCK    ( 2461):  - chain start from cl#7301 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1695 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/.)
+I/FSCK    ( 2461):  - chain start from cl#1694 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/..)
+I/FSCK    ( 2461):  - chain start from cl#1696 is used!
+I/FSCK    ( 2461):  - chain start from cl#1697 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#724a is used!
+I/FSCK    ( 2461):  - chain start from cl#7250 is used!
+I/FSCK    ( 2461):  - chain start from cl#7251 is used!
+I/FSCK    ( 2461):  - chain start from cl#725c is used!
+I/FSCK    ( 2461):  - chain start from cl#7263 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1697 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/.)
+I/FSCK    ( 2461):  - chain start from cl#1695 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/..)
+I/FSCK    ( 2461):  - chain start from cl#1698 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/audio only)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#21ed is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/av)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#21ed is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/av/.)
+I/FSCK    ( 2461):  - chain start from cl#1697 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/av/..)
+I/FSCK    ( 2461):  - chain start from cl#21ee is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1698 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/audio only/.)
+I/FSCK    ( 2461):  - chain start from cl#1697 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/computrace/2/presentation/audio only/..)
+I/FSCK    ( 2461):  - chain start from cl#1699 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#152e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/floats/.)
+I/FSCK    ( 2461):  - chain start from cl#152d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/floats/..)
+I/FSCK    ( 2461):  - chain start from cl#152f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/floats/What Every Computer Scientist Should Know About Floating-Point Arithmetic_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1682 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#152f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/floats/What Every Computer Scientist Should Know About Floating-Point Arithmetic_files/.)
+I/FSCK    ( 2461):  - chain start from cl#152e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/htmls/floats/What Every Computer Scientist Should Know About Floating-Point Arithmetic_files/..)
+I/FSCK    ( 2461):  - chain start from cl#1530 is used!
+I/FSCK    ( 2461):  - chain start from cl#1531 is used!
+I/FSCK    ( 2461):  - chain start from cl#1532 is used!
+I/FSCK    ( 2461):  - chain start from cl#1533 is used!
+I/FSCK    ( 2461):  - chain start from cl#1534 is used!
+I/FSCK    ( 2461):  - chain start from cl#1535 is used!
+I/FSCK    ( 2461):  - chain start from cl#1536 is used!
+I/FSCK    ( 2461):  - chain start from cl#1537 is used!
+I/FSCK    ( 2461):  - chain start from cl#1538 is used!
+I/FSCK    ( 2461):  - chain start from cl#1539 is used!
+I/FSCK    ( 2461):  - chain start from cl#153a is used!
+I/FSCK    ( 2461):  - chain start from cl#153b is used!
+I/FSCK    ( 2461):  - chain start from cl#153c is used!
+I/FSCK    ( 2461):  - chain start from cl#153d is used!
+I/FSCK    ( 2461):  - chain start from cl#153e is used!
+I/FSCK    ( 2461):  - chain start from cl#153f is used!
+I/FSCK    ( 2461):  - chain start from cl#1540 is used!
+I/FSCK    ( 2461):  - chain start from cl#1541 is used!
+I/FSCK    ( 2461):  - chain start from cl#1542 is used!
+I/FSCK    ( 2461):  - chain start from cl#1543 is used!
+I/FSCK    ( 2461):  - chain start from cl#1544 is used!
+I/FSCK    ( 2461):  - chain start from cl#1545 is used!
+I/FSCK    ( 2461):  - chain start from cl#1546 is used!
+I/FSCK    ( 2461):  - chain start from cl#1547 is used!
+I/FSCK    ( 2461):  - chain start from cl#1548 is used!
+I/FSCK    ( 2461):  - chain start from cl#1549 is used!
+I/FSCK    ( 2461):  - chain start from cl#154a is used!
+I/FSCK    ( 2461):  - chain start from cl#154b is used!
+I/FSCK    ( 2461):  - chain start from cl#154c is used!
+I/FSCK    ( 2461):  - chain start from cl#154d is used!
+I/FSCK    ( 2461):  - chain start from cl#154e is used!
+I/FSCK    ( 2461):  - chain start from cl#154f is used!
+I/FSCK    ( 2461):  - chain start from cl#1550 is used!
+I/FSCK    ( 2461):  - chain start from cl#1551 is used!
+I/FSCK    ( 2461):  - chain start from cl#1552 is used!
+I/FSCK    ( 2461):  - chain start from cl#1553 is used!
+I/FSCK    ( 2461):  - chain start from cl#1554 is used!
+I/FSCK    ( 2461):  - chain start from cl#1555 is used!
+I/FSCK    ( 2461):  - chain start from cl#1556 is used!
+I/FSCK    ( 2461):  - chain start from cl#1557 is used!
+I/FSCK    ( 2461):  - chain start from cl#1558 is used!
+I/FSCK    ( 2461):  - chain start from cl#1559 is used!
+I/FSCK    ( 2461):  - chain start from cl#155a is used!
+I/FSCK    ( 2461):  - chain start from cl#155b is used!
+I/FSCK    ( 2461):  - chain start from cl#155c is used!
+I/FSCK    ( 2461):  - chain start from cl#155d is used!
+I/FSCK    ( 2461):  - chain start from cl#155e is used!
+I/FSCK    ( 2461):  - chain start from cl#155f is used!
+I/FSCK    ( 2461):  - chain start from cl#1560 is used!
+I/FSCK    ( 2461):  - chain start from cl#1561 is used!
+I/FSCK    ( 2461):  - chain start from cl#1562 is used!
+I/FSCK    ( 2461):  - chain start from cl#1563 is used!
+I/FSCK    ( 2461):  - chain start from cl#1564 is used!
+I/FSCK    ( 2461):  - chain start from cl#1565 is used!
+I/FSCK    ( 2461):  - chain start from cl#1566 is used!
+I/FSCK    ( 2461):  - chain start from cl#1567 is used!
+I/FSCK    ( 2461):  - chain start from cl#1568 is used!
+I/FSCK    ( 2461):  - chain start from cl#1569 is used!
+I/FSCK    ( 2461):  - chain start from cl#156a is used!
+I/FSCK    ( 2461):  - chain start from cl#156b is used!
+I/FSCK    ( 2461):  - chain start from cl#156c is used!
+I/FSCK    ( 2461):  - chain start from cl#156d is used!
+I/FSCK    ( 2461):  - chain start from cl#156e is used!
+I/FSCK    ( 2461):  - chain start from cl#156f is used!
+I/FSCK    ( 2461):  - chain start from cl#1570 is used!
+I/FSCK    ( 2461):  - chain start from cl#1571 is used!
+I/FSCK    ( 2461):  - chain start from cl#1572 is used!
+I/FSCK    ( 2461):  - chain start from cl#1573 is used!
+I/FSCK    ( 2461):  - chain start from cl#1574 is used!
+I/FSCK    ( 2461):  - chain start from cl#1575 is used!
+I/FSCK    ( 2461):  - chain start from cl#1576 is used!
+I/FSCK    ( 2461):  - chain start from cl#1577 is used!
+I/FSCK    ( 2461):  - chain start from cl#1578 is used!
+I/FSCK    ( 2461):  - chain start from cl#1579 is used!
+I/FSCK    ( 2461):  - chain start from cl#157a is used!
+I/FSCK    ( 2461):  - chain start from cl#157b is used!
+I/FSCK    ( 2461):  - chain start from cl#157c is used!
+I/FSCK    ( 2461):  - chain start from cl#157d is used!
+I/FSCK    ( 2461):  - chain start from cl#157e is used!
+I/FSCK    ( 2461):  - chain start from cl#157f is used!
+I/FSCK    ( 2461):  - chain start from cl#1580 is used!
+I/FSCK    ( 2461):  - chain start from cl#1581 is used!
+I/FSCK    ( 2461):  - chain start from cl#1582 is used!
+I/FSCK    ( 2461):  - chain start from cl#1583 is used!
+I/FSCK    ( 2461):  - chain start from cl#1584 is used!
+I/FSCK    ( 2461):  - chain start from cl#1585 is used!
+I/FSCK    ( 2461):  - chain start from cl#1586 is used!
+I/FSCK    ( 2461):  - chain start from cl#1587 is used!
+I/FSCK    ( 2461):  - chain start from cl#1588 is used!
+I/FSCK    ( 2461):  - chain start from cl#1589 is used!
+I/FSCK    ( 2461):  - chain start from cl#158a is used!
+I/FSCK    ( 2461):  - chain start from cl#158b is used!
+I/FSCK    ( 2461):  - chain start from cl#158c is used!
+I/FSCK    ( 2461):  - chain start from cl#158d is used!
+I/FSCK    ( 2461):  - chain start from cl#158e is used!
+I/FSCK    ( 2461):  - chain start from cl#158f is used!
+I/FSCK    ( 2461):  - chain start from cl#1590 is used!
+I/FSCK    ( 2461):  - chain start from cl#1591 is used!
+I/FSCK    ( 2461):  - chain start from cl#1592 is used!
+I/FSCK    ( 2461):  - chain start from cl#1593 is used!
+I/FSCK    ( 2461):  - chain start from cl#1594 is used!
+I/FSCK    ( 2461):  - chain start from cl#1595 is used!
+I/FSCK    ( 2461):  - chain start from cl#1596 is used!
+I/FSCK    ( 2461):  - chain start from cl#1597 is used!
+I/FSCK    ( 2461):  - chain start from cl#1598 is used!
+I/FSCK    ( 2461):  - chain start from cl#1599 is used!
+I/FSCK    ( 2461):  - chain start from cl#159a is used!
+I/FSCK    ( 2461):  - chain start from cl#159b is used!
+I/FSCK    ( 2461):  - chain start from cl#159c is used!
+I/FSCK    ( 2461):  - chain start from cl#159d is used!
+I/FSCK    ( 2461):  - chain start from cl#159e is used!
+I/FSCK    ( 2461):  - chain start from cl#159f is used!
+I/FSCK    ( 2461):  - chain start from cl#15a0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a3 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a4 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a5 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a6 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15a9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15aa is used!
+I/FSCK    ( 2461):  - chain start from cl#15ab is used!
+I/FSCK    ( 2461):  - chain start from cl#15ac is used!
+I/FSCK    ( 2461):  - chain start from cl#15ad is used!
+I/FSCK    ( 2461):  - chain start from cl#15ae is used!
+I/FSCK    ( 2461):  - chain start from cl#15af is used!
+I/FSCK    ( 2461):  - chain start from cl#15b0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b3 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b4 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b5 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b6 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15ba is used!
+I/FSCK    ( 2461):  - chain start from cl#15bb is used!
+I/FSCK    ( 2461):  - chain start from cl#15bc is used!
+I/FSCK    ( 2461):  - chain start from cl#15bd is used!
+I/FSCK    ( 2461):  - chain start from cl#15be is used!
+I/FSCK    ( 2461):  - chain start from cl#15bf is used!
+I/FSCK    ( 2461):  - chain start from cl#15c0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c3 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c4 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c5 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c6 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15ca is used!
+I/FSCK    ( 2461):  - chain start from cl#15cb is used!
+I/FSCK    ( 2461):  - chain start from cl#15cc is used!
+I/FSCK    ( 2461):  - chain start from cl#15cd is used!
+I/FSCK    ( 2461):  - chain start from cl#15ce is used!
+I/FSCK    ( 2461):  - chain start from cl#15cf is used!
+I/FSCK    ( 2461):  - chain start from cl#15d0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d3 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d4 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d5 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d6 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15d9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15da is used!
+I/FSCK    ( 2461):  - chain start from cl#15db is used!
+I/FSCK    ( 2461):  - chain start from cl#15dc is used!
+I/FSCK    ( 2461):  - chain start from cl#15dd is used!
+I/FSCK    ( 2461):  - chain start from cl#15de is used!
+I/FSCK    ( 2461):  - chain start from cl#15df is used!
+I/FSCK    ( 2461):  - chain start from cl#15e0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e3 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e4 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e5 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e6 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15ea is used!
+I/FSCK    ( 2461):  - chain start from cl#15eb is used!
+I/FSCK    ( 2461):  - chain start from cl#15ec is used!
+I/FSCK    ( 2461):  - chain start from cl#15ed is used!
+I/FSCK    ( 2461):  - chain start from cl#15ee is used!
+I/FSCK    ( 2461):  - chain start from cl#15ef is used!
+I/FSCK    ( 2461):  - chain start from cl#15f0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f3 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f4 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f5 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f6 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15fa is used!
+I/FSCK    ( 2461):  - chain start from cl#15fb is used!
+I/FSCK    ( 2461):  - chain start from cl#15fc is used!
+I/FSCK    ( 2461):  - chain start from cl#15fd is used!
+I/FSCK    ( 2461):  - chain start from cl#15fe is used!
+I/FSCK    ( 2461):  - chain start from cl#15ff is used!
+I/FSCK    ( 2461):  - chain start from cl#1600 is used!
+I/FSCK    ( 2461):  - chain start from cl#1601 is used!
+I/FSCK    ( 2461):  - chain start from cl#1602 is used!
+I/FSCK    ( 2461):  - chain start from cl#1603 is used!
+I/FSCK    ( 2461):  - chain start from cl#1604 is used!
+I/FSCK    ( 2461):  - chain start from cl#1605 is used!
+I/FSCK    ( 2461):  - chain start from cl#1606 is used!
+I/FSCK    ( 2461):  - chain start from cl#1607 is used!
+I/FSCK    ( 2461):  - chain start from cl#1608 is used!
+I/FSCK    ( 2461):  - chain start from cl#1609 is used!
+I/FSCK    ( 2461):  - chain start from cl#160a is used!
+I/FSCK    ( 2461):  - chain start from cl#160b is used!
+I/FSCK    ( 2461):  - chain start from cl#160c is used!
+I/FSCK    ( 2461):  - chain start from cl#160d is used!
+I/FSCK    ( 2461):  - chain start from cl#160e is used!
+I/FSCK    ( 2461):  - chain start from cl#160f is used!
+I/FSCK    ( 2461):  - chain start from cl#1610 is used!
+I/FSCK    ( 2461):  - chain start from cl#1611 is used!
+I/FSCK    ( 2461):  - chain start from cl#1612 is used!
+I/FSCK    ( 2461):  - chain start from cl#1613 is used!
+I/FSCK    ( 2461):  - chain start from cl#1614 is used!
+I/FSCK    ( 2461):  - chain start from cl#1615 is used!
+I/FSCK    ( 2461):  - chain start from cl#1616 is used!
+I/FSCK    ( 2461):  - chain start from cl#1617 is used!
+I/FSCK    ( 2461):  - chain start from cl#1618 is used!
+I/FSCK    ( 2461):  - chain start from cl#1619 is used!
+I/FSCK    ( 2461):  - chain start from cl#161a is used!
+I/FSCK    ( 2461):  - chain start from cl#161b is used!
+I/FSCK    ( 2461):  - chain start from cl#161c is used!
+I/FSCK    ( 2461):  - chain start from cl#161d is used!
+I/FSCK    ( 2461):  - chain start from cl#161e is used!
+I/FSCK    ( 2461):  - chain start from cl#161f is used!
+I/FSCK    ( 2461):  - chain start from cl#1620 is used!
+I/FSCK    ( 2461):  - chain start from cl#1621 is used!
+I/FSCK    ( 2461):  - chain start from cl#1622 is used!
+I/FSCK    ( 2461):  - chain start from cl#1623 is used!
+I/FSCK    ( 2461):  - chain start from cl#1624 is used!
+I/FSCK    ( 2461):  - chain start from cl#1625 is used!
+I/FSCK    ( 2461):  - chain start from cl#1626 is used!
+I/FSCK    ( 2461):  - chain start from cl#1627 is used!
+I/FSCK    ( 2461):  - chain start from cl#1628 is used!
+I/FSCK    ( 2461):  - chain start from cl#1629 is used!
+I/FSCK    ( 2461):  - chain start from cl#162a is used!
+I/FSCK    ( 2461):  - chain start from cl#162b is used!
+I/FSCK    ( 2461):  - chain start from cl#162c is used!
+I/FSCK    ( 2461):  - chain start from cl#162d is used!
+I/FSCK    ( 2461):  - chain start from cl#162e is used!
+I/FSCK    ( 2461):  - chain start from cl#162f is used!
+I/FSCK    ( 2461):  - chain start from cl#1630 is used!
+I/FSCK    ( 2461):  - chain start from cl#1631 is used!
+I/FSCK    ( 2461):  - chain start from cl#1632 is used!
+I/FSCK    ( 2461):  - chain start from cl#1633 is used!
+I/FSCK    ( 2461):  - chain start from cl#1634 is used!
+I/FSCK    ( 2461):  - chain start from cl#1635 is used!
+I/FSCK    ( 2461):  - chain start from cl#1636 is used!
+I/FSCK    ( 2461):  - chain start from cl#1637 is used!
+I/FSCK    ( 2461):  - chain start from cl#1638 is used!
+I/FSCK    ( 2461):  - chain start from cl#1639 is used!
+I/FSCK    ( 2461):  - chain start from cl#163a is used!
+I/FSCK    ( 2461):  - chain start from cl#163b is used!
+I/FSCK    ( 2461):  - chain start from cl#163c is used!
+I/FSCK    ( 2461):  - chain start from cl#163d is used!
+I/FSCK    ( 2461):  - chain start from cl#163e is used!
+I/FSCK    ( 2461):  - chain start from cl#163f is used!
+I/FSCK    ( 2461):  - chain start from cl#1640 is used!
+I/FSCK    ( 2461):  - chain start from cl#1641 is used!
+I/FSCK    ( 2461):  - chain start from cl#1642 is used!
+I/FSCK    ( 2461):  - chain start from cl#1643 is used!
+I/FSCK    ( 2461):  - chain start from cl#1644 is used!
+I/FSCK    ( 2461):  - chain start from cl#1645 is used!
+I/FSCK    ( 2461):  - chain start from cl#1646 is used!
+I/FSCK    ( 2461):  - chain start from cl#1647 is used!
+I/FSCK    ( 2461):  - chain start from cl#1648 is used!
+I/FSCK    ( 2461):  - chain start from cl#1649 is used!
+I/FSCK    ( 2461):  - chain start from cl#164a is used!
+I/FSCK    ( 2461):  - chain start from cl#164b is used!
+I/FSCK    ( 2461):  - chain start from cl#164c is used!
+I/FSCK    ( 2461):  - chain start from cl#164d is used!
+I/FSCK    ( 2461):  - chain start from cl#164e is used!
+I/FSCK    ( 2461):  - chain start from cl#164f is used!
+I/FSCK    ( 2461):  - chain start from cl#1650 is used!
+I/FSCK    ( 2461):  - chain start from cl#1651 is used!
+I/FSCK    ( 2461):  - chain start from cl#1652 is used!
+I/FSCK    ( 2461):  - chain start from cl#1653 is used!
+I/FSCK    ( 2461):  - chain start from cl#1654 is used!
+I/FSCK    ( 2461):  - chain start from cl#1655 is used!
+I/FSCK    ( 2461):  - chain start from cl#1656 is used!
+I/FSCK    ( 2461):  - chain start from cl#1657 is used!
+I/FSCK    ( 2461):  - chain start from cl#1658 is used!
+I/FSCK    ( 2461):  - chain start from cl#1659 is used!
+I/FSCK    ( 2461):  - chain start from cl#165a is used!
+I/FSCK    ( 2461):  - chain start from cl#165b is used!
+I/FSCK    ( 2461):  - chain start from cl#165c is used!
+I/FSCK    ( 2461):  - chain start from cl#165d is used!
+I/FSCK    ( 2461):  - chain start from cl#165e is used!
+I/FSCK    ( 2461):  - chain start from cl#165f is used!
+I/FSCK    ( 2461):  - chain start from cl#1660 is used!
+I/FSCK    ( 2461):  - chain start from cl#1661 is used!
+I/FSCK    ( 2461):  - chain start from cl#1662 is used!
+I/FSCK    ( 2461):  - chain start from cl#1663 is used!
+I/FSCK    ( 2461):  - chain start from cl#1664 is used!
+I/FSCK    ( 2461):  - chain start from cl#1665 is used!
+I/FSCK    ( 2461):  - chain start from cl#1666 is used!
+I/FSCK    ( 2461):  - chain start from cl#1667 is used!
+I/FSCK    ( 2461):  - chain start from cl#1668 is used!
+I/FSCK    ( 2461):  - chain start from cl#1669 is used!
+I/FSCK    ( 2461):  - chain start from cl#166a is used!
+I/FSCK    ( 2461):  - chain start from cl#166b is used!
+I/FSCK    ( 2461):  - chain start from cl#166c is used!
+I/FSCK    ( 2461):  - chain start from cl#166d is used!
+I/FSCK    ( 2461):  - chain start from cl#166e is used!
+I/FSCK    ( 2461):  - chain start from cl#166f is used!
+I/FSCK    ( 2461):  - chain start from cl#1670 is used!
+I/FSCK    ( 2461):  - chain start from cl#1671 is used!
+I/FSCK    ( 2461):  - chain start from cl#1672 is used!
+I/FSCK    ( 2461):  - chain start from cl#1673 is used!
+I/FSCK    ( 2461):  - chain start from cl#1674 is used!
+I/FSCK    ( 2461):  - chain start from cl#1675 is used!
+I/FSCK    ( 2461):  - chain start from cl#1676 is used!
+I/FSCK    ( 2461):  - chain start from cl#1677 is used!
+I/FSCK    ( 2461):  - chain start from cl#1678 is used!
+I/FSCK    ( 2461):  - chain start from cl#1679 is used!
+I/FSCK    ( 2461):  - chain start from cl#167a is used!
+I/FSCK    ( 2461):  - chain start from cl#167b is used!
+I/FSCK    ( 2461):  - chain start from cl#167c is used!
+I/FSCK    ( 2461):  - chain start from cl#167d is used!
+I/FSCK    ( 2461):  - chain start from cl#167e is used!
+I/FSCK    ( 2461):  - chain start from cl#167f is used!
+I/FSCK    ( 2461):  - chain start from cl#1680 is used!
+I/FSCK    ( 2461):  - chain start from cl#1681 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/.)
+I/FSCK    ( 2461):  - chain start from cl#22b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/..)
+I/FSCK    ( 2461):  - chain start from cl#22d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/ldd3)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#e43 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/qlink)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#10ee is used!
+I/FSCK    ( 2461):  - chain start from cl#1159 is used!
+I/FSCK    ( 2461):  - chain start from cl#117b is used!
+I/FSCK    ( 2461):  - chain start from cl#1199 is used!
+I/FSCK    ( 2461):  - chain start from cl#11a3 is used!
+I/FSCK    ( 2461):  - chain start from cl#11a7 is used!
+I/FSCK    ( 2461):  - chain start from cl#1259 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/orwell)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14d5 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/vnc)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14ef is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/the act of will)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1529 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/men and ideas)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#14a97 is used!
+I/FSCK    ( 2461):  - chain start from cl#19489 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/Self-help and The Mythology of Authenticity by Morten Tolboll)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1949a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/nietzsche)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#194ea is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/on intelligence)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#194ea is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/on intelligence/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/on intelligence/..)
+I/FSCK    ( 2461):  - chain start from cl#194eb is used!
+I/FSCK    ( 2461):  - chain start from cl#1951c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1949a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/nietzsche/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/nietzsche/..)
+I/FSCK    ( 2461):  - chain start from cl#1949b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19489 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/Self-help and The Mythology of Authenticity by Morten Tolboll/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/Self-help and The Mythology of Authenticity by Morten Tolboll/..)
+I/FSCK    ( 2461):  - chain start from cl#1948a is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1529 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/men and ideas/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/men and ideas/..)
+I/FSCK    ( 2461):  - chain start from cl#152a is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#14ef is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/the act of will/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/the act of will/..)
+I/FSCK    ( 2461):  - chain start from cl#14f0 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#14d5 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/vnc/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/vnc/..)
+I/FSCK    ( 2461):  - chain start from cl#14d6 is used!
+I/FSCK    ( 2461):  - chain start from cl#14e1 is used!
+I/FSCK    ( 2461):  - chain start from cl#14e5 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1259 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/orwell/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/orwell/..)
+I/FSCK    ( 2461):  - chain start from cl#125a is used!
+I/FSCK    ( 2461):  - chain start from cl#127e is used!
+I/FSCK    ( 2461):  - chain start from cl#1499 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#e43 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/qlink/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/qlink/..)
+I/FSCK    ( 2461):  - chain start from cl#e44 is used!
+I/FSCK    ( 2461):  - chain start from cl#e4d is used!
+I/FSCK    ( 2461):  - chain start from cl#102f is used!
+I/FSCK    ( 2461):  - chain start from cl#10e6 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/..)
+I/FSCK    ( 2461):  - chain start from cl#3ce is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/lenovo z575 manual)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#65c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#997 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/amd processors manuals)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#b1f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/amd processors product errata)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#b38 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/lark freeme x2)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#b40 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t60)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#b4a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/beaglebone)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#cac is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#ddd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/intel)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#ddd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/intel/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/intel/..)
+I/FSCK    ( 2461):  - chain start from cl#dde is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/intel/core2duo)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#dde is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/intel/core2duo/.)
+I/FSCK    ( 2461):  - chain start from cl#ddd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/intel/core2duo/..)
+I/FSCK    ( 2461):  - chain start from cl#ddf is used!
+I/FSCK    ( 2461):  - chain start from cl#e10 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#cac is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/..)
+I/FSCK    ( 2461):  - chain start from cl#cad is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/power supply 90w)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/Lenovo Hardware Maintenance Manual of the ThinkPad T400s)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#ddc is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#ced is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/Lenovo Hardware Maintenance Manual of the ThinkPad T400s/.)
+I/FSCK    ( 2461):  - chain start from cl#cac is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/Lenovo Hardware Maintenance Manual of the ThinkPad T400s/..)
+I/FSCK    ( 2461):  - chain start from cl#cee is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#cad is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/power supply 90w/.)
+I/FSCK    ( 2461):  - chain start from cl#cac is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/power supply 90w/..)
+I/FSCK    ( 2461):  - chain start from cl#cae is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/power supply 90w/Power Supply akyga AK-ND-18 20V_4.5A 90W 7.9_5.5+pin_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#cec is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#cae is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/power supply 90w/Power Supply akyga AK-ND-18 20V_4.5A 90W 7.9_5.5+pin_files/.)
+I/FSCK    ( 2461):  - chain start from cl#cad is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t400/power supply 90w/Power Supply akyga AK-ND-18 20V_4.5A 90W 7.9_5.5+pin_files/..)
+I/FSCK    ( 2461):  - chain start from cl#caf is used!
+I/FSCK    ( 2461):  - chain start from cl#cb0 is used!
+I/FSCK    ( 2461):  - chain start from cl#cb1 is used!
+I/FSCK    ( 2461):  - chain start from cl#cb3 is used!
+I/FSCK    ( 2461):  - chain start from cl#cb4 is used!
+I/FSCK    ( 2461):  - chain start from cl#cbc is used!
+I/FSCK    ( 2461):  - chain start from cl#cbd is used!
+I/FSCK    ( 2461):  - chain start from cl#cbf is used!
+I/FSCK    ( 2461):  - chain start from cl#cc0 is used!
+I/FSCK    ( 2461):  - chain start from cl#cc1 is used!
+I/FSCK    ( 2461):  - chain start from cl#cc3 is used!
+I/FSCK    ( 2461):  - chain start from cl#cc4 is used!
+I/FSCK    ( 2461):  - chain start from cl#cc7 is used!
+I/FSCK    ( 2461):  - chain start from cl#cc8 is used!
+I/FSCK    ( 2461):  - chain start from cl#cc9 is used!
+I/FSCK    ( 2461):  - chain start from cl#cca is used!
+I/FSCK    ( 2461):  - chain start from cl#ccc is used!
+I/FSCK    ( 2461):  - chain start from cl#ccd is used!
+I/FSCK    ( 2461):  - chain start from cl#ccf is used!
+I/FSCK    ( 2461):  - chain start from cl#cd6 is used!
+I/FSCK    ( 2461):  - chain start from cl#cdf is used!
+I/FSCK    ( 2461):  - chain start from cl#ce0 is used!
+I/FSCK    ( 2461):  - chain start from cl#ce1 is used!
+I/FSCK    ( 2461):  - chain start from cl#ce4 is used!
+I/FSCK    ( 2461):  - chain start from cl#ce7 is used!
+I/FSCK    ( 2461):  - chain start from cl#ce8 is used!
+I/FSCK    ( 2461):  - chain start from cl#cea is used!
+I/FSCK    ( 2461):  - chain start from cl#ceb is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#b4a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/beaglebone/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/beaglebone/..)
+I/FSCK    ( 2461):  - chain start from cl#b4b is used!
+I/FSCK    ( 2461):  - chain start from cl#be4 is used!
+I/FSCK    ( 2461):  - chain start from cl#c94 is used!
+I/FSCK    ( 2461):  - chain start from cl#c95 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#b40 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t60/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/t60/..)
+I/FSCK    ( 2461):  - chain start from cl#b41 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#b38 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/lark freeme x2/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/lark freeme x2/..)
+I/FSCK    ( 2461):  - chain start from cl#b39 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#b1f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/amd processors product errata/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/amd processors product errata/..)
+I/FSCK    ( 2461):  - chain start from cl#b20 is used!
+I/FSCK    ( 2461):  - chain start from cl#b22 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#997 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/amd processors manuals/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/amd processors manuals/..)
+I/FSCK    ( 2461):  - chain start from cl#998 is used!
+I/FSCK    ( 2461):  - chain start from cl#a37 is used!
+I/FSCK    ( 2461):  - chain start from cl#ab0 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#65c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/..)
+I/FSCK    ( 2461):  - chain start from cl#65d is used!
+I/FSCK    ( 2461):  - chain start from cl#75b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/other)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#98d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/serial console info)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#98d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/serial console info/.)
+I/FSCK    ( 2461):  - chain start from cl#65c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/serial console info/..)
+I/FSCK    ( 2461):  - chain start from cl#98e is used!
+I/FSCK    ( 2461):  - chain start from cl#98f is used!
+I/FSCK    ( 2461):  - chain start from cl#990 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#75b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/other/.)
+I/FSCK    ( 2461):  - chain start from cl#65c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/other/..)
+I/FSCK    ( 2461):  - chain start from cl#75c is used!
+I/FSCK    ( 2461):  - chain start from cl#75e is used!
+I/FSCK    ( 2461):  - chain start from cl#78d is used!
+I/FSCK    ( 2461):  - chain start from cl#7a1 is used!
+I/FSCK    ( 2461):  - chain start from cl#85b is used!
+I/FSCK    ( 2461):  - chain start from cl#85e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/other/mac_and_ipprotocol)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#8ac is used!
+I/FSCK    ( 2461):  - chain start from cl#8b2 is used!
+I/FSCK    ( 2461):  - chain start from cl#8c1 is used!
+I/FSCK    ( 2461):  - chain start from cl#8eb is used!
+I/FSCK    ( 2461):  - chain start from cl#906 is used!
+I/FSCK    ( 2461):  - chain start from cl#907 is used!
+I/FSCK    ( 2461):  - chain start from cl#910 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#85e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/other/mac_and_ipprotocol/.)
+I/FSCK    ( 2461):  - chain start from cl#75b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/router/other/mac_and_ipprotocol/..)
+I/FSCK    ( 2461):  - chain start from cl#85f is used!
+I/FSCK    ( 2461):  - chain start from cl#860 is used!
+I/FSCK    ( 2461):  - chain start from cl#867 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#3ce is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/lenovo z575 manual/.)
+I/FSCK    ( 2461):  - chain start from cl#3cd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/manuals/lenovo z575 manual/..)
+I/FSCK    ( 2461):  - chain start from cl#3cf is used!
+I/FSCK    ( 2461):  - chain start from cl#3d1 is used!
+I/FSCK    ( 2461):  - chain start from cl#3f9 is used!
+I/FSCK    ( 2461):  - chain start from cl#417 is used!
+I/FSCK    ( 2461):  - chain start from cl#481 is used!
+I/FSCK    ( 2461):  - chain start from cl#54c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#22d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/ldd3/.)
+I/FSCK    ( 2461):  - chain start from cl#22c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/ldd3/..)
+I/FSCK    ( 2461):  - chain start from cl#22e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/ldd3/Confirmed Errata _ O'Reilly Media Linux Device Drivers_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#23d is used!
+I/FSCK    ( 2461):  - chain start from cl#3c5 is used!
+I/FSCK    ( 2461):  - chain start from cl#3ca is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#22e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/ldd3/Confirmed Errata _ O'Reilly Media Linux Device Drivers_files/.)
+I/FSCK    ( 2461):  - chain start from cl#22d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/Books/pdfs/ldd3/Confirmed Errata _ O'Reilly Media Linux Device Drivers_files/..)
+I/FSCK    ( 2461):  - chain start from cl#22f is used!
+I/FSCK    ( 2461):  - chain start from cl#230 is used!
+I/FSCK    ( 2461):  - chain start from cl#231 is used!
+I/FSCK    ( 2461):  - chain start from cl#232 is used!
+I/FSCK    ( 2461):  - chain start from cl#233 is used!
+I/FSCK    ( 2461):  - chain start from cl#234 is used!
+I/FSCK    ( 2461):  - chain start from cl#235 is used!
+I/FSCK    ( 2461):  - chain start from cl#237 is used!
+I/FSCK    ( 2461):  - chain start from cl#238 is used!
+I/FSCK    ( 2461):  - chain start from cl#23a is used!
+I/FSCK    ( 2461):  - chain start from cl#23b is used!
+I/FSCK    ( 2461):  - chain start from cl#23c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1500f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/..)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/.)
+I/FSCK    ( 2461):  - chain start from cl#1500f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/..)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15dc7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Benedictus de Spinoza)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15df7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Antoine de Saint-Exupéry)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15e35 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Sun Tzu – The Art of War)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#165cb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19067 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19098 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19464 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Oscar Wilde)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19476 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/The Song Celestial; Or, Bhagavad-Gîtâ (from the Mahâbhârata) by Sir Edwin Arnold)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19476 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/The Song Celestial; Or, Bhagavad-Gîtâ (from the Mahâbhârata) by Sir Edwin Arnold/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/The Song Celestial; Or, Bhagavad-Gîtâ (from the Mahâbhârata) by Sir Edwin Arnold/..)
+I/FSCK    ( 2461):  - chain start from cl#19477 is used!
+I/FSCK    ( 2461):  - chain start from cl#1947c is used!
+I/FSCK    ( 2461):  - chain start from cl#19485 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19464 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Oscar Wilde/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Oscar Wilde/..)
+I/FSCK    ( 2461):  - chain start from cl#19465 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Oscar Wilde/The Importance of Being Earnest- A Trivial Comedy for Serious People)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19465 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Oscar Wilde/The Importance of Being Earnest- A Trivial Comedy for Serious People/.)
+I/FSCK    ( 2461):  - chain start from cl#19464 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Oscar Wilde/The Importance of Being Earnest- A Trivial Comedy for Serious People/..)
+I/FSCK    ( 2461):  - chain start from cl#19466 is used!
+I/FSCK    ( 2461):  - chain start from cl#1946b is used!
+I/FSCK    ( 2461):  - chain start from cl#19474 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19098 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/..)
+I/FSCK    ( 2461):  - chain start from cl#19099 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/The Time Machine)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#190af is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/A Short History of the World)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#190af is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/A Short History of the World/.)
+I/FSCK    ( 2461):  - chain start from cl#19098 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/A Short History of the World/..)
+I/FSCK    ( 2461):  - chain start from cl#190b0 is used!
+I/FSCK    ( 2461):  - chain start from cl#19321 is used!
+I/FSCK    ( 2461):  - chain start from cl#1944c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19099 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/The Time Machine/.)
+I/FSCK    ( 2461):  - chain start from cl#19098 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/H. G. Wells/The Time Machine/..)
+I/FSCK    ( 2461):  - chain start from cl#1909a is used!
+I/FSCK    ( 2461):  - chain start from cl#190a1 is used!
+I/FSCK    ( 2461):  - chain start from cl#190ac is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19067 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/..)
+I/FSCK    ( 2461):  - chain start from cl#19068 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/Socrates)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19073 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/Candide)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19073 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/Candide/.)
+I/FSCK    ( 2461):  - chain start from cl#19067 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/Candide/..)
+I/FSCK    ( 2461):  - chain start from cl#19074 is used!
+I/FSCK    ( 2461):  - chain start from cl#1907c is used!
+I/FSCK    ( 2461):  - chain start from cl#19091 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19068 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/Socrates/.)
+I/FSCK    ( 2461):  - chain start from cl#19067 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Voltaire/Socrates/..)
+I/FSCK    ( 2461):  - chain start from cl#19069 is used!
+I/FSCK    ( 2461):  - chain start from cl#1906c is used!
+I/FSCK    ( 2461):  - chain start from cl#19071 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#165cb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/..)
+I/FSCK    ( 2461):  - chain start from cl#165cc is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/Adventures of Huckleberry Finn)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#165cc is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/Adventures of Huckleberry Finn/.)
+I/FSCK    ( 2461):  - chain start from cl#165cb is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/Adventures of Huckleberry Finn/..)
+I/FSCK    ( 2461):  - chain start from cl#165cd is used!
+I/FSCK    ( 2461):  - chain start from cl#1676a is used!
+I/FSCK    ( 2461):  - chain start from cl#16ab4 is used!
+I/FSCK    ( 2461):  - chain start from cl#16ac7 is used!
+I/FSCK    ( 2461):  - chain start from cl#16b88 is used!
+I/FSCK    ( 2461):  - chain start from cl#16b8c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/Adventures of Huckleberry Finn/mp3)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#16b8c is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/Adventures of Huckleberry Finn/mp3/.)
+I/FSCK    ( 2461):  - chain start from cl#165cc is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Mark Twain/Adventures of Huckleberry Finn/mp3/..)
+I/FSCK    ( 2461):  - chain start from cl#16b8d is used!
+I/FSCK    ( 2461):  - chain start from cl#16c0f is used!
+I/FSCK    ( 2461):  - chain start from cl#16cc7 is used!
+I/FSCK    ( 2461):  - chain start from cl#16d4e is used!
+I/FSCK    ( 2461):  - chain start from cl#16dc2 is used!
+I/FSCK    ( 2461):  - chain start from cl#16e49 is used!
+I/FSCK    ( 2461):  - chain start from cl#16f27 is used!
+I/FSCK    ( 2461):  - chain start from cl#16ff8 is used!
+I/FSCK    ( 2461):  - chain start from cl#1714c is used!
+I/FSCK    ( 2461):  - chain start from cl#171d0 is used!
+I/FSCK    ( 2461):  - chain start from cl#1723c is used!
+I/FSCK    ( 2461):  - chain start from cl#17315 is used!
+I/FSCK    ( 2461):  - chain start from cl#173f5 is used!
+I/FSCK    ( 2461):  - chain start from cl#1749c is used!
+I/FSCK    ( 2461):  - chain start from cl#17526 is used!
+I/FSCK    ( 2461):  - chain start from cl#175e5 is used!
+I/FSCK    ( 2461):  - chain start from cl#17705 is used!
+I/FSCK    ( 2461):  - chain start from cl#1782e is used!
+I/FSCK    ( 2461):  - chain start from cl#179c2 is used!
+I/FSCK    ( 2461):  - chain start from cl#17b00 is used!
+I/FSCK    ( 2461):  - chain start from cl#17c40 is used!
+I/FSCK    ( 2461):  - chain start from cl#17d9d is used!
+I/FSCK    ( 2461):  - chain start from cl#17e6c is used!
+I/FSCK    ( 2461):  - chain start from cl#17f40 is used!
+I/FSCK    ( 2461):  - chain start from cl#1800e is used!
+I/FSCK    ( 2461):  - chain start from cl#18108 is used!
+I/FSCK    ( 2461):  - chain start from cl#18201 is used!
+I/FSCK    ( 2461):  - chain start from cl#182ee is used!
+I/FSCK    ( 2461):  - chain start from cl#18423 is used!
+I/FSCK    ( 2461):  - chain start from cl#18575 is used!
+I/FSCK    ( 2461):  - chain start from cl#185f2 is used!
+I/FSCK    ( 2461):  - chain start from cl#18741 is used!
+I/FSCK    ( 2461):  - chain start from cl#18811 is used!
+I/FSCK    ( 2461):  - chain start from cl#188f8 is used!
+I/FSCK    ( 2461):  - chain start from cl#189b7 is used!
+I/FSCK    ( 2461):  - chain start from cl#18a9a is used!
+I/FSCK    ( 2461):  - chain start from cl#18b51 is used!
+I/FSCK    ( 2461):  - chain start from cl#18c22 is used!
+I/FSCK    ( 2461):  - chain start from cl#18cfb is used!
+I/FSCK    ( 2461):  - chain start from cl#18da7 is used!
+I/FSCK    ( 2461):  - chain start from cl#18e5b is used!
+I/FSCK    ( 2461):  - chain start from cl#18f2e is used!
+I/FSCK    ( 2461):  - chain start from cl#1902a is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/..)
+I/FSCK    ( 2461):  - chain start from cl#15e5a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/The Kingdom of God Is Within You)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15ea1 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/Anna Karenina)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15f83 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/Master and Man)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15f92 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/The pathway of life)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#162c4 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/War and Peace)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#163f7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/What is art)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#165bd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/What Men Live By, and Other Tales)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#165bd is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/What Men Live By, and Other Tales/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/What Men Live By, and Other Tales/..)
+I/FSCK    ( 2461):  - chain start from cl#165be is used!
+I/FSCK    ( 2461):  - chain start from cl#165c2 is used!
+I/FSCK    ( 2461):  - chain start from cl#165c9 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#163f7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/What is art/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/What is art/..)
+I/FSCK    ( 2461):  - chain start from cl#163f8 is used!
+I/FSCK    ( 2461):  - chain start from cl#165a7 is used!
+I/FSCK    ( 2461):  - chain start from cl#165b1 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#162c4 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/War and Peace/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/War and Peace/..)
+I/FSCK    ( 2461):  - chain start from cl#162c5 is used!
+I/FSCK    ( 2461):  - chain start from cl#1632a is used!
+I/FSCK    ( 2461):  - chain start from cl#163ce is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15f92 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/The pathway of life/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/The pathway of life/..)
+I/FSCK    ( 2461):  - chain start from cl#15f93 is used!
+I/FSCK    ( 2461):  - chain start from cl#162b6 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15f83 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/Master and Man/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/Master and Man/..)
+I/FSCK    ( 2461):  - chain start from cl#15f84 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f88 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f90 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15ea1 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/Anna Karenina/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/Anna Karenina/..)
+I/FSCK    ( 2461):  - chain start from cl#15ea2 is used!
+I/FSCK    ( 2461):  - chain start from cl#15ee1 is used!
+I/FSCK    ( 2461):  - chain start from cl#15f05 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15e5a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/The Kingdom of God Is Within You/.)
+I/FSCK    ( 2461):  - chain start from cl#15e59 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Leo Tolstoy/The Kingdom of God Is Within You/..)
+I/FSCK    ( 2461):  - chain start from cl#15e5b is used!
+I/FSCK    ( 2461):  - chain start from cl#15e73 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e98 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15e35 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Sun Tzu – The Art of War/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Sun Tzu – The Art of War/..)
+I/FSCK    ( 2461):  - chain start from cl#15e36 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e41 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e54 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15df7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Antoine de Saint-Exupéry/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Antoine de Saint-Exupéry/..)
+I/FSCK    ( 2461):  - chain start from cl#15df8 is used!
+I/FSCK    ( 2461):  - chain start from cl#15dfc is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Antoine de Saint-Exupéry/Le Petit Prince By Antoine de Saint-Exupéry_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15dfc is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Antoine de Saint-Exupéry/Le Petit Prince By Antoine de Saint-Exupéry_files/.)
+I/FSCK    ( 2461):  - chain start from cl#15df7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Antoine de Saint-Exupéry/Le Petit Prince By Antoine de Saint-Exupéry_files/..)
+I/FSCK    ( 2461):  - chain start from cl#15dfd is used!
+I/FSCK    ( 2461):  - chain start from cl#15dfe is used!
+I/FSCK    ( 2461):  - chain start from cl#15dff is used!
+I/FSCK    ( 2461):  - chain start from cl#15e00 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e01 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e02 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e03 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e04 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e06 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e07 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e08 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e09 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e0b is used!
+I/FSCK    ( 2461):  - chain start from cl#15e0c is used!
+I/FSCK    ( 2461):  - chain start from cl#15e0d is used!
+I/FSCK    ( 2461):  - chain start from cl#15e0e is used!
+I/FSCK    ( 2461):  - chain start from cl#15e0f is used!
+I/FSCK    ( 2461):  - chain start from cl#15e10 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e11 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e12 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e13 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e15 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e16 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e17 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e18 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e19 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e1b is used!
+I/FSCK    ( 2461):  - chain start from cl#15e1c is used!
+I/FSCK    ( 2461):  - chain start from cl#15e1d is used!
+I/FSCK    ( 2461):  - chain start from cl#15e1e is used!
+I/FSCK    ( 2461):  - chain start from cl#15e1f is used!
+I/FSCK    ( 2461):  - chain start from cl#15e20 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e23 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e24 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e26 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e27 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e28 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e29 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e2a is used!
+I/FSCK    ( 2461):  - chain start from cl#15e2b is used!
+I/FSCK    ( 2461):  - chain start from cl#15e2c is used!
+I/FSCK    ( 2461):  - chain start from cl#15e2d is used!
+I/FSCK    ( 2461):  - chain start from cl#15e2f is used!
+I/FSCK    ( 2461):  - chain start from cl#15e30 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e31 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e32 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e33 is used!
+I/FSCK    ( 2461):  - chain start from cl#15e34 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15dc7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Benedictus de Spinoza/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Benedictus de Spinoza/..)
+I/FSCK    ( 2461):  - chain start from cl#15dc8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Benedictus de Spinoza/Ethics)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15dc8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Benedictus de Spinoza/Ethics/.)
+I/FSCK    ( 2461):  - chain start from cl#15dc7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Benedictus de Spinoza/Ethics/..)
+I/FSCK    ( 2461):  - chain start from cl#15dc9 is used!
+I/FSCK    ( 2461):  - chain start from cl#15dda is used!
+I/FSCK    ( 2461):  - chain start from cl#15df1 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/..)
+I/FSCK    ( 2461):  - chain start from cl#15820 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/What is Enlightenment)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15822 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Critique of judgment)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15bb9 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/The Critique of Practical Reason)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15bdf is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/The Critique of Pure Reason)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15c4d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Fundamental Principles of the Metaphysic of Morals)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15c61 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Perpetual peace)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15c61 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Perpetual peace/.)
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Perpetual peace/..)
+I/FSCK    ( 2461):  - chain start from cl#15c62 is used!
+I/FSCK    ( 2461):  - chain start from cl#15db7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15dbc is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15c4d is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Fundamental Principles of the Metaphysic of Morals/.)
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Fundamental Principles of the Metaphysic of Morals/..)
+I/FSCK    ( 2461):  - chain start from cl#15c4e is used!
+I/FSCK    ( 2461):  - chain start from cl#15c54 is used!
+I/FSCK    ( 2461):  - chain start from cl#15c5e is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15bdf is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/The Critique of Pure Reason/.)
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/The Critique of Pure Reason/..)
+I/FSCK    ( 2461):  - chain start from cl#15be0 is used!
+I/FSCK    ( 2461):  - chain start from cl#15bed is used!
+I/FSCK    ( 2461):  - chain start from cl#15c15 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15bb9 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/The Critique of Practical Reason/.)
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/The Critique of Practical Reason/..)
+I/FSCK    ( 2461):  - chain start from cl#15bba is used!
+I/FSCK    ( 2461):  - chain start from cl#15bc7 is used!
+I/FSCK    ( 2461):  - chain start from cl#15bda is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15822 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Critique of judgment/.)
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/Critique of judgment/..)
+I/FSCK    ( 2461):  - chain start from cl#15823 is used!
+I/FSCK    ( 2461):  - chain start from cl#15b9e is used!
+I/FSCK    ( 2461):  - chain start from cl#15baf is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15820 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/What is Enlightenment/.)
+I/FSCK    ( 2461):  - chain start from cl#1581f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/Immanuel Kant/What is Enlightenment/..)
+I/FSCK    ( 2461):  - chain start from cl#15821 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/.)
+I/FSCK    ( 2461):  - chain start from cl#15010 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/..)
+I/FSCK    ( 2461):  - chain start from cl#15012 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Totem and Taboo)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15038 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Moses And Monotheism)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15183 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/The Interpretation of dreams)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#156ae is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/A General Introduction to Psychoanalysis)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#15718 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Dream Psychology - Psychoanalysis for Beginners)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1573b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Psychoanalysis and faith - the letters of Sigmund Freud and Oskar Pfister)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1573b is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Psychoanalysis and faith - the letters of Sigmund Freud and Oskar Pfister/.)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Psychoanalysis and faith - the letters of Sigmund Freud and Oskar Pfister/..)
+I/FSCK    ( 2461):  - chain start from cl#1573c is used!
+I/FSCK    ( 2461):  - chain start from cl#15814 is used!
+I/FSCK    ( 2461):  - chain start from cl#1581b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15718 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Dream Psychology - Psychoanalysis for Beginners/.)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Dream Psychology - Psychoanalysis for Beginners/..)
+I/FSCK    ( 2461):  - chain start from cl#15719 is used!
+I/FSCK    ( 2461):  - chain start from cl#15724 is used!
+I/FSCK    ( 2461):  - chain start from cl#15729 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#156ae is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/A General Introduction to Psychoanalysis/.)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/A General Introduction to Psychoanalysis/..)
+I/FSCK    ( 2461):  - chain start from cl#156af is used!
+I/FSCK    ( 2461):  - chain start from cl#156cd is used!
+I/FSCK    ( 2461):  - chain start from cl#15706 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15183 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/The Interpretation of dreams/.)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/The Interpretation of dreams/..)
+I/FSCK    ( 2461):  - chain start from cl#15184 is used!
+I/FSCK    ( 2461):  - chain start from cl#151a9 is used!
+I/FSCK    ( 2461):  - chain start from cl#151c4 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15038 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Moses And Monotheism/.)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Moses And Monotheism/..)
+I/FSCK    ( 2461):  - chain start from cl#15039 is used!
+I/FSCK    ( 2461):  - chain start from cl#15175 is used!
+I/FSCK    ( 2461):  - chain start from cl#1517b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#15012 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Totem and Taboo/.)
+I/FSCK    ( 2461):  - chain start from cl#15011 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/BooksD/books/sigmund freud/Totem and Taboo/..)
+I/FSCK    ( 2461):  - chain start from cl#15013 is used!
+I/FSCK    ( 2461):  - chain start from cl#1501c is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1964e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/..)
+I/FSCK    ( 2461):  - chain start from cl#19650 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19769 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/hu holidays)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19770 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/tren)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19770 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/tren/.)
+I/FSCK    ( 2461):  - chain start from cl#1964e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/tren/..)
+I/FSCK    ( 2461):  - chain start from cl#19772 is used!
+I/FSCK    ( 2461):  - chain start from cl#1977a is used!
+I/FSCK    ( 2461):  - chain start from cl#1977e is used!
+I/FSCK    ( 2461):  - chain start from cl#19786 is used!
+I/FSCK    ( 2461):  - chain start from cl#1978d is used!
+I/FSCK    ( 2461):  - chain start from cl#19790 is used!
+I/FSCK    ( 2461):  - chain start from cl#19797 is used!
+I/FSCK    ( 2461):  - chain start from cl#1979a is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19769 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/hu holidays/.)
+I/FSCK    ( 2461):  - chain start from cl#1964e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/hu holidays/..)
+I/FSCK    ( 2461):  - chain start from cl#1976b is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19650 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/.)
+I/FSCK    ( 2461):  - chain start from cl#1964e is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/..)
+I/FSCK    ( 2461):  - chain start from cl#19652 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/pdf)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1971f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/img)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#1971f is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/img/.)
+I/FSCK    ( 2461):  - chain start from cl#19650 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/img/..)
+I/FSCK    ( 2461):  - chain start from cl#19721 is used!
+I/FSCK    ( 2461):  - chain start from cl#19725 is used!
+I/FSCK    ( 2461):  - chain start from cl#19729 is used!
+I/FSCK    ( 2461):  - chain start from cl#1973c is used!
+I/FSCK    ( 2461):  - chain start from cl#1974f is used!
+I/FSCK    ( 2461):  - chain start from cl#19756 is used!
+I/FSCK    ( 2461):  - chain start from cl#1975f is used!
+I/FSCK    ( 2461):  - chain start from cl#19764 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19652 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/pdf/.)
+I/FSCK    ( 2461):  - chain start from cl#19650 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/prep/buszes/pdf/..)
+I/FSCK    ( 2461):  - chain start from cl#19654 is used!
+I/FSCK    ( 2461):  - chain start from cl#1965b is used!
+I/FSCK    ( 2461):  - chain start from cl#1968b is used!
+I/FSCK    ( 2461):  - chain start from cl#196ed is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#197d8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/.)
+I/FSCK    ( 2461):  - chain start from cl#7629 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/..)
+I/FSCK    ( 2461):  - chain start from cl#197da is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/manual)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#197e6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nix)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#19804 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nixpkgs)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19804 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nixpkgs/.)
+I/FSCK    ( 2461):  - chain start from cl#197d8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nixpkgs/..)
+I/FSCK    ( 2461):  - chain start from cl#19805 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nixpkgs/Nixpkgs manual_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#1980f is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#19805 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nixpkgs/Nixpkgs manual_files/.)
+I/FSCK    ( 2461):  - chain start from cl#19804 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nixpkgs/Nixpkgs manual_files/..)
+I/FSCK    ( 2461):  - chain start from cl#19806 is used!
+I/FSCK    ( 2461):  - chain start from cl#19807 is used!
+I/FSCK    ( 2461):  - chain start from cl#19808 is used!
+I/FSCK    ( 2461):  - chain start from cl#19809 is used!
+I/FSCK    ( 2461):  - chain start from cl#1980a is used!
+I/FSCK    ( 2461):  - chain start from cl#1980b is used!
+I/FSCK    ( 2461):  - chain start from cl#1980c is used!
+I/FSCK    ( 2461):  - chain start from cl#1980d is used!
+I/FSCK    ( 2461):  - chain start from cl#1980e is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#197e6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nix/.)
+I/FSCK    ( 2461):  - chain start from cl#197d8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nix/..)
+I/FSCK    ( 2461):  - chain start from cl#197e7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nix/Nix manual_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#197f2 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#197e7 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nix/Nix manual_files/.)
+I/FSCK    ( 2461):  - chain start from cl#197e6 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/nix/Nix manual_files/..)
+I/FSCK    ( 2461):  - chain start from cl#197e8 is used!
+I/FSCK    ( 2461):  - chain start from cl#197e9 is used!
+I/FSCK    ( 2461):  - chain start from cl#197ea is used!
+I/FSCK    ( 2461):  - chain start from cl#197eb is used!
+I/FSCK    ( 2461):  - chain start from cl#197ec is used!
+I/FSCK    ( 2461):  - chain start from cl#197ed is used!
+I/FSCK    ( 2461):  - chain start from cl#197ee is used!
+I/FSCK    ( 2461):  - chain start from cl#197f1 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#197da is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/manual/.)
+I/FSCK    ( 2461):  - chain start from cl#197d8 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/manual/..)
+I/FSCK    ( 2461):  - chain start from cl#197db is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/manual/NixOS Manual_files)
+I/FSCK    ( 2461): check_dot_dot().. Directory must have (.) and (..).
+I/FSCK    ( 2461):  - chain start from cl#197e0 is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#197db is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/manual/NixOS Manual_files/.)
+I/FSCK    ( 2461):  - chain start from cl#197da is used!
+I/FSCK    ( 2461):  - gather more info for dir(/1/nixos/manual/NixOS Manual_files/..)
+I/FSCK    ( 2461):  - chain start from cl#197dc is used!
+I/FSCK    ( 2461):  - chain start from cl#197dd is used!
+I/FSCK    ( 2461):  - chain start from cl#197de is used!
+I/FSCK    ( 2461):  - chain start from cl#197df is used!
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#762a is used!
+I/FSCK    ( 2461):  - gather more info for dir(/backup/.)
+I/FSCK    ( 2461):  - gather more info for dir(/backup/..)
+I/FSCK    ( 2461): readDosDirSection()
+I/FSCK    ( 2461):  - chain start from cl#7628 is used!
+I/FSCK    ( 2461):  - gather more info for dir(/LOST.DIR/.)
+I/FSCK    ( 2461):  - gather more info for dir(/LOST.DIR/..)
+I/FSCK    ( 2461):  - chain start from cl#19477 is used!
+I/FSCK    ( 2461):  - chain start from cl#1947c is used!
+I/FSCK    ( 2461):  - chain start from cl#19485 is used!
+I/fsck_msdos(  137): Phase#3 took 805272 usecs
+I/FSCK    ( 2461): checklost()
+I/fsck_msdos(  137): ** Phase 4 - Checking for Lost Files
+I/FSCK    ( 2461):  - check boot->FSInfo
+I/fsck_msdos(  137): Phase#4 took 9101 usecs
+I/fsck_msdos(  137): 1056 files, 3828480 free (381784 clusters)
+I/fsck_msdos(  137): Total fsck time took 1246612 usecs
+I/fsck_msdos(  137): === FSCK Time Usage ===
+I/fsck_msdos(  137): Phase#1 tooks 366724 usecs.
+I/fsck_msdos(  137): Phase#2 tooks 41454 usecs.
+I/fsck_msdos(  137): Phase#3 tooks 805272 usecs.
+I/fsck_msdos(  137): Phase#4 tooks 9101 usecs.
+I/fsck_msdos(  137): Total fsck tooks 1246612 usecs.
+V/MediaProvider( 1234): insertInternal>>>: uri=content://media/external/file, match=700, initValues=title=FSCK0003 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0003.REC is_drm=false
+V/MediaProvider( 1234): insertFile>>>: uri=content://media/external/file, mediaType=0, values=title=FSCK0003 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0003.REC is_drm=false
+V/MediaProvider( 1234): insertFile<<<: values=bucket_id=1940060783 media_type=0 storage_id=131073 date_modified=315525600 parent=13998 format=12288 file_name=FSCK0003.REC bucket_display_name=1 is_drm=false title=FSCK0003 mime_type=null date_added=1460238503 _size=32768 _data=/storage/sdcard1/1/FSCK0003.REC, rowId=15040
+V/MediaProvider( 1234): insertInternal>>>: uri=content://media/external/file, match=700, initValues=title=FSCK0002 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0002.REC is_drm=false
+V/MediaProvider( 1234): insertFile>>>: uri=content://media/external/file, mediaType=0, values=title=FSCK0002 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0002.REC is_drm=false
+V/MediaProvider( 1234): insertFile<<<: values=bucket_id=1940060783 media_type=0 storage_id=131073 date_modified=315525600 parent=13998 format=12288 file_name=FSCK0002.REC bucket_display_name=1 is_drm=false title=FSCK0002 mime_type=null date_added=1460238503 _size=32768 _data=/storage/sdcard1/1/FSCK0002.REC, rowId=15041
+V/MediaProvider( 1234): insertInternal>>>: uri=content://media/external/file, match=700, initValues=title=FSCK0001 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0001.REC is_drm=false
+V/MediaProvider( 1234): insertFile>>>: uri=content://media/external/file, mediaType=0, values=title=FSCK0001 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0001.REC is_drm=false
+V/MediaProvider( 1234): insertFile<<<: values=bucket_id=1940060783 media_type=0 storage_id=131073 date_modified=315525600 parent=13998 format=12288 file_name=FSCK0001.REC bucket_display_name=1 is_drm=false title=FSCK0001 mime_type=null date_added=1460238503 _size=32768 _data=/storage/sdcard1/1/FSCK0001.REC, rowId=15042
+V/MediaProvider( 1234): insertInternal>>>: uri=content://media/external/file, match=700, initValues=title=FSCK0000 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0000.REC is_drm=false
+V/MediaProvider( 1234): insertFile>>>: uri=content://media/external/file, mediaType=0, values=title=FSCK0000 mime_type=null date_modified=315525600 _size=32768 format=12288 _data=/storage/sdcard1/1/FSCK0000.REC is_drm=false
+V/MediaProvider( 1234): insertFile<<<: values=bucket_id=1940060783 media_type=0 storage_id=131073 date_modified=315525600 parent=13998 format=12288 file_name=FSCK0000.REC bucket_display_name=1 is_drm=false title=FSCK0000 mime_type=null date_added=1460238503 _size=32768 _data=/storage/sdcard1/1/FSCK0000.REC, rowId=15043

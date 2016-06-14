@@ -1,0 +1,125 @@
+* vpn on router or on laptop, and connect lark thru it!
+  * might need openwrt on router for vpn support
+    \ https://wiki.openwrt.org/inbox/vpn.howto
+    \ https://wiki.openwrt.org/doc/howto/vpn.openvpn
+* make sure lark has a firewall app and deny all incoming conns
+  \ //old though 2014! this: no root firewall: https://play.google.com/store/apps/details?id=app.greyshirts.firewall&hl=en
+  * netguard
+    \ this supports ipv6 too: https://play.google.com/store/apps/details?id=eu.faircode.netguard  yep, this is up to date: https://github.com/M66B/NetGuard
+    * also do:
+      \ https://github.com/M66B/NetGuard/blob/master/FAQ.md
+      * question 21 Does doze mode affect NetGuard?
+      * don't greenify/hibernate netguard
+        \ (20) Can I Greenify/hibernate NetGuard?
+      * also see this if you can't press OK
+        \ (14) Why can't I select OK to approve the VPN connection request?
+      * (13) How can I remove the ongoing NetGuard entry in the notification screen?
+      * ip filtering uses battery
+        \ (32) Why is the battery/network usage of NetGuard so high?
+
+* CPU-Z
+  \ https://play.google.com/store/apps/details?id=com.cpuid.cpu_z
+
+* get a pdf viewing app
+  - SmartQ Reader
+    \ src: http://www.techsupportalert.com/content/best-free-pdf-reader-android.htm
+    \ get app: https://play.google.com/store/apps/details?id=com.smartdevices.special
+  * want another pdf reader app?
+    \ see xodo maybe? or 9 others here: http://www.tomsguide.com/us/pictures-story/642-best-pdf-reader-apps.html
+    * foxit
+      \ this seems legit: https://apkpure.com/search?q=foxit
+      \ 28c39f0584bb031c43bb7fc7cbad30809be77d2e6fe7d3f832222bac3425d23bd5b761b8dac9f17f26b6a09403c01d621cc4af8b3d60e9cb0ff443615c0d7cbb  foxit.apk
+      \ also sha1 9d7578f4294f4303046ebb483db53dd296aa416d  foxit.apk
+      \ sha512sum corroborated with apk4fun and also with http://apkleecher.com/ (don't use this one tho!)
+      \ com.foxit.mobile.pdf.lite
+
+* get a browser
+  * firefox
+    \ ffbeta: https://play.google.com/store/apps/details?id=org.mozilla.firefox_beta&hl=en
+    \ ff: https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en
+  * chromium (must build it on linux!)
+    \ https://www.chromium.org/developers/how-tos/android-build-instructions
+  * chrome
+    \ dev: https://play.google.com/store/apps/details?id=com.chrome.dev&hl=en
+    \ normal: https://play.google.com/store/apps/details?id=com.android.chrome&hl=en
+
+* vnc viewer? (to see my computer from tablet)
+  \ there's no vnc server apparently...
+  \ viewer: https://play.google.com/store/apps/details?id=com.realvnc.viewer.android
+
+* terminal emulator
+  \ https://play.google.com/store/apps/details?id=jackpal.androidterm&hl=en
+  * Terminal IDE
+    \ https://apkpure.com/terminal-ide/com.spartacusrex.spartacuside
+
+* other screen lockers (locks)
+  \ https://play.google.com/store/apps/details?id=tv.marinelli.android.HiddenLock
+  \ https://play.google.com/store/apps/details?id=com.TwinBlade.PicturePassword
+
+* wavelock detector?
+  \ https://play.google.com/store/apps/details?id=com.uzumapps.wakelockdetector
+  \ src: http://www.howtogeek.com/school/basic-android-guide/lesson3/all/
+
+* keyboard
+  * swiftkey? check to see if it uses more cpu or has vulns! first.
+    \ https://apkpure.com/swiftkey-keyboard/com.touchtype.swiftkey
+
+
+* rust on android
+  \ https://github.com/rust-lang/rust-wiki-backup/blob/master/Doc-building-for-android.md
+  \ 6 jan 2016 https://ghotiphud.github.io/rust/android/cross-compiling/2016/01/06/compiling-rust-to-android.html
+  \ https://users.rust-lang.org/t/rust-nightly-for-android/645/4
+  * https://github.com/tomaka/android-rs-glue
+    \ see instructions there!!
+
+* google maps offline
+  \ https://www.androidpit.com/use-your-google-maps-offline
+
+* get internet somehow...
+  * not wirelessly!
+  * via LAN (usb LAN)
+    * ensure it's firewalled
+      * port 80 out must be blocked
+      * stateful!
+      * incoming conns blocked!
+
+* when already rooted
+  * hosts editor (only when already ROOTed)
+    \ https://play.google.com/store/apps/details?id=com.nilhcem.hostseditor
+    \ code is on github (must search for it)
+  * SuperSU
+    \ https://play.google.com/store/apps/details?id=eu.chainfire.supersu&hl=en
+
+
+
+
+* screen shot/recorder
+  \ video: https://play.google.com/store/apps/details?id=com.hecorat.screenrecorder.free&hl=en
+  \ shot: https://play.google.com/store/apps/details?id=com.icecoldapps.screenshoteasy&hl=en
+
+
+* find out how to install voice data for “Google Text-to-speech Engine” “Install voice data” without getting the phone online, but rather through PC (ie. direct url)
+  \ use genymotion+mitmproxy(or the greyshirts-made app) to capture the url link!!!
+
+* get other langs for TextFairy!
+  * see if can get the http url from code!
+    * either virustotal
+    * or dex2jar
+
+* use google authenticator?
+  \ https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en
+  \ https://github.com/google/google-authenticator-android
+  \ still, sms auth seems way more secure tho!!
+
+* CVE
+  \ https://www.cvedetails.com/vulnerability-list/vendor_id-1224/product_id-19997/version_id-177949/Google-Android-4.4.2.html
+
+
+* find out where to put things on non-SDcard on LARK, so that they're the equivalent of being on root of SDcard, eg. for DEX
+  
+
+- fix "Damaged SD card" by getting rooted phone and removing fsck_msdos, to see if it's the one doing the damage!!
+  \ nah, it was the card - must use class 4 not class 10 card!
+
+
+

@@ -1,0 +1,47 @@
+
+After getting root, get supersu:
+http://forum.xda-developers.com/showthread.php?t=1538053
+
+
+info:
+/data/local/tmp is writable and executable.
+src:
+http://forums.androidcentral.com/software-development-hacking/545961-how-do-i-actually-manually-root-android-device.html#post4938255
+
+-------
+unpack initramfs rooting:
+http://whiteboard.ping.se/Android/Rooting
+-----
+via adb root and replacing 'su':
+https://f-droid.org/forums/topic/tutorial-how-to-root-an-android-device/
+-----
+
+IMPORTANT: In /system/recovery.img there is a full copy of everything that is loaded on mtd1. This file is automatically flashed onto mtd1 every time you shut down. That means two things: 1. Any changes you make directly to /dev/mtd/mtd1 get blown away on reboot and 2. If you want to change /dev/mtd/mtd1 you're probably better off just sticking the image in /system/recovery.img and rebooting. 
+
+http://forum.xda-developers.com/showthread.php?t=443994
+-----
+adb root:
+By design adb root command works in development builds only (ones with
+ro.debuggable=1). Alternatively you could use modified adbd binary (which does
+not check for ro.debuggable)
+src:
+https://stackoverflow.com/questions/25477424/adb-shell-su-works-but-adb-root-does-not
+--------
+
+boot images howto:
+http://forum.xda-developers.com/showthread.php?t=443994
+--------
+WARNING: Unlocking bootloaders wipes everything on the device as a security
+measure.
+src: http://www.maximumpc.com/how-root-android-2013/
+--------
+
+don't backup mtd block of system partition!
+"Note: Do NOT attempt to backup the system partition using this method as the
+system image it produces this way will NOT be a valid system image to be used
+later to restore your system partition. Use it only for the recovery and boot
+partition images."
+src:
+http://www.addictivetips.com/mobile/how-to-backup-your-android-phones-boot-recovery-and-system-partition-images/
+-------
+
