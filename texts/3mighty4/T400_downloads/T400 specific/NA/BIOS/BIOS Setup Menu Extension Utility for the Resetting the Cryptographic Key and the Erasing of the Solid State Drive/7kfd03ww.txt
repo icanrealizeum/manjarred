@@ -1,0 +1,278 @@
+                                                                   Revision:  02
+--------------------------------------------------------------------------------
+Software Name      ThinkPad BIOS Setup Menu Extension Utility for the Resetting
+                   the Cryptographic Key and the Erasing the Solid State Drive
+
+Support models     ThinkPad T400, T400s, T410, T410i, T410s, T410si
+                   ThinkPad T500, T510i
+                   ThinkPad W500, W510
+                   ThinkPad R400, R500
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X200, X200s, X200si, X200 Tablet
+                   ThinkPad X201, X201i, X201s, X201 Tablet
+                   ThinkPad X300, X301
+                   ThinkPad T61, T61p
+                   ThinkPad R61
+                   ThinkPad Reserve Edition
+
+Operating System   DOS
+
+Version            1.02
+
+Support device     FDE supported harddisk drive
+                   SSD (Solid State Drive)
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package enables new menus, 'Disk Encryption HDD' and 'Solid
+  State Drive', in the BIOS Setup Utility.
+
+  This will work with FDE feature supported hard disk drives.
+  Refer to marketing materials to find out what ThinkPad models
+  support which devices.
+
+
+  Disk Encryption HDD menu:
+
+  This is the feature to reset a cryptographic key of the harddisk
+  drive (HDD) with Full Disk Encryption (FDE) function.
+
+  The FDE make encryption to writing data to its disk and decryption
+  for reading out from a disk. Without a same cryptographic key in an
+  HDD, the data inside can not be read properly decoded.
+  Once a new key is defined by reset, the previous key is deleted from
+  the HDD and then the read and write operations are done with using
+  the new key. This means the computer can not be booted from the HDD
+  nor read data in the HDD after resetting a cryptographic key.
+
+  The HDD itself makes a cryptographic key and manages it, but the
+  ThinkPad computer does not store any cryptographic key information.
+  Once a new cryptographic key is defined by doing the Resetting the
+  Cryptographic Key, as there is no way to restore the previous key,
+  recovery of the HDD data is impossible.
+
+
+  Solid State Drive menu:
+
+  This is the feature to erase all contents of the Solid State Drive
+  in a minute.
+
+
+  Make sure to use these features.
+
+  If this package has been installed, updating (overwrite-installing)
+  this package will fix problems, add new functions, or expand
+  functions as noted below.
+
+  This program is language independent and can be used with any
+  language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.01
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+- Added the Bootable ISO type DOS included.
+- Update support models (actual program code is same as 1.01)
+
+[Problem fixes]
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  Run DRVMENU.EXE with no parameter. Version information is displayed
+  on the screen.
+  Refer to the "Using the Resetting the Cryptographic Key" section for
+  the details.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- After the Resetting the Cryptographic Key of FDE is done, you cannot
+  boot your computer from the HDD nor read data in the HDD. The HDD
+  itself makes a cryptographic key and manages it, but the ThinkPad
+  computer does not store any cryptographic key information.
+  Once a new cryptographic key is defined by doing the Resetting the
+  Cryptographic Key, as there is no way to restore the previous key,
+  recovery of the HDD data is impossible.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+  If your computer runs satisfactorily now, it may not be necessary to
+  update the software. To determine if you should update the software,
+  refer to the Version Information section.
+
+
+Manual Install
+
+Floppy
+  1. Prepare a DOS bootable floppy disk and a floppy disk drive.
+  2. Unzip 7KFD03WW.ZIP file and extract DRVMENU.EXE file.
+  3. Copy the DRVMENU.EXE to the floppy disk.
+  4. Attach the floppy disk drive to the ThinkPad computer, and insert
+     the floppy disk.
+  5. Turn on the computer.
+  6. Type the following and press Enter at the command prompt to run
+     the DRVMENU.EXE.
+       - To know the current setting (the setting is displayed),
+           drvmenu
+
+       - To enable the menu,
+           drvmenu -e
+
+       - To disable the menu,
+           drvmenu -d
+
+     If the request is processed, the program returns 0. Otherwise, it
+     returns 255 with an error message.
+
+     Note:
+     The tool enables or disables both menus at the same time.
+
+
+CD-R, CD-RW
+  1. Download 7KFD0xWW.ISO where x indicates a digit.
+  2. Use CD-R, CD-RW blank media and a writing software to create the DOS bootable
+     media.
+  3. Place written CD-R, CD-RW media on an Optical Disc Drive (ODD) of supported
+     ThinkPad.
+  4. Confirm the ODD being a bootable device in BIOS Setup/Boot menu.
+  5. Turn off the computer then turn on.
+  6.   6. Type the following and press Enter at the command prompt to run
+     the DRVMENU.EXE.
+       - To know the current setting (the setting is displayed),
+           drvmenu
+
+       - To enable the menu,
+           drvmenu -e
+
+       - To disable the menu,
+           drvmenu -d
+
+     If the request is processed, the program returns 0. Otherwise, it
+     returns 255 with an error message.
+
+     Note:
+     The tool enables or disables both menus at the same time.
+
+
+--------------------------------------------------------------------------------
+HOW TO USE
+
+ Using the Resetting the Cryptographic Key:
+
+ Notes:
+ - A new entry, 'Disk Encryption HDD', will be shown in the Security
+   menu of the BIOS Setup Utility menu if the HDD with FDE (Full Disk
+   Encryption (FDE) is embedded in the ThinkPad computer.
+ - An harddisk password will be deleted by this process.
+
+  1. Turn off the computer.
+  2. Turn on the computer.
+  3. While the "To interrupt normal startup, press the blue
+     ThinkVantage button" message is displayed at the lower-left area
+     of the screen, press the F1 key.
+     The BIOS Setup Utility menu will be displayed.
+     If a password prompt appears, type the correct password.
+  4. Select the Security menu of the BIOS Setup Utility menu.
+  5. Select the Disk Encryption HDD menu.
+     The following message is displayed.
+       Reset the key of the HDD in the HDD bay  [Enter]
+  6. Press Enter key.
+     Hitting Enter key makes showing next caution message and
+     confirmation.
+  7. 'Yes' confirmation shows next confirmation message.
+  8. If a harddisk password was set, a password prompt appears. Type
+     the correct password.
+  9. Further process will start after entering the harddisk password.
+ 10. Press F3 key several times to exit the BIOS Setup Utility.
+
+
+ Using the Erasing the Solid State Drive:
+
+ Notes:
+ - A new entry, 'Solid State Drive', will be shown in the Security
+   menu of the BIOS Setup Utility menu if the SSD (Solid State Drive)
+   is embedded in the ThinkPad computer.
+ - An harddisk password will be deleted by this process.
+
+  1. Turn off the computer.
+  2. Turn on the computer.
+  3. While the "To interrupt normal startup, press the blue
+     ThinkVantage button" message is displayed at the lower-left area
+     of the screen, press the F1 key.
+     The BIOS Setup Utility menu will be displayed.
+     If a password prompt appears, type the correct password.
+  4. Select the Security menu of the BIOS Setup Utility menu.
+  5. Select the Solid State Drive menu.
+     The following message is displayed.
+       Erase the Solid State Drive in the HDD bay  [Enter]
+  6. Press Enter key.
+     Hitting Enter key makes showing next caution message and
+     confirmation.
+  7. 'Yes' confirmation shows next confirmation message.
+  8. If a harddisk password was set, a password prompt appears. Type
+     the correct password.
+  9. Further process will start after entering the harddisk password.
+ 10. Press F3 key several times to exit the BIOS Setup Utility.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Versions    Rev   Issue Date
+  --------    ---   ---------------
+  1.02        02    2010/12/07
+  1.02        01    2010/04/14
+  1.01              2008/01/30
+  1.00              Initial release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which
+  version is installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.02>
+ - (New) Added the Bootable ISO type DOS included.
+
+<1.02>
+ - (New) Update support models. (actual program code is same as 1.01)
+
+<1.01>
+ - (New) Support for SSD (Solid State Drive) menu.
+
+<1.00>
+ - (New) Initial release.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

@@ -1,0 +1,168 @@
+Patch to fix the compatibility issue between the Client Security Solution program 
+and the Mozilla FireFox 3.6 Web browser
+
+Installation Readme
+
+Introduction
+
+============
+
+After you have installed the ThinkVantage(R) Client Security Solution program on 
+your computer, the Password Manager plug-in appears dimmed and is disabled 
+in the Mozilla Firefox 3.5 or 3.6 Web browser user interface.
+
+This is a compatibility issue between the Client Security Solution program and 
+the Mozilla Firefox 3.5 or 3.6 Web browser. This installation package provides 
+a patch to help you solve this problem.
+
+
+Supported systems
+=================
+
+    - ThinkCentre(R) A35 (type 8139)
+    - ThinkCentre A50 (type 8084, 8085, 8089, 8090, 8126, 8147, 8148, 8149, 
+                                8174, 8175, 8176, 8177, 8178, 8320, 8419)
+    - ThinkCentre A50p (type 8192, 8193, 8194, 8195, 8196, 8197, 8432, 8433)
+    - ThinkCentre A51 (type 8105, 8107, 8109, 8117, 8119, 8121, 8122, 8123, 
+		    8124, 8129, 8131, 8132, 8133, 8134, 8135, 8136, 8137, 
+		    8138, 8424, 8425, 8428, 9212)
+    - ThinkCentre A51p (type 8420, 8421, 8422, 8423, 8426, 8427)
+    - ThinkCentre A52 (type 8153, 8154, 8155, 8156, 8157, 8158, 8159, 8160, 
+		    8161, 8162, 8163, 8164, 8165, 8166, 8167, 8168, 8169, 
+		    8170, 8287, 8288, 8289, 8296, 8297, 8298, 8326, 8327,
+		    8328, 8329, 8340, 8341, 8342, 8343, 8344, 8380, 8381, 8382)
+    - ThinkCentre A53 (type 8701, 8702, 8970, 8973, 8980, 8983, 8992, 8995, 
+		    9276, 9277, 9286, 9287, 9378, 9387, 9628, 9635)
+    - ThinkCentre A55 (type 8705, 8706, 8972, 8975, 8982, 8985, 8994, 9265, 
+		    9636, 9638, 9640, 9641)
+    - ThinkCentre A57 (type 9702, 9703, 9704, 9708, 9788, 9789, 9794, 9807,
+		    9851, 9853, 9859)
+    - ThinkCentre A58 (type 7515, 7522, 7523, 7560, 7569, 7610, 7611, 7705, 7706,
+		   7715, 7718, 7719, 7721, 7749, 7774, 7773, 7799)
+    - ThinkCentre A58e (type 0666, 0841, 3425, 3990, 5214, 5354)
+    - ThinkCentre A60 (type 8013, 8700, 8976, 8979, 8986, 8991, 9266, 9269, 9282,
+		    9283, 9374, 9383, 9384, 9631, 9646, 9647, 9694, 9695)
+    - ThinkCentre A61 (type 9120, 9126, 9127, 9128, 9129, 9130, 9134, 9135, 9136, 
+		    9137, 9139, 9140, 9141, 9142, 9143, 9144, 9156, 9157, 9158, 
+	      	    9169, 9171, 9189, 9191)
+    - ThinkCentre A61e (type 6416, 6417, 6418, 6449, 6453, 6495)
+    - ThinkCentre A62 (type 7057, 7061, 7062, 7090, 7092, 9342, 9344, 9353, 9354,  
+	                  9421, 9426, 9485, 9486, 9623, 9624, 9625, 9705,9707, 9786, 
+		    9787, 9795,9804, 9935, 9945, 9946, 9953)
+    - ThinkCentre E50 (type 8290, 8291, 8292, 8293, 8294, 8295, 8469, 8472, 8473, 
+		    8474, 8708, 8709, 8710, 8711, 8719, 8771, 8772, 8773, 8774, 
+		    8776, 8777, 8778, 8779, 8817, 8818, 8819, 9214, 9215, 9216, 
+	    	    9217, 9218, 9219)
+    - ThinkCentre E51 (type 8463, 8464, 8465, 8466, 8467, 8468, 8712, 8713, 8714, 8715)
+    - ThinkCentre M50 (type 8128, 8185, 8186, 8187, 8188, 8189, 8190, 8413, 8414, 8415, 
+		    8430, 8431)
+    - ThinkCentre M50e (type 8179)
+    - ThinkCentre M51 (type 8095, 8096, 8097, 8104, 8106, 8108, 8118, 8120, 8141, 8142, 
+		    8143, 8144, 8145, 8146)
+    - ThinkCentre M51e (type 9213)
+    - ThinkCentre M52 (type 8099, 8110, 8111, 8112, 8113, 8114, 8115, 8116, 8211, 8212, 
+		    8213, 8214, 8215, 9210, 9211)
+    - ThinkCentre M52e (type 8299)
+    - ThinkCentre M55 (type 6486, 6487, 6488, 6489, 8009, 8010, 8011, 8012, 8791, 8792,
+		    8793, 8794, 8795, 8796, 8797, 8798, 8799, 8800, 8801, 8802, 8803,
+		    8804, 8805, 8806, 8807, 8808, 8810, 8811, 8812, 8813, 8814, 8816)
+    - ThinkCentre M55e (type 6490, 6491, 9278, 9279, 9288, 9379, 9380, 9389, 9632, 9637,
+		     9642, 9643, 9644, 9645, 9648, 9649)
+    - ThinkCentre M55p (type 6487, 6488, 8792, 8794, 8796, 8798, 8800, 8802, 8804, 8806, 
+		     8808, 8811, 8813, 8816)
+    - ThinkCentre M57 (type 6008, 6010, 6019, 6062, 6065, 6066, 6068, 6069, 6071, 6072, 6074, 
+	   	    6075, 6076, 6077, 6079, 6081, 6082, 6086, 6087, 6089, 9172, 9174, 9181, 9182)
+    - ThinkCentre M57e (type 6176, 6177, 6178, 6179, 6305, 7064, 7065, 7066, 7094, 7096, 7098,
+		     9349, 9356, 9357, 9358, 9359, 9438, 9439, 9481, 9482, 9487, 9488, 9489, 
+	   	     9622, 9948, 9949, 9952)
+    - ThinkCentre M57p (type 6064, 6067, 6073, 6078, 6088, 9011, 9012, 9013, 9014, 9018, 9019, 
+		     9071, 9087, 9088, 9089, 9096, 9160, 9162, 9163, 9164, 9193, 9194, 9196, 9303)
+    - ThinkCentre M58 (type 3231, 6139, 6175, 6239, 6258, 6302, 6303, 7174, 7187, 7244, 7348, 7354,
+		      7355, 7359, 7360, 7373, 7626, 7627, 7628, 7637, 7638, 7639, 8820, 8910, 9728, 9960)
+    - ThinkCentre M58e (type 7258, 7259, 7260, 7267, 7268, 7269, 7270, 7279, 7280, 7290, 7296, 7298, 
+	  	      7303, 7304, 7306, 7307, 7408, 7413, 7487, 7491, 7506, 7508, 7514)
+    - ThinkCentre M58p (type 3063, 3285, 3379, 6136, 6137, 6138, 6209, 6234, 7188, 7220, 7345, 7346, 
+		      7347, 7356, 7357, 7358, 7479, 7483, 7484, 7629, 7630, 7635, 8336, 8338, 
+		      8494, 8854, 9961, 9964, 9965)
+    - ThinkCentre S50 (type 8086, 8087, 8088, 8094, 8127, 8183, 8184, 8416, 8417, 8418, 8429)
+    - ThinkCentre S51 (type 8098, 8171, 8172, 8173)
+    - ThinkPad(R) G41, G50
+    - ThinkPad Reserve Edition
+    - ThinkPad R50, R50e, R50p, R51, R51e, R52, R60, R60e, R61, R61e, R61i
+    - ThinkPad R400, R500
+    - ThinkPad SL300, SL400, SL400c, SL410, SL500, SL500c, SL510
+    - ThinkPad T43, T43p, T60, T60p, T61, T61p
+    - ThinkPad T400, T400s, T500
+    - ThinkPad X32, X40, X41, X41 Tablet, X60, X60s, X60 Tablet, X61, X61s, X61 Tablet, X200, 
+                    X200s, X200 Tablet, X300, X301
+    - ThinkPad W500, W700, W700ds
+    - ThinkPad Z60m, Z60s, Z60t, Z61e, Z61m, Z61p, Z61t
+    - ThinkStation D10 (type 6427, 6493)
+    - ThinkStation D20 (type 4155, 4158, 4218)
+    - ThinkStation S10 (type 6423, 6483)
+    - ThinkStation S20 (type 4105, 4157, 4217)
+
+
+System requirements
+===================
+
+- Microsoft Windows(R) XP (32-bit), Windows Vista(R) (32-bit) or Windows 7 operating system
+- With the installation of the Client Security Solution 8.21 (for the Windows XP or Windows Vista 
+   operating system) or Client Security Solution 8.3 (for the Windows 7 operating system) program
+- With the installation of the the Mozilla Firefox 3.5 or later Web browser 
+- Latest version of the BIOS 
+- 1.5 GB of free hard disk drive space 
+- 512 MB of memory (recommended) 
+- 8 MB of VRAM (Video Random Access Memory) shared memory set in the BIOS
+- 1 GB of system memory for the hardware password reset NTFS (New Technology File System)
+
+What you will need
+==================
+
+If you have an earlier version of the Client Security Solution program installed on the Windows XP or 
+Windows Vista operating system, you need to upgrade the program to version 8.21 first. 
+Then you can apply this patch.
+
+To download the Client Security Solution 8.21 program for the Windows XP (32-bit) operating system, go to:
+
+http://www-307.ibm.com/pc/support/site.wss/document.do?sitestyle=lenovo&lndocid=MIGR-72013
+
+To download the Client Security Solution 8.21 program for the Windows Vista (32-bit) operating system, go to:
+
+http://www-307.ibm.com/pc/support/site.wss/document.do?sitestyle=lenovo&lndocid=MIGR-72014
+
+If you have installed the Windows 7 operating system, you can download and install this patch directly.
+
+Downloading and installing the patch
+=======================
+
+1. Click the file link for the executable on the Web page.
+2. When prompted, select a drive and directory to save the executable.
+3. Go to the directory where the executable is saved.
+4. Double-click the executable and follow the instructions on the screen to complete the installation.
+
+
+==========
+The following terms are trademarks of Lenovo in the United States, other
+countries, or both:
+
+ThinkCentre
+ThinkPad
+ThinkStation
+ThinkVantage
+
+Microsoft, Windows, and Windows Vista are trademarks or registered trademarks
+of Microsoft Corporation in the United States, other countries, or both.
+
+Other company, product, and service names may be trademarks or service marks
+of others.
+
+THIS DOCUMENT IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
+LENOVO DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED,
+INCLUDING WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF FITNESS
+FOR A PARTICULAR PURPOSE AND MERCHANTABILITY WITH RESPECT TO THE
+INFORMATION IN THIS DOCUMENT. BY FURNISHING THIS DOCUMENT, LENOVO 
+GRANTS NO LICENSES TO ANY PATENTS OR COPYRIGHTS.
+
+(C) Copyright Lenovo 2009.
+

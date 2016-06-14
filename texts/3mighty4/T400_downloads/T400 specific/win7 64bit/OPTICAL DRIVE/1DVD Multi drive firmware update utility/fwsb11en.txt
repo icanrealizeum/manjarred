@@ -1,0 +1,307 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Package Name       DVD Firmware Update Utility for Windows XP, Vista, 7
+
+Support models     ThinkPad T420, T420i, T420s, T420si
+                   ThinkPad T520, T520i, W520
+                   ThinkPad X220, X220i, X220 Tablet, X220i Tablet
+                   ThinkPad T410, T410i, T410s, T410si
+                   ThinkPad T510, T510i, W510
+                   ThinkPad X201, X201i, X201s, X201si, X201 Tablet, X201i Tablet
+                   ThinkPad W701, W701ds
+
+                   ThinkPad L420, L520
+
+                   ThinkPad R500
+                   ThinkPad T400, R400
+                   ThinkPad T500, W500
+                   ThinkPad W700, W700ds
+                   ThinkPad X200, X200s, X200 Tablet
+
+                   ThinkPad SL410, SL510, L412, L512
+                   ThinkPad Edge 14", 15", E40, E50
+                   ThinkPad SL300, SL400, SL500, SL400c, SL500c
+
+Operating Systems  Microsoft Windows 7 SP1  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+                   Microsoft Windows XP  Professional SP3
+
+Release            FWSB11
+
+
+--------------------------------------------------------------------------------
+CONTENTS OF THIS DOCUMENT
+
+    - WHAT THIS PACKAGE DOES
+    - IMPORTANT INFORMATION
+    - CHANGES IN THIS RELEASE
+    - SUPPORT INFORMATION
+    - INSTALLATION GUIDE
+    - RELEASE INFORMATION
+    - SUMMARY OF CHANGES
+    - TRADEMARKS
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+This utility will examine your system configuration and detect all SATA optical
+drive (ODD) installed in your ThinkPad.
+SATA (Serial AT Attachment) is a new interface for storage devices.
+
+The utility will then check the firmware revision of the ODD and judge whether
+your system requires a firmware update or not.  If required, it will prompt you
+to run the appropriate firmware update program for your drive.
+
+This package will run on the Microsoft Windows XP (32-bit, 64-bit), Windows
+Vista (32-bit, 64-bit) and Windows 7 (32-bit, 64-bit).
+(Refer to marketing materials to find out what computer models support which
+Operating Systems)
+There is no ISO format release for the SATA ODD firmware update.
+
+
+--------------------------------------------------------------------------------
+IMPORTANT INFORMATION
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Release FWSB11
+
+- Removed support for ThinkPad T430, T430i, T430s, T430si, T530, T530i, W530,
+  X230, X230i, X230 Tablet, X230i Tablet.
+- Support for HLDS GT80N, GU70N, PPRD UJ8C0 and UJ8C2.
+- Firmware update for HLDS GT50.
+
+
+--------------------------------------------------------------------------------
+SUPPORT INFORMATION
+
+This package provides firmware for the following Optical Drives.
+("x" means a character, "|" shows new to this list.)
+
+  HLDS GSA-T30N
+  HLDS GSA-U20N
+  HLDS GSA-T50N (for Serial Utrabay Enhanced)
+  HLDS GSA-T50N (for ThinkPad SL series)
+  HLDS GT30N (for Serial Utrabay Enhanced)
+  HLDS GT30N (for ThinkPad SL410, SL510, L412, L512)
+  HLDS GT30N (for ThinkPad Edge 14", 15", E40, E50)
+  HLDS GT33N (for Serial Utrabay Enhanced)
+  HLDS GT33N (for ThinkPad SL410, SL510, L412, L512)
+  HLDS GU40N
+  HLDS DU30N
+  HLDS GT50N (for serial Ultrabay Enhanced)
+| HLDS GT80N (for serial Ultrabay Enhanced)
+| HLDS GU70N (for serial Ultrabay Enhanced)
+
+  Optiarc AD-7910S
+  Optiarc AD-7590S
+
+  Panasonic UJ8A2
+
+| PPRD UJ8C0 (for serial Ultrabay Enhanced)
+| PPRD UJ82C (for serial Ultrabay Enhanced)
+
+
+--------------------------------------------------------------------------------
+INSTALLATION GUIDE
+
+To check your SATA ODD make and model
+   To know a make and model of your ThinkPad ODD, following steps will be
+   helpful.
+   1. Click "Start" button on the task bar.
+   2. XP: Select "Run...".
+      Vista: Select "All Programs" then select "Accessories" and select "Run".
+      7: "Search programs and files".
+   3. Enter "devmgmt.msc" and press Enter key or click "OK"
+   4. Click to open "DVD/CD-ROM drives" entry from the device list.
+   5. You will find a make and a model of the SATA ODD.
+
+Download
+   1. Start Windows and logon with administrative privileges.
+   2. Download the listed file.
+
+Installation
+* Remove an optical disc media from an ODD before start update.
+   1. Run the downloaded file.
+   2. Follow the instruction on the screen.
+   3. There will be several files extracted.
+   4. Open My Computer and open folders to reach where the Firmware Update
+      Utility extracted.  They will be in 'drive:\fwsbxx' subdirectory or
+      under the fwsbxx folder under the file downloaded folder.
+      (where 'xx' indicates a release version of the utility.)
+   5. Find the fwwinod.exe and run it with double clicking.
+
+Attention: Do not run other the programs. (see Notes below)
+
+   6. Follow the instructions on the screen.
+   7. [IMPORTANT] After the update process finished, shutdown the Windows and
+      power it on again.
+      Or your ODD may not work properly. An updated firmware needs to perform
+      power on sequence to enable properly.
+
+Attention: Please do not power off the ThinkPad during the firmware update,
+           or your optical drive may NOT be usable anymore.
+
+ Notes:
+ - When you use this update utility, all the process has to been done under
+   AC powered with a fully charged battery installed.
+   This is for avoiding an accident of power lost.
+ - The update utility will not find an optical drive in a Docking Station
+   In this case, please remove the drive and install it into a bay in your
+   ThinkPad.
+   If you encounter a problem installing a drive into your ThinkPad, please
+   call your local Help Center.
+ - The utility contains several executable files, but DO NOT RUN THESE PROGRAMS
+   OTHER THAN SPECIFIED.
+   Running these programs manually could ruin your drive.
+ - The Optical Drive Firmware Update Utility does not support a
+   suspend/hibernation/resume feature of the ThinkPad while the firmware update
+   utility is running.  Please do not use Fn-F4 or equivalent functions.
+
+
+--------------------------------------------------------------------------------
+RELEASE INFORMATION
+
+Release  Rev   Issue Date
+-------  ---   ----------
+FWSB11   01    2013/09/26
+FWSB10   01    2012/09/26
+FWSB09   01    2012/06/29
+FWSB07   01    2011/03/28
+FWSB06   01    2010/07/09
+FWSB05   01    2010/03/15
+FWSB04   02    2009/10/20
+FWSB04   01    2009/09/18
+FWSB03         2009/06/17
+FWSB02         2009/03/03
+FWSB01         2008/08/07
+
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+
+--------------------------------------------------------------------------------
+SUMMARY OF CHANGES
+
+<n> means a release number.
+"x" means a character,
+
+<FWSB11>
+- Removed support for ThinkPad T430, T430i, T430s, T430si, T530, T530i, W530,
+  X230, X230i, X230 Tablet, X230i Tablet.
+- Support for HLDS GT80N, GU70N, PPRD UJ8C0 and UJ8C2.
+- Firmware update for HLDS GT50.
+
+   Model               Firmware    ThinkPad models
+   ----------------    --------    ---------------------------------------------
+   [HLDS]
+   GT50N               LT22        Serial Ultrabay Enhanced
+   GT80N               LT21        Serial Ultrabay Enhanced
+   GU70N               LT23        Serial Ultrabay Enhanced
+   [PPRD]
+   UJ8C0               SB02        Serial Ultrabay Enhanced
+   UJ8C2               SB02        Serial Ultrabay Enhanced
+
+<FWSB10>
+- Support for ThinkPad T430, T430i, T430s, T430si, T530, T530i, W530, X230, X230i,
+  X230 Tablet, X230i Tablet.
+
+   Model               Firmware    ThinkPad models
+   ----------------    --------    ---------------------------------------------
+   [HLDS]
+   GT50N               LT21        Serial Ultrabay Enhanced
+
+<FWSB09>
+
+   Model               Firmware    ThinkPad models
+   ----------------    --------    ---------------------------------------------
+   [HLDS]
+   GT30N               LT13        Serial Ultrabay Enhanced
+   GT30N               LG13        ThinkPad SL410, SL510, L series
+   GT30N               LE13        ThinkPad Edge and E series
+   GT33N               LT23        Serial Ultrabay Enhanced
+   GT33N               LT31        ThinkPad SL410, SL510, L series
+   GU40N               QX22
+   DU30N               RX11
+   [Panasonic]
+   UJ8A2               SB02
+
+<FWSB07>
+- Support for ThinkPad T420, T520, W520, T410, T410s, T510, W510, X220, X220i,
+  X220 Tablet, L420, L520.(Also added i models)
+
+   Model               Firmware    ThinkPad models
+   ----------------    --------    ---------------------------------------------
+   [HLDS]
+   GT30N               LT12        Serial Ultrabay Enhanced
+   GT30N               LG12        ThinkPad SL410, SL510, L series
+   GT30N               LE12        ThinkPad Edge and E series
+   GT33N               LT21        Serial Ultrabay Enhanced
+   GT33N               LT21        ThinkPad SL410, SL510, L series
+   GU40N               QX21
+
+<FWSB06>
+- Support for upgrading on Windows XP 64-bit.
+
+   Model               Firmware    ThinkPad models
+   ----------------    --------    ---------------------------------------------
+   [HLDS]
+   GT30N               LT10        Serial Ultrabay Enhanced
+   GT30N               LG10        ThinkPad SL410, SL510, L412, L512
+   GT30N               LE10        ThinkPad Egde 14", !5", E40, E50
+
+<FWSB05>
+- Support for upgrading on Windows 7.
+- Removed support PCC UJDA777 and UJDA777DVD.
+
+<FWSB04>
+Note: FWSB01 to FWSB04 of the utility doesn't run on the Microsoft Windows 7.
+
+<FWSB04>
+   Model               Firmware    ThinkPad models
+   ----------------    --------    ---------------------------------------------
+   [HLDS]
+   GSA-T50N            RX06        Serial Ultrabay Enhanced
+   GSA-T50N            RE06        ThinkPad SL300, 400, 500, 400c, 500c
+
+<FWSB03>
+   Model               Firmware
+   ----------------    --------
+   [ Optiarc ]
+   AD-7590S            1.FM
+
+<FWSB02>
+   Model               Firmware
+   ----------------    --------
+   [ HLDS ]
+   GSA-U20N            HX12
+   GSA-T50N            RX05
+   GSA-T50N            RE05
+   [ PCC ]
+   UJDA777DVD          WV03
+   UJDA777             VV03
+   [ Optiarc ]
+   AD-7910S            1.D1
+
+<FWSB01>
+   Model               Firmware
+   ----------------    --------
+   [ HLDS ]
+   GSA-T30N            FX07
+   GSA-U20N            HX11
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

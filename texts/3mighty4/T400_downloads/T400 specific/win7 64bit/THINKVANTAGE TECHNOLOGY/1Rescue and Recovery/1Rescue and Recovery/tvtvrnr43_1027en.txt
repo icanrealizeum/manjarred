@@ -1,0 +1,648 @@
+Rescue and Recovery Version 4.3 for the Windows 7 Operating System for Individual Languages 
+
+Installation Readme
+
+Introduction
+============
+The ThinkVantage(R) Rescue and Recovery(R) program is an essential tool that enables
+ users and administrators to restore backups, access files, diagnose problems, and make
+ Ethernet connections when the Microsoft(R) Windows(R) operating system cannot start or run correctly. It also
+enables administrators to deploy critical updates to systems that are corrupted or off the 
+network. In addition, it can automatically apply patches to a system when a restore operation is performed.
+
+
+The Rescue and Recovery program provides a workspace that runs independently
+of the Windows operating system. Thus, the Rescue and Recovery workspace enables you to
+perform rescue and recovery operations that might not be accomplished in the Windows operating system.
+
+Supported systems
+=================
+- ThinkPad Reserve Edition
+- ThinkPad Edge 13, E30, Edge 14, E40, Edge 15, E50
+- ThinkPad G41, G50
+- ThinkPad R50, R50e, R50p, R51, R51e, R52, R60, R60e, R61, R61e, R61i
+- ThinkPad T43, T43p, T60, T60p, T61, T61p
+- ThinkPad X32, X40, X41, X41 Tablet, X60, X60s, X60 Tablet, X61, X61s, X61 
+    Tablet, X300, X301
+- ThinkPad R400, R500
+- ThinkPad SL300, SL400, SL400c, SL410, SL500, SL500c, SL510
+- ThinkPad L410, L510
+- ThinkPad T400, T400s, T410, T410s, T500, T510
+- ThinkPad W500, W510, W700, W701
+- ThinkPad X100e, X200, X200s, X200 Tablet, X201, X201s, X201t
+- ThinkPad Z60m, Z60s, Z60t, Z61e, Z61m, Z61p, Z61t
+- ThinkCentre A35, A50, A50p, A51, A51p, A52, A53, A55, A57, A57e, A58, A58e, 
+    A60, A61, A61e, A62, A63, A70, A70z
+- ThinkCentre E50, E51 
+- ThinkCentre M50, M50e, M51, M51e, M52, M52e, M55, M55e, M55p, M57, M57e, 
+    M57p, M58, M58e, M58p, M70e, M90, M90p, M90z
+- ThinkCentre S50, S51 
+- ThinkStation D10, D20, E20, S10, S20, C20, C20x
+
+The Rescue and Recovery 4.3 program might also work with other systems that meet
+the system requirements. However, no testing has been done with other systems
+and no support is provided for using the Rescue and Recovery program installed on any 
+system other than the listed supported systems listed above.
+
+System requirements
+===================
+- Latest version of the BIOS
+- 1.5 GB of free hard disk drive space (required for installation)
+- 512 MB of memory (recommended)
+- 8 MB of VRAM (Video Random Access Memory) shared memory set in the BIOS
+- Microsoft Windows 7 operating system or its later versions 
+
+Software requirements
+==========================================
+The Rescue and Recovery program version 4.3 works with the following software:
+
+- Internet Explorer(R) Web browser version 5.5 or later
+- Norton AntiVirus 2004
+Note: If your computer is installed with Norton AntiVirus 2002 or 2003, you can upgrade the 
+program to Norton AntiVirus 2004 for free at http://www.symantecstore.com/110005.
+
+Major features
+==============
+Some features of the Rescue and Recovery program might vary, depending on the different 
+version you have installed; however, its major features include the following:
+
+- Create backup files to perform full and incremental hard disk drive recovery operations. 
+ Backup files can be stored on your hard disk drive, on recordable CD or DVD media, on a  
+ network drive, or on a USB device. 
+- Restore individual files from a backup file. 
+- Restore the hard disk drive to the factory default settings. This operation can be applied to
+ certain NetVista(R), ThinkCentre, and ThinkPad computers. 
+- Access the Internet to check e-mails and download files.
+- Create a migration file to migrate your settings and data to a new computer.
+- Protect the Rescue and Recovery workspace with a password or passphrase.
+- Configure your computer to start from an alternate device, such as the backup
+ CDs created by the Rescue and Recovery program.
+- Optimize your backup storage space.
+
+The Rescue and Recovery workspace is an operating environment specifically
+designed for performing rescue and recovery operations that are independent of the Windows
+operating system. 
+
+New in this release
+===================
+- Universal Unique Identifier (UUID) works as the unique identifier of a backup so that various 
+backups can be saved on a USB hard disk drive. UUID can be detected by using the ¡°rrcmd¡± command.
+- USB memory keys are supported as the backup repository.
+- The Create Rescue Media function can be started from the advanced interface of the Rescue and Recovery program. 
+- Turn off your computer when a backup operation completes.
+- The Lenovo's Enhanced Backup and Restore option is added to Control Panel as another way to launch the Rescue and Recovery program.
+
+Access to the Rescue and Recovery workspace
+===========================================
+In the event of a complete hard disk drive failure, you can access the Rescue
+and Recovery workspace by booting from the rescue media, 
+such as a Rescue and Recovery CD or an external USB hard disk drive.
+You can create rescue media in the advanced interface of the Rescue and Recovery program.
+
+Depending on your computer model type, do one of the following to access the Rescue and Recovery workspace:
+
+For ThinkCentre and NetVista computers
+--------------------------------------
+Note: The following procedure might not work on some earlier types of NetVista computers.
+If this procedure does not work for your NetVista computer, follow the procedure for computers of other brands. 
+
+1. Turn off your computer. 
+2. Turn on your computer. 
+3. When you hear beep sound or see the logo screen, press and release F11 or Enter. 
+5. If you have set a Rescue and Recovery password, type your password when prompted. 
+After a short delay, the Rescue and Recovery workspace is displayed. 
+
+For ThinkPad computers
+----------------------
+Note: If your ThinkPad computer does not have a ThinkVantage button, 
+or you cannot enter the Rescue and Recovery workspace using the ThinkVantage button, 
+follow the procedure for computers of other brands. 
+
+1. Turn off your computer.
+2. Turn on your computer.
+3. When you are prompted to press the ThinkVantage button, press and release the button.
+4. If you have set a Rescue and Recovery password, type your password when
+   prompted. After a short delay, the Rescue and Recovery workspace is displayed.
+
+For computers of other brands
+-----------------------------------------
+1. Turn off your computer. 
+2. Turn on your computer. 
+3. When you are prompted to press F11, press and release F11. 
+4. If you have set a Rescue and Recovery password, type your password when
+   prompted. After a short delay, the Rescue and Recovery workspace is displayed. 
+
+Downloading and installing the package
+=======================
+It is recommended that you uninstall any earlier versions of the Rescue and Recovery or Client 
+Security Solution program before installing the Rescue and Recovery 4.3 program. Otherwise, 
+follow the system prompts to complete the installation procedure.
+
+Note: Read the following ¡°Considerations¡± part for obtaining important installation information.
+
+To download and install the Rescue and Recovery 4.3 program, do the following:
+1. Click the file link to download the program from the Web page.
+2. When prompted, select a drive and directory to save the downloaded program.
+3. Locate the downloaded program and double-click the tvtrnr43_1027xx.exe file. A message 
+will be displayed, asking for your permission to continue the installation.
+4. Click Continue and follow the instructions on the screen to complete the installation.
+
+Considerations in this release
+============================== 
+Consideration 1
+----------------
+Cannot launch the defragmentation program from the Rescue and Recovery installer in the 
+Windows 7 (64-bit) operating system
+
+When you install the Rescue and Recovery program on the Windows 7 (64-bit) operating system, 
+a message is displayed, saying that you can launch the defragmentation program (Disk Defragmenter)
+ to make the Rescue and Recovery program more efficient. After you click Analyze for defragmentation, 
+the Disk Defragmenter program does not work.
+ 
+To solve the problem, launch the Disk Defragmenter program by clicking 
+Start -> All Programs (or Programs) -> Accessories -> System Tools -> Disk Defragmenter.
+
+Consideration 2
+----------------
+The Rescue and Recovery program cannot be launched after the removal of the Client Security 
+Solution program on systems upgraded from the Windows Vista operating system to the Windows 7 operating system.
+
+After uninstalling the Client Security Solution program and then reinstalling it, an error message
+ will be displayed when the Rescue and Recovery program is launched. If you upgrade the Windows Vista
+ operating system with the Client Security Solution and Rescue and Recovery programs installed to the Windows 7 
+operating system, reinstall the Rescue and Recovery program, and then reinstall the
+ Client Security Solution program, the Rescue and Recovery program will be corrupted.
+
+To resolve this issue, reinstall the Client Security Solution program, and then reinstall the 
+Rescue and Recovery program.
+
+Consideration 3
+----------------
+Backup operation fails if the free disk space is less than 300 MB.
+
+While creating a backup, the Rescue and Recovery program will display a warning message,
+ indicating that the backup operation is not complete. This is because the free disk space on
+ the system is less than 300 MB.
+
+Make sure the free disk space is larger than 300 MB before performing a backup operation.
+
+Consideration 4
+----------------
+The backup location changes after you select a smaller partition through the advanced interface
+ of the Rescue and Recovery program.
+
+In the advanced interface of the Rescue and Recovery program, you select a partition with smaller
+ capacity on your local hard disk drive as the backup location. Then, you switch to the simplified 
+  interface to create the backup. However, the backup is created on the partition with the largest capacity.
+
+To solve the problem, back up your system in the advanced interface of the Rescue and Recovery
+ program after you select the backup location.
+
+Consideration 5
+----------------
+It takes too much time to create a backup on a USB memory key
+
+When you create a backup on a USB memory key, it takes much more time than creating a backup on 
+a USB hard disk drive. This is because creating a backup on a USB memory key takes lots of input or output operations. 
+
+To solve the problem, it is recommended to create the backup on a Lenovo(R) USB memory key or on a USB hard disk drive.
+
+Consideration 6
+----------------
+An internal error occurs while you are creating rescue media on a non-Lenovo USB memory key
+
+Starting from the Rescue and Recovery program version 4.3, the Create Rescue Media program supports
+ USB memory keys. If the user tries to create rescue media on a non-Lenovo USB memory key, the Master 
+Boot Record (MBR) data will not be formatted or cleaned. This is an internal error.
+
+To solve the problem, fully format the USB memory key by doing the following:
+
+1. Click Start -> Run. Type cmd in the field.
+2. Type diskpart.
+3. Type select disk N, where N is the disk number of the USB memory key.
+4. Type clean.
+
+Consideration 7
+----------------
+Unable to boot from a 64 GB USB memory key
+
+When you create rescue media on a 64 GB USB memory key and then boot your computer from the memory
+ key, an error message is displayed, saying, ¡°Error loading Operating System.¡±
+
+To solve the problem, change the 64 GB USB memory key to one with less storage capacity. 
+
+Consideration 8
+----------------
+No progress bar for a scheduled backup is displayed when the user launches the simplified interface of the
+ Rescue and Recovery program
+ 
+The progress bar is not displayed while the user takes a scheduled backup through the simplified interface 
+of the Rescue and Recovery program. The progress bar will only be displayed when the user launches the
+ advanced interface, and it will not work for the simplified interface.
+
+Consideration 9
+---------------   
+Cannot enter Pre-desktop Area (PDA) after enabling BitLocker
+ 
+After the user enables BitLocker and encrypts hard disk drives, the user cannot enter the Rescue and 
+Recovery workspace and the system reports an error saying Boot Manager is missing. 
+
+The user performs a clean installation of the Windows 7 operating system or an upgrade to the Windows 
+7 operating system from the Lenovo preloaded Windows XP or Windows Vista operating system. 
+After installing the Rescue and Recovery program and enabling BitLocker to encrypt hard disk drives,
+ the user cannot enter the local PDA anymore. The action of enabling BitLocker will remove the Rescue 
+and Recovery Boot Configuration Data (BCD) entry. 
+
+Solution: To solve the problem, reinstall the Rescue and Recovery program after enabling BitLocker.
+
+Consideration 10
+----------------
+Insufficient disk space during the full restore process
+
+The user shrinks the system partition to less than 1 GB of free disk space, creates a base backup, and 
+restores from it. During the restore process, the Rescue and Recovery program will display an error
+ message, saying, ¡°Insufficient disk space on drive.¡± 
+
+The Rescue and Recovery program is trying to restore every file to the system partition, but the 
+shrank system partition does not have enough disk space to accommodate all files from the backup.
+ The real total size of all files to be located on the system partition is larger than the space on that partition.
+  
+Make sure that there is at least 1 GB of free space on the system partition before performing a restore operation.
+
+Consideration 11
+----------------
+Cannot enter local Pre-desktop Area (PDA) while attaching a second hard disk drive that contains an operating system
+
+If the user installs the Rescue and Recovery program on the local system, attaches a second hard
+ disk drive that contains an operating system, and press F11 or the ThinkVantage button, the user
+ cannot enter the local PDA. This is because Boot Manager does not know from which drive it should boot the PDA.
+  
+To solve the problem, detach the second hard disk drive and then restart the computer.
+
+Consideration 12
+----------------
+Computer reboots the Pre-desktop Area (PDA) while performing a rejuvenate operation if an ac power adapter is not connected
+
+If your computer is not connected to an ac power adapter, when you use the rejuvenate function of the
+ Rescue and Recovery program, an error message will be displayed, saying, ¡°The scheduled backup could 
+not be taken because the mobile system is not connected to AC power.¡± After you click OK, the computer will reboot the PDA.
+ 
+To solve the problem, connect the computer to an ac power adapter and perform the rejuvenate operation again.
+
+Consideration 13
+----------------
+Cannot enter PDA after restoring from a Windows backup
+
+On a preloaded Windows 7 operating system, when you use the Windows Backup and Restore function to
+ create a system image on external media, such as a USB hard disk drive, and then restore the system from
+ the created image, the system cannot enter the Pre-desktop Area (PDA) when you press either F11 or the ThinkVantage button.
+ 
+To solve the problem, reinstall the Rescue and Recovery program.
+
+Considerations in primary release
+==============
+To view the Hints & Tips associated with the Rescue and Recovery program, do the following: 
+1.	Click Hints & Tips on the Web page. 
+2.	From the Brand drop-down list, select ThinkVantage Technologies.
+3.	From the Family drop-down list, select Rescue and Recovery.
+4.	Click Continue.
+
+The following are considerations associated with the Rescue and
+Recovery workspace:
+
+Consideration 1
+---------------
+Wireless or dial-up connections are not supported in the Rescue and Recovery workspace. Only wired Ethernet connection is supported.
+
+Consideration 2
+---------------
+All pointing devices will be used as two-button devices in the
+Rescue and Recovery workspace. For example, the third
+button (not the left or right mouse button) of a three-button mouse is not supported in the Rescue and
+ Recovery workspace, and the scrolling function of a ScrollPoint(R) mouse is not supported.
+
+Consideration 3
+---------------
+Depending on the different types of the graphics cards installed on your computer, there might be
+a series of flashes when you enter the Rescue and Recovery workspace.
+.
+
+Consideration 4
+---------------
+The browser used in the Rescue and Recovery workspace has been
+modified to provide enhanced security. Therefore, some functions of the browser have been disabled.
+
+Consideration 5
+---------------
+If you are starting your computer using the Rescue and Recovery CD, the
+CD must remain in the drive in order to perform the rescue and recovery
+operations.
+
+Consideration 6
+---------------
+If there is a USB memory key attached to the computer at the time when you install the Windows 2000
+ operating system, a TXTSETUP.SIF file will be displayed under the directory of C:\. However, you cannot
+ enter the Rescue and Recovery workspace using the TXTSETUP.SIF file under the directory of C:\.
+
+To prevent this problem, detach the USB memory key before installing the Windows 2000 operating system,
+ or delete or rename the TXTSETUP.SIF file under the directory of C:\ before entering the Rescue and Recovery workspace.
+
+Consideration 7
+---------------
+The Rescue and Recovery program only supports Norton AntiVirus 2004 or later versions. 
+If you have a computer with Norton AntiVirus 2002 or 2003, you can go to the Web site at 
+http://www.symantecstore.com/110005 to upgrade the program for free.
+
+Consideration 8
+---------------
+Rapid Restore(R) Ultra 3.0 and its earlier versions are not compatible with
+the Rescue and Recovery program. If you install the Rescue and
+Recovery program on a computer with Rapid Restore Ultra 3.0 or an earlier version installed,
+  during the installation, the Rescue and Recovery program will prompt you to
+uninstall Rapid Restore Ultra and all the backups created by Rapid Restore Ultra.
+
+
+Consideration 9
+---------------
+The VRAM (Video Random Access Memory) that came with your computer might have a default
+ capacity that is less than 8 MB. Having a VRAM smaller than 8 MB might adversely affect the
+ performance of the Rescue and Recovery program. For computers using shared memory,
+ the VRAM must be set at 8 MB. You can adjust the VRAM capacity in your system BIOS.
+
+Consideration 10
+---------------
+You can use a USB memory key to rescue files in the Rescue and Recovery workspace. However, you cannot boot from a USB memory key.
+
+Consideration 11
+----------------
+The Rescue and Recovery workspace does not support booting from a
+DVD-RAM disc. As a result, do not create rescue media, Product
+Recovery CDs, and backups DVD-RAM media, or archive backups to DVD-RAM media. Other DVD formats are supported.
+
+Consideration 12
+----------------
+Computers that have a hidden protected area (HPA), also referred
+to as PARTIES, and that have the Rescue and Recovery program installed
+will not be able to boot into either the PARTIES or the Rescue and
+Recovery workspace after recovering the original factory contents.
+To enable the PARTIES again, restore a backup by using the
+Rescue and Recovery program in the Windows environment or by booting
+from rescue media and then uninstalling the Rescue and Recovery program.
+
+Consideration 13
+----------------
+Close all the applications before attempting to perform a restore operation from the 
+Rescue and Recovery workspace. Failure to do so might result in 
+performance problems.
+
+Consideration 14
+----------------
+When restoring the operating system and applications from a Rescue 
+and Recovery backup, you might need to reinstall the applications that 
+were installed after the creation of the selected backup.
+
+Consideration 15
+----------------
+If you restore the factory default settings with the Rescue 
+and Recovery 1.0 program installed, then you need to reinstall the Rescue and Recovery 2.0 
+program after the restore operation completes. After reinstalling this program,
+ perform a backup operation. It is a good idea to dispose of old rescue media and to create new rescue media 
+after the Rescue and Recovery 2.0 program is reinstalled.
+
+Consideration 16
+----------------
+For security purposes, do not back up your system to a shared
+network drive if you log on to the computer with administrative
+privileges. Otherwise, you will no longer
+have read or write access to the shared network drive. To delete any backups
+from the shared network drive, you will need to either provide write
+access to the computer after performing the backup operation or log
+in as another user without administrative privileges.
+
+Consideration 17
+----------------
+Starting from a diskette typically takes more time than starting from
+other types of media. After you start from the Recovery Repair Diskette,
+a menu is displayed before all the information on the diskette
+is loaded. Do not make any selection from the menu until the diskette LED is off to indicate that
+ all the diskette activities finish. Failure to do so might result in making incorrect selections from the menu.
+
+Consideration 18
+----------------
+When you attempt to make a USB hard disk drive bootable with the Rescue and 
+Recovery program, an error message might be displayed, indicating that it failed to copy a log 
+file. The Rescue and Recovery program will try to copy the file for up to five times. This is an intermittent problem.
+
+Consideration 19
+----------------
+When the Rescue and Recovery program is installed, a message is displayed, reminding 
+users to clean up the service partition. This is an informational message.
+
+Consideration 20
+----------------
+When attempting to create a backup on an external USB hard disk drive, an error message
+ is displayed, saying, ¡°The backup to USB failed because the USB drive could not be found.¡± 
+
+To solve this problem, you need to detach the USB hard disk drive, and then reinstall it. Then the USB hard disk drive will become E: drive.
+
+Consideration 21
+----------------
+Files on excluded partitions cannot be saved on an external device when you are performing 
+a full restore operation from the Rescue and Recovery workspace. 
+
+To avoid this problem, do not exclude partitions containing important data that you might want to
+recover later. To solve this problem, start the Windows operating system and copy the
+necessary files to an external device before initiating the restore operation.
+
+Consideration 22
+----------------
+If a user enters the Rescue and Recovery workspace and then reboots to the 
+Windows environment and uninstalls the Ultimaco Safeguard Easy program, the computer will 
+only boot to the Rescue and Recover workspace upon subsequent reboots.
+
+To avoid this problem, cold boot the computer to the Windows environment before uninstalling
+the Utimaco Safeguard Easy program. 
+
+To recover from this problem, do one of the following:
+-Download the recovery image or file from the Lenovo Web site at http://www.lenovo.com/support.
+ Create recovery media with the image or file. Then, run the recovery media.
+ This will set the first partition on the drive as active so that the computer can boot to it.
+-Use a partitioning tool, such as Partition Magic, to set the first partition on the drive as active so that the computer can boot to it.
+
+Consideration 23
+----------------
+When a limited user attempt to restore individual files from a network backup in the Windows environment,
+ the file list cannot be displayed.
+
+To solve this problem, use the Restore Individual Files feature in the Rescue and Recovery workspace
+ to view the file list when attempting to restore individual files from a network backup.
+
+Consideration 24
+----------------
+When the system boots to the Rescue and Recovery workspace from a PXE (Preboot eXecution Environment)
+ server such as Windows Server(R) 2003 through the Remote Installation Service (RIS), the operating system
+ will load and then hang indefinitely. The operation of loading the device driver while the system is booting to
+ the Rescue and Recovery workspace conflicts with the operation of loading the operating system from the network.
+ This might cause an operating system crash.
+
+To eliminate the hang during a PXE boot, delete the following files from the PXE image:
+        \preboot\swwork\ntwktpfd.tbi 
+        \preboot\swwork\ntwktpfe.tbi
+
+Consideration 25
+----------------
+When you attempt to deploy a manifest file from a diskette while running the 
+Custom Factory Recovery program in administrator mode, the Open File interface 
+might not display the contents of the diskette because the Rescue and 
+Recovery workspace has limited diskette support. Most diskettes should 
+function properly, but only certain Lenovo and Sony diskettes are officially supported.
+
+Use a supported device to deploy the manifest file when running the Custom Factory Recovery program.
+
+Consideration 26
+----------------
+When you create a backup to a second hard disk drive that is attached to a SATA UltraBay
+adapter using the Rescue and Recovery program, the function of making the second hard disk drive
+ bootable does not work. However, currently, this function is not supported by the Rescue and Recovery program.
+
+To recover from this error, do one of the following:
+
+- Create a different rescue medium such as CD, DVD, USB hard disk drive, or
+  non-SATA second hard disk drive (such as PATA or IDE).
+-	Run the Microsoft diskpart utility to clean up the hard disk drive. 
+-	Make the second hard disk drive that is attached to a SATA UltraBay adapter bootable using the rescue media.
+
+Consideration 27
+----------------
+After deleting the base backup, merge failures might occur.
+
+To reproduce this problem, do the following:
+
+  1. Create a base backup to a USB hard disk drive.
+  2. Create a few incremental backups to both USB and local hard disk drives.
+  3. Delete the base backup using the Windows interface.
+
+This operation fails while levels 0 and 1 are being merged.
+
+If this occurs, delete all backups and create a new base backup.
+
+Consideration 28
+----------------
+If you use the Rescue and Recovery program on a Dell 380 computer to create rescue media,
+ and then you boot from a USB hard disk drive with the rescue media, this operation will result in
+ a system crash. The Dell 380 computer uses a down-level hardware revision of the IASTOR SATA
+controller. A patch is required for the Rescue and Recovery workspace to boot from a hard disk 
+drive, CD, or DVD. However, this patch does not enable the Dell 380 computer to boot from a USB hard disk drive.
+
+To avoid this problem, create a bootable CD or DVD using the ThinkVantage Create
+Recovery Media program. Use this bootable CD or DVD as the rescue medium 
+instead of using a USB hard disk drive.
+
+Consideration 29
+----------------
+After reinstalling the Rescue and Recovery program, backup files stored on an external 
+device are not displayed in the backup list when you click View all backups. 
+
+This occurs after you save backup files to an external device, and then uninstall
+and reinstall the Rescue and Recovery 4.0 program. After reinstalling the
+program, the backups on the external device are no longer displayed in the View
+all backups interface. The backup files on the external device are still
+intact, and you can restore your system from these backups. When you follow the
+restore path, the desired backup files are displayed even though the files were
+not displayed in the View all backups interface.
+
+Consideration 30
+----------------
+Installing the Rescue and Recovery program version 4.0 on a system deployed with an
+ImageUltra Builder 3.0 service partition causes the ImageUltra recovery process to
+fail. The ImageUltra link on the pre-desktop menu in the service partition is
+missing after the Rescue and Recovery program version 4.0 is installed. Thus, the user
+cannot start the ImageUltra recovery process. Installing this program also
+disables the Restore Factory Contents feature.
+
+To reproduce this problem, do the following:
+
+1.  Deploy a system with ImageUltra Buider 3.0 that leaves a service partition on the
+   computer.
+2. After the system has completed the ImageUltra installation, install the
+   Rescue and Recovery program version 4.0.
+3. After the Rescue and Recovery program version 4.0 installation is complete, reboot into the
+   service partition by pressing F11 during startup. 
+
+The ImageUltra link will be missing from the pre-desktop menu, and the user cannot start the ImageUltra recovery process.
+
+To resolve this issue after installing the Rescue and Recovery program version 4.0,
+create the following TAG file in the Service Partition: 
+X:\RECOVERY\IUB\IUB.TAG
+
+For information about how to create a TAG file, refer to the ThinkVantage Technologies
+ deployment guides on the Lenovo Support Web site at http://www.lenovo.com/support.
+
+Consideration 31
+----------------
+When a limited user launches the Rescue and Recovery program and changes the
+settings under the section of Set schedule and preferences, the changes could not
+ be saved when the user clicks OK or Apply. This problem occurs in certain language
+ environments because the Users group name is translated and therefore cannot be found. This prevents the
+Users group from obtaining the correct permissions to change these settings.
+
+An Administrative user can change the permissions on the key 
+HKEY_LOCAL_MACHINE\SOFTWARE\Lenovo\Rescue and Recovery\Settings to give 
+the Users group (or the equivalent translated group) Set Value and Create Subkey access.
+
+Consideration 32
+---------------
+After performing a restore operation, you cannot launch the ThinkVantage System Migration Assistant program.
+
+After you perform a restore operation using a backup that does not contain System Migration
+ Assistant, you cannot launch System Migration Assistant even if you have saved all the data that
+ were created or modified after the creation of the backup, or even if you have installed System Migration Assistant after the creation of the backup.
+
+To solve this problem, do one of the following:
+- Reinstall System Migration Assistant.
+- Restore from a backup that contains System Migration Assistant.
+
+Affected Software versions:
+Rescue and Recovery program version 2.0 and later
+
+Consideration 33
+---------------
+Select Do not persist the password when restoring a backup
+to a new computer.
+
+When restoring a backup to a new computer, both password persistence
+options are available for selection and one must be selected before
+the Next button activates. However, when restoring a backup to a new
+computer, the local hard disk drive should be empty and the Rescue and
+Recovery program should not ask for password persistency.
+
+When prompted, select Do not persist password and click Next.
+
+Note: Either option should work as no password persistence is selected, since there is no password to persist in the hard disk drive.
+
+Trademarks
+==========
+The following terms are trademarks of Lenovo in the United States, other countries,
+or both:
+
+Lenovo
+NetVista
+Rapid Restore
+Rescue and Recovery
+ScrollPoint
+ThinkCentre
+ThinkPad
+ThinkVantage
+
+Microsoft, Internet Explorer, Windows, and Windows Server are trademarks of the Microsoft group of companies.
+
+Other company, product, and service names may be trademarks or service marks of others.
+
+THIS DOCUMENT IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.
+LENOVO DISCLAIMS ALL WARRANTIES, WHETHER EXPRESS OR IMPLIED,
+INCLUDING WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF FITNESS
+FOR A PARTICULAR PURPOSE AND MERCHANTABILITY WITH RESPECT TO THE
+INFORMATION IN THIS DOCUMENT. BY FURNISHING THIS DOCUMENT, LENOVO
+GRANTS NO LICENSES TO ANY PATENTS OR COPYRIGHTS.
+
+(C) Copyright Lenovo 2010.

@@ -1,0 +1,653 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Package Name       2.5 inch SATA Hard Drive Firmware Update Utility
+
+Support models     ThinkPad E430, E431
+                   ThinkPad E530, E531
+                   ThinkPad E440, E540 (See Important Information)
+                   ThinkPad L430, L530
+                   ThinkPad L440, L540 (See Important Information)
+                   ThinkPad L450 (See Important Information)
+                   ThinkPad T430, T430s, T530
+                   ThinkPad T431 (See Important Information)
+                   ThinkPad T440p (See Important Information)
+                   ThinkPad T440, T440s (See Important Information)
+                   ThinkPad T450, T450s (See Important Information)
+                   ThinkPad T540p (See Important Information)
+                   ThinkPad W530
+                   ThinkPad W540, W541 (See Important Information)
+                   ThinkPad X230. X230 Tablet
+                   ThinkPad X230s (See Important Information)
+                   ThinkPad X240, X240s (See Important Information)
+                   ThinkPad X250 (See Important Information)
+                   ThinkPad S531 (See Important Information)
+                   ThinkPad S540 (See Important Information)
+                   ThinkPad Edge E420, E425
+                   ThinkPad Edge E520, E525
+                   ThinkPad T420, T520
+                   ThinkPad T420s
+                   ThinkPad W520
+                   ThinkPad X220. X220 Tablet
+                   ThinkPad L420, L520, L421
+                   ThinkPad T410(i), T510(i)
+                   ThinkPad T410s(i)
+                   ThinkPad W510
+                   ThinkPad W701, W701ds (See Important Information)
+                   ThinkPad X201(i). X201s, X201 Tablet
+                   ThinkPad SL410, SL510, L410, L510, L412, L512
+                   ThinkPad R400, R500
+                   ThinkPad T400, T500
+                   ThinkPad T400s
+                   ThinkPad W500
+                   ThinkPad W700, W700ds (See Important Information)
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X300, X301
+                   ThinkPad SL300, SL400, SL400c, SL500, SL500c
+                   ThinkPad R60, R60e, R60i
+                   ThinkPad R61, R61e, R61i
+                   ThinkPad T60, T60p
+                   ThinkPad T61, T61p
+                   ThinkPad X60, X60s, X60 Tablet
+                   ThinkPad X61, X61s, X61 Tablet
+                   ThinkPad Reserve Edition
+                   ThinkPad Z60m, Z60t
+                   ThinkPad Z61e, Z61m, Z61p, Z61t
+
+Release            FWSH46
+
+Format             Bootable ISO image file
+
+
+--------------------------------------------------------------------------------
+CONTENTS OF THIS DOCUMENT
+
+    - WHAT THIS PACKAGE DOES
+    - IMPORTANT INFORMATION
+    - CHANGES IN THIS RELEASE
+    - SUPPORT INFORMATION
+    - MAKING A CD-R OR CD-RW TO USE
+    - PREPARE THE BOOT DEVICE
+    - INSTALLATION GUIDE
+    - RELEASE INFORMATION
+    - SUMMARY OF CHANGES
+    - TRADEMARKS
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+This utility will examine your system configuration and detect all 2.5 inch SATA
+Hard Drives (HDD) installed in your ThinkPad.
+SATA (Serial AT Attachment) is a new interface for storage devices.
+
+The utility will then check the firmware revision of the hard drive and judge
+whether your system requires a firmware update or not.  If required, it will
+prompt you to run the appropriate firmware update program for your drive.
+
+This package is compiled into an ISO format, which is compatible with CD writing
+software such which supports and ISO format image file, and writable to a CD-R
+or a CD-RW disc.
+
+A written CD-R or CD-RW disc will be bootable.  It will boot from your ThinkPad
+Optical Disc Drive(*) and run the update utility program.
+  * Your ThinkPad may need to change the boot device setting to boot from an
+    Optical Disc Drive. (See the "Prepare boot device" section in this document)
+
+Note: This firmware update utility may not update a drive without a Lenvo part
+      number(P/N), even its model is identical to a drive in the supported drive
+      list.
+      The drives with Lenovo part numbers include firmwares designed for using
+      with the ThinkPad system.
+
+--------------------------------------------------------------------------------
+IMPORTANT INFORMATION
+
+  Note: ThinkPad T431, T440, T440s, T440p, T540p, T450, T450s, L440, L540, L450
+        ThinkPad W540, W541, X230s, X240, X240s, X250, S531, S540
+        ThinkPad E440, E540
+        SATA HDD configuration should be `AHCI'.  Change SATA HDD in BIOS
+        Setup/Config before update a firmware.
+
+  Note: The utility will not update an HDD installed in the Ultrabay using the
+        Ultrabay HDD adapter.
+
+  Note: ThinkPad W700, W700ds, W701, W701ds
+        SATA HDD configuration should be `Compatible'.  Change SATA HDD
+        in BIOS Setup/Config before update a firmware.
+        Also note that restore this configuration after update, or an
+        operating system won't start up and blue screen error may come up.
+
+  Note: ThinkPad W700, W700ds, W701, W701ds
+        The SATA Hard Drive Firmware Update Utility won't update a hard
+        drive in the W700 Ultrabay with an adapter.
+        Hard drives being updated firmwares should be in HDD0 or HDD1 bay
+
+  Note: A bootable CD type is changed from the floppy disc emulation to the
+        hard disk emulation from FWSH20 release. Any file viewer software can
+        not show the contents of the written CD-R/CD-RW disc.
+
+  Note: The firmware update CD will not boot with UEFI mode. In case of this,
+        change ThinkPad Setup/Startup, set "Both" in UEFI/Legacy Boot section
+        and "Legacy First" in UEFI/Legacy Boot Priority section or "Legacy Only"
+        in UEFI/Legacy Boot section.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Release FWSH46
+
+Important Note:
+The firmware update CD will not boot with UEFI mode. In case of this, change
+ThinkPad Setup/Startup, set "Both" in UEFI/Legacy Boot section and "Legacy
+First" in UEFI/Legacy Boot Priority section or "Legacy Only" in UEFI/Legacy
+Boot section.
+
+[Firmware Updates]
+   Model                  Firmware
+   -------------------    -----------------
+   [ WD ]
+   WD10JPVX-08JC3T5       05.01A55
+
+   [ HGST ]
+   HTS7250**A7E630        ZC360
+   HTS725050A7E635OPAL    6B840
+   HTS7250**A7E630        ZB3F0(Gen3 model)
+   HTS7250**A7E630        ZB570(Gen2 model)
+
+   [ Toshiba ]
+   MQ01ABD***             AX0P8E
+   MQ01ABF0**             AM0P8E
+   MQ01ACF0**             AV002E
+
+
+--------------------------------------------------------------------------------
+SUPPORT INFORMATION
+
+This package provides firmware for the following Hard Drives.  Those drives are
+supported by ThinkPad models written in the first page of this document.
+("x" means a character, "|" shows new to this list.)
+
+  Toshiba MKxx32GSX
+  Toshiba MKxx34GSX
+  Toshiba MKxx08GAx
+| Toshiba MQ01ABDxxx
+| Toshiba MQ01ABF0xx
+| Toshiba MQ01ACF0xx
+
+  Fujitsu MHV2xxxBH
+  Fujitsu MHV2xxxBH PL
+  Fujitsu MHW2xxxBH
+  Fujitsu MHW2xxxBH PL
+  Fujitsu MHZ2xxxBJ G1
+  Fujitsu MHZ2xxxCJ G1
+
+  HGST    HTS5410xxG9SA00
+  HGST    HTS5416xxJ9SA00
+  HGST    HTS5432xxL9SA00
+  HGST    HTS543216L9SA01FDE
+  HGST    HTS7210xxG9SA00
+  HGST    HTS7220xxK9SA00
+  HGST    HTS7220xxK9SA00FDE
+  HGST    HTS7232xxA7A364
+  HGST    HTS723225A7A361FDE
+  HGST    HTS723225A7A365OPAL
+  HGST    HTS5432xxA7A384
+  HGST    HTS5450xxA7E380
+  HGST    HTS725032A7E635OPAL
+| HGST    HTS7250xxA7E630
+| HGST    HTS725050A7E635OPAL
+| HGST    HTS7250xxA7E630
+| HGST    HTS7250xxA7E630
+
+  WD      WDxxxxBEVS-08RS
+| WD      WD10JPVX-08JC3T5
+
+  Seagate Momentus 7200.1
+  Seagate Momentus 5400.3
+  Seagate Momentus 5400 FDE.2
+  Seagate Momentus 7200.2
+  Seagate Momentus 5400.4
+  Seagate Momentus 7200.3
+  Seagate Momentus 7200 FDE.1
+  Seagate Momentus 5400.6
+  Seagate Momentus 7200.4
+  Seagate Momentus 7200 FDE.2
+  Seagate Momentus Thin
+
+  Samsung HM251JI
+
+
+--------------------------------------------------------------------------------
+MAKING A CD-R OR CD-RW DISC TO USE
+
+This section provides instructions  for using RecordNow! to make a bootable CD.
+Please refer to a product manual when using other CD writing programs.
+
+  1. Make sure you have a ThinkPad with a CD-RW, DVD/CD-RW combo or DVD multi
+     drive installed.  Prepare a blank CD-R or CD-RW disc.
+  2. Start Windows Vista, XP, 2000 and logon with administrative privileges.
+  3. Download the firmware update utility .ISO file.
+  4. Run a CD writing software.
+  5. Choose the downloaded ISO file in step 3 of this process to create
+     your CD.
+  6. Follow the instructions on the screen.
+
+
+--------------------------------------------------------------------------------
+PREPARE THE BOOT DEVICE
+
+The resulting CD-R or CD-RW disc includes an operating system and is bootable on
+the supported ThinkPad models.
+
+Note:
+  The Hard Drive Firmware Update Utility bootable CD does not support
+  USB Optical Disc Drives, PCMCIA/CardBUS Optical Disc Drives, Optical Disc
+  Drives in a Docking Station bay, or any other drives other than the Optical Disc
+  Drive in the ThinkPad UltraBay.  Other drives will not be updated correctly
+  by this firmware update utility.
+
+Please confirm that an Optical Disc Drive is in the boot device list of your BIOS setup.
+  1. Power off the ThinkPad, if it is turned on.
+  2. Power on the ThinkPad.
+  3. Press the F1 key to enter the BIOS Setup Utility when the "ThinkPad" logo is
+     seen on the screen.
+  4. Choose "Startup" from the menu
+  5. Choose "Boot" from the menu(*)
+  6. In "Boot Priority Order", set "ATAPI CD0" to the top of the list, "1".
+  7. Press F10 to save the new setup.
+  8. Power off or restart the system.
+
+*Note: Please write down the current boot priority order for restoration
+        later if you need to modify your boot list.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION GUIDE
+
+After the above sections "Making a CD-R or CD-RW disc to use" and
+"Prepare the boot device" have been completed, follow these steps.
+Please connect the AC adapter and use a fully charged battery to power the
+ThinkPad system during the update.  This will avoid an accidental loss of power.
+
+Important Notice: Please remove the hard drive password. Otherwise the
+                  firmware can't be updated and an error message will be displayed.
+
+Note: Install only one Hard Drive into your ThinkPad.
+
+1. Place the CD-R or CD-RW disc you created in "Making a CD-R or CD-RW disc to use"
+   section into your ThinkPad Optical Disc Drive.
+2. Boot the system with the Firmware Update Utility.
+3. Drives that have been detected will be listed in the upper area of the Main Menu.
+   If a drive that requires an update is detected, it will be shown with a blinking
+   mark on the left.  If you find no blinking mark, your Hard Drive has the
+   latest firmware and there is no need to update or the update firmware is not valid
+   for your drive.  Remove the Firmware Update Utility and shutdown your ThinkPad.
+4. Follow the instructions on the screen to update the necessary drives.
+5. When the installation is complete, remove the Firmware Update Utility CD or CD-RW
+   from the Optical Disc Drive and power off your ThinkPad system.
+   Do not restart the ThinkPad system with the Ctrl-Alt-Delete keys.
+6. Enter the BIOS Setup Utility again, if you need to restore your original boot order
+   and/or a hard drive password.
+
+Attention: Please do not power off the ThinkPad during the firmware update,
+            or your Hard Drive may NOT be usable anymore.
+
+ Notes:
+ - The update utility will not find a Hard Drive in a Docking Station
+   In this case, please remove the drive and install it into a Hard Drive bay
+   in your ThinkPad.
+   If you encounter a problem installing a Hard Drive into your
+   ThinkPad, please call your local Help Center.
+ - The utility contains several executable files, but DO NOT RUN THESE PROGRAMS.
+   Running these programs manually could ruin your drive.
+ - The Hard Drive Firmware Update Utility does not support a
+   suspend/hibernation/resume feature of the ThinkPad while the firmware update
+   utility is running.  Please do not use Fn-F4 or equivalent functions.
+
+
+--------------------------------------------------------------------------------
+RELEASE INFORMATION
+
+Release  Rev   Issue Date
+-------  ---   ----------
+FWSH46    01   2015/10/14
+FWSH43    01   2013/07/18
+FWSH42    02   2013/07/16
+FWSH42    01   2013/03/06
+FWSH41    01   2012/12/20
+FWSH40    01   2012/06/27
+FWSH33    01   2009/09/28
+FWSH32    01   2009/09/02
+FWSH31    01   2009/08/26
+FWSH30         2009/07/07
+FWSH25         2009/06/04
+FWSH24         2009/01/09
+FWSH23         2008/10/17
+FWSH22         2008/09/22
+FWSH21         2008/09/04
+FWSH20         2008/07/01
+FWSH12         2008/03/17
+FWSH11         2008/01/23
+FWSH10         2007/12/17
+FWSH09         2007/11/01
+FWSH08         2007/09/18
+FWSH07         2007/08/28
+FWSH06         2007/04/13
+FWSH05         2007/03/27
+FWSH04         2007/02/19
+FWSH03         2007/01/12
+FWSH01         2006/03/17
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+
+--------------------------------------------------------------------------------
+SUMMARY OF CHANGES
+
+ <New>
+ - Added support for following ThinkPad models
+   ThinkPad E440, E540
+   ThinkPad L430, L530, L440, L540, L450
+   ThinkPad T431
+   ThinkPad T440p, T440, T440s, T450, T450s, T540p
+   ThinkPad W540, W541
+   ThinkPad X230s, X240, X240s, X250
+   ThinkPad S531, S540
+
+<FWSH46>
+[Firmware Update]
+   Model                  Firmware
+   -------------------    --------------
+   [ WD ]
+   WD10JPVX-08JC3T5       05.01A55
+
+   [ HGST ]
+   HTS7250**A7E630        ZC360
+   HTS725050A7E635OPAL    6B840
+   HTS7250**A7E630        ZB3F0(Gen3 model)
+   HTS7250**A7E630        ZB570(Gen2 model)
+
+   [ Toshiba ]
+   MQ01ABD***             AX0P8E
+   MQ01ABF0**             AM0P8E
+   MQ01ACF0**             AV002E
+
+<FWSH43>
+[Firmware Update]
+   Model                Firmware
+   ----------------     --------------
+   [ HGST ]
+   HTS725032A7E635OPAL  6B8Y0
+
+<FWSH42>
+[Firmware Updates]
+   Model                Firmware
+   ----------------     --------------
+   [ Seagate ]
+   ST***LT014-9YK14*    0005LVM7
+   ST***LT007-9ZV14*    0005LVM1
+
+<New>
+   Model                Firmware
+   ----------------     --------------
+   [ HGST ]
+   HTS725032A7E635OPAL  6B8M0
+
+<FWSH41>
+   Model                Firmware
+   ----------------     --------------
+   [ HGST ]
+   HTS5450xxA7E380      ZBC80
+
+ <New>
+ - Added support for following ThinkPad models
+   ThinkPad T430, T530
+   ThinkPad T430s
+   ThinkPad W530
+   ThinkPad X230. X230 Tablet
+
+<FWSH40>
+   Model                Firmware
+   ----------------     --------------
+   [ HGST ]
+   HTS7232xxA7A364      ZB70W
+   HTS723225A7A361FDE   LB70W
+   HTS723225A7A365OPAL  6B80P
+   HTS5432xxA7A384      ZB70V
+
+   [ Seagate ]
+   Momentus 5400.6      0021LVM1
+   Momentus Thin        0005LVM7
+   Momentus Thin        0004LVM7
+
+ <New>
+ - Added support for following ThinkPad models
+   ThinkPad T420, T520
+   ThinkPad T420s
+   ThinkPad W520
+   ThinkPad X220. X220 Tablet
+   ThinkPad T410(i), T510(i)
+   ThinkPad T410s(i)
+   ThinkPad W510
+   ThinkPad X201(i). X201s, X201 Tablet
+
+<FWSH33>
+   Model                Firmware
+   ----------------     --------------
+   [ Seagate ]
+   Momentus 7200.4      0003LVM1
+   Momentus 7200 FDE.2  0003LVM3
+
+<FWSH32>
+   Model                Firmware
+   ----------------     --------------
+   [ Seagate ]
+   Momentus 7200.3      LV15
+   Momentus 7200 FDE.1  LVC5
+   Momentus 5400.6      0008LVM1
+
+<FWSH31>
+   Model                Firmware
+   ----------------     --------------
+   [ Fujitsu ]
+   MHZ2xxxBJ G1         00840023
+   MHZ2xxxCJ G1         00848023
+
+<FWSH30>
+Update of SL300, SL400(C) and SL500(C) drive now supports AHCI mode.
+No need to change to `Compatible' when updating a firmware.
+
+   Model                Firmware
+   ----------------     --------------
+   [ Seagate ]
+   Momentus 7200.3      LV14
+   Momentus 7200 FDE1   LVC4
+   [ Samsung ]
+   HM251JI              2SS00_07
+
+<FWSH25>
+   Model                Firmware
+   ----------------     --------------
+   [ Fujitsu ]
+   MHZ2xxxBJ G1         00840022
+   MHZ2xxxCJ G1         00848022
+
+<FWSH24>
+   Model                Firmware
+   ----------------     --------------
+   [ Seagate ]
+   Momentus 7200.1      4.07
+   Momentus 5400.3      3.CLH
+   Momentus 5400 FDE.2  3.CLG
+   Momentus 7200.2      3.CME
+   Momentus 5400.4      3.CMF
+
+<FWSH23>
+   Model                Firmware
+   ----------------     --------------
+   [ Hitachi ]
+   HTS5432xxL9SA00      ZC48C
+   HTS543216L9SA01FDE   LC48C
+   [ WD ]
+   WDxxxxBEVS-08RS      11.01G11
+
+<FWSH22>
+   Model                Firmware
+   ----------------     --------------
+   [ Hitachi ]
+   HTS5410xxG9SA00      C69R
+
+<FWSH21>
+   Model                Firmware
+   ----------------     --------------
+   [ Fujitsu ]
+   MHV2xxxBH            0084002F
+   MHV2xxxBH PL         0084002F
+
+<FWSH20>
+A bootable CD type is changed from the floppy disc emulation to the
+hard disk emulation. Any file viewer software can not show the contents
+of the written CD-R/CD-RW disc.
+
+* Previously released HTS5410xxG9SA00/C67R firmware has been found an
+  update failure in some case.  This release includes older release of
+  the drive firmware instead.
+
+  Following list shows the entire contents.
+   Model                Firmware
+   ----------------     --------------
+   [ Toshiba ]
+   MKxx32GSX            ASxx7E
+   MKxx34GSX            AHxx5E
+   MKxx08GAx            BUxx2E
+
+   [ Fujitsu ]
+   MHV2xxxBH            0084002E
+   MHV2xxxBH PL         0084002E
+   MHW2xxxBH            00840019
+   MHW2xxxBH PL         00840024
+
+   [ Hitachi ]
+   HTS5410xxG9SA00      C66R
+   HTS7210xxG9SA00      C17V
+   HTS5416xxJ9SA00      C7VP
+   HTS7220xxK9SA00      ZC75A
+   HTS7220xxK9SA00FDE   LC75A
+
+<FWSH12>
+   Model                Firmware
+   ----------------     --------------
+   [ Fujitsu ]
+   Fujitsu MHV2xxxBH    0084002E
+   Fujitsu MHV2xxxBH PL 0084002E
+
+   [ Hitachi ]
+   HTS5410xxG9SA00      C67R
+   HTS7210xxG9SA00      C17V
+
+<FWSH11>
+   Model                Firmware
+   ----------------     --------------
+   [ Fujitsu ]
+   Fujitsu MHW2xxxBH    00840019
+   Fujitsu MHW2xxxBH PL 00840024
+
+<FWSH10>
+   Model               Firmware
+   ----------------    --------------
+   [ Hitachi ]
+   HTS5416xxJ9SA00     C7VP
+
+<FWSH09>
+   Model               Firmware
+   ----------------    --------------
+   [ Hitachi ]
+   HTS7220xxK9SA00     ZC75A
+   HTS7220xxK9SA00FDE  LC75A
+
+<FWSH08>
+   Model               Firmware
+   ----------------    --------------
+   [ Toshiba ]
+   MKxx32GSX           ASxx7E
+   MKxx34GSX           AHxx5E
+   MKxx08GAx           BUxx2E
+
+<FWSH07>
+   Model               Firmware
+   ----------------    --------------
+   [ Fujitsu ]
+   MHV2xxxBH           0084002A
+   MHV2xxxBH PL        0084002B
+
+   [ Hitachi ]
+   HTS5410xxG9SA00     C66R
+   HTS7210xxG9SA00     C15V
+   HTS5416xxJ9SA00     C7UP
+
+  Important: This Hitachi drive firmware updates include the fix for the case on a
+             system with Intel Turbo Memory, that the system may show blue screen
+             error during operations.
+
+<FWSH06>
+   Model               Firmware
+   ----------------    --------------
+   [ Toshiba ]
+   MKxx32GSX           ASxx6E
+   MKxx34GSX           AHxx4E
+
+<FWSH05>
+   Model               Firmware
+   ----------------    --------------
+   [ Hitachi ]
+   HTS5410xxG9SA00     C65R
+   HTS7210xxG9SA00     C14V
+   HTS5416xxJ9SA00     C7JP
+
+  Important: This firmware update includes the fix for the case on a system with
+             Windows Vista, that the system may display the following error
+             message at each power on, and then cannot boot from the hard drive.
+             "2100: Initialization error on HDD0 (Main hard disk drive)"
+
+<FWSH04>
+   Model               Firmware
+   ----------------    --------------
+   [ Toshiba ]
+   MKxx32GSX           ASxx4E
+   MKxx34GSX           AHxx1E, AHxx2E
+
+  Important: If you have applied FWSH02(now discarded) with Toshiba MKxx32GSX
+             or MKxx34GSX and plan to install Windows Vista, please apply FWSH04
+             or higher, otherwise Windows Vista will blue screen and stop.
+
+<FWSH03>
+   Model               Firmware
+   ----------------    --------
+   [ Fujitsu ]
+   MHV2xxxBH           00840029
+   MHV2xxxBH PL        0084002A
+
+   [ Hitachi ]
+   HTS5410xxG9SA00     C60R
+   HTS7210xxG9SA00     C10V
+   HTS541616J9SA00     C7EP
+
+<FWSH01>
+   Model               Firmware
+   ----------------    --------
+   [ Toshiba ]
+   MKxx32GSX           ASxx4E
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

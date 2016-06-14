@@ -1,0 +1,163 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      The patch module for ThinkPad Power Manager
+
+Support models     ThinkPad L410, L412, L420, L421
+                   ThinkPad L510, L512, L520
+                   ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad SL300
+                   ThinkPad SL400, SL400c, SL410
+                   ThinkPad SL500, SL500c, SL510
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si, T420, T420i,
+                            T420s, T420si
+                   ThinkPad T500, T510, T510i, T520, T520i
+                   ThinkPad W500, W510, W520
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X1
+                   ThinkPad X200, X200s, X200 Tablet, X201, X201i, X201s,
+                            X201 Tablet, X220, X220i, X220 Tablet, X220i Tablet
+                   ThinkPad X300, X301
+
+                   ThinkPad R51e, R52
+                   ThinkPad R60, R60e, R61, R61e, R61i
+                   ThinkPad T43, T43p
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad X32
+                   ThinkPad X40, X41, X41 Tablet
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad Z60m, Z60t, Z61e, Z61m, Z61p, Z61t
+                   ThinkPad Reserve Edition
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+                   Microsoft Windows XP  Home Edition, Professional
+                   Microsoft Windows XP  Tablet PC Edition 2005
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            1.00
+
+Support device     ThinkPad Power Manager
+                     3.40, 3.41, 3.41a, 3.42, 3.43, 3.44, 3.45, 3.46, 3.47
+                     1.90, 1.91, 1.91a, 1.92, 1.93, 1.94, 1.95, 1.96, 1.97
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  The patch module for ThinkPad Power Manager enables you to fix an issue of an
+  unexpected application error that relates to the Lenovo Doze Mode Service of
+  the ThinkPad Power Manager on Windows XP, Vista and 7 OS.
+
+  After applying this patch, the following files will be copied in the install
+  path of the ThinkPad Power Manager.
+
+  <32bit OS>
+  C:\Program Files\ThinkPad\Utilities.
+    Doze.dll and DozeSvc.exe.
+
+  <64bit OS>
+  C:\Program Files (x86)\ThinkPad\Utilities.
+    Doze.dll, DozeSvc.exe, Doze64.dll and DzSvc64.exe.
+
+  Then the Lenovo Doze Mode Service will work without termination by application
+  crashing.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.00
+
+[Problem fixes]
+- Fixed an unexpected application error of the Lenovo Doze Mode Service.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Installing files
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Ready to Install window, click Install. The necessary files will
+     be copied to ThinkPad Power Manager application path.
+ 10. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+  Verifying the patch installed
+    Once the patch module for the ThinkPad Power Manager applied, you will find the
+    following files.
+
+    <32bit OS>
+      C:\Program files\ThinkPad\Utilities\
+        Doze.dll    : File version 1.1.4.0
+        DozeSvc.exe : File version 1.1.4.0
+
+    <64bit OS>
+      C:\Program files (x86)\ThinkPad\Utilities\
+        Doze.dll    : File version 1.1.4.0
+        Doze64.dll  : File version 1.1.4.0
+        DozeSvc.exe : File version 1.1.4.0
+        DzSvc64.exe : File version 1.1.4.0
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version    Rev.  Issue Date
+  -------    ----  ----------
+  1.00       01    2011/06/13
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.00>
+ - (Fix) Fixed an unexpected application error of the Lenovo Doze Mode Service.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

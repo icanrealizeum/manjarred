@@ -1,0 +1,250 @@
+                                                                   Revision : 13
+--------------------------------------------------------------------------------
+Software name      Fix for Issue of HDD with HDP Detection  (WW)
+
+Support models     ThinkPad L410, L412, L420, L421, L430
+                   ThinkPad L510, L512, L520, L530
+                   ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad SL300
+                   ThinkPad SL400, SL400c, SL410
+                   ThinkPad SL500, SL500c, SL510
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si, T420, T420i,
+                            T420s, T420si, T430, T430i, T430s, T430si
+                   ThinkPad T500, T510, T510i, T520, T520i, T530, T530i
+                   ThinkPad W500, W510, W520, W530
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X1 Hybrid(*1)
+                   ThinkPad X200, X200s, X200 Tablet, X201, X201i, X201s,
+                            X201 Tablet, X220, X220i, X220 Tablet, X220i Tablet,
+                            X230, X230i, X230 Tablet, X230i Tablet
+                   ThinkPad X300, X301
+
+                   ThinkPad R61, R61e, R61i
+                   ThinkPad T61, T61p
+                   ThinkPad X61, X61s, X61 Tablet
+                   ThinkPad Reserve Edition
+
+                   Lenovo 3000 C200, N200, V200
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            1.02
+
+
+*1: Supports Windows 7 64-bit only.
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This patch is designed to detect password-protected secondary hard disk after
+  resume/wake from sleep/hibernate.
+
+  Password-protected secondary hard disk is not shown in My Computer but can be
+  seen in Device Manager the first time it is attached to the computer. This is
+  by-design.
+  But after putting the system to sleep, the secondary hard disk must be
+  detected in My Computer upon system resume.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.02
+
+[Important updates]
+- Added support for Microsoft Windows 7.
+
+[New functions or enhancements]
+- Added support for ThinkPad L430,L530,T430,T430i,T430s,T430si,T530,T530i,W530,
+  X230,X230i,X230 Tablet,X230i Tablet.
+- Added support for ThinkPad X1 Hybrid for Windows 7 64-bit.
+- Added support for ThinkPad T420,T420i,T420s,T420si,T520,T520i,W520,X220,X220i,
+  X220 Tablet,X220i Tablet for Microsoft Windows Vista.
+- Added support for ThinkPad X220,X220i,X220 Tablet,X220i Tablet.
+- Added support for ThinkPad W520.
+- Added support for ThinkPad L421.
+- Added support for ThinkPad T420s,T420si,L420,L520.
+- Added support for ThinkPad T420,T420i,T520,T520i.
+- Added support for ThinkPad W701, W701ds.
+- Added support for ThinkPad X201,X201i,X201s,X201 Tablet.
+- Added support for ThinkPad T410i,T410s,T410si,T510i
+- Added support for ThinkPad T410,T510,W510,L410,L510,SL410,SL510,X100e.
+- Added Readme file.
+
+[Problem fixes]
+- Removed support for ThinkPad X100e,ThinkPad Edge 13",ThinkPad Edge E30.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- This software can work correctly on Lenovo computers listed above.
+
+
+--------------------------------------------------------------------------------
+ENABLING PATCH
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+ 11. Uncheck the checkbox next to "Install ..... now", and then click Finish to
+     cancel installation.
+
+  Applying patch
+ 12. Click Start, select All Programs, then select Accessories.
+ 13. Right-click on Command Prompt, then select Open as Administrator.
+ 14. At the command prompt, type the following and press the Enter key to create
+     the task by importing the XML file into Task Scheduler.
+
+     schtasks /create /xml c:\swtools\osfixes\diskupdt\DiskUpdate.xml /tn DiskUpdate
+     or
+     Start DiskUpdate.BAT
+
+     Note:
+     This command must be run only when task scheduler service is already
+     running.
+
+ 15. Restart the computer. The task must be seen in the Task Scheduler.
+
+  Delete the file saved in the step 4.
+
+
+--------------------------------------------------------------------------------
+DISABLING PATCH
+
+  1. Open Task Scheduler.
+  2. Double click DiskUpdate listed on the Active Tasks list.
+  3. Right click on DiskUpdate and click Delete.
+  4. Delete folder of DISKUPDT located under C:\SWTOOLS\OSFIXES.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Package    Rev.  Issue Date
+  -------    ----  ----------
+  1.02       13    2012/04/27
+  1.02       12    2012/03/01
+  1.02       11    2011/04/28
+  1.02       10    2011/04/08
+  1.02       09    2011/03/18
+  1.02       08    2011/03/10
+  1.02       07    2011/03/08
+  1.02       06    2010/03/12
+  1.02       05    2010/02/12
+  1.02       04    2010/01/29
+  1.02       03    2009/12/18
+  1.02       02    2009/10/02
+  1.02       01    2009/09/08
+  1.01       01    2009/06/11
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.02>
+ - (New) Added support for ThinkPad L430,L530,T430,T430i,T430s,T430si,T530,T530i,
+         W530,X230,X230i,X230 Tablet,X230i Tablet.
+
+<1.02>
+ - (New) Added support for ThinkPad X1 Hybrid for Windows 7 64-bit.
+
+<1.02>
+ - (New) Added support for ThinkPad T420,T420i,T420s,T420si,T520,T520i,W520,X220,
+         X220i,X220 Tablet,X220i Tablet for Microsoft Windows Vista.
+
+<1.02>
+ - (New) Added support for ThinkPad X220,X220i,X220 Tablet,X220i Tablet.
+
+<1.02>
+ - (New) Added support for ThinkPad W520.
+ - (New) Added support for ThinkPad L421.
+
+<1.02>
+ - (New) Added support for ThinkPad T420s,T420si,L420,L520.
+
+<1.02>
+ - (New) Added support for ThinkPad T420,T420i,T520,T520i.
+
+<1.02>
+ - (New) Added support for ThinkPad W701,W701ds.
+
+<1.02>
+ - (New) Added support for ThinkPad X201,X201i,X201s,X201 Tablet.
+
+<1.02>
+ - (New) Added support for ThinkPad T410i,T410s,T410si,T510i.
+ - (Fix) Removed support for ThinkPad X100e,ThinkPad Edge 13",ThinkPad Edge E30.
+
+<1.02>
+ - (New) Added support for ThinkPad T410,T510,W510,L410,L510,SL410,SL510,X100e,
+         Edge 13",Edge E30.
+
+<1.02>
+ - [Important]
+         Added support for Microsoft Windows 7.
+
+<1.02>
+ - (Fix) Added Readme file.
+
+<1.01>
+ - (New) Initial release.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

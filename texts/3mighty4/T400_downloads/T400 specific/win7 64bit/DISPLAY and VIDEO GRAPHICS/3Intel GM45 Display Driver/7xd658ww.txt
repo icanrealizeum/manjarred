@@ -1,0 +1,290 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      Intel GM45 Display Driver
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X301
+
+Operating Systems  Microsoft Windows 7  64-bit
+                   Microsoft Windows Vista  64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            8.15.10.2555
+
+Support device     Intel GM45
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Display driver) to enable the following
+  device.
+
+  Device name    Device name in the Device Manager
+  -----------    -----------------------------------------------
+  Intel GM45     Mobile Intel(R) 4 Series Express Chipset Family
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 8.15.10.2555
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+- Fixed an issue where the computer might hang with a blue screen with 0x116 or 
+  0x117 error code.
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  1. Hold down the Ctrl and Alt keys and press the F12 key to open Intel(R)
+     Graphics and Media Control Panel.
+  2. Select Options and Support section on the bottom left portion of the
+     interface.
+  3. Select Information Center.
+  4. Check the Driver version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute setup.exe with the -S option.
+     Example: [Path where the files were extracted]\setup -S
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+[For Windows 7 64-bit and Windows Vista 64-bit]
+
+  Package       Build ID    Rev.  Issue Date
+  ------------  --------    ----  ----------
+  8.15.10.2555  7xd658ww    01    2011/12/28
+  8.15.10.2302  7xd657ww    01    2011/06/03
+  8.15.10.2226  7xd656ww    01    2010/12/17
+  8.15.10.2226  7xd655ww    01    2010/12/02
+  8.15.10.2182  7xd653ww    01    2010/08/25
+  8.15.10.2057  7xd652ww    01    2010/03/02
+
+
+[(Old) For Windows Vista 64-bit]
+
+  Package       Build ID    Rev.  Issue Date
+  ------------  --------    ----  ---------------
+  8.15.10.1968  7xd651ww    01    2009/11/12
+  7.15.10.1752  7xd649ww    02    2009/06/24
+  7.15.10.1752  7xd649ww    01    2009/06/11
+  7.15.10.1556  7xd628ww          2nd. release
+  7.15.10.1502  7xd626ww          Initial release
+
+
+[(Old) For Windows 7 64-bit]
+
+  Package       Build ID    Rev.  Issue Date
+  ------------  --------    ----  ----------
+  8.15.10.1968  7xd809ww    01    2009/11/12
+  8.15.10.1855  7xd808ww    01    2009/10/02
+
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+[For Windows 7 64-bit and Windows Vista 64-bit]
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<8.15.10.2555> (7xd658ww)
+ - (Fix) Fixed an issue where the computer might hang with a blue screen with
+         0x116 or 0x117 error code.
+
+<8.15.10.2302> (7xd657ww)
+ - (Fix) Fixed an issue where the external VGA monitor can not be detected when 
+         used with a long VGA cable or a video splitter.
+
+<8.15.10.2226> (7xd656ww)
+ - (Fix) Fixed an issue where 1680x1050 resolution is not properly displayed on 
+         Samsung SyncMaster BX2240W monitor.
+
+<8.15.10.2226> (7xd655ww)
+ - (Fix) Fixed an issue where ThinkVision L2440x DP monitor might have blank
+         screen after resuming normal operation from standby/sleep state,
+         undocking/docking the computer from/to the docking station or other
+         operations.
+
+<8.15.10.2182> (7xd653ww)
+ - (Fix) Fixed an issue where the computer might hang with a blue screen with
+         0x116 or 0x117 error code.
+
+<8.15.10.2057> (7xd652ww)
+ - [Important]
+         Added support for Windows 7  64-bit.  Windows 7 and Vista drivers are
+         merged into one package.
+ - (Fix) Fixed an issue where the Gamma setting is altered after driver
+         installation.
+ - (Fix) Fixed an issue where garbage might be displayed on LCD screen after
+         resuming system from standby state.
+         
+
+[(Old) For Windows Vista 64-bit]
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<8.15.10.1968> (7xd651ww)
+ - (New) Added support for 'DisplayPort to VGA' dongle.
+ - (Fix) Fixed an issue that caused no display on Philips 220SW9 monitor with
+         1680x1050 60Hz.
+ - (Fix) Fixed an issue that 'Intel(R) GMA 4500MHD' was incorrectly displayed in
+         Desktop properties.
+
+<7.15.10.1752> (7xd649ww)
+ - (Fix) Fixed an issue that might cause the computer to become unresponsive
+         continuously due to a high CPU usage rate at idling state.
+
+<7.15.10.1752> (7xd649ww)
+ - (New) Added support for ThinkPad T400s.
+ - (Fix) Fixed an issue where DVD playback might fail on DisplayPort.
+
+<7.15.10.1556> (7xd628ww)
+ - [Important]
+         The display device may not be able to change to external display after
+         resuming normal operation from standby state (ThinkPad X200, X200s and
+         X200 Tablet only).
+ - (Fix) Some garbages may be displayed on DisplayPort with 2560x1536 resolution
+         only on battery mode.
+
+<7.15.10.1502> (7xd626ww)
+ - (New) Support for ThinkPad X301 (added).
+ - (New) Support for ThinkPad X200s,X200 Tablet (added).
+ - (New) (Initial release) Support for ThinkPad R400,R500,T400,T500,X200.
+
+
+[(Old) For Windows 7 64-bit]
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<8.15.10.1968> (7xd809ww)
+ - (New) Added support for 'DisplayPort to VGA' dongle.
+ - (Fix) Fixed an issue that caused no display on Philips 220SW9 monitor with
+         1680x1050 60Hz.
+ - (Fix) Fixed an issue where the computer hanged when a DVD title was played
+         back with both WinDVD 8 and Windows Media Player at the same time.
+ - (Fix) Fixed an issue that 'Intel(R) GMA 4500MHD' was incorrectly displayed in
+         the property.
+
+<8.15.10.1855> (7xd808ww)
+ - (New) (Initial release) Support for ThinkPad R400,R500,T400,T400s,T500,W500,
+         X200.X200s,X200 Tablet,X301.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* DisplayPort is a trademark of Video Electronics Standards Association.
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

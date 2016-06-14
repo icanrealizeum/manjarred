@@ -1,0 +1,269 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      ThinkPad Switchable Graphics Driver
+
+Support models     ThinkPad R400
+                   ThinkPad T400
+                   ThinkPad T500
+                   ThinkPad W500
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            8.792.5.2-120504a-138564C-Lenovo
+
+Support devices    ATI Mobility RADEON HD 3400 Series
+                   ATI Mobility RADEON HD 3650
+                   ATI Mobility FireGL V5700
+                   INTEL GM45
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Switchable graphics driver) to enable the
+  following devices.
+
+  Device name                           Device name in the Device Manager
+  ----------------------------------    ----------------------------------------
+  ATI Mobility RADEON HD 3400 Series    ATI Mobility Radeon HD 3400 Series
+  ATI Mobility RADEON HD 3650           ATI Mobility RADEON HD 3650
+  ATI Mobility FireGL V5700             ATI Mobility FireGL V5700
+  INTEL GM45                            Mobile Intel(R) 4 Series Express Chipset
+                                        Family
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 8.792.5.2-120504a-138564C-Lenovo
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+- Fixed an issue where the Autodesk Inventor Professional 2012 application
+  crashed when changing hardware graphics options to Compatibility.
+- Fixed an issue where the 3D arrow head did not show on Autodesk Inventor
+  Professional 2012 application when creating or viewing a project.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+Note:
+- Before proceeding, make sure that your system is set to High Performance. To
+  set to High Performance mode, refer to the SWITCHING BETWEEN HIGH PERFORMANCE
+  AND ENERGY SAVING MODES section.
+
+  1. Right-click anywhere on an open area of the Windows desktop, select
+     Catalyst(TM) Control Center.
+  2. If the Catalyst Control Center is opened for the first time, a window will
+     open asking to choose between Basic or Advanced. Select Advanced and click
+     Next. Catalyst Control Center Notification window will open
+  3. Click Yes. Catalyst Control Center Advanced window will open.
+  4. In the Graphics menu, select Information Center then Graphics Software.
+  5. In the Graphics Software pane, Driver Packaging Version is displayed.
+     Check if the correct version is installed.
+
+
+--------------------------------------------------------------------------------
+SWITCHING BETWEEN HIGH PERFORMANCE AND ENERGY SAVING MODES
+
+- It is recommended to close any graphics settings utility such as ATI Catalyst
+  Control Center or Intel Customer User Interface before switching between
+  different performance modes.
+
+  1. In the Task Bar, left click the battery guage. A pop-up window will open.
+  2. In the pop-up window, mouse over Switchable Graphics.
+  3. Select High Performance or Energy Saving depending on what mode you prefer.
+     A Power Manager window will open. Click Yes to proceed.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Notes:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+- Before update, uninstallation of current driver is recommeded. Refer to the
+  Uninstallation Instructions section.
+- If you are currently using driver version 7VD614WW 
+  (8.641.1.1-090824a-089811C-Lenovo) or older and need to update to the latest 
+  driver version, we recommend to uninstall current graphics driver first from 
+  Programs and Features before installing the latest driver.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen.
+ 13. At the Select Installation Option screen, click Install.
+ 14. At the Installer Welcome screen, click Express.
+ 15. Click Finish to complete installation and restart the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute setup.exe with the -install option.
+     Example: [Path where the files were extracted]\setup -install
+
+
+--------------------------------------------------------------------------------
+UNINSTALLATION INSTRUCTIONS
+
+
+Manual Uninstall
+
+  1. Start Windows and logon with an administrator account.
+  2. Click Start, then click Control Panel.
+  3. Make sure "View by Category" is selected, and click Uninstall a program.
+  4. Select ATI Catalyst Install Manager, and click Uninstall or
+     Uninstall/Change.
+  5. Follow the instructions on the screen.
+  6. Click Next to open the Catalyst Install Manager window.
+  7. In the Catalyst Install Manager window, select Express Uninstall All ATI
+     Software.
+  8. Click Next to continue and finish the uninstallation.
+  9. Click Remove button to remove ATI Catalyst Install Manager.
+ 10. Click Fisish to restart Windows.
+
+
+Manual Unattended Uninstall
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute ATISETUP.EXE with the -uninstall option.
+     Example: [Windows 7 32-bit]
+                [Path where the files were extracted]\bin\ATISETUP -uninstall
+              [Windows 7 64-bit]
+                [Path where the files were extracted]\bin64\ATISETUP -uninstall
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version                           Build ID    Rev.  Issue Date
+  --------------------------------  --------    ----  ---------------
+  8.792.5.2-120504a-138564C-Lenovo  7VD619WW    01    2012/05/22
+  8.792.5.1-111127b-129962C-Lenovo  7VD618WW    01    2012/02/17
+  8.792.5-110424b-119200C-Lenovo    7VD617WW    01    2011/05/31
+  8.752.4-101022a-107489C-Lenovo    7VD616WW    01    2010/11/15
+  8.641.1.1-090824a-089811C-Lenovo  7VD614WW    01    2009/10/09
+  8.641.1-090825m-087782C-Lenovo    7VD611WW          For preload use
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<8.792.5.2-120504a-138564C-Lenovo>
+- (Fix) Fixed an issue where the Autodesk Inventor Professional 2012
+        application crashed when changing hardware graphics options to
+        Compatibility.
+- (Fix) Fixed an issue where the 3D arrow head did not show on Autodesk
+        Inventor Professional 2012 application when creating or viewing
+        a project.
+
+<8.792.5.1-111127b-129962C-Lenovo>
+- (Fix) Fixed as issue where refresh rate changed to 50Hz after removing 
+        AC adapter on Switchable Graphics Energy saving mode even Power 
+        plans was set to Maximum Performance in Intel control panel.
+
+<8.792.5-110424b-119200C-Lenovo>
+- (Fix) Fixed as issue where MSN Live Messenger 2011 did not respond when 
+        Switchable Graphics changed to Energy Saving mode with Windows 7
+        Service Pack 1 installed.
+
+<8.752.4-101022a-107489C-Lenovo>
+- (Fix) Fixed an issue where the power consumption increased after resuming
+        normal operation from sleep state.
+- (Fix) Fixed an issue where the LCD had blank screen after resuming normal
+        operation from sleep state by opening the lid.
+
+<8.641.1.1-090824a-089811C-Lenovo>
+- (Fix) Fixed an issue where the LCD brightness could not be changed when the
+        graphics mode was set to high performance on starting the computer.
+
+<8.641.1-090825m-087782C-Lenovo>
+- (New) Initial release.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* ATI, ATI Catalyst, ATI Mobility Radeon and FireGL are trademarks of Advanced
+  Micro Devices, lnc.
+* Autodesk Inventor is a registered trademark of Autodesk, Inc.
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft and Windows are registered trademarks of Microsoft Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

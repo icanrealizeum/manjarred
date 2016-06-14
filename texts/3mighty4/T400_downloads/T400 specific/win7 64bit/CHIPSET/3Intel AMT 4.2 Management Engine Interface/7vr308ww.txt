@@ -1,0 +1,200 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      Intel AMT 4.2 - Management Engine Interface
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700, W700ds
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X301
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+                   Microsoft Windows XP  Professional SP3
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            4.2.0.1008
+
+Support device     Intel Management Engine Interface
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Intel Active Management Technology (AMT)
+  Management Engine Interface) to enable the following device.
+
+  Device name                          Device name in the Device Manager
+  ---------------------------------    ------------------------------------
+  Intel Management Engine Interface    Intel(R) Management Engine Interface
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 4.2.0.1008  (7VR308WW)
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+- Changed the installation program would configure UNS and LMS as "Automatic
+  Delayed" when available.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+
+ [Windows 7/Vista]
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the System devices category.
+  5. Double-click Intel(R) Management Engine Interface.
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+ [Windows XP]
+
+  1. Click Start.
+  2. Right-click My Computer, then click Properties.
+  3. Click the Hardware tab, and then click Device Manager.
+  4. Double-click the System devices category.
+  5. Double-click Intel(R) Management Engine Interface.
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute setup.exe with the /s option.
+     Example: [Path where the files were extracted]\MEI\setup /s
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version     Build ID    Rev.  Issue Date
+  ----------  --------    ----  -----------
+  4.2.0.1008  7VR308WW    01    2010/04/15
+  4.2.0.1008  7VR306WW    02    2010/01/18
+  4.2.0.1008  7VR306WW    01    2009/10/02
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<4.2.0.1008> (7VR308WW)
+ - (Fix) Changed the installation program would configure UNS and LMS as
+         "Automatic Delayed" when available.
+
+<4.2.0.1008> (7VR306WW)
+ - (New) Added support for Microsoft Windows Vista 32-bit, 64-bit.
+ - (New) Added support for Microsoft Windows XP Professional Service Pack 3
+         32-bit.
+
+<4.2.0.1008> (7VR306WW)
+ - (New) Initial release for Windows 7.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

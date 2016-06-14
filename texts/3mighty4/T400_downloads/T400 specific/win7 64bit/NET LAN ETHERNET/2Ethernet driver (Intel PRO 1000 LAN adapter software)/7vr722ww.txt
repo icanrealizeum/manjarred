@@ -1,0 +1,258 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      Intel PRO/1000 LAN Adapter Software
+                   (Gigabit Ethernet Driver)
+
+Support models     ThinkPad R400
+                   ThinkPad T400, T400s
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700, W700ds
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X301
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            10.1.9.0  (Build 241716)
+
+Support devices    Intel 82567LM Gigabit Network Connection
+                   Intel 82567LF Gigabit Network Connection
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Ethernet driver) to enable the following
+  devices.
+
+  Device name
+  -------------------------------------------
+  Intel 82567LM Gigabit Network Connection
+  Intel 82567LF Gigabit Network Connection
+
+  Device name in the Device Manager
+  -------------------------------------------
+  Intel(R) 82567LM Gigabit Network Connection
+  Intel(R) 82567LF Gigabit Network Connection
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  This package also installs Intel PROSet for Windows Device Manager which is an
+  extension to the Windows Device Manager. After the Intel PROSet software is
+  installed, additional tabs are automatically added to Device Manager.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 10.1.9.0  (Build 241716)
+  This is the initial release.
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the Network adapters category.
+  5. Double-click either of the following devices;
+       Intel(R) 82567LM Gigabit Network Connection
+       Intel(R) 82567LF Gigabit Network Connection
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- If the computer resumes normal operation immediately after from going into
+  standby/sleep state or does not go into standby/sleep state when the lid is
+  closed, change the following setting in the Device Manager.
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the Network adapters category.
+  5. Double-click either of the following devices;
+       Intel(R) 82567LM Gigabit Network Connection
+       Intel(R) 82567LF Gigabit Network Connection
+  6. Click the Advanced tab.
+  7. Select Wake on Settings in Property.
+  8. Change the value to "OS Controlled" from "Wake on Magic & Directed".
+  9. Click OK.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+---------------
+Ethernet Driver
+---------------
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+     The file name ends with "_32.EXE" for 32-bit, "_64.EXE" for 64-bit
+     Windows.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  For unattended installation, Ethernet driver for DOS (e1000.dos) is prepared.
+  Obtain the additional package, "Intel PRO/1000 LAN Adapter Software for DOS"
+  to use the Ethernet drivers for DOS.
+
+  The information about unattended installation instructions are included in the
+  following folders in this package;
+
+  [Windows 7 32-bit]
+    [Path where the files were extracted]\APPS\SETUP\PUSH\Win32
+  [Windows 7 64-bit]
+    [Path where the files were extracted]\APPS\SETUP\PUSH\Winx64
+
+
+---------------------------------------
+Intel PROSet for Windows Device Manager
+---------------------------------------
+
+  Intel PROSet for Windows Device Manager is an extension to the Windows Device
+  Manager. When you install the Intel PROSet software, additional tabs are
+  automatically added to Device Manager.
+
+  Notes:
+  - You must have administrator rights to install or use Intel PROSet.
+  - Before upgrading Intel PROSet, you have to uninstall the current PROSet that
+    is installed on your ThinkPad.
+    If you still face an error message like "You must uninstall the old version",
+    uninstall the Intel PROSet for Wireless LAN driver.
+  - If you have used prior versions of Intel PROSet, you should be aware of the
+    following changes with Intel PROSet for Windows Device Manager:
+    - There is no system tray icon.
+    - The configuration utility is not accessible from the Control Panel or the
+      Start menu.
+    - All Intel PROSet features are now accessed from Device Manager. To access
+      features, simply open the Device Manager and double-click the Intel
+      adapter you would like to configure.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  1. Logon with an administrator account.
+  2. Refer to the Manual Install section of Ethernet Driver, and download and
+     extract the file.
+  3. In the step 11 of the Installing files section of Ethernet Driver, uncheck
+     the checkbox next to "Install ..... now", and then click Finish to cancel
+     installation.
+  4. Move to the following folder;
+     [Windows 7 32-bit]
+       [Path where the files were extracted]\APPS\PROSETDX\Win32
+     [Windows 7 64-bit]
+       [Path where the files were extracted]\APPS\PROSETDX\Winx64
+  5. Double-click DxSetup.exe file.
+  6. Follow the instructions on the screen to complete installation.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Build No.  Version   Operating System     Rev.  Issue Date
+  ---------  --------  -----------------    ----  ----------
+  241716     10.1.9.0  Windows 7  32-bit    01    2011/06/22
+             10.1.9.0  Windows 7  64-bit
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Build number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<241716>
+ - (New) Initial release for ThinkPad R400,T400,T400s,T500,W500,W700,W700ds,
+         X200,X200s,X200 Tablet,X301.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft and Windows are registered trademarks of Microsoft Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

@@ -1,0 +1,1272 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name    Lenovo Power Management Driver
+
+Support models
+                 [Windows 10 support]
+                   ThinkPad 13
+                   ThinkPad X1 Tablet(Machine types: 20GG, 20GH)
+                   ThinkPad 11e 3rd Gen
+                   ThinkPad T460
+
+                   ThinkPad T460s, T560, P50s, L560
+                   ThinkPad T460p
+                   ThinkPad L460
+                   ThinkPad X1 Yoga (Machine types: 20FQ, 20FR)
+                   ThinkPad Yoga 260(Black:WW)
+                   ThinkPad Yoga 260(Silver : NA)
+                   ThinkPad S1(Silver: China)
+
+                   ThinkPad P50, P70
+                   ThinkPad Yoga 14
+                   ThinkPad Yoga 460
+                   ThinkPad S3, P40 Yoga
+
+                   ThinkPad 8
+                   ThinkPad 10 (Machine types: 20C1, 20C3),
+                            10 (Machine types: 20E3, 20E4)
+                   ThinkPad 11e 
+                   ThinkPad Helix (Machine types: 369x, 370x)
+                   ThinkPad Helix 2nd Gen (Machine types: 20CG, 20CH)
+                   ThinkPad L430
+                   ThinkPad L440
+                   ThinkPad L450
+                   ThinkPad L540
+                   ThinkPad L530
+                   ThinkPad S1 Yoga
+                   ThinkPad S5 Yoga 15
+                   ThinkPad S3-S431
+                   ThinkPad S5-S531
+                   ThinkPad S430, S431
+                   ThinkPad S531
+                   ThinkPad T430, T430i, T430s, T430si, T430u, T431s, T440,
+                            T440p, T440s
+                   ThinkPad T530, T530i, T540p, T550
+                   ThinkPad Tablet 2
+                   ThinkPad Twist S230u
+                   ThinkPad W530, W540, W541, W550s
+                   ThinkPad X1 Carbon (Machine types: 34xx)
+                   ThinkPad X1 Carbon (Machine types: 20A7, 20A8)
+                   ThinkPad X1 Carbon (Machine types: 20BS, 20BT)
+                   ThinkPad X1 Carbon (Machine types: 20FB, 20FC)
+                   ThinkPad X1 Helix, X1 Helix 3G
+                   ThinkPad X120e, X131e
+                   ThinkPad X230, X230i, X230 Tablet, X230i Tablet, X230s, X240,
+                            X240s, X250, X260
+                   ThinkPad Yoga 11e  
+                   ThinkPad Edge E145
+                   ThinkPad Edge E440, E455
+                   ThinkPad Edge E540, E555
+                   ThinkPad E550, E450C, E550C
+                   ThinkPad E450, E460, E465, E560, E565
+                   ThinkPad S3-S440
+                   ThinkPad S5-S540
+                   ThinkPad S440
+                   ThinkPad S540
+                   ThinkPad S3 Yoga 14
+                   ThinkPad S1 Yoga 12
+                   ThinkPad T450, T450s
+
+                   Lenovo B4400s, B4400, B4450s
+                   Lenovo M4400s, M4400, M4450
+                   Lenovo V4400u, V4400
+                   Lenovo E4430
+                   Zhaoyang K4450, K2450
+
+
+                 [Windows 8.1 support]
+                   ThinkPad 13
+                   ThinkPad X1 Tablet(Machine types: 20GG, 20GH)
+                   ThinkPad 11e 3rd Gen
+                   ThinkPad T460
+                   ThinkPad Yoga 460, Yoga 14, S3, P40 Yoga
+
+                   ThinkPad T460s, T560, P50s, L560
+                   ThinkPad T460p
+                   ThinkPad L460
+                   ThinkPad X1 Yoga (Machine types: 20FQ, 20FR)
+                   ThinkPad Yoga 260(Black:WW)
+                   ThinkPad Yoga 260(Silver : NA)
+                   ThinkPad S1(Silver: China)
+
+                   ThinkPad P50, P70
+                   ThinkPad 8
+                   ThinkPad 10 (Machine types: 20C1, 20C3),
+                            10 (Machine types: 20E3, 20E4)
+                   ThinkPad 11e 
+                   ThinkPad Helix (Machine types: 369x, 370x)
+                   ThinkPad Helix 2nd Gen (Machine types: 20CG, 20CH)
+                   ThinkPad L430
+                   ThinkPad L440
+                   ThinkPad L450
+                   ThinkPad L540
+                   ThinkPad L530
+                   ThinkPad S1 Yoga
+                   ThinkPad S5 Yoga 15
+                   ThinkPad S3-S431
+                   ThinkPad S5-S531
+                   ThinkPad S430, S431
+                   ThinkPad S531
+                   ThinkPad T430, T430i, T430s, T430si, T430u, T431s, T440,
+                            T440p, T440s
+                   ThinkPad T530, T530i, T540p, T550
+                   ThinkPad Tablet 2
+                   ThinkPad Twist S230u
+                   ThinkPad W530, W540, W541, W550s
+                   ThinkPad X1 Carbon (Machine types: 34xx)
+                   ThinkPad X1 Carbon (Machine types: 20A7, 20A8)
+                   ThinkPad X1 Carbon (Machine types: 20BS, 20BT)
+                   ThinkPad X1 Carbon (Machine types: 20FB, 20FC)
+                   ThinkPad X1 Helix, X1 Helix 3G
+                   ThinkPad X120e, X131e
+                   ThinkPad X230, X230i, X230 Tablet, X230i Tablet, X230s, X240,
+                            X240s, X250, X260
+                   ThinkPad Yoga 11e
+                   ThinkPad Edge E145
+                   ThinkPad Edge E440, E455
+                   ThinkPad Edge E540, E555
+                   ThinkPad E550, E450C, E550C
+                   ThinkPad E450, E460, E465, E560, E565
+                   ThinkPad S3-S440
+                   ThinkPad S5-S540
+                   ThinkPad S440
+                   ThinkPad S540
+                   ThinkPad S3 Yoga 14
+                   ThinkPad S1 Yoga 12
+                   ThinkPad T450, T450s
+
+                   Lenovo B4400s, B4400, B4450s
+                   Lenovo M4400s, M4400, M4450
+                   Lenovo V4400u, V4400
+                   Lenovo E4430
+                   Zhaoyang K4450, K2450
+
+
+                 [Windows 8 support]
+                   Lenovo B490s
+                   Lenovo B5400, B4400s, B4400, B4450s
+                   Lenovo M4400s, M4400, M4450
+                   Lenovo M5400
+                   Lenovo V4400u, V4400
+                   Lenovo E4430
+                   Lenovo B430, B475e, B480, B490
+                   Lenovo B575e, B580, B590
+                   Lenovo M490, M490s, M495
+                   Lenovo V480, V480c, V480s, V490u
+                   Lenovo V580, V580c
+                   Zhaoyang K4450, K2450
+                   Zhaoyang E49
+                   Zhaoyang K29, K49
+
+                   ThinkPad Edge E145
+                   ThinkPad Edge E440, E455
+                   ThinkPad Edge E540, E555
+                   ThinkPad L440
+                   ThinkPad L540
+                   ThinkPad S3-S440
+                   ThinkPad S5-S540
+                   ThinkPad S440
+                   ThinkPad S540
+                   ThinkPad Edge 14", 15"
+                   ThinkPad Edge E40, E50
+                   ThinkPad Edge E120, E125, E130, E135
+                   ThinkPad Edge E220s
+                   ThinkPad Edge E320, E325, E330, E335
+                   ThinkPad Edge E420, E420s, E425, E430, E430c, E431, E435,
+                                 E445
+                   ThinkPad Edge E520, E525, E530, E530c, E531, E535, E545
+
+                   ThinkPad Helix (Machine types: 369x, 370x)
+                   ThinkPad L330
+                   ThinkPad L412, L420, L421, L430
+                   ThinkPad L512, L520, L530
+                   ThinkPad S3-S431
+                   ThinkPad S5-S531
+                   ThinkPad S430, S431
+                   ThinkPad S531
+                   ThinkPad T410, T410i, T410s, T410si, T420, T420i, T420s,
+                            T420si, T430, T430i, T430s, T430si, T430u, T431s,
+                            T440, T440p, T440s
+                   ThinkPad T510, T510i, T520, T520i, T530, T530i, T540p
+                   ThinkPad Tablet 2
+                   ThinkPad Twist S230u
+                   ThinkPad W520, W530, W540, W541
+                   ThinkPad X1
+                   ThinkPad X1 Carbon (Machine types: 34xx)
+                   ThinkPad X1 Carbon (Machine types: 20A7, 20A8)
+                   ThinkPad X1 Helix, X1 Helix 3G, X1 Hybrid
+                   ThinkPad X100e, X120e, X121e, X130e, X131e, X140e
+                   ThinkPad X201, X201i, X201s, X201si, X201 Tablet,
+                            X201i Tablet, X220, X220i, X220 Tablet, X220i Tablet,
+                            X230, X230i, X230 Tablet, X230i Tablet, X230s, X240,
+                            X240s
+
+
+                 [Windows 7 support]
+                   ThinkPad 13
+                   ThinkPad 11e 3rd Gen
+                   ThinkPad T460
+                   ThinkPad Yoga 460, Yoga 14, S3, P40 Yoga
+
+                   ThinkPad T460s, T560, P50s, L560
+                   ThinkPad T460p
+                   ThinkPad L460
+                   ThinkPad X1 Yoga (Machine types: 20FQ, 20FR)
+                   ThinkPad Yoga 260(Black:WW)
+                   ThinkPad Yoga 260(Silver : NA)
+                   ThinkPad S1(Silver: China)
+
+                   ThinkPad P50, P70
+                   Lenovo B490s
+                   Lenovo B5400, B4400s, B4400, B4450s
+                   Lenovo M4400s, M4400, M4450
+                   Lenovo M5400
+                   Lenovo V4400u, V4400
+                   Lenovo E4430 
+                   Lenovo B430, B475e, B480, B490
+                   Lenovo B575e, B580, B590
+                   Lenovo M490, M490s, M495
+                   Lenovo V480, V480s, V490u
+                   Lenovo V580
+
+                   Zhaoyang K4450, K2450
+                   Zhaoyang E49
+                   Zhaoyang K29, K49
+
+                   ThinkPad Edge E145
+                   ThinkPad Edge E440, E455
+                   ThinkPad Edge E540, E555
+                   ThinkPad E550, E450C, E550C
+                   ThinkPad E450, E460, E465, E560, E565
+                   ThinkPad L440
+                   ThinkPad L450
+                   ThinkPad L540
+                   ThinkPad S3-S440
+                   ThinkPad S5-S540
+                   ThinkPad S440
+                   ThinkPad S540
+                   ThinkPad S1 Yoga 12
+                   ThinkPad T450, T450s
+                   ThinkPad 11e, Yoga 11e  
+                   ThinkPad Edge 11", 13", 14", 15"
+                   ThinkPad Edge E10, E30, E31, E40, E50
+                   ThinkPad Edge E120, E125, E130, E135
+                   ThinkPad Edge E220s
+                   ThinkPad Edge E320, E325, E330, E335
+                   ThinkPad Edge E420, E420s, E425, E430, E430c, E431, E435,
+                                 E445
+                   ThinkPad Edge E520, E525, E530, E530c, E531, E535, E545
+                   ThinkPad Edge S430
+                   ThinkPad Helix (Machine types: 369x, 370x)
+                   ThinkPad L330
+                   ThinkPad L410, L412, L420, L421, L430
+                   ThinkPad L510, L512, L520, L530
+                   ThinkPad R60, R60e, R60i, R61, R61e, R61i
+                   ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad S1 Yoga
+                   ThinkPad S5 Yoga 15
+                   ThinkPad S3-S431
+                   ThinkPad S5-S531
+                   ThinkPad S430, S431
+                   ThinkPad S531
+                   ThinkPad SL410
+                   ThinkPad SL510
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si, T420, T420i,
+                            T420s, T420si, T430, T430i, T430s, T430si, T430u,
+                            T431s, T440, T440p, T440s
+                   ThinkPad T500, T510, T510i, T520, T520i, T530, T530i, T540p,
+                            T550
+                   ThinkPad Twist S230u
+                   ThinkPad W500, W510, W520, W530, W540, W541, W550s
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X1
+                   ThinkPad X1 Carbon (Machine types: 34xx)
+                   ThinkPad X1 Carbon (Machine types: 20A7, 20A8)
+                   ThinkPad X1 Carbon (Machine types: 20BS, 20BT)
+                   ThinkPad X1 Carbon (Machine types: 20FB, 20FC)
+                   ThinkPad X1 Helix, X1 Helix 3G, X1 Hybrid
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad X100e, X120e, X121e, X130e, X131e, X140e
+                   ThinkPad X200, X200s, X200 Tablet, X201, X201i, X201s, X201si,
+                            X201 Tablet, X201i Tablet, X220, X220i, X220 Tablet,
+                            X220i Tablet, X230, X230i, X230 Tablet, X230i Tablet,
+                            X230s, X240, X240s, X250, X260
+                   ThinkPad X300, X301
+
+
+                 [Windows Vista support]
+                   Lenovo B475e, B490
+                   Lenovo B575e, B580, B590
+
+                   ThinkPad Edge E320, E325
+
+                   ThinkPad L410, L412, L420, L421
+                   Thinkpad L510, L512, L520
+                   ThinkPad R52, R60, R60e, R60i, R61, R61e, R61i
+                   ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad SL410
+                   ThinkPad SL510
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si, T420, T420i,
+                            T420s, T420si
+                   ThinkPad T500, T510, T510i, T520, T520i
+                   ThinkPad W500, W510, W520
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X40, X41, X41 Tablet, X60, X60s, X60 Tablet, X61,
+                            X61s, X61 Tablet
+                   ThinkPad X100e, X120e, X130e
+                   ThinkPad X200, X200s, X200 Tablet, X201, X201i, X201s, X201si,
+                            X201 Tablet, X201i Tablet, X220, X220i, X220 Tablet,
+                            X220i Tablet
+                   ThinkPad X300, X301
+                   ThinkPad Z60m, Z60t, Z61e, Z61m, Z61p, Z61t
+
+
+                 <Legacy models>
+                   ThinkPad 570E, i Series 1157(*1)
+                   ThinkPad A20m, A20p, A21e, A21m, A21p, A22e, A22m, A22p, A30,
+                            A30p, A31, A31p
+                   ThinkPad G40, G41, G50
+                   ThinkPad R30, R31, R32, R40, R40e, R50, R50e, R50p, R51, R51e
+                   ThinkPad S31
+                   ThinkPad T20, T21, T22, T23, T30, T40, T40p, T41, T41p, T42,
+                            T42p, T43, T43p
+                   ThinkPad TransNote
+                   ThinkPad X20, X21, X22, X23, X24, X30, X31, X32
+
+Operating Systems  Microsoft Windows 10 32-bit, 64-bit
+                   Microsoft Windows 8.1 32-bit, 64-bit
+                   Microsoft Windows 8  32-bit, 64-bit
+                   Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            1.67.11.8
+
+
+*1: For ThinkPad 570E, i Series 1157:
+    - If you eject the system from Port Replicator during system suspending,
+      the suspended system might wake up. Power Management Driver provides a
+      suspend service to make the system suspending as you wish.
+    - Fn + F3/F12 key combination is not supported.
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Power management driver) to enable power
+  management on Lenovo computers.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.67.11.8
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+- Added support for ThinkPad 13.
+
+[Problems fixed]
+- Improved the Continuum feature.
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+
+Method 1:
+
+  If you have the original extracted files, find the DISKKU.VER file. You can
+  see the version information using a text editor.
+
+
+Method 2:
+
+
+ [Windows 10, 8, 8.1]
+
+  [Mouse and Keyboard]
+  1. Hold down the Windows logo key and press X to open a menu at the lower-left
+     area of the screen.
+  2. Select Programs and Features from the menu.
+  3. Select Lenovo Power Management Driver.
+  4. Check the product version in the Details Pane shown at the bottom of screen.
+     If not shown, select Organize, select Layout, then select Details Pane.
+
+  [Touch]
+  1. Press the Windows logo button to display the Start screen.
+  2. Swipe in from the bottom edge of the touchscreen to display the App bar.
+  3. Select All Apps.
+  4. Select Control Panel.
+  5. Select Programs.
+  6. Select Programs and Features.
+  7. Select Lenovo Power Management Driver.
+  8. Check the product version in the Details Pane shown at the bottom of screen.
+     If not shown, select Organize, select Layout, then select Details Pane.
+
+
+ [Windows 7]
+
+  1. Select Start, then select Control Panel.
+  2. Make sure "View by Category" is selected, and select Uninstall a program.
+  3. Select Organize, select Layout, then select Details Pane. The Details Pane
+     will be shown at the bottom of screen.
+  4. Select Lenovo Power Management Driver.
+  5. Check the product version in the Details Pane.
+
+
+ [Windows Vista]
+
+  1. Select Start, then select Control Panel.
+  2. Make sure "Control Panel Home" is selected, and select Uninstall a program.
+  3. Select Organize, select Layout, then select Details Pane. The Details Pane
+     will be shown at the bottom of screen.
+  4. Select Lenovo Power Management Driver.
+  5. Check the product version in the Details Pane.
+
+--------------------------------------------------------------------------------
+NOTES
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Select the underlined file name. Once this is done, some pop-up windows
+     will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, select Save.
+  4. Choose the folder you would like to download the file to, and select Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click/double-tap it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, select Next. If you would like
+     to select a different folder, select Browse.
+ 10. In the Ready to Install window, select Install. All the necessary files
+     will be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and select
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then select Finish to cancel installation.
+  3. At the command line, execute setup.exe with the -S options.
+     Example: [Path where the files were extracted]\setup -S 
+
+
+--------------------------------------------------------------------------------
+UNINSTALLATION INSTRUCTIONS
+
+
+Manual Uninstall
+
+
+ [Windows 10, 8, 8.1]
+
+  [Mouse and Keyboard]
+  1. Start Windows and logon with an administrator account.
+  2. Hold down the Windows logo key and press X to open a menu at the lower-left
+     area of the screen.
+  3. Select Programs and Features from the menu.
+  4. Select Lenovo Power Management Driver, and select Uninstall or
+     Uninstall/Change.
+  5. Follow the instructions on the screen to complete uninstallation and
+     restart the computer.
+
+  [Touch]
+  1. Start Windows and logon with an administrator account.
+  2. Press the Windows logo button to display the Start screen.
+  3. Swipe in from the bottom edge of the touchscreen to display the App bar.
+  4. Select All Apps.
+  5. Select Control Panel.
+  6. Select Programs.
+  7. Select Programs and Features.
+  8. Select Lenovo Power Management Driver, and select Uninstall or
+     Uninstall/Change.
+  9. Follow the instructions on the screen to complete uninstallation and
+     restart the computer.
+
+
+ [Windows 7]
+
+  1. Start Windows and logon with an administrator account.
+  2. Select Start, then select Control Panel.
+  3. Make sure "View by Category" is selected, and select Uninstall a program.
+  4. Select Lenovo Power Management Driver, and select Uninstall or
+     Uninstall/Change.
+  5. Follow the instructions on the screen to complete uninstallation and
+     restart the computer.
+
+
+ [Windows Vista]
+
+  1. Start Windows and logon with an administrator account.
+  2. Select Start, then select Control Panel.
+  3. Make sure "Control Panel Home" is selected, and select Uninstall a program.
+  4. Select Lenovo Power Management Driver, and select Uninstall or
+     Uninstall/Change.
+  5. Follow the instructions on the screen to complete uninstallation and
+     restart the computer.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Package       Build ID    Rev.  Issue Date
+  ----------    --------    ----  ---------------
+  1.67.11.08    n1lku12w    01    2016/03/04
+  1.67.11.06    n1lku08w    01    2016/01/29
+  1.67.10.20    n1cku27w    11    2016/01/27
+  1.67.10.20    n1cku27w    10    2016/01/19
+  1.67.10.20    n1cku27w    09    2016/01/15
+  1.67.10.20    n1cku27w    08    2016/01/12
+  1.67.10.20    n1cku27w    07    2015/12/15
+  1.67.10.20    n1cku27w    06    2015/11/19
+  1.67.10.20    n1cku27w    05    2015/11/17
+  1.67.10.20    n1cku27w    04    2015/11/10
+  1.67.10.20    n1cku27w    03    2015/10/23
+  1.67.10.20    n1cku27w    02    2015/10/20
+  1.67.10.20    n1cku27w    01    2015/09/23
+  1.67.10.15    n1cku18w    02    2015/08/12
+  1.67.10.15    n1cku18w    01    2015/07/29
+  1.67.10.07    n1cku09w    01    For factory use
+  1.67.10.02    n1cku04w    01    2015/04/17
+
+----- old n1cku04e -----
+  1.67.10.02    n1cku04e    02    2015/03/31
+  1.67.10.02    n1cku04e    01    2015/03/10
+  1.67.09.03    n19ku12e    05    2015/02/12
+  1.67.09.03    n19ku12e    04    2015/01/15
+  1.67.09.03    n19ku12e    03    2015/01/13
+  1.67.09.03    n19ku12e    02    2014/12/10
+  1.67.09.03    n19ku12e    01    2014/12/02
+  1.67.09.00    n19ku07e    01    2014/10/22
+  1.67.07.06    n19ku05e    01    2014/08/28
+  1.67.04.05    gtku09ew    01    2014/08/12
+  1.67.04.04    gtku07ew    01    2013/12/03
+  1.67.0.02     giku06ew    03    2013/09/13
+  1.67.0.02     giku06ew          For factory use
+  1.67.0.02     giku06ew          For factory use
+  1.67.0.02     giku06ew          For factory use
+  1.67.0.02     giku06ew    02    2013/08/06
+  1.67.0.02     giku06ew    01    2013/06/08
+
+----- old n19ku12w -----
+  1.67.9.03     n19ku12w    03    2015/03/31
+  1.67.9.03     n19ku12w    02    2015/01/13
+  1.67.9.03     n19ku12w    01    2014/11/18
+  1.67.9.02     n19ku10w    01    2014/10/28
+  1.67.9.00     n19ku07w          for factory use
+  1.67.9.00     n19ku07w    02    2014/10/17
+  1.67.9.00     n19ku07w    01    2014/10/08
+  1.67.4.05     gtku09ww    03    2014/05/30
+  1.67.4.05     gtku09ww    02    2014/04/18
+  1.67.4.05     gtku09ww    01    2014/03/04
+  1.67.4.04     gtku07ww    03    2013/12/20
+  1.67.4.04     gtku07ww    02    2013/12/04
+  1.67.4.04     gtku07ww    01    2013/11/25
+  1.67.3.13     grku10ww    04    2013/10/31
+  1.67.3.13     grku10ww    03    2013/10/18
+  1.67.3.13     grku10ww    02    2013/10/11
+  1.67.3.13     grku10ww    01    2013/09/06
+  1.67.0.02     giku06ww    02    2013/09/20
+  1.67.0.02     giku06ww    01    2013/07/05
+  1.66.0.22     geku18ww    08    2013/06/28
+  1.66.0.22     geku18ww    07    2013/05/10
+  1.66.0.22     geku18ww    06    2013/04/23
+  1.66.0.22     geku18ww    05    2013/04/11
+  1.66.0.22     geku18ww    04    2013/04/08
+  1.66.0.22     geku18ww    03    2013/03/15
+  1.66.0.22     geku18ww    02    2013/01/18
+  1.66.0.22     geku18ww    01    2012/12/19
+  1.66.0.22     geku18ww    03    2013/03/15
+  1.66.0.22     geku18ww    02    2013/01/18
+  1.66.0.22     geku18ww    01    2012/12/19
+  1.66.0.21     geku16ww    01    2012/11/26
+  1.66.0.17     geku09ww    02    2012/11/02
+  1.66.0.17     geku09ww    01    2012/10/18
+  1.66.0.15     geku08ww    01    2012/10/09
+  1.66.0.14     geku06ww    01    2012/09/24
+  1.66.0.7      gdku07ww    01    2012/09/24
+  1.65.05.21    g1ku20ww    05    2012/10/24
+  1.65.05.21    g1ku20ww    04    2012/10/12
+  1.65.05.21    g1ku20ww    03    2012/08/10
+  1.65.05.21    g1ku20ww    02    2012/07/31
+  1.65.05.21    g1ku20ww    01    2012/07/18
+  1.65.05.20    g1ku10ww    06    for factory use
+  1.65.05.20    g1ku10ww    05    for factory use
+  1.65.05.20    g1ku10ww    04    for factory use
+  1.65.05.20    g1ku10ww    03    2012/05/25
+  1.65.05.20    g1ku10ww    02    2012/04/27
+  1.65.05.20    g1ku10ww    01    2012/04/06
+  1.64                      03    2012/03/15
+  1.64                      02    2011/12/01
+  1.64                      01    2011/11/02
+  1.63                      02    2012/03/01
+  1.63                      01    2011/08/29
+  1.62                      06    2011/07/15
+  1.62                      05    2011/06/10
+  1.62                      04    2011/04/28
+  1.62                      03    2011/04/08
+  1.62                      02    2011/03/18
+  1.62                      01    2011/03/10
+  1.61                      02    2011/03/08
+  1.61                      01    2011/01/25
+  1.60                      09    2010/09/09
+  1.60                      08    2010/09/03
+  1.60                      07    2010/05/19
+  1.60                      06    2010/04/06
+  1.60                      05    2010/03/16
+  1.60                      04    2010/02/12
+  1.60                      03    2010/01/29
+  1.60                      02    2010/01/05
+  1.60                      01    2009/12/18
+  1.55                      01    2009/10/02
+  1.53                      02    2009/09/11
+  1.53                      01    2009/06/11
+  1.52                      01    2008/11/18
+  1.51                            30th release
+  1.50                            29th release
+  1.45                            28th release
+  1.44                            27th release
+  1.43                            26th release
+  1.42                            25th release
+  1.41                            24th release
+  1.40                            23th release
+  1.33                            22th release
+  1.32                            21th release
+  1.31                            20th release
+  1.30                            19th release
+  1.26                            18th release
+  1.25                            17th release
+  1.24                            16th release
+  1.23                            15th release
+  1.23                            15th release
+  1.22                            14th release
+  1.21                            13th release
+  1.21                            13th release
+  1.20                            12th release
+  1.19                            11th release
+  1.18                            10th release
+  1.18                            10th release
+  1.17                            9th release
+  1.16                            8th release
+  1.15                            7th release
+  1.14                            6th release
+  1.13                            5th release
+  1.12                            4th release
+  1.11                            3rd release
+  1.10                            2nd release
+  1.00                            Initial release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.67.11.8> (n1lku12w)
+- (New) Added support for ThinkPad 13.
+- (Fix) Improved the Continuum feature.
+
+<1.67.11.6> (n1lku08w)
+- (New) Added support for ThinkPad X1 Tablet (Machine types: 20GG, 20GH).
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for Thinkpad 11e 3rd Gen.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for Thinkpad P40 Yoga.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for Thinkpad T460.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad T460s, T560, P50s, L560.
+- (New) Added support for ThinkPad X1 Carbon (Machine types: 20FB, 20FC).
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad T460p, ThinkPad L460.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad X1 Yoga (Machine types: 20FQ, 20FR).
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad X260.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad 10 (Machine types: 20E3, 20E4)
+        in [Windows 8.1 support].
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad Yoga 260(Black:WW),
+                          ThinkPad Yoga 260(Silver : NA),
+                          ThinkPad S1(Silver: China)
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad E460, E465, E560, E565.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad P50, P70.
+
+<1.67.10.20> (n1cku27w)
+- (New) Added support for ThinkPad Yoga14, ThinkPad Yoga460, ThinkPad S3.
+
+<1.67.10.15> (n1cku18w)
+- (New) Added support for ThinkPad 10 (Machine types: 20E3, 20E4).
+
+<1.67.10.15> (n1cku18w)
+ -(New) Added Windows 10 support.
+
+<1.67.10.07> (n1cku09w)
+ -(New) Added the Fn Sticky key support for keyboard accessibility.
+
+<1.67.10.02> (n1cku04w)
+ -[Important] Merged "n1cku04e" and "n19ku12w" into "n1cku04w".
+              Please see the release history below for each old package.
+
+
+----- old n1cku04e --------------------------------------
+<1.67.10.02> (n1cku04e)
+ -(New) Added Machine Type for ThinkPad 11e, Yoga 11e.
+
+<1.67.10.02> (n1cku04e)
+ -(New) Added support for ThinkPad 11e.
+
+<1.67.09.03> (n19ku12e)
+ -(New) Added Windows 8.1 32-bit support for ThinkPad L440, L540.
+
+<1.67.09.03> (n19ku12e)
+ -(New) Added support for ThinkPad S1 Yoga 12.
+
+<1.67.09.03> (n19ku12e)
+ -(New) Added support for ThinkPad T450, T450s, L450.
+
+<1.67.09.03> (n19ku12e)
+ -(New) Added support for ThinkPad E550, E450C, E550C.
+
+<1.67.09.03> (n19ku12e)
+ -(Fix) Fixed an issue that updating Lenovo Power Management Driver might
+        cause some legacy Thinkpad models unbootable.
+
+<1.67.09.00> (n19ku07e)
+ -(New) Added support for ThinkPad E450.
+
+<1.67.07.06> (n19ku05e)
+ -(New) Added support for ThinkPad S3 Yoga 14.
+
+<1.67.04.05> (gtku09ew)
+ -(New) Added support for ThinkPad Edge E455, E555.
+ -(New) Removed Windows XP support from supported Operating Systems.
+ -(New) Removed Windows Vista support from supported Operating Systems.
+
+<1.67.04.04> (gtku07ew)
+ -(New) Added support for Microsoft Windows 8.1 32-bit, 64-bit.
+ -(New) Added support for Lenovo M4400, M4450, V4400, B4400, V4400u.
+ -(New) Added support for Lenovo B4450s, E4430, B4400s.
+
+<1.67.0.02> (giku06ew)
+ -(New) Added support for Lenovo L440, L540.
+ -(New) Added support for ThinkPad S540, S5-S540
+
+<1.67.0.02> (giku06ew)
+ -(New) Added support for ThinkPad Edge E440, E540.
+
+<1.67.0.02> (giku06ew)
+ -(New) Added support for Lenovo M5400, B5400.
+
+<1.67.0.02> (giku06ew)
+ -(New) Added support for Zhaoyang K2450.
+
+<1.67.0.02> (giku06ew)
+ -(New) Added support for ThinkPad Edge E145, Lenovo B490s, Zhaoyang K4450.
+
+<1.67.0.02> (giku06ew)
+ -(New) Initial release for ThinkPad S440, S3-S440, Lenovo V4400u.
+
+
+----- old n19ku12w --------------------------------------
+<1.67.09.03>
+- (New) Specified the machine types (20D9, 20DA) for ThinkPad 11e,Yoga 11e.
+
+<1.67.09.03>
+- (New) Added support for ThinkPad X250.
+
+<1.67.09.03>
+- (New) Added support for ThinkPad T550,W541,W550s.
+
+<1.67.09.03>
+- (New) Added support for ThinkPad X1 Carbon (Machine types: 20BS, 20BT).
+- (New) Added support for ThinkPad S5 Yoga 15.
+
+<1.67.09.03>
+- (Fix) Fixed an issue where the following models failed to be booted after
+        updating this software.
+          ThinkPad X41 Tablet, X60 Tablet, X200 Tablet, X201 Tablet, X220 Tablet,
+                   X220i Tablet, X230 Tablet, X230i Tablet
+          ThinkPad Yoga 11e
+
+<1.67.09.02>
+- (Fix) Fixed the issue of the Intelligent Cooling feature on ThinkPad Helix 2nd
+        Gen.
+
+<1.67.09.00>
+ -(New) Added support for ThinkPad Helix 2nd Gen (Machine types: 20CG, 20CH).
+
+<1.67.09.00>
+- (New) Added the [Windows Vista support] information in the title section.
+
+<1.67.09.00>
+- [Important]
+        Ended support for Microsoft Windows XP.
+        (Note)
+        For Microsoft Windows XP, use the version 1.67.04.05 (GTKU09WW).
+- (New) Added touchpad future support.
+
+<1.67.04.05>
+- (New) Added support for ThinkPad Yoga 11e.
+
+<1.67.04.05>
+- (New) Added support for ThinkPad 10.
+- (New) Added support for ThinkPad 11e.
+
+<1.67.04.05>
+- (New) Added support for the announcement function on the ThinkPad X1 Carbon
+        Uncommonly Intuitive Adaptive Keyboard.
+
+<1.67.04.04>
+- (New) Added support for ThinkPad 8.
+
+<1.67.04.04>
+- (Fix) In this readme, removed ThinkPad S5-S540.
+
+<1.67.04.04>
+- (New) Added support for ThinkPad X1 Carbon (MTM:20A7, 20A8)
+-       Marged support models for all os in this readme.
+
+<1.67.03.13>
+- [Important]
+        Added support for Windows 8.1 32-bit.
+
+<1.67.03.13>
+- (New) Added support for ThinkPad T540p,W540,X140e.
+
+<1.67.03.13>
+- [Important]
+        Added support for Microsoft Windows 8.1 64-bit.
+- (New) Added support for ThinkPad S1 Yoga,Yoga.
+
+<1.67.03.13>
+- (New) Improved the flip-screen feature on ThinkPad Twist S230u.
+- (New) Improved screen auto-rotation user experience after resume from
+        sleep/hibernation on ThinkPad Twist S230u.
+
+<1.67.0.02>
+- (New) Added support for ThinkPad T440,T440p,X240.
+
+<1.67.0.02>
+- (New) Added support for ThinkPad T440s,X240s.
+
+<1.66.0.22>
+- (New) Added support for ThinkPad Edge E430c,E530c.
+- (New) Added support for ThinkPad Edge E431,E531.
+- (New) Added support for Thinkpad Edge E445,E545.
+- (New) Added support ThinkPad Twist S230u for Windows 7.
+
+<1.66.0.22>
+- (New) Added support for ThinkPad S3-S431,S5-S531,S431,S531.
+- (New) Added support for ThinkPad X1 Helix,X1 Helix 3G.
+
+<1.66.0.22>
+- (Fix) Corrected a description of Support models in this README document.
+        (Added ThinkPad R60/R60e/R60i/R61/R61e/R61i/T60/T60p/T61/T61p/X60/X60s/
+        X60 Tablet/X61/X61s/X61 Tablet)
+
+<1.66.0.22>
+- (Fix) Added a description of the older version than 1.66.0.7 of VERSION
+        INFORMATION in this README document.
+
+<1.66.0.22>
+- (New) Added support for Thinkpad Edge E431,E531
+
+<1.66.0.22>
+- (New) Added support for ThinkPad T431s, X230s.
+- (New) Added support for Lenovo M490s.
+
+<1.66.0.22>
+- (New) Added support for ThinkPad Helix.
+
+<1.66.0.22>
+- (New) Supported for Windows 7, Windows Vista, and Windows XP operating systems.
+- (New) Added support for ThinkPad Helix.
+
+<1.66.0.21>
+- (New) Supported for all models. Improved ThinkPad Twist auto rotation function.
+
+<1.66.0.17>
+- (New) Supported for only ThinkPad Twist (Only MT:3347-2TU , MT:3347-4HU).
+        Please use 1.66.0.14(geku06ww) for other models.
+- (Fix) Corrected the model name from ThinkPad S230u to ThinkPad Twist and
+        ThinkPad S230u Twist in this Readme document.
+
+<1.66.0.17>
+- (Fix) Fixed an issue that customers cannot get the latest version of
+        Lenovo PM driver using Windows Update.
+
+<1.66.0.15>
+- (New) Supported for all models.
+- (Fix) Fixed an issue that during the first log-on, software keyboard cannot be
+        displayed when user inputs network password in the Network Connection
+        setting window. (ThinkPad S230u only)
+
+<1.66.0.14>
+- (New) Added support for ThinkPad Tablet 2.
+- (New) Supported for only ThinkPad S230u.
+
+<1.66.0.7>
+- (New) Initial release for the models except ThinkPad S230u.
+
+
+<1.65.05.21>
+- (New) Added support for Microsoft Windows XP Professional SP3 for ThinkPad
+        S430,Edge S430.
+
+<1.65.05.21>
+- (New) Added support for Lenovo B430,B490/B590,V490u.
+- (New) Added support for Microsoft Windows XP for ThinkPad Edge E135.
+- (New) Added support for Microsoft Windows XP Professional SP3 for ThinkPad
+        X131e.
+- (New) Added support for Microsoft Windows XP Professional x64 Edition SP2 for
+        ThinkPad W530.
+
+<1.65.05.21>
+- (New) Added support for ThinkPad S430,T430u.
+- (New) Added support for Lenovo M490,M495.
+
+<1.65.05.21>
+- (Fix) Corrected a description of Software name in this README document.
+
+<1.65.05.21>
+- (New) Added support for ThinkPad Edge E335, ThinkPad L330.
+- (New) Added support for Lenovo B475e, B575e,E49,V480,V480s,V580,B480,B580.
+- (New) Added support for Zhaoyang K29,K49,E49.
+- (New) Changed device name to "Lenovo PM Device" from "ThinkPad PM Device".
+
+<1.65.05.20>
+- (New) Added support for ThinkPad X1 Carbon
+
+<1.65.05.20>
+- (New) Added support for ThinkPad Edge E135
+
+<1.65.05.20>
+- (New) Added support for ThinkPad Edge E130
+
+<1.65.05.20>
+- (New) Added support for ThinkPad X131e,Edge S430.
+- (New) Added support for ThinkPad Edge E330,E435,E535.
+
+<1.65.05.20>
+- (New) Added support for ThinkPad L430,L530,T430,T430i,T430s,T430si,T530,T530i,
+        W530,X230,X230i,X230 Tablet,X230i Tablet.
+
+<1.65.05.20>
+- (New) Added support for ThinkPad Edge E430,E530.
+
+<1.64>
+- (New) Added support for ThinkPad X1 Hybrid.
+
+<1.64>
+- (New) Added support for ThinkPad X130e.
+
+<1.64>
+- (New) Added support for the Change to "F1-F12 keys" function of On Screen
+         Display on Windows 7.
+
+<1.63>
+- (New) Added support for ThinkPad X1 Hybrid for Windows 7 64-bit.
+
+<1.63>
+- (New) Added support for Microsoft Windows XP Professional x64 Edition SP2 for
+         ThinkPad W520.
+
+<1.62>
+- (New) Added support for ThinkPad Edge E425,E525.
+
+<1.62>
+- (New) Added support for ThinkPad X121e,Edge E120,E125,E320,E325.
+
+<1.62>
+- (New) Added support for ThinkPad X1.
+
+<1.62>
+- (New) Added support for ThinkPad X220,X220i,X220 Tablet,X220i Tablet.
+- (New) Added support for ThinkPad Edge E220s,E420,E520.
+
+<1.62>
+- (New) Added support for ThinkPad W520.
+- (New) Added support for ThinkPad L421.
+
+<1.62>
+- (New) Added support for ThinkPad L420,L520,T420s,T420si,Edge E420s.
+
+<1.61>
+- [Important]
+        End of support for Windows 2000, Windows Me and Windows 98 SE.
+        Note:
+        For Windows 2000/Me/98 SE users, use the version 1.60 of this software.
+- (New) Added support for ThinkPad T420,T420i,T520,T520i.
+
+<1.61>
+- (New) Added support for ThinkPad X120e.
+
+<1.60>
+- (New) Added support for W700,W700ds,W701,W701ds on Windows XP Professional x64
+        Edition.
+
+<1.60>
+- (New) Added support for ThinkPad Edge 11",E10,13",E31.
+- (New) Added support for ThinkPad Edge 14",15",E40,E50 on Windows XP.
+
+<1.60>
+- (New) Added support for ThinkPad L412,L512.
+
+<1.60>
+- (New) Added support for ThinkPad Edge 14",15",E40,E50.
+
+<1.60>
+- (New) Added support for ThinkPad W701,W701ds.
+
+<1.60>
+- (New) Added support for ThinkPad X201,X201i,X201s,X201 Tablet.
+
+<1.60>
+- (New) Added support for ThinkPad T410i,T410s,T410si,T510i.
+
+<1.60>
+- (Fix) Version information is not correct.
+
+<1.60>
+- (New) Support for ThinkPad T410,T510,W510,X100e,Edge 13",Edge E30.
+
+<1.55>
+- (New) Added support for Windows 7.
+
+<1.53>
+- (New) Added support for ThinkPad L410,L510,SL410,SL510.
+
+<1.53>
+- (New) Added support for ThinkPad T400s.
+- (New) Added new functions (Numlock indicator, Microphone mute, New Dock, Power
+        consumption indicator in AC mode and Always On USB in AC mode).
+
+<1.52>
+- (New) Support for ThinkPad W700ds.
+
+<1.51>
+- (Fix) The system sometimes fails to enter to sleep mode after detaching the
+        system from the ultrabay device during sleep mode.
+- (New) Support for ThinkPad X200s,X200 Tablet (added).
+
+<1.50>
+- (New) Support for Color Sensor feature.
+- (New) Support for ThinkPad X301,W700.
+
+<1.45>
+- (New) Support for ATM support feature.
+- (New) Support for ThinkPad X200,R400,R500,T400,T500,W500.
+
+<1.44>
+- (New) Support for ThinkPad X300.
+
+<1.43>
+- (New) Support for EnergyStar 4.0 support feature.
+- (New) Support for ThinkPad T61p,R61e,R61i.
+
+<1.42>
+- (New) Support for ThinkPad T61,R61,X61 Tablet,X61,X61s.
+
+<1.41>
+- (Fix) Fixed the late-resume problem on ThinkPad Power Management Driver under
+        the Windows Vista environment.
+
+<1.40>
+- (New) Support for ThinkPad X60 Tablet.
+- (New) Support Microsoft Windows Vista 32bit/64bit.
+
+<1.33>
+- (New) Support for ThinkPad T60,T60p,X60,X60s.
+
+<1.32>
+- (Fix) Fix the issue of installation failure when some domain user account is
+        used.
+
+<1.31>
+- (New) Support for Fn+F3 advanced feature of "ThinkPad Hotkey Features".
+
+<1.30>
+- (Fix) Blue screen error may occur in heavy situation.
+- (Fix) Shorten loading time during boot-up.
+- (Fix) Suspend/Resume continues when battery capacity is in critical low in
+        case no hibernation file exists.
+
+<1.26>
+- (Note) Windows Me Logo program was terminated.
+- (Fix) Blue screen error may occur in uninstallation.
+
+<1.25>
+- (New) Support for SETUP.EXE as an installation program.
+- (Fix) Uninstallation does not work on Windows XP.
+
+<1.24>
+- (Fix) A blue screen error may occur.
+
+<1.23>
+- (New) Certified on all operating systems (Windows Me/2000/XP).
+
+<1.23> *Certified on Windows 2000/XP, Not certified on Windows Me
+- (Note) This package was applied only to Preload of ThinkPad T40,T40p,X31,R40e.
+- (New) Support for new function of processor state control.
+
+<1.22>
+- (New) Support for new function of IBM ThinkPad Keyboard Customizer Utility.
+- (Fix) Shutdown may take longer time.
+
+<1.21>
+- (New) Certified on all operating systems (Windows Me/2000/XP).
+
+<1.21> *Certified on Windows 2000/XP, Not certified on Windows Me
+- (Note) Windows 98 Logo program was terminated.
+- (New) Support for Fn + F7 function.
+- (Fix) LCD screen is black out after waking up from lid close hibernation on
+       log on screen of Windows 2000/XP.
+
+<1.20>
+- (New) Support for a warning message when a battery is in critical condition.
+
+<1.19>
+- (New) Support for suspend function when a battery is in critical condition.
+- (Fix) Screen is turned off repeatedly on Windows XP by Fn + F3 key after Fast
+        User Switching.
+
+<1.18>
+- (Fix) Added Microsoft digital signature.
+
+<1.18> * Not certified
+- (Fix) There is a possibility that screen may flash by Fn + F3 screen blanking.
+
+<1.17> * Not certified
+- (New) Support for Windows XP.
+- (Fix) Fn+F3 does not work correctly when mouse button is configured as left-
+        handed.
+- (Fix) Fn+F3 does not work correctly when logging on Windows 98/Me with a newly
+        created user ID.
+- (Fix) Fn+F3 does not work correctly when Microsoft Office XP is installed on
+        Windows 2000.
+
+<1.16> * Not certified
+- (New) Support for non-suspend when FDD is attached to docking station.
+
+<1.15> * Not certified
+- (New) Support for ThinkPad T23.
+- (Fix) Dialup Network cannot re-connect after wake-up from hibernation by
+        Fn+F12.
+- (Fix) Version information is not correct.
+- (Fix) Screen may be black out continuously after Fn+F3 on Windows 2000.
+
+<1.14> * Not certified
+- (New) Support for ThinkPad A22m,A22p,T22,X21,A22e,TransNote.
+- (New) Support for Lid close action beep function for A2x/T2x family.
+- (Fix) (Windows Me) System takes long time to resume from standby if Screen
+        Saver is set.
+- (Fix) System does not go to standby after undocking during standby mode.
+
+<1.13> * Not certified
+- (New) Support for ThinkPad A21e,A21m,A21p,T21.
+
+<1.12> * Not certified
+- (New) Support for ThinkPad X20.
+- (New) Support for Windows Me.
+- (Fix) (Windows 2000) Changes made on power management settings are not saved
+        correctly when Fn + F3 keys are pressed.
+
+<1.11> * Not certified
+- (New) Support for display switching function for ThinkPad T20.
+- (Fix) Fn+F3 key does not work correctly when Font size is changed.
+- (New) Add ThinkPad i Series 1157 in support model.
+
+<1.10> * Not certified
+- (New) Support for ThinkPad A20m,A20p,T20.
+
+<1.00> * Not certified
+- (New) Initial for ThinkPad 570E.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+ In the case of the manual installation on the portrait screen , the error 
+message is displayed. It requires 960 pixels resolution. Please install on the 
+landscape screen.
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad and TransNote are registered trademarks of Lenovo.
+
+* Microsoft, Internet Explorer, Windows and Windows Vista are registered
+  trademarks of Microsoft Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

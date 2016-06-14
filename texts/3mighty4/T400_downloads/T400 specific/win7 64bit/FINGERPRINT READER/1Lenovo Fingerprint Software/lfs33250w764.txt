@@ -1,0 +1,182 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software Name      Lenovo Fingerprint Software
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700(*1), W700ds(*1)
+                   ThinkPad X200, X200s, X200 Tablet(*1)
+                   ThinkPad X301
+
+Operating Systems  Microsoft Windows 7  64bit
+                   
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            3.3.2.50
+
+Support device     AuthenTec Inc, AES2810
+
+
+*1: - ThinkPad W700, W700ds support the 64-bit version of Windows 7 Professional
+      edition only.
+    - ThinkPad X200 Tablet does not support Windows 7 Home Basic.
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Lenovo Fingerprint Software) to enable the
+  following device.
+
+  Device name           Device name in the Device Manager
+  ------------------    ---------------------------------
+  Fingerprint Reader    AuthenTec Inc, AES2810
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 3.3.2.50  
+
+[Important updates]
+
+- Fix issue that Single sign-on from preboot  to Windows will log in with wrong account when exit bios without any changes.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+  
+
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  1. Click Start, then go to Control Panel.
+  2. Go to Hardware and Sound then select Lenovo's Notebook Fingerprint Reader.
+  3. Click About menu.
+     Then you will see the driver version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click the Save button.
+  4. Choose the folder you would like to download the file to and click the Save
+     button.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with administrative privileges.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute SETUP64-WIN7.EXE /s /v"/qn REBOOT="R"".
+     Example:
+     [Path where the files were extracted]\SETUP64-WIN7 /s /v"/qn REBOOT="R""
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version    Rev.  Issue Date
+  ---------  ----  ----------
+  3.3.2.50    01   2011/09/04
+  3.3.2.43    01   2011/02/18
+  3.3.2.27    02   2010/05/18
+  3.3.2.27    01   2010/03/16
+  3.2.0.341   02   2009/04/27
+  3.2.0.341   01   2009/04/09
+  3.2.0.275   01   2008/11/18
+  3.2.0.275        4th release
+  3.2.0.116        3rd release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<3.3.2.50>
+ - (Fix)    Single sign-on from preboot  to Windows will log in with wrong account when exit bios without any changes
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo, ThinkPad and ThinkVantage are registered trademarks of Lenovo.
+
+* AuthenTec is a trademark of AuthenTec, Inc.
+* Microsoft and Windows are registered trademarks of Microsoft Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.
+
+(C) Copyright Lenovo 2011. All rights reserved.

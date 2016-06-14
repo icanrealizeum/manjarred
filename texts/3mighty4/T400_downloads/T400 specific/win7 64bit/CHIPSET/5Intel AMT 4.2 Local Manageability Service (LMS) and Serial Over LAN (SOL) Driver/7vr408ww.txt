@@ -1,0 +1,323 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      Intel AMT 4.2 - Local Manageability Service (LMS) and
+                   Serial Over LAN (SOL) Driver
+
+Support models     ThinkPad R400
+                   - IEEE 1394 models
+                     Machine types and models:
+                     7438-P1x,P2x,T1x,T2x,T3x,T4x,T6x,T7x,T8x,T9x,TAx,TBx,TCx
+                     7439-11x,12x,13x,14x,15x,16x,17x,18x,19x,1Ax,1Bx,1Cx,1Dx,
+                          1Ex,1Fx,1Gx,1Hx,1Jx,1Kx,1Lx,1Mx,1Nx,1Px,1Rx,1Sx,1Tx,
+                          1Ux,1Vx,1Wx,E1x,E2x,E3x,E4x,P1x,P2x,P3x,P4x,P5x,P6x,
+                          P7x,P8x,P9x,PAx,PBx,PCx,T1x,V1x,V2x,V3x,V4x,V5x
+                     7440-11x,12x,V1x,V5x,T1x
+                     7440-1Nx
+                     7443-P1x,P2x,P3x,P4x,P5x,P7x,PAx,PBx,PCx,PDx,PEx,PFx,PGx,
+                          S6x,S7x,11x,S8x,S9x,SAx,SBx,SCx,SDx,SEx,SFx,T4x,T5x,
+                          T6x,T7x,T8x,T9x,TAx,TBx,TCx,TDx,TEx,TFx,TGx,THx,TJx,
+                          TKx,TLx,TMx,TNx,TPx,TRx,TSx,1Tx,TUx
+                     7445-11x,12x,13x,14x,15x,16x,17x,18x,19x,1Ax
+                     7446-X1x
+                     7447-X2x
+                     2782-P1x,P2x,P3x,P4x,P5x,P6x,P7x,P8x,P9x,T1x,T2x,PAx,PBx,
+                          T5x,T6x,T7x,T8x,T9x,TKx,TLx,TMx,TNx,TPx,TRx,TSx,1Tx,
+                          TUx,TVx,TWx,TYx,TZx,S1x,S2x,S3x,S4x
+                     2783-T1x,T2x
+                     2784-11x,12x,13x,14x,V1x,V3x
+                     2786-11x,12x,13x,14x,V1x
+                     2787-21x,22x,23x,26x,27x,28x,P1x,P2x,P3x,P4x,P5x
+                     2788-X3x
+                     2789-X4x
+                   ThinkPad T400, T400s
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700, W700ds
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X301
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+                   Microsoft Windows XP  Professional SP3
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Versions           5.4.1.1016    Package
+                   - 5.4.1.1016  Serial Over LAN (SOL) Driver
+                   - 4.2.0.1036  Local Manageability Service (LMS)
+                   - 4.2.0.1036  Intel Management and Security Status (IMSS)
+                   - 4.2.0.1036  User Notification Service (UNS)
+
+Support device     Intel Active Management Technology (AMT) - Serial Over LAN
+                   (SOL)
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Intel Active Management Technology (AMT)
+  Manageability Engine components) to enable the following device.
+
+  Device name                              Device name in the Device Manager
+  ---------------------------------------- -------------------------------------
+  Intel Active Management Technology (AMT) Intel(R) Active Management Technology
+  - Serial Over LAN (SOL)                  - SOL (COMx)
+
+  Intel AMT Manageability Engine components
+  ---------------------------------------------
+  - Serial Over LAN (SOL) Driver
+  - Local Manageability Service (LMS)
+  - Intel Management and Security Status (IMSS)
+  - User Notification Service (UNS)
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Versions  5.4.1.1016    Package
+            - 5.4.1.1016  Serial Over LAN (SOL) Driver
+            - 4.2.0.1036  Local Manageability Service (LMS)
+            - 4.2.0.1036  Intel Management and Security Status (IMSS)
+            - 4.2.0.1036  User Notification Service (UNS)
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+- Changed the installation program would configure UNS and LMS as "Automatic
+  Delayed" when available.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+
+Serial Over LAN (SOL) Driver :
+
+
+ [Windows 7/Vista]
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the Ports(COM & LPT) category.
+  5. Double-click Intel(R) Active Management Technology - SOL (COMx).
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+ [Windows XP]
+
+  1. Click Start.
+  2. Right-click My Computer, then click Properties.
+  3. Click the Hardware tab, and then click Device Manager.
+  4. Double-click the Ports(COM & LPT) category.
+  5. Double-click Intel(R) Active Management Technology - SOL (COMx).
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+Local Manageability Service (LMS) :
+
+
+ [Windows 7/Vista/XP 32-bit]
+
+  1. Right-click the following file in the Windows Explorer, and then click
+     Properties.
+       C:\Program Files\Intel\AMT\LMS.exe
+  2. (Windows 7/Vista) Click the Details tab.
+     (Windows XP)      Click the Version tab.
+  3. Check File Version.
+
+
+ [Windows 7/Vista 64-bit]
+
+  1. Right-click the following file in the Windows Explorer, and then click
+     Properties.
+       C:\Program Files(x86)\Intel\AMT\LMS.exe
+  2. Click the Details tab.
+  3. Check File Version.
+
+
+Privacy Icon Client (IMSS) :
+
+
+ [Windows 7/Vista/XP 32-bit]
+
+  1. Right-click the following file in the Windows Explorer, and then click
+     Properties.
+       C:\Program Files\Common Files\Intel\Privacy Icon\PrivacyIconClient.exe
+  2. (Windows 7/Vista) Click the Details tab.
+     (Windows XP)      Click the Version tab.
+  3. Check File Version.
+
+
+ [Windows 7/Vista 64-bit]
+
+  1. Right-click the following file in the Windows Explorer, and then click
+     Properties.
+       C:\Program Files(x86)\Common Files\Intel\Privacy Icon\PrivacyIconClient.exe
+  2. Click the Details tab.
+  3. Check File Version.
+
+
+User Notification Service (UNS) :
+
+
+ [Windows 7/Vista/XP 32-bit]
+
+  1. Right-click the following file in the Windows Explorer, and then click
+     Properties.
+       C:\Program Files\Common Files\Intel\Privacy Icon\UNS\UNS.exe
+  2. (Windows 7/Vista) Click the Details tab.
+     (Windows XP)      Click the Version tab.
+  3. Check File Version.
+
+
+ [Windows 7/Vista 64-bit]
+
+  1. Right-click the following file in the Windows Explorer, and then click
+     Properties.
+       C:\Program Files(x86)\Common Files\Intel\Privacy Icon\UNS\UNS.exe
+  2. Click the Details tab.
+  3. Check File Version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Notes:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+- AMT devices are hidden by default and you cannot install the AMT device
+  drivers. If you need to enable AMT, contact your network administrator.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute setup.exe with the /s option.
+     Example: [Path where the files were extracted]\LMS_SOL\setup /s
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Where: SOL:  Serial Over LAN Driver
+         LMS:  Local Manageability Service
+         IMSS: Intel Management and Security Status
+         UNS:  User Notification Service
+
+ Package    Build-ID SOL        LMS        IMSS       UNS        Rev. Issue Date
+ ---------- -------- ---------- ---------- ---------- ---------- ---- ----------
+ 5.4.1.1016 7VR408WW 5.4.1.1016 4.2.0.1036 4.2.0.1036 4.2.0.1036 01   2010/04/15
+ 5.4.1.1016 7VR407WW 5.4.1.1016 4.2.0.1022 4.2.0.1020 4.2.0.1020 03   2010/01/18
+ 5.4.1.1016 7VR407WW 5.4.1.1016 4.2.0.1022 4.2.0.1020 4.2.0.1020 02   2009/10/05
+ 5.4.1.1016 7VR406WW 5.4.1.1016 4.2.0.1022 4.2.0.1020 4.2.0.1020 01   2009/10/02
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<5.4.1.1016>  (7VR408WW)
+ - (Fix) Changed the installation program would configure UNS and LMS as
+         "Automatic Delayed" when available.
+
+<5.4.1.1016>  (7VR407WW)
+ - (New) Added support for Microsoft Windows Vista 32-bit, 64-bit.
+ - (New) Added support for Microsoft Windows XP Professional Service Pack 3
+         32-bit.
+
+<5.4.1.1016>  (7VR407WW)
+ - (Fix) Fixed an issue where the computer hanged on shut down if the BitLocker
+         function is turned on.
+
+<5.4.1.1016>  (7VR406WW)
+ - (New) Initial release for Windows 7.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

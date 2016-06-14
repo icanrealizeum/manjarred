@@ -1,0 +1,590 @@
+                                                                   Revision : 04
+--------------------------------------------------------------------------------
+Software Name      ThinkPad BIOS Settings Capture/Playback Utility
+                   (SRCMOS)
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s
+                   ThinkPad T410, T410i, T410s, T410si
+                   ThinkPad T500, T510, T510i
+                   ThinkPad W500, W510
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X201, X201i, X201s, X201 Tablet
+                   ThinkPad X300, X301
+
+                   ThinkPad A30, A30p, A31, A31p
+                   ThinkPad G40, G41
+                   ThinkPad G50
+                   ThinkPad R31, R32
+                   ThinkPad R40, R40e
+                   ThinkPad R50, R50e, R50p, R51, R51e, R52
+                   ThinkPad R60, R60e, R61, R61e, R61i
+                   ThinkPad T30
+                   ThinkPad T40, T40p, T41, T41p, T42, T42p, T43, T43p
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad X30, X31, X32
+                   ThinkPad X40, X41, X41 Tablet
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad Z60m, Z60t, Z61e, Z61m, Z61p, Z61t
+                   ThinkPad Reserve Edition
+
+Operating System   DOS
+
+Version            4.01
+
+Old package name   ThinkPad Remote CMOS Update Utility
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  ThinkPad stores various BIOS settings in its nonvolatile memory like CMOS or
+  EEPROM. These settings are configured by using the BIOS setup menu. In general,
+  this is done manually by the user. However, from a deployment point of view,
+  the BIOS settings are expected to be common to all machines and to be
+  controlled remotely.
+  This software is a DOS application for this purpose.
+
+  Features:
+  - Copy BIOS setup data settings
+  - Copy BIOS secure data settings
+  - Install and update for power-on password
+  - Install for hard disk password
+  - Copy supervisor password.
+
+  To use this software, a bootable and read/write-able media (floppy disk, USB
+  memory, CD-RW, etc.) with DOS or Windows 95/98 boot disk installed, and also
+  a device for the media (floppy disk drive, USB port, CD-RW drive, etc.) are
+  necessary.
+
+  If this software has been used, updating this software will fix problems, add
+  new functions, or expand functions as noted below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 4.01
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+- Added support for ThinkPad W701, W701ds
+- Added support for ThinkPad X201, X201i, X201s, and X201 Tablet
+- Added support for ThinkPad T410i, T410si, T510i.
+- Added support for ThinkPad T410, T410s, T510, W510.
+
+[Problem fixes]
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  Run SRCMOS.EXE with no parameter at the DOS command prompt.
+  Version information is displayed on the screen.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- Both the donor ThinkPad and a target ThinkPad must have the same BIOS Level.
+- Note for ThinkPad R31 users:
+    Due to security reason the Remote CMOS Update Utility is unable to edit
+    following BIOS settings:
+
+    Config -> Network:
+      Wake On LAN
+      Flash Over LAN
+      Alert On LAN 2
+      Watchdog timer at ROM scan
+
+    Config -> RFID Security:
+      Antenna detection
+      Gate through detection
+
+    Config -> Processor serial number:
+      Processor serial number
+
+    Password:
+      Power-on password
+      Supervisor password
+      Lock BIOS Settings
+      Hard disk password
+
+    Startup:
+      Boot (Boot Priority)
+      Network (Boot Priority for network boot)
+      Boot device List F12 Option
+      Flash BIOS Updating by End-Users
+
+
+--------------------------------------------------------------------------------
+HOW TO USE THE SOFTWARE
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+- A bootable and read/write-able media (floppy disk, USB memory, CD-RW, etc.)
+  with DOS or Windows 95/98 boot disk installed, and also a device for the media
+  (floppy disk drive, USB port, CD-RW drive,  etc.) are necessary.
+Å|If you need to deploy the BIOS settings file to all ThinkPad computers through
+  IBM RDM (Remote Deployment Manager), refer to the "How to use the software
+  with RDM" section.
+
+
+Capturing BIOS Settings
+-----------------------
+
+  Do the following procedures at a donor ThinkPad:
+
+  (Setting up a donor ThinkPad)
+  1. Turn off the computer.
+  2. Turn on the computer.
+  3. While an either of the following messages is displayed at the lower-left
+     area of the screen, press the F1 key.
+       To interrupt normal startup, press the blue ThinkVantage button
+       To interrupt normal startup, press the blue Access IBM button
+       Press F1 for BIOS Setup Utility
+     The BIOS Setup Utility menu will be displayed. If a password prompt appears,
+     type the correct password.
+  4. Change and save the desired settings as required.
+  5. Exit from the BIOS Setup Utility and restart the computer.
+  6. Ensure that the donor ThinkPad starts up and functions properly.
+
+  (Starting capture)
+  7. Copy SRCMOS.EXE into a bootable and read/write-able media with DOS or
+     Windows 95/98 boot disk installed.
+  8. Insert the media in its device, then power on and boot the computer with
+     the media.
+  9. When the logo screen appears, press the Esc key. The screen mode will
+     change to the text mode.
+     Note: This step is not required for the following systems:
+             ThinkPad R400
+             ThinkPad R500
+             ThinkPad T400, T400s, T410, T410s
+             ThinkPad T410i, T410si
+             ThinkPad T500, T510, T510i
+             ThinkPad W500, W510
+             ThinkPad W700, W700ds, W701, W701ds
+             ThinkPad X200, X200s, X200 Tablet
+             ThinkPad X201, X201i, X201s, X201 Tablet
+             ThinkPad X300, X301
+             ThinkPad G50
+             ThinkPad R60, R60e, R61, R61e
+             ThinkPad T60, T60p, T61, T61p
+             ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+             ThinkPad Z61e, Z61m, Z61p, Z61t
+             ThinkPad Reserve Edition
+ 10. At the command line, execute SRCMOS.EXE with the /c option.
+       Example: SRCMOS.EXE \path\file_name /c
+     Where \path\file_name is the path and file name of BIOS Settings file to be
+     created.
+
+
+  (Capture options)
+   [Secure data and Supervisor password]
+     SRCMOS can capture BIOS secure data that includes a supervisor password.
+     The captured data has an encrypted supervisor password of the donor
+     ThinkPad. To capture the supervisor password, add the /kpap option to enter
+     the password by the keyboard.
+       Example: SRCMOS.EXE \path\file_name /c /kpap
+
+     You must use the level of BIOS ID in the following table for this function.
+     If you use a former level of BIOS ID, you must add the /e option when
+     capturing donor BIOS settings. SRCMOS will not attempt to read secure data.
+       Example: SRCMOS.EXE \path\file_name /c /e
+     You have no need to use the /e option at the target ThinkPad computers.
+
+   [UIA (User Information Area) Data]
+     To save UIA data, add the /UIA option.
+       Example: SRCMOS.EXE \path\file_name /c /UIA
+     You have no need to use the /e option at the target ThinkPad computers.
+
+   [Power-on password and Hard disk password]
+     SRCMOS with some ThinkPad computers can deploy power-on password and hard
+     disk password. To use this function, you must use the level of BIOS ID in
+     the following table for this function. To set the power-on password and
+     hard disk password at the target ThinkPad computers, create a password.txt
+     file (any name), add the /EP password.txt options.
+       Example: SRCMOS.EXE \path\file_name /c /EP password.txt
+     Where password.txt contains the names of BIOS settings files for each of
+     target ThinkPad computers, the power-on password and the hard disk password.
+     "Sample.txt" shows the format of .csv file.
+
+     If the supervisor password is set on a donor ThinkPad, add the /kpap option
+     to enter the password by the keyboard.
+       Example: SRCMOS.EXE \path\file_name /c /kpap /EP password.txt
+     In this case, the BIOS Settings file contains a supervisor password.
+
+     WARNING:
+     This process creates an intermediate file that contains the power-on
+     password, hard disk password and a pointer to the system that these
+     passwords are intended to be installed on. Be sure to treat this
+     intermediate file as a potential security exposure that exists until the
+     reset process is complete. Be sure to transmit the file securely to the
+     target system and to destroy the file when finished. Examples of secure
+     transmission include carrying the file on removable media to the target
+     system or encrypting the file before transmission over the network to the
+     target system.
+
+
+Playing Back BIOS Settings
+--------------------------
+
+  Do the following procedures at a target ThinkPad:
+
+  (Starting playback)
+  1. Copy the BIOS Settings file in the step 10 of the "Capturing BIOS Settings"
+     section into the media in the step 7, as well.
+  2. Insert the media in its device, then power on and boot the computer with
+     the media.
+  3. At the command line, execute SRCMOS.EXE with the /u option.
+       Example: SRCMOS.EXE \path\file_name /u
+     Where \path\file_name is the path and file name of BIOS Settings file.
+  4. The computer restarts automatically. After restart, the computer will shut
+     down automatically at ThinkPad logo screen.
+
+  (Notes)
+   [Secure data and Supervisor password]
+     If the target computer already has a supervisor password, add the /kpap
+     option to enter the supervisor password by keyboard:
+       Example: SRCMOS.EXE \path\file_name /u /kpap
+     You must use the level of BIOS ID in the following table for this function.
+
+   [Power-on password and Hard disk password]
+     If the target computer already has a power-on password and/or a hard disk
+     password, you can not set the passwords by SRCMOS. You must remove the
+     passwords by BIOS Setup Utility at the target computer.
+     You must use the level of BIOS ID in the following table for this function.
+
+
+BIOS Level Table
+----------------
++--------------------------+---------------------+---------------------+
+|                          | Secure Data &       | Power-on Password & |
+|     Product Name         | Supervisor Password | Hard Disk Password  |
+|                          | Support             | Support             |
++--------------------------+---------------------+---------------------+
+| R400                     | All BIOS IDs        | All BIOS IDs        |
+| R500                     | All BIOS IDs        | All BIOS IDs        |
+| T400, T400s, T410, T410s | All BIOS IDs        | All BIOS IDs        |
+| T410i, T410si            | All BIOS IDs        | All BIOS IDs        |
+| T500, T510, T510i        | All BIOS IDs        | All BIOS IDs        |
+| W500, W510               | All BIOS IDs        | All BIOS IDs        |
+| W700, W700ds, W701, W701ds All BIOS IDs        | All BIOS IDs        |
+| X200, X200s, X200 Tablet | All BIOS IDs        | All BIOS IDs        |
+| X201, X201i, X201s       | All BIOS IDs        | All BIOS IDs        |
+| X201 Tablet              | All BIOS IDs        | All BIOS IDs        |
+| X300, X301               | All BIOS IDs        | All BIOS IDs        |
+| A30, A30p                | 1EET54WW or higher  | Not supported       |
+| A31, A31p                | 1GET29WW or higher  | Not supported       |
+| G40                      | All BIOS IDs        | Not supported       |
+| G41                      | All BIOS IDs        | All BIOS IDs        |
+| G50                      | All BIOS IDs        | All BIOS IDs        |
+| R31                      | Not supported       | Not supported       |
+| R32                      | 1MET55WW or higher  | Not supported       |
+| R40, R40e                | All BIOS IDs        | Not supported       |
+| R50, R50p, R50e          | All BIOS IDs        | All BIOS IDs        |
+| R51, R51e                | All BIOS IDs        | All BIOS IDs        |
+| R52                      | All BIOS IDs        | All BIOS IDs        |
+| R60, R60e                | All BIOS IDs        | All BIOS IDs        |
+| R61, R61e, R61i          | All BIOS IDs        | All BIOS IDs        |
+| T30                      | 1IET27WW or higher  | Not supported       |
+| T40, T40p                | All BIOS IDs        | 1RET68WW or higher  |
+| T41, T41p                | All BIOS IDs        | All BIOS IDs        |
+| T42, T42p                | All BIOS IDs        | All BIOS IDs        |
+| T43, T43p                | All BIOS IDs        | All BIOS IDs        |
+| T60, T60p                | All BIOS IDs        | All BIOS IDs        |
+| T61, T61p                | All BIOS IDs        | All BIOS IDs        |
+| X30                      | All BIOS IDs        | Not supported       |
+| X31, X32                 | All BIOS IDs        | 1QET61WW or higher  |
+| X40, X41, X41 Tablet     | All BIOS IDs        | All BIOS IDs        |
+| X60, X60s, X60 Tablet    | All BIOS IDs        | All BIOS IDs        |
+| X61, X61s, X61 Tablet    | All BIOS IDs        | All BIOS IDs        |
+| Z60m, Z60t               | 1MET55WW or higher  | All BIOS IDs        |
+| Z61e, Z61m, Z61p, Z61t   | All BIOS IDs        | All BIOS IDs        |
+| Reserve Edition          | All BIOS IDs        | All BIOS IDs        |
++--------------------------+---------------------+---------------------+
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version    Rev.  The contents
+  -------    ----  ---------------
+  4.01       04    2010/03/12
+  4.01       03    2010/02/12
+  4.01       02    2010/01/29
+  4.01       01    2009/12/18
+  3.39       01    2009/06/11
+  3.38             19th release
+  3.37             18th release
+  3.35             17th release
+  3.34             16th release
+  3.33             15th release
+  3.32             14th release
+  3.31             13th release
+  3.30             12th release
+  3.28             11th release
+  3.27             10th release
+  3.24             9th release
+  3.23             8th release
+  3.22             7th release
+  3.15             6th release
+  3.14             5th release
+  3.11             4th release
+  3.10             3rd release
+  3.07             2nd release
+  3.05             Initial release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+<4.01>
+ - (New) Added support for ThinkPad W701, W701ds.
+
+<4.01>
+ - (New) Added support for ThinkPad X201, X201i, X201s and X201 Tablet.
+
+<4.01>
+ - (New) Added support for ThinkPad T410i, T410si and T510i.
+
+<4.01>
+ - (New) Support for ThinkPad T410, T410s, T510 and W510.
+
+<3.39>
+ - (New) Added support for ThinkPad T400s.
+
+<3.38>
+ - (New) Support for ThinkPad X200s,X200 Tablet,X301.
+ - (New) Support for ThinkPad X200.
+ - (New) Support for ThinkPad R400,R500,T400,T500,W500.
+
+<3.37>
+ - (New) Support for ThinkPad X300.
+
+<3.35>
+ - (New) Support for ThinkPad R61,R61e,T61,T61p,X61,X61s,X61 Tablet,Reserve
+         Edition.
+
+<3.34>
+ - (New) Support for ThinkPad X60 Tablet.
+ - (New) Security feature update.
+
+<3.33>
+ - (New) Support for ThinkPad G50,Z61p.
+
+<3.32>
+ - (New) Support for ThinkPad R60,R60e,T60,T60p,X60,X60s,Z61e,Z61m,Z61t.
+
+<3.31>
+ - (New) Support for ThinkPad R51e,Z60m,Z60t.
+
+<3.30>
+ - (New) Support for ThinkPad X41 Tablet.
+
+<3.28>
+ - (New) Support for ThinkPad R52,T43,T43p,X32,X41.
+
+<3.27>
+ - (New) Support for ThinkPad G41.
+
+<3.24>
+ - (New) Support for ThinkPad T42,T42p.
+
+<3.23>
+ - (New) Support for ThinkPad R50e,R51.
+
+<3.22>
+ - (New) Support for ThinkPad R50,R50p,T41,T41p,X40.
+ - (New) Support for distribution of power-on password, hard disk password by
+         floppy disk.
+ - (New) Support for distribution of UIA data.
+
+<3.15>
+ - (New) Support for ThinkPad G40,R40e,T40,T40p,X31.
+
+<3.14>
+ - (New) Support for ThinkPad R40.
+
+<3.11>
+ - (New) Support for ThinkPad X30.
+ - (New) Support for Distribution of supervisor password.
+
+<3.10>
+ - (New) Support for ThinkPad A30,A30p.
+ - (New) Support for secure data read/write.
+
+<3.07>
+ - (New) Support for ThinkPad R32,T30.
+
+<3.05>
+ - (New) Initial release for ThinkPad A31,A31p,R31.
+
+
+--------------------------------------------------------------------------------
+HOW TO USE THE SOFTWARE WITH RDM
+
+  The following information is a supplement of CMOS Update of Chapter 3. RDM
+  Tasks in "Remote Deployment Manager 4.x Operations Guide" when CMOS update on
+  ThinkPad using RDM is performed.
+
+
+Creating a CMOS Settings Image (for ThinkPad system user)
+---------------------------------------------------------
+
+  1. At a donor workstation:
+   1-1. Start up the workstation and access the BIOS Setup. (You can access this
+        program by pressing F1 key during the power-on self-test (POST))
+   1-2. Change and save the desired setting as required.
+   1-3. Exit from the Easy-setup program and restart the workstation. Ensure
+        that the workstation starts up and functions properly.
+
+  2. Rename the SRCMOS.EXE.
+     => 'SRCMOS' + 'xx' + '.EXE'
+                    xx: BIOS identifier (two characters)
+
+     How to get BIOS identifier:
+   2-1. Start up the workstation and access the BIOS Setup.
+   2-2. The following two characters 'XX' of BIOS Version is BIOS identifier.
+          BIOS Version    0.00a (XXETnnWW)
+
+  3. Use the SRCMOSxx.EXE program to save the current settings of the donor
+     workstation to a file named with the .CMS extension.
+   3-1. Copy SRCMOSxx.EXE into a bootable and read/write-able media with DOS or
+        Windows 95/98 boot disk installed.
+   3-2. Insert the media in its device, then power on and boot the workstation
+        with the media.
+   3-3. When the logo screen appears, press the Esc key. The screen mode will
+        change to the text mode.
+        Note: This step is not required for the following systems:
+             ThinkPad R400
+             ThinkPad R500
+             ThinkPad T400, T400s, T410, T410s
+             ThinkPad T400i, T400si
+             ThinkPad T500, T510, T510i
+             ThinkPad W500, W510
+             ThinkPad W700, W700ds, W701, W701ds
+             ThinkPad X200, X200s, X200 Tablet
+             ThinkPad X201, X201i, X201s, X201 Tablet
+             ThinkPad X300, X301
+             ThinkPad G50
+             ThinkPad R60, R60e, R61, R61e
+             ThinkPad T60, T60p, T61, T61p
+             ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+             ThinkPad Z61e, Z61m, Z61p, Z61t
+             ThinkPad Reserve Edition
+   3-4. Execute the SRCMOSxx.exe with the correct parameters:
+          > SRCMOSxx \path\file_name.CMS /c
+        If the donor system has a supervisor password: (This option is not
+        applicable for ThinkPad R31)
+          > SRCMOSxx \path\file_name.cms /kpap
+        A password prompt will appear. Type the correct supervisor password of
+        donor workstation and press Enter.
+
+        If you capture the data of the system that have supervisor password, the
+        captured data have an encrypted supervisor password of the donor system.
+
+  4. Create CMOS Update image on RDM server.
+
+   [For RDM version 4.1 or newer]
+   4-1. Prepare BIOS Update diskette or bootable CD for target system.
+        (Note) For bootable CD, use CD-RW media.
+   4-2. Copy SRCMOSxx.EXE into the BIOS diskette.
+        (Note) For bootable CD, append SRCMOSxx.EXE to CD-RW.
+   4-3. Create Firmware Flash image of the BIOS Update diskette. Using Image
+        management menu from [Tasks] -> [Remote Deployment Manager].
+   4-4. Copy CMOS setting file into appropriate folder(directory) on RDM server.
+   4-5. Create CMOS setting image on RDM server.
+        Using Image management menu from [Tasks] -> [Remote Deployment Manager].
+        Select the CMOS setting file name in "Enter CMOS Clone file" field.
+
+   [For RDM version 3.2 or earlier]
+   4-1. Copy SRCMOSxx.EXE and .CMS file to the corresponding BIOS folder
+        (directory) on your server which is named:
+          C:\RDM_install_dir\BIOS\Flash_BIOS_Name
+        where the 'Flash_BIOS_Name' folder(directory) is the name of the BIOS
+        level on your donor workstation (unless this was changed by the system
+        administrator during the Read BIOS Flash diskette process).
+        (Note)
+        When you are not able to get the BIOS update diskette when using RDM
+        version 3.2 or earlier, you can store CMOS setting files and
+        SRCMOSxx.EXE using the following steps.
+        a. Check the "Current BIOS Level" of the Maintenance page of the
+           Individual Client Details notebook.
+        b. Create the folder (directory) under the \RDM_install_dir\BIOS which
+           has the same name to "Current BIOS Level".
+           For example, if "Current BIOS Level" is IBUJ01WW, the required folder
+           (directory) is:
+             \RDM_installed_dir\BIOS\IBUJ01WW
+        c. Copy SRCMOSxx.EXE and .CMS file to above folder (directory).
+        d. You must uncheck the "Update BIOS" check box of the Maintenance page.
+           (Check the "Update CMOS with file" check box only.)
+
+
+  From Ver. 3.11, SRCMOS can support:
+  A) Distribution of supervisor password, and
+  B) Distribute cmos data to the target systems that have supervisor password.
+  To use these features, you must apply "RDM 3.1.01 Patch 1" to your RDM system.
+
+  A) Distribute supervisor password from donor to targets
+  If the donor system has a supervisor password, the captured data file (.cms
+  file) from the system contain an encrypted supervisor password of the donor
+  system.
+  If you distribute this data by RDM, the supervisor password of the target
+  systems will be updated.
+
+  B) Distribute cmos data to the system that has supervisor password
+  If the target system already has supervisor password, you must set the
+  password to RDM Console pages:
+  1. Open RDM main console.
+  2. Select the target system from tree view and double-click.
+  3. "Individual System Details" page should appear. Select the Maintenance tab.
+  4. Enter the supervisor password in the "BIOS Admin Password" edit box.
+  5. Uncheck the "Update BIOS Admin Password" checkbox.
+
+  Note:
+  ThinkPad systems do not support "Update BIOS Admin Password" on the RDM
+  Console. ThinkPad systems only support "Distribute" the supervisor password
+  from donor to target by .cms file.
+
+
+RDM is available on the IBM Website
+-----------------------------------
+  The RDM website is at:
+
+  http://www.ibm.com/servers/eserver/xseries/systems_management/ibm_director/extensions/rdm.html
+
+  From the main RDM website there will be a link to the IBM Support pages and
+  the downloadable fixes.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* IBM is a registered trademark of IBM Corporation.
+* Microsoft and Windows are registered trademarks of Microsoft Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

@@ -1,0 +1,322 @@
+                                                                   Revision : 02
+--------------------------------------------------------------------------------
+Software name      Intel Turbo Memory Driver
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s(*1)
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700(*1), W700ds(*1)
+                   ThinkPad X200, X200s, X200 Tablet(*1)
+                   ThinkPad X300, X301
+
+                   ThinkPad R61
+                   ThinkPad T61, T61p
+                   ThinkPad X61, X61s, X61 Tablet
+                   ThinkPad Reserve Edition
+
+Operating Systems  Microsoft Windows 7 32-bit, 64-bit (*1)
+                   Microsoft Windows Vista  32-bit, 64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            1.10.1.1002-8.9.2.1002 : Package
+                   1.10.1.1002 : Intel Turbo Memory Controller
+                   8.9.2.1002  : Intel 82801HEM/HBM SATA AHCI Controller
+                                 Intel ICH9M-E/M SATA AHCI Controller
+                                 Intel ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+Support devices    Intel Turbo Memory Controller
+                   Intel 82801HEM/HBM SATA AHCI Controller
+                   Intel ICH9M-E/M SATA AHCI Controller
+                   Intel ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+
+*1: - ThinkPad W700, W700ds support the 64-bit version of Windows 7 Professional
+      edition only.
+    - ThinkPad T400s multi-touch models and X200 Tablet do not support Windows 7
+      Home Basic edition.
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Intel Turbo Memory Driver) to enable the
+  following devices for the Microsoft ReadyDrive and Microsoft ReadyBoost
+  features.
+
+  Device name
+    ==> Device name in the Device Manager
+  -----------------------------------------------------
+  Intel Turbo Memory Controller
+    ==> Intel Turbo Memory Controller, and
+        Intel Flash Cache Logic Chip       
+
+  Intel 82801HEM/HBM SATA AHCI Controller
+    ==> Intel(R) 82801HEM/HBM SATA AHCI Controller
+  Intel ICH9M-E/M SATA AHCI Controller
+    ==> Intel(R) ICH9M-E/M SATA AHCI Controller
+  Intel ICH8M-E/ICH9M-E/M SATA RAID Controller
+    ==> Intel(R) ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+IMPORTANT NOTICE
+
+- If you attempt to uninstall the Intel Turbo Memory Driver, you will see a list
+  of drivers to be removed. You may choose the Intel Turbo Memory Driver, but
+  never select the Intel Matrix Storage Manager(IMSM) Driver. Your system may
+  have a blue screen error because of lack of the IMSM.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.10.1.1002-8.9.2.1002 : Package
+          1.10.1.1002 : Intel Turbo Memory Controller
+          8.9.2.1002  : Intel 82801HEM/HBM SATA AHCI Controller
+                        Intel ICH9M-E/M SATA AHCI Controller
+                        Intel ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+- Added in this document the note that it is not recommended to use Intel Turbo
+  Memory in a system with a SSD drive.
+- Fixed an issue where the system disk could not be converted to dynamic disk.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+
+ [Intel Turbo Memory Controller]
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the Storage controllers category.
+  5. Double-click either of the following devices.
+       Intel Flash Cache Logic Chip
+       Intel Turbo Memory Controller
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+ [Intel 82801HEM/HBM SATA AHCI Controller, Intel ICH9M-E/M SATA AHCI Controller
+ or Intel ICH8M-E/ICH9M-E/M SATA RAID Controller]
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the IDE ATA/ATAPI controllers or Storage controllers category.
+  5. Double-click either of the following devices.
+       Intel(R) 82801HEM/HBM SATA AHCI Controller
+       Intel(R) ICH9M-E/M SATA AHCI Controller
+       Intel(R) ICH8M-E/ICH9M-E/M SATA RAID Controller
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- If "Intel Matrix Storage Console with Device Driver" is installed beforehand,
+  Intel Turbo Memory Driver application link will be removed. In this case, this
+  package needs to be re-installed.
+
+- It is not recommended to use Intel Turbo Memory in a system with a SSD drive.  
+  It would be ideal to remove the Intel Turbo Memory module from the system, if
+  SSD drive is used.  Refer the hardware maintenance manual.  Or set to disable 
+  Intel Turbo Memory as follows.
+
+  1. Start Intel Turbo Memory Console.
+  2. Uncheck "Enable Windows ReadyBoost" and "Enable Windows ReadyDrive".
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with administrative privileges.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute setup.exe with the -s option.
+     Example: [Path where the files were extracted]\setup -s
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Where: Turbo Memory   : Intel Turbo Memory Controller
+         SATA AHCI/RAID : Intel 82801HEM/HBM SATA AHCI Controller
+                          Intel ICH9M-E/M SATA AHCI Controller
+                          Intel ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+  Package                 Turbo Memory  SATA AHCI/RAID    Rev.  Issue Date
+  ----------------------  ------------  --------------    ----  ---------------
+  1.10.1.1002-8.9.2.1002  1.10.1.1002   8.9.2.1002        02    2010/01/08
+  1.10.1.1002-8.9.2.1002  1.10.1.1002   8.9.2.1002        01    2009/12/01
+  1.10.0.1012-8.9.2.1002  1.10.0.1012   8.9.2.1002        01    2009/10/02
+  1.9.0.1006-8.8.0.1009   1.9.0.1006    8.8.0.1009        03    2009/08/21
+  1.9.0.1006-8.8.0.1009   1.9.0.1006    8.8.0.1009        02    2009/06/11
+  1.9.0.1006-8.8.0.1009   1.9.0.1006    8.8.0.1009        01    2009/04/14
+  1.9.0.1006-8.6.3.1004   1.9.0.1006    8.6.3.1004        01    2009/03/23
+  1.8.1.1002-8.6.3.1004   1.8.1.1002    8.6.3.1004        01    2008/12/09
+  1.7.0.1029-8.6.0.1007   1.7.0.1029    8.6.0.1007              6th release
+  1.6.3.1001-8.2.4.1005   1.6.3.1001    8.2.4.1005              5th release
+  1.5.0.1013-7.8.0.1012   1.5.0.1013    7.8.0.1012              4th release
+  1.0.1.1004-7.0.3.1001   1.0.1.1004    7.0.3.1001              3rd release
+  1.0.1.1004-7.0.1.1001   1.0.1.1004    7.0.1.1001              2nd release
+  1.0.0.1082-7.0.0.1020   1.0.0.1082    7.0.0.1020              Initial release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.10.1.1002-8.9.2.1002>
+ - (Fix) Added in this document the note that it is not recommended to use Intel 
+         Turbo Memory in a system with a SSD drive.
+
+<1.10.1.1002-8.9.2.1002>
+ - (Fix) Fixed an issue where the system disk could not be converted to dynamic
+         disk.
+
+<1.10.0.1012-8.9.2.1002>
+ - [Important]
+         Added support for Microsoft Windows 7.
+
+<1.9.0.1006-8.8.0.1009>
+ - (New) Resumed support for ThinkPad X301.
+
+<1.9.0.1006-8.8.0.1009>
+ - (New) Added support for ThinkPad T400s.
+
+<1.9.0.1006-8.8.0.1009>
+ - (New) Updated Intel Matrix Storage Manager Driver to version 8.8.0.1009.
+
+<1.9.0.1006-8.6.3.1004>
+ - (Fix) Fixed an issue that caused a blue screen system failure with more than
+         4 GB system memory.
+
+<1.8.1.1002-8.6.3.1004>
+ - [Important]
+         Dropped support for ThinkPad X301.
+ - (New) Support for ThinkPad W700ds.
+ - (New) Enhancement for device driver functionality.
+
+<1.7.0.1029-8.6.0.1007>
+ - (New) Support for RAID mode.
+ - (New) Support for 4GB card.
+
+<1.6.3.1001-8.2.4.1005>
+ - (New) Support for ThinkPad R400,R500,T400,T500,W500,X200.
+ - (New) Device Driver Functionality Enhancement.
+ - (New) Support for ThinkPad W700 Non-RAID Model,X301 (added).
+ - (New) Support for ThinkPad X200s,X200 Tablet (added).
+
+<1.5.0.1013-7.8.0.1012>
+ - (New) Support for the models with new microprocessors.
+ - (New) Support for ThinkPad X300.
+
+<1.0.1.1004-7.0.3.1001>
+ - (Fix) Intermittent Bluescreen system failure while the machine is carried.
+
+<1.0.1.1004-7.0.1.1001>
+ - (Fix) Intermittent Bluescreen system failure during operating system boot.
+ - (New) Support for ThinkPad X61,X61s,X61 Tablet.
+ - (New) Support for ThinkPad Reserve Edition.
+ - (New) Support for ThinkPad T61p.
+
+<1.0.0.1082-7.0.0.1020>
+ - (New) Support for ThinkPad R61,T61.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+* ReadyBoost, ReadyDrive and Windows Vista are trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

@@ -1,0 +1,434 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      Intel AMT 4.2 Management Engine Firmware
+
+Support models     ThinkPad T400, T400s
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700, W700ds
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X301
+
+                   ThinkPad R400
+                   - IEEE 1394 models
+                     Machine types and models:
+                     7438-P1x,P2x,T1x,T2x,T3x,T4x,T6x,T7x,T8x,T9x,TAx,TBx,TCx
+                     7439-11x,12x,13x,14x,15x,16x,17x,18x,19x,1Ax,1Bx,1Cx,1Dx,
+                          1Ex,1Fx,1Gx,1Hx,1Jx,1Kx,1Lx,1Mx,1Nx,1Px,1Rx,1Sx,1Tx,
+                          1Ux,1Vx,1Wx,E1x,E2x,E3x,E4x,P1x,P2x,P3x,P4x,P5x,P6x,
+                          P7x,P8x,P9x,PAx,PBx,PCx,T1x,V1x,V2x,V3x,V4x,V5x
+                     7440-11x,12x,V1x,V5x,T1x
+                     7440-1Nx
+                     7443-P1x,P2x,P3x,P4x,P5x,P7x,PAx,PBx,PCx,PDx,PEx,PFx,PGx,
+                          S6x,S7x,11x,S8x,S9x,SAx,SBx,SCx,SDx,SEx,SFx,T4x,T5x,
+                          T6x,T7x,T8x,T9x,TAx,TBx,TCx,TDx,TEx,TFx,TGx,THx,TJx,
+                          TKx,TLx,TMx,TNx,TPx,TRx,TSx,1Tx,TUx
+                     7445-11x,12x,13x,14x,15x,16x,17x,18x,19x,1Ax
+                     7446-X1x
+                     7447-X2x
+                     2782-P1x,P2x,P3x,P4x,P5x,P6x,P7x,P8x,P9x,T1x,T2x,PAx,PBx,
+                          T5x,T6x,T7x,T8x,T9x,TKx,TLx,TMx,TNx,TPx,TRx,TSx,1Tx,
+                          TUx,TVx,TWx,TYx,TZx,S1x,S2x,S3x,S4x
+                     2783-T1x,T2x
+                     2784-11x,12x,13x,14x,V1x,V3x
+                     2786-11x,12x,13x,14x,V1x
+                     2787-21x,22x,23x,26x,27x,28x,P1x,P2x,P3x,P4x,P5x
+                     2788-X3x
+                     2789-X4x
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+                   Microsoft Windows XP  Home Edition, Professional SP2, SP3
+                   Microsoft Windows XP  Tablet PC Edition 2005 SP2
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            4.2.60.1060
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package updates the following Intel Active Management Technology (AMT)
+  software.
+
+  - Management Engine Firmware
+
+  Refer to marketing materials to find out what computer models support Intel
+  AMT.
+
+  Updating the software will fix problems, add new functions, or expand
+  functions as noted below.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 4.2.60.1060
+    Intel AMT 4.2.60
+    Build Number 1060
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+- Enhanced several security functions.
+
+[Problem fixes]
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  1. Make sure to be logged on with an administrator account.
+  2. Refer to the Manual Update section, and download and extract the file.
+  3. Open a Command Prompt with the following steps.
+      [Windows 7/Vista]
+       1. Click Start, click All Programs, and then click Accessories.
+       2. Right-click Command Prompt, and select Run as administrator.
+       3. Click Yes (Windows 7) or Continue (Windows Vista).
+      [Windows XP]
+       1. Click Start, and click All Programs, and then click Accessories.
+       2. Click Command Prompt.
+  4. In the Command Prompt, type the following command and press Enter.
+       [Path where the files were extracted]\MEInfoWin.exe
+
+     The following information will be displayed.
+     Example:
+
+        Copyright(C) 2004-2011 Intel(R) Corporation. All Rights Reserved.
+
+        AMT SKU Found.
+        Intel(R) MEInfo Win Version:  4.2.60.1060
+
+        BIOS Version:                7UETxxWW (3.xx )
+
+        Intel(R) AMT code versions:
+                Flash:                          4.2.60
+                Netstack:                       4.2.60
+                Apps:                           4.2.60
+                Intel(R) AMT:                   4.2.60  <---
+                SKU:                            ASF IAMT ITPM Tdt
+                VendorID:                       8086
+                Build Number:                   1060   <---
+                .
+                .
+                .
+  5. Note "Intel(R) AMT" and "Build Number", and refer to the Version
+     Information section to check the installed version.
+
+
+  If you see any errors, check Device Manager to see if the following device
+  exists.
+
+    In the System devices category,
+      Intel(R) Management Engine Interface
+
+  If not exists, install the following software:
+
+    Intel AMT 4.2 - Management Engine Interface
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- Some of ThinkPad models that have the following BIOS IDs can not use this
+  Intel AMT Management Engine Firmware.
+
+    Models          BIOS IDs
+    -------------   --------
+    ThinkPad R400   7VETxxWW
+    ThinkPad T400   7VETxxWW
+    ThinkPad T500   7VETxxWW
+    ThinkPad W500   7VETxxWW
+    ThinkPad X200   7XETxxWW
+
+  If your ThinkPad model has the above BIOS ID, use the following Intel
+  Management Engine Firmware (without AMT support):
+
+  - Intel Management Engine Firmware for Windows XP, Vista, and 7
+    Version 4.2.1037
+    for ThinkPad R400 (w/o IEEE 1394) and R500
+
+  In order to determine the BIOS ID, refer to the "Determining which BIOS ID is
+  installed" section.
+
+
+--------------------------------------------------------------------------------
+UPDATE INSTRUCTIONS
+
+Notes:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+- You may need to confirm with your IT administrator if you need to update
+  Management Engine Firmware.
+- Before updating Management Engine Firmware, make sure to connect an AC
+  power and fully charged battery pack to your system.
+- You cannot down grade Management Engine Firmware version to any older version.
+- To use Intel Anti-Theft Technology PC Protection (AT-p), the BIOS that
+  supports AT-p is required.
+- Update may fail with prior to the version 4.2.60.1060. To avoid this, update
+  the Wireless LAN driver to the latest version.
+
+
+Manual Update
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Open a Command Prompt with the following steps.
+      [Windows 7/Vista]
+       1. Click Start, click All Programs, and then click Accessories.
+       2. Right-click Command Prompt, and select Run as administrator.
+       3. Click Yes (Windows 7) or Continue (Windows Vista).
+      [Windows XP]
+       1. Click Start, and click All Programs, and then click Accessories.
+       2. Click Command Prompt.
+ 12. In the Command Prompt, type the following command and press Enter.
+       [Path where the files were extracted]\MEUPDATE.CMD
+ 13. Read the notice on the display, and press Enter.
+     Wait for about 3 minutes until the message "Update finished successfully"
+     is displayed.
+ 14. Close the Command Prompt window, and then shut down the computer.
+
+  Finally delete the file saved in the step 4.
+
+  If the following error message is displayed, go to the "Update steps via TPM".
+    Error <8721>: Firmware update through TPM is enabled. Use -tpm switch
+
+
+Update steps via TPM
+
+  1. Start Windows and logon with an administrator account.
+  2. Open a Command Prompt.
+  3. Move to the folder where this package was extracted.
+  4. There are two cases to update ME firmware:
+     (A) If TPM is Unowned, type MEUPD.CMD and press Enter.
+     (B) If TPM is Owned, type MEUPD_PW.CMD XXXXXXX and press Enter.
+         where XXXXXXX is passphrase.
+         Example: If passphrase is tpmpass123, MEUPD_PW.CMD tpmpass123
+  5. Read the notice on the display, and press Enter.
+  6. Wait about 12 minutes (on Windows 7/Vista) or about 4 minutes (on Windows
+     XP) until the message "Update finished successfully" is displayed.
+  7. Shut down the computer.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Package version  Intel AMT / Build Number    Rev.  Issue Date
+  ---------------  ------------------------    ----  -----------
+  4.2.60.1060      4.2.60 / 1060               01    2012/07/26
+  4.2.50.1055      4.2.50 / 1055               01    2011/09/06
+  4.2.41.1049      4.2.41 / 1049               01    2011/06/08
+  4.2.40.1048      4.2.40 / 1048               01    2011/04/11
+  4.2.21.1037      4.2.21 / 1037               01    2010/05/12
+  4.2.20.1036      4.2.20 / 1036               01    2010/03/01
+  4.2.10.1023      4.2.10 / 1023               01    2009/12/18
+  4.2.0.1020       4.2.0  / 1020               01    2009/10/21
+  4.1.11.1051      4.1.11 / 1058               02    2009/07/30
+  4.1.11.1051      4.1.11 / 1058               01    2009/06/29
+  4.1.3.1038       4.1.3  / 1038               04    2009/06/11
+  4.1.3.1038       4.1.3  / 1038               03    2009/04/01
+  4.1.3.1038       4.1.3  / 1038               02    2009/02/12
+  4.1.3.1038       4.1.3  / 1038               01    2009/02/06
+  4.1.2.1030       4.1.2  / 1030                     1st release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<4.2.60.1060>
+ - (New) Enhanced several security functions.
+
+<4.2.50.1055>
+ - (New) Enhanced several security functions.
+
+<4.2.41.1049>
+ - (Fix) Fixed an issue where the system failed to reacquire the LAN link in
+         resuming from suspend with connections utilizing 4 wire cabling.
+
+<4.2.40.1048>
+ - (New) Added support for wireless AMT OOB (Out Of Band) for access points
+         configured for required connection speeds of 36/48/54Mbps.
+ - (New) Added support for CyberTrust* Root Certificate hashes
+         (GTE* CyberTrustGlobal Root, Baltimore CyberTrustRoot and
+         CybertrustGlobal Root).
+ - (Fix) Fix an issue where Redirection did not work with Kerberos ticket larger
+         than 4K in size (maximum ticket size has been increased to 10K).
+
+<4.2.21.1037>
+ - (Fix) Fixed an issue that WOL(Wake On LAN) Magic Packet on Port 68 was unable
+         to wake up.
+
+<4.2.20.1036>
+ - (Fix) Fixed an issue where it might take 20 seconds more than usual on
+         starting the computer.
+
+<4.2.10.1023>
+ - (Fix) Fixed an issue where Intel AMT did not handle DHCP options correctly if
+         the DHCP option 0 existed (padding).
+
+<4.2.0.1020>
+ - [Important]
+         Added support for Microsoft Windows 7.
+ - (New) Added support for Microsoft System Center Configuration Manager Service
+         Pack 2.
+ - (New) HW asset information on the client system is saved after
+         un-provisioning.
+ - (New) Added VeriSign G2 Root Certificate hash to AMT.
+ - (Fix) Fixed an issue that AMT responded to ping instead of Windows while
+         resuming from standby in battery mode.
+ - (Fix) Fixed an issue that LMS accepted and dropped TCP connections (full TCP
+         handshake) instead of showing AMT port as closed when performing
+         requests from remote to external network card.
+
+<4.1.11.1051>
+ - (Fix) Corrected the version of prerequisite Intel AMT - Management Engine
+         Interface in the DETERMINING WHICH VERSION IS INSTALLED section.
+           (Incorrect)  Intel AMT 4.1
+           (Correct)    Intel AMT 4.0
+
+<4.1.11.1051>
+ - (Fix) Fixed an issue where Intel Management Engine Firmware or host system
+         might hang during M1 state or warm reset transitions.
+ - (Fix) Fixed an issue that related Kerberos Authentication.
+         When using Intel AMT with Kerberos Authentication, after 25 continuous
+         days with the Intel Manageability Engine in the M0/M1 state, the IT
+         console loses the ability to manage this system due to a Kerberos
+         authentication failure. The exposure is limited to provisioned
+         platforms using Intel AMT with Kerberos Authentication enabled.
+
+<4.1.3.1038>
+ - (New) Added support for ThinkPad T400s.
+
+<4.1.3.1038>
+ - [Important]
+         Some of ThinkPad models that have the following BIOS IDs can not use
+         this Intel AMT Management Engine Firmware.
+           Models          BIOS IDs
+           -------------   --------
+           ThinkPad R400   7VETxxWW
+           ThinkPad T400   7VETxxWW
+           ThinkPad T500   7VETxxWW
+           ThinkPad W500   7VETxxWW
+           ThinkPad X200   7XETxxWW
+         If your ThinkPad model has the above BIOS ID, use the following Intel
+         Management Engine Firmware (without AMT support):
+         - Intel Management Engine Firmware for Windows XP, Vista, and 7
+           for ThinkPad R400 (w/o IEEE 1394) and R500
+         In order to determine the BIOS ID, refer to the "Determining which BIOS
+         ID is installed" section.
+
+<4.1.3.1038>
+ - [Important]
+         Fixed security vulnerability issues that:
+         1. A vulnerability in which a malicious user with local machine access
+            who had intimate Management Engine (ME)-knowledge could potentially
+            exploit boundary errors in some ME application functions to gain
+            control over those ME applications.
+         2. A remote Denial of Service (DOS) vulnerability which a malicious
+            user could potentially exploit to cause the reboot of a system
+            running susceptible versions of Intel Active Management Technology
+            (AMT).
+ - (Fix) Fixed an issue where Management Engine failed on remote power on.
+ - (Fix) Fixed an issue where Assert stolen command would fail if platform was
+         halted (Intel AT-p).
+ - (Fix) Fixed an issue where AMT did not move to passive DHCP mode when closing
+         network interface. This would lead to issues with provisioning from
+         remote console.
+ - (Fix) Fixed an issue that had loss of AMT connectivity when connected to 1x
+         network with no Operating System.
+ - (Fix) Fixed an issue that might cause unexpected shutdown or restart during
+         resuming normal operation from standby state when Power Package PP2 (S0
+         + S3/AC), PP3 (S0 + S3,4,5/AC), PP4 (S0 + ME WoL in S3/AC), or PP5 (S0
+         + ME WoL in S3,4,5/AC) was used.
+
+<4.1.3.1038>
+ - (New) Added support for some special characters in AMT host names,
+         _ (underscore) and  # (pound sign).
+         (The first character must be an alpha character)
+ - (New) Added support for Intel WiFi/WiMax Link 5150.
+
+<4.1.2.1030>
+ - (New) (Initial release) Support for Intel Anti-Theft Technology PC Protection
+         (AT-p) for ThinkPad T400.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  1. If Intel Ethernet link speed setting is changed to other than the default 
+     Auto Detect such as 10Mbps/Half in Device Manager, the system cannot obtain 
+     valid IP address or IP address does not function correctly after resuming
+     from S3.
+
+  2. Ping command does not wake the system from S4.
+
+     The above two symptoms can be resolved by disabling Remote Configuration in
+     MEBx with the following steps, you may need to contact your IT department 
+     for password:
+
+     1. Press power button and then press F12 key when ThinkPad logo screen is 
+        displayed on the screen to enter Boot Menu.
+     2. Select <Enter ME Configuration Screens> with cursor keys and press Enter
+        key.
+     3. Enter "Intel(R) ME Password" and press Enter key.  
+     4. Select "Intel(R) AMT Configuration" and press Enter key.
+     5. Select "Setup and Configuration" and press Enter key.
+     6. Select "TLS PKI" and press Enter key.
+     7. Select "Remote Configuration Enable/Disable **" and press Enter key.
+     8. Select "DISABLED" and press Enter key.
+     9. Select "Return to Previous Menu" and press Enter key.
+    10. Select "Return to Previous Menu" and press Enter key.
+    11. Select "Return to Previous Menu" and press Enter key.
+    11. Select "Exit" and press Y key.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+* VeriSign is a registered trademark of VeriSign, Inc.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

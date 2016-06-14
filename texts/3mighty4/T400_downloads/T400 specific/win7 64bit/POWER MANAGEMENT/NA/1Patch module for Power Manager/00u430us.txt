@@ -1,0 +1,167 @@
+                                                                   Revision: 01
+--------------------------------------------------------------------------------
+Software name      Patch module for Power Manager
+
+Supported models   ThinkPad L410, L412, L420, L421
+                   ThinkPad L510, L512, L520
+                   ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad SL300
+                   ThinkPad SL400, SL400c, SL410
+                   ThinkPad SL500, SL500c, SL510
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si, T420, T420i,
+                            T420s, T420si
+                   ThinkPad T500, T510, T510i, T520, T520i
+                   ThinkPad W500, W510, W520
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X1, X1 Hybrid
+                   ThinkPad X100e, X120e, X121e, X130e
+                   ThinkPad X200, X200s, X200 Tablet, X201, X201i, X201s,
+                            X201 Tablet, X220, X220i, X220 Tablet, X220i Tablet
+                   ThinkPad X300, X301
+
+                   ThinkPad Edge 11", 13", 14", 15"
+                   ThinkPad Edge E10, E30, E40, E50
+                   ThinkPad Edge E120, E125
+                   ThinkPad Edge E220s
+                   ThinkPad Edge E320, E325
+                   ThinkPad Edge E420, E420s, E425
+                   ThinkPad Edge E520, E525
+
+                   ThinkPad R51e, R52
+                   ThinkPad R60, R60e, R61, R61e, R61i
+                   ThinkPad T43, T43p
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad X32
+                   ThinkPad X40, X41, X41 Tablet
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad Z60m, Z60t, Z61e, Z61m, Z61p, Z61t
+                   ThinkPad Reserve Edition
+
+Operating systems  Microsoft(R) Windows(R) 7  (32-bit and 64-bit)
+                   Microsoft Windows Vista(R)  (32-bit and 64-bit)
+                   Refer to marketing materials to find out the computer model
+                   information and the operating system(s) each model supports.
+
+Version            1.00
+
+Supported device   Power Manager versions
+                   3.56, 3.59, 3.61, 3.62, 3.63, 3.64, 3.65
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+The patch module for Power Manager enables you to fix the application error
+related to VC++ 2005 components on the Windows Vista, and Windows 7 
+operating systems.
+After applying this patch, the following files will be copied to the following
+folder on your computer.
+
+<For 32-bit operating systems>
+C:\Program Files\ThinkPad\Utilities.
+  PWMTR32V.dll
+
+<For 64-bit operating systems>
+C:\Program Files (x86) \ThinkPad\Utilities.
+  PWMTR32V.dll, PWMTR64V.dll
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.00
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+- Fixed an application error related to VC++ 2005 components.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Installing files
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Ready to Install window, click Install. The necessary files will
+     be copied to Power Manager application path.
+ 10. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+  Verifying the patch installed
+    Once the patch module for Power Manager is installed, you will find the 
+    following files in the folder.
+
+    <For 32-bit operating systems>
+      C:\Program files\ThinkPad\Utilities\
+        PWMTR32V.dll: File version 1.0.0.3
+
+    <For 64-bit operating systems>
+      C:\Program files (x86)\ThinkPad\Utilities\
+        PWMTR32V.dll: File version 1.0.0.3
+        PWMTR64V.dll: File version 1.0.0.3
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version    Rev.  Issue date
+  -------    ----  ---------------
+  1.00       01    2012/10/09
+  1.00       01    2012/05/14
+
+  Note: The revision number (Rev.) is for the version control of  this readme
+  file and it is not related to the software version. There is no need to upgrade
+  this software when the revision number changes.
+
+  To check the version of the software, refer to the Determining which version
+  is installed section.
+
+Summary of changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.00>
+ - (Fix) Fixed the application error related to VC++ 2005 components.
+
+<1.00>
+ - (Fix) Fixed the application error related to some virtla optical drive software.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+ThinkPad is a trademark of Lenovo in the United States, other countries, or both.
+Microsoft, Windows, and Windows Vista are trademarks of the Microsoft group 
+of companies.
+Other company, product, or service names may be trademarks or service marks 
+of others.

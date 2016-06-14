@@ -1,0 +1,268 @@
+                                                                   Revision : 02
+--------------------------------------------------------------------------------
+Software Name      Intel Matrix Storage Manager Driver
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s(*1)
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700(*1)(*2), W700ds(*1)(*2)
+                   ThinkPad X200, X200s, X200 Tablet(*1)
+                   ThinkPad X300, X301
+
+                   ThinkPad R60, R60e, R60i, R61, R61e, R61i
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad Z61e, Z61m, Z61p, Z61t
+                   ThinkPad Reserve Edition
+
+Operating Systems  Microsoft Windows 7  64-bit (*1)
+                   Microsoft Windows Vista  64-bit
+                   Microsoft Windows XP  Professional x64 Edition (*2)
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            8.9.2.1002
+
+Support devices    Intel 82801GBM SATA AHCI Controller
+                   Intel 82801HEM/HBM SATA AHCI Controller
+                   Intel ICH9M-E/M SATA AHCI Controller
+                   Intel ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+
+*1: - ThinkPad W700, W700ds support the 64-bit version of Windows 7 Professional
+      edition only.
+    - ThinkPad T400s multi-touch models and X200 Tablet do not support Windows 7
+      Home Basic edition.
+*2: Only ThinkPad W700, W700ds support Windows XP Professional x64 Edition.
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (Storage driver) to enable the following
+  devices.
+
+    Device name in the Device Manager
+    -------------------------------------------------
+    - Intel(R) 82801GBM SATA AHCI Controller
+    - Intel(R) 82801HEM/HBM SATA AHCI Controller
+    - Intel(R) ICH9M-E/M SATA AHCI Controller
+    - Intel(R) ICH8M-E/ICH9M-E/M SATA RAID Controller
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 8.9.2.1002
+
+[Important updates]
+- Added support for Microsoft Windows 7 64-bit.
+
+[New functions or enhancements]
+  Nothing.
+
+[Problem fixes]
+  Modified the "Notes" section.(removed affect models)
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+  1. Right-click the My Computer(XP) or Computer(Vista/7) and click Properties.
+  2. Click Device Manager.
+  3. Double-click the IDE ATA/ATAPI controllers or Storage controllers category.
+  4. Double-click either of the following devices;
+       Intel(R) 82801HEM/HBM SATA AHCI Controller
+       Intel(R) 82801GBM SATA AHCI Controller
+       Intel(R) ICH9M-E/M SATA AHCI Controller
+       Intel(R) ICH8M-E/ICH9M-E/M SATA RAID Controller.
+  5. Click Driver tab and the driver version is displayed.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+  A Blue Screen error will come up on the Windows preload when these models boot
+  with "Compatible" mode instead of "AHCI" that is modified from the BIOS Setup/
+  Config/Serial SATA menu. This is caused by an absence of a compatible driver
+  on the Windows preload. Stay "AHCI" mode when you boot Windows preload.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click the Save button.
+  4. Choose the folder you would like to download the file to and click the Save
+     button.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with administrative privileges.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+ 11. Uncheck the checkbox next to "Install ..... now", and then click Finish to
+     complete extraction.
+
+  Delete the file saved in the step 4.
+
+  Installing files
+ 12. Click Start.
+ 13. [Windows 7/Vista]
+       Right-click Computer, and then click Properties. At the left pane, click
+       Device Manager.
+     [Windows XP]
+       Right-click My Computer, click Properties, click the Hardware tab, and
+       then click Device Manager.
+ 14. Double-click the IDE ATA/ATAPI controllers or Storage controllers category.
+ 15. Double-click either of the following devices.
+       Intel(R) ICH8M SATA AHCI Controller
+       Intel(R) 82801HEM/HBM SATA AHCI Controller
+       Intel(R) 82801GBM SATA AHCI Controller
+       Intel(R) ICH9M-E/M SATA AHCI Controller
+       Intel(R) ICH8M-E/ICH9M-E/M SATA RAID Controller
+       Standard AHCI 1.0 Serial ATA Controller
+       RAID Controller.
+ 16. Click the Driver tab, then click Update Driver Software...
+ 17. Click Browse my computer for driver software.
+ 18. Click Browse..., then point to driver location specified in step 9.
+ 19. Make sure the checkbox next to "Include subfolders" is checked and click
+     Next.
+ 20. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version       Rev.  Issue Date
+  ----------    ----  ----------
+  8.9.2.1002    02    2009/12/07
+  8.9.2.1002    01    2009/10/02
+  8.8.0.1009    02    2009/06/11
+  8.8.0.1009    01    2009/03/27
+  8.6.3.1004    01    2008/12/09
+  8.6.0.1007          7th release
+  8.2.4.1005          6th release
+  8.2.0.1001          5th release
+  7.8.0.1012          4th release
+  7.0.0.1020          3rd release
+  5.5.2.1003          2nd release
+  5.5.0.1035          Initial release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<8.9.2.1002>
+ - (Fix) Modified the "Notes" section.(removed affect models)
+
+<8.9.2.1002>
+ - [Important]
+         Added support for Microsoft Windows 7 64-bit.
+
+<8.8.0.1009>
+ - (New) Added support for ThinkPad T400s.
+
+<8.8.0.1009>
+ - (New) Resumed support for ThinkPad X301.
+ - (Fix) Fixed an issue that might not resume normal operation from hibernation
+         state.
+ - (Fix) Fixed an issue that might distort audible sound while the computer was
+         docking/undocking to/from the Docking Station.
+
+<8.6.3.1004>
+ - [Important]
+         Dropped support for ThinkPad X301.
+ - (New) Support for ThinkPad W700ds.
+ - (Fix) Blue screen error comes up during idle.
+
+<8.6.0.1007>
+ - (New) Device Driver Functionality Enhancement.
+
+<8.2.4.1005>
+ - (New) Support for ThinkPad W700,X301.
+ - (New) Device Driver Functionality Enhancement.
+ - (New) Support for ThinkPad X200 Tablet,X200s (added).
+
+<8.2.0.1001>
+ - (New) Support for ThinkPad R400,R500,T400,T500,W500,X200.
+ - (Fix) The system sometimes freezes during the check disk.
+
+<7.8.0.1012>
+ - (New) Support for  ThinkPad X300.
+ - (New) End of support for Windows 2000.
+
+<7.0.0.1020>
+ - (New) Support for Windows Vista 32-bit.
+ - (New) Support for ThinkPad R61,R61e.
+ - (New) Support for ThinkPad T61,T61p.
+ - (New) Support for ThinkPad X61,X61s,X61 Tablet.
+ - (New) Support for ThinkPad Reserve Edition.
+
+<5.5.2.1003>
+ - (New) Support for ThinkPad X60 Tablet.
+
+<5.5.0.1035>
+ - (New) Initial release. Support for:
+         ThinkPad R60,R60e,R61i
+         ThinkPad T60,T60p
+         ThinkPad X60,X60s
+         ThinkPad Z61e,Z61m,Z61p,Z61t.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

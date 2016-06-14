@@ -1,0 +1,165 @@
+Lenovo Solution Center               
+Software readme file for Windows 7, Windows 8, and Windows 10 64bit
+Version 2.8.007
+
+
+Overview
+=========
+Lenovo Solution Center is a test and troubleshooting tool developed to scan regularly your computer looking for issues and helps you through one or more options to resolve these issues in Lenovo computers running on Windows 7 or 8 OS. 
+You can scan hardware, update software, and learn from hints and tips to achieve maximum performance for your system.
+
+
+SUPPORTED SYSTEMS
+=================
+* All Thinkpad
+* All ThinkCentre
+* All ThinkStation
+* All Lenovo Essential
+* All IdeaCentre
+* All Lenovo S
+* IdeaPad 100 (80MH,80MJ,80R7,80R8), 300 (80M2,80M3), 305 (80NJ,80NK,80NL,80R1), 500 (80K3,80K4)
+* Lenovo B40 (80F1,80F3,80F5,80F6,80LS,20390,20392,20394,20395,20539), B41 (80LD,80LG,80RG,80RH,20544), B50 (80ES,80ET,80EU,80EW,80F0,80LT,80QR,20382,20383,20384,20386,20388,20540), B51 (80LH,80LK,80LM,20547,20548), B70 (80MR)
+* Lenovo E31 (80KC,80KW,80KX,80MW,80MX,20519,20520,20521), E40 (80EN,80EQ,80HR,20379,20380,20381), E41 (80Q9,80QA,20611), E50 (80J2,80JA,20469,20471), E51 (80QB,20612)
+* Lenovo G40 (80DX,80E1,80E4,80FY,80G3,80HF,80HH,80JE,80LN,80KY,20369,20417,20422,20453), G41 (80M7), G400 (80A5,20235), G400s (80AC,80AU,20244,20262), G405 (80A9,20239), G405s (80AL,20254), G410 (80A7,20237), G410s (80CG,20273), G490 (80CL,20320), G50 (80DY,80E3,80E5,80G0,80G4,80HG,80HJ,80KR,80L0,80L4,80LQ,80R0,20351,20418,20423,20454), G51 (80M8), G500 (80A6,20236), G500s (80AD,80AV,20245,20263), G505 (80AA,20240), G505s (80AM,20255), G510 (80A8,20238), G510s (80CJ,20276), G70 (80HW,80Q5,80FF,20459), G700 (80AG,20251), G710 (80AH,20252)
+* Lenovo K20 (80HT,20456), K41 (80KD,80KF,80MM,20497,20499,20568)
+* Lenovo M30 (80H8,20446), M40 (80H9,80J9,20445,20470), M41 (80KA,80KB,80KS,20494,20495,20524), M50 (80HK,80HL,20358,20398)
+* Lenovo N40 (80H4,80H5,80H6,80JC,80L1,20460,20461,20462,20473,20525), N41 (80L7), N50 (80HA,80HC,80JD,80L2,20439,20441,20474,20526), N51 (80L8,20531)
+* Lenovo V1000 (80H3,20443), V1070 (80HQ,20452), V2000 (80JQ,20484)
+* Lenovo Y50c (80Q8), Y700 (80NY)
+* Lenovo Z40 (80E6,80DW), Z41 (80K5), Z50 (80E7,80EC), Z51 (80K6), Z70 (80FG)
+* Lenovo ErazerZ41 (80N2), ErazerZ51 (80N3), ErazerZ501 (80A2,20285), ErazerZ505 (80AT,20286)
+* Lenovo MIIX 300 (80NR)
+* Lenovo TianYi 300 (80QV,80QW,80S3)
+* Lenovo Xiaoxin V3000 (80KV,20518), Xiaoxin V4000 (80MY)
+
+
+CHANGE HISTORY
+==============
+v2.8.007
+FIX: Update existing Diagnostics to Lite 4.6.0
+FIX: Loop CPU stress test can not be completed in ThinkCentre M83
+FIX: Chipset and PCI/PCI-e test results are inconsistent in scan screen and log
+FIX: Alerts does not show in Tray icon
+
+v2.8.006
+FIX:  Setup - The button "Later" has its name changed when hovering over it.
+FIX: LSC2.8.002: The LSC hanging on welcome screen, and the main window would not load.
+FIX: LSC 2.5.001(19485): Needless colon ":" after "USB ??" & "RTC??" option for CHS.
+FIX: System monitor - the service isn't stoping, when System monitor is disabled in settings
+FIX: Checkup - HW Scan - Auto Cancel the External HDD tests 
+FIX: Check-up - Hardware scan - The Hardware scan doesn't open
+FIX: LSC show  Warning MSG on HW Scan with GeForce 930A on ThinkCentre M900 Win7
+FIX: LSC 2.8 - Software Updates - Launch button for Windows Update doesn't work
+FIX: LSC will keep in background if the user try to cancel HW scan
+FIX: Accessibility - High Contrast – New pop-up windows display a grey bar on high contrast theme
+FIX: Help - The screenshot of product registration screen has the function "I've been registered"
+FIX: LSC 2.x - ECR345689: LSC HW Scan failed with PCIe Test if NVMe SSD is mounted 
+FIX: LSC 2.8.006 - The LSC is hangs on splash screen after the update of LSC 2.8.005
+FIX: LSC 2.8 - Self Update - The app is not installing the downloaded version
+FIX: LSC 2.8 - Launch button does not work on some module
+FIX: LSC 2.8 - LSC does not call windows features
+
+ADD: Splash screen performance improvement
+ADD: Security fix addresses privilege escalation vulnerability. Refer to Lenovo Security Advisory LEN-4326 for more information
+
+v2.8.005
+FIX: Self Update Issue
+FIX: Adding a USB flash drive - LSC Service not available
+FIX: Hardware Scan - Don't shows the type of memory.
+FIX: Inappropriate Japanese Translation for LSC 2.X
+FIX: LSC - Hardware Scan - The Hardware Scan doesn't open
+FIX: System monitor on tray icon is not updated when switching users
+FIX: Over translation for LSC in settings menu CHT
+FIX: Registration date include an incorrect time.
+FIX: LSC does not cache the warranty info.
+
+
+Supported Windows OS
+--------------------
+- Windows 7 64bit
+- Windows 8 64bit
+- Windows 8.1 64bit
+- Windows 10 64bit
+
+
+Supported Languages
+-------------------
+Lenovo Solution Center provides a user interface in the 
+following languages:
+
+- English
+- French
+- Spanish
+- German
+- Italian
+- Korean
+- Russian
+- Simplified Chinese
+- Traditional Chinese
+- Japanese
+- Dutch
+- Portuguese
+- Danish
+- Swedish
+- Finnish
+- Norwegian
+- Polish
+
+
+DOWNLOADING THE INSTALLATION FILE
+=================================
+1. Click the file links to download the files from the Web page.
+2. When prompted, select a drive and directory in which to save the
+   downloaded files.
+
+
+INSTALLATION
+============
+1. Navigate to the folder where you saved the installation file, lscsetup_x64_28007.exe. 
+2. Double-click the installation file icon to start the installation. 
+3. Step through the wizard that will install Lenovo Solution Center on your system. 
+
+
+LIMITATIONS AND CONSIDERATIONS
+==============================
+Limitations: 
+*Only SATA and SAS hard drive and SSD is supported
+*SATA Controller Mode needs to be set to AHCI in system BIOS if the system doesn't provide UEFI BIOS
+*Doesn't support hardware test on eMMC type Storage Device
+
+
+NOTICES
+/=======
+LENOVO GROUP LTD. PROVIDES THIS PUBLICATION AS IS WITHOUT WARRANTY 
+OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, 
+THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS 
+FOR A PARTICULAR PURPOSE. Some jurisdictions do not allow disclaimer of 
+express or implied warranties in certain transactions, therefore, this 
+statement may not apply to you. This information could include technical 
+inaccuracies or typographical errors. Changes are periodically made to 
+the information herein; these changes will be incorporated in new editions 
+of the publication. Lenovo may make improvements and/or changes in the 
+product(s) and/or the program(s) described in this publication at any time 
+without notice.
+
+
+TRADEMARKS AND SERVICE MARKS
+============================
+The following terms are trademarks of Lenovo in the United States, other 
+countries, or both: 
+
+Lenovo
+ThinkPad
+ThinkCentre
+ThinkStation
+IdeaPad
+IdeaCentre
+
+(C) Portions Copyright Lenovo 2005-2016.  All Rights Reserved.
+(C) Portions Copyright FIT 2011-2016.  All Rights Reserved.
+
+Microsoft, Windows and Windows Vista are trademarks of Microsoft Corporation in the United State and/or other countries.
+
+Note to U.S. Government Users Restricted Rights -- Use,
+duplication, or disclosure restricted by GSA ADP Schedule Contract
+with Lenovo

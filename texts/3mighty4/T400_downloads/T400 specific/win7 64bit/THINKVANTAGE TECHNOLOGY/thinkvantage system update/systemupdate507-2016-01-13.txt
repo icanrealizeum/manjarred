@@ -1,0 +1,368 @@
+ThinkVantage System Update
+for Microsoft Windows 7, Windows 8, Windows 8.1, Windows 10
+Version 5.07.0022
+Installation Readme
+
+
+System Update downloads software, driver and BIOS updates
+from a Lenovo server directly over the Internet without 
+requiring specific user knowledge of where the package is 
+located or if it is needed by the target system.
+
+Other ways in which ThinkVantage Technologies help you keep 
+your system up to date and secure are:
+
+- Provides a direct connection to Lenovo Service and Support 
+  for ThinkPad and ThinkCentre drivers, software and BIOS 
+  updates.
+- Helps maximize your system performance and minimize security
+  vulnerability.
+
+Summary of Changes
+
+   Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<5.07.0022> 2016-01-13 release
+========================
+- [Important] Forbid critical update without previous version
+- [Important] Differentiate drivers installed by Windows Update  
+- [Important] Integrate new Metrics SDK 
+
+<5.07.0019> 2015-11-11 release
+========================
+- [Important] Implement some security enhancement
+- [Important] Apply new Metrics SDK 
+
+<5.07.0013> 2015-09-29 release
+========================
+- [Important] Implement some security enhancement for standard user account. 
+
+<5.07.0008> 2015-09-10 release
+========================
+- [Important] Implement some security enhancement to secure the access to directory and exectuable files. 
+
+<5.07.0007> 2015-08-27 release
+========================
+- (Fix) Fixed bug on TVSU 5.07.0003, which TVSU is unable to launch after splash screen displayed. 
+
+<5.07.0003> 2015-07-01 release
+========================
+- (New) Support Windows 10 32bit/64bit
+
+New in 2015-06-24 release
+========================
+- Fixed some issues.
+
+New in 2015-03-27 release
+========================
+- Fixed some security issues
+
+New in 2015-01-15 release
+========================
+- Implement new design to install none reboot critical update before packages request a reboot.
+- Change frequency of checking for critical update.
+- Record return code in metrics.
+- Fixed some issues
+
+New in 2014-11-04 release
+========================
+- Support high DPI display.
+- Remove SUP.
+
+New in 2014-10-24 release
+========================
+- Fix some issues.
+
+New in 2014-02-21 release
+========================
+- Add metrics collection feature.
+- Add Lenovo offer feature.
+- Fix some issues.
+
+New in 2013-09-17 release
+========================
+- Change default setting of Schedule Updates to "Automatically download and install Critical updates"
+
+New in 2013-09-09 release
+========================
+- Support Windows 8.1
+
+New in 2013-06-26 release
+========================
+- Fix some issues.
+
+New in 2013-02-04 release
+=======================
+- Fix Accessibility issue.
+- Support 10-digit machine type model.
+
+New in 2012-12-18 release
+=======================
+- Support Windows 8
+- New GUI style
+- Other improvements
+
+New in 2012-05-11 release
+=======================
+- Support APS detection for Lenovo V/B/K/E Series
+
+New in 2012-03-16 release
+=======================
+- Add TVSU Scheduler on windows 7
+
+New in 2012-02-03 release
+=======================
+- Add Support to Lenovo V/B/K/E Series
+
+New in 2011-07-25 release
+=======================
+- Fixed the problem that TVSU displays incorrect error message when Lenovo server is down.
+- Fixed the problem that TVSU is not able to find, download and install the following systems BIOS package:
+E220s, E420s, E420, E520, L420, L421, L520, T420, T420i, T420s, T420si, T520, T520i, W520, X1, X220, X220i, X220t, X220it.
+  
+New in 2011-02-18 release
+=======================
+- Add Support for Windows 7 SP1
+  
+New in 2009-9-4 release
+=======================
+- This version only supports Windows 7. 
+- TVSU scheduler is removed and Windows built-in Task Scheduler takes its place. 
+ 
+
+New in 2009-07-09 release
+========================
+- Add TVSU back into system for preload users. 
+
+New in 2009-06-12 release
+========================
+- Add the support to Vista (32-bit and 64-bit) with Service Pack 2
+
+
+New in 2009-05-15 release
+========================
+- Maintenance update for UTS
+
+
+New in 2008-10-20 release
+========================
+- In previous versions of System Update, When the user tried to get new
+  updates, sometimes the message similar to "An error occurred while
+  gathering user information." appeared. This problem is corrected in this 
+  release.
+- An unexpected exception error, that was installed on Vista 64-bit system 
+  after the update is fixed.
+
+
+New in 2008-8-22 release
+========================
+- System Update supports the ThinkVantage Gadget application. 
+- System Update supports Windows Vista Service Pack 1 and Windows XP
+  Service Pack 3.
+- System Update supports different clickable default billboards for the
+  USA, Australia, Japan, and other countries and regions around the world.
+  The billboard for registration, downloading, and installing is disabled. 
+- System Update will not automatically query the Lenovo Support Center 
+  servers if System Update is launched by the scheduler and the scheduler 
+  mode is set to "Notify."
+- System Update supports a new database.xml format in Update Retriever 3.0.
+- This release contains the following corrections:
+      - System Update no longer prompts users to input their name and 
+        password when users searched for updates from share folder without
+        credentials.
+      - Corrected a potential security exposure that occurred when users
+        opened Internet Explorer by clicking the System Update billboard.
+      - Corrected a problem caused by a hard-coded System Type, which 
+        disabled Active Update and Factory Recovery in the Rescue and 
+        Recovery workspace.
+      - Corrected a problem that occured on some ThinkPad models, where 
+        System Update incorrectly set the type to ThinkCentre.  This 
+        caused the ThinkCentre version of the Lenovo Welcome application 
+        to be displayed instead of the ThinkPad version.
+
+
+New in 2008-5-15 release
+========================
+- System Update supports new animated billboard for America, Australia 
+  and other world-wide countries.
+
+
+New in 2008-4-29 release
+=================
+- System Update is able to detect if a Service Pack is already installed 
+  for Vista, and will not list Microsoft updates that were already installed
+  as part of that Service Pack.
+- Automatically reorder packages in the installation list to reduce the 
+  number of restarts.
+- In previous versions of System Update, at the start of each update 
+  search, if System Update updated itself, the user had to click 
+  "Get Updates" again to search for additional updates.  In this release,
+  when System Update finishes updating itself, it automatically continues
+  the search for other updates.
+- System Update no longer creates a temporary folder under C:\ when it 
+  updates itself.
+- In the 2008-1-7 and 2008-3-13 releases, the System Update icon status
+  message incorrectly stated that updates were not available if System 
+  Update was configured to get updates from a customer repository
+  instead of Lenovo Support Center and was launched in schedule mode.  This
+  problem is corrected in this release.
+
+
+New in 2008-3-13 release
+========================
+- Resolves a System Update performance issue by resetting the scheduler
+  to retrieve updates from Lenovo servers when requests for updates are
+  not at their peak. If the scheduler is currently set to retrieve 
+  updates at 11A.M. on the 1st day of each month, this update uses an 
+  algorithm to set the scheduler on each computer to a different day and
+  time.
+- A defect in the scheduler is fixed.
+- Corrects the following problems that were introduced in the 2008-1-7
+  release:
+      - Corrects a registry setting that prevents the user from accessing
+        Active Update in the Rescue and Recovery(R) program, Client 
+        Security Solution program, System Migration Assistant program, and
+        Access Connections program.
+      - Corrects a registry setting that prevents the factory recovery 
+        feature from being displayed in the Rescue and Recovery workspace.
+
+
+New in 2008-1-7 release
+=======================
+- Scheduler supports policies that are deployed by Active Directory.
+- A notification icon is displayed when System Update installs updates 
+  that will reboot or power off the client machine, from scheduler mode.
+- System Update displays download file size and required amount of 
+  disk space for a package in the pick list.
+- Active Update is available. Other ThinkVantage Technologies applications
+  can update themselves using System Update.
+- The User Access Control prompt dialog in Windows Vista is eliminated to
+  improve the user experience.
+- System Update supports manual installation when automatic installation 
+  fails.
+
+Supported systems
+=================
+ThinkVantage System Update is supported on the following systems:
+- Lenovo 3000 C100, C200, N100, N200, V100, V200 
+- Lenovo 3000 J100, J105, J110, J115, J200, J200p, J205, S200, S200p,S205
+- All ThinkPad 
+- All ThinkCentre
+- All ThinkStation
+- Lenovo V/B/K/E Series
+
+ThinkVantage System Update supports additional systems as content is
+created for them.
+
+
+Software requirements
+=====================
+The following operating systems are supported: 
+
+- Microsoft Windows 7
+- Microsoft Windows 8
+- Microsoft Windows 8.1
+- Microsoft Windows 10
+
+Downloading the package
+=======================
+1. Click the file links to download the files from the Web page.
+2. When prompted, select a drive and directory in which to save the
+   downloaded files.
+
+Installing the package
+======================
+Under Windows 10
+---------------------------
+1. Open File Explorer.
+2. Click "This PC" on the left panel.
+3. Type systemupdate507-2016-01-13.exe in the search field on the upper right corner. This will locate the file you just downloaded.
+4. Double-click the executable icon. You might see a dialog stating "Do you want to allow this app to make changes to your PC?". If you see this dialog, click Continue.
+5. Follow the onscreen instructions to complete the installation.
+
+Under Windows 8 or Windows 8.1
+---------------------------
+1. Open charms bar and click Search.
+2. Type systemupdate507-2016-01-13.exe in the search field, then
+   click Files catalog. This will locate the file you just
+   downloaded.
+3. Double-click the executable icon. You might see a dialog
+   stating "A program needs your permission to continue". If
+   you see this dialog, click Continue.
+4. Follow the onscreen instructions to complete the installation.
+
+Under Windows 7
+---------------------------
+1. Click Start, then click Start Search.
+2. Type systemupdate507-2016-01-13.exe in the search field, then
+   click Search Everywhere. This will locate the file you just
+   downloaded.
+3. Double-click the executable icon. You might see a dialog
+   stating "A program needs your permission to continue". If
+   you see this dialog, click Continue.
+4. Follow the onscreen instructions to complete the installation.
+
+
+Silent installation of System Update
+====================================
+System Update can be installed in an unattended (silent) mode, 
+which enables you to launch the installation using the default settings.
+If you want to install System Update in an unattended mode, 
+follow the steps listed below:
+
+1. Open a command prompt (DOS) session.
+2. Using DOS commands go to the folder where you saved the file you 
+   downloaded from the System Update download page.
+3. Launch the silent installation by adding the following parameters
+   to the downloaded filename /verysilent. For example, 
+
+   systemupdate507-2016-01-13.exe  /verysilent /norestart 
+
+   Then, press Enter.
+4. Wait for the installation to finish.
+5. Close the command prompt session.
+
+
+Considerations
+==============
+System Update can be installed on Windows 2003. However, the Lenovo 
+Support Center does not support Windows 2003. Therefore, when a 
+user tries to search updates from the Lenovo Support Center, System 
+Update will return nothing but an error number 42, which means the
+Lenovo Support Center Center does not support the operating system.
+
+
+Trademarks
+==========
+The following terms are trademarks of Lenovo in the United States, other
+countries, or both:
+
+Lenovo
+ThinkCentre
+ThinkPad
+ThinkVantage
+
+Microsoft, Windows, and Windows Vista are trademarks or registered trademarks
+of Microsoft Corporation in the United States, other countries, or both.
+
+Other company, product, and service names may be trademarks or service marks
+of others.
+
+LENOVO PROVIDES THIS PUBLICATION "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A
+PARTICULAR PURPOSE. Some jurisdictions do not allow disclaimer of express or
+implied warranties in certain transactions, therefore, this statement may not
+apply to you. This information could include technical inaccuracies or
+typographical errors. Changes are periodically made to the information herein;
+these changes will be incorporated in new editions of the publication. Lenovo
+may make improvements and/or changes in the product(s) and/or the program(s)
+described in this publication at any time without notice.
+
+BY FURNISHING THIS DOCUMENT, LENOVO GRANTS NO LICENSES TO ANY PATENTS OR
+COPYRIGHTS.
+
+(C) Copyright Lenovo 2015. All rights reserved.

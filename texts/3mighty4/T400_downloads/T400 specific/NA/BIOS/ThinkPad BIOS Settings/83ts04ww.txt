@@ -1,0 +1,267 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      ThinkPad BIOS Settings Windows (SRSETUP for Windows)
+
+Support models     ThinkPad L430
+                   ThinkPad L530
+                   ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si, T420, T420i,
+                            T420s, T420si, T430, T430i, T430s, T430si
+                   ThinkPad T500, T510, T510i, T520, T520i, T530, T530i
+                   ThinkPad W500, W510, W520, W530
+                   ThinkPad W700, W700ds, W701, W701ds
+                   ThinkPad X1
+                   ThinkPad X200, X200s, X200 Tablet, X201, X201i, X201s,
+                            X201 Tablet, X220, X220i, X220 Tablet, X220i Tablet,
+                            X230, X230i, X230 Tablet, X230i Tablet
+                   ThinkPad X300, X301
+
+                   ThinkPad R60, R60e, R61, R61e, R61i
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad Z61e, Z61m, Z61p, Z61t
+                   ThinkPad Reserve Edition
+
+Operating Systems  Microsoft Windows 7  32-bit
+                   Microsoft Windows Vista  32-bit
+                   Microsoft Windows XP  Home Edition, Professional
+                   Microsoft Windows XP  Tablet PC Edition 2005
+                   Microsoft Windows 2000
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            3.03
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  ThinkPad stores various BIOS settings in its non-volatile memory.
+  These settings are configured by using the ThinkPad setup menu. In general,
+  this is done manually by the user. However, from a deployment point of view,
+  the BIOS settings are expected to be common to all machines and to be
+  controlled remotely. This program is the Windows based of "ThinkPad Setup
+  Settings Capture/Playback Utility" (SRCMOS.EXE or SRSETUP.EXE).
+
+  Features:
+  - Copy ThinkPad setup data settings
+  - Copy ThinkPad secure data settings
+  - Install and update for power-on password
+  - Install for hard disk password
+
+  If this software has been used, updating this software will fix problems, add
+  new functions, or expand functions as noted below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 3.03
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+- Added support for ThinkPad L430,L530,T430,T430i,T430s,T430si,T530,T530i,W530,
+  X230,X230i,X230 Tablet,X230i Tablet.
+
+[Problem fixes]
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- Both the donor ThinkPad and a target ThinkPad must have the same BIOS Level.
+- The BiosSettingsWindows version on both donor and target must be the same.
+- Both donor and target must have a Supervisor Password to use this tool. This
+  is for security reasons to prevent malicious software from setting an unknown
+  Supervisor Password, locking all users out of the system.
+- 'Using Passphrase' setting (ThinkPad Setup Utility -> Security -> Password)
+  must be the same on both donor and target ThinkPad.
+
+
+--------------------------------------------------------------------------------
+HOW TO USE THE SOFTWARE
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+- The program must be installed on both the donor ThinkPad and the target
+  ThinkPad.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Locate the folder where the file was downloaded.
+  6. Locate the file that was downloaded and double-click it.
+  7. Follow the instructions on the screen.
+  8. In the Location to Save Files window, click Next. If you would like to
+     select a different folder, click Browse.
+  9. Follow the instructions on the screen. All the necessary files will be
+     extracted to the folder selected in the step 8.
+
+  Using the software
+ 10. Refer to BiosSettingsWindows User's Guide.doc in the folder selected in the
+     step 8.
+     Note:
+     You can use this program by copying the entire directory from the donor
+     ThinkPad to the target ThinkPad.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download the file.
+  2. At the command line, excecute the downloaded file with the /S option.
+     Example: [Path where the files were extracted]\83TS02WW /S
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Version    Rev.  Issue Date
+  -------    ----  ---------------
+  3.03       01    2012/04/27
+  3.02       01    2011/08/04
+  3.01       04    2011/04/28
+  3.01       03    2011/04/08
+  3.01       02    2011/03/18
+  3.01       01    2011/03/10
+  3.00       01    2011/02/23
+  2.00       01    2010/09/24
+  1.08       01    2010/07/13
+  1.07       04    2010/03/12
+  1.07       03    2010/02/12
+  1.07       02    2010/01/29
+  1.07       01    2009/12/18
+  1.06       01    2009/06/11
+  1.05             3rd release
+  1.04             2nd release
+  1.03             Initial release
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<3.03>
+- (New) Added support for ThinkPad L430,L530,T430,T430i,T430s,T430si,T530,T530i,
+        W530,X230,X230i,X230 Tablet,X230i Tablet.
+
+<3.02>
+- (Fix) Fixed an issue where the hard disk password could not be set in the
+        second internal hard disk or later.
+
+<3.01>
+- (New) Added support for ThinkPad X1.
+
+<3.01>
+- (New) Added support for ThinkPad X220,X220i,X220 Tablet,X220i Tablet.
+
+<3.01>
+- (New) Added support for ThinkPad W520.
+
+<3.01>
+- (New) Added support for the following models.
+          ThinkPad R400
+          ThinkPad R500
+          ThinkPad T400,T400s,T410,T410i,T410s,T410si
+          ThinkPad T500,T510,T510i
+          ThinkPad W500,W510
+          ThinkPad W700,W700ds,W701,W701ds
+          ThinkPad X200,X200s,X200 Tablet,X201,X201i,X201s,X201 Tablet
+          ThinkPad X300,X301
+          ThinkPad R60,R60e,R61,R61e,R61i
+          ThinkPad T60,T60p,T61,T61p
+          ThinkPad X60,X60s,X60 Tablet,X61,X61s,X61 Tablet
+          ThinkPad Z61e,Z61m,Z61p,Z61t
+          ThinkPad Reserve Edition
+
+<3.00>
+- (New) Support for ThinkPad T420,T420i,T420s,T420si,T520,T520i.
+
+<2.00>
+- (Fix) Fixed an issue where SATA Controller Mode Option was not copied on the
+        following ThinkPad models.
+          ThinkPad T410,T410i,T410s,T410si,T510,T510i,W701,W701ds,X201,X201i,
+                   X201s,X201 Tablet,X301.
+
+<1.08>
+- (Fix) Fixed an issue where this problem might not work when the installed
+        system memory was 4 GB.
+
+<1.07>
+- (New) Added support for ThinkPad W701,W701ds.
+- (Fix) Corrected an description of Operating Systems in this README document.
+        Added Microsoft Windows 7 32-bit.
+
+<1.07>
+- (New) Added support for ThinkPad X201,X201i,X201s,X201 Tablet.
+
+<1.07>
+- (New) Added support for ThinkPad T410i,T410si,T510i.
+
+<1.07>
+- (New) Added support for ThinkPad T410,T410s,T510,W510.
+
+<1.06>
+- (New) Added support for ThinkPad T400s.
+
+<1.05>
+- (New) Support for ThinkPad R400,R500,T400,T500,W500,W700,X200,X200s,
+        X200 Tablet,X301.
+
+<1.04>
+- (New) Support for ThinkPad X300.
+
+<1.03>
+- (New) Initial release.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

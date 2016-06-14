@@ -1,0 +1,153 @@
+                                                                   Revision : 01
+--------------------------------------------------------------------------------
+Software name      Hotkey Features patch
+
+Support models     ThinkPad R400
+                   ThinkPad R500
+                   ThinkPad T400, T400s, T410, T410i, T410s, T410si
+                   ThinkPad T500, T510, T510i
+                   ThinkPad W500, W510
+                   ThinkPad W700, W700ds
+                   ThinkPad W701, W701ds
+                   ThinkPad X100e
+                   ThinkPad X200, X200s, X200 Tablet
+                   ThinkPad X201, X201i, X201s, X201 Tablet
+                   ThinkPad X300, X301
+
+                   ThinkPad Edge 11", 13", 14", 15"
+                   ThinkPad Edge E10, E30, E31, E40, E50
+
+                   ThinkPad L410, L412
+                   ThinkPad L510, L512
+                   ThinkPad SL300
+                   ThinkPad SL400, SL400c, SL410
+                   ThinkPad SL500, SL500c, SL510
+
+                   ThinkPad G50
+                   ThinkPad R50, R50e, R50p, R51, R51e, R52
+                   ThinkPad R60, R60e, R60i, R61, R61e, R61i
+                   ThinkPad T41, T41p, T42, T42p, T43, T43p
+                   ThinkPad T60, T60p, T61, T61p
+                   ThinkPad X31, X32
+                   ThinkPad X40, X41, X41 Tablet
+                   ThinkPad X60, X60s, X60 Tablet, X61, X61s, X61 Tablet
+                   ThinkPad Z60m, Z60t, Z61e, Z61m, Z61p, Z61t
+                   ThinkPad Reserve Edition
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+                   Microsoft Windows Vista  32-bit, 64-bit
+                   Microsoft Windows XP  Professional x64 Edition
+                   Microsoft Windows XP  Home Edition, Professional
+                   Microsoft Windows XP  Tablet PC Edition 2005
+                   Microsoft Windows 2000
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            Build 01
+
+Support device     Hotkey features
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+The Hotkey Features patch enables you to fix an issue of an unexpected application
+error that relates to the Hotkey features.
+After applying this patch, one program file, HKVOLKEY.DLL will be copied in
+C:\Program Files\Lenovo\Hotkey.
+Then the TPOSDSVC.EXE will work without termination by application crashing.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Build 01
+
+[Problem fixes]
+- Fixed an unexpected application error of the TPOSDSVC.EXE.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- The Hotkey features patch is copying a file HKVOLKEY.DLL to a ThinkPad that
+  DLL files has been erased accidentally. Otherwise there is no need to apply it.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+  Verifying the patch installed
+    Once the Hotkey features patch is applied, you will find the "MARKER.DLL"
+    file in the C:\Program Files\Lenovo\Hotkey directory.
+    The MARKER.DLL is able to be overwritten, you can run the patch more than once.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date.
+
+  Build  Rev.  Issue Date
+  -----  ----  ----------
+  01     01    2010/10/14
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+Summary of Changes
+
+  Where: <   >        Version number
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<01>
+ - (Fix) Fixed an unexpected application error of the TPOSDSVC.EXE.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo and ThinkPad are registered trademarks of Lenovo.
+
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.

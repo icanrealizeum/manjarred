@@ -1,0 +1,65 @@
+get a win7(enterprise) trial(30days?or 90days dno) iso:
+http://care.dlservice.microsoft.com/dl/download/evalx/win7/x64/EN/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso
+
+md5: 1d0d239a252cb53e466d39e752b17c28
+key: 33PXH-7Y6KF-2VJC9-XBBR8-HVTHH
+
+
+MD5: 1d0d239a252cb53e466d39e752b17c28
+SHA1: 15ddabafa72071a06d5213b486a02d5b55cb7070
+CRC32: c4d12791
+
+=====
+sha512sum(added by me):
+bb6d6ae1b5d2506e65a33aed26663541c2598cfc6a0d2da7067ad6720323aeb76adde8e59cc33bf06ac191953240a5ba9d688f5bcb16988a764c341400646d02  7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso
+
+computed on my Z575(from 1tb ssd, but was cached to ram):
+real	0m20.864s
+user	0m19.555s
+sys	0m1.283s
+
+computed on my T400(sysrescd, /tmp/ tmpfs):
+sha512sum   143.79s user 0.98s system 99% cpu 2:24.83 total
+second time later:
+sha512sum   143.78s user 0.87s system 99% cpu 2:24.71 total
+
+- but cpu was set to minimum in BIOS!!! which is apparently 1600Mhz(?) as reported by some sysrescd hardware reporting tool(it was lshw)
+nope it's 800Mhz as reported by /proc/cpuinfo, also
+bogomips  : 5053.89
+model name  : Intel(R) Core(TM)2 Duo CPU     T9400  @ 2.53GHz
+
+//=======
+
+
+more keys (but may not work because: "Enterprise editions are available only to volume license customers" so it's using enterprise key for a reason: VLK):
+Windows 7 Professional 		FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4
+Windows 7 Professional N 	MRPKT-YTG23-K7D7T-X2JMM-QY7MG
+Windows 7 Professional E 	W82YF-2Q76Y-63HXB-FGJG9-GF7QX
+Windows 7 Enterprise 			33PXH-7Y6KF-2VJC9-XBBR8-HVTHH
+Windows 7 Enterprise N 		YDRBP-3D83W-TY26F-D46B2-XCKRJ
+Windows 7 Enterprise E 		C29WB-22CC8-VJ326-GHFJW-H9DH4
+
+
+src: https://github.com/joefitzgerald/packer-windows/blob/53fda6e9a157eb279a1d9557cba70093595f1778/windows_7.json
+
+key src: https://raw.githubusercontent.com/joefitzgerald/packer-windows/53fda6e9a157eb279a1d9557cba70093595f1778/answer_files/7/Autounattend.xml
+also: https://technet.microsoft.com/en-us/library/jj612867.aspx
+
+anoter untested url is: http://wb.dlservice.microsoft.com/dl/download/release/Win7/3/b/a/3bac7d87-8ad2-4b7a-87b3-def36aee35fa/7600.16385.090713-1255_x64fre_enterprise_en-us_EVAL_Eval_Enterprise-GRMCENXEVAL_EN_DVD.iso
+src: https://github.com/masteinhauser/bento-solaris/blob/00ebee78eeeccc9c1d9dfc1a830fabf4776f46e1/definitions/windows-7-enterprise/definition.rb#L11
+
+
+ALL checksums (sha1) from: https://raw.githubusercontent.com/boxcutter/windows/master/Makefile
+
+
+===================================
+
+Reset the evaluation timer
+
+After 30 days of evaluation, you can reset the evaluation timer by opening the command prompt in admin mode, and typing in the command "slmgr -rearm". You can repeat this procedure up to 3 times, so your evaluation time will be 120 days altogether.
+
+src: https://www.heidoc.net/joomla/technology-science/microsoft/14-windows-7-direct-download-links
+
+================
+
+

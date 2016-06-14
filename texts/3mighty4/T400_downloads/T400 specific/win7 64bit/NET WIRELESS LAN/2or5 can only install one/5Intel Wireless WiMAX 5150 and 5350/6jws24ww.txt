@@ -1,0 +1,402 @@
+                                                                   Revision : 04
+--------------------------------------------------------------------------------
+Software name      Intel WiMAX
+
+Support models     ThinkPad T400, T400s
+                   ThinkPad T500
+                   ThinkPad W500
+                   ThinkPad W700, W700ds
+                   ThinkPad X200, X200s
+                   ThinkPad X200 Tablet(*1)
+                   ThinkPad X301
+
+                   ThinkPad L410
+                   ThinkPad L510
+                   ThinkPad SL300
+                   ThinkPad SL400, SL400c, SL410
+                   ThinkPad SL500, SL500c, SL510
+
+Operating Systems  Microsoft Windows 7  32-bit, 64-bit
+
+                   Refer to marketing materials to find out what computer models
+                   support which Operating Systems.
+
+Version            1.05.2000      (Package)
+                   - 5.10.1046.3  (WiMAX Driver)
+                   - 5.10.1046.3  (Function Driver)
+
+Support devices    Intel WiMAX/WiFi Link 5150
+                   Intel WiMAX/WiFi Link 5350
+
+
+*1: Supports Intel WiMAX/WiFi Link 5350 only.
+
+
+--------------------------------------------------------------------------------
+WHAT THIS PACKAGE DOES
+
+  This package installs the software (WiMAX driver and function driver) to
+  enable the following device.
+
+  Device name                   Device name in the Device Manager
+  --------------------------    --------------------------------------------
+  Intel WiMAX/WiFi Link 5150    Intel(R) Wireless WiMAX Link 5150
+                                Intel(R) Wireless WiMAX Link Function Driver
+
+  Intel WiMAX/WiFi Link 5350    Intel(R) Wireless WiMAX Link 5350
+                                Intel(R) Wireless WiMAX Link Function Driver
+
+  Refer to marketing materials to find out what computer models support which
+  devices.
+
+  If this package has been installed, updating (overwrite-installing) this
+  package will fix problems, add new functions, or expand functions as noted
+  below.
+
+  This program is language independent and can be used with any language system.
+
+
+--------------------------------------------------------------------------------
+CHANGES IN THIS RELEASE
+  Version 1.05.2000      (Package)
+          - 5.10.1046.3  (WiMAX driver)
+          - 5.10.1046.3  (Function driver)
+
+[Important updates]
+  Nothing.
+
+[New functions or enhancements]
+- Initial release after integrating the following packages.
+  - Intel WiMAX for Intel WiMAX/WiFi Link 5150 (6JWS23WW)
+  - Intel WiMAX for Intel WiMAX/WiFi Link 5350 (6JWV20WW)
+
+[Problem fixes]
+- Corrected a mistake where ThinkPad X200 Tablet supported Intel WiMAX/WiFi Link
+  5150. (ThinkPad X200 Tablet supports Intel WiMAX/WiFi Link 5350 only.)
+- Corrected the support models to add ThinkPad W700,W700ds,X200 Tablet.
+- Fixed an issue where online activation of UQ WiMAX might fail upon WiMAX
+  connection.
+
+
+--------------------------------------------------------------------------------
+DETERMINING WHICH VERSION IS INSTALLED
+
+
+ [Package]
+
+  1. Click Start, then click Control Panel.
+  2. Make sure "View by Category" is selected, and click Uninstall a program.
+  3. Click Organize, select Layout, then select Details Pane. The Details Pane
+     will be shown at the bottom of screen.
+  4. Select Intel(R) PROSet/Wireless WiMax Software.
+  5. Check the product version in the Details Pane.
+
+
+ [WiMAX Driver]
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the Network adapters category.
+  5. Double-click any of the following devices.
+       Intel(R) Wireless WiMAX Link 5150
+       Intel(R) Wireless WiMAX Link 5350
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+ [Function Driver]
+
+  1. Click Start.
+  2. Right-click Computer, and then click Properties.
+  3. At the left pane, click Device Manager.
+  4. Double-click the Intel(R) WiMAX adapter category.
+  5. Double-click Intel(R) WiMAX Link Function Driver.
+  6. Click the Driver tab.
+  7. Check Driver Version.
+
+
+--------------------------------------------------------------------------------
+NOTES
+
+- UDP port 2948 needs to be opened in the firewall for successful activation and
+  provisioning. Depending on the computer's firewall and security settings, the
+  firewall's settings may need to be changed to allow the required
+  communications.
+
+- If you use ThinkVantage Access Connections, the following software must be
+  installed.
+
+  [For ThinkPad SL300,SL400,SL400c,SL500,SL500c]
+  - ThinkVantage Access Connections for Windows 7
+      version 5.60 or higher
+  - ThinkPad Power Management Driver for SL Series for Windows 7/Vista/XP
+      version 1.44 or higher
+  - Hotkey Features Integration for Windows 7/Vista/XP/2000
+      version 3.02.0000 or higher
+  - ATK Hotkey Driver for Windows 7
+      version 1.00.03.0 or higher.
+
+  [For the other ThinkPad models]
+  - ThinkVantage Access Connections for Windows 7
+      version 5.60 or higher
+  - ThinkPad Power Management Driver for Windows 98 SE/Me/2000/XP/Vista/7
+      version 1.60 or higher
+  - Hotkey Features Integration for Windows 7/Vista/XP/2000
+      version 3.02.0000 or higher.
+
+
+--------------------------------------------------------------------------------
+INSTALLATION INSTRUCTIONS
+
+Note:
+- If your computer runs satisfactorily now, it may not be necessary to update
+  the software. To determine if you should update the software, refer to the
+  Version Information section.
+
+
+Manual Install
+
+  This section assumes to use Internet Explorer and Windows Explorer.
+
+  Downloading file
+  1. Click once on the underlined file name. Once this is done, some pop-up
+     windows will appear.
+  2. Follow the instructions on the screen.
+  3. In the window to choose Run or Save, click Save.
+  4. Choose the folder you would like to download the file to and click Save.
+     A different window will appear and the download will begin and complete.
+     Once the download has completed, there may or may not be a message stating
+     that the download completed successfully.
+
+  Extracting file
+  5. Make sure to be logged on with an administrator account.
+  6. Locate the folder where the file was downloaded.
+  7. Locate the file that was downloaded and double-click it.
+  8. Follow the instructions on the screen.
+  9. In the Select Destination Location window, click Next. If you would like to
+     select a different folder, click Browse.
+ 10. In the Ready to Install window, click Install. All the necessary files will
+     be extracted to the folder selected in the step 9.
+
+  Installing files
+ 11. Make sure the checkbox next to "Install ..... now" is checked and click
+     Finish.
+ 12. Follow the instructions on the screen.
+     Note:
+     If you use ThinkVantage Access Connections, Intel PROSet/Wireless component
+     needs to be installed as pre-selected during the above procedure.
+ 13. Follow the instructions on the screen to complete installation and restart
+     the computer.
+
+  Finally delete the file saved in the step 4.
+
+
+Unattended Install
+
+  This is for system administrators' use only.
+
+  1. Refer to the Manual Install section, and download and extract the file.
+  2. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  3. At the command line, execute Autorun.exe with the /QN option.
+     Example: [Path where the files were extracted]\Autorun /QN
+
+
+--------------------------------------------------------------------------------
+UNINSTALLATION INSTRUCTIONS
+
+Note:
+- If winlogon.exe error or any problem occurs after uninstalling the software,
+  re-install any version of the software for problem solving.
+
+
+Manual Uninstall
+
+  1. Start Windows and logon with an administrator account.
+  2. Click Start, then click Control Panel.
+  3. Make sure "View by Category" is selected, and click Uninstall a program.
+  4. Select Intel(R) PROSet/Wireless WiMAX Software, and click Uninstall or
+     Uninstall/Change.
+  5. Follow the instructions on the screen to complete uninstallation and
+     restart the computer.
+
+  Or
+
+  1. Start Windows and logon with an administrator account.
+  2. Refer to the Manual Install section, and download and extract the file.
+  3. In the step 11 of the Installing files section, uncheck the checkbox next
+     to "Install ..... now", and then click Finish to cancel installation.
+  4. Click Start, then click All Programs.
+  5. Click Accessories, then click Run.
+  6. Type [Path where the files were extracted]\Autorun.exe and click OK.
+     Example: [Path where the files were extracted]\Autorun.exe
+  7. Select Remove.
+  8. Follow the instructions on the screen to complete uninstallation and
+     restart the computer.
+
+
+--------------------------------------------------------------------------------
+VERSION INFORMATION
+
+  The following versions have been released to date. Access Connections for each
+  of those versions are also available.
+
+  Where: 5150/5350      : Intel Wireless WiMAX Link 5150/5350 Driver
+         Function Driver: Intel Wireless WiMAX Link Function Driver
+
+                                    Function     Access
+  Package    Build ID  5150/5350    Driver       Connections     Rev. Issue Date
+  ---------  --------  -----------  -----------  --------------  ---- ----------
+  1.05.2000  6JWS24WW  5.10.1046.3  5.10.1046.3  5.60 or higher  04   2010/08/27
+  1.05.2000  6JWS24WW  5.10.1046.3  5.10.1046.3  5.60 or higher  03   2010/06/29
+  1.05.2000  6JWS24WW  5.10.1046.3  5.10.1046.3  5.60 or higher  02   2010/06/22
+  1.05.2000  6JWS24WW  5.10.1046.3  5.10.1046.3  5.60 or higher  01   2010/06/11
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+  To check the version of software, refer to the Determining which version is
+  installed section.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.05.2000> (6JWS24WW)
+ - (Fix) Corrected a mistake where ThinkPad X200 Tablet supported Intel WiMAX/
+         WiFi Link 5150. (ThinkPad X200 Tablet supports Intel WiMAX/WiFi Link
+         5350 only.)
+
+<1.05.2000> (6JWS24WW)
+ - (Fix) Corrected the support models to add ThinkPad W700,W700ds,X200 Tablet.
+
+<1.05.2000> (6JWS24WW)
+ - (New) Initial release after integrating the following packages.
+         - Intel WiMAX for Intel WiMAX/WiFi Link 5150 (6JWS23WW)
+         - Intel WiMAX for Intel WiMAX/WiFi Link 5350 (6JWV20WW)
+
+<1.05.2000> (6JWS24WW)
+ - (New) Added support for Intel WiMAX/WiFi Link 5350.
+ - (Fix) Fixed an issue where online activation of UQ WiMAX might fail upon
+         WiMAX connection.
+
+
+--------------------------------------------------------------------------------
+REFERENCE INFORMATION (OLD PACKAGES)
+
+  The following versions had been released for each adapter card before package
+  integration. Access Connections for each of those versions are also available.
+
+
+[Old Intel WiMAX for Intel WiMAX/WiFi Link 5150]
+
+  Where: 5150           : Intel Wireless WiMAX Link 5150 Driver
+         Function Driver: Intel Wireless WiMAX Link Function Driver
+
+                                    Function     Access
+  Package    Build ID  5150         Driver       Connections     Rev. Issue Date
+  ---------  --------  -----------  -----------  --------------  ---- ----------
+  1.05.0014  6JWS23WW  5.10.1046.3  5.10.1046.3  5.60 or higher  01   2010/03/23
+  1.04.0000  6JWS22WW  5.1.29.5     5.1.29.5     5.40 or higher  01   2009/10/16
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.05.0014> (6JWS23WW)
+ - (New) Improved compatibility with Clear network (US).
+ - (New) Added support for US MVNO.
+ - (New) Added support for Commstar network for Russia.
+
+<1.04.0000> (6JWS22WW)
+ - (New) Initial release for Intel WiMAX for Intel WiMAX/WiFi Link 5150.
+
+
+[Old Intel WiMAX for Intel WiMAX/WiFi Link 5350]
+
+  Where: 5350           : Intel Wireless WiMAX Link 5350 Driver
+         Function Driver: Intel Wireless WiMAX Link Function Driver
+         7              : Windows 7
+         Vista          : Windows Vista
+
+                               Function   Access
+  Package   Build ID 5350      Driver     Connections            Rev. Issue Date
+  --------- -------- --------- ---------  ---------------------  ---- ----------
+  1.04.0000 6JWV20WW 5.1.29.5  5.1.29.5   5.4 or higher (7)      01   2009/10/05
+                                          5.3 or higher (Vista)  01   2009/10/05
+  ......... ........ ......... .........  .....................  .... ..........
+  1.02.0006 6JWV04WW 4.1.25.15 4.1.25.15  5.3 or higher          02   2009/09/11
+  1.02.0006 6JWV04WW 4.1.25.15 4.1.25.15  5.3 or higher          01   2009/06/11
+  1.01.2010 7TWV53WW 4.1.22.13 4.1.22.13  5.21 or higher         01   2009/05/11
+  1.00.0042 7TWV12WW 3.57.3.46 3.57.3.46  5.1 or higher               Initial
+
+  Note: Revision number (Rev.) is for administrative purpose of this README
+        document and is not related to software version. There is no need to
+        upgrade this software when the revision number changes.
+
+
+Summary of Changes
+
+  Where: <   >        Package version number
+         (   )        Build ID for administrative purpose
+         [Important]  Important update
+         (New)        New function or enhancement
+         (Fix)        Correction to existing function
+
+<1.04.0000> (6JWV20WW)
+ - [Important]
+         Added support for Windows 7.
+
+<1.02.0006> (6JWV04WW)
+ - (New) Added support for ThinkPad L410,L510,SL410,SL510.
+ - (New) Added support for Yota(Russia).
+
+<1.02.0006> (6JWV04WW)
+ - (New) Added support for ThinkPad T400s.
+
+<1.01.2010> (7TWV53WW)
+ - (New) Added support for Clear(Clearwire).
+ - (New) Added support for ThinkPad T500,W500,W700,W700ds,X200,X200s,X200 Tablet,
+         SL400.
+
+<1.00.0042> (7TWV12WW)
+ - (New) Initial release for Intel WiMAX for Intel WiMAX/WiFi Link 5350.
+
+
+--------------------------------------------------------------------------------
+LIMITATIONS
+
+  Nothing.
+
+
+--------------------------------------------------------------------------------
+TRADEMARKS
+
+* Lenovo, ThinkPad and ThinkVantage are registered trademarks of Lenovo.
+* Access Connections is a trademark of Lenovo.
+
+* CLEAR is a trademark of Clear Wireless LLC and/or its affiliates.
+* Intel is a registered trademark of Intel Corporation.
+* Microsoft, Windows and Windows Vista are registered trademarks of Microsoft
+  Corporation.
+* WiMAX Forum is a registered trademark of the WiMAX Forum.
+* WiMAX is a trademark of the WiMAX Forum.
+
+Other company, product, and service names may be registered trademarks,
+trademarks or service marks of others.
