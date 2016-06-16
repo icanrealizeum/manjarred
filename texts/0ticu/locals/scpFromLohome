@@ -13,7 +13,7 @@ if test -z "$fromremotepath"; then
 fi
 
 set -x
-time scp -i ~/ticu/dns/lekeyofhss/privk -4vp -P 46802 root@lohome:"$fromremotepath" "$tolocalpath"
+time scp -i ~/privaterepos/ticu/dns/lekeyofhss/privk -4vp -P 46802 root@lohome:"$fromremotepath" "$tolocalpath"
 set +x
 
 

@@ -11,7 +11,7 @@ if test -z "$fromlocalpath" -o -z "$toremotepath"; then
 fi
 
 set -x
-time scp -i ~/ticu/dns/lekeyofhss/privk -4vp -r -P 46802 "$fromlocalpath" root@lohome:"$toremotepath"
+time scp -i ~/privaterepos/ticu/dns/lekeyofhss/privk -4vp -r -P 46802 "$fromlocalpath" root@lohome:"$toremotepath"
 set +x
 
 
