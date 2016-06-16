@@ -1,0 +1,41 @@
+#!/bin/bash
+
+if test -z "$to"; then
+  echo '\$to is unset'
+  exit 1
+fi
+
+if test "sus" == "$to"; then #celeron
+  prt=44389
+elif test "jos" == "$to"; then #amd
+  prt=44510
+else
+  echo "invalid to='$to'"
+  exit 2
+fi
+
+if test -z "$routerhost"; then
+  routerhost='remoterouter' #XXX: must be set in /etc/hosts
+fi
+keyfile=~/ticu/dns/lekeyofhss/privk
+
+
+fromlocalpath="$1"
+toremotepath="$2"
+
+if test -z "$fromlocalpath"; then
+  echo 'empty local source arg'
+  exit 1
+fi
+
+if test -z "$toremotepath"; then
+  echo "empty remote dest arg"
+  exit 2
+fi
+
+set -x
+time scp -i "$keyfile" -4vp -r -P "$prt" "$fromlocalpath" root@${routerhost}:"$toremotepath"
+#time scp -i ~/ticu/dns/lekeyofhss/privk -4vp -r -P 46802 "$fromlocalpath" root@latelier:"$toremotepath"
+set +x
+
+#FIXME: last arg should be remote(or first? but then all cmds should have remote be first!) so we can use wildcards for source files!
