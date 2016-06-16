@@ -1,0 +1,7 @@
+sudo VBoxManage internalcommands createrawvmdk -filename /tmp/myusbstickhdd.vmdk -rawdisk /dev/sdb
+
+#/dev/sdb is your USB stick! where you dd-ed the image to!
+
+
+then add that vmdk file as Harddisk, in virtualbox!
+
