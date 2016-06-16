@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#close router for both hosts
+#XXX: routerauth is a script that echoes user:pass like this: echo -n 'user:pass' | openssl base64
+
+
+curl 'http://192.168.1.1/scvrtsrv.cmd?action=remove&rmLst=-1062731274|44389|44389|1|46802|46802,' -H 'Host: 192.168.1.1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate' -H "Authorization: Basic $(`dirname -- "$0"`/routerauth)" -H 'Connection: keep-alive'
+
+curl 'http://192.168.1.1/scvrtsrv.cmd?action=remove&rmLst=-1062731310|44510|44510|1|46802|46802' -H 'Host: 192.168.1.1' -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate' -H "Authorization: Basic $(`dirname -- "$0"`/routerauth)" -H 'Connection: keep-alive'
+
