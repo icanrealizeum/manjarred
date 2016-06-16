@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if test -z "$to"; then
+  echo 'unset'
+  exit 1
+fi
+
+if test "sus" == "$to"; then #celeron
+  prt=44389
+  localvncport=46801
+elif test "jos" == "$to"; then #amd
+  prt=44510
+  localvncport=46802
+else
+  echo "invalid to='$to'"
+  exit 2
+fi
+
+routerhost='remoterouter'
+keyfile=~/ticu/dns/lekeyofhss/privk
+
+if test -n "$dovnc"; then
+  vncval="-L 5900:127.0.1.2:$localvncport"
+else
+  vncval=""
+fi
+
+set -x
+ssh -i "$keyfile" -v -p "$prt" -l root "$vncval" "$routerhost"
+set +x
+

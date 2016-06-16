@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#1st time ssh
+
+to="$1"
+
+if test -z "$to"; then
+  echo -n "unspecified to='$to' "
+  to="${0//*1ssh_/}"
+  echo "using '$to'"
+#  exit 1
+fi
+
+export to
+export dovnc=1
+
+`dirname -- "$0"`/0ssh
+
