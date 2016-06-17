@@ -2,16 +2,16 @@
 
 #1st time ssh
 
-to="$1"
+#to="$1"
 
-if test -z "$to"; then
-  echo -n "unspecified to='$to' "
+#if test -z "$to"; then
+#  echo -n "unspecified to='$to' "
   to="${0//*4scpto_/}"
   echo "using '$to'"
 #  exit 1
-else
-  shift
-fi
+#else
+#  shift
+#fi
 
 export to
 
