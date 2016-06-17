@@ -1153,4 +1153,6 @@
   * errata
     * p 206 'inscrutible' should be 'inscrutable'
 
+* get chromium to not write to disk, ie. temporarily copy shiet to tmpfs and the back to disk on exit, or something! because this is ridiculous! the amount of writes is way too many (even with cache in /tmp already)
+
 

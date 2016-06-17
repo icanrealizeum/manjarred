@@ -749,4 +749,10 @@
     \ even though it shows correctly that it will next fork the forked repo
     \ https://twitter.com/ActULizeinM8ERL/status/738040858906394624
 
+* which process is writing to disk?
+  \ echo 1 > /proc/sys/vm/block_dump
+  \ dmesg -w
+  \
+  \ src: https://unix.stackexchange.com/questions/44103/how-to-find-which-process-is-regularly-writing-to-disk
+
 

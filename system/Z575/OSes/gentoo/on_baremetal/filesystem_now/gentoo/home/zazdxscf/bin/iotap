@@ -100,7 +100,11 @@ if [ "$sudocmd" ]; then
 fi
 #actually run a new terminal, only if urxvt exists:
 urxvtpath="`which urxvt`"
-if [ -x "$urxvtpath" ]; then
+#if test ! -x "$urxvtpath"; then
+#  urxvtpath="`which xfce4-terminal`" #can't get bash -c to work with this! even with some kind of quotes
+#fi
+
+if test -x "$urxvtpath"; then
   #truncate output to current terminal width which is determined when displaying
   #remove other interfering lines like Total/Actual ...
   #keep the sort by Disk Write
