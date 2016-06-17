@@ -1,0 +1,71 @@
+#!/bin/bash
+
+#so, 16june2016, I never used this script ever and I don't remember exactly how/what I did here, but I'm making it public. (because otherwise it would just get deleted now)
+
+#I made this script before I started using $za and my full name publicly. (so before 19th july 2015) - well not to imply I haven't used my fn pub. before, which I did indeed use!
+
+#This is made so I have a way to not use my fullname but if I have to, I could prove who I am(as in: that my pseudonym is associated with my full name)
+#for this I have to use both the $za (publicly) and the $onlyimp (publicly too), maybe concatenating them and using them as email id, or something! or using the $za as email id, and $onlyimp as full name in github commits
+
+#if on a SSD, you should complete za= and fn= manually here, editing this file, or else risk having the cmdline(if using $1 and $2) saved in .bash_history (yes even if first char is space; well unless you kill -9 $$ )
+za='zazdxscf' #username/id here - public
+fn='EmanueLCzirai' #surname and name, in this order, without spaces and with 2+ capitalized letters - private/hidden (this is what we want to prove, eventually)
+salted='00000000: 5361 6c74 6564 5f5f' # == "Salted__"
+nextline='00000010:'
+
+if ! type xxd >/dev/null 2>&1 ; then
+  echo "need xxd which is part of vim package"
+  exit 2
+fi
+for i in xxd cut sha512sum head tail openssl tr diff; do
+  if ! type "$i" >/dev/null 2>&1 ; then
+    echo "Need '$i' command."
+    exit 3
+  fi
+done
+
+pass="`echo -n "$fn" | sha512sum | cut -f1 -d ' '`" #pass is based on the hidden stuff that we wanna prove.
+echo "pass: $pass"
+
+#the encrypted username with that password IS the public thing which will help us prove the connection between the username $za and the $fn
+encry="`echo -n "$za" | openssl enc -AES-256-CTR -e -pass pass:"$pass" | xxd`"
+thesalt="`echo -n "$encry" | head -1 | cut -f6,7,8,9 -d ' '`"
+thecrydata="`echo -n "$encry" | tail -n 1 | cut -f2,3,4,5 -d ' '`"
+onlyimp="`echo -n "$thesalt $thecrydata" | tr -d ' '`"  #imp=important(part)
+input="$encry"
+#so now that you have the input(which is same as onlyimp), you can decrypt it with the pass....
+decry="`echo -n "$input" | xxd -r | openssl enc -AES-256-CTR -d -pass pass:"$pass"`"
+
+#whatwecheck="${fn}${decry}"
+whatwecheck="${decry}${fn}"  #add $fn to the decrypted, 2nd layer of prof, I guess...
+decrycheck="`echo -n "$whatwecheck" | sha512sum | cut -f1 -d ' '`"
+#echo "$whatwecheck"
+
+#we avoid showing/stating what the decry is, but should be obvious! but if we do know what decry is, we can deduce the $fn  and that's why we try to avoid it. WELL, actually it's obvious in seeing the encry ... but supposedly that won't be seen anywhere.
+#decrycheckagainst="be41b6d064e84feb7760ca938d88b9a7626c739a9fc9ab05aabccb176369b4e5ca44a7b16c3682677c1546e33264766ca9f7c0bffde7c5c743c11b3a3f09188e"
+decrycheckagainst="00221f49f4e1961c1e28b6ec0de3621fba3a53963738bad801909c9c2358b2e098b5ea92ae984658b3b6a64d1b5a4846af35c680236bb35619b83174bba7c4bf"
+echo "encry: $encry"
+echo "only imp(of the encry): $onlyimp"
+echo "decry: $decry"
+echo "decrysha(sha of decry+fn): $decrycheck"
+
+#------ validate an input:
+echo
+echo "Validating an example input:"
+haveinput='ec8d9c860b656297b387ed08045f7a30' #an $onlyimp example - this is public (along with the username $za)
+
+#TODO: make $haveinput get spaces, like so:
+haveinput="ec8d 9c86 0b65 6297 b387 ed08 045f 7a30"
+thesalt="`echo -n "$haveinput" | cut -f1,2,3,4 -d ' '`"
+thecrydata="`echo -n "$haveinput" | cut -f5,6,7,8 -d ' '`"
+input="`echo -ne "${salted} ${thesalt}\n${nextline} ${thecrydata}"`" #how input should be formatted before piping it to decryptor
+decry="`echo -n "$input" | xxd -r | openssl enc -AES-256-CTR -d -pass pass:"$pass"`"
+decrycheck="`echo -n "$whatwecheck" | sha512sum | cut -f1 -d ' '`"
+echo "decry: $decry"
+echo -n "decrycheck: "
+if diff -up <(echo "$decrycheck") <(echo "$decrycheckagainst") ; then
+  echo "success! $decrycheck"
+else
+  echo "fail! $decrycheck != $decrycheckagainst"
+fi
+

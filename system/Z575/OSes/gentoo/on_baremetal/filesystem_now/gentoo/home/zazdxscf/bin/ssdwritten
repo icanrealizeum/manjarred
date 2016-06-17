@@ -1,2 +1,2 @@
 #!/bin/bash
-sudo smartctl --all /dev/sdb|grep Total_LBAs_Written | awk '{print $10}'
+sudo smartctl --all /dev/sda|grep Total_LBAs_Written | awk '{print $10" sectors, "512*$10" bytes"}'
