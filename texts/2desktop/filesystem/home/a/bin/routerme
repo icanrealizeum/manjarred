@@ -1,4 +1,105 @@
-routeropen
+#!/bin/bash
+
+#set -x
+#features:
+# - can't run it concurrently
+# - auto-remove router firewall rules upon exit either via C-c or via pressing X in xfce4-terminal
+#assumptions:
+# - all scripts are in the same dir
+# - none of the scripts need to be in path
+# - scripts needed: whatismyip, routeropen, routerclose, routerme(this is $0)
+#TODO: ensure all needed commands/scripts exist before running?
+
+lockfile="/tmp/routerme.lock"
+
+moo() {
+cmd="$1"
+if test -z "$1"; then
+  echo "no arg!"
+  exit 3
+fi
+
+mkdir -p ~/logs
+#set |grep -i path
+local rcmd="$(dirname -- "${0}")/${cmd}"
+if test -z "$rcmd" -o ! -x "$rcmd"; then
+  echo "!! Nu gasesc '$0' sau '$rcmd'"
+  return 1
+fi
+local lognow=~/logs/${cmd}_now.log
+local logfixed=~/logs/${cmd}.log
+local logalldiffs=~/logs/routerme.log
+"$rcmd" --silent --show-error > ~/logs/${cmd}_now.log
+if test ! -e "$logfixed"; then
+  cp -a -- "$lognow" "$logfixed"
+  chmod a-wx -- "$logfixed"
+fi
+#"$ro" >> ~/logs/routerme.log
+if ! diff -qup -- "$lognow" "$logfixed"; then
+  #difference
+  echo "--Start on: `date`" >> "$logalldiffs"
+  cat -- "$lognow" >> "$logalldiffs"
+  echo "//End on: `date`" >> "$logalldiffs"
+  echo '!! Ceva nu a mers bine! Asta inseamna probabil doar ca nu s-a inchis conexia router cum trebuie ultima data.' #XXX: do not routerclose on PC startup/shutdown because there are 2 computers so either one can cut the wire on the other while routerme(aka $0) is running
+  return 2
+elif test "$cmd" == "routeropen"; then
+	echo
+	echo '!! Conexiunea router deschisa. Ma pot conecta numai daca imi zici:'
+	echo "!! IP router: $(`dirname -- "${0}"`/whatismyip nopause)"
+	echo
+fi
+}
+
+cleanup() {
+#undo trap
+trap - `seq 1 64`
+
+echo
+echo "!! Asteapta..."
+#echo "`date`" >> ~/logs/date.log  #tested: happens once on exit; or, once on pressing X in xfce4-terminal!
+moo routerclose
+exit 33
+}
+
+main() {
+moo routeropen
+
+#see: trap -l
+#trap - EXIT
+#trap cleanup SIGINT
+trap cleanup `seq 1 64`
+
 read -s -p '!! Apasa Enter pentru a inchide conexia mea la router'
+echo
 read -s -p '!! Apasa Enter inca odata'
-routerclose
+cleanup
+}
+
+lockfail() {
+  echo "Failed to acquire lock! Self pid is $$"
+  lsof "${lockfile}" #| grep -Ev "^(`basename -- "$0"`|grep)"
+  read -s -p '!! Apasa Enter pt. a iesi'
+  echo
+  exit 66
+}
+
+(
+  #XXX: xsel seems to be locking the $lockfile from earlier, which is kinda odd! so we kill it
+  xselpid="$(lsof "${lockfile}" | grep -E "^xsel " | tail -n1 | cut -f6 -d' ')"
+  if test -n "$xselpid"; then
+    echo "xsel($xselpid) still locked $lockfile"
+#    ps "$xselpid" #it's xsel -i
+    kill -9 -- "$xselpid" #yes, we only kill the problematic xsel, no all other(if any)
+  fi
+#  set -e #handled by lockfail
+  #locking from, src: http://www.kfirlavi.com/blog/2012/11/06/elegant-locking-of-bash-program/
+  #200 is the file descriptor for the lock file - can't use a var, apparently!
+  flock --wait 1 --exclusive 200 || lockfail
+#  set +e
+  main
+  exit 0
+) 200>"${lockfile}"
+
+
+#Note: to view current settings: http://192.168.1.1/scvrtsrv.cmd?action=view
+
