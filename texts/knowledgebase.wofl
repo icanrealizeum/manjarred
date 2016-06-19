@@ -755,4 +755,9 @@
   \
   \ src: https://unix.stackexchange.com/questions/44103/how-to-find-which-process-is-regularly-writing-to-disk
 
+* mkfs.ext4 for usb stick
+  \ mkfs.ext4 -v -O ^has_journal -m 1 -- /dev/sdd1
+  \ aka no journal and 1% reserved for root
+  \ src: http://heraly.be/wiki/doku.php?id=raspberry:formatusb
+
 
