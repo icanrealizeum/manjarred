@@ -136,10 +136,12 @@
       \ May 27 18:36:32 atelier kernel: BUG: unable to handle kernel NULL pointer dereference at 0000000000000008
       \ May 27 18:36:33 atelier kernel: IP: [<ffffffffa04ad1d5>] intel_fb_obj_invalidate+0x15/0xf0 [i915]
       \ apparently this bug: https://bugzilla.kernel.org/show_bug.cgi?id=112891
-  * blacklist nfs module
-    \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
-    \ add line:
-    \ blacklist nfs
+  * remove nfs
+    * sudo pacman -Rs nfs-utils
+    - blacklist nfs module
+      \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
+      \ add line:
+      \ blacklist nfs
   * sudo systemctl enable ufw
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
     - apparently something set ENABLED=yes in /etc/ufw/ufw.conf but wasn't the systemctl! or the UI(?!)
@@ -237,6 +239,9 @@
       \ DefaultTimeoutStopSec=30s
   * uninstall bluez and blueman bluez-libs
     \ removes: bluez blueman pulseaudio-bluetooth bluez-libs
+  * update ssh client
+    * sudo vim /etc/ssh/ssh_config
+      \ add those uhm... options you know
 
 
 
