@@ -1,0 +1,357 @@
+* Manjaro on myzee
+  \ on btrfs partition
+  \ self IP is 192.168.1.190
+  * set Options for Add/Remove Programs
+    * DON'T set 'Remove unrequired dependencies' (because this removes qt4 when trying to remove cups, and vlc can optionally use it; and I just realized I don't have 'mc' anymore(supposedly I've had it?) else this setting removed it when I didn't notice)
+    * add AUR and stuff, but not by default!
+  * remove icedtea and all java
+    \ search for: java
+    \ removed: icedtea-web jre8-openjdk jre8-openjdk-headless java-runtime-common
+  * remove flash player
+    \ search for: flash
+    \ removed: flashplugin
+  * remove cups and system-config-printer cups-filters cups-pk-helper python-pycups splix
+    \ this removes: cups-pdf and manjaro-printer cups and system-config-printer hplip foomatic-db-engine cups-filters cups-pk-helper
+    \ if it wants to remove more, restart it (ensure 'Remove unrequired dependencies' is not set though!)
+    \ this has effect on restart, apparently the systemd services still remain until then.
+  * remove pidgin and libpurple
+  * cannot remove avahi! can only disable it
+    * sudo systemctl stop avahi-daemon.service avahi-daemon.socket
+    * sudo systemctl disable avahi-daemon.service avahi-daemon.socket
+  * set the network in UI, in xfce's Network Manager in systray
+    \ IPv6 ignore
+    \ IPv4 manual ...
+    \ the network interface is: enp1s0
+  * add chromium, vim, mc and colordiff
+    \ yep mc wasn't already installed!
+  * fstab
+    * settings for the btrfs root:
+      * backup /etc/fstab with .ORIG extension (via cp -a --)
+      * set the btrfs options in fstab, replace with:
+        \ async,relatime,rw,suid,dev,exec,ssd,compress-force=lzo,datasum,datacow,space_cache,commit=300,enospc_debug,discard
+        \ nouser is unrecognized!
+        \ noauto is ignored!
+        \ not using: loud
+      * mount / -o remount
+        \ it now has all the new options!
+      * time btrfs filesystem defragment -r -v -clzo /
+        \ sad part is that this apparently rewrites even those that are alreazy lzo-ed! ffs
+        \ 16m9.436s
+        \ down from(partial because I forgot): 21484707840 to: 19610521600
+        \ ssdwritten(even more partial -//-) from: 3967033245696 to: 3976968507392
+    * tmpfs-es
+      \ add these lines in /etc/fstab (there's no such thing there already! but /tmp is already 50% tmpfs!)
+      \ tmpfs                   /tmp            tmpfs           auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+      \ tmpfs                   /var/tmp        tmpfs auto,rw,nosuid,relatime,nodev,size=90%,mode=1777 0 0
+    - change the discard flag for swap into discard=pages
+      \ otherwise it will also do discard=once which is at swapon, and it seems like a bad idea, UNLESS! eg. on reboot or swapoff, no discard is done for the already allocated hmm...
+  * from Power Manager->Display (in UI) set display to never turn off, or it will never wake up (it's black screen!) - set Display power management to Off (this disabled sleep and turn off settings! leaves blank one enabled)
+    \ blank works though
+    \ ensure 'Switch off after' is Never
+    \ the other two from above(blank and sleep) can remain! - they both work!
+    \ set them to 20 and 21 mins
+    \ well that's great something else locked it up now!
+    * set System power saving under System tab to Never!
+  * right click Start Menu->Properties->Behaviour, Ignore Favorites, Display by default, 50
+    \ to show recently used instead of favorites!
+  * edit /etc/hosts
+    \ add the hostname to both 127.0.0.1 and ::1  to avoid that outgoing DNS request
+    * also append this after you remove the 127 entries:
+      \ wget -N -- http://winhelp2002.mvps.org/hosts.txt
+      \ vim hosts.txt
+      \ su -
+      \ # cat /home/a/hosts.txt >>/etc/hosts
+  * sudo vim /etc/default/grub
+    * GRUB_DEFAULT=0
+    * GRUB_SAVEDEFAULT=false
+      \ due to btrfs to avoid that message: "error: sparse file not allowed. Press any key to continue ..."
+    * replace this: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=52fe25fa-e76a-4595-bb3a-00c4c82f9209"
+      \ with:
+      \ GRUB_CMDLINE_LINUX_DEFAULT=""
+    * replace this: GRUB_CMDLINE_LINUX=""
+      \ with:
+      \ GRUB_CMDLINE_LINUX="root_trim=yes rd.luks.allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=999000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 slub_debug=U pax_sanitize_slab=full noefi nolvm dobtrfs console=tty1 earlyprintk=vga CPUunderclocking radeon.modeset=1"
+    * this true and should be false:
+      \ GRUB_DISABLE_RECOVERY=false
+    * make grub be text mode not graphical
+      \ uncomment:
+      \ GRUB_TERMINAL_OUTPUT=console
+      \ at some point it does go gfx mode right before startx happens
+    - set color(because green is bad on this broken monitor)
+      \ replace this line:
+      \ GRUB_COLOR_HIGHLIGHT="green/black"
+      \ with this:
+      \ GRUB_COLOR_HIGHLIGHT="green/white"
+      \ much better!
+    * time sudo update-grub
+      \ 1.1s
+      \ nice! it even has /boot/intel-ucode.img (this is an Intel processor!)
+  * sudo vim /etc/resolvconf.conf
+    \ append this line:
+    \ resolv_conf_options="ndots:1 timeout:3 attempts:1 rotate"
+    \
+    \ this has effect on next reboot: cat /etc/resolv.conf to check! worked!
+  * grub iso entries
+    * cd /etc/grub.d/
+    * sudo mv -- 40_custom{,.ORIG}
+      \ didn't save the ORIG
+    * sudo chmod a-x 40_custom.ORIG
+    * place our new file inplace
+      \ //nope, root can't login: scp -4vp -P 46802 etc/grub.d/40_custom root@192.168.1.210:/etc/grub.d/
+      \ scp -4vp -P 46802 etc/grub.d/40_custom a@192.168.1.210:/tmp
+      \ ssh -v -p 46802 192.168.1.210 -l a
+      \ sudo mv 40_custom /etc/grub.d/
+      \ cd /etc/grub.d/
+      \ sudo chown root:root 40_custom
+    * edit to match
+      \ sudo vim 40_custom
+      \ only the IP to: 192.168.1.233
+    * refresh our locally stored copy(if needed!):
+      \ scp -4vp -P 46802 a@192.168.1.210:/etc/grub.d/40_custom etc/grub.d/40_custom
+    * copy iso files and make sure they're in place!
+      \ ensure /tmp has enough space! 1.8G it does after: sudo mount /tmp -o remount
+      \ scp -4vp -P 46802 ~/Downloads/isos/manjaro/manjaro-xfce* a@192.168.1.210:/tmp
+      \ (that's the .gpg, an iso and a sig)
+      \ ssh to it and verify, just in case: cd /tmp; gpg --import manjaro.gpg; gpg2 --verify *.sig
+      \ E4CD FE50 A2DA 85D5 8C8A  8C70 CAA6 A596 11C7 F07E
+      \ time sudo mv -- manjaro.gpg manjaro-xfce* /
+      \ 31sec
+      \ sudo chown root:root -- /manjaro*
+      \ sudo chmod a-wx -- /manjaro*
+      \
+      \ copy sysrescd iso:
+      \ scp -4vp -P 46802 ~/Downloads/isos/sysrcd/systemrescuecd-x86-4.7.2.iso* a@192.168.1.210:/tmp
+      \ time sha256sum -c *.SHA256SUM
+      \ 3sec
+      \ sudo mv -- systemrescuecd* /
+      \ sudo chown root:root -- /systemrescuecd*
+      \ sudo chmod a-wx -- /systemrescuecd*
+      \ //DO NOT DO THIS(with the '/' in the iso): sudo ln -s /systemrescuecd*iso /sysrescd.iso
+      \ DO THIS(without the '/' in the iso; also can't do this with cd while inside mc): cd / && sudo ln -s systemrescuecd*iso /sysrescd.iso
+      \ or else sysrescd itself won't find the iso on boot!
+    * time sudo update-grub
+      \ 8s
+    * sync
+      \ then reboot to test! well, reboot got stuck!! ffs had to hard reset! ssh would get stuck on login too!
+      \ May 27 18:36:32 atelier kernel: BUG: unable to handle kernel NULL pointer dereference at 0000000000000008
+      \ May 27 18:36:33 atelier kernel: IP: [<ffffffffa04ad1d5>] intel_fb_obj_invalidate+0x15/0xf0 [i915]
+      \ apparently this bug: https://bugzilla.kernel.org/show_bug.cgi?id=112891
+  * blacklist nfs module
+    \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
+    \ add line:
+    \ blacklist nfs
+  * sudo systemctl enable ufw
+    \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
+    - apparently something set ENABLED=yes in /etc/ufw/ufw.conf but wasn't the systemctl! or the UI(?!)
+      \ needed a reboot after upgrading packages!!! - works now!
+    * set rules from X! (search for Firewall from Start menu)
+      * UDP 53 out for 8.8.8.8 8.8.4.4
+      * 80 and 443 tcp out
+      * 46802 tcp OUT
+      - 21 tcp out
+  - there is video in firefox but not in chromium
+    \ nevermind, it was uMatrix!
+  * disable ntpd, use updclock instead (this will make sure the clock is up to date by also sync-ing it to the hardware!)
+    * sudo systemctl stop ntpd
+    * sudo systemctl disable ntpd
+    * this was still on after reboot, so wtf!!!
+      \ did it again!, rebooted! yep, it's still ON!!!!11111111
+    * NetworkManager is starting this!
+      * sudo chmod a-rwx /etc/NetworkManager/dispatcher.d/10-ntpd
+    * set crond to use updclock, weekly
+      - scp -4vp -P 46802 filesystem/home/a/bin/updclock a@lohome:/home/a/bin/
+        \ run that from host
+      * sudo cp -a -- /home/z/bin/updclock /etc/cron.weekly/
+      * sudo chown root:root /etc/cron.weekly/updclock
+      * sudo chmod a-w /etc/cron.weekly/updclock
+      * sudo cp -aL -- /etc/systemd/system/multi-user.target.wants/cronie.service{,.ORIG}
+        \ made a backup, that's a symlink btw! to /usr/lib/systemd/system/cronie.service
+      * sudo vim /etc/systemd/system/multi-user.target.wants/cronie.service
+        \ add: -s  arg to crond!
+        \ looks like:
+        \ ExecStart=/usr/bin/crond -n -s
+      * sudo systemctl daemon-reload
+        \ because: Warning: cronie.service changed on disk. Run 'systemctl daemon-reload' to reload units.
+      * sudo systemctl restart cronie.service
+        \ verify with: ps axuw|grep -i crond
+        \ has -s done!
+        \ btw, crond was already running! (aka this service!)
+    * add Firewall rule #TODO
+      \ Advanced,
+      \ From Port: 123
+      \ To Port: 123
+      \ Protocol: UDP
+      \ Log: Log
+      \ Allow OUT, all interfaces
+  * install iotop and evince(for pdf viewing from recoll's search result links) #TODO
+  - install recoll
+    \ from Add/Remove Programs
+    \ poppler is already installed(for pdf indexing)
+    * go to Preferences->Index configuration, add Stemming Languages-> romanian
+    * select Preferences->(all languages)
+      \ new langs can be seen only after recoll restart
+    * set to realtime indexing and also start daemon now but don't start it from that button(let the daemon do it; else it will want to kill it first!)
+    * REMOVE recoll
+      * pkill recollindex
+      * sudo pacman -Rs recoll
+      * rm -rf ~/.recoll
+        \ that's 1.7G currently!
+  * open Window Manager (from Start, search for it)
+    * switch theme from Vertex-Maia to Alternate (to can see the top right buttons: minimize, maximize etc.)
+  * install qTox (because uTox is too bugged!)
+    * untick General->Connection Settings->Enable IPv6 #TODO onwards for qTox only, rest are done!
+      \ click Reconnect!
+    * in Firewall, Add Rule in Simple mode
+      \ Name: qTox
+      \ Policy: Allow
+      \ Direction: Both
+      \ Protocol: Both
+      \ Port: 33445
+      \ Add! (this actually adds 2 rules)
+      \ TODO: see if these can be relaxed? can't really test unless I'm on a different real IP!
+      \ btw, the status goes green regardless or the existence of this rule, even though I've had Deny on incoming/outgoing both!
+    * in Fireall, also add rule(or see spam in logs):
+      \ Advanced,
+      \ From Port: 33445
+      \ Allow Out, any interface, UDP
+  * remove plymouth
+    \ hmm, this disables startx by breaking this link:
+    \ /etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/lightdm-plymouth.service
+    \ so display-manager.service shows as bad
+    * pacman -Rs plymouth plymouth-theme-manjaro-elegant
+    * ensure /etc/mkinitcpio.conf doesn't have plymouth in HOOKS
+      \ so it now becomes, eg.
+      \ HOOKS="base udev autodetect modconf block keyboard keymap resume filesystems"
+    * enable lightdm (or you have to manually startx now)
+      * rm /etc/systemd/system/display-manager.service
+        \ because broken symlink! due to plymouth above being removed!
+      * systemctl enable lightdm
+        \ this works now!
+        \ without removing the above symlink, you get:
+        \ systemctl enable lightdm
+        \ Failed to execute operation: File exists
+  * a stop job is running for ....
+    * vim /etc/systemd/system.conf
+      \ add these two lines (presumably the entries don't already exist!)
+      \ DefaultTimeoutStartSec=30s
+      \ DefaultTimeoutStopSec=30s
+  * uninstall bluez and blueman bluez-libs
+    \ removes: bluez blueman pulseaudio-bluetooth bluez-libs
+
+
+
+* TODO/DONE:
+  * see #TODO
+  - explicitly mount /tmp as tmpfs with the size= parameter!!
+    \ see how to do this by looking in gentooskyline
+  - fail2ban
+    \ ok nevermind then: https://wiki.archlinux.org/index.php/fail2ban
+    * install fail2ban
+    * sudo systemctl enable fail2ban
+      \ else, it's disabled, as can be seen via:
+      \ systemctl list-unit-files
+    * put jail.d/sshd.conf
+      \ bin/scptomighty4 ./filesystem/etc/fail2ban/jail.d/sshd.conf /etc/fail2ban/jail.d/sshd.conf
+      \ there's a path inside sshd.conf to where sshd is actually spewing its logs (that should be already set correctly for Manjaro, though - not yet done!)
+    * sudo systemctl start fail2ban
+  * chromium
+    * disable plugins chrome://plugins
+    * extensions:
+      \ uMatrix
+      \ uBlock Origin
+      \ uBlock Origin Websockets
+      \ hstseverywhere
+  * firefox
+    \ disable plugins (well it's just one)
+    \ addons: uBlock Origin, https everywhere
+  * virtualbox
+    \ install packages: virtualbox and (not yet)virtualbox-host-dkms and linux44-virtualbox-host-modules (uname -a should tell you kernel is 4.4.11-1-MANJARO)
+  - (don't need this!)sshd
+    \ curiously sudo systemctl --all  does not list anything with ssh (case insensitive even)
+    * sudo vim /etc/ssh/sshd_config
+      \ Port 802
+    * sudo systemctl enable sshd.service
+    * sudo systemctl start sshd.service
+    - sudo systemctl restart sshd
+      \ there's no message
+    * scp root/.ssh/authorized_keys to can login as root via key
+  - (don't need this) x11vnc
+    * install it
+      * install x11vnc (from Add Remove Programs)
+    * remove stuff from startup
+      * open Session and Startup from Start button(search for it)
+      * go to tab named Application Autostart
+      * untick Blueman Applet (bluetooth)
+      * untick Clipman
+      - untick Print Queue Applet
+        \ this package got removed
+      - click Add (actually, NO, I'll run this manually after ssh-ing!)
+        \ Name: x11vnc
+        \ Description:
+        \ Command: /home/a/bin/vncstart
+    - sudo vim /etc/hosts
+      \ optionally add this entry:
+      \ 192.168.1.233 self
+    * open Power Manager
+      \ Security tab
+      \ untick 'Lock screen when system is going for sleep'
+      \ set 'Automatically lock the session' Never
+      \ otherwise vnc-ing to this, will require someone physically being there to unlock it by typing in the password (screen which cannot be seen from vnc!)
+    * mkdir ~/bin
+      \ exists (forgot if I created it, or the installer?)
+    * copy vncstart from local
+      \ scp -4vp -P 46802 filesystem/home/a/bin/vncstart a@192.168.1.233:/home/a/bin/
+      \ it's already executable!
+    * start it
+      \ ~/bin/vncstart
+      \ it loops so it re-runs after exit, so C-c twice to kill it, or pkill vncstart from another terminal
+    * to connect from client
+      \ ssh -v -p 46802 -l a -L 5900:localhost:46802 lmighty4
+      \ where lmighty4 points to the IP of the atelier PC, in my local /etc/hosts eg. a line: 192.168.1.233 lmighty4
+      \ then ./VNC-Viewer-5.3.0-Linux-x64 to 127.0.0.1
+  - remove sudo powers for the normal user! will ssh as root, or su - instead of sudo!
+    - (NOPE! this is for root user only!) vim /etc/sudoers
+      \ comment out line:
+      \ root ALL=(ALL) ALL
+    * vim /etc/sudoers.d/10-installer
+      \ comment out this line:
+      \ %wheel ALL=(ALL) ALL
+  - (only for T400) battery tweaks
+    \ https://wiki.archlinux.org/index.php/TLP
+    * install tp_smapi and acpi_call
+      \ powertop is already installed!
+    * install tlp
+      \ for powersaving features
+      * tlp start
+        \ run this every time a change in /etc/default/tlp is made!
+        \ there's no tlp restart !
+        \ systemd tlp*.service are already set to enabled(in effect on next reboot!)
+    * install acpi
+      \ for the acpi command
+      \ # acpi -b -i
+      \ Battery 0: Unknown, 95%
+      \ Battery 0: design capacity 4655 mAh, last full capacity 5035 mAh = 100%
+
+* INFO
+  * interesting commands for buildiso
+    * CAVEATS
+      * can't build iso from linux-git because don't have aufs support!
+        \ mount: unknown filesystem type 'aufs'
+    - repo-add custom.db.tar.gz *.pkg.tar.*
+      \ in dir: /home/a/online-repo/x86_64
+    * in dir: /home/a/online-repo/x86_64
+      \ repo-add online-repo.db.tar.gz *.pkg.tar.*
+    * Whereas file: /usr/share/manjaro-tools/pacman-multilib.conf
+      \ try2 is online-repo hopefully does what they say: "Custom online repositories will get removed automatically from this file before it gets copied over to the installed system, whereas custom non-online repositories will be kept. This means AUR packages are best installed from a custom online repository (as demonstrated by [online-repo] in this tutorial). " src: https://wiki.manjaro.org/index.php?title=Buildiso_with_AUR_packages:_Using_buildpkg
+      - contains(try1 - fails later on):
+        \ [custom]
+        \ SigLevel = Optional TrustAll
+        \ Server = file:///home/a/online-repo/$arch
+      * contains(try2):
+        \ [online-repo]
+        \ SigLevel = Optional TrustAll
+        \ Server = file:///home/a/online-repo/$arch
+    * # cd /usr/share/manjaro-tools/ && time buildiso -p xfce -b stable
+
+
+

@@ -1,0 +1,64 @@
+#GRUB_DEFAULT=saved
+GRUB_DEFAULT=0
+#GRUB_TIMEOUT=5
+GRUB_TIMEOUT=1
+GRUB_DISTRIBUTOR="Manjaro"
+#GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=26e32979-c55b-41f1-b264-499a42af8733"
+GRUB_CMDLINE_LINUX_DEFAULT="resume=UUID=26e32979-c55b-41f1-b264-499a42af8733"
+#GRUB_CMDLINE_LINUX=""
+GRUB_CMDLINE_LINUX="root_trim=yes rd.luks.allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=999000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 slub_debug=U pax_sanitize_slab=full noefi nolvm dobtrfs console=tty1 earlyprintk=vga CPUunderclocking radeon.modeset=1"
+#gentoo specific? : dolvm dobtrfs noefi
+
+# If you want to enable the save default function, uncomment the following
+# line, and set GRUB_DEFAULT to saved.
+#GRUB_SAVEDEFAULT=true
+GRUB_SAVEDEFAULT=false
+
+# Preload both GPT and MBR modules so that they are not missed
+GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+
+# Uncomment to enable Hidden Menu, and optionally hide the timeout count
+#GRUB_HIDDEN_TIMEOUT=5
+#GRUB_HIDDEN_TIMEOUT_QUIET=true
+
+# Uncomment to use basic console
+GRUB_TERMINAL_INPUT=console
+
+# Uncomment to disable graphical terminal
+#GRUB_TERMINAL_OUTPUT=console
+GRUB_TERMINAL_OUTPUT="console" #gfxterm vga_text spkmodem
+
+# The resolution used on graphical terminal
+# note that you can use only modes which your graphic card supports via VBE
+# you can see them in real GRUB with the command `vbeinfo'
+GRUB_GFXMODE=auto
+
+# Uncomment to allow the kernel use the same resolution used by grub
+GRUB_GFXPAYLOAD_LINUX=keep
+
+# Uncomment if you want GRUB to pass to the Linux kernel the old parameter
+# format "root=/dev/xxx" instead of "root=/dev/disk/by-uuid/xxx"
+#GRUB_DISABLE_LINUX_UUID=true
+GRUB_DISABLE_LINUX_UUID=false
+
+# Uncomment to disable generation of recovery mode menu entries
+#GRUB_DISABLE_RECOVERY=true
+GRUB_DISABLE_RECOVERY=false
+
+# Uncomment and set to the desired menu colors.  Used by normal and wallpaper
+# modes only.  Entries specified as foreground/background.
+GRUB_COLOR_NORMAL="light-gray/black"
+GRUB_COLOR_HIGHLIGHT="green/black"
+
+# Uncomment one of them for the gfx desired, a image background or a gfxtheme
+GRUB_BACKGROUND="/usr/share/grub/background.png"
+#GRUB_THEME="/path/to/gfxtheme"
+
+# Uncomment to get a beep at GRUB start
+#GRUB_INIT_TUNE="480 440 1"
+
+
+GRUB_TIMEOUT_STYLE=menu
+GRUB_DISABLE_OS_PROBER=true
+GRUB_ENABLE_CRYPTODISK=n
+
