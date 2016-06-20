@@ -1,0 +1,148 @@
+--- "raw original upstream_dkms-2.2.0.3/usr/bin/dkms"	2011-12-07 19:23:58.000000000 +0100
++++ "archlinux version!_dkms-2.2.0.3-15-any/usr/bin/dkms"	2014-11-05 12:33:22.000000000 +0100
+@@ -21,11 +21,11 @@
+ 
+ 
+ # All of the variables we will accept from dkms.conf.
+ # Does not include directives
+ readonly dkms_conf_variables="CLEAN REMAKE_INITRD remake_initrd PACKAGE_NAME
+-       PACKAGE_VERSION POST_ADD POST_INSTALL POST_REMOVE PRE_BUILD
++       PACKAGE_VERSION POST_ADD POST_BUILD POST_INSTALL POST_REMOVE PRE_BUILD
+        PRE_INSTALL BUILD_EXCLUSIVE_KERNEL BUILD_EXCLUSIVE_ARCH
+        build_exclude OBSOLETE_BY MAKE MAKE_MATCH MODULES_CONF
+        modules_conf_array PATCH PATCH_MATCH patch_array BUILT_MODULE_NAME
+        built_module_name BUILT_MODULE_LOCATION built_module_location
+        DEST_MODULE_NAME dest_module_name MODULES_CONF_OBSOLETES
+@@ -42,11 +42,11 @@ readonly rh_kernels='(debug|summit|smp|e
+ 
+ #Areas that will vary between Linux and other OS's
+ _get_kernel_dir() {
+     KVER=$1
+     case ${current_os} in
+-       Linux)          DIR="/lib/modules/$KVER/build" ;;
++       Linux)          DIR="/usr/lib/modules/$KVER/build" ;;
+        GNU/kFreeBSD)   DIR="/usr/src/kfreebsd-headers-$KVER/sys" ;;
+     esac
+     echo $DIR
+ }
+ 
+@@ -160,15 +160,18 @@ set_kernel_source_dir()
+     kernel_source_dir="$(_get_kernel_dir "$1")"
+ }
+ 
+ # A little test function for DKMS commands that only work on one kernel.
+ have_one_kernel() {
+-    (( ${#kernelver[@]} > 1 )) && \
+-	die 4 $"The action $1 does not support multiple kernel version" \
+-	$"parameters on the command line."
+-    [[ $all ]] && die 5 $"The action $1 does not support the --all" \
+-	$"parameter."
++       if (( ${#kernelver[@]} != 1 )); then
++	  die 4 $"The action $1 does not support multiple kernel version" \
++	  $"parameters on the command line."
++       fi
++       if [[ $all ]]; then  
++           die 5 $"The action $1 does not support the --all" \
++	   $"parameter."
++       fi 
+ }
+ 
+ # Set up the kernelver and arch arrays.  You must have a 1:1 correspondence --
+ # if there is an entry in kernelver[$i], there must also be an entry in arch[$i]
+ # Note the special casing for the status action -- the status functions just
+@@ -194,11 +197,11 @@ setup_kernels_arches()
+ 	if [[ ! $kernelver && ! $all ]]; then
+ 	    kernelver[0]=$(uname -r)
+ 	    kernels_arches_default="yes"
+ 	fi
+ 	if [[ ! $arch ]]; then
+-	    kernelver_rpm=$(rpm -qf "/lib/modules/$kernelver" 2>/dev/null | \
++	    kernelver_rpm=$(rpm -qf "/usr/lib/modules/$kernelver" 2>/dev/null | \
+ 		grep -v "not owned by any package" | grep kernel | head -n 1)
+ 	    if ! arch[0]=$(rpm -q --queryformat "%{ARCH}" "$kernelver_rpm" 2>/dev/null); then
+ 		arch[0]=$(uname -m)
+ 		if [[ $arch = x86_64 ]] && \
+ 		    grep -q Intel /proc/cpuinfo && \
+@@ -233,13 +236,13 @@ do_depmod()
+     # $1 = kernel version
+     if [ "${current_os}" != "Linux" ] ; then
+         return
+     fi
+     if [[ -f /boot/System.map-$1 ]]; then
+-	/sbin/depmod -a "$1" -F "/boot/System.map-$1"
++	depmod -a "$1" -F "/boot/System.map-$1"
+     else
+-	/sbin/depmod -a "$1"
++	depmod -a "$1"
+     fi
+ }
+ 
+ # This function is a little hairy -- every distro has slightly different tools
+ # and naming conventions for creating initial ramdisks.  It should probably
+@@ -1015,11 +1018,11 @@ prepare_kernel()
+ 	    Debian* | Ubuntu* )
+ 		die 1 $"Your kernel headers for kernel $1 cannot be found." \
+ 		    $"Please install the linux-headers-$1 package," \
+ 		    $"or use the --kernelsourcedir option to tell DKMS where it's located";;
+ 	    * ) die 1 echo $"Your kernel headers for kernel $1 cannot be found at" \
+-		$"/lib/modules/$1/build or /lib/modules/$1/source."
++		$"/usr/lib/modules/$1/build or /usr/lib/modules/$1/source."
+ 		$"You can use the --kernelsourcedir option to tell DKMS where it's located."
+ 	esac
+     }
+ 
+     [[ $no_prepare_kernel ]] && return
+@@ -1610,11 +1613,11 @@ do_uninstall()
+     fi
+ 
+     # Run the post_remove script
+     run_build_script post_remove "$post_remove"
+ 
+-    # Run depmod because we changed /lib/modules
++    # Run depmod because we changed /usr/lib/modules
+     invoke_command "do_depmod $1" "depmod" background
+ 
+     # Do remake_initrd things (remake initrd)
+     if [[ $remake_initrd && $was_active ]] && ! make_initrd "$1" "$2"; then
+ 	warn $"There was a problem remaking your initrd.  You must manually remake it" \
+@@ -2211,12 +2214,12 @@ make_suse_driver_disk()
+ 	    case $suse_arch in
+ 		i?86) suse_arch=i386;;
+ 	    esac
+ 
+ 	    echo "Marking ${kernelver[$i]}/${arch[$i]}/modules/${dest_module_name[$count]}$module_suffix..."
+-	    mkdir -p "$driver_disk_dir/$topdir/$suse_arch-$release/install/lib/modules/${kernelver[$i]}${dest_module_location[$count]}"
+-	    cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/${dest_module_name[$count]}$module_suffix" "$driver_disk_dir/$topdir/$suse_arch-$release/install/lib/modules/${kernelver[$i]}${dest_module_location[$count]}/"
++	    mkdir -p "$driver_disk_dir/$topdir/$suse_arch-$release/install/usr/lib/modules/${kernelver[$i]}${dest_module_location[$count]}"
++	    cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/${dest_module_name[$count]}$module_suffix" "$driver_disk_dir/$topdir/$suse_arch-$release/install/usr/lib/modules/${kernelver[$i]}${dest_module_location[$count]}/"
+ 
+ 	    case ${kernelver[$i]} in
+ 		*-default)
+ 		    mkdir -p "$driver_disk_dir/$topdir/$suse_arch-$release/modules/"
+ 		    cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/${dest_module_name[$count]}$module_suffix" "$driver_disk_dir/$topdir/$suse_arch-$release/modules/"
+@@ -2328,11 +2331,11 @@ make_ubuntu_driver_disk()
+ 	  rm -rf "$tempdir"
+ 	  die 5 $"Unable to build $module/$module_version for Ubuntu driver disk."
+       }
+       mkdir -p "$tempdir/$dd_prefix"
+       local deb_dir="$tempdir/$dd_prefix/debian"
+-      local deb_lib_dir="$deb_dir/lib/modules/${kernelver[$i]}/updates/dkms"
++      local deb_lib_dir="$deb_dir/usr/lib/modules/${kernelver[$i]}/updates/dkms"
+       mkdir -p "$deb_lib_dir"
+       cp "$dkms_tree/$module/$module_version/${kernelver[$i]}/${arch[$i]}/module/"*"$module_suffix" "$deb_lib_dir"
+       pushd "$deb_dir" > /dev/null 2>&1
+       mkdir DEBIAN
+       cat > DEBIAN/control <<EOF
+@@ -3344,11 +3347,11 @@ unset CC CXX CFLAGS CXXFLAGS LDFLAGS
+ # Set important variables
+ current_kernel=$(uname -r)
+ current_os=$(uname -s)
+ dkms_tree="/var/lib/dkms"
+ source_tree="/usr/src"
+-install_tree="/lib/modules"
++install_tree="/usr/lib/modules"
+ tmp_location=${TMPDIR:-/tmp}
+ verbose=""
+ dkms_frameworkconf="/etc/dkms/framework.conf"
+ 
+ # these can come from the environment or the config file

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#0. installs all makedepends packages
+#not true anymore(at least with git!)//1. unconditionally removes $srcdir then runs prepare() - so WARNING: you lose any changes in $srcdir !
+#2. does nothing else, just exits (so, no build and no repackage/install)
+#3. your .config is retained! if it doesn't exist then it's created as a copy of config.x86_64
+
+#source ./common.bash
+
+time makepkg --nobuild --syncdeps
+

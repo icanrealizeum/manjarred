@@ -1,0 +1,21 @@
+--- "archlinux version!_dkms-2.2.0.3-15-any/dkms"	2014-11-05 12:09:59.000000000 +0100
++++ "manjaro(archlinux based) version patched_dkms-2.2.0.3-15-any/dkms"	2014-11-05 12:09:02.538541798 +0100
+@@ -1764,8 +1778,16 @@ remove_module()
+ 	    rm -rf "$dkms_tree/$module/$module_version/${kernelver[$i]}"
+     done
+ 
+-    # Delete the $module_version part of the tree if no other $module_version/$kernel_version dirs exist
+-    if ! find $dkms_tree/$module/$module_version/* -maxdepth 0 -type d 2>/dev/null | egrep -qv "(build|tarball|driver_disk|rpm|deb|source)$"; then
++
++    # Delete the $module_version part of the tree if no other $module_version/$kernel_version dirs exist, 
++    # here the problem is with kernel versions that were upgraded, their older obsolete versions now are still present and won't be deleted by above `for` because they are not in that list of ${kernelver[$i]}
++    # but this works when specific kernel version is given to -k
++    # so when --all is specified it is assumed that whatever else is in that folder is only kernel folders that are to be removed nonetheless (that folder is eg. /var/lib/dkms/vboxhost/4.3.12/ )
++    # so this is a hack which checks for --all and if present it removes that folder entirely
++    # the non-hack would be making sure ${kernelver[$i]} has all kernel versions (basicaly folders) from within the module folder(that is /var/lib/dkms/vboxhost/4.3.12/ )
++    #if ! find $dkms_tree/$module/$module_version/* -maxdepth 0 -type d 2>/dev/null | egrep -qv "(build|tarball|driver_disk|rpm|deb|source)$"; then
++    find $dkms_tree/$module/$module_version/* -maxdepth 0 -type d 2>/dev/null | egrep -qv "(build|tarball|driver_disk|rpm|deb|source)$"
++    if [[ ($? -ne 0) || $all ]] ; then
+ 	echo $""
+ 	echo $"------------------------------"
+ 	echo $"Deleting module version: $module_version"

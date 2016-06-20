@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if ! test -e "/usr/bin/ccache" ; then
+  time sudo pacman -S --needed ccache
+fi
+
+time makepkg --nobuild --syncdeps
+

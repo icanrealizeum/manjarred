@@ -1,0 +1,147 @@
+# $Id$
+# Maintainer: Sébastien Luttringer
+# Contributor: Balwinder S "bsd" Dheeman (bdheeman AT gmail.com)
+
+pkgname=dkms
+pkgver=2.2.0.3
+pkgrel=15
+pkgdesc='Dynamic Kernel Modules System'
+arch=('any')
+url='http://linux.dell.com/dkms/'
+license=('GPL2')
+depends=('bash' 'kmod' 'gcc' 'make' 'patch')
+optdepends=('linux-headers: build modules against Arch kernel'
+            'linux-lts-headers: build modules against LTS Arch kernel')
+backup=('etc/dkms/framework.conf' 'etc/default/dkms')
+install=$pkgname.install
+
+manypatches=(
+        '01-broken-uninstall.patch'
+        '02-no-kernel-hook.patch'
+        '03-fix-post-build.patch'
+        '04-uname-v.patch'
+        '04_2-addback_comments_for_patch04uname-v.patch'
+        '05-report_correct_conf_file.patch'
+        '06-multicore_make.patch'
+        '07-fix_an_echo.patch'
+        '08-avoid_showing_mkdir_error.patch'
+        '09-remove_all_kernels_with_-all.patch'
+)
+source=("http://linux.dell.com/$pkgname/permalink/$pkgname-$pkgver.tar.gz"
+        "$pkgname.default"
+        "$pkgname.service"
+        "$pkgname.systemd"
+        ${manypatches[@]}
+        )
+sha512sums=('15df3e160ae54b98009692324c52b06d358665f9f4250970210fa7ba03d1458ea3fdf62b5e4c9bf5a97324ed5ab82adacea33715ca20c946ffc5aa2b1700cb5f'
+            '4611452697cce249f3b399b9514380b63f208ec593d7e3f500d4e99fac2eb9cc47b09a80ab389d27bd8761f318bef800327837fc544515c5de8e4f4c0ea31343'
+            '2959bf244f3f54c5593bb38cf741916206f69911b6b587f01fb2c33d71f0f60476ee8386721d172c83c623c01c4f50b0e269d73a7060c84e7650c068e1aa6f9f'
+            'ec2a51801ad31008c7ef6ff53bee342e0526006dd998bd67eb7d9a5feaeec86ab63a53d78661074b5de1bcc06b18a073229337170752465f5c526b7192a91fe5'
+            '0971a2079fbac0728f11340aa0cce5c8b78f5abb3fc611b201f0afbcd60d6398dff811cb3653335b892484479ae1554ae0aff55c350780fc281aa78dd44fc70a'
+            'b0929f8e91a5d7301ff5745ef1d6c1556430cd68bbf245d42a0d88f9c04bd81430a150de91cea43e92ba5e5cae082646a3398ac707139ccd2783dcf5cbdad3c3'
+            '31b5159cf7bc9bc41ed7ea2431a7b28d78744fad339bc9ce86cfd5b39bcbca5cf1ef0735fd7bffdb14bbf1b96697112338cca038ea7c3a9f9e7de436ca73506c'
+            '16fdc79bae4c39e8c0640ccbf930be1be1cfdde9fbb38990105ccafc8e1cc9557666ddf62421f2b689f122335ca0e8ba70789deda821a48ddb1eb0b3cb21c079'
+            '5040d305d98267d3c333349faed355e05d1831d71f14684917fcd8ae8962bb1876484a7cf2d06d270639d0725c43987a14f9a986258bfd9e899b00fa999dbd9e'
+            '03f3707ce27a539db76ff6815ee8af4047b23b1d20c4253869f45692ffeccf411edc6cd5880c4f3f388ee21b799eabae480a2bc45799c6e4079080cbb84798c2'
+            '5a09e230f11a212fff1a1d8a16bb7663000ed938d06905ecbeb4c0f029736f76b8e03f8c32f6abb42455205e0e583eb9554c570d8723d741869818f2bcb581fb'
+            'e85d60816e75af39b9c6ad013a60341a844aab00588f57237f19efe99f560fb741cc98a65cc3179558582a718df0bf2773350fbded9fd4767775c90c1f18afa3'
+            'f3da5de4a9a3f1cbbd3e039e738850afd294142028db544ce95183194411831ec8aec531abebe56f94e3e40522487555e0a5fa8e747fdd2d133b81bb9dba4795'
+            '6241172e8967d32be9b2ab4faeae76cf1c664e03e36d9c499bb02274274c677eed75ec1925d8c5ee855de04841ce4bcf2e3413cf0e97b8d3313019213c00886a')
+
+generic_patch() {
+  # $1 which patch
+  # $2- which params to the patch command
+  local lepatch="$1"
+  shift
+  local params=("$@")
+#  msg2 "applying patch: $lepatch  pwd=`pwd`"
+#  echo patch "${params[@]}" -i "${lepatch}"
+  patch "${params[@]}" -i "${lepatch}"
+}
+
+apply_le_patch() {
+  # $1 which patch
+  # $2- which extra params to the patch command
+  generic_patch "$@" -Np1
+}
+
+dryrun_patch() {
+  # $1 which patch
+  # $2- which extra params to the patch command
+  apply_le_patch "$@" --dry-run >/dev/null 2>&1
+}
+
+onlyfilename() {
+  [[ $# -eq 1 ]]
+  echo -n "${1%%::*}"
+}
+
+prepare() {
+  # patch
+#  patches=("$srcdir"/*.patch)
+  cd "$pkgname-$pkgver"
+
+  # /usr move
+  msg2 '/usr move patching'
+  for i in dkms{,_framework.conf,.bash-completion,.8,_common.postinst}; do
+    sed -ri 's,/lib/modules,/usr/lib/modules,g' "$i"
+  done
+
+  # test if all patches can be applied!
+  local _failpatch="n"
+  #FIXME: don't dryrun because some patches depend on previous patches being applied, but dry run applies each patch on the same original source file, ergo some patches(currently only one) will fail!
+#  for each in ${manypatches[@]}; do
+#    #    if ! patch --dry-run -Np1 -i "${srcdir}/${each}"; then
+#    local _fn1="$(onlyfilename "${srcdir}/${each}")"
+#    if ! dryrun_patch "${_fn1}"; then
+#      warning "cannot (re)apply patch: '${_fn1}'"
+#      _failpatch="y"
+#      break
+#    fi
+#  done
+  # if all can be applied, then apply them
+  if [ "$_failpatch" != "y" ]; then
+    msg "Applying a bunch of patches"
+    for each in ${manypatches[@]}; do
+      local _fn2="$(onlyfilename "${srcdir}/${each}")"
+      if ! apply_le_patch "${_fn2}"; then
+        error "Unable to apply patch '${_fn2}'\nThis is not supposed to happen!"
+        exit 104
+      fi
+    done
+  else
+    error "Cannot proceed towards applying all the patches!"
+    exit 4
+  fi
+
+#  echo `pwd`
+#  for p in "${manypatches[@]}"; do
+#    msg2 "Apply patch: ${p}" #${p##*/}"
+#    patch -p1 -i "$p"
+#  done
+
+  # fix hardcoded paths
+  sed -i "s|/sbin/depmod|depmod|" dkms
+}
+
+build() {
+  echo "bla"
+}
+
+package() {
+  # systemd
+  install -D -m 644 "$pkgname.service" "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+  install -D -m 755 "$pkgname.systemd" "$pkgdir/usr/lib/systemd/scripts/$pkgname"
+  install -D -m 644 "$pkgname.default" "$pkgdir/etc/default/$pkgname"
+  # upstream installer
+  cd "$pkgname-$pkgver"
+  make \
+    DESTDIR="$pkgdir" \
+    SBIN="$pkgdir/usr/bin" \
+    BASHDIR="$pkgdir/usr/share/bash-completion/completions" \
+    install
+
+  #colordiff -up "$pkgdir/usr/bin/dkms" "$startdir"'/dkms progress !/patches/manjaro(archlinux based) version patched_dkms-2.2.0.3-14-any/usr/bin'
+}
+
+# vim:set ts=2 sw=2 et:

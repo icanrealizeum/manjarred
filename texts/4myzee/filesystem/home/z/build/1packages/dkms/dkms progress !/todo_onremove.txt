@@ -1,0 +1,123 @@
+maybe find a better way for remove --all to remove all kernels present in the module folder (or wtw that's called; module is eg. vboxhost/4.3.12)
+otherwise the current hack assumes anything in that folder is to be removed
+which is a bit dangerous, I mean, what if someone put files in there that wants kept for some weird reason.
+
+---------
+ok here's the thing:
+when upgrading the kernel, say you have 3.12.23 and you upgrade to 3.12.24
+then the folder 3.12.23-1-MANJARO is left there in /var/lib/dkms/vboxhost/4.3.12
+and this way it won't get removed on `dkms remove vboxhost/4.3.12 --all`
+(deduced)(did not yet test this)
+
+and this seems to be based on the fact that the upgraded kernels are added to some list (with --all) but the kernel versions that were upgraded FROM are forgotten somehow.
+
+so, say I have this:
+core/linux312 3.12.24-1 [installed]
+core/linux312-headers 3.12.24-1 [installed]
+extra/linux312-ndiswrapper 1.59-9 (linux312-extramodules) [installed]
+
+and then I install 3.12.25
+then I'm guessing the old headers(at least) get removed
+but that means the 3.12.24 of dkms will still remain in /var/lib/dkms/...
+and on remove --all they won't be removed because they are not seen as valid kernels (they = other kernel folders in eg. /var/lib/dkms/vboxhost/4.3.12/
+
+
+---------old info:
+
+the symlink `sources` is not removed on `dkms remove vboxhost/4.3.12 --all`
+so upgrading from vboxhost/4.3.12 to 4.3.14  although seems to work,
+`dkms status` fails and thus `dkms autoinstall` fails
+because it sees that symlink and tries to find dkms.conf and fails!
+
+it's only a matter of removing that symlink!
+but apparently dkms remove didn't do it! check as to why?
+btw running my patch, so maybe it's something that I did!
+
+
+
+-------
+$ sudo pacman -Su virtualbox-host-dkms
+:: Starting full system upgrade...
+resolving dependencies...
+looking for inter-conflicts...
+
+Packages (1): virtualbox-host-dkms-4.3.14-1
+
+Total Installed Size:   9.48 MiB
+Net Upgrade Size:       0.61 MiB
+
+:: Proceed with installation? [Y/n] 
+(1/1) checking keys in keyring                                                 [############################################] 100%
+(1/1) checking package integrity                                               [############################################] 100%
+(1/1) loading package files                                                    [############################################] 100%
+(1/1) checking for file conflicts                                              [############################################] 100%
+(1/1) checking available disk space                                            [############################################] 100%
+(1/1) upgrading virtualbox-host-dkms                                           [############################################] 100%
+
+Creating symlink /var/lib/dkms/vboxhost/4.3.14/source ->
+                 /usr/src/vboxhost-4.3.14
+
+DKMS: add completed.
+==> To build and install your modules run: dkms install vboxhost/4.3.14
+==> To do this automatically at startup run: systemctl enable dkms.service
+[emacs@manji vboxhost]$ dkms status
+acpi_call, 1.1.0, 3.16.0-1-MANJARO, x86_64: installedError! Could not locate dkms.conf file.
+File: /var/lib/dkms/vboxhost/4.3.12/source/dkms.conf does not exist.
+
+[emacs@manji vboxhost]$ sudo pacman -Ss virtualbox-host-dkms
+community/virtualbox-host-dkms 4.3.14-1 [installed]
+    VirtualBox Host kernel modules sources
+[emacs@manji vboxhost]$ la
+total 16
+drwxr-xr-x 4 root root 4096 22.07.2014 08:47 ./
+drwxr-xr-x 4 root root 4096 17.07.2014 05:17 ../
+drwxr-xr-x 7 root root 4096 22.07.2014 08:45 4.3.12/
+drwxr-xr-x 3 root root 4096 22.07.2014 08:47 4.3.14/
+lrwxrwxrwx 1 root root   31 13.07.2014 22:14 kernel-3.12.23-1-MANJARO-x86_64 -> 4.3.12/3.12.23-1-MANJARO/x86_64/
+lrwxrwxrwx 1 root root   31 10.07.2014 10:47 kernel-3.12.24-1-MANJARO-x86_64 -> 4.3.12/3.12.24-1-MANJARO/x86_64/
+lrwxrwxrwx 1 root root   30 07.07.2014 17:09 kernel-3.15.3-1-MANJARO-x86_64 -> 4.3.12/3.15.3-1-MANJARO/x86_64/
+lrwxrwxrwx 1 root root   30 14.07.2014 04:42 kernel-3.15.4-1-MANJARO-x86_64 -> 4.3.12/3.15.4-1-MANJARO/x86_64/
+[emacs@manji vboxhost]$ cd 4.3.12/
+[emacs@manji 4.3.12]$ ls
+3.12.23-1-MANJARO/  3.12.24-1-MANJARO/  3.15.3-1-MANJARO/  3.15.4-1-MANJARO/  build/  source@
+[emacs@manji 4.3.12]$ rm source 
+rm: cannot remove ‘source’: Permission denied
+[emacs@manji 4.3.12]$ sudo rm source 
+[emacs@manji 4.3.12]$ dkms status
+acpi_call, 1.1.0, 3.16.0-1-MANJARO, x86_64: installed
+vboxhost, 4.3.14: added
+[emacs@manji 4.3.12]$ cd ..
+
+==========
+
+looks like remove responds differently to freshly installed 4.3.14
+
+$ sudo dkms remove vboxhost/4.3.14 --all
+
+------------------------------
+Deleting module version: 4.3.14
+completely from the DKMS tree.
+------------------------------
+Done.
+[emacs@manji vboxhost]$ la
+total 12
+drwxr-xr-x 3 root root 4096 22.07.2014 08:53 ./
+drwxr-xr-x 4 root root 4096 17.07.2014 05:17 ../
+drwxr-xr-x 7 root root 4096 22.07.2014 08:52 4.3.12/
+lrwxrwxrwx 1 root root   31 13.07.2014 22:14 kernel-3.12.23-1-MANJARO-x86_64 -> 4.3.12/3.12.23-1-MANJARO/x86_64/
+lrwxrwxrwx 1 root root   31 10.07.2014 10:47 kernel-3.12.24-1-MANJARO-x86_64 -> 4.3.12/3.12.24-1-MANJARO/x86_64/
+lrwxrwxrwx 1 root root   30 07.07.2014 17:09 kernel-3.15.3-1-MANJARO-x86_64 -> 4.3.12/3.15.3-1-MANJARO/x86_64/
+lrwxrwxrwx 1 root root   30 14.07.2014 04:42 kernel-3.15.4-1-MANJARO-x86_64 -> 4.3.12/3.15.4-1-MANJARO/x86_64/
+[emacs@manji vboxhost]$ 
+
+---------- --all is implemented except that it seems to not have detected my other kernels that were leftover in that folder
+
+remove [module/module-version] [-k kernel/arch] [--all]
+
+           Removes a module/version or module/version/kernel/arch combination from the  tree.   If  the  module  is  currently
+           installed,  it  first  uninstalls  it  and  if applicable, will replace it with its original_module.  Use the --all
+           option in order to remove all instances for every kernel at once.
+
+--------------
+
+

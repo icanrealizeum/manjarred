@@ -1,0 +1,148 @@
+# Maintainer: Dave Reisner <d@falconindy.com>
+# Contributor: Thomas Dziedzic < gostrc at gmail >
+# Contributor: godane <slaxemulator@gmail.com.com>
+# Contributor: Andres Perera <aepd87@gmail.com>
+
+#set
+#exit 1
+
+pkgname=pacman-git
+pkgver=5.0.1.35.g839417e
+pkgrel=4
+pkgdesc="A library-based package manager with dependency support.Manjaro+Arch git version."
+arch=('i686' 'x86_64')
+url="http://www.archlinux.org/pacman/"
+license=('GPL')
+groups=('base' 'base-devel')
+depends=('bash>=4.2.042-2' 'glibc>=2.17-2' 'libarchive>=3.1.2' 'curl>=7.39.0'
+         'gpgme' 'pacman-mirrorlist>=20130418' 'archlinux-keyring' 'manjaro-keyring')
+#depends=('bash' 'curl' 'gpgme' 'libarchive' 'pacman-mirrorlist')
+makedepends=('git' 'asciidoc')
+#optdepends=('fakeroot: for makepkg usage as normal user') #this is somehow embedded now
+optdepends=('haveged: for pacman-init.service')
+checkdepends=('python2' 'fakechroot')
+provides=("pacman=$pkgver" 'pacman-contrib' 'pacman-init') #'libalpm.so')
+#provides=("pacman=$pkgver" 'libalpm.so') # dno why i removed that here
+#provides=('pacman-contrib' 'pacman-init')
+#conflicts=('pacman' 'pacman-contrib')
+conflicts=('pacman-contrib' 'pacman-init')
+replaces=('pacman-contrib' 'pacman-init')
+options=('!libtool' '!strip')
+#emacs1of2: comment these so it doesn't rename existing ones to pacsave on install!
+#nevermind, they get renamed anyways upon pacman removal, before installing pacman-git ie.
+#(2/2) removing pacman                              [######################] 100%
+#warning: /etc/pacman.conf saved as /etc/pacman.conf.pacsave
+#warning: /etc/makepkg.conf saved as /etc/makepkg.conf.pacsave
+#(1/1) installing pacman-git                        [######################] 100%
+backup=("etc/pacman.conf"
+        "etc/makepkg.conf")
+install=pacman.install
+
+#lepatch="pacman_incremental.patch" #nolonger needed! see git.sh.in
+warnspatch="pacman_warnings_arent_errors.patch"
+sudopatch="persistent_sudo.patch"
+selectablenamespatch="selectable_packagenames.patch"
+dstfolder="${pkgname}"
+source=(
+"${dstfolder}::git+https://git.archlinux.org/pacman.git"
+#"${lepatch}"
+"${warnspatch}"
+"${sudopatch}"
+"${selectablenamespatch}"
+"pacman-sync-first-option.patch"
+"makepkg.conf"
+"pacman.conf"
+"etc-pacman.d-gnupg.mount"
+"pacman-init.service"
+)
+sha512sums=('SKIP'
+            'e0b8b45dd95e19d60d0aa6c74365bf903c2d688d7ef76b5780530b83b7693979beb948fd2db3c18851b3e3122726ff49294d7907f1154e70834f1d14adc7602e'
+            '016ed5bcf077845d3c25858bd2cf6f2f3dc733f178af4acdcc54631dcb850c7d2f9d9f8f4b54eb6098c37fb605e107fc7c04f33c80115f63405e0b8adaa2c6ea'
+            '3582c3cba11ecf1d5351f699a61b0d82a34f795e6dd702f1fb072426e8c215151cbd6c3466a80ed005f1469b3721d45a17b1bc7dfefe1612540f94acd78d66a8'
+            '76b30991b70fcbe3308fb1e0888528f575fbd72c9b69af44209dbe052860db57a5049f6a4d009b5709e286b80a6e18783ef9cf75ed7835faa632656f5f6e3f3f'
+            '97753c4182c4d5e72522ff3098728adad3bf4816ff40065cc239e34737163eb24bc66e843b448ef30d33a8e573eb97c630fec89934993495b2b7c703e9fb9ca0'
+            'bed1792cde434ef3edb6947494271ae7b5359f9f641cd5c7f11df11c47696b596ac27d22a5de53b1dac7d2bf7fc3e73c7a8a0d0b585fa5152e5bcd828e6931bf'
+            '1e34f407774a1453f55f9ce5e789b3dbbc0f7c60c5da8f273d96b636b97e301243ccb4b23d2f15d7bae7298c44481f56fe10c4c04a0fe04fd4d1772d3bd384b7'
+            '08e53897a707763100cf8721e8124b9358944de774a163ef34d28189821da0ed01668f63f03c1894189bf546275457498c4252b0eb08bc4b8cad0f8e8afe35e2')
+
+pkgver() {
+  cd "${dstfolder}"
+  git describe | sed 's/^v//;s/-/./g'
+}
+
+prepare() {
+  cd "${srcdir}/${dstfolder}"
+
+  # Manjaro patches
+  patch -p1 -i "${srcdir}/pacman-sync-first-option.patch"
+  #patch -p1 -i $srcdir/pacman-updated-locales.patch
+
+#  patch -p1 -i "${srcdir}/${lepatch}"
+  patch -p1 -i "${srcdir}/${warnspatch}"
+  patch -p1 -i "${srcdir}/${sudopatch}"
+  patch -p1 -i "${srcdir}/${selectablenamespatch}"
+}
+
+build() {
+  cd "${srcdir}/${dstfolder}"
+
+  ./autogen.sh
+  #here because those files are to be updated with git and update will fail because they are already changed locally
+  ./configure \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --enable-doc \
+    --enable-git-version \
+    --enable-debug \
+    --with-scriptlet-shell=/usr/bin/bash \
+    --with-ldconfig=/usr/bin/ldconfig
+
+  make ${MAKEFLAGS}
+  make ${MAKEFLAGS} -C contrib
+}
+
+check() {
+  make -C "${dstfolder}" check
+}
+
+package() {
+  cd "${srcdir}/${dstfolder}"
+
+  make DESTDIR="$pkgdir" install
+  # contrib
+  make DESTDIR="$pkgdir" -C contrib install
+
+  # install Arch specific stuff
+  install -dm755 -- "$pkgdir/etc"
+  install -m644 "$srcdir/makepkg.conf" "$pkgdir/etc/"
+  install -m644 -- "$srcdir/pacman.conf" "$pkgdir/etc/pacman.conf"
+
+  install -Dm644 "contrib/PKGBUILD.vim" "$pkgdir/usr/share/vim/vimfiles/syntax/PKGBUILD.vim"
+  install -dm755 "$pkgdir/usr/share/vim/vimfiles/ftdetect"
+  echo "au BufNewFile,BufRead PKGBUILD set filetype=PKGBUILD" \
+    >"$pkgdir/usr/share/vim/vimfiles/ftdetect/PKGBUILD.vim"
+
+  # install completion files
+  rm -r "$pkgdir/etc/bash_completion.d"
+  install -Dm644 "contrib/bash_completion" "$pkgdir/usr/share/bash-completion/completions/pacman"
+  for f in makepkg pacman-key; do
+    ln -s pacman "$pkgdir/usr/share/bash-completion/completions/$f"
+  done
+
+  install -Dm644 "contrib/zsh_completion" "$pkgdir/usr/share/zsh/site-functions/_pacman"
+
+  # replace rankmirrors
+  rm "$pkgdir/usr/bin/rankmirrors"
+  ln -sfv "/usr/bin/pacman-mirrors" "$pkgdir/usr/bin/rankmirrors"
+
+  # install pacman-init
+  install -dm755 "$pkgdir/usr/lib/systemd/system/"
+  install -m644 "$srcdir/etc-pacman.d-gnupg.mount" "$pkgdir/usr/lib/systemd/system/etc-pacman.d-gnupg.mount"
+  install -m644 "$srcdir/pacman-init.service" "$pkgdir/usr/lib/systemd/system/pacman-init.service"
+
+  #emacs2of2: don't wanna bother with these when --force is required to install (manjaro!) - hmm, nevermind! allowing for now, let's see what happens
+#  rm -r "${pkgdir}/etc"
+}
+
+# vim: set ts=2 sw=2 et:

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+time makepkg -s --install --noprepare --noextract "$@"
+
+sudo pacman-key --init
+sudo pacman-key --populate archlinux manjaro
+sudo pacman -S --needed manjaro-system
+
