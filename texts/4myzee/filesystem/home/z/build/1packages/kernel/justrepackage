@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#1. repackage unconditionally (recreates pkg file), using existing srcdir(or fails) but removes(as it should) existing pkgdir before running package() - this doesn't rebuild!
+
+#source ./common.bash
+
+
+time makepkg --repackage --force --noextract --noprepare "$@"
+#--noextract is good: WARNING: Using existing $srcdir/ tree
+
+
+
+
