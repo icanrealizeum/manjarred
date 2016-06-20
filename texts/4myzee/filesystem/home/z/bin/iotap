@@ -1,0 +1,348 @@
+#!/bin/bash
+
+# a non-interactive iotop that remembers all processes/threads
+# shows iotop -aok without losing finished processes/threads
+#Note: Actual/Total lines are not cumulated, so it's just like iotop does.
+
+
+#sort by Disk Write (column 6), in watch command and urxvt only
+sortcolumn=6
+
+#iotop refresh rate:
+SECONDS_DELAY=5
+
+#valid values: 0 or 1
+#set to 1 if you want alternate screen file to be updated only when graceful exit (iotap stop) - note: it won't be updated if you exit with C-c
+#set to 0 otherwise - file gets updated for each iotop line received(crazy, I know)
+UPDATE_ONLY_ON_GEXIT=0
+
+#valid values: 1 or anything else
+#if set to 1 saves screen before iotap runs, and restores it upon exit (so you won't see the last screen)
+SAVERESTORESCREEN=0
+
+#valid values: 1 or anything else
+#if set to 1, shows alternate screen file contents on iotap exit (after screen was restored)
+PASTE_ALT_SCREEN_FILE_ON_EXIT=1
+#XXX: ^ the only problem is that we have no alternating colors with this.
+
+# allow for graceful exit, because C-c can stop in the awk 'for' and thus fail to dump all lines
+gracefulexitfile="/tmp/iotap.out"
+
+#set to 1 if you have funx.bash in PATH, or to any other value to skip this and thus not check if you have all required commands to run this script
+HAS_FUNX=1
+
+#--------- basically, nothing to set below:
+
+
+sudocmd="sudo"
+
+#fail when using undefined vars?
+set -u
+
+#------ this part, may be commented out, but ensures all needed commands exist prior to this script($0) continuing execution
+if test "$HAS_FUNX" = "1"; then
+  __die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+  source funx.bash || __die 100 "funx.bash not in PATH"
+  if isroot; then
+    #don't require sudo if already root (or $0 was ran with sudo $0)
+    sudocmd=""
+  fi
+  ensure_existing_commands_or_die "mktemp date stty iotop bash touch sleep rm echo [ tput trap $sudocmd awk watch cat sort cut test"
+fi
+#--------------
+
+#fail when using undefined vars? (after using any from funx.bash ^)
+set -u
+
+
+#TODO: update file only when graceful exiting?
+#this file must be in /tmp (tmpfs, aka ramdrive) else SSD thrashing
+alternatescreen="`mktemp --tmpdir=/tmp -t -- iotap.screen.$$.XXXXXX`"
+# ^ in case likely the screen is gonna get too small to hold all the data, and you still wish to see everything, then see that file
+# ^ file created on date:
+condate="`date`"
+
+
+#from another terminal run: iotap out  - to force all iotap instances to gracefully exit
+if test "${1:-}" = "stop" -o "${1:-}" = "out" ; then
+#${PARAMETER:-WORD}'
+#If PARAMETER is unset or null, the expansion of WORD is substituted. Otherwise, the value of PARAMETER is substituted. 
+  echo "signaling all iotap instances to exit gracefully"
+  touch -- "$gracefulexitfile"
+  maxwaittime=$((1 + $SECONDS_DELAY)) #can't single quote this and it's not needed!
+  echo "waiting for all to exit, max time: $maxwaittime"
+  sleep $maxwaittime
+  echo "stopping signal"
+  rm -- "$gracefulexitfile"
+  exit 0
+elif [ "$#" -gt 0 ]; then
+  echo "unknown params: $@"
+  echo "exiting"
+  exit 9
+fi
+
+# -------------
+#save display, restore it on exit
+if test "$SAVERESTORESCREEN" = "1" ; then
+  tput smcup
+fi
+#--------------
+echo "using file $alternatescreen as another view of the screen"
+echo "use the following in a new terminal to see the screen sorted by DISK WRITE:"
+
+thewatch="watch -n$SECONDS_DELAY \( cat \"$alternatescreen\" \| sort -k $sortcolumn -g -r \)"
+echo "$thewatch"
+#XXX: ^ depending on when the ^ watch is ran, it may show the same screen for double the amount of $SECONDS_DELAY
+
+#ask for sudo password, before urxvt is run because it steals focus:
+if [ "$sudocmd" ]; then
+  "$sudocmd" --validate --
+fi
+#actually run a new terminal, only if urxvt exists:
+urxvtpath="`which urxvt`"
+#if test ! -x "$urxvtpath"; then
+#  urxvtpath="`which xfce4-terminal`" #can't get bash -c to work with this! even with some kind of quotes
+#fi
+
+if test -x "$urxvtpath"; then
+  #truncate output to current terminal width which is determined when displaying
+  #remove other interfering lines like Total/Actual ...
+  #keep the sort by Disk Write
+  #TODO: I should probably put this in a batch file in /tmp via mktemp, so user can run it whenever, and also $thewatch above could point to it instead
+#  SECONDS_DELAY='`echo 1 >>/tmp/moo`' # well ofc, double expansion, src: https://docs.fedoraproject.org/en-US/Fedora_Security_Team/1/html/Defensive_Coding/sect-Defensive_Coding-Shell-Double_Expansion.html
+#TODO: escape $extendedwatch before passing it to bash -c  because it evals it
+  extendedwatch="watch -n$SECONDS_DELAY \( cat \"$alternatescreen\" \| awk \'/^\(snapshot\|Total\|Actual\| +TID\)/ { next } // { print }\' \| sort -k $sortcolumn -g -r \| cut -c 1-\$\(tput cols\) \)"
+  "$urxvtpath" -e bash -c "$extendedwatch" >/dev/null 2>&1 &
+  # this ^ dies when iotap exits which means you don't have to C-c it, you can just C-c iotap, or graceful exit it.
+fi
+# -------------
+#disable echoing chars when you press keys this prevents for example pressing Enter and the next line is a few rows below where it should've been and thus messing up the screen and needing a tput clear
+#from: https://stackoverflow.com/questions/5633472/how-do-i-turn-off-echo-in-a-terminal?answertab=active#tab-top
+stty_orig=`stty --save`
+stty -echo
+
+on_exit() {
+#  echo "setting stty back"
+  stty $stty_orig
+  #restore saved display
+  if test "$SAVERESTORESCREEN" = "1"; then
+    tput rmcup
+  fi
+  if test "$PASTE_ALT_SCREEN_FILE_ON_EXIT" = "1"; then
+    cat "$alternatescreen"
+  fi
+  echo "last screen saved in file: $alternatescreen"
+}
+
+# happens on C-c too:
+trap on_exit EXIT
+# -------------
+
+#clear screen first XXX:happens later(first time) due to oldcols != cols below
+#tput clear
+
+#clr="`tput clear`"
+#clr="`tput smcup`"
+clr="`tput cup 0 0`"
+
+#sudo iotop --iter=1 --batch --kilobytes --only
+
+#XXX: must use --kilobytes just in case it will later sort by this value (can't mix MB with K, because 29 M will be less than 100 K then)
+#XXX: the following variant of sudo handles 2 cases: 1. when spaces are in the path/fname and 2. when sudocmd is empty and thus cannot use "$sudocmd" because we get: line 14: : command not found
+${sudocmd:+"$sudocmd"} iotop --batch --kilobytes --only --accumulate --delay="$SECONDS_DELAY" | \
+awk 'BEGIN {
+  # ensure field separator is space
+  FS=" "
+
+  # no new line when using print
+  ORS=""
+
+  #declare empty array, from: https://stackoverflow.com/questions/4353151/how-to-define-dynamic-array-in-begin-statement-with-awk?answertab=active#tab-top
+  split("", sum)
+
+  if ('"$UPDATE_ONLY_ON_GEXIT"') {
+    updatealways=0
+  } else {
+    updatealways=1
+  }
+
+  #assuming terminal (echo $TERM) cannot change while we run, we cache some colors here:
+  #setab for backgroundcolor, setaf for foreground color
+  #sgr0 Turn off all attributes (background color should be back to transparent again, in urxvt)
+  c1="tput sgr0; tput setaf 2"
+  c1 | getline color1
+  close(c1)
+
+  c2="tput sgr0 ; tput setaf 3"
+  c2 | getline color2
+  close(c2)
+
+  #XXX: dont set background to 0 (tput setab 0) because that means no transparency in urxvt(at least)
+  cnolines="tput sgr0 ; tput setaf 7" # 7 just in case something slips through, i see it and track that bug.
+  cnolines | getline colornolines
+  close(cnolines)
+
+  gracefulquitnow=0
+} #BEGIN
+
+/^(Total|Actual) .*$/ {
+  sum[1" "$1]=$0
+  next
+}
+
+/^  TID .*$/ {
+  sum[2" "$1]=$0
+  next
+}
+
+
+# function from: http://computer-programming-forum.com/11-awk/5164a44f6a51440d.htm by Jim Monty
+function file_exists(filename)
+{
+  if ((getline <filename) == -1) {
+    return 0
+    #doesnt
+  } else {
+    close(filename)
+    return 1
+    #exists
+  }
+}
+
+{ #matches each line
+
+#this is to update rows/columns just in case window got resized
+#window getting resized is detected only on the next iotop input line being received, so depends on iotop --delay  value, eg. if it is 5 then it takes up to 5 seconds to detect and refresh screen after window is resized; also takes that many seconds to display something(and clear screen first) on first startup
+# and we need cols/rows to fill them with spaces, or else dangling text would be around due to sorting AND window resize
+#not like this:
+#  exitcode=system("tput cols");
+#but like this:
+  tc1="tput cols"
+  tc1 |getline cols;
+  close(tc1);
+  tl2="tput lines"
+  tl2 |getline rows;
+  close(tl2);
+  #FIXME: use "stty size" which returns: 24 80 on a line, to avoid executing tput twice
+
+  if (oldcols != cols ||  oldrows != rows) {
+    # at least urxvt doesnt clear half the screen upon switchin from 80 to 110 cols, in my case from Ctrl+Alt+3 to Ctrl+Alt+4 (those are the shortcuts, ~/.Xresources )
+    # so we should just clear screen
+    print colornolines
+    system("tput clear");
+  }
+  oldcols=cols;
+  oldrows=rows;
+
+
+  idx=$1" "$2" "$3;
+  for(i=12;i<=NF;i++)
+  {
+    idx=idx" "$i
+  }
+  sum[3" "idx]=$0;
+
+
+  # TODO: sort by $6 which is DISK WRITE value
+  n = asorti(sum,dest);
+  
+  print "'"$clr"'";
+
+  # if requested to exit gracefully:
+  if (file_exists("'"$gracefulexitfile"'")) {
+    print "graceful exit requested\n"
+    gracefulquitnow=1
+    updatealways=1
+  }
+
+  rowsthusfar=0;
+  if (updatealways) {
+    print "iotap alternate screen file, created on: '"$condate"'\n" > "'"$alternatescreen"'"
+    #showing number of lines to help C-c ers know if file got truncated
+    print "snapshot on "strftime()" lines:"n"\n" >> "'"$alternatescreen"'"
+  }
+  for (i = 1; i<=n; i++) {
+      # print the original captured line, which may span more than 1 rows
+      thisline=sum[dest[i]];
+
+      if (updatealways) {
+        print thisline"\n" >> "'"$alternatescreen"'"
+      }
+
+      if (rowsthusfar >= rows) {
+        #ignore writing to screen, just keep writing to file
+        if (updatealways) {
+          continue;
+        } else {
+          # file is not supposed to be updated so we can break out and not waste any more CPU cycles
+          break
+        }
+      }
+
+      if (i % 2 == 0) {
+        print color2
+      } else {
+        print color1
+      }
+      thislinelen=length(thisline);
+      lastrowlen=thislinelen % cols;
+      rowsthusfar+= int( thislinelen / cols ) + (lastrowlen > 0 ? 1:0);
+
+      if (rowsthusfar <= rows) {
+        print thisline;
+      }
+
+      # fill spaces until end of line (terminal-size specific)
+      if (lastrowlen == 0) {
+        lastrowlen=cols;
+      }
+      thediff=cols - lastrowlen;
+      if (thediff >= 1) {
+        printf "%-"(thediff)"s", " ";
+      }
+
+      #FIXME: sometimes a line spanning 4 rows at the very end of screen gets "replaced" by a line spanning only 1 row, therefore 3 extra rows remaining after that are not cleared. Maybe add code to put spaces until end of screen to handle this. This happens because lines can get sorted differently as time goes by, so the 4 rows line gets pushed to the bottom this way.
+      if (rowsthusfar >= rows) {
+        #break; no break because we need to print all lines to file
+        continue;
+      } else {
+        # in preparation of next line
+        printf "\n"
+      }
+  }
+
+  # if requested to exit gracefully:
+  if (gracefulquitnow) {
+    #good to know this in the file too, as to not entertain the possibility of it having been truncated due to C-c
+    print "graceful exit requested\n" >> "'"$alternatescreen"'"
+
+    #the exit here  will make awk close the $alternatescreen file anyway
+    exit
+  }
+
+  if (updatealways) {
+    #must close file, else > will just append
+    close("'"$alternatescreen"'");
+  }
+
+  # process next iotop input row:
+  next
+}
+
+END {
+#TODO: accumulate total disk read/written, when graceful exit and display it here - wont be seen when save/restore screen is on
+
+#not reached with C-c
+#reached only via graceful exit
+ printf "awk ended gracefully.\n"
+ printf "Waiting for iotop to realize pipe is broken and thus allow us to exit...\n"
+#XXX: it will still wait for DELAY_SECONDS to elapse due to waiting for iotop program to end (as it detects awk ended pipe)
+}
+'
+
+#not reached when C-c
+#reached when graceful exit via: iotap stop
+echo "iotap ended gracefully."
+#^ message unseen because tput rmcup restores previous screen, so when SAVERESTORESCREEN=1 can't see it.
+
+

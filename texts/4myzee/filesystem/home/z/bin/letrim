@@ -1,0 +1,7 @@
+
+set -v
+sudo -v
+time sync
+time sudo fstrim -v --all
+sudo btrfs filesystem df /
+

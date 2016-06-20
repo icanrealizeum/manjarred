@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for infile in "$@"; do
+  if test -z "$infile"; then
+    echo "!! WARNING: empty arg encountered! Continuing..."
+  fi
+  echo "rotating 270 degrees clockwise: '$infile'"
+  rot270 "$infile"
+done

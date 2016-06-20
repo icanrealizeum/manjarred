@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "diff-ing dirs that reside in two different kernel tree sources"
+
+dontdifffile="/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/Documentation/dontdiff"
+
+if test ! -f "$dontdifffile" ; then
+  echo "the don't diff file doesn't exist: $dontdifffile"
+  exit 1
+fi
+
+if test -z "$opts" ; then
+  opts="-pru5N"
+fi
+
+colordiff $opts -X "$dontdifffile" -- "$1" "$2"
+

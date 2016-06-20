@@ -1,0 +1,137 @@
+#!/bin/bash
+
+#FIXME: requirements: pwgen vbindiff diff
+
+#replaces some strings within chromium's executable to prevent them from being used by javascript scripts on pages
+
+#idea by ZimTester https://github.com/diafygi/webrtc-ips/pull/11#issuecomment-75975922
+#thanks!
+
+set -e
+
+zeestring='RTCPeerConnection'
+
+backup="/tmp/backup/chromium.backup"
+#manjaro/archlinux:
+exe="/usr/lib/chromium/chromium"
+#gentoo (64bit):
+#exe="/usr/lib64/chromium-browser/chrome"
+
+echo "Wait while checking if already applied..."
+if ! grep -q "$zeestring" "$exe" ; then
+  echo "${zeestring} not found in ${exe}. This likely means this was already applied!"
+  exit 13
+fi
+echo "All good, continuing..."
+
+result="/tmp/chromium.modified"
+
+mkdir -p -- "${backup%/*}"
+
+getfsize() {
+  if test "$#" -gt 1; then
+    echo "too many args: $@"
+    exit 23
+  fi
+  local fname="$1"
+  #bad: -s is allocated size:  ls -1 -s --block-size=1 "$fname" | cut -f1 -d ' '
+  stat "-c%s" "$fname"
+}
+
+currentexesize="`getfsize "$exe"`"
+backupsize="`getfsize "$backup" || echo -n "0"`"
+
+if test "$1" = "restore"; then
+  if test -f "$backup" -a "$currentexesize" -ne "$backupsize" -a "$2" != "force"; then
+    echo "not restoring different filesize backup!"
+    exit 33
+  fi
+  echo "restoring backup $backup"
+  sudo -- install -D -m 755 -o root -- "$backup" "$exe"
+  sudo -K
+  exit 0
+fi
+
+if test "$1" != "backup" -a -f "$backup" -a "$currentexesize" -ne "$backupsize"; then
+  echo "backup file size is different from the exe, this means that either the previous modification failed somehow, or you updated the exe in which case you need to rebackup"
+  echo "aborting"
+  exit 44
+fi
+
+if test ! -f "$backup" -o "$1" = "backup"; then
+  if test -f "$backup" && diff -q "$exe" "$backup"; then
+    echo "backup file has same contents, not writing anew"
+    exit 0
+  fi
+  echo "backing up $exe as $backup"
+  cp -f -- "$exe" "$backup"
+
+  if test "$1" = "backup"; then
+    exit 0
+  fi
+fi
+
+
+
+function replaxe() 
+{
+  if test "$#" -gt 1; then
+    echo "too many args: $@"
+    exit 22
+  fi
+  replwhat="$1"
+  replsize="`echo -n "$replwhat" | wc -c`"
+  #XXX: this pwgen invocation generates different password types on gentoo! which causes some symbols to be interpreted by sed and thus filesize increase in the output!! symbols (-y) are excluded when -s is present on manjaro/archlinux's pwgen! so removing -y seems to be ok - FIXME: find a way to escape the string for sed!
+  #replwith="`pwgen -c -n -y -s -B $replsize`"
+  replwith="`pwgen -c -n -s -B $replsize`"
+  if test -z "$replwith"; then
+    echo "failed"
+  else
+    echo "replacing '$replwhat' with '$replwith' ($replsize bytes)"
+    sed --binary -re "s|$replwhat|$replwith|g" "$exe" > "$result"
+  fi
+}
+
+#disable evil webrtc, to test: https://diafygi.github.io/webrtc-ips/
+replaxe "$zeestring"
+#sed --binary -re 's|RTCPeerConnection|LoLaJvyuoN3HnJogV|g' "$exe" > "$result"
+
+
+exesize=`getfsize "$exe"`
+resultsize=`getfsize "$result"`
+
+ec=0
+if test "$exesize" -ne "$resultsize"; then
+  echo "file sizes differ: $exesize vs $resultsize"
+  ec=4
+else
+  echo "file sizes the same"
+fi
+
+if diff -q "$exe" "$result"; then
+  echo "contents are the same, nothing was changed!"
+  exit 0
+fi
+
+echo "content changes detected"
+if test -e "`which vbindiff`"; then
+  vbindiff "$exe" "$result"
+fi
+
+echo "original file is: $exe"
+echo "modified file is: $result"
+echo "copying modified over the original, C-c if you don't want this"
+
+#FIXME: handle case when root, better!
+if test "`id -u`" -eq "0"; then
+  echo "press a key to continue with that copying..."
+  read -s
+else
+  #forget already cached pwd
+  sudo -K
+fi
+#this will always ask for pwd now:
+sudo -- install -D -m 755 -o root -- "$result" "$exe"
+sudo -K
+exit $ec
+

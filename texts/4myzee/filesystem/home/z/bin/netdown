@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#ip link show net0
+#sudo ip link set net0 down
+#ip link show net0
+sudo systemctl stop network@net0
+sudo systemctl stop dnsmasq.service
+

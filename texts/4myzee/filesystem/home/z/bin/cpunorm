@@ -1,0 +1,6 @@
+#!/bin/bash
+
+sudo cpupower frequency-set --related --governor ondemand --min 800MHz --max 1400MHz
+#cpupower frequency-info | grep --color=always 'current policy:' #| logger
+showgov
+

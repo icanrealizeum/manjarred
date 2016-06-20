@@ -1,0 +1,51 @@
+#!/bin/bash
+
+echo "//This will make it .avi so seeking works with vlc  (using copy codecs)"
+echo "//(it probably strips the fragments inside the mpeg stream that contains the comments from viewers)"
+echo "//Just pass the input file .mp2t (or .mp4 if used youtube-dl)"
+echo "//Expect file size increase by about 18%"
+echo
+
+
+logfile="`mktemp --tmpdir=/tmp -t -- periscope_to_avi.ffmpeg.logfile.$$.XXXXXX.log`"
+if test -z "$logfile" -o ! -r "$logfile"; then
+  echo "Failed to create temp logfile for ffmpeg output, fname: '$logfile'"
+  exit 2
+fi
+
+cleanup() {
+  local extraargs=(
+  ""
+  ""
+  ""
+  )
+  if test -n "$DEBUG"; then
+    extraargs="-v"
+  fi
+  rm $extraargs -- "$logfile"
+}
+trap cleanup EXIT
+
+for i in `seq 1 $#`; do
+  ffile="$1"
+  shift
+  if test -z "$ffile"; then
+    echo "Not supposed to happen, file is empty: '$ffile'"
+    exit 1
+  fi
+  echo -n "Processing input file: '${ffile}' "
+  outfile="${ffile}.avi"
+  if test -r "$ffile"; then
+    ffmpeg -i "${ffile}" -acodec copy -vcodec copy "${outfile}" 2>&1 2>"$logfile"
+    if test "$?" -eq "0"; then
+      echo " done."
+    else
+      echo " ffmpeg FAILED!" | grep --color=always 'FAIL'
+      less +G -- "$logfile" #jump at end of file
+      #FIXME: ensure 'less grep ffmpeg test' etc. exist
+    fi
+  else
+    echo " file is unreadable - FAILED!" | grep --color=always 'FAIL'
+  fi
+done
+

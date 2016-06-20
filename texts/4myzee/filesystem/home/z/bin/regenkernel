@@ -1,0 +1,99 @@
+#!/bin/bash
+
+iduser="`id -u`"
+if test -n "$iduser"; then
+  if test "$iduser" -ne "0"; then
+    #XXX: re-execute myself as root (needed for ensure below to work ok, for filefrag to be found!)
+    #done: fail before exec, if sudo not found!
+    echo "Not already root, re-executing myself as root by using sudo(required!)..."
+    #we use validate to ask for pwd AND to see if we have sudo! or if pwd failed
+    sudo --validate --
+    ec="$?"
+    if test "$ec" -ne 0 ; then
+      echo "sudo failed or not found, aborting"
+      exit 12
+    fi
+    #---
+    exec sudo -- "$0" "$@"
+    #^ the above will exit with 127 if sudo is not found! unless shopt execfail is set (they say) but tested to always exit as such, regardless (btw, shopt -s execfail   sets it to on!)
+    echo "Impossibiru"
+    exit 3
+  fi
+else
+  echo "epic fail, bailing out!"
+  exit 2
+fi
+
+if ! mount |grep -- /bewt ; then
+  echo "!! Mounting /bewt"
+  #set -e #not working!
+  cryptsetup --verbose --allow-discards luksOpen /dev/sda2 luks_on_sda2_boot && mount /bewt
+  #set +e
+  #FIXME: must check each value of ${PIPESTATUS[@]} or will miss the mount fail for example:
+  ec="$?"
+  echo "!! exit codes: ${PIPESTATUS[@]}"
+  if test "$ec" -ne 0; then
+    echo "!! umounting failed! exit code: $ec"
+    exit "$ec"
+  fi
+else
+  echo "!! /bewt already mounted, moving on..."
+fi
+
+echo "!! stripping localversion (leftover from git)"
+#(nevermind this has no effect): this assumes this is already set: CONFIG_LOCALVERSION_AUTO=y
+#otherwise you get nothing appended to kernel version - this is what should happen!!!
+#sed -e 's/CONFIG_LOCALVERSION=.*$//g' -i /usr/src/linux/.config
+sed -e '/^CONFIG_LOCALVERSION=.*$/d' -i /usr/src/linux/.config
+ec="$?"
+if test "$ec" -ne 0; then
+  echo "!! sed failed! exit code: $ec"
+  exit "$ec"
+fi
+
+echo "!! Running genkernel..."
+time genkernel all --bootdir="/bewt" --install --symlink --no-splash --no-mountboot --makeopts="-j4 V=0" --no-keymap --lvm  --no-mdadm --no-dmraid --no-zfs --no-multipath --no-iscsi --disklabel --luks --no-gpg --no-netboot --no-unionfs  --no-firmware --no-integrated-initramfs --compress-initramfs --compress-initrd --compress-initramfs-type=best --loglevel=5 --color --no-mrproper --no-clean --no-postclear --oldconfig
+ec="$?"
+if test "$ec" -ne "0"; then
+  echo "!! genkernel failed $ec"
+  exit "$ec"
+fi
+echo "!! Done genkernel"
+
+#TODO: what was supposed to be executing those in postinst.d ? we're clearly doing it manually here.
+list=( `find /etc/kernel/postinst.d -type f -executable | sort  --general-numeric-sort` )
+echo "!! Found executables: ${list[@]}"
+for i in ${list[@]}; do
+  ec="-1"
+  while test "0" -ne "$ec"; do
+    echo "!! Executing: '$i'"
+    time $i
+    ec="$?"
+    echo "!! Exit code: $ec"
+    if test "$ec" -ne "0"; then
+      echo "!! something went wrong, fix it then press Enter to retry executing '$i' or press C-c now."
+      #exit $ec
+      time read -s -p '!! Press Enter to re-execute that  or C-c to cancel'
+    fi
+  done
+done
+
+if mount |grep -- /bewt ; then
+  echo "!! unmounting /bewt"
+  #set -e #wtf this had no effect! when umount failed(ec 32) due to /bewt being in use
+  umount /bewt && cryptsetup --verbose luksClose /dev/mapper/luks_on_sda2_boot
+  ec="$?"
+  echo "!! exit codes: ${PIPESTATUS[@]}"
+  if test "$ec" -ne 0; then
+    echo "!! umounting failed! exit code: $ec"
+    exit "$ec"
+  fi
+#  set +e
+else
+  echo "!! /bewt already unmounted, moving on..."
+fi
+
+echo "!! sync-ing"
+sync
+echo "!! $0 done successfully."
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#this does: transform webpage into pdf for easy reading on my LARK android...
+
+if test "$#" -ne "2"; then
+  echo "must pass two args: inputsitepageurl outfilename.pdf"
+  exit 2
+fi
+
+sitepage="$1"
+outpdf="$2"
+
+#echo "$sitepage $outpdf"
+wkhtmltopdf -R 0cm -L 0cm -B 0cm -T 0cm -s A4 -O Portrait --javascript-delay 1000 --minimum-font-size 26 "$sitepage" "$outpdf"
+
+

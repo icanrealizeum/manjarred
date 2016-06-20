@@ -1,0 +1,17 @@
+#!/bin/bash
+set -evx
+
+time sudo emaint sync --repo gentoo
+echo "${PIPESTATUS[@]}"
+#real 1m33.325s
+#user  0m19.690s
+#sys 1m8.400s
+
+
+time sudo emerge --verbose --tree --update --deep --with-bdeps=y --changed-use --ask @world
+echo "${PIPESTATUS[@]}"
+#Nothing to merge; quitting.
+#real  0m42.851s
+#user  0m40.987s
+#sys 0m1.387s
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "this doubles the speed tempo of the audio and strips the video"
+inf="$1"
+outf="/tmp/${inf}.mp3"
+time ffmpeg -i "$inf" -af atempo=2 -vn -threads 4 "$outf"
+

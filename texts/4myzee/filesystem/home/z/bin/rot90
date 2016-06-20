@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+infile="$1"
+if test "$#" -ne 1; then
+  echo "expected only one arg, the input file"
+  exit 1
+fi
+if ! test -f "$infile"; then
+  echo "input file '$infile' not found"
+  exit 2
+fi
+outfile="${infile}.rot90.jpg"
+if test -f "$outfile" ; then
+  echo "outfile '$outfile' already exists"
+  exit 3
+fi
+#cp -i -a -- "$infile" "${outfile}"
+jpegtran -copy all -rotate 90 -perfect "$infile" > "${outfile}"
+
+

@@ -1,0 +1,592 @@
+#!/bin/bash
+
+#inspired by: https://bugs.launchpad.net/ubuntu/+source/lvm2/+bug/1213631
+
+#don't exit if subcommands return non-zero exit code
+set +e
+#allow unset vars
+set +u
+
+#notTODO; avoid using sudo for each command, instead ask if to become root at startup and then call sudo $0 ... XXX: reason to prefer using sudo is because it logs all commands to dmesg which is good! besides it asks only onces
+#XXX: leave the gray messages (to see if something goes wrong) instead of redirecting their stderr/stdout to /dev/null
+
+wantedtrimtestfile='trimtest.testfile.hex'
+pattern="very silly thing"
+
+#---------------- nothing customizable below this line
+unset tryfstrim
+unset usedfstrim
+
+#defining functions:
+function start_other_msgs()
+{
+  tput sgr0 #reset
+  #  tput setab 1
+  tput bold
+  tput setaf 0
+}
+function start_our_msgs()
+{
+  tput sgr0 #reset
+  tput setaf 3 #yellow
+}
+
+function red_msg()
+{
+  tput sgr0 #reset
+  tput setaf 1 #red
+}
+
+function great_msg()
+{
+  tput sgr0 #reset
+  tput setaf 2
+}
+
+#FIXME: reset msgs color before exiting!! don't just leave the terminal with whatever color was left (usually the start_our_msgs one)
+
+function dropcache()
+{
+  start_other_msgs
+  #echo -n "1" | sudo tee /proc/sys/vm/drop_caches
+  #no worky: sudo cp -P --no-preserve=all -T -v -- <(echo -n '1') /proc/sys/vm/drop_caches
+  sudo sh -c -- 'echo -n "1" > /proc/sys/vm/drop_caches'
+  ec="$?"
+  start_our_msgs
+  if test "$ec" -eq 0; then
+    echo "dropped any cached blocks"
+  else
+    echo "dropping cache failed with exitcode $ec"
+    exit 11
+  fi
+}
+function readlocation()
+{
+  start_other_msgs
+  wehave=`sudo dd bs="$blocksize" skip="$startblock" count=1 if="$device" | hexdump -C`
+  start_our_msgs
+
+  if test -z "$wehave" ; then
+    echo "something went wrong and \$wehave is empty"
+    exit 4
+  fi
+}
+
+function syncing()
+{
+  echo -n "sync-ing..."
+  start_other_msgs
+  sync
+  start_our_msgs
+  echo "done."
+}
+
+function compare()
+{
+  start_other_msgs
+  diff <(echo "$before") <(echo "$after")
+  ec=$?
+  start_our_msgs
+}
+
+__die() { local ec=$1;shift;echo "$@" >&2 ; exit $ec; }
+
+function get_stack()
+{
+  #original source from: https://stackoverflow.com/questions/11090899/bash-find-line-number-of-function-call-from-sourcing-file/17734099#17734099
+  #modified
+  STACK=""
+  local i message="$@"
+  local stack_size="${#FUNCNAME[@]}"
+  #doc for these bash variables: https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
+  # to avoid noise we start with 1 to skip the get_stack function
+  for (( i=1; i<$stack_size; i++ )); do
+    local func="${FUNCNAME[$i]}"
+    # test -z "$func" && func=MAIN
+    local linen="${BASH_LINENO[$(( i - 1 ))]}"
+    local src="${BASH_SOURCE[$i]}"
+    test -z "$src" && src=non_file_source
+
+    #STACK+=$'\n'"   at: "$func" "$src" "$linen
+    local tmpvar
+    #printf is a shell built-in
+    printf -v tmpvar "%-${i}s vim +$linen $src $func()" 
+    STACK+="$tmpvar" #$'\n'"   at: $func $src $linen"
+    # no new line for the last one
+    # actually we need a vertical space for visibility, so allow it
+    # if test "$i" -lt "$(( $stack_size - 1 ))"; then
+    STACK+=$'\n'
+    # fi
+  done
+  if test -n "$message" ; then
+    message+=$'\n'
+  fi
+  STACK="${message}Stacktrace:"$'\n'"${STACK}"
+  #return "$STACK" can't really return string
+}
+
+
+isnum() #TODO: pull the one (from|use) funx.bash
+{
+  #src: https://stackoverflow.com/questions/806906/how-do-i-test-if-a-variable-is-a-number-in-bash/3951175#3951175
+  case "$1" in
+    ''|*[!0-9]*) return 1 ;; #bad
+    *) return 0 ;; #good
+  esac
+}
+
+getnum_or_default()
+{
+  if test ! $# -eq 2; then #XXX: test !  or ! test   both work
+    __die 211 "not enough params to function, passed: $@"
+    return 211 #just in case die doesn't die?
+  fi
+  local ret="$1"
+  if ! isnum "$1"; then
+    ret="$2"
+  fi
+  echo -n "$ret"
+  #TODO: testcase for this func
+}
+
+die()
+{ 
+  local defnum="209"
+  local wantedexitcode="$1"
+  local ec=$(getnum_or_default "$wantedexitcode" "$defnum")
+  if test ! "$ec" -eq "$defnum" -o "$wantedexitcode" = "$defnum" ; then
+    shift
+  fi
+  #TODO: testcase for above ^
+  #TODO: add color to $@ below, since it's the message preceeding the stacktrace
+  get_stack "$@"
+  echo "$STACK" >&2
+  exit $ec
+}
+
+
+validcommand()
+{
+  # $1 command to check for
+  # $2- (optional) what type of command is it expected to be one or more of: alias, keyword, function, builtin, file; it's considered to be an OR of the specified ones. So if it's a builtin OR a file  for example, it will return ok.
+  # this $2 can be one parameter space separating the list of words, or multiple parameters ($2 $3 $4) ...
+  if test $# -lt 1 ; then
+    die 211 "not enough params to function, passed($#): $@"
+    return 211 #just in case die doesn't die?
+  fi
+  local cmd="$1"
+  shift
+  local expectedtype=("$@")
+  # "type" is built-in, unlike "which"
+  local istype="$(type -t -- $cmd)"
+  #echo $istype
+  if [ -n "$istype" ]; then
+    # non-empty means it's found to be something
+    # at this point it's an alias, builtin, file etc. see help type within a bash prompt
+    #echo ${#expectedtype[@]}
+    #echo "'${expectedtype[@]}'"
+    #echo "'$@'"
+    #echo "$#"
+    if test 0 -lt "${#expectedtype[@]}"; then
+      # array size is greater than 0
+      for each in ${expectedtype[@]}; do
+        if test "$each" = "${istype}" ; then
+          #is of expected type aka found one
+          return 0
+        fi
+      done
+    else
+      # no expected type is to be enforced then.
+      return 0
+    fi
+  fi
+  return 102 #doesn't exist
+}
+
+
+ensure_existing_commands_or_die() {
+  # $1 list of commands as string with spaces
+  # $2 command types expected such as "file builtin alias" - if any matches, it'll be good; each command's type is matched against ANY in this list.
+  # $3 exit code on die
+  # $4- die msg
+  local cmdlist=("$1")
+  local cmdtypes="${2:-}" #set -u  will yell here if using $2 hence why this
+  local dieec="${3:-}"
+  shift 3
+  local diemsg="$@"
+  for prog in $cmdlist; do
+    if ! validcommand "$prog" $cmdtypes ; then
+      die "$dieec" "${diemsg[@]}" "$prog"
+    fi
+  done
+}
+
+
+#====== STARTS HERE:
+
+iduser="`id -u`"
+if test -n "$iduser"; then
+  if test "$iduser" -ne "0"; then
+    #XXX: re-execute myself as root (needed for ensure below to work ok, for filefrag to be found!)
+    #done: fail before exec, if sudo not found!
+    #--- warmup sudo
+    start_our_msgs
+    echo "Not already root, re-executing myself as root by using sudo(required!)..."
+    start_other_msgs
+    #we use validate to ask for pwd AND to see if we have sudo! or if pwd failed
+    sudo --validate --
+    ec="$?"
+    start_our_msgs
+    if test "$ec" -ne 0 ; then
+      echo "sudo failed or not found, aborting"
+      exit 12
+    fi
+    #---
+    exec sudo -- "$0" "$@"
+    #^ the above will exit with 127 if sudo is not found! unless shopt execfail is set (they say) but tested to always exit as such, regardless (btw, shopt -s execfail   sets it to on!)
+    echo "Impossibiru"
+    exit 3
+  fi
+else
+  echo "epic fail, bailing out!"
+  exit 2
+fi
+
+great_msg
+echo "This makes a file $wantedtrimtestfile then removes it to test if trim(discard) works"
+echo "The create/remove may be done twice(the second time with fstrim) if first time trim was not detected."
+start_our_msgs
+
+#--- ensure requirements are met
+# ---- snip ----
+#generated by: /home/zazdxscf/bin/whatarethese 'then else test for in do done ! case esac echo exit if fi unset function set [ local shift printf return type df cut tail dirname realpath dd filefrag sudo hexdump grep bash sh tr tput yes awk fstrim sync diff isnum getnum_or_default get_stack die start_other_msgs start_our_msgs red_msg great_msg dropcache readlocation syncing compare __die validcommand ensure_existing_commands_or_die'
+#...
+# ---- snip ----
+# -- none
+#ensure_existing_commands_or_die 'start_other_msgs start_our_msgs red_msg great_msg dropcache readlocation syncing compare __die' 'none' 107 "The specific command that was required to not exist, was in fact found:"
+# -- file
+#XXX: filefrag is in sys-fs/e2fsprogs and it's already installed in /usr/sbin/filefrag which isn't in PATH unless I'm root (or via sudo! tested)
+#fixed: here's the problem: some commands (like filefrag) can only be found if you're root or running as sudo! because the PATH changes! so... need a better than sudo -way to run this script as sudo, maybe via exec?
+
+ensure_existing_commands_or_die 'df cut tail dirname realpath dd filefrag sudo hexdump grep bash sh tr tput yes awk fstrim sync diff dumpe2fs blockdev' 'file' 108 "The required external command(of type: file) was not found:"
+# -- function
+ensure_existing_commands_or_die 'isnum getnum_or_default get_stack die validcommand ensure_existing_commands_or_die' 'function' 109 "The required command(of type: function) was not found:"
+# -- keyword
+ensure_existing_commands_or_die 'then else for in do done ! case esac if fi function' 'keyword' 110 "The required command(of type: keyword) was not found:"
+# -- builtin
+ensure_existing_commands_or_die 'test echo exit unset set [ local shift printf return type' 'builtin' 111 "The required command(of type: builtin) was not found:"
+# ---- snip ----
+
+#Old manual ones(to which I added some without testing):
+#ensure_existing_commands_or_die 'if then else [[ for in do done ! case esac' 'builtin' 107 "Required builtin keyword not found:"
+#ensure_existing_commands_or_die 'echo exit if fi unset function set [ local shift printf return type' 'builtin' 108 "Required builtin command not found:"
+#ensure_existing_commands_or_die 'df cut tail dirname realpath dd filefrag sudo hexdump grep bash sh tr tput yes awk fstrim sync diff' 'file builtin' 109 "Required (builtin or external)command not found:"
+#ensure_existing_commands_or_die 'isnum getnum_or_default get_stack die start_other_msgs start_our_msgs red_msg great_msg dropcache readlocation syncing compare __die validcommand ensure_existing_commands_or_die' 'function' 110 "Required bash function not found:"
+#---
+
+#--- get location of our testfile(which can be a symlink)
+start_our_msgs
+echo "Trying testfile: $wantedtrimtestfile"
+start_other_msgs
+trimtestfile="$(realpath --physical -- "$wantedtrimtestfile")"
+start_our_msgs
+echo "Using testfile: $trimtestfile"
+#---
+
+
+#--- destination test file mustn't already exist
+#TODO: test if it works for existing: symlinks and broken symlinks
+if [ -e "$trimtestfile" ] || [ -a "$trimtestfile" ]; then
+  echo "file already exists '$trimtestfile' refusing to overwrite for safety reasons"
+  exit 5
+fi
+#---
+
+#--- get device
+start_other_msgs
+diroffile="$(dirname `realpath "$trimtestfile"`)"
+#XXX: no real way to fix this if the devicename contains spaces eg. "/dev/mapper/Manjaro VG - Manjaro Home" although this is hightly unlikely to happen! ie. almost impossible
+device=$(df "$diroffile" | tail -n1 | cut -f1 -d ' ')
+#device="$(df "$(realpath "$trimtestfile")" | tail -n1 | cut -f1 -d ' ')"
+#device='moo'
+start_our_msgs
+
+start_other_msgs
+#TODO: make this match if it's a space followed by a digit then a char then another space, just in case mount type contains spaces (shouldn't though, lvm and cryptsetup wouldn't allow it, RIGHT?! i may be wrong)
+if [ -z "$device" ] || ! df | grep -- "$device" ; then
+  start_our_msgs
+  echo "something went wrong \$device='$device'"
+  exit 1
+fi
+start_our_msgs
+#---
+
+#--- get mount point
+start_other_msgs
+mountpoint="$(df "$diroffile" | tail -n1 | awk '{i=index($0, "% /"); if (i==0) print "fail" ; else print substr($0, i+2);}')"
+#mountpoint="$(df "$diroffile" | tail -n1 | awk '{print substr($0, index($0,$6))}')"
+#^ that works even if mount point has spaces ie. "/ho me"
+#XXX: fails for this:
+#/dev/mapper/vgall-rootlvol  392G   18G  374G   5% /
+#
+#echo "mountpoint: $mountpoint"
+if [ -z "$mountpoint" ] || test "$mountpoint" = "fail" || test "${mountpoint:0:1}" != "/" || ! df | grep -- "$mountpoint" ; then
+  start_our_msgs
+  echo "something went wrong \$mountpoint='$mountpoint'"
+  exit 1
+fi
+start_our_msgs
+#---
+
+#---
+start_other_msgs
+mount | grep "$device" | grep -i "discard"
+ec="$?"
+start_our_msgs
+
+echo "Using device: $device"
+excludeddevices='^(tmpfs|dev|run)$'
+if grep -E -q -- "$excludeddevices" <<<"$device" ; then
+  echo "this won't work on $device"
+  if [ -L "$wantedtrimtestfile" ] || [ -h "$wantedtrimtestfile" ]; then
+    echo "Since $wantedtrimtestfile is a symlink, this might be the reason"
+    ls -la "$wantedtrimtestfile"
+  fi
+  exit 13
+fi
+
+if test "$ec" -eq 0 ; then
+  echo "You have mounted $device with the discard option"
+  discardmounted=1
+else
+  echo "you did NOT mount $device with the discard option, no worries we'll try with fstrim too (ie. 2 tests)"
+  unset discardmounted
+fi
+#---
+
+#---
+start_other_msgs
+#XXX: can keep using sudo because it logs the executed commands to dmesg!
+#FIXME: XXX: so dumpe2fs only works for ext2/ext3/ext4 but not for btrfs!
+sudo dumpe2fs "$device" | grep -i "^Default mount options: .*discard"
+ec="$?"
+start_our_msgs
+
+if test "$ec" -eq 0 ; then
+  tune2fsdiscard=1
+  echo "You have discard as default mount option(tune2fs not fstab) which won't show up in mount, even though would be active"
+else
+  #FIXME: or it's btrfs filesystem...
+  unset tune2fsdiscard
+  echo "you don't have discard as default mount option(via tune2fs, not fstab), but this doesn't really matter. (or your filesystem is btrfs and we're thus assuming you don't have discard set because it's not possible for btrfs, unless you're using fstab to set it, not a tune2fs-similar)"
+fi
+#---
+
+#---
+start_other_msgs
+#determine block size first (something like 4096)                               
+#FIXED: this only works for ext4/3/2 filesystems, not btrfs! ok replaced with: blockdev --getbsz
+#blocksize=`sudo dumpe2fs "$device" | grep 'Block size'|cut -d ':' -f 2| tr -d ' '`
+blocksize=`sudo blockdev --getbsz "$device"`
+#awk '{ print $3 }'`
+#blocksize='12moo3'
+start_our_msgs
+
+anumber='^[0-9]+$' #TODO: rename to, a_positive_integer
+if test -z "$blocksize" || ! egrep -E -q -- "$anumber" <<< "$blocksize" ; then
+  echo "something's wrong and blocksize isn't a number = '$blocksize'"
+  exit 3
+fi
+#---
+
+
+#---
+function testnow()
+{
+  #-
+  start_our_msgs
+  echo "Creating '$trimtestfile'"
+  #echo -n "$pattern" | dd iflag=fullblock bs="$blocksize" count=1 of="$trimtestfile"
+  start_other_msgs
+  yes "$pattern" | dd iflag=fullblock bs="$blocksize" count=1 of="$trimtestfile"
+  ec="$?"
+  start_our_msgs
+  if test "$ec" -ne 0 ; then
+    echo "dd failed! do we have permission to create file in dir: '`dirname $trimtestfile`' ?"
+    exit 14
+  fi
+
+  syncing
+  #-
+
+  #-
+  start_other_msgs
+  startblock=`filefrag -s -v $trimtestfile | cut -d ':' -f3 | cut -d '.' -f 3 | tail -n2 | tr -d '\n' | tr -d ' '`
+  #startblock='12moo3'
+  start_our_msgs
+
+  anumber='^[0-9]+$' #TODO: coalesce and make it readonly
+  if test -z "$startblock" || ! egrep -E -q -- "$anumber" <<< "$startblock" ; then
+    echo "something's wrong and startblock isn't a number = '$startblock'"
+    exit 2
+  fi
+  #-
+
+  #-
+  echo "$trimtestfile $device $blocksize $startblock"
+  #-
+
+  #-
+  dropcache
+  #-
+
+  #-
+  readlocation
+  before="$wehave"
+  #paranoid, this doesn't seem to be able to catch anything really (like what, RAM errors?)
+  readlocation
+  before2="$wehave"
+  if [ "$before" != "$before2" ]; then
+    echo "Something's wrong while reading contents of file. The commands don't return same output"
+    exit 15
+  fi
+  #-
+
+  #-
+  start_other_msgs
+  #echo "$wehave"|grep -v "$pattern" 
+  echo "$wehave"|grep -- "$pattern" 
+  ec=$?
+  start_our_msgs
+  if test "$ec" -ne 0 ; then
+    echo "exit code was unexpected: $ec"
+    echo "something went wrong, maybe you used a new pattern than existed in file?"
+    echo "Actually this is what happens if filesystem is btrfs! filefrag returns wrong physical_offset! which is the same as logical_offset! So can't trimtest on btrfs, for now! FIXME: this only works on ext4(tested) and ext2/3, not btrfs!"
+    echo "see file contents: cat $trimtestfile"
+    exit 6
+  fi
+  #-
+
+
+  #echo "$wehave" >/tmp/trim.contents.before
+
+
+
+  #-
+  echo rm "$trimtestfile"
+  start_other_msgs
+  rm "$trimtestfile"
+  ec="$?"
+  start_our_msgs
+  if test "$ec" -ne 0 ; then
+    echo "removing file failed for some reason"
+    exit 9
+  fi
+  #-
+
+  #-
+  syncing
+
+  dropcache
+  #-
+
+  #-
+  if test -n "$tryfstrim" ; then
+    echo "Using fstrim on device $device"
+    start_other_msgs
+    sudo fstrim -v -- "$mountpoint"
+    ec="$?"
+    start_our_msgs
+    if test "$ec" -ne 0 ; then
+      echo "fstrim failed for some reason"
+      unset usedfstrim
+      #      exit 10
+    else
+      echo "fstrim success"
+      usedfstrim=1
+    fi
+  else
+    echo "NOT using fstrim, yet"
+  fi
+  #-
+
+  #-
+  syncing
+
+  dropcache
+  #-
+
+  #-
+  readlocation
+  after="$wehave"
+
+  #echo "$wehave" >/tmp/trim.contents.after
+  #echo "$before"
+  #echo "$after"
+  #-
+
+
+  compare
+  #returns 0 in $ec (exitcode) contents are the same ie. TRIM/discard had no effect
+}
+
+#-
+testnow
+if test "$ec" -eq 0 -a  -z "$tryfstrim" ; then
+  tryfstrim=1
+  echo "that didn't work, trying with fstrim!"
+  testnow
+  #do not add any more commands here, they might overwrite $ec
+fi
+#-
+
+if test "$ec" -eq 0 ; then
+  red_msg
+  echo "no changes detected in location, which means TRIM isn't working"
+  start_our_msgs
+  if test -n "$discardmounted"; then
+    echo "even though you mounted your device with discard"
+    if test -n "$usedfstrim" ; then
+      echo "and we used fstrim"
+    else
+      echo "fstrim wasn't used at all"
+    fi
+  else
+    if test -n "$usedfstrim" ; then
+      echo "you didn't use discard but also fstrim isn't working even though we tried it"
+    else
+      echo "makes sense because you didn't mount your device with discard and we didn't use fstrim"
+    fi
+  fi
+
+else
+  great_msg
+  echo "confirmed changes detected, whichs means TRIM is working"
+  start_our_msgs
+  if test -n "$discardmounted" ; then
+    echo "this makes sense because your device is mounted with discard"
+    if test -n "$usedfstrim" ; then
+      echo "also we used fstrim"
+    else
+      echo "we didn't have to use fstrim"
+    fi
+  else
+    if test -n "$usedfstrim" ; then
+      echo "we used fstrim, (apparently you didn't have discard mount option)"
+    else
+      #FIXME: these messages don't include $tune2fsdiscard
+      #NOTE: there can be the case that you just set discard with tune2fs (tune2fs -o discard -- "$device") but since it was already mounted and you didn't remount it, then it had no effect
+      echo "THIS DOESN'T MAKE SENSE(unless tune2fs discard option was set!) because your device wasn't mounted with discard and we didn't use fstrim"
+      echo "something fishy is going on!"
+      exit 8
+    fi
+  fi
+fi
+
+
+if test -n "$tune2fsdiscard" ; then
+  echo "had tune2fs discard mount option set"
+else
+  echo "did not have tune2fs discard mount option set"
+fi
+
