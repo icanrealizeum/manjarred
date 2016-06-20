@@ -1,0 +1,5 @@
+#auto eject/remove (usb disconnect) the internal webcam
+#Fn+Esc can reconnect it but it disconnects again, due to this:
+ACTION=="add", SUBSYSTEMS=="usb", ATTRS{idVendor}=="5986", ATTRS{idProduct}=="0364", ATTR{remove}="1"
+# thanks to <grawity> on #archlinux freenode irc
+

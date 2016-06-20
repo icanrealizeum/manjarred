@@ -1167,4 +1167,12 @@
 - see if firewall is off when cable is disconnected, or it was off after restart!
   \ oh wait, it's the new kernel, firewall didn't start at all!
 
+* NMI?
+  \ [    0.202020] NMI watchdog: enabled on all CPUs, permanently consumes one hw-PMU counter.
+  \ tlp doesn't disable this(or at least dmesg doesn't say it did) even with NMI_WATCHDOG=0
+  * disable this in nconfig?
+
+* get rid of LVM
+  * remove leftover LUKS partitions first!
+
 

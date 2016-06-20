@@ -146,11 +146,20 @@
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
     - apparently something set ENABLED=yes in /etc/ufw/ufw.conf but wasn't the systemctl! or the UI(?!)
       \ needed a reboot after upgrading packages!!! - works now!
+    * sudo vim /etc/ufw/ufw.conf
+      \ change to:
+      \ ENABLED=yes
+      \ FIXME: something is setting this to 'no' after reboot! it's because I was missing some kernel modules! (like ip_tables and iptable_filter)
+    * sudo vim /etc/default/ufw
+      \ change:
+      \ IPT_MODULES="nf_conntrack_ftp nf_nat_ftp nf_conntrack_netbios_ns"
+      \ to:
+      \ IPT_MODULES=""
     * set rules from X! (search for Firewall from Start menu)
       * UDP 53 out for 8.8.8.8 8.8.4.4
       * 80 and 443 tcp out
       * 46802 tcp OUT
-      - 21 tcp out
+      - 21 tcp out #should add nf_nat_ftp module in IPT_MODULES if using this!
   - there is video in firefox but not in chromium
     \ nevermind, it was uMatrix!
   * disable ntpd, use updclock instead (this will make sure the clock is up to date by also sync-ing it to the hardware!)
@@ -178,14 +187,14 @@
         \ verify with: ps axuw|grep -i crond
         \ has -s done!
         \ btw, crond was already running! (aka this service!)
-    * add Firewall rule #TODO
+    * add Firewall rule
       \ Advanced,
       \ From Port: 123
       \ To Port: 123
       \ Protocol: UDP
       \ Log: Log
       \ Allow OUT, all interfaces
-  * install iotop and evince(for pdf viewing from recoll's search result links) #TODO
+  * install iotop and evince(for pdf viewing from recoll's search result links)
   - install recoll
     \ from Add/Remove Programs
     \ poppler is already installed(for pdf indexing)
@@ -201,7 +210,7 @@
   * open Window Manager (from Start, search for it)
     * switch theme from Vertex-Maia to Alternate (to can see the top right buttons: minimize, maximize etc.)
   * install qTox (because uTox is too bugged!)
-    * untick General->Connection Settings->Enable IPv6 #TODO onwards for qTox only, rest are done!
+    * untick General->Connection Settings->Enable IPv6
       \ click Reconnect!
     * in Firewall, Add Rule in Simple mode
       \ Name: qTox
@@ -242,11 +251,15 @@
   * update ssh client
     * sudo vim /etc/ssh/ssh_config
       \ add those uhm... options you know
+  * set up tlp
+  * set up tmpfiles.d radeon thermal
+  * set up udev/rules.d/
 
 
 
 * TODO/DONE:
-  * see #TODO
+  * uninstall ufw! (not working with my custom kernel - much headache, I'd rather do it manually then)
+  - see #TODO
   - explicitly mount /tmp as tmpfs with the size= parameter!!
     \ see how to do this by looking in gentooskyline
   - fail2ban
