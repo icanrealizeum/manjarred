@@ -1,0 +1,47 @@
+# Maintainer: graysky <graysky AT archlinux DOT us>
+
+pkgname='profile-sync-daemon-git'
+_pkgname='profile-sync-daemon'
+pkgver=r625.54c6a5b
+pkgrel=1
+pkgdesc='Syncs browser profiles to tmpfs. Unstable git version!'
+arch=('any')
+url='https://github.com/graysky2/profile-sync-daemon/tree/master'
+license=('MIT')
+depends=('procps-ng' 'rsync' 'systemd')
+makedepends=('git')
+conflicts=('firefox-sync' 'goanysync' 'go-anysync-git' 'iceweasel-sync'
+'tmpfs-store' 'tmpfs-sync' 'user-profile-sync-daemon' 'profile-sync-daemon')
+provides=('profile-sync-daemon')
+_branch='master'
+#_branch='unstable'
+install=psd.install
+source=("git+https://github.com/graysky2/profile-sync-daemon#branch=$_branch"
+$install
+)
+#backup=('etc/psd.conf')#not used in v6+
+sha512sums=('SKIP'
+            '542bd0b527136a8ad90f890750699d05c18656669b4218800d075fef4a61b86f15f5d978f93f043b53983640f4d5d9fbb587310002114a451789b23b74586389')
+
+pkgver() {
+	cd "$srcdir/$_pkgname"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+	#echo $(git describe --long | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g').$_branch
+}
+
+prepare() {
+	cd "$srcdir/$_pkgname"
+	# set version of psd to match pkgver
+	sed -i "s/@VERSION@/$pkgver/" "$srcdir/$_pkgname/common/profile-sync-daemon.in"
+}
+
+build() {
+	cd "$_pkgname"
+	make
+}
+
+package() {
+	cd "$_pkgname"
+	make DESTDIR="$pkgdir" install
+	install -Dm644 MIT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
