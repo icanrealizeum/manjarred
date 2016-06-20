@@ -1,0 +1,22 @@
+#!/bin/bash
+lefil="mc-git_debug_the_subshell_flush_issue.patch"
+cat >"$lefil" <<EOF
+this patch is to debug and fix an issue in mc (midnight commander)
+whereby sometimes the subshell output was truncated and if small enough
+completely unshown.
+The fix handles the case when the order of two different inputs
+(shell output and the pwd from PROMPT_COMMAND) don't arrive in that order.
+This happens sometimes and this is why the truncation happened.
+Also note that shell being STOP-ped can also happen in any order with the above two.
+Patch by EmanueL Czirai.
+
+reported issue: https://github.com/MidnightCommander/mc/issues/44#issuecomment-60467020
+
+EOF
+
+( pushd . >/dev/null 2>&1 
+cd "/home/emacs/build/mc-git/makepkg/mc-git/src/mc/src/" >/dev/null 2>&1 
+git diff -w subshell.c 
+popd >/dev/null 2>&1 ) >>"$lefil"
+cp -f "/home/emacs/build/mc-git/makepkg/mc-git/src/mc/src/subshell.c" .
+
