@@ -326,12 +326,32 @@
         * Default Icons, list - scroll down
           * enable 'Removable Devices'
   * get mc-git with my patch to avoid shell output getting truncated
+  * install strace
+  * restore blacklisted modules from old OS
+
 
 
 * TODO/DONE:
+  * find out if led_class kernel module is actually needed!
+    * look into kernel sources or Kconfig files!
+  * maybe get rid of NetworkManager completely?
+    * see how to manually set up network!
+  * remove pamac
+    \ will pacman -Syu manually
+    \ because this starts every time I connect cable: /etc/NetworkManager/dispatcher.d/99_update_pamac_tray
+  * see why I can't Shift+PgUp in fb mode
+    \ there are no lsmod|grep fb
+  * find a way to get systemd's console text into a log file and see what's that yellow UNSUPP
+  * replace ntpd with crony(?)
+    * see how to use crony on arch wiki!
+    * remove ntpd
+      \ and thus ntpd.service is gone, so we don't have to worry about this starting: /etc/NetworkManager/dispatcher.d/10-ntpd
+    * update script: ~/bin/updclock
   * get rid of this vlc msg
     \ Failed to open VDPAU backend libvdpau_r600.so: cannot open shared object file: No such file or directory
   * get vsync to work, get gentoo's xorg.conf into manjaro
+    - get vsync to work
+    * make xorg.conf better! not into multiple files which apparently cannot override the settings properly!
   * /etc/inittab
   * /etc/inputrc
   * overlayfs for psd
