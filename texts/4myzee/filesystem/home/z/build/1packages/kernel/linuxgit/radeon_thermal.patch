@@ -1,0 +1,44 @@
+allow switching to 'thermal' (which for me is 75Mhz less than 'battery')
+
+echo 'thermal' > /sys/class/drm/card0/device/power_dpm_state
+
+thermal:
+uvd    vclk: 0 dclk: 0
+power level 0    sclk: 20000 vddc: 888
+
+# cat /sys/class/drm/card0/device/power_dpm_state
+thermal
+
+echo 'battery' > /sys/class/drm/card0/device/power_dpm_state
+
+battery:
+uvd    vclk: 0 dclk: 0
+power level 0    sclk: 27587 vddc: 888
+
+# cat /sys/class/drm/card0/device/power_dpm_state
+battery
+
+
+diff -pruN -X /home/emacs/build/3/packages-core/linux316/makepkg/linux316/src/linux-3.16-rc7/Documentation/dontdiff linux-3.16-rc7.orig/drivers/gpu/drm/radeon/radeon_pm.c linux-3.16-rc7/drivers/gpu/drm/radeon/radeon_pm.c
+--- linux-3.16-rc7.orig/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 22:09:20.000000000 +0200
++++ linux-3.16-rc7/drivers/gpu/drm/radeon/radeon_pm.c	2014-07-28 23:12:12.881405653 +0200
+@@ -466,7 +466,9 @@ static ssize_t radeon_get_dpm_state(stru
+ 
+ 	return snprintf(buf, PAGE_SIZE, "%s\n",
+ 			(pm == POWER_STATE_TYPE_BATTERY) ? "battery" :
+-			(pm == POWER_STATE_TYPE_BALANCED) ? "balanced" : "performance");
++			(pm == POWER_STATE_TYPE_BALANCED) ? "balanced" :
++			(pm == POWER_STATE_TYPE_PERFORMANCE) ? "performance" :
++			(pm == POWER_STATE_TYPE_INTERNAL_THERMAL) ? "thermal" : "unknown" );
+ }
+ 
+ static ssize_t radeon_set_dpm_state(struct device *dev,
+@@ -489,6 +491,8 @@ static ssize_t radeon_set_dpm_state(stru
+ 		rdev->pm.dpm.user_state = POWER_STATE_TYPE_BALANCED;
+ 	else if (strncmp("performance", buf, strlen("performance")) == 0)
+ 		rdev->pm.dpm.user_state = POWER_STATE_TYPE_PERFORMANCE;
++	else if (strncmp("thermal", buf, strlen("thermal")) == 0)
++		rdev->pm.dpm.user_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+ 	else {
+ 		mutex_unlock(&rdev->pm.mutex);
+ 		count = -EINVAL;

@@ -1,0 +1,20 @@
+on T400, current T400 config:
+real	97m42.538s
+user	142m25.679s
+sys	30m54.410s
+
+on T400, current Z575 config:
+real	25m5.394s
+user	35m23.980s
+sys	7m29.527s
+
+
+nevermind the below, because it seems to be working with PAT on gentoo thus far!
+
+-------
+OK DON'T SET PAT !!!! because radeon is giving blackscreens of lockup on startup, right at luks password when it's changing mode, unless radeon.modeset=0 at kernel cmdline  in which case you remain in vga textonly mode and startx aka X won't start! also sysrq won't work! (or numlock, obviously)
+sometimes it works, sometimes it locks up; last time I couldn't boot at all - it would always lock up on blackscreen!! so, go away!
+---no:
+DON'T!!!Note: enabling CONFIG_MTRR and its child option CONFIG_X86_PAT as instructed by drivers/gpu/drm/radeon/radeon_object.c:236:2: warning: #warning Please enable CONFIG_MTRR and CONFIG_X86_PAT for better performance thanks to write-combining [-Wcpp]
+
+
