@@ -286,6 +286,45 @@
     \ needed to compile cargo
   * install pacman-git, dkms, linuxgit, profile-sync-daemon-git
     \ from my repo
+  * update ~/.config/keepassx/*.ini
+  * update .config/xfce4/terminal/terminalrc
+    \ xfce4-terminal settings!
+  * uninstall thunderbird
+  * manually sync settings via diff, in .config/xfce4/xfconf/xfce-perchannel-xml
+    * Start->Keyboard
+      * Behavior tab
+        * Repeat speed:
+          \ change from 20 to 30
+      * Layout tab
+        * Change Layout Option
+          \ Alt+Shift
+      * Application Shortcuts tab
+        \ yes the middle one
+        * Add
+          \ xfce4-popup-applicationsmenu
+          \ Alt+F1
+          \ FIXME: Bug, when editing an already existing one, you're being asked for the key press again, and you can't reuse it! so dumb
+        * Edit the Ctrl+Alt+Del one to Ctrl+Alt+L
+        * Add Print key
+          \ xfce4-screenshooter --fullscreen --mouse
+          \ with startup notification
+        * Add Shift+Print key
+          \ xfce4-screenshooter --window --mouse
+          \ with startup notification
+    * Start->Mouse and touchpad
+      * Right Handed, Accel 5.0
+        \ defaults
+      * Touchpad tab
+        * tap touchpad to click
+        * Edge scrolling
+      * Theme tab
+        * Maia
+          \ default
+    * RMB on desktop, Desktop Settings
+      * Icons tab
+        * enable 'Show hidden files on the desktop'
+        * Default Icons, list - scroll down
+          * enable 'Removable Devices'
 
 
 
