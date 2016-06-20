@@ -761,3 +761,8 @@
   \ src: http://heraly.be/wiki/doku.php?id=raspberry:formatusb
 
 
+* powertop needs CONFIG_AUDIT apparently, but doesn't complain! or else cannot see % CPU states usage, and % other devices use.
+  \ but the bad part is that systemd will try to use it(AUDIT) and spam audit messages on due to chromium opening tabs
+
+
+

@@ -331,7 +331,13 @@
 
 
 
+* Note:
+  * powertop needs CONFIG_AUDIT apparently, but doesn't complain! or else cannot see % CPU states usage, and % other devices use.
 * TODO/DONE:
+  * get rid of this in dmesg:  i8042: ------------------------4294849049
+    \ in my kernel patches
+  * set up ~/.xinitrc
+  - remove light-locker due to crashing (coredumps in libdbus-1.so.3) when manually startx-ing
   - get rid of the audit: dmesg lines from chromium!
     * CONFIG_AUDIT in kernel seems to be needed only for consolekit(in gentoo) ?
       * removed and recompiled kernel!
