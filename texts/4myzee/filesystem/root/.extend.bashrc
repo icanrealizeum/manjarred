@@ -1,0 +1,1 @@
+/home/z/.extend.bashrc

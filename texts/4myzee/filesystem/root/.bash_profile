@@ -1,0 +1,1 @@
+/home/z/.bash_profile
