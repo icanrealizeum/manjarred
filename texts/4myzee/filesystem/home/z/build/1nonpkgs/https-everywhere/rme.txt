@@ -1,0 +1,19 @@
+----
+in Manjaro(Arch linux):
+required for ./go
+
+sudo pacman -S python2-lxml
+
+----
+for running
+bash test.sh
+you'll need(in gentoo):
+
+time emerge -nav dev-python/selenium lxml pycurl regex dev-util/bsdiff dev-python/python-levenshtein
+
+
+well, bash test.sh won't work because it needs chromium and something like
+firefox addon sdk(?) which I don't have (and git submodule update won't do
+anything)
+
+

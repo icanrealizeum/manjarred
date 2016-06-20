@@ -1,0 +1,8 @@
+if you want to find a certain llvm svn revision number,
+cd /usr/portage/distfiles/git3-src/llvm.git
+git log
+search there for the revision number, it would look like
+
+    git-svn-id: https://llvm.org/svn/llvm-project/llvm/trunk@247309 91177308-0d34-0410-b5e6-96231b3b80d8
+
+in the commit description, and that is the commit for that svn revision number

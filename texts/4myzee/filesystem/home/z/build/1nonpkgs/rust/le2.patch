@@ -1,0 +1,12 @@
+diff --git a/src/librustdoc/markdown.rs b/src/librustdoc/markdown.rs
+index d21726d..0704407 100644
+--- a/src/librustdoc/markdown.rs
++++ b/src/librustdoc/markdown.rs
+@@ -64,6 +64,7 @@ pub fn render(input: &str, mut output: PathBuf, matches: &getopts::Matches,
+         markdown::PLAYGROUND_KRATE.with(|s| { *s.borrow_mut() = Some(None); });
+     }
+     let playground = playground.unwrap_or("".to_string());
++    println!("playground='{}'", &playground);
+ 
+     let mut out = match File::create(&output) {
+         Err(e) => {

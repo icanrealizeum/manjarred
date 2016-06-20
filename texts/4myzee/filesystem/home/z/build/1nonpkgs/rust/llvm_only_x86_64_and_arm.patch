@@ -1,0 +1,76 @@
+diff --git a/configure b/configure
+index 60d3661..7cf274e 100755
+--- a/configure
++++ b/configure
+@@ -1332,7 +1367,8 @@ if [ -z "$CFG_ENABLE_RUSTBUILD" ]; then
+       make_dir $t/rt/compiler-rt
+       for i in                                          \
+         isaac sync test \
+-        arch/i386 arch/x86_64 arch/arm arch/aarch64 arch/mips arch/powerpc
++        arch/x86_64 arch/arm
++        #arch/i386 arch/x86_64 arch/arm arch/aarch64 arch/mips arch/powerpc
+       do
+         make_dir $t/rt/stage$s/$i
+       done
+@@ -1551,7 +1586,8 @@ do
+ 
+         msg "configuring LLVM for $gnu_t"
+ 
+-        LLVM_TARGETS="--enable-targets=x86,x86_64,arm,aarch64,mips,powerpc"
++        #LLVM_TARGETS="--enable-targets=x86,x86_64,arm,aarch64,mips,powerpc"
++        LLVM_TARGETS="--enable-targets=x86_64 arm"
+         LLVM_BUILD="--build=$gnu_t"
+         LLVM_HOST="--host=$gnu_t"
+         LLVM_TARGET="--target=$gnu_t"
+diff --git a/mk/llvm.mk b/mk/llvm.mk
+index 1cbf4a9..f8d5387 100644
+--- a/mk/llvm.mk
++++ b/mk/llvm.mk
+@@ -46,11 +46,11 @@ else
+ 
+ $$(LLVM_CONFIG_$(1)): $$(LLVM_DEPS) $$(LLVM_STAMP_$(1))
+ 	@$$(call E, make: llvm)
+-	$$(Q)$$(MAKE) -C $$(CFG_LLVM_BUILD_DIR_$(1)) $$(CFG_LLVM_BUILD_ENV_$(1)) ONLY_TOOLS="$$(LLVM_TOOLS)"
++	$$(Q)$$(MAKE) -j8 -C $$(CFG_LLVM_BUILD_DIR_$(1)) $$(CFG_LLVM_BUILD_ENV_$(1)) ONLY_TOOLS="$$(LLVM_TOOLS)"
+ 	$$(Q)touch $$(LLVM_CONFIG_$(1))
+ 
+ clean-llvm$(1):
+-	$$(Q)$$(MAKE) -C $$(CFG_LLVM_BUILD_DIR_$(1)) clean
++	$$(Q)$$(MAKE) -j8 -C $$(CFG_LLVM_BUILD_DIR_$(1)) clean
+ 
+ endif
+ 
+diff --git a/mk/main.mk b/mk/main.mk
+index f2ff4f1..1b7a064 100644
+--- a/mk/main.mk
++++ b/mk/main.mk
+@@ -276,7 +276,7 @@ endif
+ # LLVM macros
+ ######################################################################
+ 
+-LLVM_OPTIONAL_COMPONENTS=x86 arm aarch64 mips powerpc pnacl
++LLVM_OPTIONAL_COMPONENTS=x86 arm
+ LLVM_REQUIRED_COMPONENTS=ipo bitreader bitwriter linker asmparser mcjit \
+                 interpreter instrumentation
+ 
+diff --git a/src/librustc_llvm/lib.rs b/src/librustc_llvm/lib.rs
+index c1b909b..acee5cb 100644
+--- a/src/librustc_llvm/lib.rs
++++ b/src/librustc_llvm/lib.rs
+@@ -2339,7 +2339,7 @@ pub fn initialize_available_targets() {
+                  LLVMInitializeARMTargetMC,
+                  LLVMInitializeARMAsmPrinter,
+                  LLVMInitializeARMAsmParser);
+-    init_target!(llvm_component = "aarch64",
++/*    init_target!(llvm_component = "aarch64",
+                  LLVMInitializeAArch64TargetInfo,
+                  LLVMInitializeAArch64Target,
+                  LLVMInitializeAArch64TargetMC,
+@@ -2361,6 +2361,7 @@ pub fn initialize_available_targets() {
+                  LLVMInitializePNaClTargetInfo,
+                  LLVMInitializePNaClTarget,
+                  LLVMInitializePNaClTargetMC);
++                 */
+ }
+ 
+ pub fn last_error() -> Option<String> {

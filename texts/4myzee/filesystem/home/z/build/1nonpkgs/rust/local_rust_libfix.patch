@@ -1,0 +1,53 @@
+diff --git a/configure b/configure
+index 60d3661..fb80af3 100755
+--- a/configure
++++ b/configure
+@@ -845,11 +845,46 @@ then
+         err "no local rust to use"
+     fi
+ 
++    #FIXed assumption that local rust's libs are always in PATH (or whatever the PATH for libs is when using ldconfig) - we're now setting LD_LIBRARY_PATH to avoid: /tmp/1/x86_64-unknown-linux-gnu//bin/rustc: error while loading shared libraries: librustc_driver-bb943c5a.so: cannot open shared object file: No such file or directory
++#    extra=''
++    step_msg "!! LD_LIBRARY_PATH before messing with it: '$LD_LIBRARY_PATH'"
++    former_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
++    if test ! -d "${CFG_LOCAL_RUST_ROOT}/lib"; then
++      #TODO: should have a configure arg to set path to rust's lib here(or default to the above value), to can use gentoo's installed rust for example; without failing to find std crate.(or was that for a different reason?)
++      warn "Directory '${CFG_LOCAL_RUST_ROOT}/lib' does not exist, your local rust may not work. See if it fails below:"
++    else
++      if test -n "$former_LD_LIBRARY_PATH"; then
++        LD_LIBRARY_PATH="${former_LD_LIBRARY_PATH}:"
++      else
++        LD_LIBRARY_PATH=""
++      fi
++      LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${CFG_LOCAL_RUST_ROOT}/lib"
++#      extra="LD_LIBRARY_PATH=\"${:+${LD_LIBRARY_PATH}:}${CFG_LOCAL_RUST_ROOT}/lib\""
++    fi
++#    if test -d "${CFG_LOCAL_RUST_ROOT}/lib"; then #TODO: should have a configure arg to set rust's lib here, to can use gentoo's installed rust for example; without failing to find std crate.(or was that for a different reason?)
++#      extra="env - LD_LIBRARY_PATH=\"${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}${CFG_LOCAL_RUST_ROOT}/lib\""
++#      LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}${CFG_LOCAL_RUST_ROOT}/lib"
++      #^ prepend value and a ":", if already set, or prepend nothing!
++#    fi
++#    CMD="export $extra ; ${CFG_LOCAL_RUST_ROOT}/bin/rustc${BIN_SUF}"
+     CMD="${CFG_LOCAL_RUST_ROOT}/bin/rustc${BIN_SUF}"
++    export LD_LIBRARY_PATH
++    step_msg "!! set LD_LIBRARY_PATH for rust: '$LD_LIBRARY_PATH'"
+     LRV=`$CMD --version`
+-    if [ $? -ne 0 ]
++    ec=$?
++    export -n LD_LIBRARY_PATH
++    unset LD_LIBRARY_PATH
++    if test -n "$former_LD_LIBRARY_PATH" ; then
++      export LD_LIBRARY_PATH="$former_LD_LIBRARY_PATH"
++    fi
++    #FIXME: we're actually assuming that LD_LIBRARY_PATH was exported, if it was set; so we're re-exporting it when restoring it. This is wrong. But this doesn't bleed back to parent though, but it will to children; so this is bad only if we set LD_LIBRARY_PATH manually in this (configure)script instead of the caller setting it when it called ./configure
++
++#    LRV=`( $CMD --version )`
++#    LRV=`eval $extra $CMD --version`
++    step_msg "!! LD_LIBRARY_PATH restored: '$LD_LIBRARY_PATH'"
++    if [ $ec -ne 0 ]
+     then
+-        step_msg "failure while running $CMD --version"
++        step_msg "failure while running '${CMD} --version' with exitcode:$ec"
+         exit 1
+     fi
+     step_msg "using rustc at: ${CFG_LOCAL_RUST_ROOT} with version: $LRV"

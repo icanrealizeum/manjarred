@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pushd rust
+#//Run only ignored (broken) tests: 
+unset TIME_PASSES
+time make -j1 check CHECK_IGNORED=1 NO_REBUILD=1 TIME_LLVM_PASSES=1
+
+#more info: https://github.com/rust-lang/rust/wiki/Note-testsuite
+
+popd
+

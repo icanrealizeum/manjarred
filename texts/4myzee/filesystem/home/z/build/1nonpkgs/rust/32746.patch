@@ -1,0 +1,18 @@
+Relevant PR: https://github.com/rust-lang/rust/pull/14700/files#diff-3f13e5874e2b666556367d0f173cc0f7R88
+
+diff --git a/src/librustdoc/lib.rs b/src/librustdoc/lib.rs
+index 9953fd4..51f8be1 100644
+--- a/src/librustdoc/lib.rs
++++ b/src/librustdoc/lib.rs
+@@ -188,7 +188,10 @@ pub fn opts() -> Vec<RustcOptGroup> {
+                          Markdown file or generated documentation",
+                         "FILES")),
+         stable(optopt("", "markdown-playground-url",
+-                      "URL to send code snippets to", "URL")),
++               "URL to send code snippets to. \
++                In effect only when <input> file has .md or .markdown extension! \
++                For .rs files(eg. via `cargo doc`) use an inner attribute: \
++                #![doc(html_playground_url = \"https://play.rust-lang.org/\")]", "URL")),
+         stable(optflag("", "markdown-no-toc", "don't include table of contents")),
+         unstable(optopt("e", "extend-css",
+                         "to redefine some css rules with a given file to generate doc with your \

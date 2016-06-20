@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pushd cargo
+time make -j4 VERBOSE=1
+popd
+
+#duration:
+#real 15m54.832s
+#user  18m3.947s
+#sys 1m0.013s
+

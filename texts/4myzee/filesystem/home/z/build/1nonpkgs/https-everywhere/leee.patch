@@ -1,0 +1,16 @@
+diff --git a/chromium/background.js b/chromium/background.js
+index 421d6dd..ce3fa80 100644
+--- a/chromium/background.js
++++ b/chromium/background.js
+@@ -268,7 +268,10 @@ function onBeforeRequest(details) {
+   if (httpNowhereOn) {
+     if (newuristr && newuristr.substring(0, 5) === "http:") {
+       // Abort early if we're about to redirect to HTTP in HTTP Nowhere mode
+-      return {cancel: true};
++//      return {cancel: true};
++      console.log("TRANSFORMredir: '"+newuristr+"' into: ");
++      newuristr = newuristr.slice(0,3) + "s" + newuristr.slice(3);
++      console.log("... '"+newuristr+"'");
+     }
+   }
+ 

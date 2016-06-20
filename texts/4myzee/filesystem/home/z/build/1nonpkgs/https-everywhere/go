@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#requirements:
+## time emerge -nav dev-python/lxml
+#$ git clone https://github.com/EFForg/https-everywhere.git
+#$cd https-everywhere && git submodule update --init ; cd ..
+#^ ok the above is not needed, because it's used below:
+
+set -ex
+
+pushd https-everywhere/
+git reset HEAD makexpi.sh
+git checkout makexpi.sh
+git checkout chromium/background.js
+git checkout master
+git pull
+git submodule update --init
+#git merge --no-commit HEAD makexpi_nofail_when_no_translations
+patch -Np1 -i ../cp.patch
+patch -Np1 -i ../leee.patch
+#^ not necessary if you do the submodule init above. https://github.com/EFForg/https-everywhere/pull/4168/files
+rm pkg/*.xpi || true
+./makexpi.sh
+./makecrx.sh
+echo "attempting autoinstall:"
+firefox pkg/https-everywhere-*-amo.xpi
+popd
+

@@ -1,0 +1,22 @@
+From 600bb08baf379208b388d11412d4f04089177596 Mon Sep 17 00:00:00 2001
+From: Emanuel Czirai <zazdxscf@gmail.com>
+Date: Thu, 1 Oct 2015 22:01:08 +0200
+Subject: [PATCH] fix makexpi.sh when no files in ./translations/
+
+makexpi.sh nolonger fails when there are no files in translations/
+directory
+
+diff --git a/makexpi.sh b/makexpi.sh
+index ef9a3ea..da81c16 100755
+--- a/makexpi.sh
++++ b/makexpi.sh
+@@ -101,7 +101,8 @@ fi
+ # Prepare packages suitable for uploading to EFF and AMO, respectively.
+ [ -d pkg ] || mkdir pkg
+ rsync -a --delete --delete-excluded --exclude /chrome/content/rules src/ pkg/xpi-eff
+-cp -a translations/* pkg/xpi-eff/chrome/locale/
++#don't fail this entire $0 script on non-zero exit code for cp below when no files inside translations/ folder!
++cp -a --no-target-directory -- translations/ pkg/xpi-eff/chrome/locale/
+ rsync -a --delete pkg/xpi-eff/ pkg/xpi-amo
+ # The AMO version of the package cannot contain the updateKey or updateURL tags.
+ # Also, it has a different id than the eff-hosted version, because Firefox now

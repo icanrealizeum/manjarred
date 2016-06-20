@@ -1,0 +1,109 @@
+#!/bin/bash
+
+pushd rust
+cores=4
+#cores=1 #use this until this error doesn't happen: /bin/sh: x86_64-unknown-linux-gnu/stage2/bin/rustdoc: No such file or directory  ONLY when using NO_REBUILD=1
+
+
+#export NO_REBUILD=1
+#export VERBOSE=1
+# * `NO_REBUILD=1` - Don't rebootstrap when testing std
+#                     (and possibly other crates)
+
+#time ( time make -j4 all VERBOSE=1 && time make check )
+#don't use -j${cores}
+#what=all
+what=
+set -x
+#time ( time make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 "RUSTFLAGS=--verbose -Z verbose -Z print-link-args -Z debug-llvm -Z          unstable-options -C llvm-args=\"-verify-debug-info -verify-dom-info -verify-loop-info -verify-regalloc -verify-region-info -verify-scev\"" && time make check )
+#time ( time LD_LIBRARY_PATH='/home/z/build/1nonpkgs/rust/tmp_stage0/x86_64-unknown-linux-gnu/lib' make -j${cores} -- $what NO_REBUILD=1 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS="--verbose -Z verbose -Z print-link-args" RUST_BACKTRACE=1 && time make check )
+#XXX: don't pass NO_REBUILD=1 with -j4 (or any -j other than -j1) or it will fail with rustdoc something; https://github.com/rust-lang/rust/issues/29271
+#/bin/sh: x86_64-unknown-linux-gnu/stage2/bin/rustdoc: No such file or directory
+#/home/z/build/1nonpkgs/rust/rust/mk/docs.mk:123: recipe for target 'doc/not_found.html' failed
+#make: *** [doc/not_found.html] Error 127
+#XXX: disabled RUST_BACKTRACE=1 due to some bug which delays rustc exit and uses CPU if rustc was built with debuginfo
+#XXX: disabled --verbose  AND -C debug-assertions=y  AND VERBOSE=1
+time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=0 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS=" -Z print-link-args -Z print-llvm-passes -C debug-assertions=n" && time make -j${cores} check VERBOSE=0 )
+# adding SHELL='$$SHELL -x' to make doesn't work:  make: $SHELL: Command not found
+#compiling rust took:
+#with --disable-debuginfo
+#real 133m51.633s
+#user  175m34.266s
+#sys 10m55.343s
+#done on: 2015/10/31 00:47:23
+
+#with --enable-debuginfo
+#real 157m37.555s
+#user  206m26.789s
+#sys 12m24.263s
+#done on: 2015/10/31 09:12:31
+#
+#real 160m11.659s
+#user  207m27.302s
+#sys 12m43.300s
+#done on: 2015/10/29 05:59:38
+#
+#real 142m40.702s
+#user  182m12.126s
+#sys 6m52.090s
+#next time:
+#real 145m21.377s
+#user  189m41.699s
+#sys 11m31.180s
+
+# make check took:
+#...
+
+#XXX: do not use: -Z verbose   or you get ICE in stage1 https://github.com/rust-lang/rust/issues/29239  but if you do get, you can just rerun make without it, to get past it, then you can re-enable and you're off the hook.
+#-C debug-assertions=y
+#-Ccodegen-units=${cores} #will core dump https://github.com/rust-lang/rust/issues/29270
+#-Z debug-llvm
+set +x
+#takes 9m35.569s from ./updcode until the issue https://github.com/rust-lang/rust/issues/28947
+#XXX: so -verify-each fails because it's passed to 'llc' instead of to 'opt' and llc for some reason doesn't have it! Actually, both llc and then opt need to be run, since llc generates a .bc file which is fed to opt.
+# fail: RUSTFLAGS="--verbose -C llvm-args=\"--emit llvm-bc -verify-each\""
+#time ( time make -j4 all && time make check )
+#echo "For vim support make sure you do this (if you have vim pathogen plugin) eg.:"
+#echo "you need to git clone rust.vim to get the vim goodies"
+#echo "cd /home/emacs/.vim/bundle/ && ln -s `pwd`/../rust.vim/"
+
+#these are old:
+#with -j1
+#tests:
+#real 28m36.582s
+#user  42m42.686s
+#sys 3m47.430s
+#both:
+#real  157m48.250s
+#user  168m28.132s
+#sys 6m54.670s
+
+#with -j4
+#fails and:
+#around 120min? forgot
+
+
+#without any -j
+#rust:
+#real  135m56.801s
+#user  131m41.536s
+#sys 3m42.140s
+#tests:
+#real  17m8.051s
+#user  31m47.666s
+#sys 4m13.833s
+#rust+tests:
+#real  153m4.853s
+#user  163m29.202s
+#sys 7m55.973s
+#
+#second try, tests:
+#real  24m43.892s
+#user  36m43.960s
+#sys 3m20.000s
+#second try, both:
+#real  176m30.756s
+#user  182m48.366s
+#sys 7m57.650s
+
+popd
