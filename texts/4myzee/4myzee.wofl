@@ -332,6 +332,10 @@
 
 
 * TODO/DONE:
+  - get rid of the audit: dmesg lines from chromium!
+    * CONFIG_AUDIT in kernel seems to be needed only for consolekit(in gentoo) ?
+      * removed and recompiled kernel!
+        \ looks like this was systemd (now starting with -AUDIT) tapping into the kernel audit! (especially since this didn't happen on gentoo, with openrc)
   * find out if led_class kernel module is actually needed!
     * look into kernel sources or Kconfig files!
   * maybe get rid of NetworkManager completely?
