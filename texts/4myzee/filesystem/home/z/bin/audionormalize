@@ -1,0 +1,38 @@
+#!/bin/bash
+
+if test ! -x "`which bc`"; then
+  echo "can't find 'bc' command"
+  exit 3
+fi
+
+infile="$1"
+
+if test -z "$infile"; then
+  echo "pass input file"
+  exit 1
+fi
+
+dBmax="`getmaxvolume "$infile"`"
+
+if test -z "$dBmax"; then
+  echo "failed"
+  exit 2
+fi
+
+
+pm="`echo "$dBmax / 1" | bc`"
+#eg. -6
+# also -0.5 (which is after normalization) or anything more than -1.0 is ignored(aka becomes pm=0)
+if test "${pm}0" -lt 0; then
+#if test "${dBmax}0" -lt 0; then #doesn't work because it's eg. -6.50  (so float!) line 17: test: -6.50: integer expression expected
+  positive="`echo "$dBmax * -1" | bc`"
+  set -x
+  ffmpeg -i "$infile" -af "volume=${positive}dB" "${infile}.mp3"
+  ec="$?"
+  set +x
+  exit "$ec"
+else
+  echo "already normalized or clipping, at $dBmax dB"
+fi
+
+
