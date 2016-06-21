@@ -27,6 +27,7 @@ if test "${pm}0" -lt 0; then
 #if test "${dBmax}0" -lt 0; then #doesn't work because it's eg. -6.50  (so float!) line 17: test: -6.50: integer expression expected
   positive="`echo "$dBmax * -1" | bc`"
   set -x
+  #src: https://superuser.com/questions/323119/how-can-i-normalize-audio-using-ffmpeg
   ffmpeg -i "$infile" -af "volume=${positive}dB" "${infile}.mp3"
   ec="$?"
   set +x
