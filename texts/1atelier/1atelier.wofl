@@ -295,6 +295,13 @@
     * pacman -S xsel
       \ to install xsel
   * decrease xfce4-terminal transparency from 0.70 to 0.90 !
+  * fix pulseaudio from listening on 0:0:0:0:4713
+    \ tcp        0      0 0.0.0.0:4713            0.0.0.0:*               LISTEN      923/pulseaudio
+    * comment out this line in file /etc/pulse/default.pa
+      \ load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+      \ src: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/#index1h2
+      \ it was commented in gentoo!
+  * uninstall pulseaudio-zeroconf
 
 
 * TODO/DONE:

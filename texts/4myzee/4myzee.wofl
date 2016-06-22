@@ -332,7 +332,7 @@
     * sudo pacman -S ttf-symbola
   * limits.conf
   * ntp.conf
-  - fix pulseaudio from listening on 0:0:0:0:4713
+  * fix pulseaudio from listening on 0:0:0:0:4713
     \ tcp        0      0 0.0.0.0:4713            0.0.0.0:*               LISTEN      923/pulseaudio
     * comment out this line in file /etc/pulse/default.pa
       \ load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
