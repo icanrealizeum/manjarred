@@ -8,11 +8,14 @@
 #
 # Set the following values to somewhat less than your actual download
 # and uplink speed. In kilobits
-echo "not running $0"
-exit 0
-DOWNLINK=30000
-UPLINK=20000
-DEV=p4p1
+
+#echo "not running $0"
+#exit 0
+
+DOWNLINK=10000
+UPLINK=700
+#DEV=p4p1
+DEV=enp1s0
 
 # clean existing down- and uplink qdiscs, hide errors
 tc qdisc del dev $DEV root    2> /dev/null > /dev/null
