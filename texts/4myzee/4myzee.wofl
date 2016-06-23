@@ -339,12 +339,18 @@
       \ src: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/#index1h2
       \ it was commented in gentoo!
   * uninstall pulseaudio-zeroconf
+  * modify /etc/host.conf
+    \ multi off
+    \ get the gentoo version for it has comments
+  * modify /etc/inputrc
+    \ get the gentoo version because it has descriptions!
 
 
 * Note:
   * powertop needs CONFIG_AUDIT apparently, but doesn't complain! or else cannot see % CPU states usage, and % other devices use.
 
 * TODO/DONE:
+  * find out how to get /etc/inittab from gentoo into Manjaro's systemd equivalent!
   * get rid of this in dmesg:  i8042: ------------------------4294849049
     \ in my kernel patches
   * set up ~/.xinitrc
