@@ -18,14 +18,17 @@ conflicts=('mc' 'mc-cvs' 'mc-fork-svn' 'mc-mp' 'mc-slavz' 'mc-suse')
 provides=('mc')
 changelog=CHANGELOG
 fixflushpatch="fix_the_sometimes_truncated_shell_output_in_mc.patch"
+cannotcreatepipestreams_patch='createstreams.patch'
 source=('git+https://github.com/MidnightCommander/mc'
 "$fixflushpatch"
+"$cannotcreatepipestreams_patch"
 )
 if [ -n "$DEBUG" ]; then
   options+=(!strip)
 fi
 sha512sums=('SKIP'
-            '20a73a8809758bd6b084c44fe37ee0b68f3116aea9105e96bf005a24bf1a9c2128edf133367cdbd7f3b5eec67a5765082ea2a8471379bb57cdf048db6bd6b4a9')
+            '20a73a8809758bd6b084c44fe37ee0b68f3116aea9105e96bf005a24bf1a9c2128edf133367cdbd7f3b5eec67a5765082ea2a8471379bb57cdf048db6bd6b4a9'
+            '627c80632cee4ac7ef2aca60e536c4c1e5dfde3cb983f3dcd2bf23466952ee021e1176f8d0bf10115d28732548ccca2ed269316bb236378102f40b2bf8dff7ca')
 
 pkgver() {
     cd mc
@@ -37,6 +40,7 @@ prepare() { #this is temporarily here, but should be in build() because of the g
     # http://git.yoctoproject.org/cgit.cgi/poky-contrib/commit/?h=dcui/mc&id=338da10abcd744ab75dfb184f8f81370727e5653
     sed -i 's/pkglibexec_SCRIPTS = $(SCRIPTS_OUT)/pkgdata_SCRIPTS = $(SCRIPTS_OUT)/g' contrib/Makefile.am
     patch -Np1 -i "../${fixflushpatch}"
+    patch -Np1 -i "../${cannotcreatepipestreams_patch}"
 }
 
 build() {

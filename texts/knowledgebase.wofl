@@ -774,4 +774,21 @@
     \ it was commented in gentoo!
 
 
+* in mc
+  * replace last type char with char 'l'
+    \ Alt+[, d, l
+    \ or repeat: Alt+[, d
+    \ that selects 1 char to the left, aka extends selection to the left, and your next keypress eg. 'l'  will replace the selection with it
+  * get keys stuck FIXME?
+    \ make sure you have F9,o,c,Alt+y (aka pause after run: always)
+    \ exec a command eg. ls
+    \ now you see: Press any key to continue...
+    \ press Up Arrow then Enter
+    \ now it's stuck a bit even if you keep pressing a key eg. s
+    \ or press Up Arrow then s key
+    \ it doesn't stuck all the time! which is odd!
+    \ in last case you have to press key s 19 times to return to UI
+    \ now it's 21 of s ...
+    \ seems that it's only 1 s then 2 s then 21 s, when u start a new xfce4-terminal then mc
+
 
