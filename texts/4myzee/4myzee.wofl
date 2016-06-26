@@ -290,6 +290,11 @@
   * update .config/xfce4/terminal/terminalrc
     \ xfce4-terminal settings!
   * uninstall thunderbird
+  * make touchpad work like in gentoo - aka well
+    * sudo pacman -S extra/xf86-input-synaptics
+      \ for LoadModule: "synaptics"
+      \ Loading /usr/lib64/xorg/modules/input/synaptics_drv.so
+    * yep that works, no extra settings required just restart X
   * manually sync settings via diff, in .config/xfce4/xfconf/xfce-perchannel-xml
     * Start->Keyboard
       * Behavior tab
