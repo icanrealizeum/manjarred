@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#$1 filename eg. Dream\ Theater\ -\ Illumination\ Theory\ \(Audio\)-fFMDGSWhHbo.m4a
+#$2 fromtime eg. 15:52
+#$3 totime eg. 3:53  (aka duration from fromtime)
+
+ffmpeg -ss "$2" -i "$1" -acodec copy -aq 1 -vcodec copy -to "$3" "cut.${1}"
+

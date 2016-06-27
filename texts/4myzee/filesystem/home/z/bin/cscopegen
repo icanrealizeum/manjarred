@@ -5,8 +5,8 @@ echo "WARNING: this uses enough memory(virt?) to cause OOM to kill virtualbox, s
 read -p -s "Press Enter to continue or C-c to cancel"
 
 #can't using multiple -s params :/
-#kernelmode='-k' # -I"/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"'
-kernelfolder="/home/zazdxscf/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"
+#kernelmode='-k' # -I"/home/z/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"'
+kernelfolder="/home/z/build/kernel/linuxgit/makepkg/linux-git/src/linux-git/"
 #kernelmode=""
 
 echo "regen cscope database"
@@ -20,7 +20,7 @@ else
   kerneltoo=1
 fi
 
-destdir="/home/zazdxscf/cscope" #actually a symlink:
+destdir="/home/z/cscope" #actually a symlink:
 if [ ! -L "$destdir" ]; then
   echo "fail"
   exit 2

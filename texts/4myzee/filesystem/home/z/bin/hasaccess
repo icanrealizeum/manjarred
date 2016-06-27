@@ -191,11 +191,11 @@ is_user_in_group abc def
 is_user_in_group abc def ghi
 #echo $?
 
-is_user_in_group "zazdxscf" "users" 1>/dev/null
+is_user_in_group "$USER" "users" 1>/dev/null
 if test "$?" -eq "1" ; then
   echo "YES!"
 fi
-if ! is_user_in_group "zazdxscf" "users" 1>/dev/null; then
+if ! is_user_in_group "$USER" "users" 1>/dev/null; then
   #don't use this way!
   #this is the broken way, ie. exit code ==1 or ==10  is no difference, as long as it's != 0 you're here
   echo "YES2!"

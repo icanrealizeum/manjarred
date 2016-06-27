@@ -1,0 +1,4 @@
+#!/bin/bash
+#src: https://ubuntuforums.org/showthread.php?t=1188099
+iptables -C OUTPUT -m owner --gid-owner no-internet -j DROP || iptables -I OUTPUT -m owner --gid-owner no-internet -j DROP
+

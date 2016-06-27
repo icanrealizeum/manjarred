@@ -1,0 +1,19 @@
+#!/bin/bash
+#src: https://ubuntuforums.org/showthread.php?t=1188099
+
+#XXX: prerequisites: 
+#execute:
+# sudo groupadd no-internet
+#put this line in /etc/sudoers(.d/20-no-internet)
+# %wheel ALL=(:no-internet) NOPASSWD: ALL
+#put a+x file in /etc/NetworkManager/dispatcher.d/pre-up.d/iptables_no-internet_rule
+#contents:
+# iptables -C OUTPUT -m owner --gid-owner no-internet -j DROP || iptables -I OUTPUT -m owner --gid-owner no-internet -j DROP
+
+
+#eof
+
+#sg no-internet "$@"
+#src:ipu
+sudo -g no-internet -- "$@"
+
