@@ -6,6 +6,7 @@
 # sudo groupadd no-internet
 #put this line in /etc/sudoers(.d/20-no-internet)
 # %wheel ALL=(:no-internet) NOPASSWD: ALL
+# #src: https://askubuntu.com/questions/45072/how-to-control-internet-access-for-each-program
 #put a+x file in /etc/NetworkManager/dispatcher.d/pre-up.d/iptables_no-internet_rule
 #contents:
 # iptables -C OUTPUT -m owner --gid-owner no-internet -j DROP || iptables -I OUTPUT -m owner --gid-owner no-internet -j DROP
@@ -14,6 +15,6 @@
 #eof
 
 #sg no-internet "$@"
-#src:ipu
+#src:ipu and https://askubuntu.com/questions/45072/how-to-control-internet-access-for-each-program
 sudo -g no-internet -- "$@"
 
