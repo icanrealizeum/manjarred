@@ -31,7 +31,7 @@ git pull #|| git update-server-info && git pull
 patch -Np1 -i ../local_rust_libfix.patch
 patch -Np1 -i ../llvm_only_x86_64_and_arm.patch
 #patch -Np1 -i ../llvm_yes_debug.patch
-patch -Np1 -i ../llvm_extra_debug_when_no_optimize.patch
+#XXX: manually disabled: patch -Np1 -i ../llvm_extra_debug_when_no_optimize.patch
 #patch -Np1 -i ../equivalent_of_unset_RUST_BACKTRACE.patch
 #patch -Np1 -i ../le.patch
 #patch -Np1 -i ../le2.patch

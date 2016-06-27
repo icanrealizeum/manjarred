@@ -21,7 +21,7 @@ set -x
 #/bin/sh: x86_64-unknown-linux-gnu/stage2/bin/rustdoc: No such file or directory
 #/home/z/build/1nonpkgs/rust/rust/mk/docs.mk:123: recipe for target 'doc/not_found.html' failed
 #make: *** [doc/not_found.html] Error 127
-#XXX: disabled RUST_BACKTRACE=1 due to some bug which delays rustc exit and uses CPU if rustc was built with debuginfo
+#XXX: disabled RUST_BACKTRACE=1 due to some bug which delays rustc exit and uses CPU if rustc was built with debuginfo https://github.com/rust-lang/rust/issues/29293
 #XXX: disabled --verbose  AND -C debug-assertions=y  AND VERBOSE=1
 time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=0 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS=" -Z print-link-args -Z print-llvm-passes -C debug-assertions=n" && time make -j${cores} check VERBOSE=0 )
 # adding SHELL='$$SHELL -x' to make doesn't work:  make: $SHELL: Command not found
@@ -105,5 +105,16 @@ set +x
 #real  176m30.756s
 #user  182m48.366s
 #sys 7m57.650s
+
+#27 june 2016
+#tests:
+#real  8m9.460s
+#user  29m6.263s
+#sys 1m18.532s
+#total:
+#real  111m43.309s
+#user  231m55.611s
+#sys 28m30.157s
+#normal ondemand gov
 
 popd

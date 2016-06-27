@@ -12,33 +12,14 @@ index 60d3661..7cf274e 100755
        do
          make_dir $t/rt/stage$s/$i
        done
-@@ -1551,7 +1586,8 @@ do
+@@ -1750,7 +1750,7 @@ do
+         CMAKE_ARGS="$CMAKE_ARGS -DLLVM_ENABLE_ASSERTIONS=ON"
+     fi
  
-         msg "configuring LLVM for $gnu_t"
- 
--        LLVM_TARGETS="--enable-targets=x86,x86_64,arm,aarch64,mips,powerpc"
-+        #LLVM_TARGETS="--enable-targets=x86,x86_64,arm,aarch64,mips,powerpc"
-+        LLVM_TARGETS="--enable-targets=x86_64 arm"
-         LLVM_BUILD="--build=$gnu_t"
-         LLVM_HOST="--host=$gnu_t"
-         LLVM_TARGET="--target=$gnu_t"
-diff --git a/mk/llvm.mk b/mk/llvm.mk
-index 1cbf4a9..f8d5387 100644
---- a/mk/llvm.mk
-+++ b/mk/llvm.mk
-@@ -46,11 +46,11 @@ else
- 
- $$(LLVM_CONFIG_$(1)): $$(LLVM_DEPS) $$(LLVM_STAMP_$(1))
- 	@$$(call E, make: llvm)
--	$$(Q)$$(MAKE) -C $$(CFG_LLVM_BUILD_DIR_$(1)) $$(CFG_LLVM_BUILD_ENV_$(1)) ONLY_TOOLS="$$(LLVM_TOOLS)"
-+	$$(Q)$$(MAKE) -j8 -C $$(CFG_LLVM_BUILD_DIR_$(1)) $$(CFG_LLVM_BUILD_ENV_$(1)) ONLY_TOOLS="$$(LLVM_TOOLS)"
- 	$$(Q)touch $$(LLVM_CONFIG_$(1))
- 
- clean-llvm$(1):
--	$$(Q)$$(MAKE) -C $$(CFG_LLVM_BUILD_DIR_$(1)) clean
-+	$$(Q)$$(MAKE) -j8 -C $$(CFG_LLVM_BUILD_DIR_$(1)) clean
- 
- endif
+-    CMAKE_ARGS="$CMAKE_ARGS -DLLVM_TARGETS_TO_BUILD='X86;ARM;AArch64;Mips;PowerPC'"
++    CMAKE_ARGS="$CMAKE_ARGS -DLLVM_TARGETS_TO_BUILD='X86;ARM'"
+     CMAKE_ARGS="$CMAKE_ARGS -G '$CFG_CMAKE_GENERATOR'"
+     CMAKE_ARGS="$CMAKE_ARGS $CFG_LLVM_SRC_DIR"
  
 diff --git a/mk/main.mk b/mk/main.mk
 index f2ff4f1..1b7a064 100644
