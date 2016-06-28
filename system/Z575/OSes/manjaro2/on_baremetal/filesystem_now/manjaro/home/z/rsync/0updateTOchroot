@@ -1,0 +1,5 @@
+#!/bin/bash
+
+#doing this to avoid an export, won't work without export; this is the only other way: prepend the set var on the executing command:
+RSYNC_REMOTEHOST="127.0.0.111" RSYNC_SSH_VAL='ssh -v -p 8822 -i /home/emacs/.ssh/id_ed25519 -l root' ./genericupdatefromTO '/home/emacs/rsync/gentoo/' '/mnt/gentoo/'
+

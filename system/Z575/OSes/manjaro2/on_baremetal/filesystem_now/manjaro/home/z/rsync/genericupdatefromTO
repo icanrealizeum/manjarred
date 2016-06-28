@@ -1,0 +1,43 @@
+#!/bin/bash
+remoterootdir="$2" #should end in / slash
+if test "$#" -ne "2" ; then #-z "$remoterootdir"; then
+  echo "bad numer of params: '${@}' need: \"src\" \"dest\""
+  exit 2
+fi
+src="$1" #/home/emacs/rsync/gentoo/" #where to update from (aka source)
+backupdirfordeletions="${remoterootdir}/rsync-backed/" #dir where modified files will be moved from destination before being updated! this is on remote!
+
+declare -a +r -t -x EXTRA_RSYNCY_PARAMS_arr=(
+--exclude='*.tmp *~ *.swp' #FIXME: maybe it should be *.sw?  but I don't want it to be too broad
+
+--backup
+--backup-dir="${backupdirfordeletions}"
+
+#--no-delete #rsync: --no-delete: unknown option
+--max-delete=0  #attempt to prevent deletions, in case I forgot some args around
+#--no-delete-after #unknown option
+
+#--update  #this was already implied in rsyncy, but just to be extra sure!
+
+#--rsh='ssh -v -p 8822 -i /home/emacs/.ssh/id_ed25519 -l root'
+
+)
+
+if test -z "$RSYNCY_OVERWRITE_EVEN_WHEN_NEWER_ON_DEST"; then
+  EXTRA_RSYNCY_PARAMS_arr+=( --update )
+  #else don't add --update! which means it will overwrite dest files which are newer than the source to be copied over them.
+fi
+
+#echo "$RSYNC_SSH_VAL"
+if test -n "$RSYNC_SSH_VAL"; then
+  EXTRA_RSYNCY_PARAMS_arr+=( --rsh="$RSYNC_SSH_VAL" )
+fi
+if test -n "$RSYNC_REMOTEHOST"; then
+  RHOST="${RSYNC_REMOTEHOST}:"
+else
+  RHOST=""
+fi
+
+#set -x
+rsyncy "${src}" "${RHOST}${remoterootdir}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+

@@ -1,0 +1,171 @@
+From f40226c5f40995323cd9ba466da082799fbcd3fb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Linus=20F=C3=A4rnstrand?= <faern@faern.net>
+Date: Tue, 9 Feb 2016 23:05:56 +0100
+Subject: [PATCH 1/3] Use 'cargo rustc -Zno-trans' for syntastic checker
+
+---
+ syntax_checkers/rust/rustc.vim | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/syntax_checkers/rust/rustc.vim b/syntax_checkers/rust/rustc.vim
+index 5d19608..f742c59 100644
+--- a/syntax_checkers/rust/rustc.vim
++++ b/syntax_checkers/rust/rustc.vim
+@@ -14,7 +14,9 @@ let s:save_cpo = &cpo
+ set cpo&vim
+ 
+ function! SyntaxCheckers_rust_rustc_GetLocList() dict
+-    let makeprg = self.makeprgBuild({ 'args': '-Zparse-only' })
++    let makeprg = self.makeprgBuild({
++        \ 'args': 'rustc -Zno-trans',
++        \ 'fname': '' })
+ 
+     let errorformat  =
+         \ '%E%f:%l:%c: %\d%#:%\d%# %.%\{-}error:%.%\{-} %m,'   .
+@@ -28,6 +30,7 @@ function! SyntaxCheckers_rust_rustc_GetLocList() dict
+ endfunction
+ 
+ call g:SyntasticRegistry.CreateAndRegisterChecker({
++    \ 'exec': 'cargo',
+     \ 'filetype': 'rust',
+     \ 'name': 'rustc'})
+ 
+
+From 92b0a754de0c60da47551399a05e98cb70ce1f2d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Linus=20F=C3=A4rnstrand?= <faern@faern.net>
+Date: Tue, 9 Feb 2016 23:54:51 +0100
+Subject: [PATCH 2/3] Detect standalone rs vs a crate
+
+---
+ syntax_checkers/rust/rustc.vim | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/syntax_checkers/rust/rustc.vim b/syntax_checkers/rust/rustc.vim
+index f742c59..2a45cea 100644
+--- a/syntax_checkers/rust/rustc.vim
++++ b/syntax_checkers/rust/rustc.vim
+@@ -14,9 +14,20 @@ let s:save_cpo = &cpo
+ set cpo&vim
+ 
+ function! SyntaxCheckers_rust_rustc_GetLocList() dict
+-    let makeprg = self.makeprgBuild({
+-        \ 'args': 'rustc -Zno-trans',
+-        \ 'fname': '' })
++    let cwd = '.' " Don't change cwd as default
++    let cargo_toml_path = findfile('Cargo.toml', '.;')
++    if empty(cargo_toml_path) " Plain rs file, not a crate
++        let makeprg = self.makeprgBuild({
++            \ 'exe': 'rustc',
++            \ 'args': '-Zno-trans' })
++    else " We are inside a crate
++        let makeprg = self.makeprgBuild({
++            \ 'exe': 'cargo',
++            \ 'args': 'rustc -Zno-trans',
++            \ 'fname': '' })
++        " Change cwd to the root of the crate
++        let cwd = fnamemodify( cargo_toml_path, ':p:h') 
++    endif
+ 
+     let errorformat  =
+         \ '%E%f:%l:%c: %\d%#:%\d%# %.%\{-}error:%.%\{-} %m,'   .
+@@ -26,13 +37,13 @@ function! SyntaxCheckers_rust_rustc_GetLocList() dict
+ 
+     return SyntasticMake({
+         \ 'makeprg': makeprg,
+-        \ 'errorformat': errorformat })
++        \ 'errorformat': errorformat,
++        \ 'cwd': cwd })
+ endfunction
+ 
+ call g:SyntasticRegistry.CreateAndRegisterChecker({
+-    \ 'exec': 'cargo',
+     \ 'filetype': 'rust',
+-    \ 'name': 'rustc'})
++    \ 'name': 'rustc' })
+ 
+ let &cpo = s:save_cpo
+ unlet s:save_cpo
+
+From 2f4af3a6884eb24f1480d29e9b77b8cd0a708489 Mon Sep 17 00:00:00 2001
+From: somini <somini@users.noreply.github.com>
+Date: Mon, 21 Mar 2016 01:36:12 +0000
+Subject: [PATCH 3/3] Offer a choice between fast or comprehensive lint
+
+The default is the fast lint, maintain the current defaults.
+---
+ doc/rust.txt                   | 25 +++++++++++++++++++++++++
+ syntax_checkers/rust/rustc.vim | 11 ++++++++---
+ 2 files changed, 33 insertions(+), 3 deletions(-)
+
+diff --git a/doc/rust.txt b/doc/rust.txt
+index 5621e37..d7f9c4f 100644
+--- a/doc/rust.txt
++++ b/doc/rust.txt
+@@ -133,6 +133,31 @@ g:rust_shortener_url~
+ 	    let g:rust_shortener_url = 'https://is.gd/'
+ <
+ 
++							*g:rustc_syntax_only*
++g:rustc_syntax_only~
++	Set this option to control the syntastic linter.
++	You can choose between a simple syntax parser or a fuller compilation.
++
++	The syntax parser is very fast, but won't catch any compilation
++	errors. This is the default.
++	We recommend you enable syntastic's active mode with this setting
++	(that's the default too).  >
++	let g:rustc_syntax_only = 1
++<
++	
++	The fuller compilation performs a compilation of the entire project.
++	This makes it really slow on large projects.
++	If VIM becomes unusable, set syntastic passive mode for Rust. This
++	will make it so that the lint will only run on |:SyntasticCheck| (see
++	|syntastic_mode_map|).
++>
++	let g:rustc_syntax_only = 0
++	" Syntastic passive mode
++	let g:syntastic_mode_map = {
++		\ "mode": "active",
++		\ "active_filetypes": [],
++		\ "passive_filetypes": ["rust"] }
++<
+ 
+ ==============================================================================
+ COMMANDS                                                       *rust-commands*
+diff --git a/syntax_checkers/rust/rustc.vim b/syntax_checkers/rust/rustc.vim
+index 2a45cea..d7ade5a 100644
+--- a/syntax_checkers/rust/rustc.vim
++++ b/syntax_checkers/rust/rustc.vim
+@@ -10,23 +10,28 @@ if exists("g:loaded_syntastic_rust_rustc_checker")
+ endif
+ let g:loaded_syntastic_rust_rustc_checker = 1
+ 
++if !exists('g:rustc_syntax_only')
++    let g:rustc_syntax_only = 1 "Keep the fast behaviour by default
++endif
++
+ let s:save_cpo = &cpo
+ set cpo&vim
+ 
+ function! SyntaxCheckers_rust_rustc_GetLocList() dict
++    let compiler_params = g:rustc_syntax_only ? '-Zparse-only' : '-Zno-trans'
+     let cwd = '.' " Don't change cwd as default
+     let cargo_toml_path = findfile('Cargo.toml', '.;')
+     if empty(cargo_toml_path) " Plain rs file, not a crate
+         let makeprg = self.makeprgBuild({
+             \ 'exe': 'rustc',
+-            \ 'args': '-Zno-trans' })
++            \ 'args': compiler_params})
+     else " We are inside a crate
+         let makeprg = self.makeprgBuild({
+             \ 'exe': 'cargo',
+-            \ 'args': 'rustc -Zno-trans',
++            \ 'args': 'rustc ' . compiler_params,
+             \ 'fname': '' })
+         " Change cwd to the root of the crate
+-        let cwd = fnamemodify( cargo_toml_path, ':p:h') 
++        let cwd = fnamemodify( cargo_toml_path, ':p:h')
+     endif
+ 
+     let errorformat  =

@@ -1,0 +1,1 @@
+/home/z/build/1nonpkgs/rust.vim/rust.vim/

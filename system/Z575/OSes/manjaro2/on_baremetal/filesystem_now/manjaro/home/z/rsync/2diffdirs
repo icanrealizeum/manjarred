@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#this shows the diff for modified files 
+#and also shows the deleted files as lines beginning with: Only in rsync-backed/
+
+thedir='rsync-backed'  #TODO: make these vars a common file sourced in each script!
+currentdir='manjaro'
+
+sudo2() {
+ cmd="$@"
+ if test -x "`which sudo`" ; then
+   sudo ${cmd}
+ else
+   ${cmd}
+ fi
+}
+
+colordiff2() {
+  if test -x "`which colordiff`"; then
+    colordiff
+  else
+    tee
+  fi
+}
+
+
+sudo2 diff -rup "$thedir" "$currentdir" 2>/dev/null |grep -E -v "^Only in $currentdir" | colordiff2 | less
+#^ sudo is needed because "$currentdir"/root for example is inaccessible to normal user!
+#sudo git diff --no-index  -- rsync-backed "$currentdir"
+#^ this isn't working due to  it displays the + diffs for all new files as if they didn't exist (which they don't, but I can't see a way to turn it off like diff does)
+
+
+echo "Deleted files:-------------"
+sudo2 diff -rup "$thedir" "$currentdir" 2>/dev/null |grep --color=tty "Only in $thedir"
+
+echo "Modified binary files:-------------"
+sudo2 diff -rup "$thedir" "$currentdir" 2>/dev/null |grep --color=tty "^Binary files "
+
+echo "Errors: -------------"
+sudo2 diff -rup "$thedir" "$currentdir" 1>/dev/null
+echo "---------------"
+
+sudo2 diff -rup "$thedir" "$currentdir" 2>&1 1>/dev/null | grep --color=never ": No such file or directory" | cut -d ':' -f 2| sudo2 xargs --no-run-if-empty -n 1 ls -la --color=tty
+

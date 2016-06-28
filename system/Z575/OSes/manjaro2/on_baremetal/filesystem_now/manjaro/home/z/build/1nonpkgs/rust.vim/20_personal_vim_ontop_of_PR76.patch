@@ -1,0 +1,21 @@
+to be applied on top of PR76 only!
+
+old info:
+needed because, vim yields:
+syntastic: error: checker rust/rustc returned abnormal status 101       
+and thus does not show the syntax errors, like it should!
+
+https://github.com/rust-lang/rfcs/issues/734
+
+--- orig/syntax_checkers/rust/rustc.vim	2016-06-27 03:39:41.957226799 +0300
++++ patched/syntax_checkers/rust/rustc.vim	2016-06-27 03:39:59.936000775 +0300
+@@ -43,7 +43,8 @@ function! SyntaxCheckers_rust_rustc_GetL
+     return SyntasticMake({
+         \ 'makeprg': makeprg,
+         \ 'errorformat': errorformat,
+-        \ 'cwd': cwd })
++        \ 'cwd': cwd,
++        \ 'returns': [0,101] }) " 0 is normal, -1 is a result of C-c (unusable with syntactic still); 101 is due to compilation error! (usable)
+ endfunction
+ 
+ call g:SyntasticRegistry.CreateAndRegisterChecker({

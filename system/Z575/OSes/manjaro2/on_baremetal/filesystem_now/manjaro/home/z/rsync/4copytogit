@@ -1,0 +1,101 @@
+#!/bin/bash
+#TODO: FIXME: use rsync as root without preserving attributes/ownership to copy to git! this will also delete dest files not existing at source! so in total reduces all perfomed writes
+
+#XXX: src dir is in current folder!
+srcdirname='manjaro' #no . or / pls
+srcdir="./${srcdirname}"  #copies this folder... (backup/archive style)
+destdir='/home/z/manjarred/system/Z575/OSes/manjaro2/on_baremetal/filesystem_now' #... inside this folder! (the end / is ignored anyway, if any)
+
+#--------
+#ensuring no / at the end!
+srcdir=${srcdir%%/}
+destdir=${destdir%%/}
+#echo "$srcdir $destdir"
+#exit 1
+
+
+if test "0" -eq "`id -u`"; then
+  sudo=''
+else
+  sudo='sudo'
+  $sudo --validate
+fi
+
+if test -n "$DEBUG" -a "0$DEBUG" -ne "0"; then
+  verbose='--verbose'
+else
+  verbose=''
+fi
+
+if test -n "$EXTRASAFE"; then
+  extrasafe='--backup=numbered'
+else
+  extrasafe=''
+fi
+
+
+#XXX: we actually remove the entire folder(back it up to tmpfs - aka lost after reboot) so that leftover files which were removed do not hang around
+src="${destdir}/${srcdirname}"
+dest="/tmp/${src//\//_} $(date)" #make sure any paths(subdirs) become only one dir (replacing / with _ )
+echo "Removing '$src' (moving into '$dest')"
+mkdir -p "$dest"
+$sudo mv -t "$dest" -- "$src" 2>/dev/null
+
+mkdir -p -- "$destdir" #making sure it exists
+
+#--strip-trailing-slashes
+$sudo cp $verbose --archive --reflink=auto --sparse=always $extrasafe -t "$destdir" --strip-trailing-slashes -- "${srcdir}"
+#^ note here: any extra files/dirs are not deleted, but any modified files will be! Maybe I should use rsync --update ? hmm, then I won't need ./reaccess script! because rsync can do the chmod for me.
+#rsync --no-perms --executability --update
+#passing --update to cp is interesting, but I do want to overwrite newer files in destination though! which this does not do!
+
+
+
+#done: invoke the reaccess script here
+
+reaccess_for_git "$destdir"
+#^ this also resets WARNING.txt which is a sibbling of the ./manjaro2/ folder there; AND any other files/dirs present there (currently no others)
+
+#rename some certs to be ascii only, 
+#pushd "${destdir}/gentoo/etc/ssl/certs/"
+if test -d "${src}/etc/ssl/certs/"; then
+  set -e
+  pushd "${src}/etc/ssl/certs/"
+  #just to see(no changes applied):
+  #LC_ALL=C find . -regex '.*[^ -z}{|~].*' -exec bash -c 'echo -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+  #apply changes(wit see):
+  LC_ALL=C find . -regex '.*[^ -z}{|~].*' -execdir bash -c 'mv -- "{}" "`echo "{}" | LC_ALL=C tr -c -- "[ -~]\n" "_"`"'  \;
+  #set +e
+  popd
+fi
+
+#echo "-- redacting local IP"
+#pushd "${src}/etc/conf.d/" || echo "FAIL!"
+#sed -i ./net -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
+#sed -i ./nftables.rules -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
+#cat ./net ./nftables.rules | grep --color=always -E -- "(192|redacted)"
+#popd
+#echo "--"
+
+echo "-- removing ticuhost"
+pushd "${src}/etc/" || echo "FAIL!"
+sed -i ./hosts -re 's/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+.*ticuhost.*$//g'
+cat ./hosts | grep --color=always -- 'ticuhost'
+popd
+echo "--"
+
+#echo "-- removing permmac"
+#pushd "${src}/etc/local.d/" || echo "FAIL!"
+#thisarpfn='./010_arp.start'
+#sed -i "$thisarpfn" -re 's/[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]/xx:xx:xx:xx:xx:xx/g'
+#cat "$thisarpfn" | grep --color=always -E -- "[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]:[0-9a-fA-F][0-9a-fA-F]" && echo "FAIL!!" #FIXME: need the whole script to fail! don't just echo it!, also above ^
+#popd
+#echo "--"
+
+#updating smartctl info!
+pushd '/home/z/manjarred/system/Z575/OSes/manjaro/random logs/ssd/1tb/smarttools' >/dev/null
+./refresh
+#the other ssd isn't plugged in
+popd >/dev/null
+
+echo "All done."

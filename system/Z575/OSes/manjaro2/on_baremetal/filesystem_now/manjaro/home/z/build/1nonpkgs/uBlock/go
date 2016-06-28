@@ -1,0 +1,25 @@
+
+# prerequisite:
+# git clone https://github.com/gorhill/uBlock.git
+# git clone https://github.com/uBlockOrigin/uAssets.git
+
+pushd ./uAssets
+git pull
+popd
+
+pushd ./uBlock/
+#for subsequent updates, use:
+# $ ( cd uBlock && git pull )
+# where $ is the user prompt
+#then run the following:
+git pull
+
+./tools/make-chromium.sh
+echo "chromium: Load from dir: `pwd`/dist/build/uBlock0.chromium/"
+./tools/make-firefox.sh all
+echo "firefox: Load from file: `pwd`/dist/build/uBlock0.firefox.xpi"
+echo "firefox: attempting autoinstall:"
+firefox "`pwd`/dist/build/uBlock0.firefox.xpi"
+
+popd
+

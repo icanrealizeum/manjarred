@@ -1,0 +1,7 @@
+#!/bin/bash
+
+outfile='koe'
+ssh-keygen -t ed25519 -a 110 -f "$outfile"
+chmod a-rwx -- "$outfile" "${outfile}.pub"
+#chmod u+r -- "$outfile" #done on an as-needed basis
+

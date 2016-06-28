@@ -1,0 +1,1708 @@
+commit d7980b6fdf354de63d683bd426ba552073d47646
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Wed Aug 19 16:21:21 2015 +0000
+
+    upgpkg: virtualbox 5.0.2-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@138513 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index a0c4f21..264c5b4 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,7 +10,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.0
++pkgver=5.0.2
+ pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+@@ -67,7 +67,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '007-python2-path.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('1f43c53b49c50bd7700a86000ca85dda'
++md5sums=('627f9b161bba73f43e752e463bd4d9ac'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+@@ -76,7 +76,7 @@ md5sums=('1f43c53b49c50bd7700a86000ca85dda'
+          '8ba9179c4a3516904417d773816dd992'
+          'fcf6bcef98b16849d5c9f048592739c0'
+          'bc9efed88e0469cd7fc460d5a5cd7b4b'
+-         '177c0e849790a825480cb9fba785f11b'
++         '44a8e105517a1e04769b50469a87bdcb'
+          '5ebaaf351419a58db6fdddbc19c58c5e'
+          '9be7e2703afeee1fca9368bd8750e710'
+          '9e49bbaa2192b141c27ee43cef8cbab7'
+diff --git a/trunk/vboxreload b/trunk/vboxreload
+index 7b52567..8204056 100755
+--- a/trunk/vboxreload
++++ b/trunk/vboxreload
+@@ -18,6 +18,8 @@
+ # along with this program; if not, write to the Free Software
+ # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ 
++(( UID > 0 )) && { echo 'You must be root' >&2; exit 1; }
++
+ modules=(vboxnetadp vboxnetflt vboxpci vboxdrv)
+ 
+ echo -n 'Unloading modules: '
+commit 78cbfaa4ffcdb88cf0931a43f2f7c1ffcf50233a
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Thu Sep 17 17:27:54 2015 +0000
+
+    upgpkg: virtualbox 5.0.4-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@140416 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/011-fix-i686-build.patch b/trunk/011-fix-i686-build.patch
+new file mode 100644
+index 0000000..75aa4c1
+--- /dev/null
++++ b/trunk/011-fix-i686-build.patch
+@@ -0,0 +1,28 @@
++Index: src/VBox/Additions/linux/lightdm-greeter/vbox-greeter.cpp
++===================================================================
++--- a/src/VBox/Additions/linux/lightdm-greeter/vbox-greeter.cpp	(revision 57689)
+++++ b/src/VBox/Additions/linux/lightdm-greeter/vbox-greeter.cpp	(revision 57690)
++@@ -842,7 +842,7 @@
++  * @param   enmPhase
++  * @param   pfnLog
++  */
++-static void vboxGreeterLogHeaderFooter(PRTLOGGER pLoggerRelease, RTLOGPHASE enmPhase, PFNRTLOGPHASEMSG pfnLog)
+++static DECLCALLBACK(void) vboxGreeterLogHeaderFooter(PRTLOGGER pLoggerRelease, RTLOGPHASE enmPhase, PFNRTLOGPHASEMSG pfnLog)
++ {
++     /* Some introductory information. */
++     static RTTIMESPEC s_TimeSpec;
++Index: src/VBox/ExtPacks/VNC/VBoxVNC.cpp
++===================================================================
++--- a/src/VBox/ExtPacks/VNC/VBoxVNC.cpp	(revision 57657)
+++++ b/src/VBox/ExtPacks/VNC/VBoxVNC.cpp	(revision 57658)
++@@ -103,8 +103,8 @@
++     unsigned char *mScreenBuffer;
++     unsigned char *mFrameBuffer;
++     uint32_t uClients;
++-    static DECLCALLBACK(enum rfbNewClientAction) rfbNewClientEvent(rfbClientPtr cl);
++-    static DECLCALLBACK(void) vncMouseEvent(int buttonMask, int x, int y, rfbClientPtr cl);
+++    static enum rfbNewClientAction rfbNewClientEvent(rfbClientPtr cl);
+++    static void vncMouseEvent(int buttonMask, int x, int y, rfbClientPtr cl);
++     static void vncKeyboardEvent(rfbBool down, rfbKeySym keySym, rfbClientPtr cl);
++     static void clientGoneHook(rfbClientPtr cl);
++ 
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 264c5b4..aefa163 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,7 +10,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.2
++pkgver=5.0.4
+ pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+@@ -66,8 +66,9 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '006-rdesktop-vrdp-keymap-path.patch'
+         '007-python2-path.patch'
+         '010-no-update.patch'
++        '011-fix-i686-build.patch'
+         )
+-md5sums=('627f9b161bba73f43e752e463bd4d9ac'
++md5sums=('499abc66de7bb74a9117bda75e43ec4d'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+@@ -83,7 +84,8 @@ md5sums=('627f9b161bba73f43e752e463bd4d9ac'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+          'd82a6f19be739341ed7f1cf4ee8070ca'
+          '188ea65918309f737ce28216c2b07c3b'
+-         'dfa08dc682c7668c8a6f0ffc3f44fece')
++         'dfa08dc682c7668c8a6f0ffc3f44fece'
++         '64c32077b669f81012fbe4e395b52c57')
+ 
+ prepare() {
+     cd "VirtualBox-$pkgver"
+commit 8182b445e9cfa5de7306702c62a34f001a5bdb48
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Wed Oct 7 23:47:29 2015 +0000
+
+    upgpkg: virtualbox 5.0.6-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@143321 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/001-vboxdrv-reference.patch b/trunk/001-vboxdrv-reference.patch
+deleted file mode 100644
+index f778b27..0000000
+--- a/trunk/001-vboxdrv-reference.patch
++++ /dev/null
+@@ -1,57 +0,0 @@
+-diff -Nur VirtualBox-4.1.6_OSE.orig/src/VBox/Frontends/VirtualBox/src/main.cpp VirtualBox-4.1.6_OSE/src/VBox/Frontends/VirtualBox/src/main.cpp
+---- VirtualBox-4.1.6_OSE.orig/src/VBox/Frontends/VirtualBox/src/main.cpp	2011-11-04 17:22:13.636083176 +0000
+-+++ VirtualBox-4.1.6_OSE/src/VBox/Frontends/VirtualBox/src/main.cpp	2011-11-04 17:48:58.915541368 +0000
+-@@ -75,10 +75,9 @@
+-   "The VirtualBox Linux kernel driver (vboxdrv) is either not loaded or "
+-   "there is a permission problem with /dev/vboxdrv. Please reinstall the kernel "
+-   "module by executing<br/><br/>"
+--  "  <font color=blue>'/etc/init.d/vboxdrv setup'</font><br/><br/>"
+--  "as root. If it is available in your distribution, you should install the "
+--  "DKMS package first. This package keeps track of Linux kernel changes and "
+--  "recompiles the vboxdrv kernel module if necessary."
+-+  "  <font color=blue>'pacman -S virtualbox-host-modules'</font><br/><br/>"
+-+  "as root. If you don't use our stock kernel, install virtualbox-host-dkms and "
+-+  "execute dkms autoinstall ."
+-   );
+- 
+- QString g_QStrHintOtherWrongDriverVersion = QApplication::tr(
+-@@ -90,11 +89,8 @@
+- 
+- QString g_QStrHintLinuxWrongDriverVersion = QApplication::tr(
+-   "The VirtualBox kernel modules do not match this version of "
+--  "VirtualBox. The installation of VirtualBox was apparently not "
+--  "successful. Executing<br/><br/>"
+--  "  <font color=blue>'/etc/init.d/vboxdrv setup'</font><br/><br/>"
+--  "may correct this. Make sure that you do not mix the "
+--  "OSE version and the PUEL version of VirtualBox."
+-+  "VirtualBox. Reload the modules or if you don't use our stock kernel execute<br/><br/> "
+-+  "  <font color=blue>'dkms autoinstall'</font><br/><br/>"
+-   );
+- 
+- QString g_QStrHintOtherNoDriver = QApplication::tr(
+-diff -Nur VirtualBox-4.1.6_OSE.orig/src/VBox/Installer/linux/VBox.sh VirtualBox-4.1.6_OSE/src/VBox/Installer/linux/VBox.sh
+---- VirtualBox-4.1.6_OSE.orig/src/VBox/Installer/linux/VBox.sh	2011-11-04 17:22:13.549415814 +0000
+-+++ VirtualBox-4.1.6_OSE/src/VBox/Installer/linux/VBox.sh	2011-11-04 17:56:50.735874087 +0000
+-@@ -32,17 +32,18 @@
+-     cat << EOF
+- WARNING: The vboxdrv kernel module is not loaded. Either there is no module
+-          available for the current kernel (`uname -r`) or it failed to
+--         load. Please recompile the kernel module and install it by
+-+         load. Please reinstall the kernel module virtualbox-host-modules or
+-+         if you don't use our stock kernel compile the modules with
+- 
+--           sudo /etc/init.d/vboxdrv setup
+-+           sudo dkms autoinstall
+- 
+-          You will not be able to start VMs until this problem is fixed.
+- EOF
+- elif [ ! -c /dev/vboxdrv ]; then
+-     cat << EOF
+--WARNING: The character device /dev/vboxdrv does not exist. Try
+-+WARNING: The character device /dev/vboxdrv does not exist. Try to load the module
+- 
+--           sudo /etc/init.d/vboxdrv restart
+-+           sudo modprobe vboxdrv
+- 
+-          and if that is not successful, try to re-install the package.
+- 
+diff --git a/trunk/011-fix-i686-build.patch b/trunk/011-fix-i686-build.patch
+deleted file mode 100644
+index 75aa4c1..0000000
+--- a/trunk/011-fix-i686-build.patch
++++ /dev/null
+@@ -1,28 +0,0 @@
+-Index: src/VBox/Additions/linux/lightdm-greeter/vbox-greeter.cpp
+-===================================================================
+---- a/src/VBox/Additions/linux/lightdm-greeter/vbox-greeter.cpp	(revision 57689)
+-+++ b/src/VBox/Additions/linux/lightdm-greeter/vbox-greeter.cpp	(revision 57690)
+-@@ -842,7 +842,7 @@
+-  * @param   enmPhase
+-  * @param   pfnLog
+-  */
+--static void vboxGreeterLogHeaderFooter(PRTLOGGER pLoggerRelease, RTLOGPHASE enmPhase, PFNRTLOGPHASEMSG pfnLog)
+-+static DECLCALLBACK(void) vboxGreeterLogHeaderFooter(PRTLOGGER pLoggerRelease, RTLOGPHASE enmPhase, PFNRTLOGPHASEMSG pfnLog)
+- {
+-     /* Some introductory information. */
+-     static RTTIMESPEC s_TimeSpec;
+-Index: src/VBox/ExtPacks/VNC/VBoxVNC.cpp
+-===================================================================
+---- a/src/VBox/ExtPacks/VNC/VBoxVNC.cpp	(revision 57657)
+-+++ b/src/VBox/ExtPacks/VNC/VBoxVNC.cpp	(revision 57658)
+-@@ -103,8 +103,8 @@
+-     unsigned char *mScreenBuffer;
+-     unsigned char *mFrameBuffer;
+-     uint32_t uClients;
+--    static DECLCALLBACK(enum rfbNewClientAction) rfbNewClientEvent(rfbClientPtr cl);
+--    static DECLCALLBACK(void) vncMouseEvent(int buttonMask, int x, int y, rfbClientPtr cl);
+-+    static enum rfbNewClientAction rfbNewClientEvent(rfbClientPtr cl);
+-+    static void vncMouseEvent(int buttonMask, int x, int y, rfbClientPtr cl);
+-     static void vncKeyboardEvent(rfbBool down, rfbKeySym keySym, rfbClientPtr cl);
+-     static void clientGoneHook(rfbClientPtr cl);
+- 
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index aefa163..7a32568 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,7 +10,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.4
++pkgver=5.0.6
+ pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+@@ -59,16 +59,14 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         'vboxservice-nox.service'
+         'vboxweb.service'
+         'vboxreload'
+-        '001-vboxdrv-reference.patch'
+         '002-dri-driver-path.patch'
+         '003-ogl-include-path.patch'
+         '005-gsoap-build.patch'
+         '006-rdesktop-vrdp-keymap-path.patch'
+         '007-python2-path.patch'
+         '010-no-update.patch'
+-        '011-fix-i686-build.patch'
+         )
+-md5sums=('499abc66de7bb74a9117bda75e43ec4d'
++md5sums=('30163e68a0d89e9f4590aeb61cd237e5'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+@@ -78,14 +76,12 @@ md5sums=('499abc66de7bb74a9117bda75e43ec4d'
+          'fcf6bcef98b16849d5c9f048592739c0'
+          'bc9efed88e0469cd7fc460d5a5cd7b4b'
+          '44a8e105517a1e04769b50469a87bdcb'
+-         '5ebaaf351419a58db6fdddbc19c58c5e'
+          '9be7e2703afeee1fca9368bd8750e710'
+          '9e49bbaa2192b141c27ee43cef8cbab7'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+          'd82a6f19be739341ed7f1cf4ee8070ca'
+          '188ea65918309f737ce28216c2b07c3b'
+-         'dfa08dc682c7668c8a6f0ffc3f44fece'
+-         '64c32077b669f81012fbe4e395b52c57')
++         'dfa08dc682c7668c8a6f0ffc3f44fece')
+ 
+ prepare() {
+     cd "VirtualBox-$pkgver"
+@@ -222,8 +218,9 @@ package_virtualbox() {
+     install -Dm644 vboxweb.service "$pkgdir/usr/lib/systemd/system/vboxweb.service"
+     install -Dm644 virtualbox.sysusers "$pkgdir/usr/lib/sysusers.d/virtualbox.conf"
+ 
+-    # install module reloading shortcut
++    # install module reloading shortcut (with a symlink with default helper)
+     install -Dm755 vboxreload "$pkgdir/usr/bin"
++    ln -s vboxreload "$pkgdir/usr/bin/rcvboxdrv"
+ }
+ 
+ package_virtualbox-sdk() {
+commit 0be7ac3d047d2c845f441197acb8b13c0c039afa
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Fri Oct 23 15:50:16 2015 +0000
+
+    upgpkg: virtualbox 5.0.8-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@144792 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 7a32568..c7bb601 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,7 +10,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.6
++pkgver=5.0.8
+ pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+@@ -66,7 +66,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '007-python2-path.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('30163e68a0d89e9f4590aeb61cd237e5'
++md5sums=('8853a2ba183ecf255d0dc19b7584515f'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+diff --git a/trunk/virtualbox-host-dkms.install b/trunk/virtualbox-host-dkms.install
+index 0a9dd4a..3e7a675 100644
+--- a/trunk/virtualbox-host-dkms.install
++++ b/trunk/virtualbox-host-dkms.install
+@@ -18,7 +18,11 @@ pre_upgrade() {
+ # arg 1:  the new package version
+ # arg 2:  the old package version
+ post_upgrade() {
+-  post_install "$1"
++  dkms add vboxhost/${1%-*}
++  cat << EOF
++==> Remember to upgade your running modules
++==> You can do this running vboxreload command as root
++EOF
+ }
+ 
+ # arg 1:  the old package version
+commit 869f6c5e97a3a8f658b0e6dcf54486f15e8ad4e3
+Author: foutrelis <foutrelis@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Tue Nov 10 14:26:41 2015 +0000
+
+    libvpx 1.5.0 rebuild
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@146497 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index c7bb601..067f24b 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.8
+-pkgrel=1
++pkgrel=2
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+commit 0cf607618ff57962732d94d7c4cfae8c4a7840c6
+Author: lcarlier <lcarlier@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Wed Nov 11 18:36:26 2015 +0000
+
+    upgpkg: virtualbox 5.0.8-3
+    
+    xorg 1.18 rebuild
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@146599 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 067f24b..f841a55 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.8
+-pkgrel=2
++pkgrel=3
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -286,7 +286,7 @@ package_virtualbox-guest-utils() {
+     pkgdesc='VirtualBox Guest userspace utilities'
+     depends=('virtualbox-guest-modules' 'glibc' 'pam' 'libx11' 'libxcomposite'
+              'libxdamage' 'libxext' 'libxfixes' 'libxmu' 'libxt' 'xorg-xrandr'
+-             'X-ABI-VIDEODRV_VERSION=19')
++             'X-ABI-VIDEODRV_VERSION=20')
+     optdepends=('virtualbox-guest-dkms: Guest kernel source modules for non-stock kernels')
+     replaces=('virtualbox-archlinux-additions' 'virtualbox-guest-additions')
+     conflicts=('virtualbox-archlinux-additions' 'virtualbox-guest-additions' 'virtualbox-guest-utils-nox')
+commit c1a1602752aae6aac9d7331e91018d7def8d09cc
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Thu Nov 19 18:39:15 2015 +0000
+
+    upgpkg: virtualbox 5.0.10-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@147165 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index f841a55..ebbdbea 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,8 +10,8 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.8
+-pkgrel=3
++pkgver=5.0.10
++pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -66,7 +66,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '007-python2-path.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('8853a2ba183ecf255d0dc19b7584515f'
++md5sums=('b978c28a021d637489beb23f7b1380e2'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+diff --git a/trunk/virtualbox-host-dkms.install b/trunk/virtualbox-host-dkms.install
+index 3e7a675..424a7ff 100644
+--- a/trunk/virtualbox-host-dkms.install
++++ b/trunk/virtualbox-host-dkms.install
+@@ -20,7 +20,7 @@ pre_upgrade() {
+ post_upgrade() {
+   dkms add vboxhost/${1%-*}
+   cat << EOF
+-==> Remember to upgade your running modules
++==> Remember to upgrade your running modules
+ ==> You can do this running vboxreload command as root
+ EOF
+ }
+commit a6ff0e1d5a01729f7ec783dd291461994c3cd296
+Author: foutrelis <foutrelis@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sun Dec 6 19:02:53 2015 +0000
+
+    C++11 ABI rebuild
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@149060 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index ebbdbea..8a42dfd 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.10
+-pkgrel=1
++pkgrel=2
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+commit dabebea5a15bb95b7640be0b8c7b422b94052d9f
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Fri Dec 18 19:21:43 2015 +0000
+
+    upgpkg: virtualbox 5.0.10-3
+    
+    - fix FS#45748
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@153690 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/008-fix-asm-barrier.patch b/trunk/008-fix-asm-barrier.patch
+new file mode 100644
+index 0000000..a185ba8
+--- /dev/null
++++ b/trunk/008-fix-asm-barrier.patch
+@@ -0,0 +1,52 @@
++Index: src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVdma.cpp
++===================================================================
++--- a/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVdma.cpp	(revision 59178)
+++++ b/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVdma.cpp	(revision 59179)
++@@ -1514,6 +1514,8 @@
++ static int vboxWddmVdmaSubmitHgsmi(PVBOXMP_DEVEXT pDevExt, PVBOXVDMAINFO pInfo, HGSMIOFFSET offDr)
++ {
++     VBoxVideoCmnPortWriteUlong(VBoxCommonFromDeviceExt(pDevExt)->guestCtx.port, offDr);
+++    /* Make the compiler aware that the host has changed memory. */
+++    ASMCompilerBarrier();
++     return VINF_SUCCESS;
++ }
++ #define vboxWddmVdmaSubmit vboxWddmVdmaSubmitHgsmi
++Index: src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPMisc.cpp
++===================================================================
++--- a/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPMisc.cpp	(revision 59178)
+++++ b/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPMisc.cpp	(revision 59179)
++@@ -1806,6 +1806,8 @@
++                 if (offCmd != HGSMIOFFSET_VOID)
++                 {
++                     VBoxVideoCmnPortWriteUlong(VBoxCommonFromDeviceExt(pDevExt)->guestCtx.port, offCmd);
+++                    /* Make the compiler aware that the host has changed memory. */
+++                    ASMCompilerBarrier();
++                     rc = VBoxSHGSMICommandDoneSynch(&VBoxCommonFromDeviceExt(pDevExt)->guestCtx.heapCtx, pHdr);
++                     AssertRC(rc);
++                     if (RT_SUCCESS(rc))
++Index: src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVbva.cpp
++===================================================================
++--- a/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVbva.cpp	(revision 59178)
+++++ b/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVbva.cpp	(revision 59179)
++@@ -117,6 +117,8 @@
++ static int vboxCmdVbvaSubmitHgsmi(PHGSMIGUESTCOMMANDCONTEXT pHGSMICtx, HGSMIOFFSET offDr)
++ {
++     VBoxVideoCmnPortWriteUlong(pHGSMICtx->port, offDr);
+++    /* Make the compiler aware that the host has changed memory. */
+++    ASMCompilerBarrier();
++     return VINF_SUCCESS;
++ }
++ #define vboxCmdVbvaSubmit vboxCmdVbvaSubmitHgsmi
++Index: src/VBox/Additions/common/VBoxVideo/HGSMIBase.cpp
++===================================================================
++--- a/src/VBox/Additions/common/VBoxVideo/HGSMIBase.cpp	(revision 59178)
+++++ b/src/VBox/Additions/common/VBoxVideo/HGSMIBase.cpp	(revision 59179)
++@@ -169,6 +169,8 @@
++     {
++         /* Submit the buffer to the host. */
++         VBoxVideoCmnPortWriteUlong(pCtx->port, offBuffer);
+++        /* Make the compiler aware that the host has changed memory. */
+++        ASMCompilerBarrier();
++         return VINF_SUCCESS;
++     }
++ 
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 8a42dfd..b1f6434 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.10
+-pkgrel=2
++pkgrel=3
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -64,6 +64,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '005-gsoap-build.patch'
+         '006-rdesktop-vrdp-keymap-path.patch'
+         '007-python2-path.patch'
++        '008-fix-asm-barrier.patch'
+         '010-no-update.patch'
+         )
+ md5sums=('b978c28a021d637489beb23f7b1380e2'
+@@ -81,6 +82,7 @@ md5sums=('b978c28a021d637489beb23f7b1380e2'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+          'd82a6f19be739341ed7f1cf4ee8070ca'
+          '188ea65918309f737ce28216c2b07c3b'
++         '55e63dadb2269a262d93b544f2d25de1'
+          'dfa08dc682c7668c8a6f0ffc3f44fece')
+ 
+ prepare() {
+commit f61704f81d499deef8bf919a51f1e54e49c98a70
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sat Dec 19 22:57:12 2015 +0000
+
+    upgpkg: virtualbox 5.0.12-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@153734 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/008-fix-asm-barrier.patch b/trunk/008-fix-asm-barrier.patch
+deleted file mode 100644
+index a185ba8..0000000
+--- a/trunk/008-fix-asm-barrier.patch
++++ /dev/null
+@@ -1,52 +0,0 @@
+-Index: src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVdma.cpp
+-===================================================================
+---- a/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVdma.cpp	(revision 59178)
+-+++ b/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVdma.cpp	(revision 59179)
+-@@ -1514,6 +1514,8 @@
+- static int vboxWddmVdmaSubmitHgsmi(PVBOXMP_DEVEXT pDevExt, PVBOXVDMAINFO pInfo, HGSMIOFFSET offDr)
+- {
+-     VBoxVideoCmnPortWriteUlong(VBoxCommonFromDeviceExt(pDevExt)->guestCtx.port, offDr);
+-+    /* Make the compiler aware that the host has changed memory. */
+-+    ASMCompilerBarrier();
+-     return VINF_SUCCESS;
+- }
+- #define vboxWddmVdmaSubmit vboxWddmVdmaSubmitHgsmi
+-Index: src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPMisc.cpp
+-===================================================================
+---- a/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPMisc.cpp	(revision 59178)
+-+++ b/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPMisc.cpp	(revision 59179)
+-@@ -1806,6 +1806,8 @@
+-                 if (offCmd != HGSMIOFFSET_VOID)
+-                 {
+-                     VBoxVideoCmnPortWriteUlong(VBoxCommonFromDeviceExt(pDevExt)->guestCtx.port, offCmd);
+-+                    /* Make the compiler aware that the host has changed memory. */
+-+                    ASMCompilerBarrier();
+-                     rc = VBoxSHGSMICommandDoneSynch(&VBoxCommonFromDeviceExt(pDevExt)->guestCtx.heapCtx, pHdr);
+-                     AssertRC(rc);
+-                     if (RT_SUCCESS(rc))
+-Index: src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVbva.cpp
+-===================================================================
+---- a/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVbva.cpp	(revision 59178)
+-+++ b/src/VBox/Additions/WINNT/Graphics/Video/mp/wddm/VBoxMPVbva.cpp	(revision 59179)
+-@@ -117,6 +117,8 @@
+- static int vboxCmdVbvaSubmitHgsmi(PHGSMIGUESTCOMMANDCONTEXT pHGSMICtx, HGSMIOFFSET offDr)
+- {
+-     VBoxVideoCmnPortWriteUlong(pHGSMICtx->port, offDr);
+-+    /* Make the compiler aware that the host has changed memory. */
+-+    ASMCompilerBarrier();
+-     return VINF_SUCCESS;
+- }
+- #define vboxCmdVbvaSubmit vboxCmdVbvaSubmitHgsmi
+-Index: src/VBox/Additions/common/VBoxVideo/HGSMIBase.cpp
+-===================================================================
+---- a/src/VBox/Additions/common/VBoxVideo/HGSMIBase.cpp	(revision 59178)
+-+++ b/src/VBox/Additions/common/VBoxVideo/HGSMIBase.cpp	(revision 59179)
+-@@ -169,6 +169,8 @@
+-     {
+-         /* Submit the buffer to the host. */
+-         VBoxVideoCmnPortWriteUlong(pCtx->port, offBuffer);
+-+        /* Make the compiler aware that the host has changed memory. */
+-+        ASMCompilerBarrier();
+-         return VINF_SUCCESS;
+-     }
+- 
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index b1f6434..6ec0388 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,8 +10,8 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.10
+-pkgrel=3
++pkgver=5.0.12
++pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -64,10 +64,9 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '005-gsoap-build.patch'
+         '006-rdesktop-vrdp-keymap-path.patch'
+         '007-python2-path.patch'
+-        '008-fix-asm-barrier.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('b978c28a021d637489beb23f7b1380e2'
++md5sums=('5912835882ef547e0559c7e73bc85828'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+@@ -82,16 +81,16 @@ md5sums=('b978c28a021d637489beb23f7b1380e2'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+          'd82a6f19be739341ed7f1cf4ee8070ca'
+          '188ea65918309f737ce28216c2b07c3b'
+-         '55e63dadb2269a262d93b544f2d25de1'
+          'dfa08dc682c7668c8a6f0ffc3f44fece')
+ 
+ prepare() {
+     cd "VirtualBox-$pkgver"
+ 
+-    for _p in "$srcdir"/*.patch; do
+-        [[ -e $_p ]] || continue
+-        msg2 "Appy patch ${_p##*/}"
+-        patch -Np1 -i "$_p"
++    for _f in "${source[@]}"; do
++        [[ "$_f" =~ \.patch$ ]] && {
++            msg2 "Applying patch $_f"
++            patch -p1 -i "$srcdir/$_f"
++        }
+     done
+ 
+     msg2 'Applying local config'
+commit 7e13acf7b02b5a6dc700fbf774d1506049d8ca34
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Tue Jan 26 22:12:38 2016 +0000
+
+    upgpkg: virtualbox 5.0.14-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@158980 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 6ec0388..9a8e33a 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,7 +10,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.12
++pkgver=5.0.14
+ pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+@@ -66,7 +66,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '007-python2-path.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('5912835882ef547e0559c7e73bc85828'
++md5sums=('e0a02426ad09b475e630881efe911423'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+commit a8c9c268b676dab63ad5af67efbe258a33b3544a
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Thu Feb 25 10:09:04 2016 +0000
+
+    upgpkg: virtualbox 5.0.14-2
+    
+    - Drop binary modules packages, use dkms and alpm hooks to build kernel modules.
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@163393 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 9a8e33a..12ca1db3 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.14
+-pkgrel=1
++pkgrel=2
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -75,7 +75,7 @@ md5sums=('e0a02426ad09b475e630881efe911423'
+          '8ba9179c4a3516904417d773816dd992'
+          'fcf6bcef98b16849d5c9f048592739c0'
+          'bc9efed88e0469cd7fc460d5a5cd7b4b'
+-         '44a8e105517a1e04769b50469a87bdcb'
++         'fd3d988c83d33add042544fa9a281923'
+          '9be7e2703afeee1fca9368bd8750e710'
+          '9e49bbaa2192b141c27ee43cef8cbab7'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+@@ -131,13 +131,12 @@ package_virtualbox() {
+     depends=('glibc' 'openssl' 'curl' 'gcc-libs' 'libpng' 'python2' 'sdl'
+              'libvpx' 'libxml2' 'procps-ng' 'shared-mime-info' 'zlib'
+              'libxcursor' 'libxinerama' 'libx11' 'libxext' 'libxmu' 'libxt'
+-             'virtualbox-host-modules')
++             'virtualbox-host-dkms')
+     optdepends=('qt4: GUI support'
+                 'vde2: Virtual Distributed Ethernet support'
+                 'virtualbox-guest-iso: Guest Additions CD image'
+                 'virtualbox-ext-vnc: VNC server support'
+                 'virtualbox-sdk: Developer kit'
+-                'virtualbox-host-dkms: Build kernel modules with DKMS'
+                 'net-tools: Host-only or bridged networking support')
+     backup=('etc/vbox/vbox.cfg')
+     replaces=('virtualbox-ose')
+@@ -239,7 +238,7 @@ package_virtualbox-sdk() {
+     VBOX_INSTALL_PATH="/usr/lib/virtualbox" python2 vboxapisetup.py install --root "$pkgdir"
+     popd
+     rm -rf sdk/installer
+-    mv sdk "$pkgdir/usr/lib/virtualbox"
++    cp -r sdk "$pkgdir/usr/lib/virtualbox"
+     # licence
+     install -Dm644 "$srcdir/VirtualBox-$pkgver/COPYING" \
+         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+@@ -248,17 +247,15 @@ package_virtualbox-sdk() {
+ package_virtualbox-host-dkms() {
+     pkgdesc='VirtualBox Host kernel modules sources'
+     depends=('dkms' 'gcc' 'make')
+-    provides=('virtualbox-host-modules')
+     replaces=('virtualbox-source' 'virtualbox-host-source')
+     conflicts=('virtualbox-source' 'virtualbox-host-source')
+     optdepends=('linux-headers'
+                 'linux-lts-headers')
+-    install=virtualbox-host-dkms.install
+ 
+     install -dm755 "$pkgdir/usr/src"
+     source "VirtualBox-$pkgver/env.sh"
+     cd "VirtualBox-$pkgver/out/linux.$BUILD_PLATFORM_ARCH/release/bin"
+-    cp -r src "$pkgdir/usr/src/vboxhost-$pkgver"
++    cp -r src "$pkgdir/usr/src/vboxhost-${pkgver}_OSE"
+     # licence
+     install -Dm644 "$srcdir/VirtualBox-$pkgver/COPYING" \
+         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+@@ -267,17 +264,15 @@ package_virtualbox-host-dkms() {
+ package_virtualbox-guest-dkms() {
+     pkgdesc='VirtualBox Guest kernel modules sources'
+     depends=('dkms' 'gcc' 'make')
+-    provides=('virtualbox-guest-modules')
+     replaces=('virtualbox-archlinux-source' 'virtualbox-guest-source')
+     conflicts=('virtualbox-archlinux-source' 'virtualbox-guest-source')
+     optdepends=('linux-headers'
+                 'linux-lts-headers')
+-    install=virtualbox-guest-dkms.install
+ 
+     install -dm755 "$pkgdir/usr/src"
+     source "VirtualBox-$pkgver/env.sh"
+     cd "VirtualBox-$pkgver/out/linux.$BUILD_PLATFORM_ARCH/release/bin/additions"
+-    cp -r src "$pkgdir/usr/src/vboxguest-$pkgver"
++    cp -r src "$pkgdir/usr/src/vboxguest-${pkgver}_OSE"
+     # licence
+     install -Dm644 "$srcdir/VirtualBox-$pkgver/COPYING" \
+         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+@@ -285,10 +280,9 @@ package_virtualbox-guest-dkms() {
+ 
+ package_virtualbox-guest-utils() {
+     pkgdesc='VirtualBox Guest userspace utilities'
+-    depends=('virtualbox-guest-modules' 'glibc' 'pam' 'libx11' 'libxcomposite'
++    depends=('virtualbox-guest-dkms' 'glibc' 'pam' 'libx11' 'libxcomposite'
+              'libxdamage' 'libxext' 'libxfixes' 'libxmu' 'libxt' 'xorg-xrandr'
+              'X-ABI-VIDEODRV_VERSION=20')
+-    optdepends=('virtualbox-guest-dkms: Guest kernel source modules for non-stock kernels')
+     replaces=('virtualbox-archlinux-additions' 'virtualbox-guest-additions')
+     conflicts=('virtualbox-archlinux-additions' 'virtualbox-guest-additions' 'virtualbox-guest-utils-nox')
+     install=virtualbox-guest-utils.install
+@@ -318,8 +312,7 @@ package_virtualbox-guest-utils() {
+ 
+ package_virtualbox-guest-utils-nox() {
+     pkgdesc='VirtualBox Guest userspace utilities without X support'
+-    depends=('virtualbox-guest-modules' 'glibc' 'pam')
+-    optdepends=('virtualbox-guest-dkms: Guest kernel source modules for non-stock kernels')
++    depends=('virtualbox-guest-dkms' 'glibc' 'pam')
+     conflicts=('virtualbox-guest-utils')
+     install=virtualbox-guest-utils.install
+ 
+diff --git a/trunk/vboxreload b/trunk/vboxreload
+index 8204056..6af3746 100755
+--- a/trunk/vboxreload
++++ b/trunk/vboxreload
+@@ -2,7 +2,7 @@
+ 
+ # vboxreload: shortcut to reload virtualbox modules with DKMS support
+ #
+-# Copyright © 2013 Sébastien Luttringer
++# Copyright © 2016 Sébastien Luttringer
+ #
+ # This program is free software; you can redistribute it and/or
+ # modify it under the terms of the GNU General Public License
+@@ -28,11 +28,6 @@ for _m in "${modules[@]}"; do
+ done
+ echo
+ 
+-if type -P dkms >/dev/null; then
+-  echo 'DKMS autoinstall'
+-  dkms autoinstall
+-fi
+-
+ echo -n 'Loading modules: '
+ for _m in "${modules[@]}"; do
+   modprobe "$_m" && echo -n "$_m "
+diff --git a/trunk/virtualbox-guest-dkms.install b/trunk/virtualbox-guest-dkms.install
+deleted file mode 100644
+index b0b2a17..0000000
+--- a/trunk/virtualbox-guest-dkms.install
++++ /dev/null
+@@ -1,30 +0,0 @@
+-#!/bin/sh
+-
+-# arg 1:  the new package version
+-post_install() {
+-  dkms add vboxguest/${1%-*}
+-  cat << EOF
+-==> To build and install your modules run: dkms install vboxguest/${1%-*}
+-==> To do this automatically at startup run: systemctl enable dkms.service
+-EOF
+-}
+-
+-# arg 1:  the new package version
+-# arg 2:  the old package version
+-pre_upgrade() {
+-  pre_remove "$2"
+-}
+-
+-# arg 1:  the new package version
+-# arg 2:  the old package version
+-post_upgrade() {
+-  post_install "$1"
+-}
+-
+-# arg 1:  the old package version
+-pre_remove() {
+-  # Remove modules using dkms
+-  [ -n "${1%-*}" ] && dkms remove vboxguest/${1%-*} --all &>/dev/null || true
+-}
+-
+-# vim:set ts=2 sw=2 ft=sh et:
+diff --git a/trunk/virtualbox-host-dkms.install b/trunk/virtualbox-host-dkms.install
+deleted file mode 100644
+index 424a7ff..0000000
+--- a/trunk/virtualbox-host-dkms.install
++++ /dev/null
+@@ -1,34 +0,0 @@
+-#/bin/sh
+-
+-# arg 1:  the new package version
+-post_install() {
+-  dkms add vboxhost/${1%-*}
+-  cat << EOF
+-==> To build and install your modules run: dkms install vboxhost/${1%-*}
+-==> To do this automatically at startup run: systemctl enable dkms.service
+-EOF
+-}
+-
+-# arg 1:  the new package version
+-# arg 2:  the old package version
+-pre_upgrade() {
+-  pre_remove "$2"
+-}
+-
+-# arg 1:  the new package version
+-# arg 2:  the old package version
+-post_upgrade() {
+-  dkms add vboxhost/${1%-*}
+-  cat << EOF
+-==> Remember to upgrade your running modules
+-==> You can do this running vboxreload command as root
+-EOF
+-}
+-
+-# arg 1:  the old package version
+-pre_remove() {
+-  # Remove modules using dkms
+-  [ -n "${1%-*}" ] && dkms remove vboxhost/${1%-*} --all &>/dev/null || true
+-}
+-
+-# vim:set ts=2 sw=2 ft=sh et:
+commit cd5065cf8fbb695b369250649da4ed479e805166
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sat Feb 27 02:39:31 2016 +0000
+
+    upgpkg: virtualbox 5.0.14-3
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@163543 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 12ca1db3..b111aee 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.14
+-pkgrel=2
++pkgrel=3
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -247,7 +247,7 @@ package_virtualbox-sdk() {
+ package_virtualbox-host-dkms() {
+     pkgdesc='VirtualBox Host kernel modules sources'
+     depends=('dkms' 'gcc' 'make')
+-    replaces=('virtualbox-source' 'virtualbox-host-source')
++    replaces=('virtualbox-source' 'virtualbox-host-source' 'virtualbox-host-modules')
+     conflicts=('virtualbox-source' 'virtualbox-host-source')
+     optdepends=('linux-headers'
+                 'linux-lts-headers')
+@@ -264,7 +264,7 @@ package_virtualbox-host-dkms() {
+ package_virtualbox-guest-dkms() {
+     pkgdesc='VirtualBox Guest kernel modules sources'
+     depends=('dkms' 'gcc' 'make')
+-    replaces=('virtualbox-archlinux-source' 'virtualbox-guest-source')
++    replaces=('virtualbox-archlinux-source' 'virtualbox-guest-source' 'virtualbox-guest-modules')
+     conflicts=('virtualbox-archlinux-source' 'virtualbox-guest-source')
+     optdepends=('linux-headers'
+                 'linux-lts-headers')
+commit c34624cc70413e96c8f196902aae79de256df3bc
+Author: foutrelis <foutrelis@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Fri Mar 4 21:52:24 2016 +0000
+
+    OpenSSL 1.0.2g rebuild
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@164865 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index b111aee..5bb83d8 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.14
+-pkgrel=3
++pkgrel=4
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+commit b79afc2b72b306753b75ec600e1757e77735abf9
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sat Mar 12 18:50:54 2016 +0000
+
+    upgpkg: virtualbox 5.0.16-1
+    
+    - load kernel modules via systemd-modules-load
+    - add others kernels in makedepends and a better description
+    - fix FS#48523
+    - display a message that we have moved modules to dkms (still in discutions in a-d-p@al.org)
+    - vbox-*-dkms: temporary pull linux-headers until FS#48498
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@166426 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 5bb83d8..5b08321 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,8 +10,8 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.14
+-pkgrel=4
++pkgver=5.0.16
++pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -66,7 +66,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '007-python2-path.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('e0a02426ad09b475e630881efe911423'
++md5sums=('1752a485b1cb377cee5f196918cda741'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+@@ -246,11 +246,16 @@ package_virtualbox-sdk() {
+ 
+ package_virtualbox-host-dkms() {
+     pkgdesc='VirtualBox Host kernel modules sources'
+-    depends=('dkms' 'gcc' 'make')
+-    replaces=('virtualbox-source' 'virtualbox-host-source' 'virtualbox-host-modules')
++    depends=('dkms' 'gcc' 'make' 'linux-headers')
++    replaces=('virtualbox-source'
++              'virtualbox-host-source'
++              'virtualbox-host-modules'
++              'virtualbox-host-modules-lts')
+     conflicts=('virtualbox-source' 'virtualbox-host-source')
+-    optdepends=('linux-headers'
+-                'linux-lts-headers')
++    optdepends=('linux-headers: build modules against Arch kernel'
++                'linux-lts-headers: build modules against LTS Arch kernel'
++                'linux-zen-headers: build modules against ZEN Arch kernel'
++                'linux-grsec-headers: build modules against GRSEC Arch kernel')
+ 
+     install -dm755 "$pkgdir/usr/src"
+     source "VirtualBox-$pkgver/env.sh"
+@@ -259,15 +264,25 @@ package_virtualbox-host-dkms() {
+     # licence
+     install -Dm644 "$srcdir/VirtualBox-$pkgver/COPYING" \
+         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
++    # module loading
++    install -Dm644 /dev/null \
++        "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
++    echo "vboxnetadp\nvboxnetflt\nvboxdrv\n" > \
++        "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+ }
+ 
+ package_virtualbox-guest-dkms() {
+     pkgdesc='VirtualBox Guest kernel modules sources'
+-    depends=('dkms' 'gcc' 'make')
+-    replaces=('virtualbox-archlinux-source' 'virtualbox-guest-source' 'virtualbox-guest-modules')
++    depends=('dkms' 'gcc' 'make' 'linux-headers')
++    replaces=('virtualbox-archlinux-source'
++              'virtualbox-guest-source'
++              'virtualbox-guest-modules'
++              'virtualbox-guest-modules-lts')
+     conflicts=('virtualbox-archlinux-source' 'virtualbox-guest-source')
+-    optdepends=('linux-headers'
+-                'linux-lts-headers')
++    optdepends=('linux-headers: build modules against Arch kernel'
++                'linux-lts-headers: build modules against LTS Arch kernel'
++                'linux-zen-headers: build modules against ZEN Arch kernel'
++                'linux-grsec-headers: build modules against GRSEC Arch kernel')
+ 
+     install -dm755 "$pkgdir/usr/src"
+     source "VirtualBox-$pkgver/env.sh"
+@@ -276,6 +291,11 @@ package_virtualbox-guest-dkms() {
+     # licence
+     install -Dm644 "$srcdir/VirtualBox-$pkgver/COPYING" \
+         "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
++    # module loading
++    install -Dm644 /dev/null \
++        "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
++    echo "vboxnetadp\nvboxsf\nvboxguest\n" > \
++        "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+ }
+ 
+ package_virtualbox-guest-utils() {
+diff --git a/trunk/virtualbox.install b/trunk/virtualbox.install
+index 20a66d7..2b89db9 100644
+--- a/trunk/virtualbox.install
++++ b/trunk/virtualbox.install
+@@ -28,6 +28,10 @@ post_install() {
+ # arg 2:  the old package version
+ post_upgrade() {
+   post_install "$1"
++  if (( $(vercmp $2 5.0.16-1) < 0 )); then
++    echo '==> Since version 5.0.14-2 kernel modules are provided via dkms'
++    echo '==> Check you have the headers matching your kernel installed'
++  fi
+ }
+ 
+ # arg 1:  the old package version
+commit 3892415c05b474c6ffd293eaa88dece6877e5b5f
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sun Mar 13 12:18:18 2016 +0000
+
+    Unify my way of patching
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@166538 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 5b08321..0cbf1c6 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -89,7 +89,7 @@ prepare() {
+     for _f in "${source[@]}"; do
+         [[ "$_f" =~ \.patch$ ]] && {
+             msg2 "Applying patch $_f"
+-            patch -p1 -i "$srcdir/$_f"
++            patch -p1 -N -i "$srcdir/$_f"
+         }
+     done
+ 
+commit 37524a431b6a1a25ff22172f8bc6269a7febbd77
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sun Mar 13 13:29:35 2016 +0000
+
+    upgpkg: virtualbox 5.0.16-2
+    
+    - fix FS#48551
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@166540 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 0cbf1c6..9a0a00f 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.16
+-pkgrel=1
++pkgrel=2
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -267,7 +267,7 @@ package_virtualbox-host-dkms() {
+     # module loading
+     install -Dm644 /dev/null \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+-    echo "vboxnetadp\nvboxnetflt\nvboxdrv\n" > \
++    printf "vboxnetadp\nvboxnetflt\nvboxdrv\n" > \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+ }
+ 
+@@ -294,7 +294,7 @@ package_virtualbox-guest-dkms() {
+     # module loading
+     install -Dm644 /dev/null \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+-    echo "vboxnetadp\nvboxsf\nvboxguest\n" > \
++    printf "vboxnetadp\nvboxsf\nvboxguest\n" > \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+ }
+ 
+commit 3fe996a48f6d1b21697d550f766f3db8c2af511a
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sun Mar 13 21:21:28 2016 +0000
+
+    upgpkg: virtualbox 5.0.16-3
+    
+    - put sheebang to bash because of bashish in *.install files
+    - display a notification about the change of loading modules use systemd-modules-load
+    - fix description in vboxreload
+    - do not depends on linux-headers
+    - fix FS#48566
+    - add vboxvideo modules for guest
+    - fix modules loading ordering
+    - update patching snippet to last version
+    - fix optdeps kernels description
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@166559 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 9a0a00f..31d9946 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.16
+-pkgrel=2
++pkgrel=3
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -75,7 +75,7 @@ md5sums=('1752a485b1cb377cee5f196918cda741'
+          '8ba9179c4a3516904417d773816dd992'
+          'fcf6bcef98b16849d5c9f048592739c0'
+          'bc9efed88e0469cd7fc460d5a5cd7b4b'
+-         'fd3d988c83d33add042544fa9a281923'
++         '0bab94ff2f4835fd907f89eb23ebbe21'
+          '9be7e2703afeee1fca9368bd8750e710'
+          '9e49bbaa2192b141c27ee43cef8cbab7'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+@@ -86,11 +86,13 @@ md5sums=('1752a485b1cb377cee5f196918cda741'
+ prepare() {
+     cd "VirtualBox-$pkgver"
+ 
+-    for _f in "${source[@]}"; do
+-        [[ "$_f" =~ \.patch$ ]] && {
+-            msg2 "Applying patch $_f"
+-            patch -p1 -N -i "$srcdir/$_f"
+-        }
++    # apply patch from the source array (should be a pacman feature)
++    local filename
++    for filename in "${source[@]}"; do
++        if [[ "$filename" =~ \.patch$ ]]; then
++            msg2 "Applying patch $filename"
++            patch -p1 -N -i "$srcdir/$filename"
++        fi
+     done
+ 
+     msg2 'Applying local config'
+@@ -246,16 +248,17 @@ package_virtualbox-sdk() {
+ 
+ package_virtualbox-host-dkms() {
+     pkgdesc='VirtualBox Host kernel modules sources'
+-    depends=('dkms' 'gcc' 'make' 'linux-headers')
++    depends=('dkms' 'gcc' 'make')
+     replaces=('virtualbox-source'
+               'virtualbox-host-source'
+               'virtualbox-host-modules'
+               'virtualbox-host-modules-lts')
+     conflicts=('virtualbox-source' 'virtualbox-host-source')
+     optdepends=('linux-headers: build modules against Arch kernel'
+-                'linux-lts-headers: build modules against LTS Arch kernel'
+-                'linux-zen-headers: build modules against ZEN Arch kernel'
+-                'linux-grsec-headers: build modules against GRSEC Arch kernel')
++                'linux-lts-headers: build modules against LTS kernel'
++                'linux-zen-headers: build modules against ZEN kernel'
++                'linux-grsec-headers: build modules against GRSEC kernel')
++    install=virtualbox-host-dkms.install
+ 
+     install -dm755 "$pkgdir/usr/src"
+     source "VirtualBox-$pkgver/env.sh"
+@@ -267,22 +270,23 @@ package_virtualbox-host-dkms() {
+     # module loading
+     install -Dm644 /dev/null \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+-    printf "vboxnetadp\nvboxnetflt\nvboxdrv\n" > \
++    printf "vboxdrv\nvboxpci\nvboxnetadp\nvboxnetflt\n" > \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+ }
+ 
+ package_virtualbox-guest-dkms() {
+     pkgdesc='VirtualBox Guest kernel modules sources'
+-    depends=('dkms' 'gcc' 'make' 'linux-headers')
++    depends=('dkms' 'gcc' 'make')
+     replaces=('virtualbox-archlinux-source'
+               'virtualbox-guest-source'
+               'virtualbox-guest-modules'
+               'virtualbox-guest-modules-lts')
+     conflicts=('virtualbox-archlinux-source' 'virtualbox-guest-source')
+     optdepends=('linux-headers: build modules against Arch kernel'
+-                'linux-lts-headers: build modules against LTS Arch kernel'
+-                'linux-zen-headers: build modules against ZEN Arch kernel'
+-                'linux-grsec-headers: build modules against GRSEC Arch kernel')
++                'linux-lts-headers: build modules against LTS kernel'
++                'linux-zen-headers: build modules against ZEN kernel'
++                'linux-grsec-headers: build modules against GRSEC kernel')
++    install=virtualbox-guest-dkms.install
+ 
+     install -dm755 "$pkgdir/usr/src"
+     source "VirtualBox-$pkgver/env.sh"
+@@ -294,7 +298,7 @@ package_virtualbox-guest-dkms() {
+     # module loading
+     install -Dm644 /dev/null \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+-    printf "vboxnetadp\nvboxsf\nvboxguest\n" > \
++    printf "vboxguest\nvboxsf\nvboxvideo\n" > \
+         "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+ }
+ 
+diff --git a/trunk/vboxreload b/trunk/vboxreload
+index 6af3746..04b6e7b 100755
+--- a/trunk/vboxreload
++++ b/trunk/vboxreload
+@@ -1,6 +1,6 @@
+ #!/bin/bash
+ 
+-# vboxreload: shortcut to reload virtualbox modules with DKMS support
++# vboxreload: shortcut to reload virtualbox host modules
+ #
+ # Copyright © 2016 Sébastien Luttringer
+ #
+diff --git a/trunk/virtualbox-ext-vnc.install b/trunk/virtualbox-ext-vnc.install
+index 828a16a..624cc20 100644
+--- a/trunk/virtualbox-ext-vnc.install
++++ b/trunk/virtualbox-ext-vnc.install
+@@ -1,4 +1,4 @@
+-#/bin/sh
++#/bin/bash
+ 
+ # arg 1:  the new package version
+ post_install() {
+diff --git a/trunk/virtualbox-guest-dkms.install b/trunk/virtualbox-guest-dkms.install
+new file mode 100644
+index 0000000..e15beac
+--- /dev/null
++++ b/trunk/virtualbox-guest-dkms.install
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++# arg 1:  the new package version
++# arg 2:  the old package version
++post_upgrade() {
++  if (( $(vercmp $2 5.0.16-3) < 0 )); then
++    echo '==> Since version 5.0.16-2 kernel modules are loaded at boot by systemd-modules-load.'
++    echo '==> Read modules-load.d man page to disable them.'
++  fi
++}
++
++# vim:set ts=2 sw=2 ft=sh et:
+diff --git a/trunk/virtualbox-guest-utils.install b/trunk/virtualbox-guest-utils.install
+index f9aa0d3..6c65ee2 100644
+--- a/trunk/virtualbox-guest-utils.install
++++ b/trunk/virtualbox-guest-utils.install
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ # arg 1:  the new package version
+ post_install() {
+diff --git a/trunk/virtualbox-host-dkms.install b/trunk/virtualbox-host-dkms.install
+new file mode 100644
+index 0000000..e15beac
+--- /dev/null
++++ b/trunk/virtualbox-host-dkms.install
+@@ -0,0 +1,12 @@
++#!/bin/bash
++
++# arg 1:  the new package version
++# arg 2:  the old package version
++post_upgrade() {
++  if (( $(vercmp $2 5.0.16-3) < 0 )); then
++    echo '==> Since version 5.0.16-2 kernel modules are loaded at boot by systemd-modules-load.'
++    echo '==> Read modules-load.d man page to disable them.'
++  fi
++}
++
++# vim:set ts=2 sw=2 ft=sh et:
+diff --git a/trunk/virtualbox.install b/trunk/virtualbox.install
+index 2b89db9..df39c4e 100644
+--- a/trunk/virtualbox.install
++++ b/trunk/virtualbox.install
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ utils() {
+   if [ -x usr/bin/update-mime-database ]; then
+commit debf335ec3c2dbb1f3bf80881020e23e3a530d05
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sun Apr 17 22:11:27 2016 +0000
+
+    upgpkg: virtualbox 5.0.16-4
+    
+    - remove linux-grsec suggestion for dkms packages
+    - use a virtual package to pull virtualbox modules
+    - fix FS#48598
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@171273 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/11-kernel-4.5-drm-fixes.patch b/trunk/11-kernel-4.5-drm-fixes.patch
+new file mode 100644
+index 0000000..0f3153b
+--- /dev/null
++++ b/trunk/11-kernel-4.5-drm-fixes.patch
+@@ -0,0 +1,55 @@
++Index: src/VBox/Additions/linux/drm/vbox_drv.h
++===================================================================
++--- a/src/VBox/Additions/linux/drm/vbox_drv.h	(revision 60057)
+++++ b/src/VBox/Additions/linux/drm/vbox_drv.h	(revision 60058)
++@@ -205,6 +205,9 @@
++ 
++ int vbox_framebuffer_init(struct drm_device *dev,
++              struct vbox_framebuffer *vbox_fb,
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+++             const
+++#endif
++              struct DRM_MODE_FB_CMD *mode_cmd,
++              struct drm_gem_object *obj);
++ 
++Index: src/VBox/Additions/linux/drm/vbox_main.c
++===================================================================
++--- a/src/VBox/Additions/linux/drm/vbox_main.c	(revision 60057)
+++++ b/src/VBox/Additions/linux/drm/vbox_main.c	(revision 60058)
++@@ -168,6 +168,9 @@
++ 
++ int vbox_framebuffer_init(struct drm_device *dev,
++              struct vbox_framebuffer *vbox_fb,
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+++             const
+++#endif
++              struct DRM_MODE_FB_CMD *mode_cmd,
++              struct drm_gem_object *obj)
++ {
++@@ -190,6 +193,9 @@
++ static struct drm_framebuffer *
++ vbox_user_framebuffer_create(struct drm_device *dev,
++            struct drm_file *filp,
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+++           const
+++#endif
++            struct drm_mode_fb_cmd2 *mode_cmd)
++ {
++     struct drm_gem_object *obj;
++Index: src/VBox/Additions/linux/drm/vbox_mode.c
++===================================================================
++--- a/src/VBox/Additions/linux/drm/vbox_mode.c	(revision 60057)
+++++ b/src/VBox/Additions/linux/drm/vbox_mode.c	(revision 60058)
++@@ -409,7 +409,11 @@
++         return NULL;
++ 
++     drm_encoder_init(dev, &vbox_encoder->base, &vbox_enc_funcs,
++-             DRM_MODE_ENCODER_DAC);
+++                     DRM_MODE_ENCODER_DAC
+++#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+++                     , NULL
+++#endif
+++                     );
++     drm_encoder_helper_add(&vbox_encoder->base, &vbox_enc_helper_funcs);
++ 
++     vbox_encoder->base.possible_crtcs = 1 << i;
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 31d9946..0a4eb39 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -11,7 +11,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+ pkgver=5.0.16
+-pkgrel=3
++pkgrel=4
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -65,6 +65,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '006-rdesktop-vrdp-keymap-path.patch'
+         '007-python2-path.patch'
+         '010-no-update.patch'
++        '11-kernel-4.5-drm-fixes.patch'
+         )
+ md5sums=('1752a485b1cb377cee5f196918cda741'
+          '984412a63aa9c07ddc3cfd970381d5df'
+@@ -81,7 +82,8 @@ md5sums=('1752a485b1cb377cee5f196918cda741'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+          'd82a6f19be739341ed7f1cf4ee8070ca'
+          '188ea65918309f737ce28216c2b07c3b'
+-         'dfa08dc682c7668c8a6f0ffc3f44fece')
++         'dfa08dc682c7668c8a6f0ffc3f44fece'
++         '67fdd1ff4b027ea52d895183c946b962')
+ 
+ prepare() {
+     cd "VirtualBox-$pkgver"
+@@ -133,7 +135,7 @@ package_virtualbox() {
+     depends=('glibc' 'openssl' 'curl' 'gcc-libs' 'libpng' 'python2' 'sdl'
+              'libvpx' 'libxml2' 'procps-ng' 'shared-mime-info' 'zlib'
+              'libxcursor' 'libxinerama' 'libx11' 'libxext' 'libxmu' 'libxt'
+-             'virtualbox-host-dkms')
++             'VIRTUALBOX-HOST-MODULES')
+     optdepends=('qt4: GUI support'
+                 'vde2: Virtual Distributed Ethernet support'
+                 'virtualbox-guest-iso: Guest Additions CD image'
+@@ -251,13 +253,12 @@ package_virtualbox-host-dkms() {
+     depends=('dkms' 'gcc' 'make')
+     replaces=('virtualbox-source'
+               'virtualbox-host-source'
+-              'virtualbox-host-modules'
+               'virtualbox-host-modules-lts')
+     conflicts=('virtualbox-source' 'virtualbox-host-source')
++    provides=('VIRTUALBOX-HOST-MODULES')
+     optdepends=('linux-headers: build modules against Arch kernel'
+                 'linux-lts-headers: build modules against LTS kernel'
+-                'linux-zen-headers: build modules against ZEN kernel'
+-                'linux-grsec-headers: build modules against GRSEC kernel')
++                'linux-zen-headers: build modules against ZEN kernel')
+     install=virtualbox-host-dkms.install
+ 
+     install -dm755 "$pkgdir/usr/src"
+@@ -279,13 +280,12 @@ package_virtualbox-guest-dkms() {
+     depends=('dkms' 'gcc' 'make')
+     replaces=('virtualbox-archlinux-source'
+               'virtualbox-guest-source'
+-              'virtualbox-guest-modules'
+               'virtualbox-guest-modules-lts')
++    provides=('VIRTUALBOX-GUEST-MODULES')
+     conflicts=('virtualbox-archlinux-source' 'virtualbox-guest-source')
+     optdepends=('linux-headers: build modules against Arch kernel'
+                 'linux-lts-headers: build modules against LTS kernel'
+-                'linux-zen-headers: build modules against ZEN kernel'
+-                'linux-grsec-headers: build modules against GRSEC kernel')
++                'linux-zen-headers: build modules against ZEN kernel')
+     install=virtualbox-guest-dkms.install
+ 
+     install -dm755 "$pkgdir/usr/src"
+@@ -304,9 +304,9 @@ package_virtualbox-guest-dkms() {
+ 
+ package_virtualbox-guest-utils() {
+     pkgdesc='VirtualBox Guest userspace utilities'
+-    depends=('virtualbox-guest-dkms' 'glibc' 'pam' 'libx11' 'libxcomposite'
++    depends=('glibc' 'pam' 'libx11' 'libxcomposite'
+              'libxdamage' 'libxext' 'libxfixes' 'libxmu' 'libxt' 'xorg-xrandr'
+-             'X-ABI-VIDEODRV_VERSION=20')
++             'VIRTUALBOX-GUEST-MODULES' 'X-ABI-VIDEODRV_VERSION=20')
+     replaces=('virtualbox-archlinux-additions' 'virtualbox-guest-additions')
+     conflicts=('virtualbox-archlinux-additions' 'virtualbox-guest-additions' 'virtualbox-guest-utils-nox')
+     install=virtualbox-guest-utils.install
+@@ -336,7 +336,7 @@ package_virtualbox-guest-utils() {
+ 
+ package_virtualbox-guest-utils-nox() {
+     pkgdesc='VirtualBox Guest userspace utilities without X support'
+-    depends=('virtualbox-guest-dkms' 'glibc' 'pam')
++    depends=('glibc' 'pam' 'VIRTUALBOX-GUEST-MODULES')
+     conflicts=('virtualbox-guest-utils')
+     install=virtualbox-guest-utils.install
+ 
+commit 98d48838dbd563e4d1d4fa1cf82e5b33ee6db321
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sat Apr 23 16:02:08 2016 +0000
+
+    upgpkg: virtualbox 5.0.18-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@171631 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/11-kernel-4.5-drm-fixes.patch b/trunk/11-kernel-4.5-drm-fixes.patch
+deleted file mode 100644
+index 0f3153b..0000000
+--- a/trunk/11-kernel-4.5-drm-fixes.patch
++++ /dev/null
+@@ -1,55 +0,0 @@
+-Index: src/VBox/Additions/linux/drm/vbox_drv.h
+-===================================================================
+---- a/src/VBox/Additions/linux/drm/vbox_drv.h	(revision 60057)
+-+++ b/src/VBox/Additions/linux/drm/vbox_drv.h	(revision 60058)
+-@@ -205,6 +205,9 @@
+- 
+- int vbox_framebuffer_init(struct drm_device *dev,
+-              struct vbox_framebuffer *vbox_fb,
+-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+-+             const
+-+#endif
+-              struct DRM_MODE_FB_CMD *mode_cmd,
+-              struct drm_gem_object *obj);
+- 
+-Index: src/VBox/Additions/linux/drm/vbox_main.c
+-===================================================================
+---- a/src/VBox/Additions/linux/drm/vbox_main.c	(revision 60057)
+-+++ b/src/VBox/Additions/linux/drm/vbox_main.c	(revision 60058)
+-@@ -168,6 +168,9 @@
+- 
+- int vbox_framebuffer_init(struct drm_device *dev,
+-              struct vbox_framebuffer *vbox_fb,
+-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+-+             const
+-+#endif
+-              struct DRM_MODE_FB_CMD *mode_cmd,
+-              struct drm_gem_object *obj)
+- {
+-@@ -190,6 +193,9 @@
+- static struct drm_framebuffer *
+- vbox_user_framebuffer_create(struct drm_device *dev,
+-            struct drm_file *filp,
+-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+-+           const
+-+#endif
+-            struct drm_mode_fb_cmd2 *mode_cmd)
+- {
+-     struct drm_gem_object *obj;
+-Index: src/VBox/Additions/linux/drm/vbox_mode.c
+-===================================================================
+---- a/src/VBox/Additions/linux/drm/vbox_mode.c	(revision 60057)
+-+++ b/src/VBox/Additions/linux/drm/vbox_mode.c	(revision 60058)
+-@@ -409,7 +409,11 @@
+-         return NULL;
+- 
+-     drm_encoder_init(dev, &vbox_encoder->base, &vbox_enc_funcs,
+--             DRM_MODE_ENCODER_DAC);
+-+                     DRM_MODE_ENCODER_DAC
+-+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 5, 0)
+-+                     , NULL
+-+#endif
+-+                     );
+-     drm_encoder_helper_add(&vbox_encoder->base, &vbox_enc_helper_funcs);
+- 
+-     vbox_encoder->base.possible_crtcs = 1 << i;
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 0a4eb39..a20ddc1 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,8 +10,8 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.16
+-pkgrel=4
++pkgver=5.0.18
++pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+ license=('GPL' 'custom')
+@@ -65,9 +65,8 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '006-rdesktop-vrdp-keymap-path.patch'
+         '007-python2-path.patch'
+         '010-no-update.patch'
+-        '11-kernel-4.5-drm-fixes.patch'
+         )
+-md5sums=('1752a485b1cb377cee5f196918cda741'
++md5sums=('5d57e400f4ab75696510aef308f6c7a9'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+@@ -82,8 +81,7 @@ md5sums=('1752a485b1cb377cee5f196918cda741'
+          'ecfd13297d7753ebe7b8763ca5b792d9'
+          'd82a6f19be739341ed7f1cf4ee8070ca'
+          '188ea65918309f737ce28216c2b07c3b'
+-         'dfa08dc682c7668c8a6f0ffc3f44fece'
+-         '67fdd1ff4b027ea52d895183c946b962')
++         'dfa08dc682c7668c8a6f0ffc3f44fece')
+ 
+ prepare() {
+     cd "VirtualBox-$pkgver"
+commit c40313d757902a2165ec4cffd364278374883320
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sun May 1 00:37:20 2016 +0000
+
+    upgpkg: virtualbox 5.0.20-1
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@173213 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index a20ddc1..3f456f8 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -10,7 +10,7 @@ pkgname=('virtualbox'
+          'virtualbox-guest-utils'
+          'virtualbox-guest-utils-nox'
+          'virtualbox-ext-vnc')
+-pkgver=5.0.18
++pkgver=5.0.20
+ pkgrel=1
+ arch=('i686' 'x86_64')
+ url='http://virtualbox.org'
+@@ -66,7 +66,7 @@ source=("http://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.ta
+         '007-python2-path.patch'
+         '010-no-update.patch'
+         )
+-md5sums=('5d57e400f4ab75696510aef308f6c7a9'
++md5sums=('2054e12c21cac025916df4162f18efd7'
+          '984412a63aa9c07ddc3cfd970381d5df'
+          '4833c8e0524fd2272b24ba0d94aef006'
+          '6e2722bfd7013c1b0174382626ac1b8d'
+commit 5f9a92bf093583920f930a1e03b1b021ff14d18a
+Author: seblu <seblu@9fca08f4-af9d-4005-b8df-a31f2cc04f65>
+Date:   Sat May 14 13:20:54 2016 +0000
+
+    https://www.archlinux.org/todo/hooks-part-1/
+    
+    git-svn-id: file:///srv/repos/svn-community/svn@175354 9fca08f4-af9d-4005-b8df-a31f2cc04f65
+
+diff --git a/trunk/virtualbox.install b/trunk/virtualbox.install
+index df39c4e..158e236c 100644
+--- a/trunk/virtualbox.install
++++ b/trunk/virtualbox.install
+@@ -1,42 +1,15 @@
+-#!/bin/bash
+-
+-utils() {
+-  if [ -x usr/bin/update-mime-database ]; then
+-    update-mime-database usr/share/mime > /dev/null 2>&1
+-  fi
+-
+-  if [ -x usr/bin/xdg-icon-resource ]; then
+-    xdg-icon-resource forceupdate --theme hicolor > /dev/null 2>&1
+-  fi
+-
+-  if [ -x usr/bin/update-desktop-database ]; then
+-    usr/bin/update-desktop-database -q
+-  fi
+-
+-  if [ -x usr/bin/udevadm ]; then
+-    usr/bin/udevadm control --reload
+-  fi
+-}
++# vim:set ts=2 sw=2 ft=sh et:
+ 
+ # arg 1:  the new package version
+ post_install() {
+   systemd-sysusers virtualbox.conf
+-  utils
+ }
+ 
+ # arg 1:  the new package version
+ # arg 2:  the old package version
+ post_upgrade() {
+-  post_install "$1"
+   if (( $(vercmp $2 5.0.16-1) < 0 )); then
+     echo '==> Since version 5.0.14-2 kernel modules are provided via dkms'
+     echo '==> Check you have the headers matching your kernel installed'
+   fi
+ }
+-
+-# arg 1:  the old package version
+-post_remove() {
+-  utils
+-}
+-
+-# vim:set ts=2 sw=2 ft=sh et:
