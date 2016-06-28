@@ -1,7 +1,7 @@
 #!/bin/bash
 #src: https://ubuntuforums.org/showthread.php?t=1188099
 
-set -x
+#set -x
 
 GID='emacs'
 chain='emacs'
@@ -39,6 +39,7 @@ tofilter_appendifnot "${line[@]}"
 line2=(
 "$chain"
 --destination 104.236.16.183,208.118.235.89
+--protocol tcp
 -j ACCEPT
 #melpa.org
 #elpa.gnu.org
@@ -47,7 +48,7 @@ line2=(
 
 linelast=(
 "$chain"
--j DROP
+-j REJECT
 #drop by default - aka policy
 )
 
