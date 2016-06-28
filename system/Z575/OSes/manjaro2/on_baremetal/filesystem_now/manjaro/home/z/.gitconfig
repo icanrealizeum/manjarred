@@ -1,0 +1,26 @@
+[user]
+        name = ActualizeInMaterial
+        email = ActualizeInMaterial@gmail.com
+[core]
+	editor = vim
+	autocrlf = input
+	pager = less -+X -R -+S -+F -+E
+	whitespace = -blank-at-eof,-blank-at-eol,-space-before-tab
+[color]
+	ui = true
+[receive]
+	fsckObjects = true
+	denyNonFastForwards = true
+	denyDeletes = true
+[push]
+	default = matching
+[alias]
+	wdiff = diff --color-words
+  lol = log --graph --pretty=format:\"%C(yellow)%h%Creset%C(cyan)%C(bold)%d%Creset %C(cyan)(%cr)%Creset %C(green)%ce%Creset %s\"
+#src for lol: https://stackoverflow.com/questions/14243380/how-to-configure-git-log-to-show-commit-date
+  epilog = log --sparse --full-history --graph --pretty=fuller
+  #my;;
+  pr = "!f() { git fetch -fu ${2:-upstream} refs/pull/$1/head:pr/$1 && git checkout pr/$1; }; f"
+  pr-clean = "!git for-each-ref refs/heads/pr/* --format='%(refname)' | while read ref ; do branch=${ref#refs/heads/} ; git branch -D $branch ; done"
+
+
