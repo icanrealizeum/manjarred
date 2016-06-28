@@ -1,0 +1,65 @@
+#!/bin/bash
+#src: https://ubuntuforums.org/showthread.php?t=1188099
+
+set -x
+
+GID='emacs'
+chain='emacs'
+
+iptables -v --new-chain "$chain" 2>/dev/null
+#iptables -v --policy "$chain" DROP
+ #iptables: Bad built-in chain name.
+#XXX: cannot set policy for user-made chains!
+
+ipt=(
+iptables
+--table filter
+)
+
+tofilter_appendifnot() {
+  #executes:
+  "${ipt[@]}" -C "$@" 2>/dev/null || "${ipt[@]}" -A "$@"
+}
+
+line=(
+OUTPUT
+-m owner --gid-owner "$GID"
+-j "$chain"
+#-j DROP
+#'!' --destination 104.236.16.183,208.118.235.89
+#melpa.org
+#elpa.gnu.org
+#XXX: added these to /etc/hosts to ensure they don't change!
+)
+
+#|| iptables -I OUTPUT -m owner --gid-owner no-internet -j DROP
+#"${ipt[@]}" -C "${line[@]}" || "${ipt[@]}" -I "${line[@]}"
+tofilter_appendifnot "${line[@]}"
+
+line2=(
+"$chain"
+--destination 104.236.16.183,208.118.235.89
+-j ACCEPT
+#melpa.org
+#elpa.gnu.org
+#XXX: added these to /etc/hosts to ensure they don't change!
+)
+
+linelast=(
+"$chain"
+-j DROP
+#drop by default - aka policy
+)
+
+#"${ipt[@]}" -C "${line2[@]}" || "${ipt[@]}" -I "${line2[@]}"
+tofilter_appendifnot "${line2[@]}"
+tofilter_appendifnot "${linelast[@]}"
+
+
+#first time:
+#iptables: Bad built-in chain name.
+#iptables: No chain/target/match by that name.
+#iptables: Bad rule (does a matching rule exist in that chain?).
+#second time:
+#iptables: Chain already exists.
+
