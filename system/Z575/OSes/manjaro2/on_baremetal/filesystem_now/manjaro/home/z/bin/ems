@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#aka server
+
+set -x
+if test -n "$1"; then
+  emc --eval '(kill-emacs)'
+else
+  em --daemon
+fi
+set +x
+

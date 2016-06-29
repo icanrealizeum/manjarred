@@ -14,6 +14,12 @@
 
 #eof
 
+#FIXM: allow aliases: ni fox  where fox is an alias
+##ok, except... i'm passing the alias to sudo, so no effect:
+#shopt -s expand_aliases
+#shopt -s
+##eg. ni fox
+
 #sg no-internet "$@"
 #src:ipu and https://askubuntu.com/questions/45072/how-to-control-internet-access-for-each-program
 sudo -g no-internet -- "$@"

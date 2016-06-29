@@ -13,8 +13,16 @@ fi
 #fi
 
 basedir="$2" #'/home/emacs/rsync'
+if test -z "$basedir"; then
+  echo 'arg 2 must be specified'
+  exit 1
+fi
 #where='/tmp/gentoo/'
 subdir='manjaro'
+if test -z "$subdir"; then
+  echo 'subdir is unset in script'
+  exit 2
+fi
 #XXX: other scrips depend on the name of these dirs being the same (names: gentoo & rsync-backed)
 where="${basedir}/${subdir}/" #where to update (aka destination)
 backupdirfordeletions="${basedir}/rsync-backed/" #dir where deleted/modified files will be moved from $where before being updated! (any new files added in $where that didn't exist in the .list files and at source will be deleted and thus moved here; see the red colored output for these)
@@ -59,10 +67,28 @@ fi
 
 
   mkdir -p "${where}/"
+  if test -z "$where" -o "`realpath -- "$where"`" == "/" -o -z "`realpath -- "$where"`" ; then
+    echo "something's off: where='$where' is not supposed to be rootdir or empty"
+    exit 3
+  fi
 #  echo "${EXTRA_RSYNCY_PARAMS[@]}"
 #set -x
   rsyncy "${RHOST}${remoterootdir}/" "${where}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
 
+#strip timing information from Xorg.0.log
+#testing: sudo find ./manjarred/system/Z575/OSes/ -name Xorg.?.log -type f -print0 2>/dev/null | xargs -0 -I {} --max-args=1 -- sh -c 'cat "{}" | strip_timing_from_log | less'
+
+#cd;mkdir /tmp/1;sudo find ./manjarred/system/Z575/OSes/ -name Xorg.?.log -type f -print0 2>/dev/null | xargs -0 -I '{}' --max-args=1 -- sh -c 'cp -a --parents -t /tmp/1 "{}"'
+#cd;sudo find /tmp/1 -name Xorg.?.log -type f -print0 2>/dev/null | xargs -0 -I '{}' --max-args=1 -- sh -c 'cat -- "{}" | strip_timing_from_log > "{}.tmp" && mv -- "{}.tmp" "{}"'
+echo '!! Removing timing information from Xorg.0.log'
+if test -z "$where"; then
+  echo "empty! where='$where'"
+  exit 4
+fi
+sudo -- find "${where}/" -name Xorg.?.log -type f -print0 2>/dev/null | xargs -0 -I '{}' --max-args=1 -- sudo -- sh -c 'cat -- "{}" | strip_timing_from_log > "{}.tmp" && ( touch --date="`stat --format="%y" -- "{}" `" "{}.tmp" && mv -- "{}.tmp" "{}" )'
+echo '!! done'
+#fixed by touch/stat //oh oops: home/z/.local/share/xorg/Xorg.0.log is newer #this was on next rsync.
+#test: touch --date="`stat --format='%y' -- /tmp/1/manjarred/system/Z575/OSes/gentoo/on_baremetal/logs/X/Xorg.0.log `" /tmp/moo4
 
 
 #------
