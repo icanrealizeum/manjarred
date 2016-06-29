@@ -3,12 +3,13 @@
 sudo smartctl --all -- /dev/sda >smartctl--all.log
 
 ssdwrittenlogfile='ssdwritten.log'
-tmpfile="${ssdwrittenlogfile}.tmp"
-ssdwritten > "$tmpfile"
+#tmpfile="${ssdwrittenlogfile}.tmp"
+#ssdwritten > "$tmpfile"
+ssdwritten > "$ssdwrittenlogfile"
 if test -e "$ssdwrittenlogfile"; then
   #difference="`cat "$tmpfile" "$ssdwrittenlogfile" | awk '{print $3}' |sed ':a;N;$!ba;s/\n/-/'|bc`" #since last run of ~/rsync/4copytogit  but not since last commit
   difference="`git diff -R -- "$ssdwrittenlogfile" | tail -n2 | awk '{print $3}' |sed ':a;N;$!ba;s/\n/-/'|bc`"
   echo "$difference" > bytes_written_since_last_commit.log
 fi
-mv -- "$tmpfile" "$ssdwrittenlogfile"
+#mv -- "$tmpfile" "$ssdwrittenlogfile"
 

@@ -1,6 +1,7 @@
 * iptables
   * reject with reset instead of drop? maybe
     \ consider it
+    \ src: https://www.digitalocean.com/community/tutorials/how-to-choose-an-effective-firewall-policy-to-secure-your-servers
     * tcp reset
       \ -A INPUT -p tcp -j REJECT --reject-with tcp-reset
     * udp reject with icmp
@@ -26,6 +27,7 @@
   * put all DROPs before all other ACCEPT rules! even though default policy is DROP already.
   * rate limit
     \ --limit 10/second
+    \ connlimit
     \ limit, hashlimit, recent
     \ src: https://www.digitalocean.com/community/tutorials/how-to-choose-an-effective-firewall-policy-to-secure-your-servers
   * TODO: check router logs for it lists iptables firewalls rules added!
