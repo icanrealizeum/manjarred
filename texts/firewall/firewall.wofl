@@ -59,6 +59,28 @@
     \ sudo xtables-multi iptables-save -t table
     \ sudo xtables-multi iptables-restore [file]
     \ because iptables-save is a symlink to xtables-multi
+  * reject with RST
+    \ src: https://www.digitalocean.com/community/tutorials/how-to-implement-a-basic-firewall-template-with-iptables-on-ubuntu-14-04
+    \ Attempting to reach a closed UDP port will result in an ICMP "port unreachable" message. We can imitate this by typing:
+    \ sudo iptables -A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
+    \ Attempting to establish a TCP connection on a closed port results in a TCP RST response:
+    \ sudo iptables -A INPUT -p tcp -j REJECT --reject-with tcp-reset
+    \ For all other packets, we can send an ICMP "protocol unreachable" message to indicate that the server doesn't respond to packets of that type:
+    \ sudo iptables -A INPUT -j REJECT --reject-with icmp-proto-unreachable
+    * note ICMP rate is 1 per second
+      \ as per: sudo sysctl net.ipv4.icmp_ratelimit
+      \ net.ipv4.icmp_ratelimit = 1000
+      \ (miliseconds)
 
+
+* INFO:
+  * "only the first packet in a connection will be evaluated against the NAT rules."
+    \ "Any nat decisions made for the first packet will be applied to all subsequent packets in the connection without additional evaluation. Responses to NAT'ed connections will automatically have the reverse NAT rules applied to route correctly."
+    \ src: https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture
+  * chain traveral order
+    \ Incoming packets destined for the local system: PREROUTING -> INPUT
+    \ Incoming packets destined to another host: PREROUTING -> FORWARD -> POSTROUTING
+    \ Locally generated packets: OUTPUT -> POSTROUTING
+    \ src: https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture
 
 
