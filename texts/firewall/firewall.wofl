@@ -55,6 +55,10 @@
     \ sudo iptables -A INPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     \ sudo iptables -A OUTPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstate ESTABLISHED -j ACCEPT
     \ src: https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands
+  * use:
+    \ sudo xtables-multi iptables-save -t table
+    \ sudo xtables-multi iptables-restore [file]
+    \ because iptables-save is a symlink to xtables-multi
 
 
 
