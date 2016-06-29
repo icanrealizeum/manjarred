@@ -434,7 +434,7 @@ alias ejectmsproduo='sudo umount here ; sync && sudo eject /dev/sdc'
 
 
 # http://cscope.sourceforge.net/cscope_vim_tutorial.html
-export CSCOPE_DB="/home/zazdxscf/cscope/"
+export CSCOPE_DB="/home/z/cscope/"
 
 
 # from: https://code.google.com/p/chromium/wiki/LinuxFasterBuilds#Linking_using_gold
