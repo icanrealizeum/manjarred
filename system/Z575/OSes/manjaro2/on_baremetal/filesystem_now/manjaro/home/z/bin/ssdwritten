@@ -1,2 +1,6 @@
 #!/bin/bash
 sudo smartctl --all /dev/sda|grep Total_LBAs_Written | awk '{print $10" sectors, "512*$10" bytes"}'
+
+#XXX: the following script depens on the output of the current one:
+#/home/z/manjarred/system/Z575/OSes/manjaro/random logs/ssd/1tb/smarttools/refresh
+

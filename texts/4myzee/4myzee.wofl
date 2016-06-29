@@ -142,7 +142,17 @@
       \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
       \ add line:
       \ blacklist nfs
-  * sudo systemctl enable ufw
+  - TODO: use iptables.service as firewall
+    \ FIXME: fails on the COMMIT line of simple_firewall.rules possibly due to my kernel lacking some iptables module
+    \ TODO: pass args (in iptables.service) to iptables-restore: --verbose --noflush  but then again, maybe I should use flush... if I do it will overwrite my NetworkManager pre_up.d/ rules
+    * place the proper updated *.rules files:
+      \ on start uses: /etc/iptables/iptables.rules
+      \ ^ doesn't exist, but you can cp existing: simple_firewall.rules
+      \ on stop uses: /etc/iptables/empty.rules
+      \ ^ exists!
+    * sudo systemctl enable iptables.service
+    * sudo systemctl start iptables.service
+  - sudo systemctl enable ufw
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
     - apparently something set ENABLED=yes in /etc/ufw/ufw.conf but wasn't the systemctl! or the UI(?!)
       \ needed a reboot after upgrading packages!!! - works now!

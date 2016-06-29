@@ -30,4 +30,12 @@
     \ src: https://www.digitalocean.com/community/tutorials/how-to-choose-an-effective-firewall-policy-to-secure-your-servers
   * TODO: check router logs for it lists iptables firewalls rules added!
     \ also check with telnet?
-
+  * need this
+    \ sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+    \ src: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-iptables-on-ubuntu-14-04
+    * see more in /etc/iptables/simple_firewall.rules
+    * see /etc/ufw/*
+      \ TODO: when done with it, uninstall ufw and gufw!
+    * iptables -S
+      \ sudo iptables -vS
+  * 
