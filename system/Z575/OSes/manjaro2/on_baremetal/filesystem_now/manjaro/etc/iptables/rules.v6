@@ -1,0 +1,35 @@
+
+#src: https://www.digitalocean.com/community/tutorials/how-to-implement-a-basic-firewall-template-with-iptables-on-ubuntu-14-04
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+COMMIT
+
+*raw
+:PREROUTING DROP [0:0]
+:OUTPUT DROP [0:0]
+COMMIT
+
+*nat
+:PREROUTING DROP [0:0]
+:INPUT DROP [0:0]
+:OUTPUT DROP [0:0]
+:POSTROUTING DROP [0:0]
+COMMIT
+
+*security
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+COMMIT
+
+*mangle
+:PREROUTING DROP [0:0]
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+:POSTROUTING DROP [0:0]
+COMMIT
+
