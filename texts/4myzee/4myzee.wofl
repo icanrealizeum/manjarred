@@ -142,9 +142,9 @@
       \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
       \ add line:
       \ blacklist nfs
-  - TODO: use iptables.service as firewall
-    \ FIXME: fails on the COMMIT line of simple_firewall.rules possibly due to my kernel lacking some iptables module
-    \ TODO: pass args (in iptables.service) to iptables-restore: --verbose --noflush  but then again, maybe I should use flush... if I do it will overwrite my NetworkManager pre_up.d/ rules
+  * TODO: use iptables.service as firewall
+    \ //fixed: fails on the COMMIT line of simple_firewall.rules possibly due to my kernel lacking some iptables module
+    \ //nope: pass args (in iptables.service) to iptables-restore: --verbose --noflush  but then again, maybe I should use flush... if I do it will overwrite my NetworkManager pre_up.d/ rules
     * place the proper updated *.rules files:
       \ on start uses: /etc/iptables/iptables.rules
       \ ^ doesn't exist, but you can cp existing: simple_firewall.rules
