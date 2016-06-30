@@ -1,6 +1,12 @@
 #!/bin/bash
 
-dig @208.67.222.220 myip.opendns.com +short | tee /tmp/myip.log
+if test -x "`which dig 2>/dev/null`"; then
+  dig @208.67.222.220 myip.opendns.com +short | tee /tmp/myip.log
+elif test -x "`which drill 2>/dev/null`"; then
+  drill @208.67.222.220 myip.opendns.com | grep '^myip.opendns.com'| cut -f 5
+else
+  exit 1
+fi
 
 #also works:
 #dig @ns1.google.com -t txt o-o.myaddr.l.google.com +short

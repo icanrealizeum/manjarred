@@ -28,7 +28,7 @@
 # Acceptable newUDPin traffic
 #-A newUDPin -j rejected
 
--A newUDPout -p udp --dport 53 --dst 8.8.4.4,8.8.8.8 -j accepted
+-A newUDPout -p udp --dport 53 --dst 8.8.4.4,8.8.8.8,208.67.222.220 -j accepted
 
 # Acceptable incoming newTCPin traffic
 #-A newTCPin -p tcp --dport 22 -j accepted
@@ -117,7 +117,9 @@
 #---------------INPUT
 
 # Boilerplate acceptance policy for incoming traffic
--A INPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j accepted
+#-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j accepted
+#log less:
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j ACCEPT
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -p icmp -j estaICMPin
 
 
@@ -166,7 +168,10 @@
 -A estaICMPout -j commonICMPblocks
 -A estaICMPout -j accepted
 
--A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j accepted
+#-A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j accepted
+#XXX: log less:
+-A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j ACCEPT
+
 -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -p icmp -j estaICMPout
 
 -A OUTPUT -p udp -m conntrack --ctstate NEW -j newUDPout
