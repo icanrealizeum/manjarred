@@ -1,0 +1,5 @@
+#!/bin/bash
+
+dev=enp1s0
+ip address show dev "$dev" | grep inet | cut -d' ' -f6 | cut -f1 -d '/'
+

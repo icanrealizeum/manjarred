@@ -77,8 +77,8 @@
 #-------------- new ICMP out
 -A newICMPout -j commonICMPblocks
 #-A newICMPout -p icmp --icmp-type echo-request -m hashlimit --hashlimit-name ping_dest --hashlimit-mode dstip --hashlimit-upto 2/second -m connlimit --connlimit-upto 2 --connlimit-daddr --connlimit-mask 32 -j accepted
--A newICMPout -p icmp --icmp-type 8/0 -m hashlimit --hashlimit-name ping_dest --hashlimit-mode dstip --hashlimit-upto 2/second -m connlimit --connlimit-upto 35 --connlimit-daddr --connlimit-mask 32 -j accepted
-#XXX: changed connlimit-upto to 35 from 2, because if I ping an IP then C-c, the third time it will fail until like 30 sec pass or something like that! - probably conntrack keeps them open for 30 sec after ping exited so they get counted like that!
+-A newICMPout -p icmp --icmp-type 8/0 -m hashlimit --hashlimit-name ping_dest --hashlimit-mode dstip --hashlimit-upto 2/second -m connlimit --connlimit-upto 65 --connlimit-daddr --connlimit-mask 32 -j accepted
+#XXX: changed connlimit-upto to 65 from 2, because if I ping an IP then C-c, the third time it will fail until like 30 sec pass or something like that! - probably conntrack keeps them open for 30 sec after ping exited so they get counted like that!
 #Do I need to allow anything in the NEW icmp here? or do they fall into RELATED?
 
 #--------- established/related ICMP incoming
@@ -190,8 +190,9 @@ COMMIT
 :PREROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 #incoming: -A PREROUTING -p icmp -j TRACE
-#outgoing:
--A OUTPUT -p icmp -j TRACE
+#outgoing: -A OUTPUT -p icmp -j TRACE
+#-A OUTPUT -p tcp -j TRACE
+
 #XXX: x_tables: ip_tables: REJECT target: only valid in filter table, not nat
 #:rejected - [0:0]
 ##TODO: log each type of the 3 below, separately! (maybe it's not needed?)

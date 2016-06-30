@@ -1,14 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
 INTERFACE=$1 # The interface which is brought up or down
 STATUS=$2 # The new state of the interface
 
-#XXX: do not change this(required for whatismyip!):
-dns=208.67.222.220
+
+#I made this to close port 8081 on my Huawei HG510 router (no idea what the port does, but firefox seems to be repeatedly asking me for user/password - but might be a firefox fluke) 30 june 2016
+#HG=Home Gateway
 theport=8081
 wait4router_seconds=30
 wait4inet_seconds=60
-#^ waits this much for the router to be up, then again for internet access! so 2x that time!
+#^ waits this much for the router to be up
+#then wait for internet access!
+routerip="`route -n|grep -F ' UG ' | awk '{print $2}'`"
+if test -z "$routerip"; then
+  #fallback
+  routerip=192.168.1.1
+fi
+#XXX: do not change this dns ip!(required for whatismyip below to work!):
+dns=208.67.222.220
 
 whatismyip() {
   if test -x "`which dig 2>/dev/null`"; then
@@ -20,52 +29,126 @@ whatismyip() {
   fi
 }
 
+getlocalip() {
+  intf="$1"
+  if test -z "$intf"; then
+    echo "!! didn't specify the interface!" >&2
+    exit 20
+  else
+    ip address show dev "$intf" | grep inet | cut -d' ' -f6 | cut -f1 -d '/'
+    #FIXME: should use awk maybe? but only if exists!
+  fi
+}
+
+isup() {
+  local ip="$1"
+  if test -z "$ip"; then
+    echo 'bad args for isup()' >&2
+    exit 10
+  fi
+  local maxwait="$2"
+  if test -z "$maxwait"; then
+    exit 11
+  fi
+
+  local count
+  let 'count=0'
+  while true; do
+    let 'count++'
+    ping -i 1 -n -c 1 -W 1 -- "$ip"
+    local ec="$?"
+    if test "$ec" -eq "0"; then
+      echo "success on try $count/$maxwait"
+      return 0
+    else
+      if test "$count" -ge "$maxwait"; then
+        break
+      fi
+      sleep 1 #FIXME: this could wait for 2 sec if ping timeouts instead of getting a reset/reject reply instantly; find a way to ensure ping above sleeps for at least 1 sec in all cases! leave this as is, to be safe!
+    fi
+  done
+  return 1
+}
+
+declare -a moopre moodel mooend
+on_exit() {
+  if test -n "$DEBUG"; then set -x ; fi
+  "${moopre[@]}" "${moodel[@]}" "${mooend[@]}"
+  if test "$?" -ne "0"; then
+    echo "!! failed deleting firewall rule! continuing(to exit)..." >&2
+  else
+    echo "removed temporary firewall rule"
+  fi
+  if test -n "$DEBUG"; then set +x ; fi
+}
+
 case "$STATUS" in
     'up') # $INTERFACE is up
       #wait for router to be up
-      let 'count=0'
-      while true; do
-        ping -c 1 -W 1 -- 192.168.1.1
-        if test "$?" -eq "0"; then
-          echo "router responds to ping! on try $count"
-          let 'count=0'
-          while true; do
-            ping -c 1 -W 1 -- "$dns"
-            if test "$?" -eq "0"; then
-              echo "router has got internet! on try $count"
-              break;
-            fi
-            let 'count++'
-            if test "$count" -gt "$wait4inet_seconds"; then
-              echo '!! router did not gain internet in due time, aborting'
-              exit 2
-            fi
-          done
-          break; #required!
-        fi
-        let 'count++'
-        if test "$count" -gt "$wait4router_seconds"; then
-          echo '!! router did not respond to ping, aborting'
-          exit 1
-        fi
-      done
-
-      ip="`whatismyip`"
-      if test -n "$ip"; then
-        echo "Closing port $theport"
-        #should return: curl: (52) Empty reply from server
-        #then the next request is: curl: (7) Failed to connect to $ip port $theport: Connection refused
-        curl -I -Ss -- "http://${ip}:$theport/"
-        ec="$?"
-        if test "$ec" -ne "52" -a "$ec" -ne "7"; then
-          echo "!! failed closing port $theport, not 52 (nor 7 already)"
-        fi
-        curl -I -Ss -- "http://${ip}:$theport/"
-        if test "$ec" -ne "7"; then
-          echo "!! failed closing port $theport, not 7"
+      if isup "$routerip" "$wait4router_seconds"; then
+#      ping -i 1 -n -c "$wait4router_seconds" -W 1 -- 192.168.1.1
+#      if test "$?" -eq "0"; then #yes, even if some packets were dropped/lost
+        echo "router responds to ping!"
+#        ping -i 1 -n -c "$wait4inet_seconds" -W 1 -- "$dns"
+#        if test "$?" -eq "0"; then
+        if isup "$dns" "$wait4inet_seconds"; then
+          echo "router has internet!"
+        else
+          echo '!! router did not gain internet in due time, aborting'
+          exit 2
         fi
       else
-        echo "!! Failed closing port $theport"
+        echo '!! router did not respond to ping, aborting'
+        exit 1
+      fi
+
+      #FIXME: test that IP is a valid IP!
+      ip="`whatismyip`"
+      if test -n "$ip"; then
+        echo "Closing port $theport using realIP $ip"
+        #add a temporary firewall rule
+        localip="`getlocalip $INTERFACE`"
+        if test -n "$localip"; then
+          echo "Attempting to add tmp firewall rule for '$localip' to '$ip' on port '$theport'"
+          moopre=(iptables -t filter)
+          mooins=(-I OUTPUT 1)
+          moodel=(-D OUTPUT)
+          mooend=(-o "$INTERFACE" -s "$localip" -d "$ip" -p tcp --syn --dport "$theport" -j ACCEPT)
+          if test -n "$DEBUG"; then set -x ; fi
+          "${moopre[@]}" "${mooins[@]}" "${mooend[@]}"
+          iptables -vnL | grep 8081
+          ec="$?"
+          trap on_exit EXIT
+          if test -n "$DEBUG"; then set +x ; fi
+          if test "$ec" -ne "0"; then
+            echo "!! failed inserting firewall rule! continuing..." >&2
+          fi
+        else
+          echo "!! couldn't get localIP, not inserting firewall rule! this might not block the port tho! continuing..."
+        fi
+        #should return: curl: (52) Empty reply from server
+        #then the next request is: curl: (7) Failed to connect to $ip port $theport: Connection refused
+        curl -I -Ss -- "http://${ip}:${theport}/"
+        ec="$?"
+        if test "$ec" -ne "52"; then
+          echo "!! failed closing port $theport, not 52"
+          if test "$ec" -eq "7"; then
+            echo "but port was already closed from before (7 already) OR outgoing to port is blocked in firewall!"
+#            exit 0
+          else
+            echo "!! port was not already closed (not 7 already) ec='$ec'"
+            exit 3
+          fi
+        fi
+        curl -I -Ss -- "http://${ip}:${theport}/"
+        ec="$?"
+        if test "$ec" -ne "7"; then
+          echo "!! failed closing port $theport, not 7"
+          exit 4
+        fi
+      else
+        echo "!! Failed closing port $theport due to bad IP='$ip'"
+        exit 5
       fi
       echo "The port $theport was closed!"
 	;;

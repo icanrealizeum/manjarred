@@ -32,8 +32,8 @@
     \ --limit 10/second
     \ limit, hashlimit, recent
     \ src: https://www.digitalocean.com/community/tutorials/how-to-choose-an-effective-firewall-policy-to-secure-your-servers
-  * TODO: check router logs for it lists iptables firewalls rules added!
-    \ also check with telnet?
+  - TODO: check router logs for it lists iptables firewalls rules added!
+    \ also check with telnet?-can't?it's limited
   - need this
     \ sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
     \ src: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-iptables-on-ubuntu-14-04
