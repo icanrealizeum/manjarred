@@ -37,7 +37,9 @@
 -A newTCPout -p tcp --dport 22 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
 #^ doc: http://ipset.netfilter.org/iptables-extensions.man.html
 # also in: man iptables-extensions
-#-A newTCPin -j rejected
+-A newTCPout -p tcp --dport 23 -d 192.168.1.1 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
+#XXX: not really needed:
+-A newTCPin -j rejected
 
 #------------------ common ICMP blocks
 :commonICMPblocks - [0:0]
@@ -75,8 +77,8 @@
 #-------------- new ICMP out
 -A newICMPout -j commonICMPblocks
 #-A newICMPout -p icmp --icmp-type echo-request -m hashlimit --hashlimit-name ping_dest --hashlimit-mode dstip --hashlimit-upto 2/second -m connlimit --connlimit-upto 2 --connlimit-daddr --connlimit-mask 32 -j accepted
--A newICMPout -p icmp --icmp-type 8/0 -m hashlimit --hashlimit-name ping_dest --hashlimit-mode dstip --hashlimit-upto 2/second -m connlimit --connlimit-upto 5 --connlimit-daddr --connlimit-mask 32 -j accepted
-#XXX: changed connlimit-upto to 5 from 2, because if I ping an IP then C-c, the third time it will fail until like 30 sec pass or something like that! - probably conntrack keeps them open for 30 sec after ping exited so they get counted like that!
+-A newICMPout -p icmp --icmp-type 8/0 -m hashlimit --hashlimit-name ping_dest --hashlimit-mode dstip --hashlimit-upto 2/second -m connlimit --connlimit-upto 35 --connlimit-daddr --connlimit-mask 32 -j accepted
+#XXX: changed connlimit-upto to 35 from 2, because if I ping an IP then C-c, the third time it will fail until like 30 sec pass or something like that! - probably conntrack keeps them open for 30 sec after ping exited so they get counted like that!
 #Do I need to allow anything in the NEW icmp here? or do they fall into RELATED?
 
 #--------- established/related ICMP incoming
@@ -146,6 +148,8 @@
 
 
 #---------------OUTPUT
+#
+#----no-internet/emacs stuff
 -A OUTPUT -m owner --gid-owner no-internet -j dropped
 :emacs - [0:0]
 -A OUTPUT -m owner --gid-owner emacs -j emacs
@@ -156,7 +160,7 @@
 ##XXX: added these to /etc/hosts to ensure they don't change!
 -A emacs -j rejected
 #-A emacs -j DROP
-
+#----------------
 
 #-A OUTPUT -o lo -j accepted
 -A OUTPUT -o lo -s 127.0.0.1/8 -d hostBlocked -j snh
@@ -185,6 +189,9 @@ COMMIT
 *raw
 :PREROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
+#incoming: -A PREROUTING -p icmp -j TRACE
+#outgoing:
+-A OUTPUT -p icmp -j TRACE
 #XXX: x_tables: ip_tables: REJECT target: only valid in filter table, not nat
 #:rejected - [0:0]
 ##TODO: log each type of the 3 below, separately! (maybe it's not needed?)

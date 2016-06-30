@@ -1,0 +1,61 @@
+#router: Huawei Home Gateway 510
+
+iptables -t nat -D PRE_UTILIZE -i br0 -d 192.168.1.1 -p udp --dport 53 -j DNAT --to 128.9.0.107 2>/dev/null
+iptables -t nat -A PRE_UTILIZE -i br0 -d 192.168.1.1 -p udp --dport 53 -j DNAT --to 128.9.0.107
+
+iptables -I FWD_UTILIZE 1 -i br0 -p tcp -m iprange --dst-range 193.231.100.1-193.231.100.254 -j DROP 2>/dev/null
+iptables -I FWD_UTILIZE 1 -i br0 -p udp -m iprange --dst-range 193.231.100.1-193.231.100.254 -j DROP 2>/dev/null
+
+iptables -A FWD_UTILIZE -o ppp_0_35_1 -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+iptables -A FWD_UTILIZE -i ppp_0_35_1 -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
+iptables -t nat -D PRE_UTILIZE -i br0 -d 192.168.1.1 -p udp --dport 53 -j DNAT --to 128.9.0.107 2>/dev/null
+
+iptables -t nat -D POSTROUTING -o ppp_0_35_1 -s 192.168.1.0/255.255.255.0 -j MASQUERADE 2>/dev/null
+iptables -t nat -A POSTROUTING -o ppp_0_35_1 -s 192.168.1.0/255.255.255.0 -j MASQUERADE
+
+iptables -t nat -D PRE_UTILIZE -i br0 -d 192.168.1.1 -p udp --dport 53 -j DNAT --to 8.8.8.8 2>/dev/null
+iptables -t nat -D PRE_UTILIZE -i br0 -d 192.168.1.1 -p udp --dport 53 -j DNAT --to 8.8.4.4 2>/dev/null
+iptables -t nat -A PRE_UTILIZE -i br0 -d 192.168.1.1 -p udp --dport 53 -j DNAT --to 8.8.8.8
+
+echo 1 > /proc/sys/net/ipv4/conf/ppp_0_35_1/rp_filter
+
+iptables -A INPUT -p ALL -i ppp_0_35_1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A FWD_IN -p ALL -i ppp_0_35_1 -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+iptables -A INPUT -i ppp_0_35_1 -p tcp --syn -m limit --limit 6/h -j LOG --log-level 1 --log-prefix="Intrusion -> "
+dnsprobe started!
+iptables -A FWD_IN -i ppp_0_35_1 -p tcp --syn -m limit --limit 6/h -j LOG --log-level 1 --log-prefix="Intrusion -> "
+iptables -A INPUT -i ppp_0_35_1 -j DROP 2>/dev/null
+iptables -A FWD_IN -i ppp_0_35_1 -j DROP 2>/dev/null
+
+#teh f*ck is this?! you bastarz! it's open! service: tproxy? either way I cannot block it through web interface security...
+#OK, i can workaround it and close it via NAT Virtual Servers and redirect it to a non-used IP!
+#also just run this twice from localhost(local LAN) to close it for good: curl -I http://REALIPnotlocal:8081/
+#curl: (52) Empty reply from server
+#run it again:
+#curl: (7) Failed to connect to REALIP port 8081: Connection refused
+#if you do it from firefox, it won't close it! keeps asking for user/pass
+iptables -I INPUT 1 -p tcp --dport 8081 -i ppp_0_35_1 -j ACCEPT 2>/dev/null
+iptables -t nat -I PRE_LOCAL 1 -p tcp --dport 8081 -i ppp_0_35_1 -j ACCEPT 2>/dev/null
+
+#report as closed via http://support.nightlydev.org/tcp-udp-port-scan
+iptables -I INPUT 1 -p udp --dport 67:68 -i ppp_0_35_1 -j ACCEPT 2>/dev/null
+iptables -t nat -I PRE_LOCAL 1 -p udp --dport 67:68 -i ppp_0_35_1 -j ACCEPT 2>/dev/null
+
+ip rule add from REALIP table 128 2>/dev/null
+ip route add default via REALIP dev ppp_0_35_1 table 128 2>/dev/null
+ip route add 192.168.1.0/24 dev br0 table 128 2>/dev/null
+ip route flush table 100
+ip route add 192.168.1.0/24 dev br0 table 100
+ip route add default dev ppp_0_35_1 table 100
+
+iptables -t mangle -A OUTPUT -j MARK --set-mark 3 -p udp --dport 53
+# 2 is IGMP src: https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
+iptables -t mangle -A OUTPUT -j MARK --set-mark 3 -p 2
+# 161 is snmp
+iptables -t mangle -A OUTPUT -j MARK --set-mark 3 -p udp --sport 161
+# 520 is route
+iptables -t mangle -A OUTPUT -j MARK --set-mark 3 -p udp --sport 520
+iptables -t mangle -A OUTPUT -j MARK --set-mark 3 -p udp --dport 67:68
+
