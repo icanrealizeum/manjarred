@@ -393,3 +393,9 @@ endif
 " https://github.com/junegunn/fzf
 set rtp+=~/build/1nonpkgs/fzf
 
+" src: https://github.com/racer-rust/vim-racer/blob/master/README.md
+" settings for vim-racer
+set hidden
+"let g:racer_cmd = "/home/z/build/1nonpkgs/racer/target/release/racer"
+"let $RUST_SRC_PATH="/home/z/build/1nonpkgs/rust/rust/src"
+

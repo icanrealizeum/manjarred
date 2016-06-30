@@ -543,3 +543,7 @@ export GIT_SSH=~/bin/sshgit
 
 export GOPATH=~/"build/1nonpkgs/gopath"
 
+#add racer to PATH for rust autocompletion vim-racer
+export PATH="$PATH:/home/$USER/build/1nonpkgs/racer/target/release"
+export RUST_SRC_PATH=~/"build/1nonpkgs/rust/rust/src"
+
