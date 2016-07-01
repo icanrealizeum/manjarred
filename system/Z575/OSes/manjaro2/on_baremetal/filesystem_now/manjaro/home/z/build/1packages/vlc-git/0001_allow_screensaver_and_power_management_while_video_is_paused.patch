@@ -1,0 +1,448 @@
+This vlc patch changes the way vlc works when video is paused.
+(note: this works for me, may not work for you, although it kinda should)
+It allows screensaver and power management to trigger while video is paused.
+Thus far vlc would prevent screensaver and power management (by default) from triggering while video is playing or paused.
+This patch also prefers xdg vlc module instead of dbus_screensaver vlc module.
+It doesn't require any settings from the defaults. (it does require recompiling vlc though, obviously)
+
+Addon: prevent high CPU usage when playlist automatically advances through tracks too fast(eg. when files in playlist nolonger exist due to you moving them while vlc was playing). Will sleep for 2 seconds if more than(or equal to) 10 consecutive Next tracks happen too fast (less than or equal to 1 second between them). Look for SECS_TO_SLEEP if you want to change. This allows you to Close the Errors window and press the Stop button to prevent the looping which would otherwise use 100% CPU (or 100% of one core, can't remember) and make it impossible for you to stop the playlist.
+
+Patch by EmanueL Czirai, with many thanks to jjacky and vlc authors for their code.
+
+How this works: vlc, when it uses xdg inhibit(instead of dbus inhibit) module, automatically runs `xdg-screensaver reset` every 30 seconds while video is playing(or paused, without this patch) in order to prevernt screensaver and screen blanking etc. from occurring. Thus, if you have the blanking set to anything below 30 seconds, it will still trigger blanking and unblank when the 30 second mark is reached. But with this patch, while paused, the timer which runs the aforementioned command is stopped; the timer is started again when video starts playing again.
+
+---
+If you want a variant that works for any system, I recommend using jjacky's patch which you can find here:
+https://github.com/jjk-jacky/abs/blob/726bba27c787339f331ae92380119281f20f4ff6/vlc-jjk/0001-Add-dpms-module-to-switch-it-off-while-playing.patch
+and read more about it here: jjacky.com/2013-09-30-automatically-switch-dpms-off-in-vlc-2.1/
+for vlc-git there's a change needed(at the time of this writing +-1 days) so you can find the same patch wholly, here(nolonger available online but this is the coostomhuston commit):
+coostomhuston b855780bf164950e5ca3b525d1c0056a504de2ba/system/lenovo%20z575/OS/manjaro/filesystem%20now/home/emacs/build/vlc-git/0001-Add-dpms-module-to-switch-it-off-while-playing.patch
+
+Note that using this dpms.c module requires me to, eg:
+$ vlc --verbose 2 --extraintf dpms -- file.mp4
+that's to load dpms as interface (or if it works for you, you can do it from Preferences, in Interface->Control interfaces, could add: dpms  there in the text input)
+then go in Tools->Preferences, Show settings -> All, click Advanced on the left list, then unset(untick) "Inhibit the power management daemon during playback"
+AND click Video on the left list, the unset(untick) "Disable screensaver"
+Because dpms.c will handle the blanking for you (won't blank while playing, will blank while paused; blank=scrensaver/powermanagement)
+---
+
+diff --git a/bin/vlc.c b/bin/vlc.c
+index e0deebe..f034311 100644
+--- a/bin/vlc.c
++++ b/bin/vlc.c
+@@ -244,6 +244,10 @@ int main( int i_argc, const char *ppsz_argv[] )
+     if (libvlc_add_intf (vlc, NULL))
+         goto out;
+ 
++    fprintf(stderr,"!!! trying to add as intf\n");
++    libvlc_add_intf (vlc, "don't prevent power saving during pause");
++    fprintf(stderr,"!!! done trying to add as intf.\n");
++
+     libvlc_playlist_play (vlc, -1, 0, NULL);
+ 
+     /* Qt4 insists on catching SIGCHLD via signal handler. To work around that,
+diff --git a/modules/misc/inhibit/xdg.c b/modules/misc/inhibit/xdg.c
+index 4b94633..53d87d0 100644
+--- a/modules/misc/inhibit/xdg.c
++++ b/modules/misc/inhibit/xdg.c
+@@ -24,19 +24,53 @@
+ 
+ #include <vlc_common.h>
+ #include <vlc_plugin.h>
++
++#include <vlc_interface.h>
++#include <vlc_input.h>
++
++#include <vlc_playlist.h>
++
+ #include <vlc_inhibit.h>
+ #include <assert.h>
+ #include <signal.h>
+ #include <spawn.h>
+ #include <sys/wait.h>
+ 
++#include <time.h>
++
++#if defined(DEBUG) && ! defined(NDEBUG)
++
++//FIXME: can we eval expr1 and expr2 only once? but we need their type (the non-printf type!)
++//info: https://gcc.gnu.org/onlinedocs/cpp/Stringification.html#Stringification
++//info: https://gcc.gnu.org/onlinedocs/cpp/Concatenation.html
++#define ensert(expr1, op, expr2, expr1_printf_type, expr2_printf_type) \
++    do { \
++      if (!( (expr1) op (expr2) )) { \
++        fprintf(stderr, "Assertion failed -> %s(" #expr1_printf_type ") %s %s(" #expr2_printf_type ")\n", #expr1 , expr1, #op, #expr2, expr2); \
++        assert( (expr1) op (expr2) ); \
++      } \
++    } while(0)
++
++#define dprintf(...) fprintf(stderr, __VA_ARGS__)                                                             
++
++#else
++
++  #define ensert(expr1,op,expr2, e1pt, e2pt)
++
++  #define dprintf(...)
++
++#endif
++
++
++static vlc_inhibit_t *ih=NULL;
++
+ static int Open (vlc_object_t *);
+ static void Close (vlc_object_t *);
+ 
+ vlc_module_begin ()
+     set_shortname (N_("XDG-screensaver") )
+     set_description (N_("XDG screen saver inhibition") )
+-    set_capability ("inhibit", 10 )
++    set_capability ("inhibit", 30 ) //FIXME: set back to 10 when you handle dbus_screensaver(which is 20) too! otherwise this will always load first because 30 > 20;  to handle dbus too, code probably needs to be moved outside xdg.c into  src/video_output/inhibit.c +56  vlc_inhibit_Create() and vlc_inhibit_Destroy() and considering ih->inhibit points to the right Inhibit() functions (be it xdg's or dbus' )
+     set_callbacks (Open, Close)
+     set_category (CAT_ADVANCED)
+     set_subcategory (SUBCAT_ADVANCED_MISC)
+@@ -59,6 +93,7 @@ static void Timer (void *data)
+     };
+     pid_t pid;
+ 
++    fprintf(stderr, "!!! about to reset screensaver, see modules/misc/inhibit/xdg.c +62\n");
+     int err = posix_spawnp (&pid, "xdg-screensaver", NULL, &sys->attr,
+                             argv, environ);
+     if (err == 0)
+@@ -66,59 +101,269 @@ static void Timer (void *data)
+         int status;
+ 
+         while (waitpid (pid, &status, 0) == -1);
++        fprintf(stderr, "!!! done reset screensaver, see modules/misc/inhibit/xdg.c +69\n");
+     }
+     else
+         msg_Warn (ih, "error starting xdg-screensaver: %s",
+                   vlc_strerror_c(err));
+ }
+ 
+-static void Inhibit (vlc_inhibit_t *ih, unsigned mask)
++static void Inhibit (vlc_inhibit_t *iharg, unsigned mask)
+ {
++  fprintf(stderr, "!!! Inhibit function called, see modules/misc/inhibit/xdg.c +77\n");
++  ensert(NULL,!=,ih, %p, %p);
++  ensert(iharg, !=, NULL, %p, %p);
++  ensert(ih, ==, iharg, %p, %p);
+     vlc_inhibit_sys_t *sys = ih->p_sys;
+     bool suspend = (mask & VLC_INHIBIT_DISPLAY) != 0;
+     mtime_t delay = suspend ? 30 * CLOCK_FREQ : INT64_C(0);
+ 
++  fprintf(stderr,"!!! delay %" PRId64 "\n", delay);
+     vlc_timer_schedule (sys->timer, false, delay, delay);
+ }
+ 
++
++
++static int
++state_changed_func( vlc_object_t * p_this, char const * psz_cmd,
++                     vlc_value_t oldval, vlc_value_t newval,
++                     void * p_userdata )
++{
++//  ensert(p_this, ==, p_userdata, %p, %p); //guess they are different, I forget why
++
++  static int prevstate=-8888; //initialized with some random number that doesn't exist as a state
++  int state;
++//  const input_thread_t  *p_input = (input_thread_t*)p_this;
++  state = var_GetInteger(p_this, "state");
++//XXX: this gets called often during playback! not at all during pause (well except first time on pause)
++//  fprintf(stderr, "!!!!!!!! statechanged in my func: %" PRId64 " state:%d prevstate:%d %p %p\n", newval.i_int, state, prevstate, p_this, p_userdata);
++
++  if (prevstate != state) {
++    prevstate = state;
++    if (state == PAUSE_S) {
++      fprintf(stderr, "!!! pause detected! ih:%p p_userdata:%p psz_cmd:%s\n",ih, p_userdata, psz_cmd);
++      if (NULL != ih) {
++        Inhibit(ih, VLC_INHIBIT_NONE);
++      }
++    }else if (state == PLAYING_S) {
++      fprintf(stderr, "!!! play detected! ih:%p p_userdata:%p psz_cmd:%s\n", ih, p_userdata, psz_cmd);
++      if (NULL != ih) {
++        Inhibit(ih, VLC_INHIBIT_VIDEO);
++      }
++    }
++  }
++
++  //get rid of warnings like this: warning: unused parameter ‘p_userdata’ [-Wunused-parameter]
++  (void) psz_cmd; (void)oldval; (void)newval;
++  return VLC_SUCCESS;
++}
++
++
++//------------------
++
++//when detecting vlc playlist infinite loop of high cpu usage because of inexistent files while playlist is set to repeat.
++#define SECS_TO_SLEEP 2
++#define SECS_TOO_FAST 1 //anything below or equal to this value in seconds between calling Next track(eg. pressing Next button; or vlc playlist advancing automatically)  is considered a trigger and if TRIGGER_AFTER of such triggers happen then vlc will be forced to sleep SECS_TO_SLEEP seconds to avoid that high CPU usage from the really fast Next track-ing :)
++#define TRIGGER_AFTER 10 //x consecutive file not found fails! or, x really quick attempts to play track(s)
++#define RESET_CONSECUTIVES_AFTER_SLEEP false //true means, it will sleep only once every x consecutives (see TRIGGER_AFTER for value of x); false means it will keep sleeping until the delay between Nexts is higher than SECS_TOO_FAST ; false recommended
++
++//please see: https://github.com/jjk-jacky/abs/blob/726bba27c787339f331ae92380119281f20f4ff6/vlc-jjk/0001-Add-dpms-module-to-switch-it-off-while-playing.patch which helped me very much and it's probably what you want instead of this current implementation that I made here(which only works for xdg, not dbus).
++//many thanks to Olivier Brunel aka jjacky!
++static int ItemChange (vlc_object_t *p_playlist, const char *var,
++                       vlc_value_t prev, vlc_value_t value, void *data)
++{
++    intf_thread_t *p_intf = data;
++    ensert(NULL, !=, p_intf, %p, %p);
++    fprintf(stderr,"!!! in ItemChange , p_intf:%p\n", p_intf);
++    playlist_t *gotten_p_playlist = pl_Get(p_intf);
++    fprintf(stderr,"!!! pl_Get(p_intf):%p\n", gotten_p_playlist);
++    fprintf(stderr,"!!! p_playlist    :%p\n", p_playlist);
++    ensert( (playlist_t *)p_playlist, ==, gotten_p_playlist, %p,%p );
++    input_thread_t *p_input;
++
++
++    //must get p_input here  because it's always null in Open(); and we need it to attach intf-event hook below, in order to detect play/pause events
++    p_input = playlist_CurrentInput ( gotten_p_playlist );
++    fprintf(stderr,"!!! p_input:%p\n", p_input);
++    if (NULL == p_input) {
++      goto exit2;
++    }
++    if (p_input->b_dead) {
++      goto exit1;
++    }
++
++    ensert(NULL, !=, p_input, %p, %p);
++
++    //this part will prevent high cpu usage if you moved your files that you had in vlc's playlist while vlc was playing, and now when it's time to go to next track(s) they don't exist anymore - this adds a SECS_TO_SLEEP seconds delay after TRIGGER_AFTER such consecutive tracks were encountered, by noting that the next track call(so to speak) was triggered too fast
++    //prevent infinite loop stealing CPU (eg. 100% CPU usage) when playlist is on repeat and files are non-existent
++    //this must be when p_input isn't NULL, because when it is null that happens after the previous track ends. When it itsn't NULL it's when next track begins(and vlc will realize it's file doesn't exist next)
++    static time_t lastcalltime=0;
++    time_t currentcalltime;
++    time(&currentcalltime);
++    static int consecutives_thus_far=0;
++    time_t diff= currentcalltime - lastcalltime;
++    fprintf(stderr,"!!! prevtime:%"PRIuMAX" currenttime:%"PRIuMAX" diff:%"PRIuMAX"\n", (uintmax_t)lastcalltime, (uintmax_t)currentcalltime, (uintmax_t)(diff));
++    if (diff <= SECS_TOO_FAST ) { //less than 1 second passed since the current function(we are in right now) was called, then likely we are in loop playlist with non-existing files mode, OR a bunch of files don't exist.
++      //usleep(1000 * 1000/*1000 ms = 1 sec*/);
++      consecutives_thus_far++;//yes i want to make it obvious :P I'm not here for obfuscating/codetricks by putting this inside the if :)
++      if (consecutives_thus_far >= TRIGGER_AFTER) {
++        fprintf(stderr,"!!! sleeping %d seconds to prevent high CPU usage...\n", SECS_TO_SLEEP);
++        sleep(SECS_TO_SLEEP);
++        fprintf(stderr,"!!! ok I'm up.\n");
++        if (RESET_CONSECUTIVES_AFTER_SLEEP) {
++            consecutives_thus_far = 0;//reset
++        }else{
++          time(&currentcalltime);//refresh current time after sleep, otherwise the diff will be SECS_TO_SLEEP and if higher than SECS_TOO_FAST then consecutives will be reset and so it will allow Next spam again for TRIGGER_AFTER times.; This is so it gets saved as lastcalltime below.
++          //so this allows our sleep to get discounted from the diff on the next call of this function that we're in, and thus it won't allow consecutives to get reset(by the next call) because the diff is now outside of range to trigger because of our sleep having been added to the time diff.
++        }
++      }else{
++        fprintf(stderr,"Not sleeping yet, %d/%d consecutives\n", consecutives_thus_far, TRIGGER_AFTER);
++      }
++    }else if (consecutives_thus_far>0) {
++      consecutives_thus_far = 0;//reset
++    }
++    lastcalltime=currentcalltime;
++    fprintf(stderr,"!!! consecutives:%d/%d\n", consecutives_thus_far, TRIGGER_AFTER);
++    //end prevent
++
++    fprintf(stderr,"!!!! first-time adding callback intf-event in ItemChange p_input:%p p_intf:%p\n", p_input, p_intf);
++    var_AddCallback (p_input, "intf-event", state_changed_func, p_intf);
++    //noneed2fix: when does this get removed? when p_input gets destroyed eg. on next media in playlist?
++    //I'm already removing it at Close() but this gets added for any new file being played(ie. next in playlist)
++    //ok here's the deal, when I press next p_input is nil, so I can't remove the callback anyway, but I guess since it's nil, all callbacks were cleaned anyway and probably went away with that (old)p_input
++
++exit1:
++    vlc_object_release (p_input);
++
++    (void)var; (void)prev; (void)value;//avoid compiler warnings on unused params
++exit2:
++    return VLC_SUCCESS;
++}
++
++//static bool already=false;
++static bool as_intf_already=false;
++static bool as_inhibit_already=false;
++
+ static int Open (vlc_object_t *obj)
+ {
+-    vlc_inhibit_t *ih = (vlc_inhibit_t *)obj;
++  intf_thread_t   *p_intf     = (intf_thread_t*)obj;
++  ensert(NULL, !=, p_intf, %p, %p);
++  ensert(NULL, !=, p_intf->psz_object_type, %p, %p);
++  fprintf(stderr, "!!! inhibit xdg Open called... as '%s', p_intf:%p\n", p_intf->psz_object_type, p_intf);
++  bool is_intf = 0 == strncmp("interface", p_intf->psz_object_type, 10); //what? compare the \0 too!
++  if ((is_intf && as_intf_already)||(!is_intf && as_inhibit_already)) {
++    fprintf(stderr, "!!! inhibit xdg Open was already initialized as '%s'. Refusing to init, you should clean up first(aka call pf_deactivate which is Close() ) OR this is a bug somewhere which says you're calling Open at least twice without Close-ing!\n", p_intf->psz_object_type);
++    return VLC_EGENERIC;
++  }
++
++  fprintf(stderr, "!!! current p_intf:%p\n", p_intf);
++  //done: find a way to tell if passed param is ih type or intf type
++  if (!is_intf) {//if it's not interface, then it's inhibit type
++    //NOTE: this will never trigger when: vlc --novideo file.mp4
++    //this is when loading module as an inhibit type(capability):
++    if (!as_intf_already) {
++      fprintf(stderr, "!!! module was NOT already initialized as interface before now loading it as inhibit. This is not supposed to happen! Refusing to load.\n");
++      return VLC_EGENERIC;
++    }
++    assert(as_intf_already);//expected that interface was inited first, and then inhibit; although it probably works in either order(can't think right now)
++    fprintf(stderr, "!!! it's inhibit Open() init-ing.\n");
++    ensert( 0, ==, strncmp("inhibit", p_intf->psz_object_type, 8), %d, %d);
+     vlc_inhibit_sys_t *p_sys = malloc (sizeof (*p_sys));
+-    if (p_sys == NULL)
+-        return VLC_ENOMEM;
++    if (p_sys == NULL) {
++      return VLC_ENOMEM;
++    }
+ 
+     posix_spawnattr_init (&p_sys->attr);
+     /* Reset signal handlers to default and clear mask in the child process */
+     {
+-        sigset_t set;
+-
+-        sigemptyset (&set);
+-        posix_spawnattr_setsigmask (&p_sys->attr, &set);
+-        sigaddset (&set, SIGPIPE);
+-        posix_spawnattr_setsigdefault (&p_sys->attr, &set);
+-        posix_spawnattr_setflags (&p_sys->attr, POSIX_SPAWN_SETSIGDEF
+-                                              | POSIX_SPAWN_SETSIGMASK);
+-    }
++      sigset_t set;
+ 
++      sigemptyset (&set);
++      posix_spawnattr_setsigmask (&p_sys->attr, &set);
++      sigaddset (&set, SIGPIPE);
++      posix_spawnattr_setsigdefault (&p_sys->attr, &set);
++      posix_spawnattr_setflags (&p_sys->attr, POSIX_SPAWN_SETSIGDEF
++          | POSIX_SPAWN_SETSIGMASK);
++    }
++    fprintf(stderr, "!!! current p_sys:%p\n", p_sys);
++    ih = (vlc_inhibit_t *)obj;
+     ih->p_sys = p_sys;
+     if (vlc_timer_create (&p_sys->timer, Timer, ih))
+     {
+-        posix_spawnattr_destroy (&p_sys->attr);
+-        free (p_sys);
+-        return VLC_ENOMEM;
++      posix_spawnattr_destroy (&p_sys->attr);
++      free (p_sys);
++      return VLC_ENOMEM;
+     }
+ 
+-    ih->inhibit = Inhibit;
++    ih->inhibit = Inhibit; //shouldn't this be before creating timer? just in case timer wants to call ih->inhibit but it's NULL; actually the timer isn't set/started until Inhibit is called, which isn't until this function exits in src/video_output/window.c +81 after vlc_inhibit_Create() which called this Open()  is called; via vlc_inhibit_Set(w->inhibit, VLC_INHIBIT_VIDEO);
++    fprintf(stderr, "!!! done with inhibit Open() exiting.\n");
++    //TODO: use msg_Dbg or/and msg_Err in all places instead of fprintf
++    as_inhibit_already=true;
+     return VLC_SUCCESS;
++  }//done inhibit
++
++  //this is when loading module as an interface:
++  if (as_inhibit_already) {
++    fprintf(stderr, "!!! module was already initialized before the interface. This is not supposed to happen! Refusing to load.\n");
++    return VLC_EGENERIC;
++  }
++  assert(!as_inhibit_already);//expected that interface was inited first, and then inhibit; although it probably works in either order(can't think right now)
++  playlist_t *p_playlist = pl_Get (p_intf);
++  fprintf(stderr, "!!! current p_playlist:%p\n", p_playlist);
++  ensert(NULL, !=, p_playlist, %p, %p);
++  ensert(NULL, !=, p_intf, %p, %p);
++  var_AddCallback( p_playlist, "input-current", ItemChange, p_intf );//yep, inexistent too!
++  //TODO: also prevent inhibition when main window is minimized because it's assumed it's audio only (and the audio out doesn't get plugged into the display which forwards it to speakers, if it does then dpms will turn it off and the audio is gone too, but this is a special case which doesn't affect me, so I would want the minimize to act as if video is paused and thus allow power management to kick in)
++  //^ search for XCB_VISIBILITY_NOTIFY the only problem is it doesn't detect when display it non-visible, only when it is (vlc bug? or X11 bug? or even window manager bug?) but cvlc does have unhandled events 18 and 19 (seen in the same ProcessEvent func in vlc/modules/video_output/xcb/event.c file +289 ) which notice minimize/restore XCB_UNMAP_NOTIFY (18) and XCB_MAP_NOTIFY (19); note to self: XCB_WINDOW_CLASS_INPUT_OUTPUT  XCB_EVENT_MASK_VISIBILITY_CHANGE ok so I have quickly verified that each XCB_WINDOW_CLASS_INPUT_OUTPUT window calls (there are 4) has the XCB_EVENT_MASK_VISIBILITY_CHANGE set except one: modules/video_output/xcb/window.c and adding it there has no effect on notifying me on non-visibility!! so I can only conclude it's an X bug? until further info; also there are no other uses of XCB_WINDOW_CLASS_* such as XCB_WINDOW_CLASS_INPUT_ONLY which according to this http://tronche.com/gui/x/xlib/events/window-state-change/visibility.html wouldn't have notified of any visibility changes. Also XCB_VISIBILITY_NOTIFY is 15 and reported as  xcb_window window debug: unhandled event 15 by modules/video_output/xcb/window.c +401 but only when window is restored, not when minimized! So, again maybe X isn't sending it, or wm isn't notifying X properly, I don't know. Yep, this confirms it: xev | grep Visibility  (try minimizing it and restoring it; only restoring shows VisibilityNotify events!) Just tested compiz(previously xfwm4) and it's the same thing, so it's probably not the window manager's fault, also when replacing the window manager with --replace then and only during that time I get those events VisibilityFullyObscured and VisibilityPartiallyObscured, otherwise it's only VisibilityUnobscured events. this http://www.x.org/releases/X11R7.7/doc/libX11/libX11/libX11.html#VisibilityNotify_Events says: "Unmapped windows and their inferiors are never viewable or visible." so maybe that is why the VisibilityNotify doesn't happen after an XCB_UNMAP_NOTIFY notify event!
++  //
++  //TODO: test what happens if the inhibit part doesn't get started! so we're only having the interface, eg. ih would be NULL
++  //TODO: test what happens if the interface part doesn't get started!
++
++  as_intf_already=true;
++  return VLC_SUCCESS;
+ }
+ 
++
+ static void Close (vlc_object_t *obj)
+ {
+-    vlc_inhibit_t *ih = (vlc_inhibit_t *)obj;
+-    vlc_inhibit_sys_t *p_sys = ih->p_sys;
++  intf_thread_t   *p_intf     = (intf_thread_t*)obj;
++  ensert(NULL, !=, p_intf, %p, %p);
++  ensert(NULL, !=, p_intf->psz_object_type, %p, %p);
++  fprintf(stderr, "!!! inhibit xdg Close called... as '%s', p_intf:%p\n", p_intf->psz_object_type, p_intf);
++  
++
++  bool is_intf = 0 == strncmp("interface", p_intf->psz_object_type, 10); //what? compare the \0 too!
++  if (!as_intf_already && !as_inhibit_already) {
++    fprintf(stderr, "!!! inhibit xdg Close called as '%s' without a precursive Open. Refusing to deinit!\n", p_intf->psz_object_type);
++    return;
++  }
+ 
++  fprintf(stderr, "!!! in Close, current ih:%p\n", ih);
++  if (!is_intf) {//inhibit deinit
++    vlc_inhibit_sys_t *p_sys = ih->p_sys;
+     vlc_timer_destroy (p_sys->timer);
+     posix_spawnattr_destroy (&p_sys->attr);
+     free (p_sys);
++    ih = NULL;
++    as_inhibit_already=false;
++  }else{//interface deinit
++    playlist_t *p_playlist = pl_Get (p_intf);
++    fprintf(stderr, "!!! in Close, current p_playlist:%p\n", p_playlist);
++    input_thread_t *p_input;
++    p_input = playlist_CurrentInput (p_playlist);
++    fprintf(stderr,"!!! in Close, p_input:%p\n", p_input);
++    if (p_input)
++    {
++      //we don't know if a callback was yet set... we try to delete it anyway:
++      fprintf(stderr, "!!! removing intf-event p_input:%p p_intf:%p\n", p_input, p_intf);
++      var_DelCallback (p_input, "intf-event", state_changed_func, p_intf);
++      vlc_object_release (p_input);
++    }
++    var_DelCallback( p_playlist, "input-current", ItemChange, p_intf );//yep, inexistent too!
++    as_intf_already=false;
++  }
++  fprintf(stderr,"!!! in Close, all done.\n");
++
++  //nolonger valid: see src/video_output/inhibit.c +56  for vlc_inhibit_Destroy() The point is: have to vlc_object_release (ih);
+ }
++
+diff --git a/src/interface/interface.c b/src/interface/interface.c
+index 4bc709a..a6b5d4e 100644
+--- a/src/interface/interface.c
++++ b/src/interface/interface.c
+@@ -110,12 +110,42 @@ int intf_Create( playlist_t *playlist, const char *chain )
+     char *module;
+ 
+     p_intf->p_cfg = NULL;
++    const char * type;
++    if ((NULL != chain) && 
++        (0 == strncmp("don't prevent power saving during pause",chain ,40))) {
++      //we load inhibit (xdg)module as an interface to be able to hook into play/pause events
++//      chain="any";//this works too
++      chain="xdg";//not this: chain="XDG-screensaver";
++      //TODO:FIXME: dbus_screensaver which is another inhibit module is unused(doesn't activate) for me, because it cannot find any of the four dbus services; but I should verify what happens when it does: likely the xdg part will never load(due to lower score) so this will be useless and thus won't prevent dbus_screensaver from inhibiting power management(since I only put code in xdg).
++      type="inhibit";
++    }else{
++      type="interface";
++    }
++    fprintf(stderr,"!!! trying %s module with chain:'%s'!\n", type, chain); //FIXME: change to msg_Dbg but will be harder to find, unless we keep the '!!!'
+     free( config_ChainCreate( &module, &p_intf->p_cfg, chain ) );
+-    p_intf->p_module = module_need( p_intf, "interface", module, true );
++    p_intf->p_module = module_need( p_intf, type/*"interface"*/, module, true );
+     free(module);
+     if( p_intf->p_module == NULL )
+     {
+-        msg_Err( p_intf, "no suitable interface module" );
++        msg_Err( p_intf, "no suitable %s module", type );
++        /*
++        if (strncmp(chain,"dpms",4) != 0) {//ignore dpms module
++          fprintf(stderr,"!!! trying inhibit module 'any'!\n");
++          free( config_ChainCreate( &module, &p_intf->p_cfg, "any" ) );
++          p_intf->p_module = module_need( p_intf, "inhibit", module, true );
++          free(module);
++          if( p_intf->p_module == NULL ){
++
++            msg_Err( p_intf, "no suitable inhibit module!!" );
++            fprintf(stderr,"!!! nope FAIL!\n");
++            goto error;
++          }else{
++            fprintf(stderr,"!!! wow that worked!\n");
++          }
++        }else {
++          msg_Err( p_intf, "no suitable inhibit module!!" );
++          goto error;
++        }*/
+         goto error;
+     }
+ 

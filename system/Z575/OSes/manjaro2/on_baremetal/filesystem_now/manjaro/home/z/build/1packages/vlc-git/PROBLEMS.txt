@@ -1,0 +1,54 @@
+these 2 were inexistent before upgrade:
+[2015-03-14 18:11] [ALPM] upgraded vlc (2.1.5-5 -> 2.2.0-2)
+
+and the flip one wasn't an issue before git upgrade:
+[2015-03-14 22:48] [ALPM] removed vlc (2.2.0-2)
+[2015-03-14 22:48] [ALPM] installed vlc-git (r2.2.0.git.2586.gb8c639d-1)
+--------
+transform flip horizontal(at least) doesn't work (even with the workaround patch): it only works on some videos (with the patch) or not at all without patch.
+
+with patch, repeats this:
+[00007f23a00815d8] vdpau_chroma filter error: corrupt VDPAU video surface 0x7f23a1207a30
+when it doesn't work.
+
+and without patch:
+...
+Unsupported pixel size 0
+...
+aproximate error.
+
+------------
+black screen and this error repeats:
+
+[00007fee7c075f38] vdpau_display vout display error: presentation queue display failure: An invalid handle value was provided. Either the handle does not exist at all, or refers to an object of an incorrect type.
+
+sometimes when the next video starts up, the screen is black instead, but if stopped(via stop button) then play again works!  however doubleclicking on the same video or other videos  doesn't usually fix the blackscreen - but stop button then play, does!
+----------
+
+an annoying orange slider is bouncing on the progress bar
+looks like it would stop if this wouldn't happen:
+QObject::~QObject: Timers cannot be stopped from another thread
+and maybe this is from that slider too:
+QWidget::paintEngine: Should no longer be called
+
+in: modules/gui/qt4/util/input_slider.cpp
+commit 21c572201171aecdae671c5ca3987f9d71a93826
+
+something else is starting it!
+ie. this
+seekLimitTimer->start( 150 ); 
+only gets executed once when seeking eg. click in the progress bar
+but when next file in playlist starts playing, something else is starting this timer!!
+
+OR it's a completely different one!
+
+but seeking via mouse definitely disables it instantly!
+
+OK, it's something else:
+animLoading->start();
+gets started(twice)
+but doesn't get stopped...  at least when playing files from playlist and is any subsequent file.
+
+---------
+
+

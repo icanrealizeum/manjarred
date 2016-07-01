@@ -1,0 +1,39 @@
+#!/bin/bash
+
+pfile="`realpath ./0001_allow_screensaver_and_power_management_while_video_is_paused.patch`"
+cat > "$pfile" <<\EOF
+This vlc patch changes the way vlc works when video is paused.
+(note: this works for me, may not work for you, although it kinda should)
+It allows screensaver and power management to trigger while video is paused.
+Thus far vlc would prevent screensaver and power management (by default) from triggering while video is playing or paused.
+This patch also prefers xdg vlc module instead of dbus_screensaver vlc module.
+It doesn't require any settings from the defaults. (it does require recompiling vlc though, obviously)
+
+Addon: prevent high CPU usage when playlist automatically advances through tracks too fast(eg. when files in playlist nolonger exist due to you moving them while vlc was playing). Will sleep for 2 seconds if more than(or equal to) 10 consecutive Next tracks happen too fast (less than or equal to 1 second between them). Look for SECS_TO_SLEEP if you want to change. This allows you to Close the Errors window and press the Stop button to prevent the looping which would otherwise use 100% CPU (or 100% of one core, can't remember) and make it impossible for you to stop the playlist.
+
+Patch by EmanueL Czirai, with many thanks to jjacky and vlc authors for their code.
+
+How this works: vlc, when it uses xdg inhibit(instead of dbus inhibit) module, automatically runs `xdg-screensaver reset` every 30 seconds while video is playing(or paused, without this patch) in order to prevernt screensaver and screen blanking etc. from occurring. Thus, if you have the blanking set to anything below 30 seconds, it will still trigger blanking and unblank when the 30 second mark is reached. But with this patch, while paused, the timer which runs the aforementioned command is stopped; the timer is started again when video starts playing again.
+
+---
+If you want a variant that works for any system, I recommend using jjacky's patch which you can find here:
+https://github.com/jjk-jacky/abs/blob/726bba27c787339f331ae92380119281f20f4ff6/vlc-jjk/0001-Add-dpms-module-to-switch-it-off-while-playing.patch
+and read more about it here: jjacky.com/2013-09-30-automatically-switch-dpms-off-in-vlc-2.1/
+for vlc-git there's a change needed(at the time of this writing +-1 days) so you can find the same patch wholly, here(nolonger available online but this is the coostomhuston commit):
+coostomhuston b855780bf164950e5ca3b525d1c0056a504de2ba/system/lenovo%20z575/OS/manjaro/filesystem%20now/home/emacs/build/vlc-git/0001-Add-dpms-module-to-switch-it-off-while-playing.patch
+
+Note that using this dpms.c module requires me to, eg:
+$ vlc --verbose 2 --extraintf dpms -- file.mp4
+that's to load dpms as interface (or if it works for you, you can do it from Preferences, in Interface->Control interfaces, could add: dpms  there in the text input)
+then go in Tools->Preferences, Show settings -> All, click Advanced on the left list, then unset(untick) "Inhibit the power management daemon during playback"
+AND click Video on the left list, the unset(untick) "Disable screensaver"
+Because dpms.c will handle the blanking for you (won't blank while playing, will blank while paused; blank=scrensaver/powermanagement)
+---
+
+EOF
+
+pushd makepkg/vlc-git/src/vlc
+git diff -- modules/misc/inhibit/xdg.c src/interface/interface.c bin/vlc.c >> "$pfile"
+#modules/video_output/xcb/events.c modules/video_output/xcb/modules.c modules/hw/vdpau/display.c modules/video_output/xcb/ >> "$pfile"
+#modules/misc/Makefile.am src/video_output/inhibit.h src/video_output/inhibit.c > "$pfile"
+popd

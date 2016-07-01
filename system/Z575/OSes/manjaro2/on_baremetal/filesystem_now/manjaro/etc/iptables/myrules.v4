@@ -21,6 +21,7 @@
 
 :accepted - [0:0]
 :rejected - [0:0]
+:rejectwithreset - [0:0]
 :dropped - [0:0]
 :snh - [0:0]
 #snh=should not happen - if it did then there's a bug in the way rules were set up!
@@ -105,14 +106,20 @@
 #XXX: do not log the accepted:
 #-A accepted -j LOG --log-prefix "accepted:" --log-level 7 --log-uid
 -A accepted -j ACCEPT
-## Try to be protocol-specific w/ rejection message
+
+
+#XXX: do not log these qTox broadcasted LAN packets
+-A rejected -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.1.255  -m limit --limit 12/minute --limit-burst 2 -j rejectwithreset
 #syslog levels (--log-level): https://en.wikipedia.org/wiki/Syslog#Severity_level
 #--log-uid Log the userid of the process which generated the packet.
-#TODO: log each type of the 3 below, separately! (maybe it's not needed?)
 -A rejected -j LOG --log-prefix "rejected:" --log-level 6 --log-uid
--A rejected -p tcp -j REJECT --reject-with tcp-reset
--A rejected -p udp -j REJECT --reject-with icmp-port-unreachable
--A rejected -j REJECT --reject-with icmp-proto-unreachable
+-A rejected -j rejectwithreset
+
+## Try to be protocol-specific w/ rejection message
+#TODO: log each type of the 3 below, separately! (maybe it's not needed?)
+-A rejectwithreset -p tcp -j REJECT --reject-with tcp-reset
+-A rejectwithreset -p udp -j REJECT --reject-with icmp-port-unreachable
+-A rejectwithreset -j REJECT --reject-with icmp-proto-unreachable
 
 -A dropped -j LOG --log-prefix "dropped:" --log-level 6 --log-uid
 -A dropped -j DROP

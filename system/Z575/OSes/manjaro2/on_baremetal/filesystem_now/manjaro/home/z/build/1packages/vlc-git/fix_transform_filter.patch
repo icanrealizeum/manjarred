@@ -1,0 +1,14 @@
+still won't work for most videos!
+
+diff --git a/modules/video_filter/transform.c b/modules/video_filter/transform.c
+index cec6ebd..276d0f9 100644
+--- a/modules/video_filter/transform.c
++++ b/modules/video_filter/transform.c
+@@ -339,6 +339,7 @@ static int Open(vlc_object_t *object)
+     free(type_name);
+ 
+     switch (chroma->pixel_size) {
++        case 0:
+         case 1:
+             sys->plane[0] = dsc->plane8;
+             break;

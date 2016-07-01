@@ -1,0 +1,19 @@
+that evil orange bouncing bar
+just disable it for now (aka never start it)
+proper fix - never ?
+
+diff --git a/modules/gui/qt4/util/input_slider.cpp b/modules/gui/qt4/util/input_slider.cpp
+index d67f2b8..a7115ac 100644
+--- a/modules/gui/qt4/util/input_slider.cpp
++++ b/modules/gui/qt4/util/input_slider.cpp
+@@ -236,8 +236,8 @@ void SeekSlider::inputUpdated( input_thread_t *p_input )
+         mLoading = 0.0;
+         repaint();
+     }
+-    else if ( f_buffering == 0.0 && !isEnabled() )
+-        animLoading->start();
++//    else if ( f_buffering == 0.0 && !isEnabled() )
++//        animLoading->start();
+ }
+ 
+ void SeekSlider::processReleasedButton()
