@@ -38,13 +38,15 @@
     \ sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
     \ src: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-using-iptables-on-ubuntu-14-04
   * more
-    * see more in /etc/iptables/simple_firewall.rules
+    * see Ars
+      \ /home/z/Documents/htmls/iptables/ars firewall
+    - see more in /etc/iptables/simple_firewall.rules
     * see /etc/ufw/*
       \ TODO: when done with it, uninstall ufw and gufw!
+    * see ~/*.nft for more rules from nftables that I might want to port back
+      \ not using nftables due to bugged and the likeliness bugs I find will be fixed is slim-ish enough that I don't wanna bother! iptables should be more stable
     - iptables -S
       \ sudo iptables -vS
-  * see ~/*.nft for more rules from nftables that I might want to port back
-    \ not using nftables due to bugged and the likeliness bugs I find will be fixed is slim-ish enough that I don't wanna bother! iptables should be more stable
   - conntrack established on OUTPUT with sport
     \ sudo iptables -A INPUT -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     \ sudo iptables -A OUTPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
