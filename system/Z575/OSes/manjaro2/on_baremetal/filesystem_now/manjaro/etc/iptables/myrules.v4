@@ -109,7 +109,8 @@
 
 
 #XXX: do not log these qTox broadcasted LAN packets
--A rejected -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.1.255  -m limit --limit 12/minute --limit-burst 2 -j rejectwithreset
+-A rejected -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.1.255  -m limit --limit 700/minute --limit-burst 2 -j rejectwithreset
+#should be 720/hour but I do want to log some of them.
 #syslog levels (--log-level): https://en.wikipedia.org/wiki/Syslog#Severity_level
 #--log-uid Log the userid of the process which generated the packet.
 -A rejected -j LOG --log-prefix "rejected:" --log-level 6 --log-uid

@@ -8,13 +8,13 @@
 # Contributor: Arkham <arkham at archlinux dot us>
 # Contributor: MacWolf <macwolf at archlinux dot de>
 
-DEBUG=1
+DEBUG=0
 #avoid making compressed packages? aka faster
 PKGEXT='.pkg.tar'
 
 _name=vlc
 pkgname=vlc-git
-pkgver=r2.2.0.git.7856.gca134b9
+pkgver=2.2.0.git.r7856.gca134b9
 pkgrel=1
 pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player (GIT Version)"
 arch=('i686' 'x86_64')
@@ -81,6 +81,7 @@ patch2='workaround_orange_bouncing_bar.patch'
 #patch3='0001-Add-dpms-module-to-switch-it-off-while-playing.patch'
 patch4='0001_allow_screensaver_and_power_management_while_video_is_paused.patch'
 #patch5='0003_d3d_dangling_symbol.patch'
+patch6='rendererDialog.patch'
 source=('git+https://github.com/videolan/vlc.git'
 #'git://git.videolan.org/vlc.git' #no https
 "$install"
@@ -89,28 +90,32 @@ source=('git+https://github.com/videolan/vlc.git'
 #"$patch3"
 "$patch4"
 #"$patch5"
+"$patch6"
 )
 sha512sums=('SKIP'
             '0051ff0d454bbed09bc6bdde1b8cd2f1187ef9e0f22f6b03878deb2203ea4bb963d54276253de323db6e519d243d2140799d062425e6b6d496223885188a2c78'
             '5bb0b0d0a0df7e132c1b0e362af1fb51366846a5c56829bbe1617c55606e3cfa2dace4811ea60d12719d99e6e21d12053d730c2bb85a22a2b1c1ede42d9c8e90'
             '04f3405614cec9e1e5edff440b908ea9cd92055217755fc61fe0777025f3bd5580bee08190baaf0258c6c50150c52ea11f9a44f0122b20d95e579a88357d6a55'
-            '0dd00cdfd60ecf1c6988b52803cc98e0b5f98cfbc10afa066b053fc9c8cf62500815876fcf37aa8067d3d99414a0218a1b48991cfe5644a6f11f0ca098d2b03a')
+            '0dd00cdfd60ecf1c6988b52803cc98e0b5f98cfbc10afa066b053fc9c8cf62500815876fcf37aa8067d3d99414a0218a1b48991cfe5644a6f11f0ca098d2b03a'
+            'd96848bdb6077382b0912a01fdf9216a9df465addec9328cfe7950d7a6b04299adc64d8242b0dd3166c9ca12c5c4e81d563c5c94f29a16b39b5657048bc04a68')
 
 if test -n "$DEBUG" -a "$DEBUG" -eq "1" ; then
   dbg="-g3 -DDEBUG -O1 -fvar-tracking-assignments"
   export CFLAGS+=" $dbg"
   export CXXFLAGS+=" $dbg"
   export CPPFLAGS+=" $dbg"
-  msg2 "CFLAGS=$CFLAGS"
-  msg2 "CXXFLAGS=$CXXFLAGS"
-  msg2 "CPPFLAGS=$CPPFLAGS"
   #options-=('strip')
   options+=('!strip')
 fi
 
+msg2 "CFLAGS=$CFLAGS"
+msg2 "CXXFLAGS=$CXXFLAGS"
+msg2 "CPPFLAGS=$CPPFLAGS"
+
 pkgver() {
   cd "${srcdir}/${_name}"
-  git describe --long | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+#  git describe --long | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
+  git describe --long | sed 's/\([^-]*-g\)/r\1/g;s/^.//;s/-/./g'
 }
 
 prepare() {
@@ -123,8 +128,9 @@ prepare() {
 #  patch -Np1 -i "../${patch3}"
   patch -Np1 -i "../${patch4}"
 #  patch -Np1 -i "../${patch5}"
+  patch -Np1 -i "../${patch6}"
 
-  find . -name .deps -exec rm -rf \{\} \;
+  find . -name .deps -exec rm -rf \{\} \; || true
   ./bootstrap
 #  CFLAGS+=" -I/usr/include/samba-4.0" CPPFLAGS+=" -I/usr/include/samba-4.0" \
 
