@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#don't use restart because that does a Stop then a Start
+#reload just does a Reload (which in this case is a Start, iptables-restore doing a flush first anyway - but part of a commit!)
+sudo systemctl reload iptables
+

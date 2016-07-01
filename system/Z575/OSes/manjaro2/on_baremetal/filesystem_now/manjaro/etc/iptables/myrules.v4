@@ -99,20 +99,22 @@
 #others are not allowed... will fall back to rejected on return somewhere in INPUT
 #-----------
 
--A snh -j LOG --log-prefix "snh:" --log-level 4
+-A snh -j LOG --log-prefix "snh:" --log-level 4 --log-uid
 -A snh -j rejected
 
--A accepted -j LOG --log-prefix "accepted:" --log-level 7
+#XXX: do not log the accepted:
+#-A accepted -j LOG --log-prefix "accepted:" --log-level 7 --log-uid
 -A accepted -j ACCEPT
 ## Try to be protocol-specific w/ rejection message
 #syslog levels (--log-level): https://en.wikipedia.org/wiki/Syslog#Severity_level
+#--log-uid Log the userid of the process which generated the packet.
 #TODO: log each type of the 3 below, separately! (maybe it's not needed?)
--A rejected -j LOG --log-prefix "rejected:" --log-level 6
+-A rejected -j LOG --log-prefix "rejected:" --log-level 6 --log-uid
 -A rejected -p tcp -j REJECT --reject-with tcp-reset
 -A rejected -p udp -j REJECT --reject-with icmp-port-unreachable
 -A rejected -j REJECT --reject-with icmp-proto-unreachable
 
--A dropped -j LOG --log-prefix "dropped:" --log-level 6
+-A dropped -j LOG --log-prefix "dropped:" --log-level 6 --log-uid
 -A dropped -j DROP
 
 
@@ -163,7 +165,7 @@
 #----------------
 
 #-A OUTPUT -o lo -j accepted
--A OUTPUT -o lo -s 127.0.0.1/8 -d hostBlocked -j snh
+-A OUTPUT -o lo -s 127.0.0.1/8 -d hostBlocked -j rejected
 #-A OUTPUT -o lo -s 127.0.0.1/8 -d 127.0.0.1/8 -j accepted
 -A OUTPUT -o lo -s 127.0.0.1/8 -d 127.0.0.1/8 -m conntrack --ctstate NEW -j accepted
 
