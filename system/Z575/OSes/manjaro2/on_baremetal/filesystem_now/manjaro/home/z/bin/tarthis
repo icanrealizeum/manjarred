@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#multicore xz
+#expected args: archivename.tar.xz filenames
+#ie. arch.tar.xz *
+#to zip current dir
+
+tar -I 'xz -T0 -c -z -' -cvf "$@"
+
