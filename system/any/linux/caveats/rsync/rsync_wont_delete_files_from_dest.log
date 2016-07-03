@@ -1,0 +1,8 @@
+rsync  version 3.1.2  protocol version 31
+
+rsync won't delete files from destination if the containing folder isn't in included files list!
+ie.
+to delete /etc/resolv.conf in dest, you have to have /etc/ in included files (or / in included files)
+if you have /etc/resolv.conf in both, still nothing happens(dest is not deleted)
+
+
