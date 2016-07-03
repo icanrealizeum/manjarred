@@ -1,3 +1,6 @@
+ok, i've worked around this by removing the old dest dir!
+so each time I rsync it's in a brand new non-existing destination! thus any dest files that I wanted removed(because they're in exclude list) are going to not be there.
+---------
 I have to include the root dir /  in included files!
 because, otherwise excluding files in excluded list has no effect! they won't be deleted even if I include the filename in both lists!
 
