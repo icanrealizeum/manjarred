@@ -1,0 +1,6 @@
+I have to include the root dir /  in included files!
+because, otherwise excluding files in excluded list has no effect! they won't be deleted even if I include the filename in both lists!
+
+ie. if I want to ensure /etc/resolv.conf  is nolonger backed up, then
+I have to include /etc/ in excluded list, else resolv.conf won't be removed from destination!
+

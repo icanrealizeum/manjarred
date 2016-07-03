@@ -42,9 +42,12 @@ declare -a +r -t -x EXTRA_RSYNCY_PARAMS_arr=(
 --exclude-from="${basedir}/rsync_exclude.list"
 
 --delete-excluded
---backup
-#--backup-dir='/home/emacs/rsync/rsync-backed/'
---backup-dir="${backupdirfordeletions}"
+
+#we must not use backupdir because we're renaming the old dir, because excluded files won't be deleted by rsync like in this example: /etc/resolv.conf in excluded, and /etc/ not in included (or / not in included). So if I just include files and exclude some of them, they don't get deleted from dest! unless their containing folder is included.
+
+#--backup
+##--backup-dir='/home/emacs/rsync/rsync-backed/'
+#--backup-dir="${backupdirfordeletions}"
 
 --update  #this was already implied in rsyncy, but just to be extra sure!
 --delete-after #implies --delete
@@ -73,7 +76,13 @@ fi
   fi
 #  echo "${EXTRA_RSYNCY_PARAMS[@]}"
 #set -x
-  rsyncy "${RHOST}${remoterootdir}/" "${where}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
+#manual backup
+#set -v
+#mv -- "${backupdirfordeletions}" "/tmp/rsync-backed-`date`"
+./3rmbacked
+mv -- "${where}" "${backupdirfordeletions}"
+#set +v
+rsyncy "${RHOST}${remoterootdir}/" "${where}/" "${EXTRA_RSYNCY_PARAMS_arr[@]}"
 
 #strip timing information from Xorg.0.log
 #testing: sudo find ./manjarred/system/Z575/OSes/ -name Xorg.?.log -type f -print0 2>/dev/null | xargs -0 -I {} --max-args=1 -- sh -c 'cat "{}" | strip_timing_from_log | less'
