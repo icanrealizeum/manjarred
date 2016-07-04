@@ -1,4 +1,4 @@
-#	$OpenBSD: sshd_config,v 1.97 2015/08/06 14:53:21 deraadt Exp $
+#	$OpenBSD: sshd_config,v 1.98 2016/02/17 05:29:04 djm Exp $
 
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
@@ -10,14 +10,13 @@
 # possible, but leave them commented.  Uncommented options override the
 # default value.
 
-Port 22
+#Port 22
 #AddressFamily any
-AddressFamily inet
-ListenAddress 0.0.0.0
+#ListenAddress 0.0.0.0
 #ListenAddress ::
 
 # The default requires explicit activation of protocol 1
-Protocol 2
+#Protocol 2
 
 # HostKey for protocol version 1
 #HostKey /etc/ssh/ssh_host_key
@@ -25,7 +24,7 @@ Protocol 2
 #HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_dsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
-HostKey /etc/ssh/ssh_host_ed25519_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
 
 # Lifetime and size of ephemeral version 1 server key
 #KeyRegenerationInterval 1h
@@ -38,62 +37,11 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 # obsoletes QuietMode and FascistLogging
 #SyslogFacility AUTH
 #LogLevel INFO
-LogLevel VERBOSE
-LoginGraceTime 30s
-PermitRootLogin yes
-StrictModes yes
-MaxAuthTries 1
-MaxSessions 10
-RSAAuthentication no
-PubkeyAuthentication yes
-AuthorizedKeysFile      .ssh/authorized_key
-RhostsRSAAuthentication no
-HostbasedAuthentication no
-IgnoreUserKnownHosts yes
-IgnoreRhosts yes
-PasswordAuthentication no
-PermitEmptyPasswords no
-ChallengeResponseAuthentication no
-#^ yes = enables TIS Challenge/Response in SSH protocol version 1, and keyboard-interactive in SSH protocol v2
-UsePAM no
-#^ set PAM to no, because PAM is not used if public key authentication is used! src: https://dev.gentoo.org/~swift/docs/security_benchmarks/openssh.html#item-xccdf_org.gentoo.dev.swift_group_config-default
-#okno: but if PAM is no, then limits.conf is not applied! but keep these 2 as 'no' to disable PAM auth PasswordAuthentication ChallengeResponseAuthentication; OK, that wasn't it, XXX: even with UsePAM no, ulimit -c works, set to unlimited as per limits.conf except in the case when you use '*' instead of '0:' as first field in there! tested!
-AllowAgentForwarding no
-AllowTcpForwarding yes
-GatewayPorts no
-X11Forwarding no
-PermitTTY yes
-PrintMotd no
-PrintLastLog yes
-TCPKeepAlive yes
-UseLogin no
-UsePrivilegeSeparation sandbox
-PermitUserEnvironment no
-Compression delayed
-ClientAliveInterval 30
-ClientAliveCountMax 5
-UseDNS no
-PermitTunnel point-to-point
-NoneEnabled no
-AcceptEnv LANG LC_*
-Ciphers aes256-ctr
-# Set this to the unix group whose members are allowed access
-#AllowGroup ssh
-AllowUsers root zazdxscf emacs
-DenyUsers portage a
-MACs hmac-sha2-512-etm@openssh.com
-KexAlgorithms curve25519-sha256@libssh.org
-AuthenticationMethods publickey
-#ListenAddress 192.168.100.121
-
-
-
 
 # Authentication:
 
 #LoginGraceTime 2m
 #PermitRootLogin prohibit-password
-#PermitRootLogin yes
 #StrictModes yes
 #MaxAuthTries 6
 #MaxSessions 10
@@ -103,7 +51,7 @@ AuthenticationMethods publickey
 
 # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
 # but this is overridden so installations will only check .ssh/authorized_keys
-#AuthorizedKeysFile	.ssh/authorized_keys
+AuthorizedKeysFile	.ssh/authorized_keys
 
 #AuthorizedPrincipalsFile none
 
@@ -121,11 +69,11 @@ AuthenticationMethods publickey
 #IgnoreRhosts yes
 
 # To disable tunneled clear text passwords, change to no here!
-#PasswordAuthentication no
+#PasswordAuthentication yes
 #PermitEmptyPasswords no
 
 # Change to no to disable s/key passwords
-#ChallengeResponseAuthentication yes
+ChallengeResponseAuthentication no
 
 # Kerberos options
 #KerberosAuthentication no
@@ -146,7 +94,7 @@ AuthenticationMethods publickey
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-#UsePAM yes
+UsePAM yes
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
@@ -155,11 +103,11 @@ AuthenticationMethods publickey
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
-#PrintMotd no
-#PrintLastLog no
+PrintMotd no # pam does that
+#PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
-#UsePrivilegeSeparation sandbox		# Default for new installations.
+#UsePrivilegeSeparation sandbox
 #PermitUserEnvironment no
 #Compression delayed
 #ClientAliveInterval 0
@@ -175,23 +123,7 @@ AuthenticationMethods publickey
 #Banner none
 
 # override default of no subsystems
-#Subsystem	sftp	/usr/lib64/misc/sftp-server
-#Subsystem      sftp    /usr/lib64/misc/sftp-server
-Subsystem      sftp    /usr/lib/ssh/sftp-server
-
-# the following are HPN related configuration options
-# tcp receive buffer polling. disable in non autotuning kernels
-#TcpRcvBufPoll yes
-
-# disable hpn performance boosts
-#HPNDisabled no
-
-# buffer size for hpn to non-hpn connections
-#HPNBufferSize 2048
-
-
-# allow the use of the none cipher
-#NoneEnabled no
+Subsystem	sftp	/usr/lib/ssh/sftp-server
 
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
@@ -199,7 +131,3 @@ Subsystem      sftp    /usr/lib/ssh/sftp-server
 #	AllowTcpForwarding no
 #	PermitTTY no
 #	ForceCommand cvs server
-
-# Allow client to pass locale environment variables #367017
-#AcceptEnv LANG LC_*
-
