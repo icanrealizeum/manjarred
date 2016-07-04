@@ -35,6 +35,7 @@
 #-A newTCPin -p tcp --dport 22 -j accepted
 #redundant: -A newTCPin -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -j accepted
 -A newTCPout -p tcp -m multiport --dports 80,443 -j accepted
+-A newTCPout -p tcp -m multiport --dports 802,46802 -j accepted
 -A newTCPout -p tcp --dport 22 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
 #^ doc: http://ipset.netfilter.org/iptables-extensions.man.html
 # also in: man iptables-extensions

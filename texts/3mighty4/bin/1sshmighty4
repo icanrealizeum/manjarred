@@ -2,7 +2,7 @@
 
 #1st time ssh
 
-k=~/.../koe
+k=~/.../oldkey/koe
 chmod u+r -- "$k"
 (sleep 10 && chmod u-r -- "$k") &
 ssh -i "$k" -p 802 -l root -L 5900:127.0.1.2:46801 lmighty4

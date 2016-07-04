@@ -13,7 +13,7 @@ if test -z "$fromremotepath"; then
 fi
 
 set -x
-k=~/.../koe
+k=~/.../oldkey/koe
 chmod u+r -- "$k"
 (sleep 10 && chmod u-r -- "$k") &
 time scp -i "$k" -vp4 -P 802 -r -- root@lmighty4:"$fromremotepath" "$tolocalpath"
