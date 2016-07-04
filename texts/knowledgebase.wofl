@@ -461,12 +461,15 @@
   \ Received signal 8 FPE_INTDIV 7fe5168a5200
   \ #10 0x7fe5166ba9f9 vpx_codec_decode
   \ view this video: https://www.youtube.com/watch?v=2pbEarwdusc
+  \ this only works on my bugged CPU! Thanks AMD!
+  \ https://bugs.chromium.org/p/chromium/issues/detail?id=599899
 
 
 * how to add another IP:
   \ ifconfig eth0:1 192.168.0.3
   \ now you have eth0 192.168.0.2(supposedly) and eth0:1 192.168.0.3 !
   \ src: man pure-ftpd
+  \ There's another way without adding a new virtual eth, and that's via 'ip addr'
 
 * how to dual push when 'git push' happens = push to two repositories when a git push happens!
   \ src: https://stackoverflow.com/questions/14290113/git-pushing-code-to-two-remotes
@@ -802,5 +805,8 @@
 * umount is hanging...
   \ and it's function umount2 (libc.so.6)
   \ so this is why it's hanging for like 30sec upon shutdown, most likely
+
+* chromium hangs or slows down during playing youtube videos because of audio issues
+  \ haven't figured out why or how to fix this!
 
 
