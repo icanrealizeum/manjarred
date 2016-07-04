@@ -547,3 +547,6 @@ export GOPATH=~/"build/1nonpkgs/gopath"
 export PATH="$PATH:/home/$USER/build/1nonpkgs/racer/target/release"
 export RUST_SRC_PATH=~/"build/1nonpkgs/rust/rust/src"
 
+#attempt:don't autoload some system packages placed plugins! - this doesn't work
+export MOZ_PLUGIN_PATH="/$RANDOM" #tried: /
+
