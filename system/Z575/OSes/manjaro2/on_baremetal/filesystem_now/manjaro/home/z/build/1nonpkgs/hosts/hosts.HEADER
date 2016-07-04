@@ -7,13 +7,21 @@
 # consulted at all; see /etc/host.conf for the resolution order.
 #
 
+#manjaro defaults:
+#127.0.0.1	localhost
+#127.0.1.1	myzee
+#::1	localhost ip6-localhost ip6-loopback
+#ff02::1 ip6-allnodes
+#ff02::2 ip6-allrouters
+
+#gentoo:
 # IPv4 and IPv6 localhost aliases
 127.0.0.1 localhost.localdomain   localhost
-127.0.0.1	localhost gobaby
+127.0.0.1	localhost myzee
 #yourhostname here ^ or else  `hostname -f` will look it up by asking DNS server in /etc/resolv.conf !!!
 #NO DON'T!!when ipv6 is disabled, comment this line:
 ::1             localhost.localdomain   localhost
-::1		localhost gobaby
+::1		localhost myzee
 #^ without that, `hostname -f` will DNS request it as `AAAA? hostname` where hostname is `uname -n` (or `hostname`)     
 
 #l=local, r=remote (the r should be changed by a script! depending on the real IP)
@@ -22,6 +30,13 @@
 192.168.1.210 lohome
 192.168.1.210 rohome
 192.168.1.233 lmighty4
+
+#NetworkManager
+127.0.0.3 nmcheck.gnome.org
+
+#fixify these IPs, because they're used in firewall:
+208.118.235.89 elpa.gnu.org
+104.236.16.183 melpa.org
 
 #
 # Imaginary network.
@@ -249,9 +264,9 @@
 127.0.0.3 git.savannah.gnu.org
 127.0.0.3 debbugs.gnu.org
 
-127.0.0.3	vine.co
-127.0.0.3	instagram.com
-127.0.0.3	www.instagram.com
+#127.0.0.3	vine.co
+#127.0.0.3	instagram.com
+#127.0.0.3	www.instagram.com
 
 #TWITTER
 #just read tweets, see pics (no twittervids, but gifs[mp4] work if scripts are on):
