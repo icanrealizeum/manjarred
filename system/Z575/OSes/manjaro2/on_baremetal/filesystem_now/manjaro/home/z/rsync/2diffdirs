@@ -24,6 +24,11 @@ colordiff2() {
 }
 
 
+if ! test -d "$thedir"; then
+  echo "$thedir doesn't yet exist! Aborting..."
+  exit 1
+fi
+
 sudo2 diff -rup "$thedir" "$currentdir" 2>/dev/null |grep -E -v "^Only in $currentdir" | colordiff2 | less
 #^ sudo is needed because "$currentdir"/root for example is inaccessible to normal user!
 #sudo git diff --no-index  -- rsync-backed "$currentdir"
