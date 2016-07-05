@@ -852,7 +852,7 @@
               \ so it doesn't go to country tld but stays on .com
               * save this .xml from firefox by loading this page first:
                 \ resource://search-plugins/google.xml
-                \ see all: resource:///chrome/en-US/locale/browser/searchplugins/ 
+                \ see all: resource:///chrome/en-US/locale/browser/searchplugins/
                 \ src: https://support.mozilla.org/en-US/questions/1078483
               * move .xml into folder named: ./searchplugins/  which is located in your firefox profile directory eg. in homedir/.mozilla/firefox/*.default/
                 \ folder doesn't exist(now), creating it
@@ -863,10 +863,12 @@
                 * replace 'client=firefox' with 'hl=en'
                 * add line at the end of other lines like it:
                   \ <Param name="hl" value="en"/>
-                * required one more line (or else it will still redir!):
+                - required one more line (or else it will still redir!):
+                  \ this doesn't work anymore, it's still better than the default but still wants to redirect(but firefox can catch this by asking me if I want to allow the redirect, if set in Settings) to the country google.
                   \ <Param name="gws_rd" value="cr"/>
                   \ rd=redir, cr=country or country redirect
                   \ although this does the opposite of country redirect and just keeps this on google.com instead of going to eg. google.hu
+                * remove the ie and oe params (which have the utf-8 values)
                 * remove or comment out the two MozParam entries
               * about:support
               * open profile dir by clicking the button
@@ -875,6 +877,8 @@
                 \ this will make firefox see that new .xml
                 \ src: https://support.mozilla.org/en-US/questions/1062399#answer-729508
               * start firefox
+              * Remove the original Google by clicking Remove button and select the Google2 one
+                \ here I mean: about:preferences#search
             * don't trim urls in urlbar (src: SN#542)
               \ browser.urlbar.trimURLs false
             * looks like, in gentoo, this is the file that's in effect(with prefs being set as defaults - eg. Reset will set to this values)
