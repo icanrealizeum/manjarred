@@ -1,0 +1,34 @@
+#!/bin/bash
+
+echo "Before:" |grep -i before
+git remote -v show
+
+repo="$1"
+if test -z "$1" -o "$#" -gt "1"; then
+  echo "Too many args or none given: '$@'. Pass a repo name!"
+  exit 1
+fi
+
+remote='origin'
+username='icanrealizeum'
+
+git remote remove "$remote"
+set -xeu
+
+#eg. git@github.com:icanrealizeum/manjarred.git
+githubrepo="git@github.com:${username}/${repo}.git"
+
+#eg. git@notabug.org:icanrealizeum/manjarred.git
+notabugrepo="git@notabug.org:${username}/${repo}.git"
+
+git remote add "$remote" "$githubrepo"
+git remote set-url --add --push "$remote" "$githubrepo"
+git remote set-url --add --push "$remote" "$notabugrepo"
+set +xeu
+
+echo "After:" |grep -i after
+git remote -v show
+
+echo "Don't forget to do this next:"
+echo "git push -u --all"
+

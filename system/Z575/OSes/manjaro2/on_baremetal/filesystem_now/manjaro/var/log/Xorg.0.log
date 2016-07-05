@@ -3,8 +3,8 @@ X.Org X Server 1.17.4
 Release Date: 2015-10-28
 X Protocol Version 11, Revision 0
 Build Operating System: Linux 4.2.5-1-ARCH x86_64 
-Current Operating System: Linux myzee 4.7.0-rc3-gc369533 #4 SMP PREEMPT Mon Jun 20 16:35:52 EEST 2016 x86_64
-Kernel command line: BOOT_IMAGE=/boot/vmlinuz-linux-git root=UUID=1cfe2bc2-306d-49c0-8f81-1ee569235b2d rw root_trim=yes rd.luks.allow-discards ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 pcie_aspm=force fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 "dyndbg=file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt" acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=999000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.aspm=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.dpm=1 radeon.runpm=1 rd.debug rd.udev.debug rd.memdebug=3 net.ifnames=1 slub_debug=U pax_sanitize_slab=full noefi nolvm dobtrfs console=tty1 earlyprintk=vga CPUunderclocking radeon.modeset=1 resume=UUID=26e32979-c55b-41f1-b264-499a42af8733
+Current Operating System: Linux myzee 4.4.13-1-MANJARO #1 SMP PREEMPT Wed Jun 8 09:21:59 UTC 2016 x86_64
+Kernel command line: BOOT_IMAGE=/boot/vmlinuz-4.4-x86_64 root=UUID=96efaea0-86dc-485a-af36-36706f9f3908 rw quiet splash
 Build Date: 01 November 2015  10:36:50AM
  
 Current version of pixman: 0.34.0
@@ -13,7 +13,7 @@ Current version of pixman: 0.34.0
 Markers: (--) probed, (**) from config file, (==) default setting,
 	(++) from command line, (!!) notice, (II) informational,
 	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
-(==) Log file: "/var/log/Xorg.0.log", Time: Mon Jun 20 21:32:45 2016
+(==) Log file: "/var/log/Xorg.0.log", Time: Tue Jul  5 10:55:43 2016
 (==) Using config directory: "/etc/X11/xorg.conf.d"
 (==) Using system config directory "/usr/share/X11/xorg.conf.d"
 (==) No Layout section.  Using the first Screen section.
@@ -50,13 +50,10 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 	X.Org Video Driver: 19.0
 	X.Org XInput driver : 21.1
 	X.Org Server Extension : 9.0
-(EE) systemd-logind: failed to get session: PID 399 does not belong to any known session
+(EE) systemd-logind: failed to get session: PID 21737 does not belong to any known session
 (II) xfree86: Adding drm device (/dev/dri/card0)
-(--) PCI:*(0:0:1:0) 1002:9647:17aa:3971 rev 0, Mem @ 0xe0000000/268435456, 0xf0100000/262144, I/O @ 0x00002000/256, BIOS @ 0x????????/131072
+(--) PCI:*(0:0:1:0) 1002:9647:17aa:3971 rev 0, Mem @ 0xe0000000/268435456, 0xf0100000/262144, I/O @ 0x00002000/256
 (WW) Open ACPI failed (/var/run/acpid.socket) (No such file or directory)
-(II) "glx" will be loaded by default.
-(II) LoadModule: "dbe"
-(II) Module "dbe" already built-in
 (II) LoadModule: "glx"
 (II) Loading /usr/lib/xorg/modules/extensions/libglx.so
 (II) Module glx: vendor="X.Org Foundation"
@@ -325,15 +322,6 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (==) RADEON(0): Depth 24, (--) framebuffer bpp 32
 (II) RADEON(0): Pixel depth = 24 bits stored in 4 bytes (32 bpp pixmaps)
 (==) RADEON(0): Default visual is TrueColor
-(**) RADEON(0): Option "SWcursor" "off"
-(**) RADEON(0): Option "EnablePageFlip" "on"
-(**) RADEON(0): Option "ColorTiling" "on"
-(**) RADEON(0): Option "ColorTiling2D" "on"
-(**) RADEON(0): Option "RenderAccel" "on"
-(**) RADEON(0): Option "AccelMethod" "EXA"
-(**) RADEON(0): Option "EXAVSync" "on"
-(**) RADEON(0): Option "EXAPixmaps" "on"
-(**) RADEON(0): Option "SwapbuffersWait" "true"
 (WW) RADEON(0): Option "DRI" requires an integer value
 (==) RADEON(0): RGB weight 888
 (II) RADEON(0): Using 8 bits per RGB (8 bit DAC)
@@ -358,7 +346,7 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) RADEON(0): KMS Pageflipping: enabled
 (II) RADEON(0): SwapBuffers wait for vsync: enabled
 (II) RADEON(0): Output VGA-0 has no monitor section
-(II) RADEON(0): Output LVDS using monitor section LVDS
+(II) RADEON(0): Output LVDS has no monitor section
 (II) RADEON(0): Output HDMI-0 has no monitor section
 (II) RADEON(0): EDID for output VGA-0
 (II) RADEON(0): EDID for output LVDS
@@ -391,7 +379,6 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) RADEON(0): 	004c503135365748342d544c41310009
 (II) RADEON(0): Printing probed modes for output LVDS
 (II) RADEON(0): Modeline "1366x768"x60.0   70.00  1366 1402 1450 1492  768 771 776 782 -hsync -vsync (46.9 kHz eP)
-(II) RADEON(0): Modeline "1366x768_60.0"x60.0   70.00  1366 1402 1450 1492  768 771 776 782 -hsync -vsync (46.9 kHz)
 (II) RADEON(0): Modeline "1280x720"x59.9   74.50  1280 1344 1472 1664  720 723 728 748 -hsync +vsync (44.8 kHz)
 (II) RADEON(0): Modeline "1152x768"x59.8   71.75  1152 1216 1328 1504  768 771 781 798 -hsync +vsync (47.7 kHz)
 (II) RADEON(0): Modeline "1024x768"x59.9   63.50  1024 1072 1176 1328  768 771 775 798 -hsync +vsync (47.8 kHz)
@@ -406,7 +393,7 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) RADEON(0): Using exact sizes for initial modes
 (II) RADEON(0): Output LVDS using initial mode 1366x768
 (II) RADEON(0): Using default gamma of (1.0, 1.0, 1.0) unless otherwise stated.
-(II) RADEON(0): mem size init: gart size :3fdde000 vram size: s:20000000 visible:1f87a000
+(II) RADEON(0): mem size init: gart size :3fdde000 vram size: s:20000000 visible:1f768000
 (II) RADEON(0): EXA: Driver will allow EXA pixmaps in VRAM
 (==) RADEON(0): DPI set to (96, 96)
 (II) Loading sub module "ramdac"
@@ -417,12 +404,10 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) RADEON(0): [DRI2]   DRI driver: r600
 (II) RADEON(0): [DRI2]   VDPAU driver: r600
 (II) RADEON(0): Front buffer size: 4224K
-(II) RADEON(0): VRAM usage limit set to 461095K
+(II) RADEON(0): VRAM usage limit set to 460108K
 (==) RADEON(0): DRI3 disabled
 (==) RADEON(0): Backing store enabled
 (II) RADEON(0): Direct rendering enabled
-(II) RADEON(0): EXA VSync enabled
-(**) RADEON(0): Option "MigrationHeuristic" "greedy"
 (II) EXA(0): Driver allocated offscreen pixmaps
 (II) EXA(0): Driver registered support for the following operations:
 (II)         Solid
@@ -437,8 +422,6 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) RADEON(0): [XvMC] Associated with Radeon Textured Video.
 (II) RADEON(0): [XvMC] Extension initialized.
 (II) RADEON(0): RandR 1.2 enabled, ignore the following RandR disabled message.
-(WW) RADEON(0): Option "AccelDFS" is not used
-(WW) RADEON(0): Option "Backlight" is not used
 (--) RandR disabled
 (II) AIGLX: enabled GLX_MESA_copy_sub_buffer
 (II) AIGLX: enabled GLX_ARB_create_context
@@ -453,11 +436,11 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) AIGLX: Loaded and initialized r600
 (II) GLX: Initialized DRI2 GL provider for screen 0
 (II) RADEON(0): Setting screen physical size to 361 x 203
-(II) config/udev: Adding input device Power Button (/dev/input/event3)
+(II) config/udev: Adding input device Power Button (/dev/input/event4)
 (**) Power Button: Applying InputClass "evdev keyboard catchall"
 (**) Power Button: Applying InputClass "libinput keyboard catchall"
 (**) Power Button: Applying InputClass "system-keyboard"
-(**) Power Button: Applying InputClass "system-keyboard"
+(**) Power Button: Applying InputClass "Keyboard Defaults"
 (II) LoadModule: "libinput"
 (II) Loading /usr/lib/xorg/modules/input/libinput_drv.so
 (II) Module libinput: vendor="X.Org Foundation"
@@ -466,79 +449,99 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 	ABI class: X.Org XInput driver, version 21.1
 (II) Using input driver 'libinput' for 'Power Button'
 (**) Power Button: always reports core events
-(**) Option "Device" "/dev/input/event3"
+(**) Option "Device" "/dev/input/event4"
 (**) Option "_source" "server/udev"
-(II) input device 'Power Button', /dev/input/event3 is tagged by udev as: Keyboard
-(II) input device 'Power Button', /dev/input/event3 is a keyboard
-(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXPWRBN:00/input/input3/event3"
+(II) input device 'Power Button', /dev/input/event4 is tagged by udev as: Keyboard
+(II) input device 'Power Button', /dev/input/event4 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXPWRBN:00/input/input5/event4"
 (II) XINPUT: Adding extended input device "Power Button" (type: KEYBOARD, id 6)
 (**) Option "xkb_model" "pc105"
 (**) Option "xkb_layout" "us"
-(**) Option "xkb_variant" "basic"
-(**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
-(II) input device 'Power Button', /dev/input/event3 is tagged by udev as: Keyboard
-(II) input device 'Power Button', /dev/input/event3 is a keyboard
-(II) config/udev: Adding input device Video Bus (/dev/input/event4)
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(EE) Error compiling keymap (server-0)
+(EE) XKB: Couldn't compile keymap
+(EE) XKB: Failed to load keymap. Loading default keymap instead.
+(II) input device 'Power Button', /dev/input/event4 is tagged by udev as: Keyboard
+(II) input device 'Power Button', /dev/input/event4 is a keyboard
+(II) config/udev: Adding input device Video Bus (/dev/input/event5)
 (**) Video Bus: Applying InputClass "evdev keyboard catchall"
 (**) Video Bus: Applying InputClass "libinput keyboard catchall"
 (**) Video Bus: Applying InputClass "system-keyboard"
-(**) Video Bus: Applying InputClass "system-keyboard"
+(**) Video Bus: Applying InputClass "Keyboard Defaults"
 (II) Using input driver 'libinput' for 'Video Bus'
 (**) Video Bus: always reports core events
-(**) Option "Device" "/dev/input/event4"
+(**) Option "Device" "/dev/input/event5"
 (**) Option "_source" "server/udev"
-(II) input device 'Video Bus', /dev/input/event4 is tagged by udev as: Keyboard
-(II) input device 'Video Bus', /dev/input/event4 is a keyboard
-(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:01/input/input4/event4"
+(II) input device 'Video Bus', /dev/input/event5 is tagged by udev as: Keyboard
+(II) input device 'Video Bus', /dev/input/event5 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:01/input/input6/event5"
 (II) XINPUT: Adding extended input device "Video Bus" (type: KEYBOARD, id 7)
 (**) Option "xkb_model" "pc105"
 (**) Option "xkb_layout" "us"
-(**) Option "xkb_variant" "basic"
-(**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
-(II) input device 'Video Bus', /dev/input/event4 is tagged by udev as: Keyboard
-(II) input device 'Video Bus', /dev/input/event4 is a keyboard
-(II) config/udev: Adding input device Power Button (/dev/input/event0)
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(II) input device 'Video Bus', /dev/input/event5 is tagged by udev as: Keyboard
+(II) input device 'Video Bus', /dev/input/event5 is a keyboard
+(II) config/udev: Adding input device Power Button (/dev/input/event1)
 (**) Power Button: Applying InputClass "evdev keyboard catchall"
 (**) Power Button: Applying InputClass "libinput keyboard catchall"
 (**) Power Button: Applying InputClass "system-keyboard"
-(**) Power Button: Applying InputClass "system-keyboard"
+(**) Power Button: Applying InputClass "Keyboard Defaults"
 (II) Using input driver 'libinput' for 'Power Button'
 (**) Power Button: always reports core events
-(**) Option "Device" "/dev/input/event0"
+(**) Option "Device" "/dev/input/event1"
 (**) Option "_source" "server/udev"
-(II) input device 'Power Button', /dev/input/event0 is tagged by udev as: Keyboard
-(II) input device 'Power Button', /dev/input/event0 is a keyboard
-(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input0/event0"
+(II) input device 'Power Button', /dev/input/event1 is tagged by udev as: Keyboard
+(II) input device 'Power Button', /dev/input/event1 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input2/event1"
 (II) XINPUT: Adding extended input device "Power Button" (type: KEYBOARD, id 8)
 (**) Option "xkb_model" "pc105"
 (**) Option "xkb_layout" "us"
-(**) Option "xkb_variant" "basic"
-(**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
-(II) input device 'Power Button', /dev/input/event0 is tagged by udev as: Keyboard
-(II) input device 'Power Button', /dev/input/event0 is a keyboard
-(II) config/udev: Adding input device Lid Switch (/dev/input/event1)
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(II) input device 'Power Button', /dev/input/event1 is tagged by udev as: Keyboard
+(II) input device 'Power Button', /dev/input/event1 is a keyboard
+(II) config/udev: Adding input device Lid Switch (/dev/input/event2)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) config/udev: Adding input device Sleep Button (/dev/input/event2)
+(II) config/udev: Adding input device Sleep Button (/dev/input/event3)
 (**) Sleep Button: Applying InputClass "evdev keyboard catchall"
 (**) Sleep Button: Applying InputClass "libinput keyboard catchall"
 (**) Sleep Button: Applying InputClass "system-keyboard"
-(**) Sleep Button: Applying InputClass "system-keyboard"
+(**) Sleep Button: Applying InputClass "Keyboard Defaults"
 (II) Using input driver 'libinput' for 'Sleep Button'
 (**) Sleep Button: always reports core events
-(**) Option "Device" "/dev/input/event2"
+(**) Option "Device" "/dev/input/event3"
 (**) Option "_source" "server/udev"
-(II) input device 'Sleep Button', /dev/input/event2 is tagged by udev as: Keyboard
-(II) input device 'Sleep Button', /dev/input/event2 is a keyboard
-(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0E:00/input/input2/event2"
+(II) input device 'Sleep Button', /dev/input/event3 is tagged by udev as: Keyboard
+(II) input device 'Sleep Button', /dev/input/event3 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0E:00/input/input4/event3"
 (II) XINPUT: Adding extended input device "Sleep Button" (type: KEYBOARD, id 9)
 (**) Option "xkb_model" "pc105"
 (**) Option "xkb_layout" "us"
-(**) Option "xkb_variant" "basic"
-(**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
-(II) input device 'Sleep Button', /dev/input/event2 is tagged by udev as: Keyboard
-(II) input device 'Sleep Button', /dev/input/event2 is a keyboard
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(II) input device 'Sleep Button', /dev/input/event3 is tagged by udev as: Keyboard
+(II) input device 'Sleep Button', /dev/input/event3 is a keyboard
 (II) config/udev: Adding input device HD-Audio Generic HDMI/DP,pcm=3 (/dev/input/event7)
+(II) No input driver specified, ignoring this device.
+(II) This device may have been added with another device file.
+(II) config/udev: Adding input device Lenovo EasyCamera (/dev/input/event14)
+(**) Lenovo EasyCamera: Applying InputClass "evdev keyboard catchall"
+(**) Lenovo EasyCamera: Applying InputClass "libinput keyboard catchall"
+(**) Lenovo EasyCamera: Applying InputClass "system-keyboard"
+(**) Lenovo EasyCamera: Applying InputClass "Keyboard Defaults"
+(II) Using input driver 'libinput' for 'Lenovo EasyCamera'
+(**) Lenovo EasyCamera: always reports core events
+(**) Option "Device" "/dev/input/event14"
+(**) Option "_source" "server/udev"
+(II) input device 'Lenovo EasyCamera', /dev/input/event14 is tagged by udev as: Keyboard
+(II) input device 'Lenovo EasyCamera', /dev/input/event14 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/pci0000:00/0000:00:13.2/usb4/4-3/4-3:1.0/input/input15/event14"
+(II) XINPUT: Adding extended input device "Lenovo EasyCamera" (type: KEYBOARD, id 10)
+(**) Option "xkb_model" "pc105"
+(**) Option "xkb_layout" "us"
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(II) input device 'Lenovo EasyCamera', /dev/input/event14 is tagged by udev as: Keyboard
+(II) input device 'Lenovo EasyCamera', /dev/input/event14 is a keyboard
+(II) config/udev: Adding input device HDA Digital PCBeep (/dev/input/event8)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
 (II) config/udev: Adding input device HD-Audio Generic Mic (/dev/input/event9)
@@ -547,59 +550,75 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) config/udev: Adding input device HD-Audio Generic Headphone (/dev/input/event10)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) config/udev: Adding input device HDA Digital PCBeep (/dev/input/event8)
-(II) No input driver specified, ignoring this device.
-(II) This device may have been added with another device file.
-(II) config/udev: Adding input device AT Translated Set 2 keyboard (/dev/input/event5)
+(II) config/udev: Adding input device Ideapad extra buttons (/dev/input/event6)
+(**) Ideapad extra buttons: Applying InputClass "evdev keyboard catchall"
+(**) Ideapad extra buttons: Applying InputClass "libinput keyboard catchall"
+(**) Ideapad extra buttons: Applying InputClass "system-keyboard"
+(**) Ideapad extra buttons: Applying InputClass "Keyboard Defaults"
+(II) Using input driver 'libinput' for 'Ideapad extra buttons'
+(**) Ideapad extra buttons: always reports core events
+(**) Option "Device" "/dev/input/event6"
+(**) Option "_source" "server/udev"
+(II) input device 'Ideapad extra buttons', /dev/input/event6 is tagged by udev as: Keyboard
+(II) input device 'Ideapad extra buttons', /dev/input/event6 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/pci0000:00/0000:00:14.3/PNP0C09:00/VPC2004:00/input/input7/event6"
+(II) XINPUT: Adding extended input device "Ideapad extra buttons" (type: KEYBOARD, id 11)
+(**) Option "xkb_model" "pc105"
+(**) Option "xkb_layout" "us"
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(II) input device 'Ideapad extra buttons', /dev/input/event6 is tagged by udev as: Keyboard
+(II) input device 'Ideapad extra buttons', /dev/input/event6 is a keyboard
+(II) config/udev: Adding input device AT Translated Set 2 keyboard (/dev/input/event0)
 (**) AT Translated Set 2 keyboard: Applying InputClass "evdev keyboard catchall"
 (**) AT Translated Set 2 keyboard: Applying InputClass "libinput keyboard catchall"
 (**) AT Translated Set 2 keyboard: Applying InputClass "system-keyboard"
-(**) AT Translated Set 2 keyboard: Applying InputClass "system-keyboard"
+(**) AT Translated Set 2 keyboard: Applying InputClass "Keyboard Defaults"
 (II) Using input driver 'libinput' for 'AT Translated Set 2 keyboard'
 (**) AT Translated Set 2 keyboard: always reports core events
-(**) Option "Device" "/dev/input/event5"
+(**) Option "Device" "/dev/input/event0"
 (**) Option "_source" "server/udev"
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is tagged by udev as: Keyboard
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is a keyboard
-(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio0/input/input5/event5"
-(II) XINPUT: Adding extended input device "AT Translated Set 2 keyboard" (type: KEYBOARD, id 10)
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event0 is tagged by udev as: Keyboard
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event0 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio0/input/input0/event0"
+(II) XINPUT: Adding extended input device "AT Translated Set 2 keyboard" (type: KEYBOARD, id 12)
 (**) Option "xkb_model" "pc105"
 (**) Option "xkb_layout" "us"
-(**) Option "xkb_variant" "basic"
-(**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is tagged by udev as: Keyboard
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is a keyboard
-(II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/event6)
+(**) Option "xkb_options" "terminate:ctrl_alt_bksp"
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event0 is tagged by udev as: Keyboard
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event0 is a keyboard
+(II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/event13)
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "evdev touchpad catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "evdev touchscreen catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "libinput touchpad catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "libinput touchscreen catchall"
 (II) Using input driver 'libinput' for 'SynPS/2 Synaptics TouchPad'
 (**) SynPS/2 Synaptics TouchPad: always reports core events
-(**) Option "Device" "/dev/input/event6"
+(**) Option "Device" "/dev/input/event13"
 (**) Option "_source" "server/udev"
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is tagged by udev as: Touchpad Touchscreen
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is a touchpad
-(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio1/input/input7/event6"
-(II) XINPUT: Adding extended input device "SynPS/2 Synaptics TouchPad" (type: TOUCHPAD, id 11)
+(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event13 is tagged by udev as: Touchpad Touchscreen
+(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event13 is a touchpad
+(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio1/input/input9/event13"
+(II) XINPUT: Adding extended input device "SynPS/2 Synaptics TouchPad" (type: TOUCHPAD, id 13)
 (**) Option "AccelerationScheme" "none"
 (**) SynPS/2 Synaptics TouchPad: (accel) selected scheme none/0
 (**) SynPS/2 Synaptics TouchPad: (accel) acceleration factor: 2.000
 (**) SynPS/2 Synaptics TouchPad: (accel) acceleration threshold: 4
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is tagged by udev as: Touchpad Touchscreen
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is a touchpad
+(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event13 is tagged by udev as: Touchpad Touchscreen
+(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event13 is a touchpad
 (II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/mouse0)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) RADEON(0): EDID vendor "LGD", prod id 732
-(II) RADEON(0): Printing DDC gathered Modelines:
-(II) RADEON(0): Modeline "1366x768"x0.0   70.00  1366 1402 1450 1492  768 771 776 782 -hsync -vsync (46.9 kHz eP)
-(II) RADEON(0): EDID vendor "LGD", prod id 732
-(II) RADEON(0): Printing DDC gathered Modelines:
-(II) RADEON(0): Modeline "1366x768"x0.0   70.00  1366 1402 1450 1492  768 771 776 782 -hsync -vsync (46.9 kHz eP)
-(II) RADEON(0): EDID vendor "LGD", prod id 732
-(II) RADEON(0): Printing DDC gathered Modelines:
-(II) RADEON(0): Modeline "1366x768"x0.0   70.00  1366 1402 1450 1492  768 771 776 782 -hsync -vsync (46.9 kHz eP)
+(II) config/udev: Adding input device ThinkPad Extra Buttons (/dev/input/event12)
+(II) No input driver specified, ignoring this device.
+(II) This device may have been added with another device file.
+(II) config/udev: Adding input device Acer BMA150 accelerometer (/dev/input/event11)
+(II) No input driver specified, ignoring this device.
+(II) This device may have been added with another device file.
+(II) config/udev: Adding input device Acer BMA150 accelerometer (/dev/input/js0)
+(II) No input driver specified, ignoring this device.
+(II) This device may have been added with another device file.
+(II) UnloadModule: "libinput"
+(II) UnloadModule: "libinput"
 (II) UnloadModule: "libinput"
 (II) UnloadModule: "libinput"
 (II) UnloadModule: "libinput"
