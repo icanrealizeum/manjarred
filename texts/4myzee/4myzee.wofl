@@ -225,6 +225,17 @@
     * mkdir ~/Downloads/qTox
     * untick General->Connection Settings->Enable IPv6
       \ click Reconnect!
+    * config:
+      * General
+        * untick Use emoticons
+        * tick Group chats always notify
+        * tick(already) Faux offline messaging
+        * tick Show contacts' status changes
+        * Default directory to save files: /home/z/Downloads/qTox/
+        * tick Autoaccept files
+        * Show system tray icon - is already selected but has no effect if unselecting it! - bug
+        * tick Light icon
+        * untick(already) Autostart
     * in Firewall, Add Rule in Simple mode
       \ Name: qTox
       \ Policy: Allow
@@ -246,14 +257,16 @@
     * ensure /etc/mkinitcpio.conf doesn't have plymouth in HOOKS
       \ so it now becomes, eg.
       \ HOOKS="base udev autodetect modconf block keyboard keymap resume filesystems"
-    * enable lightdm (or you have to manually startx now)
-      * rm /etc/systemd/system/display-manager.service
-        \ because broken symlink! due to plymouth above being removed!
-      * systemctl enable lightdm
-        \ this works now!
-        \ without removing the above symlink, you get:
-        \ systemctl enable lightdm
-        \ Failed to execute operation: File exists
+  * sudo pacman -Rs lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+    \ not using this to auto startx, but otherwise it's good!
+  - enable lightdm (or you have to manually startx now)
+    * rm /etc/systemd/system/display-manager.service
+      \ because broken symlink! due to plymouth above being removed!
+    * systemctl enable lightdm
+      \ this works now!
+      \ without removing the above symlink, you get:
+      \ systemctl enable lightdm
+      \ Failed to execute operation: File exists
   * a stop job is running for ....
     * vim /etc/systemd/system.conf
       \ add these two lines (presumably the entries don't already exist!)
@@ -265,10 +278,12 @@
     * sudo vim /etc/ssh/ssh_config
       \ add those uhm... options you know
   * set up tlp
+    \ powertop is already installed!
   * set up tmpfiles.d radeon thermal
   * set up udev/rules.d/
   * install pwgen keepassx vbindiff
   * firefox
+    \ see: workflowy.wofl
     * addons
       * https-everywhere
         * git version?
@@ -283,7 +298,10 @@
       * firestorageplus
         \ for viewing localstorage! (eg. for rust-playpen)
         * requires firebug
+  * get emoticons font before running chromium(else it needs restart)
+    * sudo pacman -S ttf-symbola
   * chromium
+    \ see: workflowy.wofl
     * put ~/.config/chromium-flags.conf
     * extensions
       * hsts-everywhere-chrome
@@ -386,8 +404,6 @@
   * sudo pacman -Rs cifs-utils smbclient gvfs-smb gnome-vfs
     \ apparently not needed!
     \ possibly installed with vlc?(optional for!)
-  * sudo pacman -Rs lightdm lightdm-gtk-greeter
-    \ not using this to auto startx, but otherwise it's good!
   * sudo pacman -Rs steam-manjaro
     \ 200+MiB
   * psd
