@@ -852,9 +852,11 @@
               \ so it doesn't go to country tld but stays on .com
               * save this .xml from firefox by loading this page first:
                 \ resource://search-plugins/google.xml
+                \ see all: resource:///chrome/en-US/locale/browser/searchplugins/ 
+                \ src: https://support.mozilla.org/en-US/questions/1078483
               * move .xml into folder named: ./searchplugins/  which is located in your firefox profile directory eg. in homedir/.mozilla/firefox/*.default/
                 \ folder doesn't exist(now), creating it
-                \ had no effect on ff restart hmm
+                \ had no effect on ff restart hmm, even if filename is google2.xml instead of google.xml - ok found it: delete search.json.mozlz4 from your profile dir! but do this after the .xml is ready!!!
               * edit file
                 * rename ShortName to Google2
                 * also rename Description
@@ -865,12 +867,21 @@
                   \ <Param name="gws_rd" value="cr"/>
                   \ rd=redir, cr=country or country redirect
                   \ although this does the opposite of country redirect and just keeps this on google.com instead of going to eg. google.hu
+                * remove or comment out the two MozParam entries
+              * about:support
+              * open profile dir by clicking the button
+              * exit firefox
+              * delete file search.json.mozlz4
+                \ this will make firefox see that new .xml
+                \ src: https://support.mozilla.org/en-US/questions/1062399#answer-729508
+              * start firefox
             * don't trim urls in urlbar (src: SN#542)
               \ browser.urlbar.trimURLs false
             * looks like, in gentoo, this is the file that's in effect(with prefs being set as defaults - eg. Reset will set to this values)
               \ /usr/portage/www-client/firefox-bin/files/firefox-bin-prefs.js
               * on manjaro the only file is here:
                 \ /usr/lib/firefox/defaults/pref/channel-prefs.js
+                \ also this: /usr/lib/firefox/browser/defaults/preferences/vendor.js
             * app.update.auto
               \ false
             * app.update.enabled
