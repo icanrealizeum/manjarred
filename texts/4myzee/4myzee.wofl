@@ -304,7 +304,8 @@
     \ see: workflowy.wofl
     * put ~/.config/chromium-flags.conf
     * extensions
-      * hsts-everywhere-chrome
+      * hsts-hacky
+        \ aka the hsts-everywhere-chrome modified
       * uMatrix
       * uBlock
       * uBO-WebSocket
@@ -362,7 +363,6 @@
         * Default Icons, list - scroll down
           * enable 'Removable Devices'
   * get mc-git with my patch to avoid shell output getting truncated
-  * install strace
   * restore blacklisted modules from old OS
   * emojis
     * sudo pacman -S ttf-symbola
@@ -387,10 +387,10 @@
   * sudo pacman -Rs gnome-keyring
     \ it's optional and not needed for my needs
   * sudo pacman -S strace
-  * sudo pacman -S emacs
+  - sudo pacman -S emacs
   * sudo pacman -S tcpdump
-  * sudo pacman -S cscope ctags
-    \ unsure if I need ctags!
+  * sudo pacman -S cscope
+    \ unsure if I need ctags too! apparently not
   * sudo pacman -S wkhtmltopdf
     \ for my pdfpage script
   * sudo pacman -Rs refind-efi
@@ -427,14 +427,14 @@
   * find out how to get /etc/inittab from gentoo into Manjaro's systemd equivalent!
   * get rid of this in dmesg:  i8042: ------------------------4294849049
     \ in my kernel patches
-  * set up ~/.xinitrc
+  - set up ~/.xinitrc
   - get rid of the audit: dmesg lines from chromium!
     * CONFIG_AUDIT in kernel seems to be needed only for consolekit(in gentoo) ?
       * removed and recompiled kernel!
         \ looks like this was systemd (now starting with -AUDIT) tapping into the kernel audit! (especially since this didn't happen on gentoo, with openrc)
   * find out if led_class kernel module is actually needed!
     * look into kernel sources or Kconfig files!
-  * maybe get rid of NetworkManager completely?
+  - //nah, I'm using its hooks capability! // maybe get rid of NetworkManager completely?
     * see how to manually set up network!
   * remove pamac
     \ will pacman -Syu manually
