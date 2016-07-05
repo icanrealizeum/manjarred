@@ -462,6 +462,14 @@
     \ addons: uBlock Origin, https everywhere
   * virtualbox
     \ install packages: virtualbox and (not yet)virtualbox-host-dkms and linux44-virtualbox-host-modules (uname -a should tell you kernel is 4.4.11-1-MANJARO)
+  * sudo pacman -Qo xfce4-clipman-plugin
+  * remove stuff from startup
+    * open Session and Startup from Start button(search for it)
+    * go to tab named Application Autostart
+    * untick Blueman Applet (bluetooth)
+    * untick Clipman
+    - untick Print Queue Applet
+      \ this package got removed
   - (don't need this!)sshd
     \ curiously sudo systemctl --all  does not list anything with ssh (case insensitive even)
     * sudo vim /etc/ssh/sshd_config
