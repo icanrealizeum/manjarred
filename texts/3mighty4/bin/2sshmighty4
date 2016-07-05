@@ -2,7 +2,7 @@
 
 #2+ times ssh
 
-k=~/.../oldkey/koe
+k=~/.../T400/koe
 chmod u+r -- "$k"
 (sleep 10 && chmod u-r -- "$k") &
 ssh -i "$k" -p 802 -l root lmighty4

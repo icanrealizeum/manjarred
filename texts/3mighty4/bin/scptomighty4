@@ -11,7 +11,7 @@ if test -z "$fromlocalpath" -o -z "$toremotepath"; then
 fi
 
 set -x
-k=~/.../oldkey/koe
+k=~/.../T400/koe
 chmod u+r -- "$k"
 (sleep 3 && chmod u-r -- "$k") &
 time scp -i "$k" -vp4 -P 802 -r -- "$fromlocalpath" root@lmighty4:"$toremotepath"
