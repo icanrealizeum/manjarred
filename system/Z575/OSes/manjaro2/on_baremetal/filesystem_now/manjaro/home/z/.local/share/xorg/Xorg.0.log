@@ -13,7 +13,7 @@ Current version of pixman: 0.34.0
 Markers: (--) probed, (**) from config file, (==) default setting,
 	(++) from command line, (!!) notice, (II) informational,
 	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
-(==) Log file: "/home/z/.local/share/xorg/Xorg.0.log", Time: Tue Jul  5 20:29:37 2016
+(==) Log file: "/home/z/.local/share/xorg/Xorg.0.log", Time: Wed Jul  6 03:36:30 2016
 (==) Using config directory: "/etc/X11/xorg.conf.d"
 (==) Using system config directory "/usr/share/X11/xorg.conf.d"
 (==) No Layout section.  Using the first Screen section.
@@ -584,24 +584,39 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "evdev touchscreen catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "libinput touchpad catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "libinput touchscreen catchall"
+(**) SynPS/2 Synaptics TouchPad: Applying InputClass "touchpad catchall"
+(**) SynPS/2 Synaptics TouchPad: Applying InputClass "Default clickpad buttons"
+(II) LoadModule: "synaptics"
+(II) Loading /usr/lib/xorg/modules/input/synaptics_drv.so
+(II) Module synaptics: vendor="X.Org Foundation"
+	compiled for 1.17.4, module version = 1.8.99
+	Module class: X.Org XInput Driver
+	ABI class: X.Org XInput driver, version 21.1
 (II) systemd-logind: got fd for /dev/input/event6 13:70 fd 20 paused 0
-(II) Using input driver 'libinput' for 'SynPS/2 Synaptics TouchPad'
+(II) Using input driver 'synaptics' for 'SynPS/2 Synaptics TouchPad'
 (**) SynPS/2 Synaptics TouchPad: always reports core events
 (**) Option "Device" "/dev/input/event6"
-(**) Option "_source" "server/udev"
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is tagged by udev as: Touchpad Touchscreen
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is a touchpad
+(II) synaptics: SynPS/2 Synaptics TouchPad: ignoring touch events for semi-multitouch device
+(--) synaptics: SynPS/2 Synaptics TouchPad: x-axis range 1472 - 5728 (res 46)
+(--) synaptics: SynPS/2 Synaptics TouchPad: y-axis range 1408 - 4902 (res 83)
+(--) synaptics: SynPS/2 Synaptics TouchPad: pressure range 0 - 255
+(--) synaptics: SynPS/2 Synaptics TouchPad: finger width range 0 - 15
+(--) synaptics: SynPS/2 Synaptics TouchPad: buttons: left right double triple
+(--) synaptics: SynPS/2 Synaptics TouchPad: Vendor 0x2 Product 0x7
+(--) synaptics: SynPS/2 Synaptics TouchPad: touchpad found
+(**) SynPS/2 Synaptics TouchPad: always reports core events
 (**) Option "config_info" "udev:/sys/devices/platform/i8042/serio1/input/input7/event6"
 (II) XINPUT: Adding extended input device "SynPS/2 Synaptics TouchPad" (type: TOUCHPAD, id 11)
-(**) Option "AccelerationScheme" "none"
-(**) SynPS/2 Synaptics TouchPad: (accel) selected scheme none/0
+(**) synaptics: SynPS/2 Synaptics TouchPad: (accel) MinSpeed is now constant deceleration 2.5
+(**) synaptics: SynPS/2 Synaptics TouchPad: (accel) MaxSpeed is now 1.75
+(**) synaptics: SynPS/2 Synaptics TouchPad: (accel) AccelFactor is now 0.036
+(**) SynPS/2 Synaptics TouchPad: (accel) keeping acceleration scheme 1
+(**) SynPS/2 Synaptics TouchPad: (accel) acceleration profile 1
 (**) SynPS/2 Synaptics TouchPad: (accel) acceleration factor: 2.000
 (**) SynPS/2 Synaptics TouchPad: (accel) acceleration threshold: 4
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is tagged by udev as: Touchpad Touchscreen
-(II) input device 'SynPS/2 Synaptics TouchPad', /dev/input/event6 is a touchpad
+(--) synaptics: SynPS/2 Synaptics TouchPad: touchpad found
 (II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/mouse0)
-(II) No input driver specified, ignoring this device.
-(II) This device may have been added with another device file.
+(**) SynPS/2 Synaptics TouchPad: Ignoring device from InputClass "touchpad ignore duplicates"
 (II) config/udev: Adding input device PC Speaker (/dev/input/event7)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
@@ -614,15 +629,3 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) RADEON(0): EDID vendor "LGD", prod id 732
 (II) RADEON(0): Printing DDC gathered Modelines:
 (II) RADEON(0): Modeline "1366x768"x0.0   70.00  1366 1402 1450 1492  768 771 776 782 -hsync -vsync (46.9 kHz eP)
-(EE) libinput bug: invalid tap event when fingers are up
-(II) Axis 0x1 value 1191 is outside expected range [1233, 5076]
-See https://wayland.freedesktop.org/libinput/doc/1.3.2//absolute_coordinate_ranges.html for details
-(II) Axis 0x1 value 1212 is outside expected range [1233, 5076]
-See https://wayland.freedesktop.org/libinput/doc/1.3.2//absolute_coordinate_ranges.html for details
-(II) Axis 0x1 value 1228 is outside expected range [1233, 5076]
-See https://wayland.freedesktop.org/libinput/doc/1.3.2//absolute_coordinate_ranges.html for details
-(EE) libinput bug: invalid tap event when fingers are up
-(II) Axis 0x1 value 1231 is outside expected range [1233, 5076]
-See https://wayland.freedesktop.org/libinput/doc/1.3.2//absolute_coordinate_ranges.html for details
-(II) Axis 0x1 value 1229 is outside expected range [1233, 5076]
-See https://wayland.freedesktop.org/libinput/doc/1.3.2//absolute_coordinate_ranges.html for details
