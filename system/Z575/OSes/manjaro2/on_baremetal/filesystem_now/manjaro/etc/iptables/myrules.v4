@@ -26,22 +26,42 @@
 :snh - [0:0]
 #snh=should not happen - if it did then there's a bug in the way rules were set up!
 
+#---------------------
 # Acceptable newUDPin traffic
-#-A newUDPin -j rejected
+#allow qtox:
+-A newUDPin -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.1.255  -j accepted
+-A newUDPin -p udp --sport 33445 --dport 33445 -j accepted
+#^ eg. bcast packets from qtoxes running on local LAN machines
+#XXX: not really needed:
+-A newUDPin -j rejected
+#^ so not specifying this means it will still fall through to rejected but it's easier to see if anything got rejected in this category
 
+#---------------------
+# Acceptable newUDPout traffic
 -A newUDPout -p udp --dport 53 --dst 8.8.4.4,8.8.8.8,208.67.222.220 -j accepted
+#allow qtox:
+-A newUDPout -p udp --sport 33445 -j accepted
+#XXX: not really needed:
+-A newUDPout -j rejected
+#^ so not specifying this means it will still fall through to rejected but it's easier to see if anything got rejected in this category
 
+#---------------------
 # Acceptable incoming newTCPin traffic
 #-A newTCPin -p tcp --dport 22 -j accepted
 #redundant: -A newTCPin -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -j accepted
+#XXX: not really needed:
+-A newTCPin -j rejected
+
 -A newTCPout -p tcp -m multiport --dports 80,443 -j accepted
 -A newTCPout -p tcp -m multiport --dports 802,46802 -j accepted
 -A newTCPout -p tcp --dport 22 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
 #^ doc: http://ipset.netfilter.org/iptables-extensions.man.html
 # also in: man iptables-extensions
 -A newTCPout -p tcp --dport 23 -d 192.168.1.1 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
+#qtox:
+-A newTCPout -p tcp --dport 33445 -j accepted
 #XXX: not really needed:
--A newTCPin -j rejected
+-A newTCPout -j rejected
 
 #------------------ common ICMP blocks
 :commonICMPblocks - [0:0]
@@ -110,7 +130,7 @@
 
 
 #XXX: do not log these qTox broadcasted LAN packets
--A rejected -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.1.255  -m limit --limit 700/minute --limit-burst 2 -j rejectwithreset
+#-A rejected -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.1.255  -m limit --limit 700/minute --limit-burst 2 -j rejectwithreset
 #should be 720/hour but I do want to log some of them.
 #syslog levels (--log-level): https://en.wikipedia.org/wiki/Syslog#Severity_level
 #--log-uid Log the userid of the process which generated the packet.

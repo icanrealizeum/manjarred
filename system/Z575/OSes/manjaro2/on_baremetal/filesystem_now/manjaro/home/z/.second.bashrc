@@ -91,6 +91,7 @@ unset CDPATH
 #both should be in PATH because with just aliases cargo will fail
 #export PATH="$PATH:$rustroot/bin:$cargoroot"
 
+alias rustfmt='/home/z/build/1nonpkgs/rustfmt/target/release/rustfmt'
 ##alias rustc='LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/" /home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/rustc'
 ##alias cargo='LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/" PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/:$PATH" /home/emacs/build/cargo/target/x86_64-unknown-linux-gnu/cargo'
 #----------
