@@ -161,7 +161,9 @@
 
 #127.0.0.3/32 is hostBlocked  it's in /etc/hosts !
 #127.0.0.1/8 is whole 127.*.*.* network!
--A INPUT -i lo -s 127.0.0.1/8 -d hostBlocked -j rejected
+#-A INPUT -i lo -s 127.0.0.1/8 -d hostBlocked -j snh
+-A INPUT -i lo -s 127.0.0.1/8 -d 127.3.0.0/16 -j snh
+#XXX: ^ 127.3.0.0/16 is in accordance with /etc/hosts which is from: /home/z/build/1nonpkgs/hosts/
 -A INPUT -i lo -s 127.0.0.1/8 -d 127.0.0.1/8 -m conntrack --ctstate NEW -j accepted
 #-A INPUT -i lo -j accepted
 #TODO: restrict this lo conntrack-like
@@ -194,7 +196,9 @@
 #----------------
 
 #-A OUTPUT -o lo -j accepted
--A OUTPUT -o lo -s 127.0.0.1/8 -d hostBlocked -j rejected
+#-A OUTPUT -o lo -s 127.0.0.1/8 -d hostBlocked -j rejected
+-A OUTPUT -o lo -s 127.0.0.1/8 -d 127.3.0.0/16 -j rejected
+#XXX: ^ 127.3.0.0/16 is in accordance with /etc/hosts which is from: /home/z/build/1nonpkgs/hosts/
 #-A OUTPUT -o lo -s 127.0.0.1/8 -d 127.0.0.1/8 -j accepted
 -A OUTPUT -o lo -s 127.0.0.1/8 -d 127.0.0.1/8 -m conntrack --ctstate NEW -j accepted
 
