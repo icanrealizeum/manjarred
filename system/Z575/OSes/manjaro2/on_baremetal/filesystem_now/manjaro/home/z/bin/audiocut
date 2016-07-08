@@ -13,5 +13,18 @@ EOF
   exit 1
 fi
 
-ffmpeg -ss "$2" -i "$1" -acodec copy -aq 1 -to "$3" "cut.${1}" 
+
+
+fname="$1"
+fromtime="$2"
+totaltime="$3"
+prefix="cut."
+ext="${fname##*.}"
+#extension is required so that ffmpeg can infer the format, apparently!
+
+#echo "$ext"
+suffix="_${0/*\//}_fromtime_${fromtime/:/_}_totaltime_${totaltime/:/_}.${ext}"
+
+set -x
+ffmpeg -ss "$fromtime" -i "$fname" -acodec copy -aq 1 -vcodec copy -to "$totaltime" "${prefix}${fname}${suffix}"
 
