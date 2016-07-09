@@ -36,7 +36,15 @@ for i in `seq 1 $#`; do
   echo -n "Processing input file: '${ffile}' "
   outfile="${ffile}.avi"
   if test -r "$ffile"; then
-    ffmpeg -i "${ffile}" -acodec copy -vcodec copy "${outfile}" 2>&1 2>"$logfile"
+    #    ROTATEMETA=( "-c" "copy" "-metadata:s:v:0" "rotate=90") # no effect(even after youtube upload), src: https://stackoverflow.com/questions/25031557/rotate-mp4-videos-without-re-encoding
+    ROTATEMETA=("-vf" "transpose=1" "-acodec" "copy" "-vcodec" "libx264")
+    #0 = 90CounterCLockwise and Vertical Flip (default)
+    #1 = 90Clockwise
+    #2 = 90CounterClockwise
+    #3 = 90Clockwise and Vertical Flip
+    #src: https://stackoverflow.com/questions/3937387/rotating-videos-with-ffmpeg
+    #ROTATEMETA=("-acodec" "copy" "-vcodec" "copy")
+    ffmpeg -i "${ffile}" "${ROTATEMETA[@]}" "${outfile}" 2>&1 2>"$logfile"
     if test "$?" -eq "0"; then
       echo " done."
     else

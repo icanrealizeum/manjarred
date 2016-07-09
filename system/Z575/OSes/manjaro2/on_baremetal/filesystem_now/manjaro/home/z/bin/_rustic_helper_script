@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cargobasedir='/home/z/build/1nonpkgs/cargo/cargo/'
+cargoclippydir='/home/z/build/1nonpkgs/cargo-clippy/target/release'
 
 #for rustc
 basedir='/home/z/build/1nonpkgs/rust/rust/'
@@ -11,6 +12,7 @@ searchdirs=(
 "$basedir"'/x86_64-unknown-linux-gnu/stage0/bin/'
 
 "$cargobasedir"'/target/x86_64-unknown-linux-gnu/release/'
+"$cargoclippydir"
 )
 
 #this will work even if array elements contain spaces! (ofc, why didn't I think of this)
