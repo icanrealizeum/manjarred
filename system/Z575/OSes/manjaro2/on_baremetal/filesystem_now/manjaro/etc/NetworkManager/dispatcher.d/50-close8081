@@ -6,6 +6,11 @@ STATUS=$2 # The new state of the interface
 
 #I made this to close port 8081 on my Huawei HG510 router (no idea what the port does, but firefox seems to be repeatedly asking me for user/password - but might be a firefox fluke) 30 june 2016
 #HG=Home Gateway
+#ok, this 8081 port is for TR-069 aka CWMP(The CPE WAN (CWMP) Management Protocol) aka ACS server (Auto Configuration Server) more info: https://www.incognito.com/tips-and-tutorials/faq-tr-069/
+#src: https://community.bt.com/t5/BT-Infinity-Speed-Connection/HG612-modem-remote-port-8081-OPEN/td-p/463589/page/2#
+#src: https://github.com/dpavlin/perl-cwmp
+#and the user/pass values are on that TR-069 page when visiting LAN IP of router... tested to work!
+
 theport=8081
 wait4router_seconds=30
 wait4inet_seconds=60
