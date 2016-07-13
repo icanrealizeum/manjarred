@@ -189,6 +189,13 @@
     \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
     \ add line:
     \ blacklist nfs
+  * fix pulseaudio from listening on 0:0:0:0:4713
+    \ tcp        0      0 0.0.0.0:4713            0.0.0.0:*               LISTEN      923/pulseaudio
+    * comment out this line in file /etc/pulse/default.pa
+      \ load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+      \ src: https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/#index1h2
+      \ it was commented in gentoo!
+  * uninstall pulseaudio-zeroconf
   * sudo systemctl enable ufw
     \ enable firewall on startup! else it only starts when you manually start it from X and then you have to switch the Status to enabled! every time!
     - apparently something set ENABLED=yes in /etc/ufw/ufw.conf but wasn't the systemctl! or the UI(?!)
@@ -201,6 +208,8 @@
       * 46801 tcp in on lo
         \ x11vnc
         \ apparently works even without this!
+      * 5228 tcp out
+        \ this is chromium sync!
   - there is video in firefox but not in chromium
     \ nevermind, it was uMatrix!
   * chromium

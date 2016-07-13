@@ -1,0 +1,92 @@
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow_log tcp 46802 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-logging-input -p tcp --dport 46802 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -p tcp --dport 46802 -j RETURN
+-A ufw-user-input -p tcp --dport 46802 -j ufw-user-logging-input
+-A ufw-user-input -p tcp --dport 46802 -j ACCEPT
+
+### tuple ### allow udp 53 8.8.8.8 any 0.0.0.0/0 out
+-A ufw-user-output -p udp -d 8.8.8.8 --dport 53 -j ACCEPT
+
+### tuple ### allow udp 53 8.8.4.4 any 0.0.0.0/0 out
+-A ufw-user-output -p udp -d 8.8.4.4 --dport 53 -j ACCEPT
+
+### tuple ### allow tcp 21 0.0.0.0/0 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp --dport 21 -j ACCEPT
+
+### tuple ### allow_log tcp 46801 0.0.0.0/0 any 0.0.0.0/0 in_lo
+-A ufw-user-logging-input -i lo -p tcp --dport 46801 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-input -i lo -p tcp --dport 46801 -j RETURN
+-A ufw-user-input -i lo -p tcp --dport 46801 -j ufw-user-logging-input
+-A ufw-user-input -i lo -p tcp --dport 46801 -j ACCEPT
+
+### tuple ### allow any 33445 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 33445 -j ACCEPT
+-A ufw-user-input -p udp --dport 33445 -j ACCEPT
+
+### tuple ### allow any 33445 0.0.0.0/0 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp --dport 33445 -j ACCEPT
+-A ufw-user-output -p udp --dport 33445 -j ACCEPT
+
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp --dport 80 -j ACCEPT
+
+### tuple ### allow tcp 443 0.0.0.0/0 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp --dport 443 -j ACCEPT
+
+### tuple ### allow udp any 0.0.0.0/0 33445 0.0.0.0/0 out
+-A ufw-user-output -p udp --sport 33445 -j ACCEPT
+
+### tuple ### allow_log udp 123 0.0.0.0/0 123 0.0.0.0/0 out
+-A ufw-user-logging-output -p udp --dport 123 --sport 123 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -p udp --dport 123 --sport 123 -j RETURN
+-A ufw-user-output -p udp --dport 123 --sport 123 -j ufw-user-logging-output
+-A ufw-user-output -p udp --dport 123 --sport 123 -j ACCEPT
+
+### tuple ### allow_log udp 53 208.67.222.220 any 0.0.0.0/0 out
+-A ufw-user-logging-output -p udp -d 208.67.222.220 --dport 53 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -p udp -d 208.67.222.220 --dport 53 -j RETURN
+-A ufw-user-output -p udp -d 208.67.222.220 --dport 53 -j ufw-user-logging-output
+-A ufw-user-output -p udp -d 208.67.222.220 --dport 53 -j ACCEPT
+
+### tuple ### allow_log tcp 5228 0.0.0.0/0 any 0.0.0.0/0 out
+-A ufw-user-logging-output -p tcp --dport 5228 -m conntrack --ctstate NEW -m limit --limit 3/min --limit-burst 10 -j LOG --log-prefix "[UFW ALLOW] "
+-A ufw-user-logging-output -p tcp --dport 5228 -j RETURN
+-A ufw-user-output -p tcp --dport 5228 -j ufw-user-logging-output
+-A ufw-user-output -p tcp --dport 5228 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-output -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
