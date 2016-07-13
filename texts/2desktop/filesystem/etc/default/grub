@@ -1,10 +1,10 @@
 GRUB_DEFAULT=0
-GRUB_TIMEOUT=5
+GRUB_TIMEOUT=1
 GRUB_DISTRIBUTOR="Manjaro"
 #GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=52fe25fa-e76a-4595-bb3a-00c4c82f9209"
 GRUB_CMDLINE_LINUX_DEFAULT=""
 #GRUB_CMDLINE_LINUX=""
-GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" rd.debug rd.udev.debug rd.memdebug=3 console=tty1 earlyprintk=vga slub_debug=U pax_sanitize_slab=full noefi resume=UUID=52fe25fa-e76a-4595-bb3a-00c4c82f9209"
+GRUB_CMDLINE_LINUX="ipv6.disable=1 pnp.debug=1 loglevel=9 log_buf_len=10M printk.always_kmsg_dump=y printk.time=y mminit_loglevel=0 memory_corruption_check=1 fbcon=scrollback:4096k fbcon=font:ProFont6x11 apic=debug dynamic_debug.verbose=1 dyndbg=\"file arch/x86/kernel/apic/* +pflmt ; file drivers/video/* +pflmt ; file drivers/input/* -pflmt ; file drivers/acpi/* -pflmt\" rd.debug rd.udev.debug rd.memdebug=3 console=tty1 earlyprintk=vga slub_debug=U pax_sanitize_slab=full noefi resume=UUID=52fe25fa-e76a-4595-bb3a-00c4c82f9209 radeon.dynclks=1 radeon.dpm=1 radeon.runpm=1"
 
 # If you want to enable the save default function, uncomment the following
 # line, and set GRUB_DEFAULT to saved.
