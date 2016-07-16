@@ -1,0 +1,20 @@
+../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/prefs/browser_prefs.cc:300:3: error: incomplete type 'BackgroundModeManager' named in nested name specifier
+  BackgroundModeManager::RegisterPrefs(registry);
+  ^~~~~~~~~~~~~~~~~~~~~~~
+../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/browser_process.h:20:7: note: forward declaration of 'BackgroundModeManager'
+class BackgroundModeManager;
+      ^
+1 warning and 1 error generated.
+
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index 73d9b85..b8396e3 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -297,5 +300,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+ #if !defined(OS_ANDROID)
+   AutomaticProfileResetterFactory::RegisterPrefs(registry);
++#if defined(ENABLE_BACKGROUND)
+   BackgroundModeManager::RegisterPrefs(registry);
++#endif
+   RegisterBrowserPrefs(registry);
+   // The native GCM is used on Android instead.

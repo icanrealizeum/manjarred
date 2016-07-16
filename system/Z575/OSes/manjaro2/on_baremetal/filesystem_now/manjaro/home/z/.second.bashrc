@@ -165,7 +165,7 @@ alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias grep='grep --color=tty -d skip'
 alias grepcolor='grep --color=always -d skip'
-alias cp="cp -i"                          # confirm before overwriting something
+alias cp="cp -i --reflink=always"                          # confirm before overwriting something; and CoW
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias np='nano PKGBUILD'
@@ -499,11 +499,11 @@ alias bt='echo 0 | gdb -batch-silent -ex "run" -ex "set logging overwrite on" -e
 #usage: bt crashed_program_filename
 #src: https://blog.cryptomilk.org/2010/12/23/gdb-backtrace-to-file/
 
-#export RUST_BACKTRACE=1
-export -n RUST_BACKTRACE
-unset RUST_BACKTRACE
+export RUST_BACKTRACE=1
+#export -n RUST_BACKTRACE
+#unset RUST_BACKTRACE
 
-export MAKEFLAGS='-j4 '
+export MAKEFLAGS=' -j4 '
 
 #temporary rustc and cargo path
 #export PATH="${PATH}:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage2/bin:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage1/bin:/home/zazdxscf/build/1nonpkgs/cargo/cargo/target/x86_64-unknown-linux-gnu/release:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/lib/rustlib/x86_64-unknown-linux-gnu/bin/:/home/zazdxscf/build/1nonpkgs/rust/rust/x86_64-unknown-linux-gnu/stage0/bin/"

@@ -2,7 +2,7 @@
 
 _pkgname=youtube-dl
 pkgname=${_pkgname}-git
-pkgver=12835
+pkgver=12868
 pkgrel=1
 pkgdesc='A small command-line program to download videos from YouTube.com and a few more sites'
 arch=('any')
@@ -13,8 +13,12 @@ makedepends=('git')
 optdepends=('ffmpeg: for video post-processing')
 provides=("${_pkgname}")
 conflicts=("${_pkgname}")
-source=("git+https://github.com/rg3/${_pkgname}.git")
-md5sums=('SKIP')
+patch1="le.patch"
+source=("git+https://github.com/rg3/${_pkgname}.git"
+"$patch1"
+)
+sha512sums=('SKIP'
+            'b348a07dc17432c658966a1e35a7339a887eed74330c032ec5195bc6939ac4f1a421f7274874495e3d8ee3156e6e2461ed7a7afd6411a06f5187aebe45b062e9')
 
 pkgver() {
 	cd "$_pkgname"
@@ -24,6 +28,7 @@ pkgver() {
 prepare() {
 	cd "$_pkgname"
 	sed -i 's:etc/bash_completion.d:share/bash-completion/completions:' setup.py
+  patch -Np1 -i "../$patch1"
 }
 
 package() {

@@ -1194,6 +1194,12 @@
   \ apparently it suddenly just starts using 100% cpu for no reason for a few seconds
   \ looks like it happens only with that video! perhaps it's the way it's encoded, perhaps it does something hacky! ie. this is ok: https://www.youtube.com/watch?v=dHZRP6qdvbw a max 58% (at 1.5X), normally 40+%
   \ in this https://www.youtube.com/watch?v=_i6DpXrkyPM it freezes at 0:09 and loses audio sometimes... hmm maybe it's chromium+pulse doing this - had no issue in gentoo tho! also cpu usage spikes during the freeze
+  \ constantly reproducible in this video: https://www.youtube.com/watch?v=d1uraoHM8Gg
+  \ and in this at beginning: https://www.youtube.com/watch?v=HSu2pKMbqBI
+  \ but both vids have to be at higher than 1.0x playback speed (eg. 1.5x and 1.25x I tested for each respectively)
+  \ z         20   0 1086160 215668  93444 R 99.9  1.4   1:13.26 AudioOutputDevi
+  \ issue: https://bugs.chromium.org/p/chromium/issues/detail?id=422522#c353
+
 - rename project to manjarred
   - update git remote -v show
 

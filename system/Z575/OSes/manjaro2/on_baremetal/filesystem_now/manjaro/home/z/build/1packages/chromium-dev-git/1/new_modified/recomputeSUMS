@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#doing this because links may pointing to other packages, so sources will be re-downloaded during updpkgsums
+./gopreplinks && updpkgsums

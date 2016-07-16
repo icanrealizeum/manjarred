@@ -1,0 +1,33 @@
+relevant file extensions to search into(with mc): *.gn*,*.gyp*,*.grd,*.idl,*.json,*.js,*.cc,*.h
+-----
+nevermind that(below section): use ./1_sync  to clone or pull(update) from internet
+use that first time or any other times when you wanna update the sourcecode!
+and any subsequent times! whenever you want to update the repo via eg. git pull
+
+then use 1gngen (it's in a subfolder) to regen the /tmp/out/Default  folder when u had it deleted
+this doesn't update source code which is good
+1_sync already does what 1gngen does, after it's done updating source code from internet.
+
+then use ./recompile to compile sourcecode into /tmp/out/Default (assumed tmpfs/RAM)
+
+------- old:
+Update: ignore this, just run ./upd  because PKGBUILD already does what i said below(depending on the case: first time, or subsequent times)
+------ older:
+Notes:
+cd "/home/emacs/build/chromium-dev-git/fetch gclient base/checkout_root"
+
+first time, within an empty ^ folder, did:
+fetch --nohooks chromium
+this will take at least 2 hours 34mins(154min7sec; 16GB) on like 10Mbps download
+well with --no-history takes 29mins 6.7G apparently
+
+fetch is from depot-tools-git
+
+
+any other time:
+gclient sync --jobs 16
+
+^ must use python2 !
+
+so use pythonic in both cases!
+

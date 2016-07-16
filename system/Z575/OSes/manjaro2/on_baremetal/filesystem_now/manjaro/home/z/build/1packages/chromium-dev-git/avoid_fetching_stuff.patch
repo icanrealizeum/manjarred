@@ -1,0 +1,33 @@
+diff --git a/.gclient.orig b/.gclient
+index 3cae876..bd2a3a9 100644
+--- a/.gclient.orig
++++ b/.gclient
+@@ -3,7 +3,27 @@ solutions = [
+     "managed": False,
+     "name": "src",
+     "url": "https://chromium.googlesource.com/chromium/src.git",
+-    "custom_deps": {},
++    "custom_deps": {
++      'src/chrome/test/data/perf/canvas_bench': None,
++      'src/chrome/test/data/perf/frame_rate/content': None,
++      'src/chrome/tools/test/reference_build/chrome_linux': None,
++      'src/testing/gmock': None,
++      'src/testing/gtest': None,
++      'src/third_party/pdfium': None,
++      'src/third_party/libjingle': None,
++      'src/third_party/libjingle/source/talk': None,
++      'src/third_party/libphonenumber': None,
++      'src/third_party/libphonenumber/src/phonenumbers': None,
++      'src/third_party/libphonenumber/src/resources': None,
++      'src/third_party/libphonenumber/src/test': None,
++      'src/third_party/libsrtp': None,
++      'src/third_party/safe_browsing': None,
++      'src/third_party/safe_browsing/testing': None,
++      'src/third_party/webrtc': None,
++      'src/native_client': None,
++      'src/testing/gmock': None,
++      'src/testing/gtest': None,
++    },
+     "deps_file": ".DEPS.git",
+     "safesync_url": "",
+   },

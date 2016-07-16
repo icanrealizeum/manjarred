@@ -1,0 +1,17 @@
+diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
+index fdb7c0c..52b2abf 100644
+--- a/chrome/test/BUILD.gn
++++ b/chrome/test/BUILD.gn
+@@ -1665,9 +1665,9 @@ if (!is_android) {
+                       "//chrome")
+       deps += [ "//ui/app_list:test_support" ]
+     }
+-    if (!enable_plugin_installation) {
+-      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
+-    }
++#    if (!enable_plugin_installation) {
++#      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
++#    }
+   }
+ 
+   if (is_linux && !is_chromeos) {

@@ -1,0 +1,573 @@
+make linking succeed with the following side effects:
+- removing pdf support (possibly due to webrtc being disabled in args.gn?)
+but possibly adding ppapi will allow pdf to link too(?) so it's not required to remove pdf in fact.
+- attempt to fix that Illegal instruction
+- removed gcd_private - for mdns=false to link
+
+diff --git a/src/opts/SkBlitRow_opts_SSE2.cpp b/src/opts/SkBlitRow_opts_SSE2.cpp
+index 80fdeec..96b448f 100644
+--- a/src/opts/SkBlitRow_opts_SSE2.cpp
++++ b/src/opts/SkBlitRow_opts_SSE2.cpp
+@@ -12,6 +12,7 @@
+ #include "SkColor_opts_SSE2.h"
+ #include "SkDither.h"
+ #include "SkUtils.h"
++#include "stdio.h"
+ 
+ /* SSE2 version of S32_Blend_BlitRow32()
+  * portable version is in core/SkBlitRow_D32.cpp
+@@ -199,37 +200,68 @@ void S32A_Blend_BlitRow32_SSE2(SkPMColor* SK_RESTRICT dst,
+         return;
+     }
+ 
++    printf("1\n");
+     if (count >= 4) {
+         while (((size_t)dst & 0x0F) != 0) {
++    printf("2\n");
+             *dst = SkBlendARGB32(*src, *dst, alpha);
++    printf("3\n");
+             src++;
+             dst++;
+             count--;
+         }
+ 
++    printf("4\n");
+         const __m128i *s = reinterpret_cast<const __m128i*>(src);
++    printf("5\n");
+         __m128i *d = reinterpret_cast<__m128i*>(dst);
++    printf("6\n");//fails after this; with Program terminated with signal SIGILL, Illegal instruction.
+         while (count >= 4) {
++    printf("7\n");//but before this apparently, so like either this doesn't get flushed, or what teh
++    fflush(stdout);
+             // Load 4 pixels each of src and dest.
+             __m128i src_pixel = _mm_loadu_si128(s);
++//    return;
++    printf("8\n");
++    fflush(stdout);
+             __m128i dst_pixel = _mm_load_si128(d);
++    printf("9\n");
++    fflush(stdout);
+ 
+             __m128i result = SkBlendARGB32_SSE2(src_pixel, dst_pixel, alpha);
++    printf("10\n");
++    fflush(stdout);
+             _mm_store_si128(d, result);
++    printf("11\n");
++    fflush(stdout);
+             s++;
+             d++;
+             count -= 4;
+         }
++    printf("12\n");
++    fflush(stdout);
+         src = reinterpret_cast<const SkPMColor*>(s);
++    printf("13\n");
++    fflush(stdout);
+         dst = reinterpret_cast<SkPMColor*>(d);
++    printf("14\n");
++    fflush(stdout);
+     }
+ 
++    printf("15\n");
++    fflush(stdout);
+     while (count > 0) {
++    printf("16\n");
++    fflush(stdout);
+         *dst = SkBlendARGB32(*src, *dst, alpha);
++    printf("17\n");
++    fflush(stdout);
+         src++;
+         dst++;
+         count--;
+     }
++    printf("18end\n");
++    fflush(stdout);
+ }
+ 
+ /* SSE2 version of Color32()
+diff --git a/build/common.gypi b/build/common.gypi
+index e84856a..7a24ea9 100644
+--- a/build/common.gypi
++++ b/build/common.gypi
+@@ -1345,5 +1345,5 @@
+ 
+     # And if we want to dump symbols for Breakpad-enabled builds.
+-    'linux_dump_symbols%': 0,
++    'linux_dump_symbols%': 1,
+     # And if we want to strip the binary after dumping symbols.
+     'linux_strip_binary%': 0,
+diff --git a/chrome/app/chrome_exe_main_aura.cc b/chrome/app/chrome_exe_main_aura.cc
+index 6bb7e41..b922a41 100644
+--- a/chrome/app/chrome_exe_main_aura.cc
++++ b/chrome/app/chrome_exe_main_aura.cc
+@@ -14,5 +14,7 @@ int ChromeMain(int argc, const char** argv);
+ }
+ 
+-int main(int argc, const char** argv) {
++int 
++__attribute__ ((visibility ("default")))
++main(int argc, const char** argv) {
+   return ChromeMain(argc, argv);
+ }
+diff --git a/chrome/app/chrome_main_delegate.cc b/chrome/app/chrome_main_delegate.cc
+index 3b56ecf..eaa0f9d 100644
+--- a/chrome/app/chrome_main_delegate.cc
++++ b/chrome/app/chrome_main_delegate.cc
+@@ -119,5 +119,5 @@
+ #if defined(ENABLE_PLUGINS) && (defined(CHROME_MULTIPLE_DLL_CHILD) || \
+     !defined(CHROME_MULTIPLE_DLL_BROWSER))
+-#include "pdf/pdf.h"
++//#include "pdf/pdf.h"
+ #endif
+ 
+@@ -800,8 +800,8 @@ void ChromeMainDelegate::SandboxInitialized(const std::string& process_type) {
+ #endif
+ #if defined(ENABLE_PLUGINS)
+-  ChromeContentClient::SetPDFEntryFunctions(
++/*  ChromeContentClient::SetPDFEntryFunctions(
+       chrome_pdf::PPP_GetInterface,
+       chrome_pdf::PPP_InitializeModule,
+-      chrome_pdf::PPP_ShutdownModule);
++      chrome_pdf::PPP_ShutdownModule);*/
+ #endif
+ #endif
+diff --git a/chrome/browser/devtools/BUILD.gn b/chrome/browser/devtools/BUILD.gn
+index a7580cb..765dbb4 100644
+--- a/chrome/browser/devtools/BUILD.gn
++++ b/chrome/browser/devtools/BUILD.gn
+@@ -74,5 +74,5 @@ static_library("devtools") {
+       "//third_party/leveldatabase",
+       "//third_party/libusb",
+-      ":webrtc_device_provider_resources",
++#      ":webrtc_device_provider_resources",
+     ]
+     sources += [
+@@ -103,12 +103,12 @@ static_library("devtools") {
+       "device/usb/usb_device_provider.cc",
+       "device/usb/usb_device_provider.h",
+-      "device/webrtc/devtools_bridge_client.cc",
+-      "device/webrtc/devtools_bridge_client.h",
+-      "device/webrtc/devtools_bridge_instances_request.cc",
+-      "device/webrtc/devtools_bridge_instances_request.h",
+-      "device/webrtc/send_command_request.cc",
+-      "device/webrtc/send_command_request.h",
+-      "device/webrtc/webrtc_device_provider.cc",
+-      "device/webrtc/webrtc_device_provider.h",
++#      "device/webrtc/devtools_bridge_client.cc",
++#      "device/webrtc/devtools_bridge_client.h",
++#      "device/webrtc/devtools_bridge_instances_request.cc",
++#      "device/webrtc/devtools_bridge_instances_request.h",
++#      "device/webrtc/send_command_request.cc",
++#      "device/webrtc/send_command_request.h",
++#      "device/webrtc/webrtc_device_provider.cc",
++#      "device/webrtc/webrtc_device_provider.h",
+       "devtools_contents_resizing_strategy.cc",
+       "devtools_contents_resizing_strategy.h",
+@@ -135,15 +135,15 @@ static_library("devtools") {
+ }
+ 
+-if (!is_android) {
+-  # GYP version: chrome/browser/devtools/webrtc_device_provider_resources.gyp:webrtc_device_provider_resources
+-  grit("webrtc_device_provider_resources") {
+-    source = "device/webrtc/resources.grd"
+-    output_dir = "$root_gen_dir/chrome"
+-    outputs = [
+-      "grit/webrtc_device_provider_resources.h",
+-      "grit/webrtc_device_provider_resources_map.cc",
+-      "grit/webrtc_device_provider_resources_map.h",
+-      "webrtc_device_provider_resources.pak",
+-    ]
+-  }
+-}
++#if (!is_android) {
++#  # GYP version: chrome/browser/devtools/webrtc_device_provider_resources.gyp:webrtc_device_provider_resources
++#  grit("webrtc_device_provider_resources") {
++#    source = "device/webrtc/resources.grd"
++#    output_dir = "$root_gen_dir/chrome"
++#    outputs = [
++#      "grit/webrtc_device_provider_resources.h",
++#      "grit/webrtc_device_provider_resources_map.cc",
++#      "grit/webrtc_device_provider_resources_map.h",
++#      "webrtc_device_provider_resources.pak",
++#    ]
++#  }
++#}
+diff --git a/chrome/browser/devtools/device/devtools_android_bridge.cc b/chrome/browser/devtools/device/devtools_android_bridge.cc
+index 4f6762a..6151368 100644
+--- a/chrome/browser/devtools/device/devtools_android_bridge.cc
++++ b/chrome/browser/devtools/device/devtools_android_bridge.cc
+@@ -27,5 +27,5 @@
+ #include "chrome/browser/devtools/device/self_device_provider.h"
+ #include "chrome/browser/devtools/device/usb/usb_device_provider.h"
+-#include "chrome/browser/devtools/device/webrtc/webrtc_device_provider.h"
++//#include "chrome/browser/devtools/device/webrtc/webrtc_device_provider.h"
+ #include "chrome/browser/devtools/devtools_protocol.h"
+ #include "chrome/browser/devtools/devtools_target_impl.h"
+@@ -1032,6 +1032,6 @@ void DevToolsAndroidBridge::CreateDeviceProviders() {
+ 
+   if (IsWebRTCDeviceProviderEnabled()) {
+-    device_providers.push_back(
+-        new WebRTCDeviceProvider(profile_, signin_manager_, token_service_));
++//    device_providers.push_back(
++//        new WebRTCDeviceProvider(profile_, signin_manager_, token_service_));
+   }
+ 
+diff --git a/chrome/browser/extensions/browser_context_keyed_service_factories.cc b/chrome/browser/extensions/browser_context_keyed_service_factories.cc
+index 5830c48..fa7249c 100644
+--- a/chrome/browser/extensions/browser_context_keyed_service_factories.cc
++++ b/chrome/browser/extensions/browser_context_keyed_service_factories.cc
+@@ -18,10 +18,10 @@
+ #include "chrome/browser/extensions/api/feedback_private/feedback_private_api.h"
+ #include "chrome/browser/extensions/api/font_settings/font_settings_api.h"
+-#include "chrome/browser/extensions/api/gcd_private/gcd_private_api.h"
++//#include "chrome/browser/extensions/api/gcd_private/gcd_private_api.h"
+ #include "chrome/browser/extensions/api/history/history_api.h"
+ #include "chrome/browser/extensions/api/hotword_private/hotword_private_api.h"
+ #include "chrome/browser/extensions/api/identity/identity_api.h"
+ #include "chrome/browser/extensions/api/location/location_manager.h"
+-#include "chrome/browser/extensions/api/mdns/mdns_api.h"
++//#include "chrome/browser/extensions/api/mdns/mdns_api.h"
+ #include "chrome/browser/extensions/api/omnibox/omnibox_api.h"
+ #include "chrome/browser/extensions/api/preference/chrome_direct_setting_api.h"
+@@ -100,5 +100,5 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
+   extensions::FeedbackPrivateAPI::GetFactoryInstance();
+   extensions::FontSettingsAPI::GetFactoryInstance();
+-  extensions::GcdPrivateAPI::GetFactoryInstance();
++//  extensions::GcdPrivateAPI::GetFactoryInstance();
+   extensions::HistoryAPI::GetFactoryInstance();
+   extensions::HotwordPrivateEventService::GetFactoryInstance();
+@@ -113,5 +113,5 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
+   extensions::LogPrivateAPI::GetFactoryInstance();
+ #endif
+-  extensions::MDnsAPI::GetFactoryInstance();
++//  extensions::MDnsAPI::GetFactoryInstance();
+ #if defined(OS_CHROMEOS)
+   extensions::MediaPlayerAPI::GetFactoryInstance();
+diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
+index 18ea11e..b339eb2 100644
+--- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
++++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
+@@ -104,5 +104,5 @@
+ #include "chrome/browser/ui/webui/net_export_ui.h"
+ #else
+-#include "chrome/browser/devtools/device/webrtc/webrtc_device_provider.h"
++//#include "chrome/browser/devtools/device/webrtc/webrtc_device_provider.h"
+ #include "chrome/browser/ui/webui/devtools_ui.h"
+ #include "chrome/browser/ui/webui/inspect_ui.h"
+@@ -468,6 +468,6 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
+   if (url.SchemeIs(content::kChromeDevToolsScheme))
+     return &NewWebUI<DevToolsUI>;
+-  if (url.host() == chrome::kChromeUIWebRTCDeviceProviderHost)
+-    return &NewWebUI<WebRTCDeviceProvider::WebUI>;
++//  if (url.host() == chrome::kChromeUIWebRTCDeviceProviderHost)
++//    return &NewWebUI<WebRTCDeviceProvider::WebUI>;
+ 
+   // chrome://inspect isn't supported on Android nor iOS. Page debugging is
+diff --git a/chrome/browser/ui/webui/options/options_ui.cc b/chrome/browser/ui/webui/options/options_ui.cc
+index 0de3974..2e5a305 100644
+--- a/chrome/browser/ui/webui/options/options_ui.cc
++++ b/chrome/browser/ui/webui/options/options_ui.cc
+@@ -271,5 +271,5 @@ OptionsUI::OptionsUI(content::WebUI* web_ui)
+   AddOptionsPageUIHandler(localized_strings, core_handler);
+ 
+-  AddOptionsPageUIHandler(localized_strings, new AutofillOptionsHandler());
++//  AddOptionsPageUIHandler(localized_strings, new AutofillOptionsHandler());
+   AddOptionsPageUIHandler(localized_strings,
+                           new AutomaticSettingsResetHandler());
+diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
+index f6bb6b7..233f470 100644
+--- a/chrome/BUILD.gn
++++ b/chrome/BUILD.gn
+@@ -139,7 +139,7 @@ if (!is_android) {
+     }
+ 
+-    if (is_linux && enable_plugins) {
+-      deps += [ "//pdf" ]
+-    }
++#    if (is_linux && enable_plugins) {
++#      deps += [ "//pdf" ]
++#    }
+   }
+ }  # !is_android
+@@ -225,7 +225,7 @@ shared_library("main_dll") {
+   }
+ 
+-  if (enable_plugins) {
+-    deps += [ "//pdf" ]
+-  }
++#  if (enable_plugins) {
++#    deps += [ "//pdf" ]
++#  }
+ }
+ 
+@@ -471,8 +471,8 @@ repack("packed_extra_resources") {
+       "$root_gen_dir/chrome/settings_resources.pak",
+       "$root_gen_dir/chrome/sync_file_system_internals_resources.pak",
+-      "$root_gen_dir/chrome/webrtc_device_provider_resources.pak",
++#      "$root_gen_dir/chrome/webrtc_device_provider_resources.pak",
+     ]
+     deps += [
+-      "//chrome/browser/devtools:webrtc_device_provider_resources",
++#      "//chrome/browser/devtools:webrtc_device_provider_resources",
+       "//chrome/browser/resources:component_extension_resources",
+       "//chrome/browser/resources:options_resources",
+diff --git a/chrome/chrome_browser_extensions.gypi b/chrome/chrome_browser_extensions.gypi
+index 6148e6c..4b6e74b 100644
+--- a/chrome/chrome_browser_extensions.gypi
++++ b/chrome/chrome_browser_extensions.gypi
+@@ -248,6 +248,6 @@
+       'browser/extensions/api/font_settings/font_settings_api.cc',
+       'browser/extensions/api/font_settings/font_settings_api.h',
+-      'browser/extensions/api/gcd_private/gcd_private_api.cc',
+-      'browser/extensions/api/gcd_private/gcd_private_api.h',
++#      'browser/extensions/api/gcd_private/gcd_private_api.cc',
++#      'browser/extensions/api/gcd_private/gcd_private_api.h',
+       'browser/extensions/api/gcm/gcm_api.cc',
+       'browser/extensions/api/gcm/gcm_api.h',
+@@ -306,12 +306,12 @@
+       'browser/extensions/api/management/chrome_management_api_delegate.cc',
+       'browser/extensions/api/management/chrome_management_api_delegate.h',
+-      'browser/extensions/api/mdns/dns_sd_delegate.cc',
+-      'browser/extensions/api/mdns/dns_sd_delegate.h',
+-      'browser/extensions/api/mdns/dns_sd_device_lister.cc',
+-      'browser/extensions/api/mdns/dns_sd_device_lister.h',
+-      'browser/extensions/api/mdns/dns_sd_registry.cc',
+-      'browser/extensions/api/mdns/dns_sd_registry.h',
+-      'browser/extensions/api/mdns/mdns_api.cc',
+-      'browser/extensions/api/mdns/mdns_api.h',
++#      'browser/extensions/api/mdns/dns_sd_delegate.cc',
++#      'browser/extensions/api/mdns/dns_sd_delegate.h',
++#      'browser/extensions/api/mdns/dns_sd_device_lister.cc',
++#      'browser/extensions/api/mdns/dns_sd_device_lister.h',
++#      'browser/extensions/api/mdns/dns_sd_registry.cc',
++#      'browser/extensions/api/mdns/dns_sd_registry.h',
++#      'browser/extensions/api/mdns/mdns_api.cc',
++#      'browser/extensions/api/mdns/mdns_api.h',
+       'browser/extensions/api/media_galleries/media_galleries_api.cc',
+       'browser/extensions/api/media_galleries/media_galleries_api.h',
+diff --git a/chrome/chrome_debugger.gypi b/chrome/chrome_debugger.gypi
+index 09b182a..7fc110c 100644
+--- a/chrome/chrome_debugger.gypi
++++ b/chrome/chrome_debugger.gypi
+@@ -14,5 +14,5 @@
+         '../content/content.gyp:content_browser',
+         '../net/net.gyp:net',
+-        'browser/devtools/webrtc_device_provider_resources.gyp:webrtc_device_provider_resources',
++#        'browser/devtools/webrtc_device_provider_resources.gyp:webrtc_device_provider_resources',
+         'browser/devtools/devtools_protocol_constants.gyp:devtools_protocol_constants',
+       ],
+@@ -83,12 +83,12 @@
+             'browser/devtools/device/usb/usb_device_provider.cc',
+             'browser/devtools/device/usb/usb_device_provider.h',
+-            'browser/devtools/device/webrtc/devtools_bridge_client.cc',
+-            'browser/devtools/device/webrtc/devtools_bridge_client.h',
+-            'browser/devtools/device/webrtc/devtools_bridge_instances_request.cc',
+-            'browser/devtools/device/webrtc/devtools_bridge_instances_request.h',
+-            'browser/devtools/device/webrtc/send_command_request.cc',
+-            'browser/devtools/device/webrtc/send_command_request.h',
+-            'browser/devtools/device/webrtc/webrtc_device_provider.cc',
+-            'browser/devtools/device/webrtc/webrtc_device_provider.h',
++#            'browser/devtools/device/webrtc/devtools_bridge_client.cc',
++#            'browser/devtools/device/webrtc/devtools_bridge_client.h',
++#            'browser/devtools/device/webrtc/devtools_bridge_instances_request.cc',
++#            'browser/devtools/device/webrtc/devtools_bridge_instances_request.h',
++#            'browser/devtools/device/webrtc/send_command_request.cc',
++#            'browser/devtools/device/webrtc/send_command_request.h',
++#            'browser/devtools/device/webrtc/webrtc_device_provider.cc',
++#            'browser/devtools/device/webrtc/webrtc_device_provider.h',
+             'browser/devtools/devtools_contents_resizing_strategy.cc',
+             'browser/devtools/devtools_contents_resizing_strategy.h',
+diff --git a/chrome/chrome_resources.gyp b/chrome/chrome_resources.gyp
+index 49018c5..5716d5b 100644
+--- a/chrome/chrome_resources.gyp
++++ b/chrome/chrome_resources.gyp
+@@ -82,5 +82,5 @@
+             '../content/browser/devtools/devtools_resources.gyp:devtools_resources',
+             '../content/browser/tracing/tracing_resources.gyp:tracing_resources',
+-            'browser/devtools/webrtc_device_provider_resources.gyp:webrtc_device_provider_resources',
++#            'browser/devtools/webrtc_device_provider_resources.gyp:webrtc_device_provider_resources',
+           ],
+           'actions': [
+diff --git a/chrome/common/extensions/api/schemas.gypi b/chrome/common/extensions/api/schemas.gypi
+index e848f60..587fcac 100644
+--- a/chrome/common/extensions/api/schemas.gypi
++++ b/chrome/common/extensions/api/schemas.gypi
+@@ -44,5 +44,5 @@
+       'file_system.idl',
+       'font_settings.json',
+-      'gcd_private.idl',
++#      'gcd_private.idl',
+       'gcm.json',
+       'hangouts_private.idl',
+diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
+index 20d55d1..d0f6133 100644
+--- a/chrome/test/BUILD.gn
++++ b/chrome/test/BUILD.gn
+@@ -169,11 +169,11 @@ source_set("test_support") {
+   }
+ 
+-  if (enable_plugins) {
+-    sources += [
+-      "ppapi/ppapi_test.cc",
+-      "ppapi/ppapi_test.h",
+-    ]
+-    deps += [ "//pdf" ]
+-  }
++#  if (enable_plugins) {
++#    sources += [
++#      "ppapi/ppapi_test.cc",
++#      "ppapi/ppapi_test.h",
++#    ]
++#    deps += [ "//pdf" ]
++#  }
+ 
+   if (use_ash) {
+@@ -1679,7 +1679,7 @@ if (!is_android) {
+       deps += [ "//ui/app_list:test_support" ]
+     }
+-    if (!enable_plugin_installation) {
+-      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
+-    }
++#    if (!enable_plugin_installation) {
++#      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
++#    }
+   }
+ 
+diff --git a/chrome/utility/printing_handler.cc b/chrome/utility/printing_handler.cc
+index 9e282ad..6f1f023 100644
+--- a/chrome/utility/printing_handler.cc
++++ b/chrome/utility/printing_handler.cc
+@@ -14,5 +14,5 @@
+ #include "chrome/utility/cloud_print/pwg_encoder.h"
+ #include "content/public/utility/utility_thread.h"
+-#include "pdf/pdf.h"
++//#include "pdf/pdf.h"
+ #include "printing/page_range.h"
+ #include "printing/pdf_render_settings.h"
+@@ -197,8 +197,8 @@ bool PrintingHandler::RenderPDFPagesToPWGRaster(
+ 
+   int total_page_count = 0;
+-  if (!chrome_pdf::GetPDFDocInfo(data.data(), data_size,
+-                                 &total_page_count, NULL)) {
++//  if (!chrome_pdf::GetPDFDocInfo(data.data(), data_size,
++//                                 &total_page_count, NULL)) {
+     return false;
+-  }
++//  }
+ 
+   cloud_print::PwgEncoder encoder;
+@@ -219,5 +219,5 @@ bool PrintingHandler::RenderPDFPagesToPWGRaster(
+     }
+ 
+-    if (!chrome_pdf::RenderPDFPageToBitmap(data.data(),
++/*    if (!chrome_pdf::RenderPDFPageToBitmap(data.data(),
+                                            data_size,
+                                            page_number,
+@@ -226,7 +226,7 @@ bool PrintingHandler::RenderPDFPagesToPWGRaster(
+                                            image.size().height(),
+                                            settings.dpi(),
+-                                           autoupdate)) {
++                                           autoupdate)) {*/
+       return false;
+-    }
++//    }
+ 
+     cloud_print::PwgHeaderInfo header_info;
+diff --git a/src/opts/opts_check_x86.cpp b/src/opts/opts_check_x86.cpp
+index 7314f7d..c1f5cf4 100644
+--- a/third_party/skia/src/opts/opts_check_x86.cpp
++++ b/third_party/skia/src/opts/opts_check_x86.cpp
+@@ -244,5 +244,5 @@ static const SkBlitRow::Proc32 platform_32_procs_SSE4[] = {
+     NULL,                               // S32_Opaque,
+     S32_Blend_BlitRow32_SSE2,           // S32_Blend,
+-    S32A_Opaque_BlitRow32_SSE4,         // S32A_Opaque
++    S32A_Opaque_BlitRow32_SSE2,         // S32A_Opaque
+     S32A_Blend_BlitRow32_SSE2,          // S32A_Blend,
+ };
+@@ -296,7 +296,7 @@ SkBlitMask::BlitLCD16RowProc SkBlitMask::PlatformBlitRowProcs16(bool isOpaque) {
+     if (supports_simd(SK_CPU_SSE_LEVEL_SSE2)) {
+         if (isOpaque) {
+-            return SkBlitLCD16OpaqueRow_SSE2;
++            return SkBlitLCD16OpaqueRow;
+         } else {
+-            return SkBlitLCD16Row_SSE2;
++            return SkBlitLCD16Row;
+         }
+     } else {
+diff --git a/src/opts/SkBlitRow_opts_SSE2.cpp b/src/opts/SkBlitRow_opts_SSE2.cpp
+index 80fdeec..96b448f 100644
+--- a/third_party/skia/src/opts/SkBlitRow_opts_SSE2.cpp
++++ b/third_party/skia/src/opts/SkBlitRow_opts_SSE2.cpp
+@@ -13,4 +13,5 @@
+ #include "SkDither.h"
+ #include "SkUtils.h"
++#include "stdio.h"
+ 
+ /* SSE2 version of S32_Blend_BlitRow32()
+@@ -200,7 +201,10 @@ void S32A_Blend_BlitRow32_SSE2(SkPMColor* SK_RESTRICT dst,
+     }
+ 
++    printf("1\n");
+     if (count >= 4) {
+         while (((size_t)dst & 0x0F) != 0) {
++    printf("2\n");
+             *dst = SkBlendARGB32(*src, *dst, alpha);
++    printf("3\n");
+             src++;
+             dst++;
+@@ -208,27 +212,55 @@ void S32A_Blend_BlitRow32_SSE2(SkPMColor* SK_RESTRICT dst,
+         }
+ 
++    printf("4\n");
+         const __m128i *s = reinterpret_cast<const __m128i*>(src);
++    printf("5\n");
+         __m128i *d = reinterpret_cast<__m128i*>(dst);
++    printf("6\n");//fails after this; with Program terminated with signal SIGILL, Illegal instruction.
+         while (count >= 4) {
++    printf("7\n");//but before this apparently, so like either this doesn't get flushed, or what teh
++    fflush(stdout);
+             // Load 4 pixels each of src and dest.
+             __m128i src_pixel = _mm_loadu_si128(s);
++//    return;
++    printf("8\n");
++    fflush(stdout);
+             __m128i dst_pixel = _mm_load_si128(d);
++    printf("9\n");
++    fflush(stdout);
+ 
+             __m128i result = SkBlendARGB32_SSE2(src_pixel, dst_pixel, alpha);
++    printf("10\n");
++    fflush(stdout);
+             _mm_store_si128(d, result);
++    printf("11\n");
++    fflush(stdout);
+             s++;
+             d++;
+             count -= 4;
+         }
++    printf("12\n");
++    fflush(stdout);
+         src = reinterpret_cast<const SkPMColor*>(s);
++    printf("13\n");
++    fflush(stdout);
+         dst = reinterpret_cast<SkPMColor*>(d);
++    printf("14\n");
++    fflush(stdout);
+     }
+ 
++    printf("15\n");
++    fflush(stdout);
+     while (count > 0) {
++    printf("16\n");
++    fflush(stdout);
+         *dst = SkBlendARGB32(*src, *dst, alpha);
++    printf("17\n");
++    fflush(stdout);
+         src++;
+         dst++;
+         count--;
+     }
++    printf("18end\n");
++    fflush(stdout);
+ }
+ 

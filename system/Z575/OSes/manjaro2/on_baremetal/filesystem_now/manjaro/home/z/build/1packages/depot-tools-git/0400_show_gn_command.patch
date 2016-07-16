@@ -1,0 +1,12 @@
+diff --git a/gn.py b/gn.py
+index 32c2fa0..e8c28ec 100755
+--- a/gn.py
++++ b/gn.py
+@@ -30,6 +30,7 @@ def main(args):
+     print >> sys.stderr, 'gn.py: Could not find gn executable at: %s' % gn_path
+     return 2
+   else:
++    print ([gn_path] + args[1:])
+     return subprocess.call([gn_path] + args[1:])
+ 
+ 

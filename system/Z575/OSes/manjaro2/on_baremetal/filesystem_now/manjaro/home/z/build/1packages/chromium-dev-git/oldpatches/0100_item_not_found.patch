@@ -1,0 +1,27 @@
+fixing this:
+
+gn gen /tmp/out/Default
+['/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/buildtools/linux64/gn', 'gen', '/tmp/out/Default']
+ERROR at //chrome/test/BUILD.gn:1686:20: Item not found
+      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
+                   ^------------------------------------------------
+You were trying to remove "../browser/plugins/plugin_installer_unittest.cc"
+from the list but it wasn't there.
+
+
+diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
+index 7082051..739a7ee 100644
+--- a/chrome/test/BUILD.gn
++++ b/chrome/test/BUILD.gn
+@@ -1682,8 +1682,8 @@ if (!is_android && (!is_win || link_chrome_on_windows)) {
+       # crbug.com/354036
+       sources -= [ "../browser/chromeos/events/event_rewriter_unittest.cc" ]
+     }
+-    if (!enable_plugin_installation) {
+-      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
+-    }
++#    if (!enable_plugin_installation) {
++#      sources -= [ "../browser/plugins/plugin_installer_unittest.cc" ]
++#    }
+   }
+ }

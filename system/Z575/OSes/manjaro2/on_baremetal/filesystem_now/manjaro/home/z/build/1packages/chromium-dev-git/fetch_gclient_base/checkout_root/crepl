@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#this script is for replacing stuff in .cc .h files! at compile time, that is.
+
+#set -e -x
+
+# Remember the location of commands as they are looked up. - this is already set tho! ie. default
+set -h
+#no "!" history expansion
+set +H
+
+
+function sedify_lines()
+{
+  #expected $1 is a string separating lines with \n
+  local result=() #array
+  local linestofiddle="$1"
+  local comment='//'
+  comment="`sed -e 's|/|\\\\/|g; s/"/\\\\"/g'  <<<"$comment"`" #aka // escaped for sed
+  echo "$linestofiddle" | while read eachline; do
+    if test -z "$eachline"; then 
+      continue
+    fi
+
+    #sanitize:
+    eachline="`sed -e 's|/|\\\\/|g; s/"/\\\\"/g'  <<<"$eachline"`"
+
+#    echo "$eachline" >&2
+#untested: echo -n "/^[[:space:]]*($comment)?[[:space:]]*.*$/!s/(^[^$comment][[:space:]]*.*($eachline).*$)/$comment\\1/g; "
+#delete all (non-commented out) matching lines:
+#echo -n "/(^[[:space:]]*[^\\/]?[^\\/]?[[:space:]]*.*($eachline).*$)/d; "
+
+#ok we're only commenting lines which aren't already commented(by us!)
+echo -n "/^${comment}/!s|^(.*($eachline).*)$|${comment}\\1|g; "
+  done
+}
+
+#exit 1
+set +e 
+
+# / and " are autoescaped, so don't escape!
+# rest are sed interpretable
+ch_lines='
+#include "testing/
+#include "base/metrics/
+'
+
+
+#the original file will be backed up with this file extension:
+origext=".cedified"
+sedscripts="`sedify_lines "$ch_lines"`"
+pushd src
+
+#XXX: yep -type f must be repeated to have effect for each!!!
+#ofc u shouldn't quote the *.cc params if doing it this way through bash!!!
+findcmd='find . -type f -name *.cc -or -type f -name *.c -or -type f -name *.h -or -type f -name *.hh'
+#currently 2m15sec:
+time $findcmd | xargs sed -re "$sedscripts" --in-place=".$origext"
+#2m57sec:
+time for eachf in `$findcmd`; do
+  origfname="${eachf}.${origext}"
+  if [ -f "$origfname" ]; then
+    diff -q "$origfname" "$eachf" >/dev/null || echo "$eachf" >> "../patched_files.lst"
+  fi
+done
+
+popd
+

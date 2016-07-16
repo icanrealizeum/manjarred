@@ -1,0 +1,31 @@
+fix this chromium build error:
+"
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux32/gn.sha1' in '/home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root'
+File gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec for src/buildtools/linux32/gn does not exist.
+0> File gs://chromium-gn/26db2ae201b26761164a93c3ada56280a68539ec for src/buildtools/linux32/gn does not exist, skipping.
+Error: Command download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux32/gn.sha1 returned non-zero exit status 1 in /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root
+"
+by not using --force-version because it tries to create folders like opt/depot-tools-git/external_bin/gsutil/.cache_dir/  which it cannot because permissions
+
+diff --git a/gsutil.py b/gsutil.py
+index d57cafb..7310906 100755
+--- a/gsutil.py
++++ b/gsutil.py
+@@ -122,11 +122,14 @@ def ensure_gsutil(version, target, clean):
+ 
+ def run_gsutil(force_version, fallback, target, args, clean=False):
+   if force_version:
+-    gsutil_bin = ensure_gsutil(force_version, target, clean)
+-  else:
+-    gsutil_bin = fallback
++    print ("Ignoring force version: ", force_version, target)
++    #gsutil_bin = ensure_gsutil(force_version, target)
++  #else:
++  print ("Fallback: ", fallback)
++  gsutil_bin = fallback
+   disable_update = ['-o', 'GSUtil:software_update_check_period=0']
+   cmd = [sys.executable, gsutil_bin] + disable_update + args
++  print ("Cmd: %s", cmd)
+   return subprocess.call(cmd)
+ 
+ 

@@ -1,0 +1,41 @@
+fix this:
+../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/ui/autofill/autofill_dialog_controller.cc:14:27: error: out-of-line definition of 'Create' does not match any declaration in 'autofill::AutofillDialogController'
+AutofillDialogController::Create(
+                          ^~~~~~
+../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/ui/autofill/autofill_dialog_controller.h:40:13: note: type of 4th parameter of member declaration does not match definition ('const AutofillClient::ResultCallback &' (aka 'const Callback<void (autofill::AutofillClient::RequestAutocompleteResult, const base::string16 &, const autofill::FormStructure *)> &') vs 'const base::Callback<void (const FormStructure *)> &')
+      const AutofillClient::ResultCallback& callback);
+            ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+diff --git a/chrome/browser/ui/autofill/autofill_dialog_controller.cc b/chrome/browser/ui/autofill/autofill_dialog_controller.cc
+index 39a8530..38327fe 100644
+--- a/chrome/browser/ui/autofill/autofill_dialog_controller.cc
++++ b/chrome/browser/ui/autofill/autofill_dialog_controller.cc
+@@ -9,13 +9,23 @@ namespace autofill {
+ AutofillDialogController::~AutofillDialogController() {}
+ 
+ #if !defined(ENABLE_AUTOFILL_DIALOG)
++//  static 
++    base::WeakPtr<AutofillDialogController> 
++    AutofillDialogController::Create(
++      content::WebContents* contents,
++      const FormData& form_structure,
++      const GURL& source_url,
++      const AutofillClient::ResultCallback& callback)//;
++
+ // static
+-base::WeakPtr<AutofillDialogController>
++/*base::WeakPtr<AutofillDialogController>
+ AutofillDialogController::Create(
+     content::WebContents* contents,
+     const FormData& form_structure,
+     const GURL& source_url,
+-    const base::Callback<void(const FormStructure*)>& callback) {
++    const base::Callback<void(const FormStructure*)>& callback) 
++*/
++{
+   NOTIMPLEMENTED();
+   return base::WeakPtr<AutofillDialogController>();
+ }

@@ -1,0 +1,24 @@
+In file included from ../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/plugin_manager.cc:16:
+../../../home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root/src/content/public/common/pepper_plugin_info.h:18:2: error: "Plugins should be enabled"
+#error "Plugins should be enabled"
+ ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+diff --git a/chrome/browser/extensions/plugin_manager.cc b/chrome/browser/extensions/plugin_manager.cc
+index 2384d71..590fbc0 100644
+--- a/chrome/browser/extensions/plugin_manager.cc
++++ b/chrome/browser/extensions/plugin_manager.cc
+@@ -14,5 +14,4 @@
+ #include "chrome/common/extensions/api/plugins/plugins_handler.h"
+ #include "content/public/browser/plugin_service.h"
+-#include "content/public/common/pepper_plugin_info.h"
+ #include "extensions/browser/extension_registry.h"
+ #include "extensions/common/extension.h"
+@@ -21,4 +20,5 @@
+ 
+ #if !defined(DISABLE_NACL)
++#include "content/public/common/pepper_plugin_info.h"
+ #include "components/nacl/common/nacl_constants.h"
+ #endif
