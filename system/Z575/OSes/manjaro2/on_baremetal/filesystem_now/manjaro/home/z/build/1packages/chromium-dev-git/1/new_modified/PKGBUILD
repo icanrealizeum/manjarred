@@ -1105,7 +1105,8 @@ EOFF
   fi
 
   msg2 "runhooks"
-  "${srcdir}/pythonic" gclient runhooks   #can't run this here because it runs gyp_chromium!
+  #"${srcdir}/pythonic"
+  gclient runhooks   #can't run this here because it runs gyp_chromium!
 #  pushd "${_srcfolder}"
 #FIXME: I should make runhooks run it like this:  OK doing this in build() below; ok this may not work for gn ? clang: error: unsupported argument '--version' to option 'Xassembler'
 #compiler_version.py failed to execute: ccache clang++ -Qunused-arguments -Xassembler --version -x assembler -c /dev/null
