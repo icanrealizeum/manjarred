@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2800.0_r5.8429df4
+pkgver=54.0.2800.0_r6.d1a7457
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -496,6 +496,12 @@ prepare() {
   msg2 "running: gclient runhooks (note: rerun this lots if you get this skippable error: CommandException: Invalid command \"stat\")"
   #"${srcdir}/pythonic"
   gclient runhooks   #can't run this here because it runs gyp_chromium!
+
+  if test ! -e "/usr/lib/libtinfo.so.5"; then
+    msg2 "if you're getting something about libtinfo.so.5 missing in build() next, then you have to do this: cd /usr/lib && sudo ln -rs libtinfo.so libtinfo.so.5"
+  fi
+  #this is the error:
+  #../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: error while loading shared libraries: libtinfo.so.5: cannot open shared object file: No such file or directory
 
 }
 

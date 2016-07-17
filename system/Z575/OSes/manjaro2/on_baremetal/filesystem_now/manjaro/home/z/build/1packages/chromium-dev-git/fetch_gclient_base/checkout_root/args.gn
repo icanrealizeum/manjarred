@@ -1018,7 +1018,13 @@ target_sysroot_dir = "" #Default = ""
 toolkit_views = false #Default = false
 #    //build/config/ui.gni:35
 
-treat_warnings_as_errors = true #Default = true
+#XXX: set to false because when true:
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/zlib/google/zip_reader.cc:284:36: error: implicit conversion of NULL constant to 'int' [-Werror,-Wnull-conversion]
+#                                   NULL);
+#                                   ^~~~
+#                                   0
+#1 error generated.
+treat_warnings_as_errors = false #Default = true
 #    //build/config/compiler/BUILD.gn:30
 #    Default to warnings as errors for default workflow, where we catch
 #    warnings with known toolchains. Allow overriding this e.g. for Chromium
@@ -1081,7 +1087,13 @@ use_cups = false #Default = false
 use_custom_libcxx = false #Default = false
 #    //build/config/sanitizers/sanitizers.gni:97
 
-use_dbus = false #Default = false
+#XXX: set to true because:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/power_save_blocker/power_save_blocker_x11.cc:31:
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/dbus/bus.h:8:10: fatal error: 'dbus/dbus.h' file not found
+##include <dbus/dbus.h>
+#         ^
+#1 error generated.
+use_dbus = true #Default = false
 #    //build/config/features.gni:104
 
 use_debug_fission = "default" #Default = "default"
@@ -1254,6 +1266,7 @@ use_sanitizer_coverage = false #Default = false
 use_srtp_boringssl = true #Default = true
 #    //third_party/libsrtp/BUILD.gn:6
 
+#XXX: setting this to true here has no effect on my libtinfo.so.5 error from the embedded clang++
 use_sysroot = false #Default = false  actually it's true but patch made it false!
 #    //build/config/sysroot.gni:18
 
