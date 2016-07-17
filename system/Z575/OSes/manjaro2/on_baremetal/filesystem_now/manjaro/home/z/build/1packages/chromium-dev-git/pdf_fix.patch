@@ -1,0 +1,82 @@
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:38:41: error: use of undeclared identifier 'IDS_PDF_NEED_PASSWORD'
+  SetL10nString(dict, "passwordPrompt", IDS_PDF_NEED_PASSWORD);
+                                        ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:39:41: error: use of undeclared identifier 'IDS_PDF_PASSWORD_SUBMIT'
+  SetL10nString(dict, "passwordSubmit", IDS_PDF_PASSWORD_SUBMIT);
+                                        ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:40:42: error: use of undeclared identifier 'IDS_PDF_PASSWORD_INVALID'
+  SetL10nString(dict, "passwordInvalid", IDS_PDF_PASSWORD_INVALID);
+                                         ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:41:38: error: use of undeclared identifier 'IDS_PDF_PAGE_LOADING'
+  SetL10nString(dict, "pageLoading", IDS_PDF_PAGE_LOADING);
+                                     ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:42:41: error: use of undeclared identifier 'IDS_PDF_PAGE_LOAD_FAILED'
+  SetL10nString(dict, "pageLoadFailed", IDS_PDF_PAGE_LOAD_FAILED);
+                                        ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:43:37: error: use of undeclared identifier 'IDS_PDF_PAGE_RELOAD_BUTTON'
+  SetL10nString(dict, "pageReload", IDS_PDF_PAGE_RELOAD_BUTTON);
+                                    ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:44:36: error: use of undeclared identifier 'IDS_PDF_BOOKMARKS'
+  SetL10nString(dict, "bookmarks", IDS_PDF_BOOKMARKS);
+                                   ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:45:42: error: use of undeclared identifier 'IDS_PDF_LABEL_PAGE_NUMBER'
+  SetL10nString(dict, "labelPageNumber", IDS_PDF_LABEL_PAGE_NUMBER);
+                                         ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:46:42: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_ROTATE_CW'
+  SetL10nString(dict, "tooltipRotateCW", IDS_PDF_TOOLTIP_ROTATE_CW);
+                                         ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:47:42: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_DOWNLOAD'
+  SetL10nString(dict, "tooltipDownload", IDS_PDF_TOOLTIP_DOWNLOAD);
+                                         ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:48:39: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_PRINT'
+  SetL10nString(dict, "tooltipPrint", IDS_PDF_TOOLTIP_PRINT);
+                                      ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:49:43: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_FIT_PAGE'
+  SetL10nString(dict, "tooltipFitToPage", IDS_PDF_TOOLTIP_FIT_PAGE);
+                                          ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:50:44: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_FIT_WIDTH'
+  SetL10nString(dict, "tooltipFitToWidth", IDS_PDF_TOOLTIP_FIT_WIDTH);
+                                           ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:51:40: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_ZOOM_IN'
+  SetL10nString(dict, "tooltipZoomIn", IDS_PDF_TOOLTIP_ZOOM_IN);
+                                       ^
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/extensions/api/resources_private/resources_private_api.cc:52:41: error: use of undeclared identifier 'IDS_PDF_TOOLTIP_ZOOM_OUT'
+  SetL10nString(dict, "tooltipZoomOut", IDS_PDF_TOOLTIP_ZOOM_OUT);
+                                        ^
+15 errors generated.
+
+
+diff --git a/chrome/browser/extensions/api/resources_private/resources_private_api.cc b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
+index 37a7fa3..880a274 100644
+--- a/chrome/browser/extensions/api/resources_private/resources_private_api.cc
++++ b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
+@@ -34,7 +34,7 @@ void AddStringsForIdentity(base::DictionaryValue* dict) {
+   SetL10nString(dict, "window-title", IDS_EXTENSION_CONFIRM_PERMISSIONS);
+ }
+ 
+-void AddStringsForPdf(base::DictionaryValue* dict) {
++/*void AddStringsForPdf(base::DictionaryValue* dict) {
+   SetL10nString(dict, "passwordPrompt", IDS_PDF_NEED_PASSWORD);
+   SetL10nString(dict, "passwordSubmit", IDS_PDF_PASSWORD_SUBMIT);
+   SetL10nString(dict, "passwordInvalid", IDS_PDF_PASSWORD_INVALID);
+@@ -50,7 +50,7 @@ void AddStringsForPdf(base::DictionaryValue* dict) {
+   SetL10nString(dict, "tooltipFitToWidth", IDS_PDF_TOOLTIP_FIT_WIDTH);
+   SetL10nString(dict, "tooltipZoomIn", IDS_PDF_TOOLTIP_ZOOM_IN);
+   SetL10nString(dict, "tooltipZoomOut", IDS_PDF_TOOLTIP_ZOOM_OUT);
+-}
++}*/
+ 
+ }  // namespace
+ 
+@@ -71,9 +71,9 @@ ExtensionFunction::ResponseAction ResourcesPrivateGetStringsFunction::Run() {
+     case api::resources_private::COMPONENT_IDENTITY:
+       AddStringsForIdentity(dict.get());
+       break;
+-    case api::resources_private::COMPONENT_PDF:
++/*    case api::resources_private::COMPONENT_PDF:
+       AddStringsForPdf(dict.get());
+-      break;
++      break;*/
+     case api::resources_private::COMPONENT_NONE:
+       NOTREACHED();
+   }

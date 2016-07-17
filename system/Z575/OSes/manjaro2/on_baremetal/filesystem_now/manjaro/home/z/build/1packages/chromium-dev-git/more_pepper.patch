@@ -8,8 +8,13 @@
   ^
 1 error generated.
 
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/prefs/browser_prefs.cc:538:3: error: use of undeclared identifier 'DeviceIDFetcher'
+  DeviceIDFetcher::RegisterProfilePrefs(registry);
+  ^
+1 error generated.
+
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index c62343a..9d4dd7f 100644
+index c62343a..93245e8 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -38,7 +38,7 @@
@@ -30,6 +35,15 @@ index c62343a..9d4dd7f 100644
  #include "chrome/browser/search/search.h"
  #include "chrome/browser/signin/signin_manager_factory.h"
  #include "chrome/browser/task_management/task_manager_interface.h"
+@@ -535,7 +535,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   PartnerBookmarksShim::RegisterProfilePrefs(registry);
+ #else
+   AppShortcutManager::RegisterProfilePrefs(registry);
+-  DeviceIDFetcher::RegisterProfilePrefs(registry);
++//  DeviceIDFetcher::RegisterProfilePrefs(registry);
+   DevToolsWindow::RegisterProfilePrefs(registry);
+ #if defined(ENABLE_APP_LIST)
+   DriveAppMapping::RegisterProfilePrefs(registry);
 @@ -546,7 +546,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    first_run::RegisterProfilePrefs(registry);
    gcm::GCMChannelStatusSyncer::RegisterProfilePrefs(registry);
