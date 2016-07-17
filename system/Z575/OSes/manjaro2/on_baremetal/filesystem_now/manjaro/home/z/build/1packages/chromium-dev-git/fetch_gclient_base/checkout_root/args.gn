@@ -94,6 +94,7 @@ chrome_pgo_phase = 0 #Default = 0
    
 #    TODO(sebmarchand): Add support for the PGU (update) phase.
 
+#clang_base_path = "/usr/bin" #Default = "//third_party/llvm-build/Release+Asserts"
 clang_base_path = "//third_party/llvm-build/Release+Asserts" #Default = "//third_party/llvm-build/Release+Asserts"
 #    //build/config/clang/clang.gni:12
 
@@ -700,7 +701,7 @@ msan_track_origins = 2 #Default = 2
 #                     ^----
 #The variable "nacl_sdk_untrusted" was set as a build argument
 #but never appeared in a declare_args() block in any buildfile.
-nacl_sdk_untrusted = false #Default = false
+#nacl_sdk_untrusted = false #Default = false
 #    //native_client_sdk/src/BUILD.gn:14
 #    Build the nacl SDK untrusted components.  This is disabled by default since
 #    not all NaCl untrusted compilers are in goma (e.g arm-nacl-glibc)
