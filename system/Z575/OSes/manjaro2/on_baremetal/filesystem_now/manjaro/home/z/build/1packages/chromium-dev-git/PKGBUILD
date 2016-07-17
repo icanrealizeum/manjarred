@@ -9,8 +9,9 @@
 ## -- Build options -- ##
 #########################
 
-_use_clang=1           # Use clang compiler (system). Results in faster build and smaller chromium.
-_use_bundled_clang=0   # Use bundled clang compiler (needs build). NOTE: if use this option , '_use_clang' need set to 1
+#XXX: will always use system clang!(not bundled, and not gcc!)
+#_use_clang=1           # Use clang compiler (system). Results in faster build and smaller chromium.
+#_use_bundled_clang=0   # Use bundled clang compiler (needs build). NOTE: if use this option , '_use_clang' need set to 1
 _use_ccache=1          # Use ccache when build
 _use_pax=0             # Set 1 to change PaX permisions in executables NOTE: only use if use PaX environment
 _use_gtk3=1            # If set 1, then build with GTK3 support, if set 0, then build with GTK2
@@ -81,7 +82,7 @@ makedepends=('libexif'
              'glib2'
              'gtk2'
              'nspr'
-             'ttf-ms-fonts'
+#             'ttf-ms-fonts' #it's there on AUR only!
              'freetype2'
              'cairo'
              'dbus'
@@ -105,16 +106,16 @@ conflicts=('chromedriver' 'chromium')
 allpatches=(
 0200_no_warnings_as_errors.patch
 0300_use_system_clang.patch
-0500_message_center_disabled.patch
-0600_fix_AutofillDialogController.patch
-#0800_small_fixes.patch
-0900_autofill_disabled.patch
-1000_pepper_compile_error.patch
-1100_plugins_disabled.patch
-1200_signin_fix.patch
-1300_background_fix.patch
-#1400_hotword_disabled.patch
-1400_make_linking_work.patch
+#0500_message_center_disabled.patch
+#0600_fix_AutofillDialogController.patch
+##0800_small_fixes.patch
+#0900_autofill_disabled.patch
+#1000_pepper_compile_error.patch
+#1100_plugins_disabled.patch
+#1200_signin_fix.patch
+#1300_background_fix.patch
+##1400_hotword_disabled.patch
+#1400_make_linking_work.patch
 )
 
 source=(
@@ -125,9 +126,9 @@ source=(
         'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-ffmpeg-r2.patch'
         'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-jinja-r11.patch'
         'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-zlib-r0.patch'
-        'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-linker-warnings-r0.patch'
+##it is changed        'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-linker-warnings-r0.patch'
         # Misc Patches
-        'https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/enable_vaapi_on_linux.diff'
+        'enable_vaapi_on_linux.diff' ###'https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/enable_vaapi_on_linux.diff'
         'minizip.patch::http://pastebin.com/raw/QCqSDam5'
         # Patch from crbug (chromium bugtracker)
         'chromium-widevine-r1.patch' # https://crbug.com/473866
@@ -138,30 +139,20 @@ source=(
 
 ##"$(curl -sL https://gsdview.appspot.com/chromium-browser-official/?marker=chromium-${pkgver}.tar.xz.hashes | awk -v FS='<td>"' -v RS='"</td>' '$0=$2' | head -n1)"
 #          "$(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz.hashes | grep sha1 | cut -d " " -f3)"
-sha1sums=(
-
-#          'd18f8d96e80be9c31d994cc6362d7d8041c53319'
+sha1sums=('9dba13f45d964058c9fa3e4d220e9cb5a576263e'
           '336976cb66bf8df71fc7f2e92aa723891b6efb53'
-          # Patch form Gentoo
           '450cd81653499eb50f0f7df1b0d4d1c1620365a5'
           '7f835fba97fe94109e72d3be49ec28a89e30713f'
           '3a1c57ae49a31e8eff64b32c4196433ea240e4ea'
-          '39caf5a74fe2dd1832c803b9e6fab5d21e3cbe36'
-          # Misc Patches
-          '80122f1da3df77309fdee7dad4bf6370d9b6f350'
+          '92338cc861dca81577075a85eea8530e08eb5bef'
           'bc90b327b05dbecaa88da43211ae0a4ed0c6c57f'
-          # Patch from crbug (chromium bugtracker)
           '3032c9aeb68d80d8ef3cb8029be0d06ee402fa7f'
-          )
+          'bc71b67977693c3e3ba4e13469fab848be36c820'
+          '04c1b7858a314e63449913ba522de6bb54216543')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
 _srcfolder="${_folder}/src"
-if test "$GYP" = "1"; then
-  _reldir="out/Release" #anything else won't work, even when copied
-else
-  _reldir="out/Default"
-fi
 if test "$inTMPFS" = "1"; then
   _reldir="/tmp/${_reldir}"
 fi
@@ -195,9 +186,9 @@ if [ "${_use_pax}" = "1" ]; then
 fi
 
 # Need you use clang?
-if [ "${_use_clang}" = "1" ]; then
+#if [ "${_use_clang}" = "1" ]; then
   makedepends+=('clang')
-fi
+#fi
 if [ "${_use_bundled_clang}" = "1" ]; then
   makedepends+=('cmake'
                 'ocaml'
@@ -222,6 +213,8 @@ if [ "${_use_ccache}" = "1" ]; then
   makedepends+=('ccache')
 fi
 
+#FIXME: remove the following GYP(not GN) build stuff
+cat >/dev/null <<EOF
 # Are we in Gnome?
 _use_gnome=0
 if [ -f /usr/lib/libgconf-2.so ]; then
@@ -243,7 +236,6 @@ if [ -x /usr/lib/libpulse.so ]; then
   depends+=('libpulse')
   _use_pulseaudio=1
 fi
-
 
 # List of third-party components needed for build chromium. The rest is remove by remove_bundled_libraries srcipt in prepare()
 _necesary=('base/third_party/dmg_fp'
@@ -479,6 +471,7 @@ _use_system=('-Duse_system_expat=1'
              '-Duse_system_xdg_utils=1'
              '-Duse_system_zlib=1'
              )
+EOF
 
 ################################################
 getchromiumver() {
@@ -608,18 +601,23 @@ prepare() {
 #    popd
 
     msg2 "stashing changes..."
-    gclient recurse --no-progress -- git stash || echo "ignoring failure" # >/dev/null
+    gclient recurse --no-progress -- git stash >/dev/null || echo "ignoring failure" # >/dev/null
     gclient recurse --no-progress -- git stash clear >/dev/null || echo "ignored fails - because it's probably first run with empty src folder"
+    rm -v -- "${_srcfolder}/content/common/va_wayland.sigs" #created by the patch: enable_vaapi_on_linux.diff
     msg2 "sync-ing from the internet"
     pushd "${_srcfolder}"
     find . -type f -name '*.sedified' -or -type f -name '*.rej' -or -type f -name '*.cedified' | xargs rm -f -- 
 #TEMP:    find . -type f -name '*_browsertest.*' | xargs rm -f --
 #    TODO: is this really needed?: guess so, but should check updating instructions again sometime
     if test -d '.git'; then
-      msg2 "git pull (because gclient sync doesn't update src/"
+      msg2 "git rebase-update aka git pull, sort of"
 #      git pull --verbose --tags --depth=1  || ( git checkout master && git pull --tags --depth=1 --verbose )
 #      git pull --progress --verbose || ( git checkout master && git pull --verbose --progress )
-      git pull --verbose || ( git checkout master && git pull --verbose ) || echo "ignoring - because it's probably first run with empty src folder"
+#good last:      git pull --verbose || ( git checkout master && git pull --verbose ) || echo "ignoring - because it's probably first run with empty src folder"
+       git rebase-update
+       #src: https://dev.chromium.org/developers/how-tos/get-the-code
+       #//fixed: Cannot rebase-update with detached head + uncommitted changes.
+       #//only the .keep filename is present/untracked! ok we remove it and keep .gitattributes
     fi
     popd
     #-vvv
@@ -629,18 +627,24 @@ prepare() {
 #ok: need to modify .gclient_entries before syncing from internet! but it's part of gclient.py
 #    updgclient_entries
     #gclient sync -vvv --nohooks --no-history --jobs 1
-    msg2 "gclient sync"
+    msg2 "gclient sync (takes 33min on first time, on 13Mbps download)"
     #--with_tags  #doesn't fetch tags if repo is already fetched
     gclient sync --nohooks --no-history --jobs 8  #not using -v , in order to be quiet; ok --shallow is bad, apparently!
+#first time:
+#real 33m31.809s
+#user  11m25.590s
+#sys 12m0.301s
 
-#    pwd
+    pwd
     gnexe="${_srcfolder}/buildtools/linux64/gn"
     if ! test -f "$gnexe"; then
       msg2 "gn executable isn't there, so this is probably the first run"
       msg2 "downloading it now..."
-      download_from_google_storage --no_resume --platform='linux*' --bucket chromium-gn -s src/buildtools/linux64/gn.sha1 | grep -v -- 'CommandException: Invalid command "stat".'
+      download_from_google_storage -v --no_auth --no_resume --platform='linux*' --bucket chromium-gn -s src/buildtools/linux64/gn.sha1 || true
+      #| grep -v -- 'CommandException: Invalid command "stat".'
       #^ this will fail with: "CommandException: Invalid command "stat"."
-      # so using that grep which only returns 1 if that pattern isn't found should work around this and still fail if something else happened - but we can't see it :) unless using that -v to show anything other than that pattern
+      # //yeah this didn't seem to work anyway: so using that grep which only returns 1 if that pattern isn't found should work around this and still fail if something else happened - but we can't see it :) unless using that -v to show anything other than that pattern
+      #new error: Failed to fetch file gs://chromium-gn/feb65590433fab827a05b0b5fd6d8298aa572a25 for src/buildtools/linux64/gn. [Err: CommandException: option -o not recognized]
     fi
     if ! test -x "$gnexe"; then
       chmod a+x "$gnexe"
@@ -678,7 +682,7 @@ prepare() {
   # Patch sources from Gentoo
   patch -p1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch"
   patch -p0 -i "${srcdir}/chromium-system-jinja-r11.patch"
-  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch"
+#  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch" #TODO: should set fatal_linker_warnings to false instead of applying this patch!
 
   # Misc Patches:
   patch -p1 -i "${srcdir}/enable_vaapi_on_linux.diff"
@@ -688,6 +692,10 @@ prepare() {
   # https://crbug.com/473866
   patch -p0 -i "${srcdir}/chromium-widevine-r1.patch"
   sed 's|@WIDEVINE_VERSION@|The Cake Is a Lie|g' -i "third_party/widevine/cdm/stub/widevine_cdm_version.h"
+
+  for eachpatch in "${allpatches[@]}"; do
+    lepatch -Np1 -i "${srcdir}/${eachpatch}"
+  done
 
   ##
   # Fix libpng errors
@@ -707,10 +715,10 @@ prepare() {
   _flags+=( -Dflapper_version_h_file="${_flapfile}" )
 
   # Remove most bundled libraries. Some are still needed.
-  msg2 "Removing unnecessary components to save space"
-  python2 build/linux/unbundle/remove_bundled_libraries.py ${_necesary[@]} --do-remove
-  rm -fr native_client/toolchain
-  rm -fr build/linux/debian*
+#  msg2 "Removing unnecessary components to save space"
+#  python2 build/linux/unbundle/remove_bundled_libraries.py ${_necesary[@]} --do-remove
+#  rm -fr native_client/toolchain
+#  rm -fr build/linux/debian*
 
   if [ "${_build_pnacl}" = "1" ]; then
     msg2 "Setup NaCl/PNaCl SDK: Download and install NaCl/PNaCl toolchains"
@@ -722,6 +730,23 @@ prepare() {
   find . -name '*.py' -exec sed -r 's|/usr/bin/env python$|&2|g' -i {} +
 
   touch chrome/test/data/webui/i18n_process_css_test.html
+
+  msg2 "done sources"
+
+  mkdir -p "${_reldir}"
+
+msg2 "ok wait"
+exit 1
+#    gn --root=src gen /tmp/out/Default
+#    pwd #already in src
+    cp -- "../args.gn" "${_reldir}"
+#    "${srcdir}/pythonic"
+      gn gen "${_reldir}"
+
+  msg2 "runhooks"
+  #"${srcdir}/pythonic"
+  gclient runhooks   #can't run this here because it runs gyp_chromium!
+
 }
 
 build() {
@@ -739,8 +764,10 @@ build() {
   fi
 
   # Use system/bundled Clang? or GCC?
-  _bundled_clang_path="${srcdir}/chromium-${pkgver}/third_party/llvm-build/Release+Asserts/bin"
+#  _bundled_clang_path="${srcdir}/chromium-${pkgver}/third_party/llvm-build/Release+Asserts/bin"
 
+#FIXME: remove
+cat >/dev/null <<EOF
   if [ "${_use_clang}" = "0" ]; then
     msg2 "Setup for use system GCC"
     if [ "${_use_ccache}" = "0" ]; then
@@ -751,7 +778,8 @@ build() {
       export CXX="ccache g++ -Wall"
     fi
   elif [ "${_use_clang}" = "1" ]; then
-    if [ "${_use_bundled_clang}" = "0" ]; then
+#    if [ "${_use_bundled_clang}" = "0" ]; then
+EOF
       msg2 "Setup for use system Clang"
       if [ "${_use_ccache}" = "0" ]; then
         export CC="clang -Qunused-arguments"
@@ -761,6 +789,8 @@ build() {
         export CXX="ccache clang++ -Qunused-arguments"
       fi
       export CXXFLAGS="${CXXFLAGS} -Wno-unknown-warning-option"
+#FIXME: remove
+cat >/dev/null <<EOF
     elif [ "${_use_bundled_clang}" = "1" ]; then
       msg2 "Setup and build bundled Clang"
       python2 tools/clang/scripts/update.py --force-local-build --without-android --gcc-toolchain=/usr
@@ -773,12 +803,13 @@ build() {
       fi
     fi
   fi
+EOF
 
   # Changing bundle libraries to system ones
-  python2 build/linux/unbundle/replace_gyp_files.py ${_use_system[@]}
+#  python2 build/linux/unbundle/replace_gyp_files.py ${_use_system[@]}
 
   # update libaddressinput strings
-  python2 third_party/libaddressinput/chromium/tools/update-strings.py
+#  python2 third_party/libaddressinput/chromium/tools/update-strings.py
 
   #TODO: add to compilation: -fno-delete-null-pointer-checks
   #why? src: https://bugs.chromium.org/p/chromium/issues/detail?id=604165
@@ -793,7 +824,7 @@ build() {
 
   msg2 "Starting building Chromium..."
   # Configure the builder
-  python2 build/gyp_chromium --depth=. -Drelease_extra_cflags="$CFLAGS" ${_flags[@]} ${_use_system[@]}
+#  python2 build/gyp_chromium --depth=. -Drelease_extra_cflags="$CFLAGS" ${_flags[@]} ${_use_system[@]}
 
   # Build mksnapshot and pax-mark it.
   if [ "${_use_pax}" = "1" ]; then
@@ -872,6 +903,8 @@ package() {
   install -Dm644 chromium-dev.svg "${pkgdir}/usr/share/icons/hicolor/scalable/apps/chromium-dev.svg"
   install -Dm644 "chromium-${pkgver}/LICENSE" "${pkgdir}/usr/share/licenses/chromium-dev/LICENSE"
 
+#FIXME: remove this
+cat >/dev/null <<EOF
   # install gnome stuff if is detected
   if [ "${_use_gnome}" = "1" ]; then
     install -Dm644 "chromium-${pkgver}/chrome/installer/linux/common/default-app.template" "${pkgdir}/usr/share/gnome-control-center/default-apps/chromium-dev.xml"
@@ -880,6 +913,7 @@ package() {
         -e 's|@@PACKAGE@@|chromium-dev|g' \
         -i "${pkgdir}/usr/share/gnome-control-center/default-apps/chromium-dev.xml"
   fi
+EOF
 
   # Manually strip binaries so that 'nacl_irt_*.nexe' is left intact
   if [ "${_build_pnacl}" = "1" ]; then

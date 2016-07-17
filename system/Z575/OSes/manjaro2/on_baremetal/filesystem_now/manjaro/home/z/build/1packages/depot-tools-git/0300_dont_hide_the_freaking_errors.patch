@@ -22,16 +22,34 @@ KeyError: 'AWS_CREDENT  IAL_FILE'
 Error: Command download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-eu-strip -s src/build/linux/bin/eu-strip.sha1 returned non-zero exit status 1 in /home/emacs/vmb/build/chromium-dev-git/fetch_gclient_base/checkout_root
 
 
-
 diff --git a/download_from_google_storage.py b/download_from_google_storage.py
-index 5c1df03..03d1abe 100755
+index fb09c6d..2a2db15 100755
 --- a/download_from_google_storage.py
 +++ b/download_from_google_storage.py
-@@ -94,6 +94,7 @@ class Gsutil(object):
+@@ -95,6 +95,7 @@ class Gsutil(object):
          timeout=self.timeout)
  
      # Parse output.
-+    print err
++    print('the error is: ', err, 'for command', cmd, 'out is', out)
      status_code_match = re.search('status=([0-9]+)', err)
      if status_code_match:
        return (int(status_code_match.group(1)), out, err)
+@@ -239,6 +240,7 @@ def _downloader_worker_thread(thread_num, q, force, base_url,
+           continue
+     # Check if file exists.
+     file_url = '%s/%s' % (base_url, input_sha1_sum)
++    out_q.put('file_url=%s' % (file_url))
+     (code, _, err) = gsutil.check_call('ls', file_url)
+     if code != 0:
+       if code == 404:
+@@ -248,8 +250,8 @@ def _downloader_worker_thread(thread_num, q, force, base_url,
+             file_url, output_filename)))
+       else:
+         # Other error, probably auth related (bad ~/.boto, etc).
+-        out_q.put('%d> Failed to fetch file %s for %s, skipping. [Err: %s]' % (
+-            thread_num, file_url, output_filename, err))
++        out_q.put('%d> Failed to fetch file %s for %s, skipping. [Err: "%s" Code: "%d"]' % (
++            thread_num, file_url, output_filename, err, code))
+         ret_codes.put((1, 'Failed to fetch file %s for %s. [Err: %s]' % (
+             file_url, output_filename, err)))
+       continue
