@@ -119,6 +119,7 @@ allpatches=(
 ##1400_hotword_disabled.patch
 #1400_make_linking_work.patch
 no_sysroot.patch
+desktop_capture_controller_fail.patch
 )
 
 source=(
@@ -150,7 +151,8 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '6b39d8a1dc048f583d06339739cbcf8e48a078d31e3eac478800e890ef78a28e5fcf282fb6533c984cfdddacbb1dcbe6d679349bc5d52d3f93730fa14bc77f3b'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '425466860efd72c9bd611dcd54531af1394a2cba069d843f7e7accda240450effa09026ead94811c7c45db990696b54ea464c3811980e587a35473d6fa171953'
-            '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c')
+            '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
+            'b7072b646a56648efd802668070280c550cd0d1d0d3b709c264e877b33c4d45ef38a92386962ea3442b414e63628b7be1880ad82f3bc75d1b2a20c9260b6595a')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
@@ -604,9 +606,10 @@ prepare() {
 
 #    popd
 
-    msg2 "stashing changes..."
-    gclient recurse --no-progress -- git stash >/dev/null || echo "ignoring failure" # >/dev/null
-    gclient recurse --no-progress -- git stash clear >/dev/null || echo "ignored fails - because it's probably first run with empty src folder"
+    msg2 "discarding changes..."
+    gclient recurse --no-progress -- git checkout -- . >/dev/null || echo "ignoring failure" # >/dev/null
+#    gclient recurse --no-progress -- git stash >/dev/null || echo "ignoring failure" # >/dev/null
+#    gclient recurse --no-progress -- git stash clear >/dev/null || echo "ignored fails - because it's probably first run with empty src folder"
     rm -v -- "${_srcfolder}/content/common/va_wayland.sigs" ||true #created by the patch: enable_vaapi_on_linux.diff
     msg2 "sync-ing from the internet"
     pushd "${_srcfolder}"
@@ -618,10 +621,21 @@ prepare() {
 #      git pull --verbose --tags --depth=1  || ( git checkout master && git pull --tags --depth=1 --verbose )
 #      git pull --progress --verbose || ( git checkout master && git pull --verbose --progress )
 #good last:      git pull --verbose || ( git checkout master && git pull --verbose ) || echo "ignoring - because it's probably first run with empty src folder"
+
+
+       git prune
+       rm -- .git/gc.log || true
        git rebase-update
        #src: https://dev.chromium.org/developers/how-tos/get-the-code
        #//fixed: Cannot rebase-update with detached head + uncommitted changes.
        #//only the .keep filename is present/untracked! ok we remove it and keep .gitattributes
+
+       #See "git help gc" for manual housekeeping.
+       #error: The last gc run reported the following. Please correct the root cause
+       #and remove .git/gc.log.
+       #Automatic cleanup will not be performed until the file is removed.
+       #warning: There are too many unreachable loose objects; run 'git prune' to remove them.
+
     fi
     popd
     #-vvv
@@ -684,17 +698,17 @@ prepare() {
 
   msg2 "Patching the sources"
   # Patch sources from Gentoo
-  patch -p1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch"
-  patch -p0 -i "${srcdir}/chromium-system-jinja-r11.patch"
+  lepatch -Np1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch"
+  lepatch -Np0 -i "${srcdir}/chromium-system-jinja-r11.patch"
 #  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch" #TODO: should set fatal_linker_warnings to false instead of applying this patch!
 
   # Misc Patches:
-  patch -p1 -i "${srcdir}/enable_vaapi_on_linux.diff"
-  patch -p1 -i "${srcdir}/minizip.patch"
+  lepatch -Np1 -i "${srcdir}/enable_vaapi_on_linux.diff"
+  lepatch -Np1 -i "${srcdir}/minizip.patch"
 
   # Patch from crbug (chromium bugtracker)
   # https://crbug.com/473866
-  patch -p0 -i "${srcdir}/chromium-widevine-r1.patch"
+  lepatch -Np0 -i "${srcdir}/chromium-widevine-r1.patch"
   sed 's|@WIDEVINE_VERSION@|The Cake Is a Lie|g' -i "third_party/widevine/cdm/stub/widevine_cdm_version.h"
 
   for eachpatch in "${allpatches[@]}"; do

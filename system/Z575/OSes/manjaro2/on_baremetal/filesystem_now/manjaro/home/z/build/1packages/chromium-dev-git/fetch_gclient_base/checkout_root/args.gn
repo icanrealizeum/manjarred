@@ -215,7 +215,13 @@ enable_clipboard_aurax11 = false #Default = false
 #    //build/config/ui.gni:56
 #    Allow aura to access x11 clipboard.
 
-enable_cross_trusted = true #Default = true
+#XXX: no effect?
+#ERROR at build arg file (use "gn args <out_dir>" to edit):218:24: Build argument has no effect.
+#enable_cross_trusted = true #Default = true
+#                       ^---
+#The variable "enable_cross_trusted" was set as a build argument
+#but never appeared in a declare_args() block in any buildfile.
+#enable_cross_trusted = true #Default = true
 #    //native_client_sdk/src/BUILD.gn:10
 #    Set to true if cross compiling trusted (e.g. building sel_ldr_arm on x86)
 #    binaries is supported.
@@ -261,7 +267,8 @@ enable_internal_app_remoting_targets = false #Default = false
 #    //remoting/remoting_options.gni:13
 #    Set this to enable building internal AppRemoting apps.
 
-enable_ipc_fuzzer = true #Default = true
+#TODO: set to true again if component_build is false!
+enable_ipc_fuzzer = false #Default = true
 #    //tools/ipc_fuzzer/ipc_fuzzer.gni:14
 
 enable_iterator_debugging = true #Default = true
@@ -835,7 +842,7 @@ rtc_build_usrsctp = true #Default = true
 rtc_build_with_neon = false #Default = false
 #    //third_party/webrtc/build/webrtc.gni:90
 
-rtc_desktop_capture_supported = true #Default = true
+rtc_desktop_capture_supported = false #Default = true
 #    //third_party/webrtc/modules/BUILD.gn:15
 #    Desktop capturer is supported only on Windows, OSX and Linux.
 
@@ -1027,7 +1034,16 @@ use_ash = false #Default = false
 #    Indicates if Ash is enabled. Ash is the Aura Shell which provides a
 #    desktop-like environment for Aura. Requires use_aura = true
 
-use_aura = false #Default = false
+#XXX: must be true because:
+#ERROR at //ash/BUILD.gn:10:1: Assertion failed.
+#assert(use_aura)
+#^-----
+#See //ash/mus/BUILD.gn:89:5: which caused the file to be included.
+#    "//ash",
+#    ^------
+#==> ERROR: A failure occurred in prepare().
+#    Aborting...
+use_aura = true #Default = false
 #    //build/config/ui.gni:31
 #    Indicates if Aura is enabled. Aura is a low-level windowing library, sort
 #    of a replacement for GDI or GTK.
@@ -1092,15 +1108,37 @@ use_external_popup_menu = false #Default = false
 #    //build/config/features.gni:120
 #    Whether or not to use external popup menu.
 
-use_gconf = false #Default = false
+#XXX: must be true because:
+#ERROR at //build/config/linux/gconf/BUILD.gn:9:1: Assertion failed.
+#assert(!is_chromeos && use_gconf)
+#^-----
+#See //ui/accessibility/BUILD.gn:107:7: which caused the file to be included.
+#      "//build/config/linux/gconf",
+#      ^---------------------------
+#==> ERROR: A failure occurred in prepare().
+#    Aborting...
+use_gconf = true #Default = false
 #    //build/config/features.gni:108
 #    Option controlling the use of GConf (the classic GNOME configuration
 #    system).
 
-use_gio = false #Default = false
+#XXX: must be true because:
+#ERROR Unresolved dependencies.
+#//content/browser:browser(//build/toolchain/linux:clang_x64)
+#  needs //build/config/linux:glib(//build/toolchain/linux:clang_x64)
+#//third_party/harfbuzz-ng:harfbuzz-ng(//build/toolchain/linux:clang_x64)
+#  needs //build/config/linux:glib(//build/toolchain/linux:clang_x64)
+#//build/linux/libgio:libgio(//build/toolchain/linux:clang_x64)
+#  needs //build/linux:gio_config(//build/toolchain/linux:clang_x64)
+#//ui/events:events(//build/toolchain/linux:clang_x64)
+#  needs //build/config/linux:glib(//build/toolchain/linux:clang_x64)
+#//ui/accessibility:accessibility(//build/toolchain/linux:clang_x64)
+#  needs //build/config/linux:glib(//build/toolchain/linux:clang_x64)
+use_gio = true #Default = false
 #    //build/config/features.gni:110
 
-use_glib = false #Default = false
+#XXX: must be true because, see above!
+use_glib = true #Default = false
 #    //build/config/ui.gni:47
 #    Whether we should use glib, a low level C utility library.
 

@@ -1,0 +1,27 @@
+diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
+index 02f930a..8b8ef48 100644
+--- a/chrome/test/BUILD.gn
++++ b/chrome/test/BUILD.gn
+@@ -659,10 +659,18 @@ if (!is_android) {
+       }
+     }  # enable_notifications
+ 
+-    if (!use_aura || is_chromeos) {
+-      sources -=
+-          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
+-    }
++#    if (!use_aura || is_chromeos) {
++#ERROR at //chrome/test/BUILD.gn:664:13: Item not found
++#          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
++#            ^-------------------------------------------------------------
++#You were trying to remove "../../ui/views/corewm/desktop_capture_controller_unittest.cc"
++#from the list but it wasn't there.
++#See //BUILD.gn:526:9: which caused the file to be included.
++#        "//chrome/test:load_library_perf_tests",
++#        ^--------------------------------------
++#      sources -=
++#          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
++#    }
+   }
+ 
+   if (enable_app_list && use_ash) {
