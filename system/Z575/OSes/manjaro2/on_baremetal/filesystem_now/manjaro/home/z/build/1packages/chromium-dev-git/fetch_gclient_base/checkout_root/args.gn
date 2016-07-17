@@ -267,8 +267,8 @@ enable_internal_app_remoting_targets = false #Default = false
 #    //remoting/remoting_options.gni:13
 #    Set this to enable building internal AppRemoting apps.
 
-#TODO: set to true again if component_build is false!
-enable_ipc_fuzzer = false #Default = true
+#TODO: set to true again if is_component_build is false!
+enable_ipc_fuzzer = true #Default = true
 #    //tools/ipc_fuzzer/ipc_fuzzer.gni:14
 
 enable_iterator_debugging = true #Default = true
@@ -532,7 +532,8 @@ is_clang = true #Default = true
 #    to configure warnings.
 
 #TODO: true  (shared libs?) also see: https://chromium.googlesource.com/chromium/src/+/master/docs/linux_faster_builds.md which recommends true
-is_component_build = true #Default = false
+#XXX: "The component build links many parts of Chrome into separate shared libraries to avoid the long link step at the end. Most developers use this mode for everyday builds and debugging. Startup will be slower and some linker optimizations won't work, so don't do benchmarks in this mode."
+is_component_build = false #Default = false
 #    //build/config/BUILDCONFIG.gn:117
 #    Component build. Setting to true compiles targets declared as "components"
 #    as shared libraries loaded dynamically. This speeds up development time.
@@ -693,6 +694,12 @@ msan_track_origins = 2 #Default = 2
 #    0 - no tracking, 1 - track only the initial allocation site, 2 - track the
 #    chain of stores leading from allocation site to use site.
 
+#XXX: no effect because:
+#ERROR at build arg file (use "gn args <out_dir>" to edit):697:22: Build argument has no effect.
+#nacl_sdk_untrusted = false #Default = false
+#                     ^----
+#The variable "nacl_sdk_untrusted" was set as a build argument
+#but never appeared in a declare_args() block in any buildfile.
 nacl_sdk_untrusted = false #Default = false
 #    //native_client_sdk/src/BUILD.gn:14
 #    Build the nacl SDK untrusted components.  This is disabled by default since
