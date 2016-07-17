@@ -285,6 +285,7 @@ enable_iterator_debugging = true #Default = true
 #    significantly slow execution.
 
 #TODO: false; want false here because otherwise: avahi-daemon gets started on my linux manjaro system (seen in dmesg also)
+#FIXME: a patch comments out an include line in here: chrome/browser/extensions/browser_context_keyed_service_factories.cc  so if you ever set enable_mdns=true you need to fix that! alternatively the patch should #if defined(enable_mdns) if that's how it works!
 enable_mdns = false #Default = false
 #    //build/config/features.gni:25
 #    Multicast DNS.
@@ -1015,7 +1016,14 @@ target_sysroot_dir = "" #Default = ""
 #    //build/config/sysroot.gni:16
 #    The absolute path to directory containing sysroots for linux 32 and 64bit
 
-toolkit_views = false #Default = false
+#XXX: should be true because apparently it's used anyway
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/about_flags.cc:1703:6: error: use of undeclared identifier 'IDS_FLAGS_AUTOFILL_CREDIT_CARD_UPLOAD_NAME'
+#     IDS_FLAGS_AUTOFILL_CREDIT_CARD_UPLOAD_NAME,
+#     ^
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/about_flags.cc:1704:6: error: use of undeclared identifier 'IDS_FLAGS_AUTOFILL_CREDIT_CARD_UPLOAD_DESCRIPTION'
+#     IDS_FLAGS_AUTOFILL_CREDIT_CARD_UPLOAD_DESCRIPTION, kOsAll,
+#     ^
+toolkit_views = true #Default = false
 #    //build/config/ui.gni:35
 
 #XXX: set to false because when true:
@@ -1288,7 +1296,20 @@ use_system_sqlite = false #Default = false
 #    shipped with the system (currently only supported on iOS) or the one
 #    shipped with Chromium source.
 
-use_udev = false #Default = false
+#XXX: must be true because:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/serial/serial_device_enumerator_linux.cc:5:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/serial/serial_device_enumerator_linux.h:10:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/udev_linux/scoped_udev.h:10:
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/udev_linux/udev.h:15:2: error: "USE_UDEV not defined"
+##error "USE_UDEV not defined"
+# ^
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/serial/serial_device_enumerator_linux.cc:5:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/serial/serial_device_enumerator_linux.h:10:
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/udev_linux/scoped_udev.h:13:2: error: "USE_UDEV not defined"
+##error "USE_UDEV not defined"
+# ^
+#2 errors generated.
+use_udev = true #Default = false
 #    //build/config/features.gni:102
 #    libudev usage. This currently only affects the content layer.
 

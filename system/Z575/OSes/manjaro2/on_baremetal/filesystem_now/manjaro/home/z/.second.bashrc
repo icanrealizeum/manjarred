@@ -165,7 +165,8 @@ alias ll='ls -l --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color
 alias la='ls -la --group-directories-first --time-style=+"%d.%m.%Y %H:%M" --color=auto -F'
 alias grep='grep --color=tty -d skip'
 alias grepcolor='grep --color=always -d skip'
-alias cp="cp -i --reflink=always"                          # confirm before overwriting something; and CoW
+alias cp="cp -i --reflink=auto"                          # confirm before overwriting something; and CoW; using auto instead of always due to: cp: failed to clone 'gcd_fix.patch' from '/tmp/le.patch': Invalid cross-device link  AND --reflink=auto is specified, fall back to a standard copy.
+
 alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias np='nano PKGBUILD'

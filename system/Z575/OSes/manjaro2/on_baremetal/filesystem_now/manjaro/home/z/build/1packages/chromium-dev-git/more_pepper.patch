@@ -1,0 +1,18 @@
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/prefs/browser_prefs.cc:41:10: fatal error: 'chrome/browser/pepper_flash_settings_manager.h' file not found
+#include "chrome/browser/pepper_flash_settings_manager.h"
+         ^
+1 error generated.
+
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index c62343a..05d0e08 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -38,7 +38,7 @@
+ #include "chrome/browser/net/predictor.h"
+ #include "chrome/browser/notifications/extension_welcome_notification.h"
+ #include "chrome/browser/notifications/notifier_state_tracker.h"
+-#include "chrome/browser/pepper_flash_settings_manager.h"
++//#include "chrome/browser/pepper_flash_settings_manager.h"
+ #include "chrome/browser/plugins/plugin_finder.h"
+ #include "chrome/browser/prefs/chrome_pref_service_factory.h"
+ #include "chrome/browser/prefs/incognito_mode_prefs.h"

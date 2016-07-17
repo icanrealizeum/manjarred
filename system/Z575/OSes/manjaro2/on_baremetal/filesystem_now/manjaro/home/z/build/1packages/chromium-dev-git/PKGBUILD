@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2800.0_r6.d1a7457
+pkgver=54.0.2800.0_r9.ee06edf
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -121,6 +121,9 @@ allpatches=(
 #1400_make_linking_work.patch
 no_sysroot.patch
 desktop_capture_controller_fail.patch
+gcd_mdns_fix.patch
+no_ppapi.patch
+more_pepper.patch
 )
 
 source=(
@@ -153,7 +156,10 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '425466860efd72c9bd611dcd54531af1394a2cba069d843f7e7accda240450effa09026ead94811c7c45db990696b54ea464c3811980e587a35473d6fa171953'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
-            'b7072b646a56648efd802668070280c550cd0d1d0d3b709c264e877b33c4d45ef38a92386962ea3442b414e63628b7be1880ad82f3bc75d1b2a20c9260b6595a')
+            'b7072b646a56648efd802668070280c550cd0d1d0d3b709c264e877b33c4d45ef38a92386962ea3442b414e63628b7be1880ad82f3bc75d1b2a20c9260b6595a'
+            'f111dc231b027c83bc7b986365b53b16e9df7170844ccefde26ce136b817f1c069c09ca9909ab1a6da59a833aa62b1c55d7c9538ec34155040fbc69b776de413'
+            '531887bd14ba1c80aaa71fedddb44237ec0b54f0f0786a9f5c6fed1feb863fd02639a412dce9669bb2e8a3ac11367e7fb3969ff945b3b6f9fd0ddfb31dd4d24a'
+            '338392bb4ed37b559202ba871ecce630c9150a7ba619f05d279dff45af754001de6c6b4f9ab8a4745bd77074ca39e28f5bf55335e0d2e4d0856a44fcf40050f7')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
@@ -172,9 +178,9 @@ fi
 # NOTE: These are for Arch Linux use ONLY. For your own distribution, please
 # get your own set of keys. Feel free to contact foutrelis@archlinux.org for
 # more information.
-_google_api_key="AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM"
-_google_default_client_id="413772536636.apps.googleusercontent.com"
-_google_default_client_secret="0ZChLK6AxeA3Isu96MkwqDR4"
+#_google_api_key="AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM"
+#_google_default_client_id="413772536636.apps.googleusercontent.com"
+#_google_default_client_secret="0ZChLK6AxeA3Isu96MkwqDR4"
 
 
 
@@ -413,6 +419,29 @@ prepare() {
 
   cd "${_srcfolder}"
   pwd
+
+#XXX: remove ppapi stuff due to:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/content/ppapi_plugin/ppapi_broker_main.cc:11:
+#In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/content/ppapi_plugin/ppapi_thread.h:20:
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/content/public/common/pepper_plugin_info.h:20:2: error: "Plugins should be enabled"
+##error "Plugins should be enabled"
+# ^
+#1 error generated.
+
+removestuff "." <<EOF
+chrome/browser/extensions/api/gcd_private
+browser/extensions/api/mdns
+chrome/browser/extensions/api/mdns
+content/ppapi_plugin
+content/public/common/pepper_plugin_info.h
+EOF
+
+removestuff "chrome/browser" <<EOF
+pepper_broker_infobar_delegate.cc
+pepper_broker_infobar_delegate.h
+pepper_flash_settings_manager.cc
+pepper_flash_settings_manager.h
+EOF
 
 #  cd "chromium-${pkgver}"
 
