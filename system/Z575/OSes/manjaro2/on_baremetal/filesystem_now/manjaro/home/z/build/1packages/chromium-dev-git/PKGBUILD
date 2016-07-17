@@ -15,6 +15,8 @@
 _use_ccache=1          # Use ccache when build
 _use_pax=0             # Set 1 to change PaX permisions in executables NOTE: only use if use PaX environment
 _use_gtk3=1            # If set 1, then build with GTK3 support, if set 0, then build with GTK2
+inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
+
 
 ##############################################
 ## -- Package and components information -- ##
@@ -104,8 +106,8 @@ optdepends=(
 conflicts=('chromedriver' 'chromium')
 
 allpatches=(
-0200_no_warnings_as_errors.patch
-0300_use_system_clang.patch
+#0200_no_warnings_as_errors.patch
+#0300_use_system_clang.patch
 #0500_message_center_disabled.patch
 #0600_fix_AutofillDialogController.patch
 ##0800_small_fixes.patch
@@ -116,6 +118,7 @@ allpatches=(
 #1300_background_fix.patch
 ##1400_hotword_disabled.patch
 #1400_make_linking_work.patch
+no_sysroot.patch
 )
 
 source=(
@@ -139,20 +142,21 @@ source=(
 
 ##"$(curl -sL https://gsdview.appspot.com/chromium-browser-official/?marker=chromium-${pkgver}.tar.xz.hashes | awk -v FS='<td>"' -v RS='"</td>' '$0=$2' | head -n1)"
 #          "$(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz.hashes | grep sha1 | cut -d " " -f3)"
-sha1sums=('9dba13f45d964058c9fa3e4d220e9cb5a576263e'
-          '336976cb66bf8df71fc7f2e92aa723891b6efb53'
-          '450cd81653499eb50f0f7df1b0d4d1c1620365a5'
-          '7f835fba97fe94109e72d3be49ec28a89e30713f'
-          '3a1c57ae49a31e8eff64b32c4196433ea240e4ea'
-          '92338cc861dca81577075a85eea8530e08eb5bef'
-          'bc90b327b05dbecaa88da43211ae0a4ed0c6c57f'
-          '3032c9aeb68d80d8ef3cb8029be0d06ee402fa7f'
-          'bc71b67977693c3e3ba4e13469fab848be36c820'
-          '04c1b7858a314e63449913ba522de6bb54216543')
+sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db1ce670faefd460308548f2d861a935c12c8de24284edad58902cc89aac4a5'
+            'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
+            'bd662718e65d72854018d7d9e20be0196057de69be87e2ef18e1a8c98b2ddaccbdb074377820b31e6797d9370aa68724fabf26d826a402595390730857cc3956'
+            '008a3fa78dc09493f98bc1d5f615fbf261c055a824f1edd920b775b4d87992120a1c27111c8d5e4a1b335b16c83066c01d22e4ac5b91b2d39f811aa9b0605c00'
+            'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
+            '6b39d8a1dc048f583d06339739cbcf8e48a078d31e3eac478800e890ef78a28e5fcf282fb6533c984cfdddacbb1dcbe6d679349bc5d52d3f93730fa14bc77f3b'
+            '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
+            '425466860efd72c9bd611dcd54531af1394a2cba069d843f7e7accda240450effa09026ead94811c7c45db990696b54ea464c3811980e587a35473d6fa171953'
+            '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
 _srcfolder="${_folder}/src"
+
+_reldir="out/Default"
 if test "$inTMPFS" = "1"; then
   _reldir="/tmp/${_reldir}"
 fi
@@ -603,7 +607,7 @@ prepare() {
     msg2 "stashing changes..."
     gclient recurse --no-progress -- git stash >/dev/null || echo "ignoring failure" # >/dev/null
     gclient recurse --no-progress -- git stash clear >/dev/null || echo "ignored fails - because it's probably first run with empty src folder"
-    rm -v -- "${_srcfolder}/content/common/va_wayland.sigs" #created by the patch: enable_vaapi_on_linux.diff
+    rm -v -- "${_srcfolder}/content/common/va_wayland.sigs" ||true #created by the patch: enable_vaapi_on_linux.diff
     msg2 "sync-ing from the internet"
     pushd "${_srcfolder}"
     find . -type f -name '*.sedified' -or -type f -name '*.rej' -or -type f -name '*.cedified' | xargs rm -f -- 
@@ -627,7 +631,7 @@ prepare() {
 #ok: need to modify .gclient_entries before syncing from internet! but it's part of gclient.py
 #    updgclient_entries
     #gclient sync -vvv --nohooks --no-history --jobs 1
-    msg2 "gclient sync (takes 33min on first time, on 13Mbps download)"
+    msg2 "gclient sync (takes 33min on first time, on 13Mbps download, .git dir will be 776MiB and the whole src dir over 7GiB)"
     #--with_tags  #doesn't fetch tags if repo is already fetched
     gclient sync --nohooks --no-history --jobs 8  #not using -v , in order to be quiet; ok --shallow is bad, apparently!
 #first time:
@@ -698,7 +702,7 @@ prepare() {
   done
 
   ##
-  # Fix libpng errors
+  msg2 "Fix libpng errors"
   pushd chrome/app/theme &> /dev/null
   export IFS=$'\n'
   for i in $(find . -name '*.png' -type f); do
@@ -708,6 +712,7 @@ prepare() {
   popd &> /dev/null
 
   # Make it possible to remove third_party/adobe
+  #FIXME: is this really needed in GN? or only has effect with GYP? - no idea
 #  echo > "${srcdir}/flapper_version.h"
   _flapfile="${srcdir}/flapper_version.h"
   [ -f "$_flapfile" ] || echo > "$_flapfile"
@@ -725,9 +730,9 @@ prepare() {
     python2 build/download_nacl_toolchains.py --packages nacl_x86_newlib,pnacl_newlib,pnacl_translator sync --extract
   fi
 
-  msg2 "Make sure use Python2"
-  find . -name '*.py' -exec sed -r 's|/usr/bin/python$|&2|g' -i {} +
-  find . -name '*.py' -exec sed -r 's|/usr/bin/env python$|&2|g' -i {} +
+#  msg2 "Make sure use Python2" don't need this due to PATH being set with a symlinked python to python2
+#  find . -name '*.py' -exec sed -r 's|/usr/bin/python$|&2|g' -i {} +
+#  find . -name '*.py' -exec sed -r 's|/usr/bin/env python$|&2|g' -i {} +
 
   touch chrome/test/data/webui/i18n_process_css_test.html
 
@@ -735,13 +740,16 @@ prepare() {
 
   mkdir -p "${_reldir}"
 
-msg2 "ok wait"
-exit 1
-#    gn --root=src gen /tmp/out/Default
-#    pwd #already in src
+##    gn --root=src gen /tmp/out/Default
+    pwd #already in src
     cp -- "../args.gn" "${_reldir}"
-#    "${srcdir}/pythonic"
+##    "${srcdir}/pythonic"
       gn gen "${_reldir}"
+      #args.gn generated from:
+#      gn args "${_reldir}" --list
+      #and also without --list to edit it
+#msg2 "ok wait"
+#exit 1
 
   msg2 "runhooks"
   #"${srcdir}/pythonic"
