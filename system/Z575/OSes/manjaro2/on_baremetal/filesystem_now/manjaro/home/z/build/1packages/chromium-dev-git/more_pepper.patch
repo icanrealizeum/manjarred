@@ -3,8 +3,13 @@
          ^
 1 error generated.
 
+../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/chrome/browser/prefs/browser_prefs.cc:549:3: error: use of undeclared identifier 'PepperFlashSettingsManager'
+  PepperFlashSettingsManager::RegisterProfilePrefs(registry);
+  ^
+1 error generated.
+
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index c62343a..05d0e08 100644
+index c62343a..9d4dd7f 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -38,7 +38,7 @@
@@ -16,3 +21,21 @@ index c62343a..05d0e08 100644
  #include "chrome/browser/plugins/plugin_finder.h"
  #include "chrome/browser/prefs/chrome_pref_service_factory.h"
  #include "chrome/browser/prefs/incognito_mode_prefs.h"
+@@ -50,7 +50,7 @@
+ #include "chrome/browser/profiles/profile_info_cache.h"
+ #include "chrome/browser/profiles/profiles_state.h"
+ #include "chrome/browser/push_messaging/push_messaging_app_identifier.h"
+-#include "chrome/browser/renderer_host/pepper/device_id_fetcher.h"
++//#include "chrome/browser/renderer_host/pepper/device_id_fetcher.h"
+ #include "chrome/browser/search/search.h"
+ #include "chrome/browser/signin/signin_manager_factory.h"
+ #include "chrome/browser/task_management/task_manager_interface.h"
+@@ -546,7 +546,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   first_run::RegisterProfilePrefs(registry);
+   gcm::GCMChannelStatusSyncer::RegisterProfilePrefs(registry);
+   NewTabUI::RegisterProfilePrefs(registry);
+-  PepperFlashSettingsManager::RegisterProfilePrefs(registry);
++  //PepperFlashSettingsManager::RegisterProfilePrefs(registry);
+   PinnedTabCodec::RegisterProfilePrefs(registry);
+   signin::RegisterProfilePrefs(registry);
+ #endif
