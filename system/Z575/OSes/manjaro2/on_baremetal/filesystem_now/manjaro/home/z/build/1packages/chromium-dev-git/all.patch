@@ -350,6 +350,26 @@ index 172bf46..605a1da 100644
 +    #"//third_party/widevine/cdm:version_h",
      "//ui/accessibility:test_support",
      "//ui/base:test_support",
+diff --git a/media/base/key_systems.cc b/media/base/key_systems.cc
+index 4567bf4..463f263 100644
+--- a/media/base/key_systems.cc
++++ b/media/base/key_systems.cc
+@@ -21,5 +21,5 @@
+ #include "media/base/media.h"
+ #include "media/base/media_client.h"
+-#include "third_party/widevine/cdm/widevine_cdm_common.h"
++//#include "third_party/widevine/cdm/widevine_cdm_common.h"
+ 
+ namespace media {
+@@ -152,6 +152,6 @@ class ClearKeyProperties : public KeySystemProperties {
+ static bool IsPotentiallySupportedKeySystem(const std::string& key_system) {
+   // Known and supported key systems.
+-  if (key_system == kWidevineKeySystem)
+-    return true;
++//  if (key_system == kWidevineKeySystem)
++//    return true;
+   if (key_system == kClearKeyKeySystem)
+     return true;
 diff --git a/media/BUILD.gn b/media/BUILD.gn
 index a1f03af..cbb651f 100644
 --- a/media/BUILD.gn
