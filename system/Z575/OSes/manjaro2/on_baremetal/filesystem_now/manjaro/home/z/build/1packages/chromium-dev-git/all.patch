@@ -665,6 +665,17 @@ index f364f89..47c67d4 100644
 +#    "//third_party/widevine/cdm:version_h",
    ]
  }
+diff --git a/content/browser/renderer_host/render_message_filter.cc b/content/browser/renderer_host/render_message_filter.cc
+index befd3b3..ead29d7 100644
+--- a/content/browser/renderer_host/render_message_filter.cc
++++ b/content/browser/renderer_host/render_message_filter.cc
+@@ -35,5 +35,5 @@
+ #include "content/browser/loader/resource_dispatcher_host_impl.h"
+ #include "content/browser/media/media_internals.h"
+-#include "content/browser/renderer_host/pepper/pepper_security_helper.h"
++//#include "content/browser/renderer_host/pepper/pepper_security_helper.h"
+ #include "content/browser/renderer_host/render_process_host_impl.h"
+ #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
 index 49a1881..2eaca28 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
@@ -782,13 +793,6 @@ diff --git a/media/BUILD.gn b/media/BUILD.gn
 index a1f03af..cbb651f 100644
 --- a/media/BUILD.gn
 +++ b/media/BUILD.gn
-@@ -354,5 +354,5 @@ component("media") {
-   }
- 
--  if (current_cpu != "arm" && is_chromeos) {
-+  if (current_cpu != "arm" && (is_chromeos || is_desktop_linux)) {
-     sources += [
-       "filters/h264_bitstream_buffer.cc",
 @@ -603,5 +603,5 @@ test("media_unittests") {
      "//third_party/libwebm",
      "//third_party/libyuv",
@@ -796,13 +800,6 @@ index a1f03af..cbb651f 100644
 +#    "//third_party/widevine/cdm:version_h",
      "//ui/gfx:test_support",
      "//url",
-@@ -650,5 +650,5 @@ test("media_unittests") {
-   }
- 
--  if (current_cpu != "arm" && is_chromeos) {
-+  if (current_cpu != "arm" && (is_chromeos || is_desktop_linux)) {
-     sources += [ "filters/h264_bitstream_buffer_unittest.cc" ]
-   }
 @@ -726,5 +726,5 @@ test("media_perftests") {
      "//testing/gtest",
      "//testing/perf",
