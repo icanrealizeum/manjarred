@@ -136,6 +136,8 @@
       \ May 27 18:36:32 atelier kernel: BUG: unable to handle kernel NULL pointer dereference at 0000000000000008
       \ May 27 18:36:33 atelier kernel: IP: [<ffffffffa04ad1d5>] intel_fb_obj_invalidate+0x15/0xf0 [i915]
       \ apparently this bug: https://bugzilla.kernel.org/show_bug.cgi?id=112891
+  * remove manjaro urls from firefox/chromium
+    * sudo pacman -Rs manjaro-browser-settings
   * remove nfs
     * sudo pacman -Rs nfs-utils
     - blacklist nfs module
@@ -423,6 +425,11 @@
   * sudo pacman -Rs zd1211-firmware unarj
   * sudo pacman -Rs lvm2
     \ don't need this
+  * sudo pacman -S community/simplescreenrecorder
+    \ for recording screen as video
+  * sudo pacman -S extra/avidemux-gtk community/openshot frei0r-plugins
+    \ for video editor
+    \ actually extra/avidemux-gtk is optional/independent! I haven't used it yet!
 
 
 * Note:

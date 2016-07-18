@@ -39,6 +39,10 @@
 #---------------------
 # Acceptable newUDPout traffic
 -A newUDPout -p udp --dport 53 --dst 8.8.4.4,8.8.8.8,208.67.222.220 -j accepted
+#allow QUIC (youtube/google) for extra speeds:
+#UDP out 443 is QUIC src: http://kb.fortinet.com/kb/documentLink.do?externalID=FD36680
+#looks like only 443 out and not 80 out, UDP is seen by my logs
+-A newUDPout -p udp --dport 443 -j accepted
 #allow qtox:
 -A newUDPout -p udp --sport 33445 -j accepted
 #XXX: not really needed:

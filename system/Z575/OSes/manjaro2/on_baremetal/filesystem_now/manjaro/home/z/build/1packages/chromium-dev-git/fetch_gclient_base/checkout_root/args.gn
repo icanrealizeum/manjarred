@@ -416,7 +416,7 @@ fatal_linker_warnings = true #Default = true
 #    of binutils can cause linker warning.
 #    See: https://bugs.chromium.org/p/chromium/issues/detail?id=457359
 
-ffmpeg_branding = "Chromium" #Default = "Chromium"
+ffmpeg_branding = "ChromeOS" #Default = "Chromium"
 #    //third_party/ffmpeg/ffmpeg_options.gni:33
 #    Controls whether we build the Chromium or Google Chrome version of FFmpeg.
 #    The Google Chrome version contains additional codecs. Typical values are
@@ -542,6 +542,7 @@ is_component_build = false #Default = false
 #    as shared libraries loaded dynamically. This speeds up development time.
 #    When false, components will be linked statically.
 
+#XXX: no good reason to enable this! when enabled creates libffmpeg.so which you cannot use from system's ffmpeg!
 is_component_ffmpeg = false #Default = false
 #    //third_party/ffmpeg/ffmpeg_options.gni:40
 #    Set true to build ffmpeg as a shared library. NOTE: this means we should
@@ -788,7 +789,7 @@ pkg_config = "" #Default = ""
 #    the sysroot mechanism to find the right .pc files.
 
 #TODO: true and (check https://www.youtube.com/html5  if that changes the 2nd row and if can watch live streams)
-#for the pacman -S chromium  on Manjaro, all 6 checks are set
+#for the pacman -S chromium  on Manjaro, all 6 checks are set - after this chromium git install they are still all 6 set! BUT my youtube uploads won't play! while they previously did!
 proprietary_codecs = true #Default = false
 #    //build/config/features.gni:51
 #    Enables proprietary codecs and demuxers; e.g. H264, AAC, MP3, and MP4.

@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2800.0_r22.43b9c63
+pkgver=54.0.2800.0_r35.1ce44d2
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -652,6 +652,11 @@ package() {
   install -Dm4755 chrome_sandbox "${pkgdir}/usr/lib/chromium/chrome-sandbox"
 #what is?  install -Dm755 chromedriver "${pkgdir}/usr/lib/chromium-dev/chromedriver"
 #  ln -s /usr/lib/chromium-dev/chromedriver "${pkgdir}/usr/bin/chromedriver-dev"
+
+   #ok this is useless, because needs LD_LIBRARY_PATH set! but it makes this .so when  is_component_ffmpeg = true #Default = false
+   if test -e 'libffmpeg.so' ; then
+     install -Dm755 libffmpeg.so "${pkgdir}/usr/lib/chromium/libffmpeg.so"
+   fi
 
   # Install libs
 #  for i in libwidevinecdmadapter libclearkeycdm; do
