@@ -3,43 +3,15 @@
 #XXX: relevant files to search into: *.gn*,*.gyp*,*.idl,*.js,*.grd,*.json,*.htm*
 #when editing js and html files, you have to delete stuff instead of commenting them out beacuse otherwise they are still seen
 
-fname='1400_make_linking_work.patch'
+fname='all.patch'
 pushd src
 #XXX: DO NOT put any # comments inside the following:
 #dups are ok, they will be filtered out.
 #./ in front is ok, it will be filtered out
 allfiles='
-chrome/BUILD.gn
-chrome/test/BUILD.gn
-chrome/app/chrome_main_delegate.cc
-chrome/browser/ui/webui/options/options_ui.cc
-chrome/utility/printing_handler.cc
-chrome/app/chrome_exe_main_aura.cc
-third_party/skia/src/opts/opts_check_x86.cpp
-chrome/browser/devtools/BUILD.gn
-chrome/common/extensions/api/schemas.gypi
-chrome/chrome_browser_extensions.gypi
-chrome/browser/extensions/browser_context_keyed_service_factories.cc
-chrome/chrome_browser_extensions.gypi
-chrome/chrome_debugger.gypi
-chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-chrome/browser/devtools/device/devtools_android_bridge.cc
-chrome/chrome_resources.gyp
-chrome/chrome_debugger.gypi
-build/common.gypi
-
 '
-
-#XXX: these won't work due to git diff being a dumb ass motherfucker, faq!
-cat >/dev/null <<EOF
-third_party/skia/include/core/SkColorPriv.h
-third_party/skia/src/opts/SkBlitRow_opts_SSE2.cpp
-third_party/skia/src/core/SkXfermode.cpp
-third_party/skia/src/core/SkBlitter_RGB16.cpp
-third_party/skia/src/core/SkBitmapProcState_matrixProcs.cpp
-third_party/skia/src/core/SkBitmapProcState.cpp
-src/skia/ext/convolver_SSE2.cc
-EOF
+#chrome/test/BUILD.gn
+#'
 
 #was using clang --version
 #clang version 3.5.1 (tags/RELEASE_351/final)
@@ -54,40 +26,6 @@ EOF
 #apparently I was NOT using system clang although after updating system clang, and recompiling(ccache is on) a different function (S32_alpha_D32_filter_DX_SSSE3) failed with Illegal instruction than before.
 
 #chrome/browser/devtools/webrtc_device_provider_resources.gyp
-
-cat >/dev/null <<EOF
-allfiles='
-chrome/chrome_browser.gypi
-chrome/browser/resources/component_extension_resources.grd
-chrome/browser/browser_resources.grd
-chrome/chrome_browser_extensions.gypi
-chrome/browser/extensions/browser_context_keyed_service_factories.cc
-extensions/common/api/_permission_features.json
-chrome/browser/resources/options/options_bundle.js
-chrome/browser/resources/options/options.html
-chrome/common/extensions/api/schemas.gypi
-chrome/browser/ui/webui/options/browser_options_handler.cc
-chrome/browser/ui/webui/options/browser_options_handler.h
-chrome/app/theme/theme_resources.grd
-chrome/browser/ui/app_list/app_list_view_delegate.h
-chrome/browser/ui/app_list/app_list_view_delegate.cc
-chrome/browser/ui/app_list/app_list_service_impl.cc
-chrome/browser/ui/webui/app_list/start_page_handler.cc
-chrome/browser/ui/webui/app_list/start_page_ui.cc
-chrome/browser/ui/app_list/start_page_service.cc
-chrome/browser/extensions/external_component_loader.cc
-chrome/browser/ui/webui/voice_search_ui.cc
-chrome/browser/extensions/component_loader.h
-chrome/browser/extensions/component_loader.cc
-chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
-chrome/chrome_browser.gypi
-chrome/browser/task_manager/task_manager.cc
-chrome/browser/printing/print_preview_dialog_controller.cc
-content/public/common/common_param_traits_macros.h
-content/common/view_messages.h
-content/common/frame_messages.h
-'
-EOF
 
 allfiles+="$(echo;cat "../patched_files.lst")"
 #remove "./" from the beginning, ignoring any whitespace prefix
@@ -114,15 +52,9 @@ cat > "$outpatch" <<EOF
 make linking succeed with the following side effects:
 - removing pdf support (possibly due to webrtc being disabled in args.gn?)
 but possibly adding ppapi will allow pdf to link too(?) so it's not required to remove pdf in fact.
-- attempt to fix that Illegal instruction
 - removed gcd_private - for mdns=false to link
 
 EOF
-
-#faq git diff!
-pushd "third_party/skia/src/opts/"
-git diff SkBlitRow_opts_SSE2.cpp >> "$outpatch"
-popd
 
 temp_newlist="/tmp/patched_files.lst"
 echo -n "" > "$temp_newlist" #start with empty contents
@@ -131,7 +63,7 @@ echo -n "" > "$temp_newlist" #start with empty contents
 
 #XXX: paths can't have spaces because of this(they will be treated as two different things!):
 #yep this takes a while, because it executes git diff for each file!!!
-echo "wait like 3m17sec currently"
+echo "wait like 4sec currently"
 time for eachf in ${params[@]}; do
   if ! test -f "$eachf" -o -d "$eachf" ; then
     echo "Inexistent file/dir: '$eachf'"

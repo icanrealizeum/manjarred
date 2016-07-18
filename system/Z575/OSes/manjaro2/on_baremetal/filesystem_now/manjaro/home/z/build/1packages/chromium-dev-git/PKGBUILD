@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2800.0_r9.ee06edf
+pkgver=54.0.2800.0_r12.f3d6584
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -120,11 +120,13 @@ allpatches=(
 ##1400_hotword_disabled.patch
 #1400_make_linking_work.patch
 no_sysroot.patch
-desktop_capture_controller_fail.patch
+#desktop_capture_controller_fail.patch
 gcd_mdns_fix.patch
 no_ppapi.patch
 more_pepper.patch
 pdf_fix.patch
+foo_widevine.patch
+all.patch
 )
 
 source=(
@@ -139,8 +141,8 @@ source=(
         # Misc Patches
         'enable_vaapi_on_linux.diff' ###'https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/enable_vaapi_on_linux.diff'
         'minizip.patch::http://pastebin.com/raw/QCqSDam5'
-        # Patch from crbug (chromium bugtracker)
-        'chromium-widevine-r1.patch' # https://crbug.com/473866
+#        # Patch from crbug (chromium bugtracker)
+#        'chromium-widevine-r1.patch' # https://crbug.com/473866
 
         #own patches
         "${allpatches[@]}"
@@ -155,13 +157,13 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
             '6b39d8a1dc048f583d06339739cbcf8e48a078d31e3eac478800e890ef78a28e5fcf282fb6533c984cfdddacbb1dcbe6d679349bc5d52d3f93730fa14bc77f3b'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
-            '425466860efd72c9bd611dcd54531af1394a2cba069d843f7e7accda240450effa09026ead94811c7c45db990696b54ea464c3811980e587a35473d6fa171953'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
-            'b7072b646a56648efd802668070280c550cd0d1d0d3b709c264e877b33c4d45ef38a92386962ea3442b414e63628b7be1880ad82f3bc75d1b2a20c9260b6595a'
             'fd4c128895967713e4f2cee94a5174390dfcfa1f42fc42be5bd77c2e27fa852b1b402cb76b8ba96d9c7cca4d2baa0577af725a747488e2e7ce7064b892ac64f0'
             '531887bd14ba1c80aaa71fedddb44237ec0b54f0f0786a9f5c6fed1feb863fd02639a412dce9669bb2e8a3ac11367e7fb3969ff945b3b6f9fd0ddfb31dd4d24a'
             '9bcd1f7f8a4a6bd21a3a50edd94bbb2d9930249005c9ccf414ab557711904a24aa5370c2442340d464851ef6e7c9332f11f4e18f8049e1ea9e96c3a46529f472'
-            '076d74791fddeb8241dc90c4b2130dd92664cf1b1e8533a380bc5754f55a9e95b2d0e479d24a291915a2409d95271594f63f48e7753f3c11cb63d34d81403ec1')
+            '076d74791fddeb8241dc90c4b2130dd92664cf1b1e8533a380bc5754f55a9e95b2d0e479d24a291915a2409d95271594f63f48e7753f3c11cb63d34d81403ec1'
+            '5084d0e4ed9a471cf188f9916b998d2dadf2fe559ca4fcd862881e9119b272103aa2790bdf94e032bedceebcbad45edc8a13089f9f304ca2cd493c6fe3f22142'
+            '6fd71f2717504525795c2cc69bbd9f0a6c3ee9038a1a5309a5393f32e7aaf15675d4314251341d14283925536160396aa3ccd1795fee906cbf7186ed7f0e07ec')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
@@ -443,6 +445,14 @@ chrome/browser/extensions/api/mdns
 content/ppapi_plugin
 content/public/common/pepper_plugin_info.h
 content/browser/renderer_host/pepper
+chrome/common/widevine_cdm_constants.cc
+chrome/common/widevine_cdm_constants.h
+components/cdm/common/widevine_drm_delegate_android.cc
+components/cdm/common/widevine_drm_delegate_android.h
+components/cdm/renderer/widevine_key_system_properties.cc
+components/cdm/renderer/widevine_key_system_properties.h
+media/test/data/eme_player_js/widevine_player.js
+third_party/widevine
 EOF
 
 removestuff "chrome/browser" <<EOF
@@ -480,8 +490,13 @@ EOF
 
   # Patch from crbug (chromium bugtracker)
   # https://crbug.com/473866
-  lepatch -Np0 -i "${srcdir}/chromium-widevine-r1.patch"
-  sed 's|@WIDEVINE_VERSION@|The Cake Is a Lie|g' -i "third_party/widevine/cdm/stub/widevine_cdm_version.h"
+#  lepatch -Np0 -i "${srcdir}/chromium-widevine-r1.patch"
+#  sed 's|@WIDEVINE_VERSION@|The Cake Is a Lie|g' -i "third_party/widevine/cdm/stub/widevine_cdm_version.h"
+#  pushd "${_srcfolder}"
+#  mkdir -p -- third_party/widevine/cdm/stub
+#  touch third_party/widevine/cdm/stub/widevine_cdm_version.h
+#  popd
+#XXX: ^ even if that existed, because it's not included in some main .gn(i) file, it won't be processed/seen!! so, I'll fix the 20 files which include that .h instead!
 
   for eachpatch in "${allpatches[@]}"; do
     lepatch -Np1 -i "${srcdir}/${eachpatch}"
@@ -526,7 +541,7 @@ EOF
     pwd #already in src
     cp -- "../args.gn" "${_reldir}"
 ##    "${srcdir}/pythonic"
-      gn gen "${_reldir}"
+      gn --root="${_srcfolder}" gen "${_reldir}"
       #args.gn generated from:
 #      gn args "${_reldir}" --list
       #and also without --list to edit it

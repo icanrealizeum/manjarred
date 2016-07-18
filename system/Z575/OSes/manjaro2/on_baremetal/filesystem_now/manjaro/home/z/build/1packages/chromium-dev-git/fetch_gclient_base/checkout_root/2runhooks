@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export GYP_CHROMIUM_NO_ACTION=1
+
+time PATH=~/build/1packages/chromium-dev-git/makepkg_pacman/chromium-dev/src/python-path:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/depot_tools:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/z/bin:/home/z/build/1nonpkgs/racer/target/release:/home/z/bin:/home/z/build/1nonpkgs/racer/target/release gclient runhooks
+echo "exit code: $?"
+

@@ -1,0 +1,239 @@
+make linking succeed with the following side effects:
+- removing pdf support (possibly due to webrtc being disabled in args.gn?)
+but possibly adding ppapi will allow pdf to link too(?) so it's not required to remove pdf in fact.
+- removed gcd_private - for mdns=false to link
+
+diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
+index 5de84d1..0f601f3 100644
+--- a/chrome/browser/BUILD.gn
++++ b/chrome/browser/BUILD.gn
+@@ -230,5 +230,5 @@ split_static_library("browser") {
+     "//third_party/libjingle",
+     "//third_party/libxml",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//third_party/zlib",
+     "//third_party/zlib:compression_utils",
+diff --git a/chrome/browser/load_library_perf_test.cc b/chrome/browser/load_library_perf_test.cc
+index 3b49e6a..ba4ad3d 100644
+--- a/chrome/browser/load_library_perf_test.cc
++++ b/chrome/browser/load_library_perf_test.cc
+@@ -17,5 +17,5 @@
+ #include "testing/perf/perf_test.h"
+ 
+-#include "widevine_cdm_version.h"  //  In SHARED_INTERMEDIATE_DIR.
++//#include "widevine_cdm_version.h"  //  In SHARED_INTERMEDIATE_DIR.
+ 
+ #if defined(ENABLE_PEPPER_CDMS)
+diff --git a/chrome/chrome_browser.gypi b/chrome/chrome_browser.gypi
+index c010005..eb943fc 100644
+--- a/chrome/chrome_browser.gypi
++++ b/chrome/chrome_browser.gypi
+@@ -1224,6 +1224,6 @@
+       'browser/chrome_process_singleton.cc',
+       'browser/chrome_process_singleton.h',
+-      'browser/component_updater/widevine_cdm_component_installer.cc',
+-      'browser/component_updater/widevine_cdm_component_installer.h',
++#      'browser/component_updater/widevine_cdm_component_installer.cc',
++#      'browser/component_updater/widevine_cdm_component_installer.h',
+       'browser/custom_handlers/register_protocol_handler_permission_request.cc',
+       'browser/custom_handlers/register_protocol_handler_permission_request.h',
+@@ -3342,5 +3342,5 @@
+         '../third_party/icu/icu.gyp:icuuc',
+         '../third_party/libxml/libxml.gyp:libxml',
+-        '../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
++        #'../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
+         '../third_party/zlib/google/zip.gyp:compression_utils',
+         '../third_party/zlib/google/zip.gyp:zip',
+diff --git a/chrome/chrome_common.gypi b/chrome/chrome_common.gypi
+index 39b33f6..df6b961 100644
+--- a/chrome/chrome_common.gypi
++++ b/chrome/chrome_common.gypi
+@@ -112,6 +112,6 @@
+       'common/web_application_info.cc',
+       'common/web_application_info.h',
+-      'common/widevine_cdm_constants.cc',
+-      'common/widevine_cdm_constants.h',
++      #'common/widevine_cdm_constants.cc',
++      #'common/widevine_cdm_constants.h',
+     ],
+     'chrome_common_extensions_sources': [
+@@ -419,5 +419,5 @@
+             '<(DEPTH)/media/media.gyp:media',
+             '<(DEPTH)/third_party/re2/re2.gyp:re2',
+-            '<(DEPTH)/third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
++            #'<(DEPTH)/third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
+           ],
+         }, {  # OS == ios
+diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
+index 491244e..e81bbbc 100644
+--- a/chrome/common/BUILD.gn
++++ b/chrome/common/BUILD.gn
+@@ -156,5 +156,5 @@ static_library("common") {
+       "//mojo/public/cpp/bindings",
+       "//third_party/re2",
+-      "//third_party/widevine/cdm:version_h",
++#      "//third_party/widevine/cdm:version_h",
+     ]
+   }
+@@ -342,5 +342,5 @@ static_library("constants") {
+     "//components/nacl/common:switches",
+     "//media:cdm_paths",  # Needed by chrome_paths.cc.
+-    "//third_party/widevine/cdm:version_h",
++    #"//third_party/widevine/cdm:version_h",
+   ]
+ 
+diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
+index da7909d..770112e 100644
+--- a/chrome/common/chrome_content_client.cc
++++ b/chrome/common/chrome_content_client.cc
+@@ -48,5 +48,5 @@
+ #include "ui/base/layout.h"
+ #include "ui/base/resource/resource_bundle.h"
+-#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
++//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
+ 
+ #if defined(OS_LINUX)
+diff --git a/chrome/common/chrome_paths.cc b/chrome/common/chrome_paths.cc
+index 8649931..20bd23b 100644
+--- a/chrome/common/chrome_paths.cc
++++ b/chrome/common/chrome_paths.cc
+@@ -34,5 +34,5 @@
+ #endif
+ 
+-#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
++//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
+ 
+ namespace {
+diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
+index fc1868e..ff8edc1 100644
+--- a/chrome/renderer/BUILD.gn
++++ b/chrome/renderer/BUILD.gn
+@@ -68,5 +68,5 @@ static_library("renderer") {
+     "//third_party/icu",
+     "//third_party/re2",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//ui/surface",
+     "//v8:v8",
+diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
+index ec4c0d6..b54e4a0 100644
+--- a/chrome/renderer/chrome_content_renderer_client.cc
++++ b/chrome/renderer/chrome_content_renderer_client.cc
+@@ -115,5 +115,5 @@
+ #include "ui/base/resource/resource_bundle.h"
+ #include "ui/base/webui/jstemplate_builder.h"
+-#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
++//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
+ 
+ #if !defined(DISABLE_NACL)
+diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
+index 02f930a..f27a7dd 100644
+--- a/chrome/test/BUILD.gn
++++ b/chrome/test/BUILD.gn
+@@ -660,8 +660,16 @@ if (!is_android) {
+     }  # enable_notifications
+ 
+-    if (!use_aura || is_chromeos) {
+-      sources -=
+-          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
+-    }
++#    if (!use_aura || is_chromeos) {
++#ERROR at //chrome/test/BUILD.gn:664:13: Item not found
++#          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
++#            ^-------------------------------------------------------------
++#You were trying to remove "../../ui/views/corewm/desktop_capture_controller_unittest.cc"
++#from the list but it wasn't there.
++#See //BUILD.gn:526:9: which caused the file to be included.
++#        "//chrome/test:load_library_perf_tests",
++#        ^--------------------------------------
++#      sources -=
++#          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
++#    }
+   }
+ 
+@@ -993,5 +1001,5 @@ test("browser_tests") {
+       "//third_party/libjingle",
+       "//third_party/webrtc/modules/desktop_capture",
+-      "//third_party/widevine/cdm:version_h",
++#      "//third_party/widevine/cdm:version_h",
+       "//ui/accessibility:test_support",
+       "//ui/base:test_support",
+@@ -1010,5 +1018,5 @@ test("browser_tests") {
+       "//remoting/webapp:unit_tests",
+       "//third_party/mesa:osmesa",
+-      "//third_party/widevine/cdm:widevine_test_license_server",
++#      "//third_party/widevine/cdm:widevine_test_license_server",
+     ]
+ 
+@@ -1670,5 +1678,5 @@ if (!is_android) {
+       "//testing/gtest",
+       "//testing/perf",
+-      "//third_party/widevine/cdm:version_h",
++#      "//third_party/widevine/cdm:version_h",
+     ]
+ 
+diff --git a/components/cdm/renderer/BUILD.gn b/components/cdm/renderer/BUILD.gn
+index f364f89..47c67d4 100644
+--- a/components/cdm/renderer/BUILD.gn
++++ b/components/cdm/renderer/BUILD.gn
+@@ -5,6 +5,6 @@
+ static_library("renderer") {
+   sources = [
+-    "widevine_key_system_properties.cc",
+-    "widevine_key_system_properties.h",
++#    "widevine_key_system_properties.cc",
++#    "widevine_key_system_properties.h",
+   ]
+ 
+@@ -21,5 +21,5 @@ static_library("renderer") {
+     "//content/public/renderer",
+     "//media",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+   ]
+ }
+diff --git a/content/public/renderer/BUILD.gn b/content/public/renderer/BUILD.gn
+index 75d4439..a04007e 100644
+--- a/content/public/renderer/BUILD.gn
++++ b/content/public/renderer/BUILD.gn
+@@ -41,5 +41,5 @@ source_set("renderer_sources") {
+     "//third_party/WebKit/public:blink_headers",
+     "//third_party/libjingle",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//ui/base",
+     "//ui/base/ime",
+diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
+index 2014cc8..662976e 100644
+--- a/content/renderer/BUILD.gn
++++ b/content/renderer/BUILD.gn
+@@ -81,5 +81,5 @@ source_set("renderer") {
+     "//third_party/libjingle",
+     "//third_party/libyuv",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//ui/accessibility",
+     "//ui/base",
+diff --git a/content/test/BUILD.gn b/content/test/BUILD.gn
+index 8c8e58d..62ba8df 100644
+--- a/content/test/BUILD.gn
++++ b/content/test/BUILD.gn
+@@ -682,5 +682,5 @@ test("content_unittests") {
+     "//third_party/libjingle",
+     "//third_party/re2",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//ui/accessibility",
+     "//ui/base:test_support",
+diff --git a/extensions/BUILD.gn b/extensions/BUILD.gn
+index 172bf46..605a1da 100644
+--- a/extensions/BUILD.gn
++++ b/extensions/BUILD.gn
+@@ -313,5 +313,5 @@ source_set("chrome_extensions_browsertests") {
+     "//third_party/libjingle",
+     "//third_party/webrtc/modules/desktop_capture",
+-    "//third_party/widevine/cdm:version_h",
++    #"//third_party/widevine/cdm:version_h",
+     "//ui/accessibility:test_support",
+     "//ui/base:test_support",
