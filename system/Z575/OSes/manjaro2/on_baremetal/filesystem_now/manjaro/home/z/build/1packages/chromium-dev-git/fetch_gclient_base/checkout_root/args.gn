@@ -47,7 +47,7 @@ asan_globals = true #Default = true
    
 #    Mac: http://crbug.com/352073
 
-binutils_path = "../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/Release/bin" #Default = "../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/Release/bin"
+#binutils_path = "../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/Release/bin" #Default = "../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/binutils/Linux_x64/Release/bin"
 #    //build/config/compiler/BUILD.gn:42
 
 blink_gc_plugin = true #Default = true
@@ -441,10 +441,11 @@ gold_path = false #Default = false
 #    When we are going to use gold we need to find it.
 #    This is initialized below, after use_gold might have been overridden.
 
-goma_dir = "/home/z/goma" #Default = "/home/z/goma"
+#goma_dir = "/home/z/goma" #Default = "/home/z/goma"
 #    //build/toolchain/goma.gni:20
 #    Absolute directory containing the Goma source code.
 
+#XXX: see https://www.chromium.org/developers/how-tos/api-keys
 google_api_key = "" #Default = ""
 #    //google_apis/BUILD.gn:45
 #    Set these to bake the specified API keys and OAuth client

@@ -362,10 +362,10 @@ index 03c71a9..7d57c63 100644
  
    // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 5de84d1..0f601f3 100644
+index 7a8e087..8958c60 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -230,5 +230,5 @@ split_static_library("browser") {
+@@ -231,5 +231,5 @@ split_static_library("browser") {
      "//third_party/libjingle",
      "//third_party/libxml",
 -    "//third_party/widevine/cdm:version_h",
@@ -659,6 +659,42 @@ index b50a5ba..f937a6a 100644
 +#endif
    }
  }
+diff --git a/chrome/browser/resources/options/content_settings_exceptions_area.html b/chrome/browser/resources/options/content_settings_exceptions_area.html
+index 4a16f4c..19e4f45 100644
+--- a/chrome/browser/resources/options/content_settings_exceptions_area.html
++++ b/chrome/browser/resources/options/content_settings_exceptions_area.html
+@@ -26,9 +26,4 @@
+         <list mode="otr"></list>
+       </div>
+-      <div class="flash-plugin-area">
+-        <a i18n-values="href:flashStorageUrl" target="_blank"
+-            i18n-content="flashStorageSettings">
+-        </a>
+-      </div>
+     </div>
+     <div contentType="images">
+@@ -101,9 +96,4 @@
+         <list mode="otr"></list>
+       </div>
+-      <div id="media-pepper-flash-exceptions-mic" class="pepper-flash-settings">
+-        <span i18n-content="mediaPepperFlashMicExceptionsDivergedLabel"></span>
+-        <a target="_blank" i18n-content="mediaPepperFlashChangeLink"
+-            i18n-values="href:mediaPepperFlashWebsitePrivacyURL"></a>
+-      </div>
+     </div>
+     <div contentType="media-stream-camera">
+@@ -114,11 +104,4 @@
+         <list mode="otr"></list>
+       </div>
+-      <div id="media-pepper-flash-exceptions-camera"
+-          class="pepper-flash-settings">
+-        <span i18n-content="mediaPepperFlashCameraExceptionsDivergedLabel">
+-        </span>
+-        <a target="_blank" i18n-content="mediaPepperFlashChangeLink"
+-            i18n-values="href:mediaPepperFlashWebsitePrivacyURL"></a>
+-      </div>
+     </div>
+     <div contentType="ppapi-broker">
 diff --git a/chrome/browser/search/hotword_service.cc b/chrome/browser/search/hotword_service.cc
 index f5579e1..f6bc651 100644
 --- a/chrome/browser/search/hotword_service.cc
@@ -1163,10 +1199,10 @@ index b2d01f3..c6de290 100644
  
      if (is_multi_dll_chrome) {
 diff --git a/chrome/chrome_browser.gypi b/chrome/chrome_browser.gypi
-index c010005..eb943fc 100644
+index 861a281..2d1305a 100644
 --- a/chrome/chrome_browser.gypi
 +++ b/chrome/chrome_browser.gypi
-@@ -1224,6 +1224,6 @@
+@@ -1226,6 +1226,6 @@
        'browser/chrome_process_singleton.cc',
        'browser/chrome_process_singleton.h',
 -      'browser/component_updater/widevine_cdm_component_installer.cc',
@@ -1175,7 +1211,7 @@ index c010005..eb943fc 100644
 +#      'browser/component_updater/widevine_cdm_component_installer.h',
        'browser/custom_handlers/register_protocol_handler_permission_request.cc',
        'browser/custom_handlers/register_protocol_handler_permission_request.h',
-@@ -3342,5 +3342,5 @@
+@@ -3344,5 +3344,5 @@
          '../third_party/icu/icu.gyp:icuuc',
          '../third_party/libxml/libxml.gyp:libxml',
 -        '../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',

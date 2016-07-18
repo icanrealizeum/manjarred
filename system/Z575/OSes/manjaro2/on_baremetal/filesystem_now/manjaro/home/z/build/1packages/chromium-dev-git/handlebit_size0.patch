@@ -1,0 +1,13 @@
+diff --git a/third_party/ffmpeg/libavcodec/get_bits.h b/third_party/ffmpeg/libavcodec/get_bits.h
+index 4cf61d6..2ab3a33 100644
+--- a/third_party/ffmpeg/libavcodec/get_bits.h
++++ b/third_party/ffmpeg/libavcodec/get_bits.h
+@@ -421,7 +421,7 @@ static inline int init_get_bits(GetBitContext *s, const uint8_t *buffer,
+     int buffer_size;
+     int ret = 0;
+ 
+-    if (bit_size >= INT_MAX - 7 || bit_size < 0 || !buffer) {
++    if (bit_size >= INT_MAX - 7 || bit_size <= 0 || !buffer) {
+         bit_size    = 0;
+         buffer      = NULL;
+         ret         = AVERROR_INVALIDDATA;

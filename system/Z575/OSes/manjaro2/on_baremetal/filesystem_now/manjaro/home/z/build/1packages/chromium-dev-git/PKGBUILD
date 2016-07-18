@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2800.0_r35.1ce44d2
+pkgver=54.0.2800.0_r50.d7cfe11
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -127,6 +127,9 @@ no_sysroot.patch
 #pdf_fix.patch
 #foo_widevine.patch
 media_build.patch
+OnReadFrameDone.patch
+FPE_INTDIV.patch
+handlebit_size0.patch
 all.patch
 )
 
@@ -160,7 +163,10 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
             '305c09ca37cfeb290f7249c3d69679555fa74fb2a030a3ea8734b9ab2a045af17890813cfecb4add20b1e54e0476049a815fb29a3cdb5a30bd07c4281750f020'
-            '8458168e5c4abc058351bcd192cd2f32408efcda94b2849bfd5558d9c9fc983f2f46fe49b33620efb16d461d6540198a8dcbd588a1e6d65ed097227209664ad2')
+            'a34603902fdd3a4229215c433e3c1b1859c23d65e41d6e6683fd9e4b157a2aee802424e9e608c480745912099377a54e7c41b36e1df07db85990a0ec5684efd2'
+            '42f7e222247892610e6e47bfd8249d252437b81eaffa80a0b98eefa7301fa2ef7ee54a2dbd147e06e2e710d847a63ad39f700ece6275239462e0b5511542e99b'
+            '2314a9ce1cc4327ff03d574ffb0bcc2f2d642ce68fc558c1c772e61922e078e02f43684088452f9513382ddde5ec344554e1cfa85d195033b49261466c779d08'
+            '8b806a49203faf933d84520a20fa6005f3538beca522b84c495d7b2d3f76bb9fcdfcb929a1b0a543e6c2d601d16bc5c28e9ca3e16f7d3d25c8c4274a3f3e1a5a')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
@@ -478,7 +484,7 @@ EOF
 
   msg2 "Patching the sources"
   # Patch sources from Gentoo
-  lepatch -Np1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch"
+  lepatch -Np1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch" #add/remove of this has no effect on this issue: https://bugs.chromium.org/p/chromium/issues/detail?id=422522#c354
   lepatch -Np0 -i "${srcdir}/chromium-system-jinja-r11.patch"
 #  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch" #TODO: should set fatal_linker_warnings to false instead of applying this patch!
 
