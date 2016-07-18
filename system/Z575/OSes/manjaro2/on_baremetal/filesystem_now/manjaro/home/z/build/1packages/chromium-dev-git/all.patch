@@ -181,6 +181,24 @@ index c62343a..93245e8 100644
 +  //PepperFlashSettingsManager::RegisterProfilePrefs(registry);
    PinnedTabCodec::RegisterProfilePrefs(registry);
    signin::RegisterProfilePrefs(registry);
+diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
+index 3951954..71df419 100644
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
+@@ -68,5 +68,5 @@
+ #include "chrome/browser/memory/tab_manager_web_contents_data.h"
+ #include "chrome/browser/notifications/notification_ui_manager.h"
+-#include "chrome/browser/pepper_broker_infobar_delegate.h"
++//#include "chrome/browser/pepper_broker_infobar_delegate.h"
+ #include "chrome/browser/permissions/permission_request_manager.h"
+ #include "chrome/browser/prefs/incognito_mode_prefs.h"
+@@ -1847,5 +1847,5 @@ bool Browser::RequestPpapiBrokerPermission(
+     const base::FilePath& plugin_path,
+     const base::Callback<void(bool)>& callback) {
+-  PepperBrokerInfoBarDelegate::Create(web_contents, url, plugin_path, callback);
++//  PepperBrokerInfoBarDelegate::Create(web_contents, url, plugin_path, callback);
+   return true;
+ }
 diff --git a/chrome/browser/ui/webui/options/content_settings_handler.cc b/chrome/browser/ui/webui/options/content_settings_handler.cc
 index 990daf5..742d622 100644
 --- a/chrome/browser/ui/webui/options/content_settings_handler.cc
@@ -552,6 +570,35 @@ index ec4c0d6..b54e4a0 100644
 +//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
  
  #if !defined(DISABLE_NACL)
+diff --git a/chrome/renderer/media/chrome_key_systems.cc b/chrome/renderer/media/chrome_key_systems.cc
+index ba65f65..b4e5fe5 100644
+--- a/chrome/renderer/media/chrome_key_systems.cc
++++ b/chrome/renderer/media/chrome_key_systems.cc
+@@ -16,5 +16,5 @@
+ #include "build/build_config.h"
+ #include "chrome/common/render_messages.h"
+-#include "components/cdm/renderer/widevine_key_system_properties.h"
++//#include "components/cdm/renderer/widevine_key_system_properties.h"
+ #include "content/public/renderer/render_thread.h"
+ #include "media/base/eme_constants.h"
+@@ -25,5 +25,5 @@
+ #endif
+ 
+-#include "widevine_cdm_version.h" // In SHARED_INTERMEDIATE_DIR.
++//#include "widevine_cdm_version.h" // In SHARED_INTERMEDIATE_DIR.
+ 
+ // The following must be after widevine_cdm_version.h.
+diff --git a/chrome/renderer/plugins/plugin_uma.cc b/chrome/renderer/plugins/plugin_uma.cc
+index 8c7c7c1..533978a 100644
+--- a/chrome/renderer/plugins/plugin_uma.cc
++++ b/chrome/renderer/plugins/plugin_uma.cc
+@@ -12,5 +12,5 @@
+ #include "base/strings/string_util.h"
+ #include "content/public/common/content_constants.h"
+-#include "third_party/widevine/cdm/widevine_cdm_common.h"
++//#include "third_party/widevine/cdm/widevine_cdm_common.h"
+ 
+ namespace {
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
 index 02f930a..f27a7dd 100644
 --- a/chrome/test/BUILD.gn
@@ -618,6 +665,33 @@ index f364f89..47c67d4 100644
 +#    "//third_party/widevine/cdm:version_h",
    ]
  }
+diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
+index 49a1881..2eaca28 100644
+--- a/content/browser/renderer_host/render_process_host_impl.cc
++++ b/content/browser/renderer_host/render_process_host_impl.cc
+@@ -102,6 +102,6 @@
+ #include "content/browser/renderer_host/media/video_capture_host.h"
+ #include "content/browser/renderer_host/offscreen_canvas_surface_impl.h"
+-#include "content/browser/renderer_host/pepper/pepper_message_filter.h"
+-#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
++//#include "content/browser/renderer_host/pepper/pepper_message_filter.h"
++//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
+ #include "content/browser/renderer_host/render_message_filter.h"
+ #include "content/browser/renderer_host/render_view_host_delegate.h"
+@@ -1416,5 +1416,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+     switches::kDisableNotifications,
+     switches::kDisableOverlayScrollbar,
+-    switches::kDisablePepper3DImageChromium,
++    //switches::kDisablePepper3DImageChromium,
+     switches::kDisablePermissionsAPI,
+     switches::kDisablePresentationAPI,
+@@ -1498,5 +1498,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+     switches::kReducedReferrerGranularity,
+     switches::kReduceSecurityForTesting,
+-    switches::kRegisterPepperPlugins,
++//    switches::kRegisterPepperPlugins,
+     switches::kRendererStartupDialog,
+     switches::kRootLayerScrolls,
 diff --git a/content/public/child/BUILD.gn b/content/public/child/BUILD.gn
 index 00bdfa3..09f186f 100644
 --- a/content/public/child/BUILD.gn

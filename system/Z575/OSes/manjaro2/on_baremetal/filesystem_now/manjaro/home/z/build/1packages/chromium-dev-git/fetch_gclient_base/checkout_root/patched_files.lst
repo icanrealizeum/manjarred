@@ -6,6 +6,7 @@ chrome/browser/extensions/browser_context_keyed_service_factories.cc
 chrome/browser/extensions/plugin_manager.cc
 chrome/browser/load_library_perf_test.cc
 chrome/browser/prefs/browser_prefs.cc
+chrome/browser/ui/browser.cc
 chrome/browser/ui/webui/options/content_settings_handler.cc
 chrome/browser/ui/webui/options/content_settings_handler.h
 chrome/BUILD.gn
@@ -16,8 +17,12 @@ chrome/common/chrome_content_client.cc
 chrome/common/chrome_paths.cc
 chrome/renderer/BUILD.gn
 chrome/renderer/chrome_content_renderer_client.cc
+chrome/renderer/media/chrome_key_systems.cc
+chrome/renderer/plugins/plugin_uma.cc
 chrome/test/BUILD.gn
 components/cdm/renderer/BUILD.gn
+content/browser/renderer_host/render_message_filter.cc
+content/browser/renderer_host/render_process_host_impl.cc
 content/public/child/BUILD.gn
 content/public/renderer/BUILD.gn
 content/renderer/BUILD.gn
