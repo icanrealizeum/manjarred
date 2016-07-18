@@ -14,6 +14,45 @@ index 5de84d1..0f601f3 100644
 +#    "//third_party/widevine/cdm:version_h",
      "//third_party/zlib",
      "//third_party/zlib:compression_utils",
+diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
+index 38baad1..c9a2484 100644
+--- a/chrome/browser/chrome_browser_main.cc
++++ b/chrome/browser/chrome_browser_main.cc
+@@ -51,5 +51,5 @@
+ #include "chrome/browser/component_updater/file_type_policies_component_installer.h"
+ #include "chrome/browser/component_updater/origin_trials_component_installer.h"
+-#include "chrome/browser/component_updater/pepper_flash_component_installer.h"
++//#include "chrome/browser/component_updater/pepper_flash_component_installer.h"
+ #include "chrome/browser/component_updater/recovery_component_installer.h"
+ #include "chrome/browser/component_updater/sth_set_component_installer.h"
+@@ -57,5 +57,5 @@
+ #include "chrome/browser/component_updater/supervised_user_whitelist_installer.h"
+ #include "chrome/browser/component_updater/swiftshader_component_installer.h"
+-#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
++//#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
+ #include "chrome/browser/defaults.h"
+ #include "chrome/browser/first_run/first_run.h"
+@@ -460,7 +460,7 @@ void RegisterComponentsForUpdate() {
+ #if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+   RegisterRecoveryComponent(cus, g_browser_process->local_state());
+-  RegisterPepperFlashComponent(cus);
++  //RegisterPepperFlashComponent(cus);
+   RegisterSwiftShaderComponent(cus);
+-  RegisterWidevineCdmComponent(cus);
++  //RegisterWidevineCdmComponent(cus);
+ #endif  // !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+ 
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index df50338..8c1dbac 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -67,5 +67,5 @@
+ #include "chrome/browser/profiles/profile_io_data.h"
+ #include "chrome/browser/renderer_host/chrome_render_message_filter.h"
+-#include "chrome/browser/renderer_host/pepper/chrome_browser_pepper_host_factory.h"
++//#include "chrome/browser/renderer_host/pepper/chrome_browser_pepper_host_factory.h"
+ #include "chrome/browser/safe_browsing/safe_browsing_service.h"
+ #include "chrome/browser/safe_browsing/ui_manager.h"
 diff --git a/chrome/browser/extensions/api/resources_private/resources_private_api.cc b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
 index 37a7fa3..880a274 100644
 --- a/chrome/browser/extensions/api/resources_private/resources_private_api.cc
@@ -73,6 +112,32 @@ index 9b39773..1585e01 100644
 +//  extensions::MDnsAPI::GetFactoryInstance();
  #if defined(OS_CHROMEOS)
    extensions::MediaPlayerAPI::GetFactoryInstance();
+diff --git a/chrome/browser/extensions/plugin_manager.cc b/chrome/browser/extensions/plugin_manager.cc
+index 57cd72a..4fa88a7 100644
+--- a/chrome/browser/extensions/plugin_manager.cc
++++ b/chrome/browser/extensions/plugin_manager.cc
+@@ -14,5 +14,5 @@
+ #include "chrome/common/extensions/api/plugins/plugins_handler.h"
+ #include "content/public/browser/plugin_service.h"
+-#include "content/public/common/pepper_plugin_info.h"
++//#include "content/public/common/pepper_plugin_info.h"
+ #include "extensions/browser/extension_registry.h"
+ #include "extensions/common/extension.h"
+@@ -145,5 +145,6 @@ void PluginManager::UpdatePluginListWithNaClModules() {
+   if (!PathService::Get(chrome::FILE_NACL_PLUGIN, &path))
+     return;
+-  const content::PepperPluginInfo* pepper_info =
++  return;
++/*  const content::PepperPluginInfo* pepper_info =
+       PluginService::GetInstance()->GetRegisteredPpapiPluginInfo(path);
+   if (!pepper_info)
+@@ -182,5 +183,5 @@ void PluginManager::UpdatePluginListWithNaClModules() {
+       break;
+     }
+-  }
++  }*/
+ }
+ 
 diff --git a/chrome/browser/load_library_perf_test.cc b/chrome/browser/load_library_perf_test.cc
 index 3b49e6a..ba4ad3d 100644
 --- a/chrome/browser/load_library_perf_test.cc
@@ -116,6 +181,264 @@ index c62343a..93245e8 100644
 +  //PepperFlashSettingsManager::RegisterProfilePrefs(registry);
    PinnedTabCodec::RegisterProfilePrefs(registry);
    signin::RegisterProfilePrefs(registry);
+diff --git a/chrome/browser/ui/webui/options/content_settings_handler.cc b/chrome/browser/ui/webui/options/content_settings_handler.cc
+index 990daf5..742d622 100644
+--- a/chrome/browser/ui/webui/options/content_settings_handler.cc
++++ b/chrome/browser/ui/webui/options/content_settings_handler.cc
+@@ -387,4 +387,5 @@ ContentSettingsHandler::MediaSettingsInfo::~MediaSettingsInfo() {
+ }
+ 
++/*
+ ContentSettingsHandler::MediaSettingsInfo::ForFlash::ForFlash()
+     : default_setting(CONTENT_SETTING_DEFAULT),
+@@ -399,5 +400,5 @@ ContentSettingsHandler::MediaSettingsInfo::ForFlash&
+     ContentSettingsHandler::MediaSettingsInfo::forFlash() {
+   return flash_settings_;
+-}
++}*/
+ 
+ ContentSettingsHandler::MediaSettingsInfo::ForOneType&
+@@ -414,6 +415,6 @@ ContentSettingsHandler::MediaSettingsInfo::ForOneType&
+ 
+ ContentSettingsHandler::MediaSettingsInfo::ForOneType::ForOneType()
+-    : show_flash_default_link(false),
+-      show_flash_exceptions_link(false),
++    : //show_flash_default_link(false),
++      //show_flash_exceptions_link(false),
+       default_setting(CONTENT_SETTING_DEFAULT),
+       policy_disable(false),
+@@ -458,6 +459,6 @@ void ContentSettingsHandler::GetLocalizedValues(
+     {"cookiesBlock3rdParty", IDS_COOKIES_BLOCK_3RDPARTY_CHKBOX},
+     {"cookiesShowCookies", IDS_COOKIES_SHOW_COOKIES_BUTTON},
+-    {"flashStorageSettings", IDS_FLASH_STORAGE_SETTINGS},
+-    {"flashStorageUrl", IDS_FLASH_STORAGE_URL},
++    //{"flashStorageSettings", IDS_FLASH_STORAGE_SETTINGS},
++    //{"flashStorageUrl", IDS_FLASH_STORAGE_URL},
+ #if BUILDFLAG(ENABLE_GOOGLE_NOW)
+     {"googleGeolocationAccessEnable",
+@@ -525,5 +526,5 @@ void ContentSettingsHandler::GetLocalizedValues(
+     {"mediaStreamCameraBlock", IDS_MEDIA_STREAM_BLOCK_VIDEO_ONLY_RADIO},
+     // Flash media settings.
+-    {"mediaPepperFlashMicDefaultDivergedLabel",
++/*    {"mediaPepperFlashMicDefaultDivergedLabel",
+      IDS_MEDIA_PEPPER_FLASH_MIC_DEFAULT_DIVERGED_LABEL},
+     {"mediaPepperFlashCameraDefaultDivergedLabel",
+@@ -535,5 +536,5 @@ void ContentSettingsHandler::GetLocalizedValues(
+     {"mediaPepperFlashChangeLink", IDS_MEDIA_PEPPER_FLASH_CHANGE_LINK},
+     {"mediaPepperFlashGlobalPrivacyURL", IDS_FLASH_GLOBAL_PRIVACY_URL},
+-    {"mediaPepperFlashWebsitePrivacyURL", IDS_FLASH_WEBSITE_PRIVACY_URL},
++    {"mediaPepperFlashWebsitePrivacyURL", IDS_FLASH_WEBSITE_PRIVACY_URL},*/
+     // PPAPI broker filter.
+     {"ppapiBrokerHeader", IDS_PPAPI_BROKER_HEADER},
+@@ -652,8 +653,8 @@ void ContentSettingsHandler::InitializeHandler() {
+   PrefService* prefs = user_prefs::UserPrefs::Get(context);
+   pref_change_registrar_.Init(prefs);
+-  pref_change_registrar_.Add(
++/*  pref_change_registrar_.Add(
+       prefs::kPepperFlashSettingsEnabled,
+       base::Bind(&ContentSettingsHandler::OnPepperFlashPrefChanged,
+-                 base::Unretained(this)));
++                 base::Unretained(this)));*/
+   pref_change_registrar_.Add(
+       prefs::kAudioCaptureAllowed,
+@@ -692,5 +693,5 @@ void ContentSettingsHandler::InitializeHandler() {
+                          base::Unretained(this)));
+ 
+-  flash_settings_manager_.reset(new PepperFlashSettingsManager(this, context));
++  //flash_settings_manager_.reset(new PepperFlashSettingsManager(this, context));
+ 
+   Profile* profile = Profile::FromWebUI(web_ui());
+@@ -706,5 +707,5 @@ void ContentSettingsHandler::InitializeHandler() {
+ void ContentSettingsHandler::InitializePage() {
+   media_settings_.reset(new MediaSettingsInfo());
+-  RefreshFlashMediaSettings();
++//  RefreshFlashMediaSettings();
+ 
+   UpdateHandlersEnabledRadios();
+@@ -766,9 +767,10 @@ void ContentSettingsHandler::Observe(
+ }
+ 
+-void ContentSettingsHandler::OnGetPermissionSettingsCompleted(
++/*void ContentSettingsHandler::OnGetPermissionSettingsCompleted(
+     uint32_t request_id,
+     bool success,
+-    PP_Flash_BrowserOperations_Permission default_permission,
+-    const ppapi::FlashSiteSettings& sites) {
++//    PP_Flash_BrowserOperations_Permission default_permission,
++    //const ppapi::FlashSiteSettings& sites
++    ) {
+   MediaSettingsInfo::ForFlash& settings = media_settings_->forFlash();
+   if (success && request_id == settings.last_refresh_request_id) {
+@@ -785,5 +787,5 @@ void ContentSettingsHandler::OnGetPermissionSettingsCompleted(
+     UpdateFlashMediaLinksVisibility(CONTENT_SETTINGS_TYPE_MEDIASTREAM_CAMERA);
+   }
+-}
++}*/
+ 
+ void ContentSettingsHandler::UpdateSettingDefaultFromModel(
+@@ -844,5 +846,5 @@ void ContentSettingsHandler::UpdateMediaSettingsFromPrefs(
+   settings.default_setting_initialized = true;
+ 
+-  UpdateFlashMediaLinksVisibility(type);
++//  UpdateFlashMediaLinksVisibility(type);
+   UpdateMediaDeviceDropdownVisibility(type);
+ }
+@@ -884,5 +886,5 @@ void ContentSettingsHandler::UpdateExceptionsViewFromModel(
+   } else if (type == CONTENT_SETTINGS_TYPE_MEDIASTREAM_MIC ||
+              type == CONTENT_SETTINGS_TYPE_MEDIASTREAM_CAMERA) {
+-    CompareMediaExceptionsWithFlash(type);
++    //CompareMediaExceptionsWithFlash(type);
+     UpdateExceptionsViewFromHostContentSettingsMap(type);
+   } else if (type == CONTENT_SETTINGS_TYPE_MIDI_SYSEX) {
+@@ -1005,5 +1007,5 @@ void ContentSettingsHandler::UpdateNotificationExceptionsView() {
+ }
+ 
+-void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
++/*void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
+     ContentSettingsType type) {
+   MediaSettingsInfo::ForOneType& settings = media_settings_->forType(type);
+@@ -1043,5 +1045,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
+   settings.exceptions_initialized = true;
+   UpdateFlashMediaLinksVisibility(type);
+-}
++}*/
+ 
+ void ContentSettingsHandler::UpdateMIDISysExExceptionsView() {
+@@ -1528,5 +1530,5 @@ HostContentSettingsMap*
+ }
+ 
+-void ContentSettingsHandler::RefreshFlashMediaSettings() {
++/*void ContentSettingsHandler::RefreshFlashMediaSettings() {
+   MediaSettingsInfo::ForFlash& settings = media_settings_->forFlash();
+   settings.initialized = false;
+@@ -1552,5 +1554,5 @@ void ContentSettingsHandler::OnPepperFlashPrefChanged() {
+   else
+     media_settings_->forFlash().initialized = false;
+-}
++}*/
+ 
+ void ContentSettingsHandler::OnZoomLevelChanged(
+@@ -1559,5 +1561,5 @@ void ContentSettingsHandler::OnZoomLevelChanged(
+ }
+ 
+-void ContentSettingsHandler::ShowFlashMediaLink(
++/*void ContentSettingsHandler::ShowFlashMediaLink(
+     LinkType link_type, ContentSettingsType content_type, bool show) {
+   MediaSettingsInfo::ForOneType& settings =
+@@ -1625,5 +1627,5 @@ void ContentSettingsHandler::UpdateFlashMediaLinksVisibility(
+     ShowFlashMediaLink(EXCEPTIONS, type, true);
+   }
+-}
++}*/
+ 
+ void ContentSettingsHandler::UpdateMediaDeviceDropdownVisibility(
+diff --git a/chrome/browser/ui/webui/options/content_settings_handler.h b/chrome/browser/ui/webui/options/content_settings_handler.h
+index 2a6bfe8..5c50a30 100644
+--- a/chrome/browser/ui/webui/options/content_settings_handler.h
++++ b/chrome/browser/ui/webui/options/content_settings_handler.h
+@@ -14,7 +14,7 @@
+ #include "base/scoped_observer.h"
+ #include "base/values.h"
+-#include "chrome/browser/pepper_flash_settings_manager.h"
++//#include "chrome/browser/pepper_flash_settings_manager.h"
+ #include "chrome/browser/ui/webui/options/options_ui.h"
+-#include "chrome/browser/ui/webui/options/pepper_flash_content_settings_utils.h"
++//#include "chrome/browser/ui/webui/options/pepper_flash_content_settings_utils.h"
+ #include "components/content_settings/core/browser/content_settings_observer.h"
+ #include "components/content_settings/core/common/content_settings.h"
+@@ -32,6 +32,6 @@ namespace options {
+ class ContentSettingsHandler : public OptionsPageUIHandler,
+                                public content_settings::Observer,
+-                               public content::NotificationObserver,
+-                               public PepperFlashSettingsManager::Client {
++                               public content::NotificationObserver {
++//                               public PepperFlashSettingsManager::Client {
+  public:
+   struct ChooserTypeNameEntry;
+@@ -58,9 +58,9 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+ 
+   // PepperFlashSettingsManager::Client implementation.
+-  void OnGetPermissionSettingsCompleted(
++/*  void OnGetPermissionSettingsCompleted(
+       uint32_t request_id,
+       bool success,
+       PP_Flash_BrowserOperations_Permission default_permission,
+-      const ppapi::FlashSiteSettings& sites) override;
++      const ppapi::FlashSiteSettings& sites) override;*/
+ 
+  private:
+@@ -73,5 +73,5 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+ 
+     // Cached Pepper Flash settings.
+-    struct ForFlash {
++/*    struct ForFlash {
+       ForFlash();
+       ~ForFlash();
+@@ -81,5 +81,5 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+       bool initialized;
+       uint32_t last_refresh_request_id;
+-    };
++    };*/
+ 
+     struct ForOneType {
+@@ -95,15 +95,15 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+       bool policy_disable;
+       bool default_setting_initialized;
+-      MediaExceptions exceptions;
++      //MediaExceptions exceptions;
+       bool exceptions_initialized;
+     };
+ 
+     ForOneType& forType(ContentSettingsType type);
+-    ForFlash& forFlash();
++    //ForFlash& forFlash();
+ 
+    private:
+     ForOneType mic_settings_;
+     ForOneType camera_settings_;
+-    ForFlash flash_settings_;
++    //ForFlash flash_settings_;
+ 
+     DISALLOW_COPY_AND_ASSIGN(MediaSettingsInfo);
+@@ -147,5 +147,5 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+   // Compares the exceptions of the camera or microphone |type| with its Flash
+   // counterparts and updates the Flash links' visibility accordingly.
+-  void CompareMediaExceptionsWithFlash(ContentSettingsType type);
++//  void CompareMediaExceptionsWithFlash(ContentSettingsType type);
+ 
+   // Clobbers and rebuilds just the MIDI SysEx exception table.
+@@ -246,5 +246,5 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+   ProtocolHandlerRegistry* GetProtocolHandlerRegistry();
+ 
+-  void RefreshFlashMediaSettings();
++  //void RefreshFlashMediaSettings();
+ 
+   // Fills in |exceptions| with Values for the given |type| from |map|.
+@@ -253,13 +253,13 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+                                        base::ListValue* exceptions);
+ 
+-  void OnPepperFlashPrefChanged();
++  //void OnPepperFlashPrefChanged();
+ 
+   // content::HostZoomMap subscription.
+   void OnZoomLevelChanged(const content::HostZoomMap::ZoomLevelChange& change);
+ 
+-  void ShowFlashMediaLink(
+-      LinkType link_type, ContentSettingsType content_type, bool show);
++//  void ShowFlashMediaLink(
++//      LinkType link_type, ContentSettingsType content_type, bool show);
+ 
+-  void UpdateFlashMediaLinksVisibility(ContentSettingsType type);
++//  void UpdateFlashMediaLinksVisibility(ContentSettingsType type);
+ 
+   void UpdateMediaDeviceDropdownVisibility(ContentSettingsType type);
+@@ -271,5 +271,5 @@ class ContentSettingsHandler : public OptionsPageUIHandler,
+   content::NotificationRegistrar notification_registrar_;
+   PrefChangeRegistrar pref_change_registrar_;
+-  std::unique_ptr<PepperFlashSettingsManager> flash_settings_manager_;
++  //std::unique_ptr<PepperFlashSettingsManager> flash_settings_manager_;
+   std::unique_ptr<MediaSettingsInfo> media_settings_;
+   std::unique_ptr<content::HostZoomMap::Subscription>
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
 index b2d01f3..c6de290 100644
 --- a/chrome/BUILD.gn
@@ -328,6 +651,17 @@ index 2014cc8..662976e 100644
 +#    "//third_party/widevine/cdm:version_h",
      "//ui/accessibility",
      "//ui/base",
+diff --git a/content/renderer/media/render_media_client.h b/content/renderer/media/render_media_client.h
+index 1d5d345..49e589c 100644
+--- a/content/renderer/media/render_media_client.h
++++ b/content/renderer/media/render_media_client.h
+@@ -15,5 +15,5 @@
+ #include "content/common/content_export.h"
+ #include "media/base/media_client.h"
+-#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
++//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
+ 
+ namespace content {
 diff --git a/content/test/BUILD.gn b/content/test/BUILD.gn
 index 8c8e58d..62ba8df 100644
 --- a/content/test/BUILD.gn
