@@ -296,7 +296,7 @@ export PS1='\
 \[\e[1;37m\e[42m\]\u@\H\[\e[0m\] \
 \[\033[1;30m\]$(date "+%Y/%m/%d %H:%M:%S")\[\033[0m\] \
 \[\e[0;37m\]\s\V t:\l j:\j \
-d:${SHLVL} pp:${PPID} p:$$\[\e[0m\]\n\
+d:${SHLVL} pp:${PPID} p:$$ ut`cat /proc/uptime | cut -f1 -d'.'`\[\e[0m\]\n\
 \[\e[0;37m\]!\!\[\e[0m\] \
 \[\033[0;36m\]\#\[\033[0m\] \
 $(evalexitcode "${__earlyec[@]}" ) \
