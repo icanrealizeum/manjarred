@@ -121,11 +121,11 @@ allpatches=(
 #1400_make_linking_work.patch
 no_sysroot.patch
 #desktop_capture_controller_fail.patch
-gcd_mdns_fix.patch
-no_ppapi.patch
-more_pepper.patch
-pdf_fix.patch
-foo_widevine.patch
+#gcd_mdns_fix.patch
+#no_ppapi.patch
+#more_pepper.patch
+#pdf_fix.patch
+#foo_widevine.patch
 all.patch
 )
 
@@ -158,12 +158,7 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '6b39d8a1dc048f583d06339739cbcf8e48a078d31e3eac478800e890ef78a28e5fcf282fb6533c984cfdddacbb1dcbe6d679349bc5d52d3f93730fa14bc77f3b'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
-            'fd4c128895967713e4f2cee94a5174390dfcfa1f42fc42be5bd77c2e27fa852b1b402cb76b8ba96d9c7cca4d2baa0577af725a747488e2e7ce7064b892ac64f0'
-            '531887bd14ba1c80aaa71fedddb44237ec0b54f0f0786a9f5c6fed1feb863fd02639a412dce9669bb2e8a3ac11367e7fb3969ff945b3b6f9fd0ddfb31dd4d24a'
-            '9bcd1f7f8a4a6bd21a3a50edd94bbb2d9930249005c9ccf414ab557711904a24aa5370c2442340d464851ef6e7c9332f11f4e18f8049e1ea9e96c3a46529f472'
-            '076d74791fddeb8241dc90c4b2130dd92664cf1b1e8533a380bc5754f55a9e95b2d0e479d24a291915a2409d95271594f63f48e7753f3c11cb63d34d81403ec1'
-            '5084d0e4ed9a471cf188f9916b998d2dadf2fe559ca4fcd862881e9119b272103aa2790bdf94e032bedceebcbad45edc8a13089f9f304ca2cd493c6fe3f22142'
-            '6fd71f2717504525795c2cc69bbd9f0a6c3ee9038a1a5309a5393f32e7aaf15675d4314251341d14283925536160396aa3ccd1795fee906cbf7186ed7f0e07ec')
+            '84b783ce2e0c744b9093799d94e058fe9b2a052a3428c39f4a2dc80cff95d9424b4b23b54ffa592fefbd9dcf27a892056e3114827bfc530c0bac834880c3a290')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
