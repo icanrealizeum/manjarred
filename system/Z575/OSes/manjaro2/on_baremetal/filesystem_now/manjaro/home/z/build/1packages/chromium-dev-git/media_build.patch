@@ -1,0 +1,19 @@
+diff --git a/media/BUILD.gn b/media/BUILD.gn
+index a1f03af..cbb651f 100644
+--- a/media/BUILD.gn
++++ b/media/BUILD.gn
+@@ -603,5 +603,5 @@ test("media_unittests") {
+     "//third_party/libwebm",
+     "//third_party/libyuv",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//ui/gfx:test_support",
+     "//url",
+@@ -726,5 +726,5 @@ test("media_perftests") {
+     "//testing/gtest",
+     "//testing/perf",
+-    "//third_party/widevine/cdm:version_h",
++#    "//third_party/widevine/cdm:version_h",
+     "//ui/gfx:test_support",
+   ]
+

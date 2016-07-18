@@ -3,6 +3,364 @@ make linking succeed with the following side effects:
 but possibly adding ppapi will allow pdf to link too(?) so it's not required to remove pdf in fact.
 - removed gcd_private - for mdns=false to link
 
+diff --git a/chrome/browser/browsing_data/cookies_tree_model.cc b/chrome/browser/browsing_data/cookies_tree_model.cc
+index 0b7d81e..f59bead 100644
+--- a/chrome/browser/browsing_data/cookies_tree_model.cc
++++ b/chrome/browser/browsing_data/cookies_tree_model.cc
+@@ -18,5 +18,5 @@
+ #include "chrome/browser/browsing_data/browsing_data_channel_id_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_cookie_helper.h"
+-#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
++//#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
+ #include "chrome/browser/content_settings/cookie_settings_factory.h"
+ #include "chrome/grit/generated_resources.h"
+@@ -136,5 +136,5 @@ bool TypeIsProtected(CookieTreeNode::DetailedInfo::NodeType type) {
+     case CookieTreeNode::DetailedInfo::TYPE_QUOTA:
+     case CookieTreeNode::DetailedInfo::TYPE_CHANNEL_ID:
+-    case CookieTreeNode::DetailedInfo::TYPE_FLASH_LSO:
++    //case CookieTreeNode::DetailedInfo::TYPE_FLASH_LSO:
+       return false;
+     default:
+@@ -265,10 +265,10 @@ CookieTreeNode::DetailedInfo& CookieTreeNode::DetailedInfo::InitCacheStorage(
+ }
+ 
+-CookieTreeNode::DetailedInfo& CookieTreeNode::DetailedInfo::InitFlashLSO(
++/*CookieTreeNode::DetailedInfo& CookieTreeNode::DetailedInfo::InitFlashLSO(
+     const std::string& flash_lso_domain) {
+   Init(TYPE_FLASH_LSO);
+   this->flash_lso_domain = flash_lso_domain;
+   return *this;
+-}
++}*/
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+@@ -732,5 +732,5 @@ CookieTreeHostNode::GetOrCreateCacheStoragesNode() {
+ }
+ 
+-CookieTreeFlashLSONode* CookieTreeHostNode::GetOrCreateFlashLSONode(
++/*CookieTreeFlashLSONode* CookieTreeHostNode::GetOrCreateFlashLSONode(
+     const std::string& domain) {
+   DCHECK_EQ(GetHost(), domain);
+@@ -740,5 +740,5 @@ CookieTreeFlashLSONode* CookieTreeHostNode::GetOrCreateFlashLSONode(
+   AddChildSortedByTitle(flash_lso_child_);
+   return flash_lso_child_;
+-}
++}*/
+ 
+ void CookieTreeHostNode::CreateContentException(
+@@ -906,4 +906,5 @@ CookieTreeNode::DetailedInfo CookieTreeCacheStoragesNode::GetDetailedInfo()
+ }
+ 
++/*
+ ///////////////////////////////////////////////////////////////////////////////
+ // CookieTreeFlashLSONode
+@@ -925,5 +926,5 @@ CookieTreeNode::DetailedInfo CookieTreeFlashLSONode::GetDetailedInfo() const {
+   return DetailedInfo().InitFlashLSO(domain_);
+ }
+-
++*/
+ ///////////////////////////////////////////////////////////////////////////////
+ // ScopedBatchUpdateNotifier
+@@ -1160,9 +1161,9 @@ void CookiesTreeModel::PopulateCacheStorageUsageInfo(
+ }
+ 
+-void CookiesTreeModel::PopulateFlashLSOInfo(
++/*void CookiesTreeModel::PopulateFlashLSOInfo(
+       LocalDataContainer* container) {
+   ScopedBatchUpdateNotifier notifier(this, GetRoot());
+   PopulateFlashLSOInfoWithFilter(container, &notifier, base::string16());
+-}
++}*/
+ 
+ void CookiesTreeModel::PopulateAppCacheInfoWithFilter(
+@@ -1466,5 +1467,5 @@ void CookiesTreeModel::PopulateQuotaInfoWithFilter(
+ }
+ 
+-void CookiesTreeModel::PopulateFlashLSOInfoWithFilter(
++/*void CookiesTreeModel::PopulateFlashLSOInfoWithFilter(
+     LocalDataContainer* container,
+     ScopedBatchUpdateNotifier* notifier,
+@@ -1487,5 +1488,5 @@ void CookiesTreeModel::PopulateFlashLSOInfoWithFilter(
+     }
+   }
+-}
++}*/
+ 
+ void CookiesTreeModel::SetBatchExpectation(int batches_expected, bool reset) {
+diff --git a/chrome/browser/browsing_data/cookies_tree_model.h b/chrome/browser/browsing_data/cookies_tree_model.h
+index c693ce7..b8f667f 100644
+--- a/chrome/browser/browsing_data/cookies_tree_model.h
++++ b/chrome/browser/browsing_data/cookies_tree_model.h
+@@ -48,5 +48,5 @@ class CookieTreeDatabasesNode;
+ class CookieTreeFileSystemNode;
+ class CookieTreeFileSystemsNode;
+-class CookieTreeFlashLSONode;
++//class CookieTreeFlashLSONode;
+ class CookieTreeHostNode;
+ class CookieTreeIndexedDBNode;
+@@ -109,5 +109,5 @@ class CookieTreeNode : public ui::TreeNode<CookieTreeNode> {
+       TYPE_CACHE_STORAGES,    // This is used for CookieTreeCacheStoragesNode.
+       TYPE_CACHE_STORAGE,     // This is used for CookieTreeCacheStorageNode.
+-      TYPE_FLASH_LSO,         // This is used for CookieTreeFlashLSONode.
++      //TYPE_FLASH_LSO,         // This is used for CookieTreeFlashLSONode.
+     };
+ 
+@@ -141,5 +141,5 @@ class CookieTreeNode : public ui::TreeNode<CookieTreeNode> {
+     DetailedInfo& InitCacheStorage(
+         const content::CacheStorageUsageInfo* cache_storage_info);
+-    DetailedInfo& InitFlashLSO(const std::string& flash_lso_domain);
++    //DetailedInfo& InitFlashLSO(const std::string& flash_lso_domain);
+ 
+     NodeType node_type;
+@@ -159,5 +159,5 @@ class CookieTreeNode : public ui::TreeNode<CookieTreeNode> {
+     const content::ServiceWorkerUsageInfo* service_worker_info = nullptr;
+     const content::CacheStorageUsageInfo* cache_storage_info = nullptr;
+-    std::string flash_lso_domain;
++    //std::string flash_lso_domain;
+   };
+ 
+@@ -229,5 +229,5 @@ class CookieTreeHostNode : public CookieTreeNode {
+   CookieTreeQuotaNode* UpdateOrCreateQuotaNode(
+       std::list<BrowsingDataQuotaHelper::QuotaInfo>::iterator quota_info);
+-  CookieTreeFlashLSONode* GetOrCreateFlashLSONode(const std::string& domain);
++  //CookieTreeFlashLSONode* GetOrCreateFlashLSONode(const std::string& domain);
+ 
+   std::string canonicalized_host() const { return canonicalized_host_; }
+@@ -260,5 +260,5 @@ class CookieTreeHostNode : public CookieTreeNode {
+   CookieTreeServiceWorkersNode* service_workers_child_ = nullptr;
+   CookieTreeCacheStoragesNode* cache_storages_child_ = nullptr;
+-  CookieTreeFlashLSONode* flash_lso_child_ = nullptr;
++  //CookieTreeFlashLSONode* flash_lso_child_ = nullptr;
+ 
+   // The URL for which this node was initially created.
+@@ -667,4 +667,5 @@ class CookieTreeCacheStoragesNode : public CookieTreeNode {
+ };
+ 
++/*
+ // CookieTreeFlashLSONode ----------------------------------------------------
+ class CookieTreeFlashLSONode : public CookieTreeNode {
+@@ -681,5 +682,5 @@ class CookieTreeFlashLSONode : public CookieTreeNode {
+ 
+   DISALLOW_COPY_AND_ASSIGN(CookieTreeFlashLSONode);
+-};
++};*/
+ 
+ // CookiesTreeModel -----------------------------------------------------------
+@@ -771,5 +772,5 @@ class CookiesTreeModel : public ui::TreeNodeModel<CookieTreeNode> {
+   void PopulateServiceWorkerUsageInfo(LocalDataContainer* container);
+   void PopulateCacheStorageUsageInfo(LocalDataContainer* container);
+-  void PopulateFlashLSOInfo(LocalDataContainer* container);
++  //void PopulateFlashLSOInfo(LocalDataContainer* container);
+ 
+   BrowsingDataCookieHelper* GetCookieHelper(const std::string& app_id);
+@@ -845,7 +846,7 @@ class CookiesTreeModel : public ui::TreeNodeModel<CookieTreeNode> {
+       ScopedBatchUpdateNotifier* notifier,
+       const base::string16& filter);
+-  void PopulateFlashLSOInfoWithFilter(LocalDataContainer* container,
++  /*void PopulateFlashLSOInfoWithFilter(LocalDataContainer* container,
+                                       ScopedBatchUpdateNotifier* notifier,
+-                                      const base::string16& filter);
++                                      const base::string16& filter);*/
+ 
+ #if defined(ENABLE_EXTENSIONS)
+diff --git a/chrome/browser/browsing_data/local_data_container.cc b/chrome/browser/browsing_data/local_data_container.cc
+index d1189dc..25338c7 100644
+--- a/chrome/browser/browsing_data/local_data_container.cc
++++ b/chrome/browser/browsing_data/local_data_container.cc
+@@ -8,5 +8,5 @@
+ #include "base/memory/linked_ptr.h"
+ #include "chrome/browser/browsing_data/browsing_data_channel_id_helper.h"
+-#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
++//#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
+ #include "chrome/browser/browsing_data/cookies_tree_model.h"
+ #include "net/cookies/canonical_cookie.h"
+@@ -26,6 +26,7 @@ LocalDataContainer::LocalDataContainer(
+     BrowsingDataChannelIDHelper* channel_id_helper,
+     BrowsingDataServiceWorkerHelper* service_worker_helper,
+-    BrowsingDataCacheStorageHelper* cache_storage_helper,
+-    BrowsingDataFlashLSOHelper* flash_lso_helper)
++    BrowsingDataCacheStorageHelper* cache_storage_helper
++//    BrowsingDataFlashLSOHelper* flash_lso_helper
++    )
+     : appcache_helper_(appcache_helper),
+       cookie_helper_(cookie_helper),
+@@ -39,5 +40,5 @@ LocalDataContainer::LocalDataContainer(
+       service_worker_helper_(service_worker_helper),
+       cache_storage_helper_(cache_storage_helper),
+-      flash_lso_helper_(flash_lso_helper),
++      //flash_lso_helper_(flash_lso_helper),
+       weak_ptr_factory_(this) {}
+ 
+@@ -126,4 +127,5 @@ void LocalDataContainer::Init(CookiesTreeModel* model) {
+   }
+ 
++  /*
+   if (flash_lso_helper_.get()) {
+     batches_started_++;
+@@ -131,5 +133,5 @@ void LocalDataContainer::Init(CookiesTreeModel* model) {
+         base::Bind(&LocalDataContainer::OnFlashLSOInfoLoaded,
+                    weak_ptr_factory_.GetWeakPtr()));
+-  }
++  }*/
+ 
+   model_->SetBatchExpectation(batches_started_, true);
+@@ -229,8 +231,8 @@ void LocalDataContainer::OnCacheStorageModelInfoLoaded(
+ }
+ 
+-void LocalDataContainer::OnFlashLSOInfoLoaded(
++/*void LocalDataContainer::OnFlashLSOInfoLoaded(
+     const FlashLSODomainList& domains) {
+   flash_lso_domain_list_ = domains;
+   DCHECK(model_);
+   model_->PopulateFlashLSOInfo(this);
+-}
++}*/
+diff --git a/chrome/browser/browsing_data/local_data_container.h b/chrome/browser/browsing_data/local_data_container.h
+index d78fb85..fa43da9 100644
+--- a/chrome/browser/browsing_data/local_data_container.h
++++ b/chrome/browser/browsing_data/local_data_container.h
+@@ -27,5 +27,5 @@
+ #include "net/ssl/channel_id_store.h"
+ 
+-class BrowsingDataFlashLSOHelper;
++//class BrowsingDataFlashLSOHelper;
+ class CookiesTreeModel;
+ class LocalDataContainer;
+@@ -53,5 +53,5 @@ typedef std::list<content::ServiceWorkerUsageInfo> ServiceWorkerUsageInfoList;
+ typedef std::list<content::CacheStorageUsageInfo> CacheStorageUsageInfoList;
+ typedef std::map<GURL, std::list<content::AppCacheInfo> > AppCacheInfoMap;
+-typedef std::vector<std::string> FlashLSODomainList;
++//typedef std::vector<std::string> FlashLSODomainList;
+ 
+ }  // namespace
+@@ -75,6 +75,7 @@ class LocalDataContainer {
+                      BrowsingDataChannelIDHelper* channel_id_helper,
+                      BrowsingDataServiceWorkerHelper* service_worker_helper,
+-                     BrowsingDataCacheStorageHelper* cache_storage_helper,
+-                     BrowsingDataFlashLSOHelper* flash_data_helper);
++                     BrowsingDataCacheStorageHelper* cache_storage_helper
++//                     BrowsingDataFlashLSOHelper* flash_data_helper
++                     );
+   virtual ~LocalDataContainer();
+ 
+@@ -96,5 +97,5 @@ class LocalDataContainer {
+   friend class CookieTreeServiceWorkerNode;
+   friend class CookieTreeCacheStorageNode;
+-  friend class CookieTreeFlashLSONode;
++  //friend class CookieTreeFlashLSONode;
+ 
+   // Callback methods to be invoked when fetching the data is complete.
+@@ -117,5 +118,5 @@ class LocalDataContainer {
+   void OnCacheStorageModelInfoLoaded(
+       const CacheStorageUsageInfoList& cache_storage_info);
+-  void OnFlashLSOInfoLoaded(const FlashLSODomainList& domains);
++  //void OnFlashLSOInfoLoaded(const FlashLSODomainList& domains);
+ 
+   // Pointers to the helper objects, needed to retreive all the types of locally
+@@ -132,5 +133,5 @@ class LocalDataContainer {
+   scoped_refptr<BrowsingDataServiceWorkerHelper> service_worker_helper_;
+   scoped_refptr<BrowsingDataCacheStorageHelper> cache_storage_helper_;
+-  scoped_refptr<BrowsingDataFlashLSOHelper> flash_lso_helper_;
++  //scoped_refptr<BrowsingDataFlashLSOHelper> flash_lso_helper_;
+ 
+   // Storage for all the data that was retrieved through the helper objects.
+@@ -147,5 +148,5 @@ class LocalDataContainer {
+   ServiceWorkerUsageInfoList service_worker_info_list_;
+   CacheStorageUsageInfoList cache_storage_info_list_;
+-  FlashLSODomainList flash_lso_domain_list_;
++  //FlashLSODomainList flash_lso_domain_list_;
+ 
+   // A delegate, which must outlive this object. The update callbacks use the
+diff --git a/chrome/browser/browsing_data/site_data_size_collector.cc b/chrome/browser/browsing_data/site_data_size_collector.cc
+index 215a969..e89c5ad 100644
+--- a/chrome/browser/browsing_data/site_data_size_collector.cc
++++ b/chrome/browser/browsing_data/site_data_size_collector.cc
+@@ -31,6 +31,7 @@ SiteDataSizeCollector::SiteDataSizeCollector(
+     BrowsingDataChannelIDHelper* channel_id_helper,
+     BrowsingDataServiceWorkerHelper* service_worker_helper,
+-    BrowsingDataCacheStorageHelper* cache_storage_helper,
+-    BrowsingDataFlashLSOHelper* flash_lso_helper)
++    BrowsingDataCacheStorageHelper* cache_storage_helper
++    //BrowsingDataFlashLSOHelper* flash_lso_helper
++    )
+     : default_storage_partition_path_(default_storage_partition_path),
+       appcache_helper_(appcache_helper),
+@@ -43,5 +44,5 @@ SiteDataSizeCollector::SiteDataSizeCollector(
+       service_worker_helper_(service_worker_helper),
+       cache_storage_helper_(cache_storage_helper),
+-      flash_lso_helper_(flash_lso_helper),
++      //flash_lso_helper_(flash_lso_helper),
+       in_flight_operations_(0),
+       total_bytes_(0),
+@@ -113,10 +114,10 @@ void SiteDataSizeCollector::Fetch(const FetchCallback& callback) {
+     in_flight_operations_++;
+   }
+-  if (flash_lso_helper_.get()) {
++  /*if (flash_lso_helper_.get()) {
+     flash_lso_helper_->StartFetching(
+         base::Bind(&SiteDataSizeCollector::OnFlashLSOInfoLoaded,
+                    weak_ptr_factory_.GetWeakPtr()));
+     in_flight_operations_++;
+-  }
++  }*/
+   // TODO(fukino): SITE_USAGE_DATA and WEB_APP_DATA should be counted too.
+   // All data types included in REMOVE_SITE_USAGE_DATA should be counted.
+@@ -228,5 +229,5 @@ void SiteDataSizeCollector::OnCacheStorageModelInfoLoaded(
+ }
+ 
+-void SiteDataSizeCollector::OnFlashLSOInfoLoaded(
++/*void SiteDataSizeCollector::OnFlashLSOInfoLoaded(
+     const FlashLSODomainList& domains) {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+@@ -246,5 +247,5 @@ void SiteDataSizeCollector::OnFlashLSOInfoLoaded(
+       base::Bind(&SiteDataSizeCollector::OnStorageSizeFetched,
+                  weak_ptr_factory_.GetWeakPtr()));
+-}
++}*/
+ 
+ void SiteDataSizeCollector::OnStorageSizeFetched(int64_t size) {
+diff --git a/chrome/browser/browsing_data/site_data_size_collector.h b/chrome/browser/browsing_data/site_data_size_collector.h
+index 03c71a9..7d57c63 100644
+--- a/chrome/browser/browsing_data/site_data_size_collector.h
++++ b/chrome/browser/browsing_data/site_data_size_collector.h
+@@ -13,5 +13,5 @@
+ #include "chrome/browser/browsing_data/browsing_data_database_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_file_system_helper.h"
+-#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
++//#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_indexed_db_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_local_storage_helper.h"
+@@ -34,5 +34,5 @@ typedef std::list<content::ServiceWorkerUsageInfo> ServiceWorkerUsageInfoList;
+ typedef std::list<content::CacheStorageUsageInfo> CacheStorageUsageInfoList;
+ typedef std::map<GURL, std::list<content::AppCacheInfo> > AppCacheInfoMap;
+-typedef std::vector<std::string> FlashLSODomainList;
++//typedef std::vector<std::string> FlashLSODomainList;
+ 
+ }  // namespace
+@@ -49,6 +49,7 @@ class SiteDataSizeCollector {
+                         BrowsingDataChannelIDHelper* channel_id_helper,
+                         BrowsingDataServiceWorkerHelper* service_worker_helper,
+-                        BrowsingDataCacheStorageHelper* cache_storage_helper,
+-                        BrowsingDataFlashLSOHelper* flash_lso_helper);
++                        BrowsingDataCacheStorageHelper* cache_storage_helper
++                        //BrowsingDataFlashLSOHelper* flash_lso_helper
++                        );
+   virtual ~SiteDataSizeCollector();
+ 
+@@ -75,5 +76,5 @@ class SiteDataSizeCollector {
+   void OnCacheStorageModelInfoLoaded(
+       const CacheStorageUsageInfoList& cache_storage_info_list);
+-  void OnFlashLSOInfoLoaded(const FlashLSODomainList& domains);
++  //void OnFlashLSOInfoLoaded(const FlashLSODomainList& domains);
+ 
+   // Callback for when the size is fetched from each storage backend.
+@@ -94,5 +95,5 @@ class SiteDataSizeCollector {
+   scoped_refptr<BrowsingDataServiceWorkerHelper> service_worker_helper_;
+   scoped_refptr<BrowsingDataCacheStorageHelper> cache_storage_helper_;
+-  scoped_refptr<BrowsingDataFlashLSOHelper> flash_lso_helper_;
++  //scoped_refptr<BrowsingDataFlashLSOHelper> flash_lso_helper_;
+ 
+   // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
 index 5de84d1..0f601f3 100644
 --- a/chrome/browser/BUILD.gn
@@ -53,6 +411,29 @@ index df50338..8c1dbac 100644
 +//#include "chrome/browser/renderer_host/pepper/chrome_browser_pepper_host_factory.h"
  #include "chrome/browser/safe_browsing/safe_browsing_service.h"
  #include "chrome/browser/safe_browsing/ui_manager.h"
+diff --git a/chrome/browser/content_settings/local_shared_objects_container.cc b/chrome/browser/content_settings/local_shared_objects_container.cc
+index d82aa46..b3bacee 100644
+--- a/chrome/browser/content_settings/local_shared_objects_container.cc
++++ b/chrome/browser/content_settings/local_shared_objects_container.cc
+@@ -223,5 +223,6 @@ LocalSharedObjectsContainer::CreateCookiesTreeModel() const {
+       cookies(), databases(), local_storages(), session_storages(), appcaches(),
+       indexed_dbs(), file_systems(), nullptr, channel_ids(), service_workers(),
+-      cache_storages(), nullptr);
++      cache_storages()//, nullptr
++      );
+ 
+   return base::WrapUnique(new CookiesTreeModel(container, nullptr));
+diff --git a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
+index 82c81a7..d6c65ec 100644
+--- a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
++++ b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
+@@ -305,5 +305,5 @@ BrowsingDataRemoverFunction::~BrowsingDataRemoverFunction() {}
+ void BrowsingDataRemoverFunction::CheckRemovingPluginDataSupported(
+     scoped_refptr<PluginPrefs> plugin_prefs) {
+-  if (!PluginDataRemoverHelper::IsSupported(plugin_prefs.get()))
++//  if (!PluginDataRemoverHelper::IsSupported(plugin_prefs.get()))
+     removal_mask_ &= ~BrowsingDataRemover::REMOVE_PLUGIN_DATA;
+ 
 diff --git a/chrome/browser/extensions/api/resources_private/resources_private_api.cc b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
 index 37a7fa3..880a274 100644
 --- a/chrome/browser/extensions/api/resources_private/resources_private_api.cc
@@ -181,6 +562,59 @@ index c62343a..93245e8 100644
 +  //PepperFlashSettingsManager::RegisterProfilePrefs(registry);
    PinnedTabCodec::RegisterProfilePrefs(registry);
    signin::RegisterProfilePrefs(registry);
+diff --git a/chrome/browser/printing/print_view_manager.cc b/chrome/browser/printing/print_view_manager.cc
+index b50a5ba..f937a6a 100644
+--- a/chrome/browser/printing/print_view_manager.cc
++++ b/chrome/browser/printing/print_view_manager.cc
+@@ -37,4 +37,5 @@ static base::LazyInstance<ScriptedPrintPreviewClosureMap>
+     g_scripted_print_preview_closure_map = LAZY_INSTANCE_INITIALIZER;
+ 
++#if defined(ENABLE_BASIC_PRINTING)
+ void EnableInternalPDFPluginForContents(int render_process_id,
+                                         int render_frame_id) {
+@@ -52,4 +53,5 @@ void EnableInternalPDFPluginForContents(int render_process_id,
+       render_process_id, render_frame_id, GURL(), pdf_plugin);
+ }
++#endif
+ 
+ }  // namespace
+@@ -62,7 +64,9 @@ PrintViewManager::PrintViewManager(content::WebContents* web_contents)
+       scripted_print_preview_rph_(NULL) {
+   if (PrintPreviewDialogController::IsPrintPreviewDialog(web_contents)) {
++#if defined(ENABLE_BASIC_PRINTING)
+     EnableInternalPDFPluginForContents(
+         web_contents->GetRenderProcessHost()->GetID(),
+         web_contents->GetMainFrame()->GetRoutingID());
++#endif
+   }
+ }
+@@ -143,6 +147,8 @@ void PrintViewManager::RenderFrameCreated(
+     content::RenderFrameHost* render_frame_host) {
+   if (PrintPreviewDialogController::IsPrintPreviewDialog(web_contents())) {
++#if defined(ENABLE_BASIC_PRINTING)
+     EnableInternalPDFPluginForContents(render_frame_host->GetProcess()->GetID(),
+                                        render_frame_host->GetRoutingID());
++#endif
+   }
+ }
+diff --git a/chrome/browser/search/hotword_service.cc b/chrome/browser/search/hotword_service.cc
+index f5579e1..f6bc651 100644
+--- a/chrome/browser/search/hotword_service.cc
++++ b/chrome/browser/search/hotword_service.cc
+@@ -592,4 +592,5 @@ bool HotwordService::UninstallHotwordExtension(
+ 
+ bool HotwordService::IsServiceAvailable() {
++#if defined(ENABLE_HOTWORDING)
+   error_message_ = 0;
+ 
+@@ -636,4 +637,7 @@ bool HotwordService::IsServiceAvailable() {
+ 
+   return (error_message_ == 0) && IsHotwordAllowed();
++#else
++  return 1 == 2;
++#endif
+ }
+ 
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
 index 3951954..71df419 100644
 --- a/chrome/browser/ui/browser.cc
@@ -199,6 +633,91 @@ index 3951954..71df419 100644
 +//  PepperBrokerInfoBarDelegate::Create(web_contents, url, plugin_path, callback);
    return true;
  }
+diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
+index 85c3e1d..38a2477 100644
+--- a/chrome/browser/ui/tab_helpers.cc
++++ b/chrome/browser/ui/tab_helpers.cc
+@@ -200,5 +200,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+       web_contents);
+   extensions::WebNavigationTabObserver::CreateForWebContents(web_contents);
+-  HungPluginTabHelper::CreateForWebContents(web_contents);
++  //HungPluginTabHelper::CreateForWebContents(web_contents);
+   ManagePasswordsUIController::CreateForWebContents(web_contents);
+   pdf::PDFWebContentsHelper::CreateForWebContentsWithClient(
+@@ -206,5 +206,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+                         new ChromePDFWebContentsHelperClient()));
+   PermissionRequestManager::CreateForWebContents(web_contents);
+-  PluginObserver::CreateForWebContents(web_contents);
++  //PluginObserver::CreateForWebContents(web_contents);
+   SadTabHelper::CreateForWebContents(web_contents);
+   safe_browsing::SafeBrowsingTabObserver::CreateForWebContents(web_contents);
+diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+index 0d00ebe..846c4cc 100644
+--- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
++++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+@@ -569,12 +569,17 @@ void BrowserTabStripController::OnFindURLMimeTypeCompleted(
+   // TODO(bauerb): This possibly uses stale information, but it's guaranteed not
+   // to do disk access.
++#if defined(ENABLE_PLUGINS)
+   content::WebPluginInfo plugin;
++#endif
+   tabstrip_->FileSupported(
+       url,
+-      mime_type.empty() || mime_util::IsSupportedMimeType(mime_type) ||
+-          content::PluginService::GetInstance()->GetPluginInfo(
++      mime_type.empty() || mime_util::IsSupportedMimeType(mime_type)
++#if defined(ENABLE_PLUGINS)
++||          content::PluginService::GetInstance()->GetPluginInfo(
+               -1,                // process ID
+               MSG_ROUTING_NONE,  // routing ID
+               model_->profile()->GetResourceContext(), url, GURL(), mime_type,
+-              false, NULL, &plugin, NULL));
++              false, NULL, &plugin, NULL)
++#endif
++);
+ }
+diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
+index 3f54361..fdddb8e 100644
+--- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
++++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
+@@ -789,7 +789,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+ #endif
+ 
++#if defined(ENABLE_PLUGINS)
+   // Flash is not available on android.
+   if (page_url.host() == chrome::kChromeUIFlashHost)
+     return FlashUI::GetFaviconResourceBytes(scale_factor);
++#endif
+ 
+   // Android uses the native download manager.
+@@ -809,7 +811,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+ #endif
+ 
++#if defined(ENABLE_PLUGINS)
+   // Android doesn't use the plugins pages.
+   if (page_url.host() == chrome::kChromeUIPluginsHost)
+     return PluginsUI::GetFaviconResourceBytes(scale_factor);
++#endif
+ 
+ #endif
+diff --git a/chrome/browser/ui/webui/cookies_tree_model_util.cc b/chrome/browser/ui/webui/cookies_tree_model_util.cc
+index a1cef91..ca5a4c9 100644
+--- a/chrome/browser/ui/webui/cookies_tree_model_util.cc
++++ b/chrome/browser/ui/webui/cookies_tree_model_util.cc
+@@ -289,5 +289,5 @@ bool CookiesTreeModelUtil::GetCookieTreeNodeDictionary(
+       break;
+     }
+-    case CookieTreeNode::DetailedInfo::TYPE_FLASH_LSO: {
++/*    case CookieTreeNode::DetailedInfo::TYPE_FLASH_LSO: {
+       dict->SetString(kKeyType, "flash_lso");
+       dict->SetString(kKeyIcon, "chrome://theme/IDR_COOKIE_ICON");
+@@ -295,5 +295,5 @@ bool CookiesTreeModelUtil::GetCookieTreeNodeDictionary(
+       dict->SetString(kKeyDomain, node.GetDetailedInfo().flash_lso_domain);
+       break;
+-    }
++    }*/
+     default:
+ #if defined(OS_MACOSX)
 diff --git a/chrome/browser/ui/webui/options/content_settings_handler.cc b/chrome/browser/ui/webui/options/content_settings_handler.cc
 index 990daf5..742d622 100644
 --- a/chrome/browser/ui/webui/options/content_settings_handler.cc
@@ -457,6 +976,105 @@ index 2a6bfe8..5c50a30 100644
 +  //std::unique_ptr<PepperFlashSettingsManager> flash_settings_manager_;
    std::unique_ptr<MediaSettingsInfo> media_settings_;
    std::unique_ptr<content::HostZoomMap::Subscription>
+diff --git a/chrome/browser/ui/webui/options/cookies_view_handler.cc b/chrome/browser/ui/webui/options/cookies_view_handler.cc
+index 2737f66..1bbbcf5 100644
+--- a/chrome/browser/ui/webui/options/cookies_view_handler.cc
++++ b/chrome/browser/ui/webui/options/cookies_view_handler.cc
+@@ -93,5 +93,5 @@ void CookiesViewHandler::GetLocalizedValues(
+       {"cookie_service_worker", IDS_COOKIES_SERVICE_WORKER},
+       {"cookie_cache_storage", IDS_COOKIES_CACHE_STORAGE},
+-      {"cookie_flash_lso", IDS_COOKIES_FLASH_LSO},
++      //{"cookie_flash_lso", IDS_COOKIES_FLASH_LSO},
+       {"search_cookies", IDS_COOKIES_SEARCH_COOKIES},
+       {"remove_cookie", IDS_COOKIES_REMOVE_LABEL},
+@@ -215,6 +215,7 @@ void CookiesViewHandler::EnsureCookiesTreeModelCreated() {
+         BrowsingDataChannelIDHelper::Create(profile->GetRequestContext()),
+         new BrowsingDataServiceWorkerHelper(service_worker_context),
+-        new BrowsingDataCacheStorageHelper(cache_storage_context),
+-        BrowsingDataFlashLSOHelper::Create(profile));
++        new BrowsingDataCacheStorageHelper(cache_storage_context)
++        //BrowsingDataFlashLSOHelper::Create(profile)
++        );
+     cookies_tree_model_.reset(new CookiesTreeModel(
+         container, profile->GetExtensionSpecialStoragePolicy()));
+diff --git a/chrome/browser/ui/webui/options/core_options_handler.cc b/chrome/browser/ui/webui/options/core_options_handler.cc
+index ae9d4a8..db92e05 100644
+--- a/chrome/browser/ui/webui/options/core_options_handler.cc
++++ b/chrome/browser/ui/webui/options/core_options_handler.cc
+@@ -79,9 +79,9 @@ void CoreOptionsHandler::InitializeHandler() {
+   Profile* profile = Profile::FromWebUI(web_ui());
+ 
+-  plugin_status_pref_setter_.Init(
++  /*plugin_status_pref_setter_.Init(
+       profile,
+       base::Bind(&CoreOptionsHandler::OnPreferenceChanged,
+                  base::Unretained(this),
+-                 profile->GetPrefs()));
++                 profile->GetPrefs()));*/
+ 
+   pref_change_filters_[prefs::kBrowserGuestModeEnabled] =
+@@ -94,6 +94,6 @@ void CoreOptionsHandler::InitializeHandler() {
+ 
+ void CoreOptionsHandler::InitializePage() {
+-  UpdateClearPluginLSOData();
+-  UpdatePepperFlashSettingsEnabled();
++/*  UpdateClearPluginLSOData();
++  UpdatePepperFlashSettingsEnabled();*/
+ }
+ 
+@@ -190,5 +190,5 @@ void CoreOptionsHandler::OnPreferenceChanged(PrefService* service,
+   if (pref_name == prefs::kClearPluginLSODataEnabled) {
+     // This preference is stored in Local State, not in the user preferences.
+-    UpdateClearPluginLSOData();
++//    UpdateClearPluginLSOData();
+     return;
+   }
+@@ -646,5 +646,5 @@ void CoreOptionsHandler::HandleDisableExtension(const base::ListValue* args) {
+ }
+ 
+-void CoreOptionsHandler::UpdateClearPluginLSOData() {
++/*void CoreOptionsHandler::UpdateClearPluginLSOData() {
+   base::FundamentalValue enabled(
+           plugin_status_pref_setter_.IsClearPluginLSODataEnabled());
+@@ -658,5 +658,5 @@ void CoreOptionsHandler::UpdatePepperFlashSettingsEnabled() {
+   web_ui()->CallJavascriptFunctionUnsafe(
+       "options.OptionsPage.setPepperFlashSettingsEnabled", enabled);
+-}
++}*/
+ 
+ bool CoreOptionsHandler::IsUserUnsupervised(const base::Value* to_value) {
+diff --git a/chrome/browser/ui/webui/options/core_options_handler.h b/chrome/browser/ui/webui/options/core_options_handler.h
+index ae17b20..6591b62 100644
+--- a/chrome/browser/ui/webui/options/core_options_handler.h
++++ b/chrome/browser/ui/webui/options/core_options_handler.h
+@@ -173,5 +173,5 @@ class CoreOptionsHandler : public OptionsPageUIHandler {
+   PrefChangeRegistrar local_state_registrar_;
+ 
+-  PluginStatusPrefSetter plugin_status_pref_setter_;
++//  PluginStatusPrefSetter plugin_status_pref_setter_;
+ 
+   // This maps pref names to filter functions. The callbacks should take the
+diff --git a/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc b/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
+index de86c63..7b69c68 100644
+--- a/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
+@@ -19,5 +19,5 @@
+ #include "chrome/browser/browsing_data/browsing_data_database_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_file_system_helper.h"
+-#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
++//#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_indexed_db_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_local_storage_helper.h"
+@@ -158,6 +158,7 @@ void CookiesViewHandler::EnsureCookiesTreeModelCreated() {
+         BrowsingDataChannelIDHelper::Create(profile->GetRequestContext()),
+         new BrowsingDataServiceWorkerHelper(service_worker_context),
+-        new BrowsingDataCacheStorageHelper(cache_storage_context),
+-        BrowsingDataFlashLSOHelper::Create(profile));
++        new BrowsingDataCacheStorageHelper(cache_storage_context)
++        //BrowsingDataFlashLSOHelper::Create(profile)
++        );
+     cookies_tree_model_.reset(
+         new CookiesTreeModel(container,
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
 index b2d01f3..c6de290 100644
 --- a/chrome/BUILD.gn
@@ -588,6 +1206,23 @@ index ba65f65..b4e5fe5 100644
 +//#include "widevine_cdm_version.h" // In SHARED_INTERMEDIATE_DIR.
  
  // The following must be after widevine_cdm_version.h.
+diff --git a/chrome/renderer/pepper/chrome_pdf_print_client.cc b/chrome/renderer/pepper/chrome_pdf_print_client.cc
+index a0d8fee..b3c9ea3 100644
+--- a/chrome/renderer/pepper/chrome_pdf_print_client.cc
++++ b/chrome/renderer/pepper/chrome_pdf_print_client.cc
+@@ -16,9 +16,9 @@ namespace {
+ 
+ blink::WebElement GetWebElement(PP_Instance instance_id) {
+-  content::PepperPluginInstance* instance =
++/*  content::PepperPluginInstance* instance =
+       content::PepperPluginInstance::Get(instance_id);
+-  if (!instance)
++  if (!instance)*/
+     return blink::WebElement();
+-  return instance->GetContainer()->element();
++//  return instance->GetContainer()->element();
+ }
+ 
 diff --git a/chrome/renderer/plugins/plugin_uma.cc b/chrome/renderer/plugins/plugin_uma.cc
 index 8c7c7c1..533978a 100644
 --- a/chrome/renderer/plugins/plugin_uma.cc
@@ -789,21 +1424,3 @@ index 4567bf4..463f263 100644
 +//    return true;
    if (key_system == kClearKeyKeySystem)
      return true;
-diff --git a/media/BUILD.gn b/media/BUILD.gn
-index a1f03af..cbb651f 100644
---- a/media/BUILD.gn
-+++ b/media/BUILD.gn
-@@ -603,5 +603,5 @@ test("media_unittests") {
-     "//third_party/libwebm",
-     "//third_party/libyuv",
--    "//third_party/widevine/cdm:version_h",
-+#    "//third_party/widevine/cdm:version_h",
-     "//ui/gfx:test_support",
-     "//url",
-@@ -726,5 +726,5 @@ test("media_perftests") {
-     "//testing/gtest",
-     "//testing/perf",
--    "//third_party/widevine/cdm:version_h",
-+#    "//third_party/widevine/cdm:version_h",
-     "//ui/gfx:test_support",
-   ]

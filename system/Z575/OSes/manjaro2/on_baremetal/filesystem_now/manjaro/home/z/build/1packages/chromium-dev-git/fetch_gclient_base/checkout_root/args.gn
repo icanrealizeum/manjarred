@@ -193,8 +193,8 @@ enable_background = true #Default = true
 #    //chrome/common/features.gni:24
 #    Enables support for background apps.
 
-#TODO: false
-enable_basic_printing = true #Default = true
+#XXX: false because it uses pdf plugin and fails to link due to not handling the case when plugins are disabled
+enable_basic_printing = false #Default = true
 #    //build/config/features.gni:113
 #    Enable basic printing support and UI.
 

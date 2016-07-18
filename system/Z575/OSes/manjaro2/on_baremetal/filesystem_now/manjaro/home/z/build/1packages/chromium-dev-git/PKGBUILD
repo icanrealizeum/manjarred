@@ -126,6 +126,7 @@ no_sysroot.patch
 #more_pepper.patch
 #pdf_fix.patch
 #foo_widevine.patch
+media_build.patch
 all.patch
 )
 
@@ -158,7 +159,8 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '6b39d8a1dc048f583d06339739cbcf8e48a078d31e3eac478800e890ef78a28e5fcf282fb6533c984cfdddacbb1dcbe6d679349bc5d52d3f93730fa14bc77f3b'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
-            '87fc634d1064efa90b2a47bd2f5d6e1a3fa83d12496de8cab4240b3e43683c45267668134e0d6179bc765532f9d34146c6150e28b6271883cf305e9497fae516')
+            '305c09ca37cfeb290f7249c3d69679555fa74fb2a030a3ea8734b9ab2a045af17890813cfecb4add20b1e54e0476049a815fb29a3cdb5a30bd07c4281750f020'
+            '3f646cc2f262b239cdd57bb02d2fefc3139693377686d569c25bd01d90786fccd341f6b7bfe8cc3fc8765f968bf4dd9b7f43a8cbe96c6e3aa31ed5d8e40fb856')
 options=('!strip')
 install=chromium-dev.install
 _folder="${startdir}/fetch_gclient_base/checkout_root"
@@ -461,6 +463,7 @@ component_updater/pepper_flash_component_installer.cc
 component_updater/widevine_cdm_component_installer.h
 component_updater/widevine_cdm_component_installer.cc
 renderer_host/pepper
+browsing_data/browsing_data_flash_lso_helper.h
 EOF
 
 #  cd "chromium-${pkgver}"
