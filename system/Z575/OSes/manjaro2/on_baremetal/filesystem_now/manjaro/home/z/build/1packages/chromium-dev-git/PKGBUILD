@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2800.0_r12.f3d6584
+pkgver=54.0.2800.0_r22.43b9c63
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -663,12 +663,12 @@ package() {
   #^ what is?
 
   # Install Resources
-  for i in content_resources keyboard_resources resources chrome_100_percent chrome_200_percent; do
+  for i in gen/content/content_resources keyboard_resources resources chrome_100_percent chrome_200_percent; do
     install -Dm644 "${i}.pak" "${pkgdir}/usr/lib/chromium/${i}.pak"
   done
 
   # Install locales
-  find pseudo_locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium/{}" \;
+#don't have this:  find pseudo_locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium/{}" \;
   find locales -type f -name "*.pak" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium/{}" \;
   find resources -type f -name "*" -exec install -Dm644 '{}' "${pkgdir}/usr/lib/chromium/{}" \;
   (cd "${pkgdir}/usr/lib/chromium"; ln -s locales remote_locales)
