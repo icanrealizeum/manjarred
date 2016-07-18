@@ -424,15 +424,77 @@ index d82aa46..b3bacee 100644
  
    return base::WrapUnique(new CookiesTreeModel(container, nullptr));
 diff --git a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
-index 82c81a7..d6c65ec 100644
+index 82c81a7..4675fcf 100644
 --- a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
 +++ b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
-@@ -305,5 +305,5 @@ BrowsingDataRemoverFunction::~BrowsingDataRemoverFunction() {}
+@@ -286,4 +286,5 @@ bool BrowsingDataRemoverFunction::RunAsync() {
+     // If we're being asked to remove plugin data, check whether it's actually
+     // supported.
++    /*
+     BrowserThread::PostTask(
+         BrowserThread::FILE,
+@@ -293,4 +294,5 @@ bool BrowsingDataRemoverFunction::RunAsync() {
+             this,
+             PluginPrefs::GetForProfile(GetProfile())));
++            */
+   } else {
+     StartRemoving();
+@@ -305,5 +307,5 @@ BrowsingDataRemoverFunction::~BrowsingDataRemoverFunction() {}
  void BrowsingDataRemoverFunction::CheckRemovingPluginDataSupported(
      scoped_refptr<PluginPrefs> plugin_prefs) {
 -  if (!PluginDataRemoverHelper::IsSupported(plugin_prefs.get()))
 +//  if (!PluginDataRemoverHelper::IsSupported(plugin_prefs.get()))
      removal_mask_ &= ~BrowsingDataRemover::REMOVE_PLUGIN_DATA;
+ 
+diff --git a/chrome/browser/extensions/api/content_settings/content_settings_api.cc b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
+index 75351e8..2ea22db 100644
+--- a/chrome/browser/extensions/api/content_settings/content_settings_api.cc
++++ b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
+@@ -37,5 +37,5 @@
+ 
+ using content::BrowserThread;
+-using content::PluginService;
++//using content::PluginService;
+ 
+ namespace Clear = extensions::api::content_settings::ContentSetting::Clear;
+@@ -288,4 +288,5 @@ bool ContentSettingsContentSettingSetFunction::RunSync() {
+ }
+ 
++
+ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
+   ContentSettingsType content_type;
+@@ -297,11 +298,11 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
+   }
+ 
+-  PluginService::GetInstance()->GetPlugins(
++/*  PluginService::GetInstance()->GetPlugins(
+       base::Bind(&ContentSettingsContentSettingGetResourceIdentifiersFunction::
+                  OnGotPlugins,
+-                 this));
++                 this));*/
+   return true;
+ }
+-
++/*
+ void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
+     const std::vector<content::WebPluginInfo>& plugins) {
+@@ -330,5 +331,5 @@ void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
+           this,
+           true));
+-}
++}*/
+ 
+ }  // namespace extensions
+diff --git a/chrome/browser/extensions/api/content_settings/content_settings_api.h b/chrome/browser/extensions/api/content_settings/content_settings_api.h
+index a4706d1..1b2fbcf 100644
+--- a/chrome/browser/extensions/api/content_settings/content_settings_api.h
++++ b/chrome/browser/extensions/api/content_settings/content_settings_api.h
+@@ -71,5 +71,5 @@ class ContentSettingsContentSettingGetResourceIdentifiersFunction
+   // Callback method that gets executed when |plugins|
+   // are asynchronously fetched.
+-  void OnGotPlugins(const std::vector<content::WebPluginInfo>& plugins);
++//  void OnGotPlugins(const std::vector<content::WebPluginInfo>& plugins);
+ };
  
 diff --git a/chrome/browser/extensions/api/resources_private/resources_private_api.cc b/chrome/browser/extensions/api/resources_private/resources_private_api.cc
 index 37a7fa3..880a274 100644
@@ -977,9 +1039,16 @@ index 2a6bfe8..5c50a30 100644
    std::unique_ptr<MediaSettingsInfo> media_settings_;
    std::unique_ptr<content::HostZoomMap::Subscription>
 diff --git a/chrome/browser/ui/webui/options/cookies_view_handler.cc b/chrome/browser/ui/webui/options/cookies_view_handler.cc
-index 2737f66..1bbbcf5 100644
+index 2737f66..df46fac 100644
 --- a/chrome/browser/ui/webui/options/cookies_view_handler.cc
 +++ b/chrome/browser/ui/webui/options/cookies_view_handler.cc
+@@ -19,5 +19,5 @@
+ #include "chrome/browser/browsing_data/browsing_data_database_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_file_system_helper.h"
+-#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
++//#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_indexed_db_helper.h"
+ #include "chrome/browser/browsing_data/browsing_data_local_storage_helper.h"
 @@ -93,5 +93,5 @@ void CookiesViewHandler::GetLocalizedValues(
        {"cookie_service_worker", IDS_COOKIES_SERVICE_WORKER},
        {"cookie_cache_storage", IDS_COOKIES_CACHE_STORAGE},
@@ -998,15 +1067,17 @@ index 2737f66..1bbbcf5 100644
      cookies_tree_model_.reset(new CookiesTreeModel(
          container, profile->GetExtensionSpecialStoragePolicy()));
 diff --git a/chrome/browser/ui/webui/options/core_options_handler.cc b/chrome/browser/ui/webui/options/core_options_handler.cc
-index ae9d4a8..db92e05 100644
+index ae9d4a8..8741cee 100644
 --- a/chrome/browser/ui/webui/options/core_options_handler.cc
 +++ b/chrome/browser/ui/webui/options/core_options_handler.cc
-@@ -79,9 +79,9 @@ void CoreOptionsHandler::InitializeHandler() {
-   Profile* profile = Profile::FromWebUI(web_ui());
+@@ -77,5 +77,5 @@ CoreOptionsHandler::~CoreOptionsHandler() {}
  
--  plugin_status_pref_setter_.Init(
-+  /*plugin_status_pref_setter_.Init(
-       profile,
+ void CoreOptionsHandler::InitializeHandler() {
+-  Profile* profile = Profile::FromWebUI(web_ui());
++  /*Profile* profile = Profile::FromWebUI(web_ui());
+ 
+   plugin_status_pref_setter_.Init(
+@@ -83,5 +83,5 @@ void CoreOptionsHandler::InitializeHandler() {
        base::Bind(&CoreOptionsHandler::OnPreferenceChanged,
                   base::Unretained(this),
 -                 profile->GetPrefs()));
@@ -1022,11 +1093,16 @@ index ae9d4a8..db92e05 100644
 +  UpdatePepperFlashSettingsEnabled();*/
  }
  
-@@ -190,5 +190,5 @@ void CoreOptionsHandler::OnPreferenceChanged(PrefService* service,
+@@ -190,9 +190,9 @@ void CoreOptionsHandler::OnPreferenceChanged(PrefService* service,
    if (pref_name == prefs::kClearPluginLSODataEnabled) {
      // This preference is stored in Local State, not in the user preferences.
 -    UpdateClearPluginLSOData();
 +//    UpdateClearPluginLSOData();
+     return;
+   }
+   if (pref_name == prefs::kPepperFlashSettingsEnabled) {
+-    UpdatePepperFlashSettingsEnabled();
++    //UpdatePepperFlashSettingsEnabled();
      return;
    }
 @@ -646,5 +646,5 @@ void CoreOptionsHandler::HandleDisableExtension(const base::ListValue* args) {
@@ -1178,7 +1254,7 @@ index fc1868e..ff8edc1 100644
      "//ui/surface",
      "//v8:v8",
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index ec4c0d6..b54e4a0 100644
+index ec4c0d6..193fec6 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -115,5 +115,5 @@
@@ -1188,6 +1264,20 @@ index ec4c0d6..b54e4a0 100644
 +//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
  
  #if !defined(DISABLE_NACL)
+@@ -424,5 +424,5 @@ void ChromeContentRendererClient::RenderThreadStarted() {
+   WebSecurityPolicy::registerURLSchemeAsSecure(chrome_search_scheme);
+ 
+-#if defined(ENABLE_PRINT_PREVIEW)
++#if defined(ENABLE_PRINT_PREVIEW) && defined(ENABLE_PEPPER_CDMS)
+   pdf_print_client_.reset(new ChromePDFPrintClient());
+   pdf::PepperPDFHost::SetPrintClient(pdf_print_client_.get());
+@@ -1190,5 +1190,5 @@ ChromeContentRendererClient::OverrideSpeechSynthesizer(
+ bool ChromeContentRendererClient::AllowPepperMediaStreamAPI(
+     const GURL& url) {
+-#if defined(OS_ANDROID)
++#if defined(OS_ANDROID) || !defined(ENABLE_PLUGINS)
+   return false;
+ #else
 diff --git a/chrome/renderer/media/chrome_key_systems.cc b/chrome/renderer/media/chrome_key_systems.cc
 index ba65f65..b4e5fe5 100644
 --- a/chrome/renderer/media/chrome_key_systems.cc
