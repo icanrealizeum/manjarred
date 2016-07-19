@@ -64,6 +64,9 @@
 -A newTCPout -p tcp --dport 23 -d 192.168.1.1 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
 #qtox:
 -A newTCPout -p tcp --dport 33445 -j accepted
+#
+#plaintext git (eg. from pacman source=git:// or git+git:// eg. gstreamer-git package) 
+-A newTCPout -p tcp --dport 9418 -j accepted
 #XXX: not really needed:
 -A newTCPout -j rejected
 
