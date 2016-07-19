@@ -659,6 +659,26 @@ index b50a5ba..f937a6a 100644
 +#endif
    }
  }
+diff --git a/chrome/browser/resources/options/clear_browser_data_overlay.html b/chrome/browser/resources/options/clear_browser_data_overlay.html
+index 9bf3abb..a5c476c 100644
+--- a/chrome/browser/resources/options/clear_browser_data_overlay.html
++++ b/chrome/browser/resources/options/clear_browser_data_overlay.html
+@@ -34,6 +34,4 @@
+           <input id="delete-cookies-checkbox"
+               pref="browser.clear_data.cookies" type="checkbox">
+-          <span i18n-content="deleteCookiesFlashCheckbox"
+-              class="clear-plugin-lso-data-enabled"></span>
+           <span i18n-content="deleteCookiesCheckbox"
+               class="clear-plugin-lso-data-disabled"></span>
+@@ -89,8 +87,4 @@
+       </div>
+     </div>
+-    <div id="flash-storage-settings" class="flash-plugin-area">
+-      <a target="_blank" i18n-content="flashStorageSettings"
+-          i18n-values="href:flashStorageUrl"></a>
+-    </div>
+   </div>
+   <div class="action-area">
 diff --git a/chrome/browser/resources/options/content_settings_exceptions_area.html b/chrome/browser/resources/options/content_settings_exceptions_area.html
 index 4a16f4c..19e4f45 100644
 --- a/chrome/browser/resources/options/content_settings_exceptions_area.html
@@ -695,6 +715,60 @@ index 4a16f4c..19e4f45 100644
 -      </div>
      </div>
      <div contentType="ppapi-broker">
+diff --git a/chrome/browser/resources/options/content_settings.html b/chrome/browser/resources/options/content_settings.html
+index 85659d6..b4e20ec 100644
+--- a/chrome/browser/resources/options/content_settings.html
++++ b/chrome/browser/resources/options/content_settings.html
+@@ -396,9 +396,4 @@
+               i18n-content="manageExceptions"></button>
+         </div>
+-        <div id="media-pepper-flash-default-mic" class="pepper-flash-settings">
+-          <span i18n-content="mediaPepperFlashMicDefaultDivergedLabel"></span>
+-          <a target="_blank" i18n-content="mediaPepperFlashChangeLink"
+-              i18n-values="href:mediaPepperFlashGlobalPrivacyURL"></a>
+-        </div>
+       </div>
+     </section>
+@@ -436,11 +431,4 @@
+           </button>
+         </div>
+-        <div id="media-pepper-flash-default-camera"
+-            class="pepper-flash-settings">
+-          <span i18n-content="mediaPepperFlashCameraDefaultDivergedLabel">
+-          </span>
+-          <a target="_blank" i18n-content="mediaPepperFlashChangeLink"
+-              i18n-values="href:mediaPepperFlashGlobalPrivacyURL"></a>
+-        </div>
+       </div>
+     </section>
+diff --git a/chrome/browser/resources/options/content_settings.js b/chrome/browser/resources/options/content_settings.js
+index edcadaf..737849b 100644
+--- a/chrome/browser/resources/options/content_settings.js
++++ b/chrome/browser/resources/options/content_settings.js
+@@ -78,8 +78,8 @@ cr.define('options', function() {
+           PageManager.closeOverlay.bind(PageManager);
+ 
+-      $('media-pepper-flash-default-mic').hidden = true;
++/*      $('media-pepper-flash-default-mic').hidden = true;
+       $('media-pepper-flash-default-camera').hidden = true;
+       $('media-pepper-flash-exceptions-mic').hidden = true;
+-      $('media-pepper-flash-exceptions-camera').hidden = true;
++      $('media-pepper-flash-exceptions-camera').hidden = true;*/
+ 
+       $('media-select-mic').addEventListener('change',
+@@ -199,10 +199,10 @@ cr.define('options', function() {
+    * @param {boolean} show Whether to show (or hide) the link.
+    */
+-  ContentSettings.showMediaPepperFlashLink =
++/*  ContentSettings.showMediaPepperFlashLink =
+       function(linkType, contentType, show) {
+     assert(['default', 'exceptions'].indexOf(linkType) >= 0);
+     assert(['mic', 'camera'].indexOf(contentType) >= 0);
+     $('media-pepper-flash-' + linkType + '-' + contentType).hidden = !show;
+-  };
++  };*/
+ 
+   /**
 diff --git a/chrome/browser/search/hotword_service.cc b/chrome/browser/search/hotword_service.cc
 index f5579e1..f6bc651 100644
 --- a/chrome/browser/search/hotword_service.cc
