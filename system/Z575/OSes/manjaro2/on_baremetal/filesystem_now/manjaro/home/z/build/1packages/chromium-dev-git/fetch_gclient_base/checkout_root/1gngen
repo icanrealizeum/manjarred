@@ -13,7 +13,14 @@
 out="/tmp/out/Default"
 mkdir -p -- "$out"
 cp args.gn "$out"
-time PATH=~/build/1packages/chromium-dev-git/makepkg_pacman/chromium-dev/src/python-path:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/depot_tools:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/z/bin:/home/z/build/1nonpkgs/racer/target/release:/home/z/bin:/home/z/build/1nonpkgs/racer/target/release gn --root=src gen "$out"
+export PATH=~/build/1packages/chromium-dev-git/makepkg_pacman/chromium-dev/src/python-path:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/depot_tools:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/z/bin:/home/z/build/1nonpkgs/racer/target/release:/home/z/bin:/home/z/build/1nonpkgs/racer/target/release
 
+set -ve
+pushd src
+time build/linux/unbundle/replace_gn_files.py --system-libraries libvpx ffmpeg libwebp
+popd
+set +e
 
+time gn --root=src gen "$out"
+echo "exit code: $?"
 

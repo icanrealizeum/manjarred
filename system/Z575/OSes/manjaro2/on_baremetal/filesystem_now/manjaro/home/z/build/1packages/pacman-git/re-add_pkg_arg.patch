@@ -1,0 +1,82 @@
+diff --git a/doc/makepkg.8.txt b/doc/makepkg.8.txt
+index 2dff1b1..7053211 100644
+--- a/doc/makepkg.8.txt
++++ b/doc/makepkg.8.txt
+@@ -156,6 +156,10 @@ Options
+ 	such as a chroot or remote builder. It will also satisfy requirements of
+ 	the GPL when distributing binary packages.
+ 
++*\--pkg* <list>::
++	Only build listed packages from a split package. Multiple packages should
++	be comma separated in the list. This option can be specified multiple times.
++
+ *\--check*::
+ 	Run the check() function in the PKGBUILD, overriding the setting in
+ 	linkman:makepkg.conf[5].
+diff --git a/scripts/makepkg.sh.in b/scripts/makepkg.sh.in
+index 7b2ce51..77f075d 100644
+--- a/scripts/makepkg.sh.in
++++ b/scripts/makepkg.sh.in
+@@ -76,6 +76,7 @@ NOBUILD=0
+ NODEPS=0
+ NOEXTRACT=0
+ PKGFUNC=0
++PKGLIST=()
+ PKGVERFUNC=0
+ PREPAREFUNC=0
+ REPKG=0
+@@ -1191,6 +1192,7 @@ usage() {
+ 	printf -- "$(gettext "  --noprepare      Do not run the %s function in the %s")\n" "prepare()" "$BUILDSCRIPT"
+ 	printf -- "$(gettext "  --nosign         Do not create a signature for the package")\n"
+ 	printf -- "$(gettext "  --packagelist    Only list packages that would be produced, without PKGEXT")\n"
++	printf -- "$(gettext "  --pkg <list>     Only build listed packages from a split package")\n"
+ 	printf -- "$(gettext "  --printsrcinfo   Print the generated SRCINFO and exit")\n"
+ 	printf -- "$(gettext "  --sign           Sign the resulting package with %s")\n" "gpg"
+ 	printf -- "$(gettext "  --skipchecksums  Do not verify checksums of the source files")\n"
+@@ -1281,6 +1283,7 @@ while true; do
+ 		--nosign)         SIGNPKG='n' ;;
+ 		-o|--nobuild)     NOBUILD=1 ;;
+ 		-p)               shift; BUILDFILE=$1 ;;
++		--pkg)            shift; IFS=, read -ra p <<<"$1"; PKGLIST+=("${p[@]}"); unset p ;;
+ 		--packagelist)    PACKAGELIST=1 IGNOREARCH=1;;
+ 		--printsrcinfo)   PRINTSRCINFO=1 IGNOREARCH=1;;
+ 		-r|--rmdeps)      RMDEPS=1 ;;
+@@ -1536,6 +1539,11 @@ elif [[ $SPLITPKG -eq 0 ]] && have_function package_${pkgname}; then
+ 	SPLITPKG=1
+ fi
+ 
++if [[ -n "${PKGLIST[@]}" ]]; then
++	unset pkgname
++	pkgname=("${PKGLIST[@]}")
++fi
++
+ # check if gpg signature is to be created and if signing key is valid
+ if { [[ -z $SIGNPKG ]] && check_buildenv "sign" "y"; } || [[ $SIGNPKG == 'y' ]]; then
+ 	SIGNPKG='y'
+diff --git a/scripts/makepkg.sh.in b/scripts/makepkg.sh.in
+index 77f075d..05993e0 100644
+--- a/scripts/makepkg.sh.in
++++ b/scripts/makepkg.sh.in
+@@ -1238,7 +1253,7 @@ ARGLIST=("$@")
+ OPT_SHORT="AcCdefFghiLmop:rRsSV"
+ OPT_LONG=('allsource' 'check' 'clean' 'cleanbuild' 'config:' 'force' 'geninteg'
+           'help' 'holdver' 'ignorearch' 'install' 'key:' 'log' 'noarchive' 'nobuild'
+-          'nocolor' 'nocheck' 'nodeps' 'noextract' 'noprepare' 'nosign' 'packagelist'
++          'nocolor' 'nocheck' 'nodeps' 'noextract' 'noprepare' 'nosign' 'packagelist' 'pkg:'
+           'printsrcinfo' 'repackage' 'rmdeps' 'sign' 'skipchecksums' 'skipinteg'
+           'skippgpcheck' 'source' 'syncdeps' 'verifysource' 'version')
+ 
+diff --git a/scripts/makepkg.sh.in b/scripts/makepkg.sh.in
+index 77f075d..3726c12 100644
+--- a/scripts/makepkg.sh.in
++++ b/scripts/makepkg.sh.in
+@@ -1251,7 +1267,8 @@ fi
+ set -- "${OPTRET[@]}"
+ unset OPT_SHORT OPT_LONG OPTRET
+ 
+-while true; do
++echo "$0 $@" >&2
++while test -n "$1"; do
+ 	case "$1" in
+ 		# Pacman Options
+ 		--asdeps)         ASDEPS=1;;

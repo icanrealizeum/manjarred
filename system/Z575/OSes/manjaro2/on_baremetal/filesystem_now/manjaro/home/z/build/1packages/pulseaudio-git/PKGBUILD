@@ -7,9 +7,10 @@
 _pkgname="pulseaudio"
 #pkgname="$_pkgname-git"
 #pkgbase=pulseaudio
-pkgname=("$_pkgname-git" libpulse pulseaudio-{gconf,zeroconf,lirc,jack,bluetooth,equalizer})
+#pkgname=("${_pkgname}-git" libpulse)
+pkgname=("${_pkgname}-git" libpulse pulseaudio-{gconf,zeroconf,lirc,jack,bluetooth,equalizer})
 pkgdesc="A featureful, general-purpose sound server"
-pkgver=v9.0.45.g4cd89aa
+pkgver=9.0.45.g4cd89aa
 pkgrel=1
 arch=(i686 x86_64)
 url="http://www.freedesktop.org/wiki/Software/PulseAudio"
@@ -40,7 +41,7 @@ sha256sums=('SKIP'
 
 pkgver() {
     cd "$srcdir/$_pkgname"
-    git describe --always | sed "s/-/./g"
+    git describe --always | sed -e "s/-/./g" -e 's/^v//'
 }
 
 prepare() {
@@ -126,14 +127,14 @@ package_pulseaudio-git() {
      "$srcdir/libpulse/usr/bin"
 
   mv usr/lib/libpulse{,-simple,-mainloop-glib}.so* \
-     usr/lib/{cmake,pkgconfig} \
      "$srcdir/libpulse/usr/lib"
+     #usr/lib/{cmake,pkgconfig} \
 
   mv usr/lib/pulseaudio/libpulse{dsp,common-*}.so \
      "$srcdir/libpulse/usr/lib/pulseaudio"
 
-  mv usr/include \
-     "$srcdir/libpulse/usr"
+#  mv usr/include \
+#     "$srcdir/libpulse/usr"
 
   mv usr/share/man/man1/pa{cat,ctl,dsp,mon,play,rec,record}.1 \
      "$srcdir/libpulse/usr/share/man/man1"
@@ -141,8 +142,8 @@ package_pulseaudio-git() {
   mv usr/share/man/man5/pulse-client.conf.5 \
      "$srcdir/libpulse/usr/share/man/man5"
 
-  mv usr/share/vala \
-     "$srcdir/libpulse/usr/share"
+#  mv usr/share/vala \
+#     "$srcdir/libpulse/usr/share"
 
 ### Split modules
 
@@ -185,21 +186,21 @@ package_libpulse() {
 
 package_pulseaudio-gconf(){
   pkgdesc="GConf support for PulseAudio"
-  depends=("pulseaudio=$pkgver-$pkgrel" gconf)
+  depends=("pulseaudio-git=$pkgver-$pkgrel" gconf)
 
   mv "$srcdir"/gconf/* "$pkgdir"
 }
 
 package_pulseaudio-zeroconf(){
   pkgdesc="Zeroconf support for PulseAudio"
-  depends=("pulseaudio=$pkgver-$pkgrel" avahi openssl)
+  depends=("pulseaudio-git=$pkgver-$pkgrel" avahi openssl)
 
   mv "$srcdir"/zeroconf/* "$pkgdir"
 }
 
 package_pulseaudio-lirc(){
   pkgdesc="IR (lirc) support for PulseAudio"
-  depends=("pulseaudio=$pkgver-$pkgrel" lirc)
+  depends=("pulseaudio-git=$pkgver-$pkgrel" lirc)
 
   mv "$srcdir"/lirc/* "$pkgdir"
 }
@@ -214,21 +215,21 @@ package_pulseaudio-lirc(){
 
 package_pulseaudio-jack(){
   pkgdesc="Jack support for PulseAudio"
-  depends=("pulseaudio=$pkgver-$pkgrel" jack2)
+  depends=("pulseaudio-git=$pkgver-$pkgrel" jack2)
 
   mv "$srcdir"/jack/* "$pkgdir"
 }
 
 package_pulseaudio-bluetooth(){
   pkgdesc="Bluetooth support for PulseAudio"
-  depends=("pulseaudio=$pkgver-$pkgrel" bluez bluez-libs)
+  depends=("pulseaudio-git=$pkgver-$pkgrel" bluez bluez-libs)
 
   mv "$srcdir"/bluetooth/* "$pkgdir"
 }
 
 package_pulseaudio-equalizer(){
   pkgdesc="Equalizer for PulseAudio"
-  depends=("pulseaudio=$pkgver-$pkgrel" python-pyqt4 fftw)
+  depends=("pulseaudio-git=$pkgver-$pkgrel" python-pyqt4 fftw)
   license=(AGPL3)
 
   mv "$srcdir"/equalizer/* "$pkgdir"

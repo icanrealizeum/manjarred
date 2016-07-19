@@ -13,6 +13,7 @@
 #so we leave it without --nobuild for now, which means it will rebuild if pkg file doesn't exist, but will use existing folder because of --noextract and --noprepare prevents reaplying patches(since the srcdir folder is kept)
 
 #XXX: if incremental was set then useincremental=("--incremental") otherwise useincremental=("--noextract")
+#set -x
 time makepkg -s --install --noprepare --noextract "$@"
 #"${useincremental[@]}" "$@"
 

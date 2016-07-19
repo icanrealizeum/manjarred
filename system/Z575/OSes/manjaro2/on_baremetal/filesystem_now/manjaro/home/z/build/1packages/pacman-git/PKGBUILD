@@ -39,6 +39,7 @@ backup=("etc/pacman.conf"
 install=pacman.install
 
 #lepatch="pacman_incremental.patch" #nolonger needed! see git.sh.in
+pkgpatch='re-add_pkg_arg.patch' #this is part2
 warnspatch="pacman_warnings_arent_errors.patch"
 sudopatch="persistent_sudo.patch"
 selectablenamespatch="selectable_packagenames.patch"
@@ -46,6 +47,7 @@ dstfolder="${pkgname}"
 source=(
 "${dstfolder}::git+https://git.archlinux.org/pacman.git"
 #"${lepatch}"
+"${pkgpatch}"
 "${warnspatch}"
 "${sudopatch}"
 "${selectablenamespatch}"
@@ -56,6 +58,7 @@ source=(
 "pacman-init.service"
 )
 sha512sums=('SKIP'
+            '2feab3e99c79ac860b17c35ce9092bd81faf3627d879e7471f51dc865c854d7e2e2b6ff0ea2966364490356d92443618f06c2a0b1f1d2650c088454bddc7bdcd'
             'e0b8b45dd95e19d60d0aa6c74365bf903c2d688d7ef76b5780530b83b7693979beb948fd2db3c18851b3e3122726ff49294d7907f1154e70834f1d14adc7602e'
             '016ed5bcf077845d3c25858bd2cf6f2f3dc733f178af4acdcc54631dcb850c7d2f9d9f8f4b54eb6098c37fb605e107fc7c04f33c80115f63405e0b8adaa2c6ea'
             '3582c3cba11ecf1d5351f699a61b0d82a34f795e6dd702f1fb072426e8c215151cbd6c3466a80ed005f1469b3721d45a17b1bc7dfefe1612540f94acd78d66a8'
@@ -72,6 +75,11 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}/${dstfolder}"
+
+  #bring back the --pkg arg! ffs
+#in patch file now!  git revert -n e8deba3b87784ca14c9afc908046f36a3ad7578c
+  patch -p1 -i "${srcdir}/${pkgpatch}"
+
 
   # Manjaro patches
   patch -p1 -i "${srcdir}/pacman-sync-first-option.patch"

@@ -417,7 +417,8 @@ fatal_linker_warnings = true #Default = true
 #    of binutils can cause linker warning.
 #    See: https://bugs.chromium.org/p/chromium/issues/detail?id=457359
 
-ffmpeg_branding = "ChromeOS" #Default = "Chromium"
+#XXX: not an option when system-ffmpeg via PKGBUILD! so commenting out:
+#ffmpeg_branding = "ChromeOS" #Default = "Chromium"
 #    //third_party/ffmpeg/ffmpeg_options.gni:33
 #    Controls whether we build the Chromium or Google Chrome version of FFmpeg.
 #    The Google Chrome version contains additional codecs. Typical values are
@@ -545,7 +546,8 @@ is_component_build = false #Default = false
 #    When false, components will be linked statically.
 
 #XXX: no good reason to enable this! when enabled creates libffmpeg.so which you cannot use from system's ffmpeg!
-is_component_ffmpeg = false #Default = false
+#XXX: not an option when system-ffmpeg via PKGBUILD! so commenting out:
+#is_component_ffmpeg = false #Default = false
 #    //third_party/ffmpeg/ffmpeg_options.gni:40
 #    Set true to build ffmpeg as a shared library. NOTE: this means we should
 #    always consult is_component_ffmpeg instead of is_component_build for
