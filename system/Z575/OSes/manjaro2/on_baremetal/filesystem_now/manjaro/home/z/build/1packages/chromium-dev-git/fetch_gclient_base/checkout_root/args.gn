@@ -660,7 +660,7 @@ media_use_ffmpeg = false #Default = true
 #    based decoding, demuxing, and sometimes optimized FFTs. If disabled,
 #    implementors must provide their own demuxers and decoders.
 
-media_use_libvpx = true #Default = true
+media_use_libvpx = false #Default = true
 #    //media/media_options.gni:22
 #    Enable usage of libvpx within the media library. Used for software based
 #    decoding of VP9 and VP8A type content.
@@ -834,7 +834,7 @@ rtc_build_libjpeg = true #Default = true
 rtc_build_libsrtp = true #Default = true
 #    //third_party/webrtc/build/webrtc.gni:43
 
-rtc_build_libvpx = true #Default = true
+rtc_build_libvpx = false #Default = true
 #    //third_party/webrtc/build/webrtc.gni:44
 
 rtc_build_libyuv = true #Default = true
@@ -843,7 +843,7 @@ rtc_build_libyuv = true #Default = true
 rtc_build_openmax_dl = true #Default = true
 #    //third_party/webrtc/build/webrtc.gni:47
 
-rtc_build_opus = true #Default = true
+rtc_build_opus = false #Default = true
 #    //third_party/webrtc/build/webrtc.gni:48
 
 rtc_build_ssl = true #Default = true
@@ -886,7 +886,7 @@ rtc_include_ilbc = false #Default = false
 #    //third_party/webrtc/build/webrtc.gni:126
 #    Include the iLBC audio codec?
 
-rtc_include_opus = true #Default = true
+rtc_include_opus = false #Default = true
 #    //third_party/webrtc/build/webrtc.gni:16
 #    Disable this to avoid building the Opus audio codec.
 
@@ -906,7 +906,7 @@ rtc_jsoncpp_root = "//third_party/jsoncpp/source/include" #Default = "//third_pa
 #    Used to specify an external Jsoncpp include path when not compiling the
 #    library that comes with WebRTC (i.e. rtc_build_json == 0).
 
-rtc_libvpx_build_vp9 = true #Default = true
+rtc_libvpx_build_vp9 = false #Default = true
 #    //third_party/webrtc/build/webrtc.gni:45
 
 rtc_prefer_fixed_point = false #Default = false
