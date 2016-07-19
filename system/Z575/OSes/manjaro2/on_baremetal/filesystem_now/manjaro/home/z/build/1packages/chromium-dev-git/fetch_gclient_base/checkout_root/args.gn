@@ -327,7 +327,8 @@ enable_package_mash_services = false #Default = false
 #    Set to true to bundle all the mash related mojo services into chrome.
 #    Specify --mash to chrome to have chrome start the mash environment.
 
-enable_pdf = true #Default = true
+#XXX; set to false because it doesn't work anyway - with my other current settings such as enable_plugins = false
+enable_pdf = false #Default = true
 #    //build/config/features.gni:29
 
 enable_plugin_installation = false #Default = false
@@ -338,7 +339,7 @@ enable_plugins = false #Default = true
 #    //build/config/features.gni:28
 
 #TODO: false
-enable_print_preview = true #Default = true
+enable_print_preview = false #Default = true
 #    //build/config/features.gni:117
 #    Enable printing with print preview. It does not imply
 #    enable_basic_printing. It's possible to build Chrome with preview only.
@@ -653,7 +654,7 @@ mac_views_browser = false #Default = false
 #    //build/config/ui.gni:38
 #    Whether the entire browser uses toolkit-views on Mac instead of Cocoa.
 
-media_use_ffmpeg = true #Default = true
+media_use_ffmpeg = false #Default = true
 #    //media/media_options.gni:18
 #    Enable usage of FFmpeg within the media library. Used for most software
 #    based decoding, demuxing, and sometimes optimized FFTs. If disabled,
@@ -760,7 +761,7 @@ ozone_platform_wayland = false #Default = false
 ozone_platform_x11 = false #Default = false
 #    //ui/ozone/ozone.gni:31
 
-pdf_enable_v8 = true #Default = true
+pdf_enable_v8 = false #Default = true
 #    //third_party/pdfium/pdfium.gni:15
 #    Build PDFium either with or without v8 support.
 

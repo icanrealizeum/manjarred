@@ -555,6 +555,30 @@ index 9b39773..1585e01 100644
 +//  extensions::MDnsAPI::GetFactoryInstance();
  #if defined(OS_CHROMEOS)
    extensions::MediaPlayerAPI::GetFactoryInstance();
+diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
+index ca4d2cf..5ae9d30 100644
+--- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
++++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
+@@ -74,5 +74,5 @@ bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
+     case IDR_CHROME_APP_MANIFEST:
+ #endif
+-    case IDR_CLOUDPRINT_MANIFEST:
++//    case IDR_CLOUDPRINT_MANIFEST:
+     case IDR_CRYPTOTOKEN_MANIFEST:
+     case IDR_FEEDBACK_MANIFEST:
+diff --git a/chrome/browser/extensions/component_loader.cc b/chrome/browser/extensions/component_loader.cc
+index c1742b7..8bd376e 100644
+--- a/chrome/browser/extensions/component_loader.cc
++++ b/chrome/browser/extensions/component_loader.cc
+@@ -510,6 +510,6 @@ void ComponentLoader::AddDefaultComponentExtensions(
+       base::FilePath(FILE_PATH_LITERAL("bookmark_manager")));
+   // Cloud Print component app. Not required on Chrome OS.
+-  Add(IDR_CLOUDPRINT_MANIFEST,
+-      base::FilePath(FILE_PATH_LITERAL("cloud_print")));
++//  Add(IDR_CLOUDPRINT_MANIFEST,
++//      base::FilePath(FILE_PATH_LITERAL("cloud_print")));
+ #endif
+ 
 diff --git a/chrome/browser/extensions/plugin_manager.cc b/chrome/browser/extensions/plugin_manager.cc
 index 57cd72a..4fa88a7 100644
 --- a/chrome/browser/extensions/plugin_manager.cc
@@ -592,6 +616,24 @@ index 3b49e6a..ba4ad3d 100644
 +//#include "widevine_cdm_version.h"  //  In SHARED_INTERMEDIATE_DIR.
  
  #if defined(ENABLE_PEPPER_CDMS)
+diff --git a/chrome/browser/pdf/pdf_extension_util.cc b/chrome/browser/pdf/pdf_extension_util.cc
+index 774bdcf..59895bc 100644
+--- a/chrome/browser/pdf/pdf_extension_util.cc
++++ b/chrome/browser/pdf/pdf_extension_util.cc
+@@ -28,4 +28,5 @@ const char kPdfResourceIdentifier[] = "chromium-pdf";
+ 
+ std::string GetManifest() {
++#if defined(ENABLE_PLUGINS)
+   std::string manifest_contents =
+       ResourceBundle::GetSharedInstance().GetRawDataResource(
+@@ -36,4 +37,7 @@ std::string GetManifest() {
+ 
+   return manifest_contents;
++#else
++  return NULL;
++#endif
+ }
+ 
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
 index c62343a..93245e8 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
@@ -1272,10 +1314,10 @@ index de86c63..7b69c68 100644
      cookies_tree_model_.reset(
          new CookiesTreeModel(container,
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 926b277..0e263d5 100644
+index 70a1759..0339b19 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -267,5 +267,5 @@ if (!is_android && !is_mac) {
+@@ -268,5 +268,5 @@ if (!is_android && !is_mac) {
      ]
  
 -    data_deps += [ "//third_party/widevine/cdm:widevinecdmadapter" ]
@@ -1283,10 +1325,10 @@ index 926b277..0e263d5 100644
  
      if (is_multi_dll_chrome) {
 diff --git a/chrome/chrome_browser.gypi b/chrome/chrome_browser.gypi
-index 29f389b..3b08135 100644
+index 3b94763..f1a8f07 100644
 --- a/chrome/chrome_browser.gypi
 +++ b/chrome/chrome_browser.gypi
-@@ -1230,6 +1230,6 @@
+@@ -1228,6 +1228,6 @@
        'browser/chrome_process_singleton.cc',
        'browser/chrome_process_singleton.h',
 -      'browser/component_updater/widevine_cdm_component_installer.cc',
@@ -1295,7 +1337,7 @@ index 29f389b..3b08135 100644
 +#      'browser/component_updater/widevine_cdm_component_installer.h',
        'browser/custom_handlers/register_protocol_handler_permission_request.cc',
        'browser/custom_handlers/register_protocol_handler_permission_request.h',
-@@ -3348,5 +3348,5 @@
+@@ -3346,5 +3346,5 @@
          '../third_party/icu/icu.gyp:icuuc',
          '../third_party/libxml/libxml.gyp:libxml',
 -        '../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
@@ -1303,7 +1345,7 @@ index 29f389b..3b08135 100644
          '../third_party/zlib/google/zip.gyp:compression_utils',
          '../third_party/zlib/google/zip.gyp:zip',
 diff --git a/chrome/chrome_common.gypi b/chrome/chrome_common.gypi
-index 0c9aba5..93c49c8 100644
+index 3260609..b2f3949 100644
 --- a/chrome/chrome_common.gypi
 +++ b/chrome/chrome_common.gypi
 @@ -112,6 +112,6 @@
@@ -1323,7 +1365,7 @@ index 0c9aba5..93c49c8 100644
            ],
          }, {  # OS == ios
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 491244e..e81bbbc 100644
+index fdb0ab6..16beb2d 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -156,5 +156,5 @@ static_library("common") {
@@ -1593,10 +1635,10 @@ index 1d5d345..49e589c 100644
  
  namespace content {
 diff --git a/content/test/BUILD.gn b/content/test/BUILD.gn
-index 8c8e58d..62ba8df 100644
+index 3a6d603..f97a8b2 100644
 --- a/content/test/BUILD.gn
 +++ b/content/test/BUILD.gn
-@@ -682,5 +682,5 @@ test("content_unittests") {
+@@ -686,5 +686,5 @@ test("content_unittests") {
      "//third_party/libjingle",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
