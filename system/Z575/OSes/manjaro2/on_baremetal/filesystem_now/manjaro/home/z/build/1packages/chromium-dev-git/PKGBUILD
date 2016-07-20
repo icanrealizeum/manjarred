@@ -485,7 +485,7 @@ EOF
 
   msg2 "Patching the sources"
   # Patch sources from Gentoo
-#  lepatch -Np1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch" #add/remove of this has no effect on this issue: https://bugs.chromium.org/p/chromium/issues/detail?id=422522#c354
+#  lepatch -Np1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch" #add/remove of this has no effect on this issue: https://bugs.chromium.org/p/chromium/issues/detail?id=422522#c354  FIXED by using system-ffmpeg and reported new here: https://bugs.chromium.org/p/chromium/issues/detail?id=629695
   lepatch -Np0 -i "${srcdir}/chromium-system-jinja-r11.patch"
 #  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch" #TODO: should set fatal_linker_warnings to false instead of applying this patch!
 
