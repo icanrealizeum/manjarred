@@ -1,4 +1,41 @@
 add chromium-hotwording-2403.patch
 but modify it first so that only the #ifdefs remain and rename and add a suffix to that symbol, so it acts as if it's always disabled!
 
+---
+------
+
+this won't play: https://twitter.com/dexbonus/status/755512409092034561
+error	FFmpegDemuxer: data source error
+error	FFmpegDemuxer: open context failed
+pipeline_error	demuxer: could not open
+
+but this will: https://twitter.com/AnnaKendrick47/status/755485525448863744
+although it previously didn't until new tab!
+
+as reported by vlc,
+
+these are the same:
+Type: Video
+Codec: H264 - MPEG-4 AVC (part 10) (avc1)
+Decoded format: Planar 4:2:0 YUV
+Orientation: Top left
+Chroma location: Left
+
+
+only these are different:
+doesn't work:
+Display resolution: 480x360
+Buffer dimensions: 480x386
+Frame rate: 10.004653
+
+works:
+Display resolution: 1042x782
+Buffer dimensions: 1056x802
+Frame rate: 1.273190
+
+
+
+the foop! now it just randomly works again! (after restarting chromium - tho did this many times)
+
+-------
 

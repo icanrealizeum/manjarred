@@ -1,0 +1,22 @@
+this commit 23f765ccc6be80523d9d09358e249fc749cf5331
+introduced this msg:
+
+[1:1:0720/030608:ERROR:json_feature_provider.cc(42)] clipboard: API features must specify at least one context.
+
+which is spammy!
+
+diff --git a/extensions/common/features/json_feature_provider.cc b/extensions/common/features/json_feature_provider.cc
+index 11d9541..1d70b52 100644
+--- a/extensions/common/features/json_feature_provider.cc
++++ b/extensions/common/features/json_feature_provider.cc
+@@ -38,8 +38,8 @@ bool ParseFeature(const base::DictionaryValue* value,
+   feature->Parse(value);
+   std::string error;
+   bool valid = feature->Validate(&error);
+-  if (!valid)
+-    LOG(ERROR) << error;
++//  if (!valid)
++//    LOG(ERROR) << error;
+   return valid;
+ }
+ 

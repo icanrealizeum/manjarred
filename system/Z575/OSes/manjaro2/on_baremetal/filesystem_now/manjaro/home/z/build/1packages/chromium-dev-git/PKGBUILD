@@ -15,6 +15,7 @@
 _use_ccache=1          # Use ccache when build
 _use_gtk3=1            # If set 1, then build with GTK3 support, if set 0, then build with GTK2
 inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
+#^ this currently takes 1.3G when done
 
 
 ##############################################
@@ -131,6 +132,8 @@ OnReadFrameDone.patch
 FPE_INTDIV.patch
 handlebit_size0.patch
 chromium-system-ffmpeg-r3.patch
+clipboard_nospam.patch
+
 all.patch
 )
 
@@ -167,6 +170,7 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '42f7e222247892610e6e47bfd8249d252437b81eaffa80a0b98eefa7301fa2ef7ee54a2dbd147e06e2e710d847a63ad39f700ece6275239462e0b5511542e99b'
             '2314a9ce1cc4327ff03d574ffb0bcc2f2d642ce68fc558c1c772e61922e078e02f43684088452f9513382ddde5ec344554e1cfa85d195033b49261466c779d08'
             'bd662718e65d72854018d7d9e20be0196057de69be87e2ef18e1a8c98b2ddaccbdb074377820b31e6797d9370aa68724fabf26d826a402595390730857cc3956'
+            '2f36f0da7a1c506ed396be10fdecb22faa3e7950e35857542b2204f2c829471a41fc3bb2bf4d4593a4bca02f14a161f12c43e9bd44c968512e7ffe862bdadf21'
             '49a09b20288d269830212b72ffdeea95f8a6742a116d330982ad83f865e9082d643f468bc8f8408c274715502feadce38c9fa781bf92f7b46d294bbde80a48bf')
 options=('!strip')
 install=chromium-dev.install
