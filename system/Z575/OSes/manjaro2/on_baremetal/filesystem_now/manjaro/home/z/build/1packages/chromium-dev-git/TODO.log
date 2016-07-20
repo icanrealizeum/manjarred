@@ -54,10 +54,13 @@ the foop! now it just randomly works again! (after restarting chromium - tho did
 
 -------
 
-try without applying this patch:
-chromium-system-ffmpeg-r3.patch
+//try without applying this patch:
+//chromium-system-ffmpeg-r3.patch
+//with enabled and disabled: #new-audio-rendering-mixing-strategy
+DONE both ^ --no effect! 
 
-trying partial (that big blob not being removed; but removing the internal.h deprecated stuff)
+//won't work, compile errors! //trying partial patch(that big blob not being removed; but removing the internal.h deprecated stuff)
+
 
 -----
 
@@ -65,8 +68,15 @@ try chrome://flags
 New audio rendering mixing strategy Mac, Windows, Linux, Android
 #new-audio-rendering-mixing-strategy
 
-Tried this flag with the following chromium versions,
+Tried this flag on enabled then disabled,
+with the following chromium versions,
 but no change on the issue(629695):
 -rw-r--r-- 1 z z 168151040 20.07.2016 13:07 chromium-dev-54.0.2803.0_r554.e52ba8d-1-x86_64.pkg.tar
+
+
+-rw-r--r-- 1 z z 168151040 20.07.2016 15:17 chromium-dev-54.0.2803.0_r576.8281029-1-x86_64.pkg.tar
+
+that's odd, the size is the same?!!
+
 ------
 
