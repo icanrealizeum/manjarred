@@ -13,7 +13,7 @@ Current version of pixman: 0.34.0
 Markers: (--) probed, (**) from config file, (==) default setting,
 	(++) from command line, (!!) notice, (II) informational,
 	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
-(==) Log file: "/home/z/.local/share/xorg/Xorg.0.log", Time: Wed Jul 20 08:36:44 2016
+(==) Log file: "/home/z/.local/share/xorg/Xorg.0.log", Time: Wed Jul 20 21:34:42 2016
 (==) Using config directory: "/etc/X11/xorg.conf.d"
 (==) Using system config directory "/usr/share/X11/xorg.conf.d"
 (==) No Layout section.  Using the first Screen section.
@@ -559,27 +559,27 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (II) config/udev: Adding input device HD-Audio Generic Headphone (/dev/input/event11)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) config/udev: Adding input device AT Translated Set 2 keyboard (/dev/input/event6)
+(II) config/udev: Adding input device AT Translated Set 2 keyboard (/dev/input/event5)
 (**) AT Translated Set 2 keyboard: Applying InputClass "evdev keyboard catchall"
 (**) AT Translated Set 2 keyboard: Applying InputClass "libinput keyboard catchall"
 (**) AT Translated Set 2 keyboard: Applying InputClass "system-keyboard"
 (**) AT Translated Set 2 keyboard: Applying InputClass "system-keyboard"
-(II) systemd-logind: got fd for /dev/input/event6 13:70 fd 19 paused 0
+(II) systemd-logind: got fd for /dev/input/event5 13:69 fd 19 paused 0
 (II) Using input driver 'libinput' for 'AT Translated Set 2 keyboard'
 (**) AT Translated Set 2 keyboard: always reports core events
-(**) Option "Device" "/dev/input/event6"
+(**) Option "Device" "/dev/input/event5"
 (**) Option "_source" "server/udev"
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event6 is tagged by udev as: Keyboard
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event6 is a keyboard
-(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio0/input/input7/event6"
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is tagged by udev as: Keyboard
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is a keyboard
+(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio0/input/input5/event5"
 (II) XINPUT: Adding extended input device "AT Translated Set 2 keyboard" (type: KEYBOARD, id 10)
 (**) Option "xkb_model" "pc105"
 (**) Option "xkb_layout" "us"
 (**) Option "xkb_variant" "basic"
 (**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event6 is tagged by udev as: Keyboard
-(II) input device 'AT Translated Set 2 keyboard', /dev/input/event6 is a keyboard
-(II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/event5)
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is tagged by udev as: Keyboard
+(II) input device 'AT Translated Set 2 keyboard', /dev/input/event5 is a keyboard
+(II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/event6)
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "evdev touchpad catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "evdev touchscreen catchall"
 (**) SynPS/2 Synaptics TouchPad: Applying InputClass "libinput touchpad catchall"
@@ -592,10 +592,10 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 	compiled for 1.17.4, module version = 1.8.99
 	Module class: X.Org XInput Driver
 	ABI class: X.Org XInput driver, version 21.1
-(II) systemd-logind: got fd for /dev/input/event5 13:69 fd 20 paused 0
+(II) systemd-logind: got fd for /dev/input/event6 13:70 fd 20 paused 0
 (II) Using input driver 'synaptics' for 'SynPS/2 Synaptics TouchPad'
 (**) SynPS/2 Synaptics TouchPad: always reports core events
-(**) Option "Device" "/dev/input/event5"
+(**) Option "Device" "/dev/input/event6"
 (II) synaptics: SynPS/2 Synaptics TouchPad: ignoring touch events for semi-multitouch device
 (--) synaptics: SynPS/2 Synaptics TouchPad: x-axis range 1472 - 5728 (res 46)
 (--) synaptics: SynPS/2 Synaptics TouchPad: y-axis range 1408 - 4902 (res 83)
@@ -605,7 +605,7 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (--) synaptics: SynPS/2 Synaptics TouchPad: Vendor 0x2 Product 0x7
 (--) synaptics: SynPS/2 Synaptics TouchPad: touchpad found
 (**) SynPS/2 Synaptics TouchPad: always reports core events
-(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio1/input/input6/event5"
+(**) Option "config_info" "udev:/sys/devices/platform/i8042/serio1/input/input7/event6"
 (II) XINPUT: Adding extended input device "SynPS/2 Synaptics TouchPad" (type: TOUCHPAD, id 11)
 (**) synaptics: SynPS/2 Synaptics TouchPad: (accel) MinSpeed is now constant deceleration 2.5
 (**) synaptics: SynPS/2 Synaptics TouchPad: (accel) MaxSpeed is now 1.75
