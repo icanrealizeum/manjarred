@@ -8,7 +8,15 @@ _pkgname="pulseaudio"
 #pkgname="$_pkgname-git"
 #pkgbase=pulseaudio
 #pkgname=("${_pkgname}-git" libpulse)
-pkgname=("${_pkgname}-git" libpulse pulseaudio-{gconf,zeroconf,lirc,jack,bluetooth,equalizer})
+pkgname=(${_pkgname} libpulse pulseaudio-{gconf,zeroconf,lirc,jack,bluetooth,equalizer})
+#required name: pulseaudio NOT pulseaudio-git!!! because: //fixed(renamed pulseaudio-git to pulseaudio!)---- also, can't install! due to:
+#sudo /usr/bin/pacman -U /home/z/build/1packages/pulseaudio-git/packages_pacman/pulseaudio-git-9.0.45.g4cd89aa-1-x86_64.pkg.tar /home/z/build/1packages/pulseaudio-git/packages_pacman/libpulse-9.0.45.g4cd89aa-1-x86_64.pkg.tar
+#loading packages...
+#resolving dependencies...
+#looking for conflicting packages...
+#error: failed to prepare transaction (could not satisfy dependencies)
+#:: pulseaudio: installing libpulse (9.0.45.g4cd89aa-1) breaks dependency 'libpulse=8.0-3'
+#==> WARNING: Failed to install built package(s).
 pkgdesc="A featureful, general-purpose sound server"
 pkgver=9.0.45.g4cd89aa
 pkgrel=1
@@ -30,12 +38,15 @@ makedepends=(git libasyncns libcap attr libxtst libsm libsndfile libtool rtkit l
 #         "webrtc-audio-processing" "sbc" "libasyncns" "libxtst" "libsm" "libsndfile" "json-c")
 options=(!emptydirs)
 #source=(http://freedesktop.org/software/$pkgbase/releases/$pkgbase-$pkgver.tar.xz
+patch1='shm_open_whatfilename.patch'
 source=("git+https://github.com/pulseaudio/pulseaudio.git"
+        "$patch1"
         padsp-lib32.patch
         pulseaudio.install
         )
 #sha256sums=('c3d3d66b827f18fbe903fe3df647013f09fc1e2191c035be1ee2d82a9e404686'
 sha256sums=('SKIP'
+            'fac6861a6ceda52238614a91a0319501a20c00687a6ad41389498e7fb987e8a6'
             '7832fc59df76538ff10aedd297c03cb7ff117235da8bfad26082994bb5b84332'
             '1d4890b10fadb9208c3fefbbed4aca1f22e63a0f102f4c598dc573a55e724cb2')
 
@@ -47,6 +58,7 @@ pkgver() {
 prepare() {
   #cd $pkgbase-$pkgver
   cd "$srcdir/$_pkgname"
+  patch -Np1 -i "${srcdir}/$patch1"
 
 #  ./configure --prefix=/usr \
   ./autogen.sh --prefix=/usr \
@@ -75,7 +87,7 @@ build() {
   make
 }
 
-package_pulseaudio-git() {
+package_pulseaudio() {
   depends=("libpulse=$pkgver-$pkgrel" rtkit libltdl speexdsp tdb orc
            webrtc-audio-processing sbc libsoxr)
   optdepends=('pulseaudio-alsa: ALSA configuration (recommended)')
@@ -186,21 +198,21 @@ package_libpulse() {
 
 package_pulseaudio-gconf(){
   pkgdesc="GConf support for PulseAudio"
-  depends=("pulseaudio-git=$pkgver-$pkgrel" gconf)
+  depends=("pulseaudio=$pkgver-$pkgrel" gconf)
 
   mv "$srcdir"/gconf/* "$pkgdir"
 }
 
 package_pulseaudio-zeroconf(){
   pkgdesc="Zeroconf support for PulseAudio"
-  depends=("pulseaudio-git=$pkgver-$pkgrel" avahi openssl)
+  depends=("pulseaudio=$pkgver-$pkgrel" avahi openssl)
 
   mv "$srcdir"/zeroconf/* "$pkgdir"
 }
 
 package_pulseaudio-lirc(){
   pkgdesc="IR (lirc) support for PulseAudio"
-  depends=("pulseaudio-git=$pkgver-$pkgrel" lirc)
+  depends=("pulseaudio=$pkgver-$pkgrel" lirc)
 
   mv "$srcdir"/lirc/* "$pkgdir"
 }
@@ -215,21 +227,21 @@ package_pulseaudio-lirc(){
 
 package_pulseaudio-jack(){
   pkgdesc="Jack support for PulseAudio"
-  depends=("pulseaudio-git=$pkgver-$pkgrel" jack2)
+  depends=("pulseaudio=$pkgver-$pkgrel" jack2)
 
   mv "$srcdir"/jack/* "$pkgdir"
 }
 
 package_pulseaudio-bluetooth(){
   pkgdesc="Bluetooth support for PulseAudio"
-  depends=("pulseaudio-git=$pkgver-$pkgrel" bluez bluez-libs)
+  depends=("pulseaudio=$pkgver-$pkgrel" bluez bluez-libs)
 
   mv "$srcdir"/bluetooth/* "$pkgdir"
 }
 
 package_pulseaudio-equalizer(){
   pkgdesc="Equalizer for PulseAudio"
-  depends=("pulseaudio-git=$pkgver-$pkgrel" python-pyqt4 fftw)
+  depends=("pulseaudio=$pkgver-$pkgrel" python-pyqt4 fftw)
   license=(AGPL3)
 
   mv "$srcdir"/equalizer/* "$pkgdir"

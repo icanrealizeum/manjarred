@@ -1,0 +1,13 @@
+diff --git a/src/pulsecore/shm.c b/src/pulsecore/shm.c
+index 9dea0a5..736f630 100644
+--- a/src/pulsecore/shm.c
++++ b/src/pulsecore/shm.c
+@@ -357,7 +357,7 @@ static int shm_attach(pa_shm *m, pa_mem_type_t type, unsigned id, int memfd_fd,
+         segment_name(fn, sizeof(fn), id);
+         if ((fd = shm_open(fn, writable ? O_RDWR : O_RDONLY, 0)) < 0) {
+             if ((errno != EACCES && errno != ENOENT) || !for_cleanup)
+-                pa_log("shm_open() failed: %s", pa_cstrerror(errno));
++                pa_log("shm_open() failed: %s '%s'", pa_cstrerror(errno), fn);
+             goto fail;
+         }
+         break;
