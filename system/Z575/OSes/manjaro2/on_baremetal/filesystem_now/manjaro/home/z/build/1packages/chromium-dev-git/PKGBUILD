@@ -21,7 +21,7 @@ inTMPFS=1 # 1 means compile in /tmp (assumed u have enough ram and it's tmpfs)
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2801.0_r342.dfabf15
+pkgver=54.0.2801.0_r364.8efd481
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -562,8 +562,11 @@ local gn_system_libraries=(
 
 #more of those ^ system libs?: https://chromium.googlesource.com/chromium/src/+/lkgr/build/linux/unbundle/replace_gn_files.py
 
-    msg2 "Using system libs: ${gn_system_libraries[@]}"
+    msg2only="${gn_system_libraries[@]}"
+    msg2 "Using system libs: $msg2only"
+    set -x
     build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}"
+    set +x
 
 
     cp -- "../args.gn" "${_reldir}"

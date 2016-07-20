@@ -2,7 +2,7 @@ add chromium-hotwording-2403.patch
 but modify it first so that only the #ifdefs remain and rename and add a suffix to that symbol, so it acts as if it's always disabled!
 
 ----
-
+done//tested to not work, just as if ffmpeg is missing
 add to PKGBUILD, from gentoo:
 
 local gn_system_libraries="
@@ -25,7 +25,7 @@ libvpx
 build/linux/unbundle/replace_gn_files.py --system-libraries ${gn_system_libraries}
 
 -----
-see if chromium-system-ffmpeg-r3.patch  is needed! we already have another similar one!
+nope//see if chromium-system-ffmpeg-r3.patch  is needed! we already have another similar one!
 -----
 
 if the above had no change, and cannot use external ffmpeg as player, then:
@@ -34,10 +34,22 @@ put back(to their defaults) these in args.gn
 
 media_use_ffmpeg
 media_use_libvpx
+
+and then:
+
 rtc_build_libvpx
 rtc_build_opus
 rtc_include_opus
 rtc_libvpx_build_vp9
 
 -------
+then install pulseaudio-git
+
+-------
+try git versions of these packages:
+
+local/libx264
+local/x265
+local/x264
+---------
 
