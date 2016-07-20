@@ -1,3 +1,18 @@
+tested chromium versions with this arg: --audio-buffer-size=8192
+to have no effect on this issue: https://bugs.chromium.org/p/chromium/issues/detail?id=629695
+
+-rw-r--r-- 1 z z 170516480 18.07.2016 14:23 chromium-dev-54.0.2800.0_r22.43b9c63-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 170977280 18.07.2016 17:17 chromium-dev-54.0.2800.0_r33.c451c08-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 172431360 18.07.2016 18:00 chromium-dev-54.0.2800.0_r35.1ce44d2-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 172441600 18.07.2016 23:51 chromium-dev-54.0.2800.0_r54.7a44b9e-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 172472320 19.07.2016 05:36 chromium-dev-54.0.2800.0_r149.9448608-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 164945920 19.07.2016 14:03 chromium-dev-54.0.2801.0_r277.4f82b40-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 164218880 19.07.2016 17:26 chromium-dev-54.0.2801.0_r296.b6208b9-1-x86_64.pkg.tar
+-rw-r--r-- 1 z z 163962880 19.07.2016 19:19 chromium-dev-54.0.2801.0_r327.e60df82-1-x86_64.pkg.tar
+
+-rw-r--r-- 1 z z 168151040 20.07.2016 13:07 chromium-dev-54.0.2803.0_r554.e52ba8d-1-x86_64.pkg.tar
+
+---------
 add chromium-hotwording-2403.patch
 but modify it first so that only the #ifdefs remain and rename and add a suffix to that symbol, so it acts as if it's always disabled!
 
@@ -41,10 +56,17 @@ the foop! now it just randomly works again! (after restarting chromium - tho did
 
 try without applying this patch:
 chromium-system-ffmpeg-r3.patch
+
+trying partial (that big blob not being removed; but removing the internal.h deprecated stuff)
+
 -----
 
 try chrome://flags
 New audio rendering mixing strategy Mac, Windows, Linux, Android
 #new-audio-rendering-mixing-strategy
+
+Tried this flag with the following chromium versions,
+but no change on the issue(629695):
+-rw-r--r-- 1 z z 168151040 20.07.2016 13:07 chromium-dev-54.0.2803.0_r554.e52ba8d-1-x86_64.pkg.tar
 ------
 
