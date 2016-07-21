@@ -80,3 +80,18 @@ that's odd, the size is the same?!!
 
 ------
 
+fix this in depottools, so that if that stat error happens, you ignore it!!!:
+
+________ running 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux64/gn.sha1' in '/home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root'
+Copying gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52...
+
+file_url=gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52
+('the error is: ', '', 'for command', ['/usr/bin/python2', '/opt/depot_tools/gsutil.py', '--force-version', '4.15', 'ls', 'gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52'], 'out is', "gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52\n('Ignoring force version: ', '4.15', '/opt/depot_tools/external_bin/gsutil')\n('Fallback: ', '/opt/depot_tools/third_party/gsutil/gsutil')\n('Cmd: %s', ['/usr/bin/python2', '/opt/depot_tools/third_party/gsutil/gsutil', 'ls', 'gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52'])\n")
+0> Downloading src/buildtools/linux64/gn...
+('the error is: ', 'Copying gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52...\n', 'for command', ['/usr/bin/python2', '/opt/depot_tools/gsutil.py', '--force-version', '4.15', 'cp', 'gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52', 'src/buildtools/linux64/gn'], 'out is', "('Ignoring force version: ', '4.15', '/opt/depot_tools/external_bin/gsutil')\n('Fallback: ', '/opt/depot_tools/third_party/gsutil/gsutil')\n('Cmd: %s', ['/usr/bin/python2', '/opt/depot_tools/third_party/gsutil/gsutil', 'cp', 'gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52', 'src/buildtools/linux64/gn'])\n")
+('the error is: ', 'CommandException: Invalid command "stat".\n', 'for command', ['/usr/bin/python2', '/opt/depot_tools/gsutil.py', '--force-version', '4.15', 'stat', 'gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52'], 'out is', "('Ignoring force version: ', '4.15', '/opt/depot_tools/external_bin/gsutil')\n('Fallback: ', '/opt/depot_tools/third_party/gsutil/gsutil')\n('Cmd: %s', ['/usr/bin/python2', '/opt/depot_tools/third_party/gsutil/gsutil', 'stat', 'gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52'])\n")
+0> Copying gs://chromium-gn/a95c41cc948827cf263b4ab76d636e6376816b52...
+
+Downloading 1 files took 4.620926 second(s)
+Error: Command 'download_from_google_storage --no_resume --platform=linux* --no_auth --bucket chromium-gn -s src/buildtools/linux64/gn.sha1' returned non-zero exit status 1 in /home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root
+

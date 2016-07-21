@@ -1,0 +1,74 @@
+modified to always disable hotwording
+
+From c2a0c6df7d468da9864c56f2099aa947b07e2535 Mon Sep 17 00:00:00 2001
+From: amistry <amistry@chromium.org>
+Date: Tue, 9 Jun 2015 12:18:39 -0700
+Subject: [PATCH] Add build flag to disable hotwording.
+
+Hotwording downloads a shared module from the web store containing a NaCl module. There is a desire to build and distribute Chromium without this happening. This change adds an "enable_hotwording" build flag that is enabled by default, but can be disabled at compile time.
+
+BUG=491435
+
+Review URL: https://codereview.chromium.org/1160243004
+
+Cr-Commit-Position: refs/heads/master@{#333548}
+
+Conflicts:
+	chrome/browser/search/hotword_service.cc
+---
+ build/common.gypi                                 | 4 ++++
+ chrome/browser/BUILD.gn                           | 9 +++++++++
+ chrome/browser/search/hotword_service.cc          | 4 ++++
+ chrome/browser/search/hotword_service_unittest.cc | 4 ++++
+ chrome/chrome_browser.gypi                        | 3 +++
+ 5 files changed, 24 insertions(+)
+
+diff --git a/chrome/browser/search/hotword_service_unittest.cc b/chrome/browser/search/hotword_service_unittest.cc
+index d4b20fa..cd7451d 100644
+--- a/chrome/browser/search/hotword_service_unittest.cc
++++ b/chrome/browser/search/hotword_service_unittest.cc
+@@ -167,6 +167,7 @@ INSTANTIATE_TEST_CASE_P(HotwordServiceTests,
+ 
+ // Disabled due to http://crbug.com/503963.
+ TEST_P(HotwordServiceTest, DISABLED_IsHotwordAllowedLocale) {
++#if defined(ENABLE_HOTWORDING_NOWAY)
+   TestingProfile::Builder profile_builder;
+   std::unique_ptr<TestingProfile> profile = profile_builder.Build();
+ 
+@@ -208,6 +209,7 @@ TEST_P(HotwordServiceTest, DISABLED_IsHotwordAllowedLocale) {
+   Profile* otr_profile = profile->GetOffTheRecordProfile();
+   SetApplicationLocale(otr_profile, "en");
+   EXPECT_FALSE(HotwordServiceFactory::IsHotwordAllowed(otr_profile));
++#endif  // defined(ENABLE_HOTWORDING_NOWAY)
+ }
+ 
+ TEST_P(HotwordServiceTest, ShouldReinstallExtension) {
+@@ -264,6 +266,7 @@ TEST_P(HotwordServiceTest, PreviousLanguageSetOnInstall) {
+ }
+ 
+ TEST_P(HotwordServiceTest, UninstallReinstallTriggeredCorrectly) {
++#if defined(ENABLE_HOTWORDING_NOWAY)
+   InitializeEmptyExtensionService();
+   service_->Init();
+ 
+@@ -344,6 +347,7 @@ TEST_P(HotwordServiceTest, UninstallReinstallTriggeredCorrectly) {
+ #endif
+   EXPECT_FALSE(hotword_service->MaybeReinstallHotwordExtension());
+   EXPECT_EQ(1, hotword_service->uninstall_count());  // no change
++#endif  // defined(ENABLE_HOTWORDING_NOWAY)
+ }
+ 
+ TEST_P(HotwordServiceTest, DisableAlwaysOnOnLanguageChange) {
+diff --git a/chrome/browser/search/hotword_service.cc b/chrome/browser/search/hotword_service.cc
+index f5579e1..923f9d9 100644
+--- a/chrome/browser/search/hotword_service.cc
++++ b/chrome/browser/search/hotword_service.cc
+@@ -638,7 +638,7 @@ bool HotwordService::IsServiceAvailable() {
+ }
+ 
+ bool HotwordService::IsHotwordAllowed() {
+-#if defined(ENABLE_HOTWORDING)
++#if defined(ENABLE_HOTWORDING) && defined(ENABLE_HOTWORDING_NOWAY)
+   return DoesHotwordSupportLanguage(profile_);
+ #else
+   return false;
