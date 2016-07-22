@@ -832,6 +832,20 @@
                 \ "https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc"
         * setup firefox
           * in about:config
+            * plugin.default.state
+              \ from 1 to 0
+              \ 0=disabled (any new plugins are disabled by default aka Never Activate)
+              \ src: https://serverfault.com/questions/340195/disable-certain-firefox-plugins-system-wide-by-default/447214#447214
+            * plugin.state.flash
+              \ from 2 to 0
+            * plugin.state.java
+              \ already set to 0 by some other extension, it seems!(eg. noscript?)
+            * plugins.update.notifyUser
+              \ from false to true
+            * clear plugins.update.url
+            * security.xpconnect.plugin.unrestricted
+              \ from true to false
+              \ src: https://www.reddit.com/r/firefox/comments/4clikr/are_these_security_settings_still_necessary/
             * remove Cisco systems h265 plugin
               * to disable: in about:config (ff 44.0)
                 \ media.gmp-gmpopenh264.autoupdate;false
