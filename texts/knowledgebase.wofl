@@ -821,4 +821,25 @@
   \ git clone the two repos: https://github.com/intellij-rust/intellij-rust and https://github.com/intellij-rust/intellij-toml and follow instruction to build them with gradle(note: it fetches a bunch of intellij stuff twice for each project!)
   \ use install from disk and point to the zip files in ./build/distributions/ for each project(project=intellij-rust and intellij-toml)
 
+* buildroot
+  * the manual (doc)
+    * required on host:
+      \ sudo pacman -S --needed w3m dblatex
+      \ NOTE: dblatex takes a while to install!! 5min?
+    * build
+      \ html manual(needs dblatex):
+      \ time make manual
+      \ or text only (without dblatex needed):
+      \ time make manual-text
+    * open:
+      \ text: less output/docs/manual/manual.text
+      \ html: less /output/docs/manual/manual.html
+  * build
+    * time make menuconfig
+    * time make
+      \ fail: configure: error: in `/home/z/build/1nonpkgs/buildroot/buildroot/output/build/gettext-0.19.8.1/gettext-runtime/libasprintf':
+      \ configure: error: C++ preprocessor "/lib/cpp" fails sanity check
+      \ See `config.log' for more details
+      \ configure: error: ./configure failed for libasprintf
+      \ make: *** [package/pkg-generic.mk:194: /home/z/build/1nonpkgs/buildroot/buildroot/output/build/gettext-0.19.8.1/.stamp_configured] Error 1
 
