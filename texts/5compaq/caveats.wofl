@@ -3,4 +3,17 @@
     \ it stops disc activity
     \ during ftp transfer to it(or any other disk activity!), it will lock up(BSOD Esception 0E(i think) or just freeze forever) - if it does BSOD, press Enter, and then Ctrl+Alt+Del to sync! (don't ctrl+alt+del from BSOD, it will just lock up - might still sync first, but seemed not to!)
     \
+* win98SE and DOS
+  * grand prix (1&2) racing
+    * during race, keys(eg. key A) will beep due to filling keyboard buffer, and thus freeze gameplay - gameplay is impossible
+      \ fix: run fastbf26.com  before gp2.exe
+      \ I tested/discovered this myself
+      \ src: http://ftp.labs.hp.com/ftp/pub/micro/pc/simtelnet/msdos/keyboard/fastbf26.zip
+      \ descriptions: http://www.lanet.lv/simtel.net/msdos/keyboard-pre.html
+    * CAVEATS
+      * can't disable 'Steering Help' when using keyboard(keys: AZ,. )
+        \ http://www.grandprix2.de/wissen/01wissen.htm
+        \ ok well, apparently something can be disabled with the  F keys, so... i don't know how true that is.
+
+
 
