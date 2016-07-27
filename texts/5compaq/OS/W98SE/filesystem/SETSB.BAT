@@ -1,0 +1,2 @@
+C:\WIN\ESSCFG.EXE /A:220 /I:5 /D:1 /B:330 /M:E
+C:\WIN\ESSVOL.EXE /V:8 /L:8 /W:8 /M:0 /C:8 /S:8 /A:8

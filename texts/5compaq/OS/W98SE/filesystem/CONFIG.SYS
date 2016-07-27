@@ -1,0 +1,12 @@
+set runwin=1
+DEVICE=C:\WIN\HIMEM.SYS /A20CONTROL:ON /NUMHANDLES=128 /TESTMEM:ON /VERBOSE
+DEVICE=C:\WIN\EMM386.EXE ON VERBOSE RAM
+DOS=HIGH,UMB
+break=on
+numlock=off
+rem because 585 free instead of 606 KB
+rem fileshigh=120
+rem fcbshigh=1,0
+rem buffershigh=30,0
+rem stackshigh=9,256
+
