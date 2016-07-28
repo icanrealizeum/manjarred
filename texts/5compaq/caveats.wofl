@@ -4,6 +4,8 @@
     \ 2. during ftp transfer to it(or any other disk activity!), it has high chance to lock up the system (BSOD Esception 0E(i think) or just freeze forever) - if it does BSOD, press Enter, and then Ctrl+Alt+Del to sync! (don't ctrl+alt+del from BSOD, it will just lock up - might still sync first, but seemed not to!)
     * this is true even when viewing through realvnc
       \ so moving mouse through vnc can still lock up system!
+  * trying to use DMA 0 for sound(in DOS games) will lock up windows
+    \ dma 1 and 3 are ok to test though - tested with Tyrian's setup
 * win98SE and DOS
   * Lotus III Challenge
     \ will not work within win98se - gets a Close window on start
@@ -20,6 +22,20 @@
       * can't disable 'Steering Help' when using keyboard(keys: AZ,. )
         \ http://www.grandprix2.de/wissen/01wissen.htm
         \ ok well, apparently something can be disabled with the  F keys, so... i don't know how true that is.
+
+* DOS
+  * I've to put audio irq 7(or 10 with dma 0) in BIOS or else esscfg with irq 5 won't work
+    \ so if irq 5 is on both, it says conflict or something
+
+* BIOS
+  * set audio irq 10, DMA8 0, dma16 5
+    \ this is how whiplash's install.exe detects it in windows
+    \ but with this only midi works! no digi is heard! even tho both in windows and in DOS is detected as such! (sb16 with irq 10, dma 0)
+    \ XXX: so if I esscfg on irq 5 dma 1 , dma16 5, then it works as sb manually set!
+    \ so in install.exe of whiplash(game) select Sound Blaster, 220, IRQ 5 (there's no DMA setting) - this won't work under win98se btw!
+    \ and it works in game too (sfx and music were both off in settings tho)
+    \ sfx and music work in windows too! install.exe won't accept the same settings as above though, so can't test digi while in windowss, only in DOS!
+    \ irq reported on the soundcard settings in windows is 10, dma8 is 1 dma16 is 5 - if set in bios to irq5, dma8 1, dma16 5 then this is what gets reported in windows too (and btw, can't change these in windows!) - only esscfg is mean - audio still works in fatal.exe(game = whiplash) but install.exe still won't play test audio(when manually set), and still detects irq 10 dma 0 - in DOS detected as SB PRO 220 irq 5 dma 1  if answering No to the irq10 dma 0 initially detected!(even tho it's set to 220 irq 5 dma 1 in BIOS!)
 
 
 
