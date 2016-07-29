@@ -1,0 +1,108 @@
+* F10 to enter BIOS
+* ESC for boot menu prompt
+
+* Phoenix BIOS
+  \ F10 Save and Exit
+  * Main
+    * Legacy Diskette A: [1.44/1.25 Mb 3 1/2]
+      \ can be [Disabled]
+    * B: Disabled
+    * Primary Master [2112MB]
+      \ Type: Auto
+      \ Cylinders: 4092
+      \ Heads: 16
+      \ Sectors: 63
+      \ Maximum Capacity: 2112MB
+      \
+      \ Multi-Sector Transfers: [16 Sectors]
+      \ LBA Mode Control: [Enabled]
+      \ 32 Bit I/O: [Enabled]  ([Disabled] when reverting to defaults!] - this is the only option that can be Set manually when Auto
+      \ Transfer Mode: [Fast PIO 4]
+    * Primary Slace [None]
+      \ Type: Auto
+      \ 32 Bit I/O: [Enabled]  ([Disabled] when reverting to defaults!] - this is the only option that can be Set manually when Auto
+    * Seconday Master [CD-ROM]
+      \ Type: Auto
+      \ Multi-Sector Transfers: [Disabled]
+      \ LBA Mode Control: [Disabled]
+      \ 32 Bit I/O: [Enabled]  ([Disabled] when reverting to defaults!] - this is the only option that can be Set manually when Auto
+      \ Transfer Mode: [Fast PIO 3]
+    * Secondary Slave [None]
+      \ Type: Auto
+      \ 32 Bit I/O: [Enabled]  ([Disabled] when reverting to defaults!] - this is the only option that can be Set manually when Auto
+    * QuickBoot Mode: [Enabled]
+      \ should be Disabled
+    * System Memory: 640 KB
+    * Extended Memory: 31744 KB
+  * Advanced
+    * Compaq Multimedia Monitor [Not Present]
+    * Plug & Play O/S: [Yes]
+    * Reset Configuration Data: [No]
+      \ maybe when this is set to yes, a bunch of stuff in BIOS here revert to default! even though, this is not what should happen! - must retest this sometime! - or something else caused everything to revert to defaults once, except the clock which was fine!
+    * PCI Configuration
+      * PCI Device, Slot #1
+        * Option Rom Scan: [Enabled]
+        * Enable Master: [Disabled]
+        * Latency Timer: [Default]
+    * PS/2 Mouse [Auto]
+    * USB Controller: [Enabled]
+    * USB Legacy Support: [Enabled]
+    * Memory Cache: [Enabled]
+    * Secured Setup Configurations [No]
+    * I/O Device Configuration
+      * Serial port A: [Disabled]
+      * Parallel port: [Disabled]
+      * Floppy disk controller: [Auto]
+    * Large Disk Access Mode: [DOS]
+    * Local Bus IDE adapter: [Both]
+    * Audio Options Menu
+      * Sound: [Enabled]
+        \ not a submenu, but on the same page, indented
+        * Base I/O address: [220 - 22F]
+        * FM I/O address: [388 - 38B]
+        * MPU I/O address: [330 - 331]
+        * Interrupt: [IRQ 7]
+        * 8-bit DMA channel: [DMA 1]
+        * 16-bit DMA channel: [DMA 5]
+      * Joystick: [Disabled]
+  * Security
+    * Supervisor Password Is: Set
+    * User Password Is: Set
+    * Set User Password [Enter]
+    * Set Supervisor Password [Enter]
+    * Password on boot: [Disabled]
+    * Fixed disk boot sector: [Write Protect]
+    * Diskette access: [Supervisor]
+    * Virus check reminder: [Disabled]
+    * System backup reminder: [Disabled]
+  * Power
+    * Power Savings [Customized]
+      \ if Disabled, win98se won't allow you the Stand By option when showing shut down menu.
+    * Auto Suspend Timeout: [Off]
+    * Hard Disk Timeout: [15 minutes]
+    * Resume On Modem Ring: [Off]
+    * Resume On Time: [Off]
+    * Resume Time: [00:00:00]
+    * Keyboard Wake Up Control: [Disabled]
+    * Mouse Wake Up Control: [Disabled]
+    * Advanced Options
+      \ I set them all to Enabled, but some are Disabled (when defaults)
+      \ IRQ 2 and 8 are missing from list!
+      * IRQ 1: [Enabled]
+      * ... 3,4,5,6,7,9,10,11,12,13,14,
+      * IRQ 15 [Enabled]
+  * Boot
+    * 1. [Hard Drive]
+    * 2. [ATAPI CD-ROM Drive]
+    * 3. [Removable Devices]
+    * Hard Drive
+      * 1. [ST32122A]
+      * 2. [Bootable ISA Cards]
+    * Removable Devices
+      * 1. [Legacy Floppy Drives]
+  * Exit
+    * Exit Saving Changes
+    * Exit Discarding Changes
+    * Load Setup Defaults
+    * Discard Changes
+    * Save Changes
