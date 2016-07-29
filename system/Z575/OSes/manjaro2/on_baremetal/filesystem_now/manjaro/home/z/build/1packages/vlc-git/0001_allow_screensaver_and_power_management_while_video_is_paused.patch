@@ -7,7 +7,7 @@ It doesn't require any settings from the defaults. (it does require recompiling 
 
 Addon: prevent high CPU usage when playlist automatically advances through tracks too fast(eg. when files in playlist nolonger exist due to you moving them while vlc was playing). Will sleep for 2 seconds if more than(or equal to) 10 consecutive Next tracks happen too fast (less than or equal to 1 second between them). Look for SECS_TO_SLEEP if you want to change. This allows you to Close the Errors window and press the Stop button to prevent the looping which would otherwise use 100% CPU (or 100% of one core, can't remember) and make it impossible for you to stop the playlist.
 
-Patch by EmanueL Czirai, with many thanks to jjacky and vlc authors for their code.
+Patch by icanrealizeum, with many thanks to jjacky and vlc authors for their code.
 
 How this works: vlc, when it uses xdg inhibit(instead of dbus inhibit) module, automatically runs `xdg-screensaver reset` every 30 seconds while video is playing(or paused, without this patch) in order to prevernt screensaver and screen blanking etc. from occurring. Thus, if you have the blanking set to anything below 30 seconds, it will still trigger blanking and unblank when the 30 second mark is reached. But with this patch, while paused, the timer which runs the aforementioned command is stopped; the timer is started again when video starts playing again.
 
@@ -261,11 +261,11 @@ index 4b94633..53d87d0 100644
 -    vlc_inhibit_t *ih = (vlc_inhibit_t *)obj;
 +  intf_thread_t   *p_intf     = (intf_thread_t*)obj;
 +  ensert(NULL, !=, p_intf, %p, %p);
-+  ensert(NULL, !=, p_intf->psz_object_type, %p, %p);
-+  fprintf(stderr, "!!! inhibit xdg Open called... as '%s', p_intf:%p\n", p_intf->psz_object_type, p_intf);
-+  bool is_intf = 0 == strncmp("interface", p_intf->psz_object_type, 10); //what? compare the \0 too!
++  ensert(NULL, !=, p_intf->obj.object_type, %p, %p);
++  fprintf(stderr, "!!! inhibit xdg Open called... as '%s', p_intf:%p\n", p_intf->obj.object_type, p_intf);
++  bool is_intf = 0 == strncmp("interface", p_intf->obj.object_type, 10); //what? compare the \0 too!
 +  if ((is_intf && as_intf_already)||(!is_intf && as_inhibit_already)) {
-+    fprintf(stderr, "!!! inhibit xdg Open was already initialized as '%s'. Refusing to init, you should clean up first(aka call pf_deactivate which is Close() ) OR this is a bug somewhere which says you're calling Open at least twice without Close-ing!\n", p_intf->psz_object_type);
++    fprintf(stderr, "!!! inhibit xdg Open was already initialized as '%s'. Refusing to init, you should clean up first(aka call pf_deactivate which is Close() ) OR this is a bug somewhere which says you're calling Open at least twice without Close-ing!\n", p_intf->obj.object_type);
 +    return VLC_EGENERIC;
 +  }
 +
@@ -280,7 +280,7 @@ index 4b94633..53d87d0 100644
 +    }
 +    assert(as_intf_already);//expected that interface was inited first, and then inhibit; although it probably works in either order(can't think right now)
 +    fprintf(stderr, "!!! it's inhibit Open() init-ing.\n");
-+    ensert( 0, ==, strncmp("inhibit", p_intf->psz_object_type, 8), %d, %d);
++    ensert( 0, ==, strncmp("inhibit", p_intf->obj.object_type, 8), %d, %d);
      vlc_inhibit_sys_t *p_sys = malloc (sizeof (*p_sys));
 -    if (p_sys == NULL)
 -        return VLC_ENOMEM;
@@ -358,13 +358,13 @@ index 4b94633..53d87d0 100644
 -    vlc_inhibit_sys_t *p_sys = ih->p_sys;
 +  intf_thread_t   *p_intf     = (intf_thread_t*)obj;
 +  ensert(NULL, !=, p_intf, %p, %p);
-+  ensert(NULL, !=, p_intf->psz_object_type, %p, %p);
-+  fprintf(stderr, "!!! inhibit xdg Close called... as '%s', p_intf:%p\n", p_intf->psz_object_type, p_intf);
++  ensert(NULL, !=, p_intf->obj.object_type, %p, %p);
++  fprintf(stderr, "!!! inhibit xdg Close called... as '%s', p_intf:%p\n", p_intf->obj.object_type, p_intf);
 +  
 +
-+  bool is_intf = 0 == strncmp("interface", p_intf->psz_object_type, 10); //what? compare the \0 too!
++  bool is_intf = 0 == strncmp("interface", p_intf->obj.object_type, 10); //what? compare the \0 too!
 +  if (!as_intf_already && !as_inhibit_already) {
-+    fprintf(stderr, "!!! inhibit xdg Close called as '%s' without a precursive Open. Refusing to deinit!\n", p_intf->psz_object_type);
++    fprintf(stderr, "!!! inhibit xdg Close called as '%s' without a precursive Open. Refusing to deinit!\n", p_intf->obj.object_type);
 +    return;
 +  }
  
