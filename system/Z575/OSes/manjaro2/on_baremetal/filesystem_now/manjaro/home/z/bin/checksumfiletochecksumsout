@@ -1,0 +1,42 @@
+#!/bin/bash
+
+destfile='checksums'
+
+#TODO: when file isn't writable?
+
+tmpout="`mktemp --tmpdir="/tmp" -t -- "${0##*/}XXXXXXXXXX"`"
+if ! test -e "$tmpout"; then
+  echo "failed to create temp file '$tmpout'"
+  exit 1
+fi
+
+if test -f "$destfile"; then
+#  echo "cat $tmpout"
+  cat "$destfile" > "$tmpout"
+fi
+#( cat "$tmpout" ; checksumfile "$@" ) | sort -u
+#( cat "$tmpout" ; checksumfile "$@" ) | sort -u > "$tmpout"
+checksumfile "$@" >> "$tmpout"
+tmpout2="`mktemp --tmpdir="/tmp" -t -- "${0##*/}XXXXXXXXXX"`"
+if ! test -e "$tmpout2"; then
+  echo "failed to create temp file '$tmpout2'"
+  exit 2
+fi
+
+sort -u "$tmpout" > "$tmpout2"
+#^ yep need another file, or zeroed!
+rm -- "$tmpout"
+
+if ! diff -q "$tmpout2" "$destfile" 1>/dev/null ; then
+#  echo 'copying new' >&2
+#  cat "$tmpout2"
+  cp -a -- "$tmpout2" "$destfile"
+  ec="$?"
+  if test "$ec" -ne "0"; then
+    echo "!! failed: arg:'$@' pwd:'`pwd`' checksumfile:'$tmpout2'" >&2
+    exit 3
+  fi
+fi
+
+rm -- "$tmpout2"
+

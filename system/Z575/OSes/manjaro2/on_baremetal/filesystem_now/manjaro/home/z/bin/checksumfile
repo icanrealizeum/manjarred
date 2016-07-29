@@ -1,0 +1,19 @@
+#!/bin/bash
+
+infile="$@"
+
+if test -z "$infile"; then
+  echo "filename expected as arg" >&2
+  exit 1
+fi
+
+if ! test -e "$infile"; then
+  echo "!! file '$infile' doesn't exist" >&2
+  exit 2
+fi
+
+sha512sum "$infile"
+sha256sum "$infile"
+sha1sum "$infile"
+md5sum "$infile"
+

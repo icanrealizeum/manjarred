@@ -45,6 +45,8 @@
 -A newUDPout -p udp --dport 443 -j accepted
 #allow qtox:
 -A newUDPout -p udp --sport 33445 -j accepted
+#allow ntpdate
+-A newUDPout -p udp --sport 123 --dport 123 -j accepted
 #XXX: not really needed:
 -A newUDPout -j rejected
 #^ so not specifying this means it will still fall through to rejected but it's easier to see if anything got rejected in this category
@@ -56,6 +58,11 @@
 #XXX: not really needed:
 -A newTCPin -j rejected
 
+#TODO: 
+#ftp:
+#-A newTCPout -p tcp --dport 21 -j accepted
+#21=ftp 11371=keyserver
+#-A newTCPout -p tcp -m multiport --dports 21,11371 -j accepted
 -A newTCPout -p tcp -m multiport --dports 80,443 -j accepted
 -A newTCPout -p tcp -m multiport --dports 802,46802 -j accepted
 -A newTCPout -p tcp --dport 22 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
@@ -67,6 +74,9 @@
 #
 #plaintext git (eg. from pacman source=git:// or git+git:// eg. gstreamer-git package) 
 -A newTCPout -p tcp --dport 9418 -j accepted
+
+#vnc to lcompaq
+-A newTCPout -p tcp --dport 5900 -d 192.168.1.222 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted
 #XXX: not really needed:
 -A newTCPout -j rejected
 
@@ -161,7 +171,7 @@
 #log less:
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j ACCEPT
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -p icmp -j estaICMPin
-
+#ftp: -A INPUT -p tcp --sport 20 -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 # Drop invalid packets
 -A INPUT -m conntrack --ctstate INVALID -j dropped
@@ -219,6 +229,10 @@
 -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED ! -p icmp -j ACCEPT
 
 -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -p icmp -j estaICMPout
+
+#ftp passive? https://www.devops-blog.net/iptables/iptables-settings-for-outgoing-ftp
+#-A OUTPUT -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISHED,RELATED -j accepted
+#FIXME: I might need module: ip_conntrack and ip_conntrack_ftp  loaded!
 
 -A OUTPUT -p udp -m conntrack --ctstate NEW -j newUDPout
 -A OUTPUT -p tcp --syn -m conntrack --ctstate NEW -j newTCPout

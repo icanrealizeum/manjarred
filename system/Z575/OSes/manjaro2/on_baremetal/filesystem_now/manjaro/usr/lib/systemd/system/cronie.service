@@ -2,7 +2,7 @@
 Description=Periodic Command Scheduler
 
 [Service]
-ExecStart=/usr/bin/crond -n -s
+ExecStart=/usr/bin/crond -n
 ExecReload=/usr/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=always
