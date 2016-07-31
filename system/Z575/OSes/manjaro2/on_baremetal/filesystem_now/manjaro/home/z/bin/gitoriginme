@@ -3,7 +3,9 @@
 echo "Before:" |grep -i before
 git remote -v show
 
-repo="$1"
+#XXX: the repo should be lowercase! at least on notabug.org! github however allows any case! so lowercase works! - tested!
+#src: https://stackoverflow.com/questions/2264428/converting-string-to-lower-case-in-bash-shell-scripting/2264537#2264537
+repo="${1,,}"
 if test -z "$1" -o "$#" -gt "1"; then
   echo "Too many args or none given: '$@'. Pass a repo name!"
   exit 1

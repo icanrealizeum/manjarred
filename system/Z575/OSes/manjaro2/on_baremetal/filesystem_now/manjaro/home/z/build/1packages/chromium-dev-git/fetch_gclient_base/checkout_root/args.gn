@@ -198,7 +198,8 @@ enable_basic_printing = false #Default = true
 #    //build/config/features.gni:113
 #    Enable basic printing support and UI.
 
-enable_blimp = false #Default = false
+#XXX: build arg has no effect
+#enable_blimp = false #Default = false
 #    //blimp/client/core/BUILD.gn:13
 #    Enables blimp. This is required to get the real implementation of blimp.
 #    By default, only a dummy-implementation is provided.
@@ -746,7 +747,8 @@ ozone_platform_caca = false #Default = false
 ozone_platform_cast = false #Default = false
 #    //ui/ozone/ozone.gni:26
 
-ozone_platform_egltest = false #Default = false
+#XXX: build argument has no effect
+#ozone_platform_egltest = false #Default = false
 #    //ui/ozone/ozone.gni:27
 
 ozone_platform_gbm = false #Default = false
@@ -755,7 +757,8 @@ ozone_platform_gbm = false #Default = false
 ozone_platform_headless = false #Default = false
 #    //ui/ozone/ozone.gni:30
 
-ozone_platform_ozonex = false #Default = false
+#XXX: build arg has no effect
+#ozone_platform_ozonex = false #Default = false
 #    //ui/ozone/ozone.gni:29
 
 ozone_platform_wayland = false #Default = false
@@ -893,7 +896,8 @@ rtc_include_opus = false #Default = true
 #    //third_party/webrtc/build/webrtc.gni:16
 #    Disable this to avoid building the Opus audio codec.
 
-rtc_include_tests = false #Default = false
+#XXX: build arg has no effect
+#rtc_include_tests = false #Default = false
 #    //third_party/webrtc/build/webrtc.gni:65
 
 rtc_initialize_ffmpeg = false #Default = false
