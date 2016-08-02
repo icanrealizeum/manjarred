@@ -856,8 +856,8 @@
       * look into using thunderbird on host instead!
         * maybe keep datadir inside a tcplay container?
 
-* get rust
-  * get git rust
+- get rust
+  - get git rust
     * make it work with non-default ./configure options
       \ https://github.com/rust-lang/rust/issues/28947
       * ok, compile a rust stage0 with llvm 3.8.0 (llvm-9999) with --disable-debuginfo
@@ -992,28 +992,30 @@
 
 * rustbook
   * find out if cargo has a debug mode (arg?), or how do those debug! macros work?
+    \ cargo is in debug mode unless passing --release
+    \ unsure about debug! macros yet!
   * read from 5: https://doc.rust-lang.org/nightly/book/syntax-and-semantics.html
     \ currently next: https://doc.rust-lang.org/nightly/book/enums.html
   * then read from 4: https://doc.rust-lang.org/nightly/book/learn-rust.html
   * then read 6: https://doc.rust-lang.org/nightly/book/nightly-rust.html
   * read: https://doc.rust-lang.org/nightly/std/fmt/
   * check this: https://nbaksalyar.github.io/2015/11/09/rust-in-detail-2.html
-  * this https://play.rust-lang.org needs to have a way to set RUST_BACKTRACE
+  - this was done once, but since ported to .rs it's not implemented anymore//this https://play.rust-lang.org needs to have a way to set RUST_BACKTRACE
     \ eg. https://play.rust-lang.org/?code=fn%20main%28%29%20{%0A%20%20%20%20fn%20diverges%28%29%20-%3E%20!%20{%0A%20%20%20%20%20%20%20panic!%28%22This%20function%20never%20returns!%22%29%3B%0A%20%20%20%20}%0A%20%20%20%20let%20x%3A%20i32%20%3D%20diverges%28%29%3B%0A%20%20%20%20let%20x%3A%20String%20%3D%20diverges%28%29%3B%0A%20%20%20%20%0A}%0A&version=nightly 
     \ see: https://github.com/rust-lang/rust-playpen/issues/119
     \
     \ see this line: https://github.com/rust-lang/rust-playpen/blob/master/web.py#L115
     \ unsure how to add an environment there, at this time. or maybe just in that compile.sh script!
-
-  * find a way to make copy/pasting work in rust-playpen without `dom.event.clipboardevents.enabled` having to be true  see: https://github.com/rust-lang/rust-playpen/issues/69
+  - nevermind this//find a way to make copy/pasting work in rust-playpen without `dom.event.clipboardevents.enabled` having to be true  see: https://github.com/rust-lang/rust-playpen/issues/69
   * autoformat rust code on filesave (get rustfmt command and see this rust.vim PR)
     \ https://github.com/rust-lang/rust.vim/pull/49/files
     * see who has rustfmt ?
     * get that PR locally, on ./upd
       \ dno what I meant by upd
       \ this PR: https://github.com/rust-lang/rust.vim/pull/49/files
+  * read: https://ricardomartins.cc/2016/06/08/interior-mutability
 
-* emerge libreoffice-9999
+- emerge libreoffice-9999
   \ https://bugs.gentoo.org/show_bug.cgi?id=567926
 
 - didn't have xmodmap command thus far, maybe that's why less was failing with certain keys!
