@@ -52,7 +52,12 @@ ac_add_options --enable-system-sqlite
 ac_add_options --enable-system-ffi
 
 # Features
-ac_add_options --enable-startup-notification
+#ac_add_options --enable-startup-notification
+#^ bad because #if defined(MOZ_ENABLE_STARTUP_NOTIFICATION)
+# if (mIsX11Display) {
+# in a static function, but that field is part of a class!
+#so,  0:42.98 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/widget/gtk/nsWindow.cpp:1352:9: error: ‘mIsX11Display’ was not declared in this scope
+
 
 ac_add_options --disable-crashreporter
 ac_add_options --disable-updater
@@ -91,11 +96,16 @@ ac_add_options --disable-gio
 #ac_add_options --disable-gconf
 ac_add_options --disable-libproxy
 ac_add_options --disable-gnomeui
-ac_add_options --disable-dbus #!!!!
+#14:10.76 Notification center failed: Install the python dbus module to get a notification when the build finishes.
+#ac_add_options --disable-dbus #!!!!
+ac_add_options --enable-dbus #!!!!
 ac_add_options --disable-websms-backend
 ac_add_options --disable-dbm #!!!!
 ac_add_options --disable-accessibility
-ac_add_options --disable-webrtc
+
+# 0:26.05 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/media/webrtc/MediaEngineCameraVideoSource.h:14:53: fatal error: webrtc/video_engine/include/vie_capture.h: No such file or directory
+#ac_add_options --disable-webrtc
+ac_add_options --enable-webrtc
 
 
 #can't disable this because compilation error

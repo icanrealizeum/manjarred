@@ -20,6 +20,7 @@ depends=('gtk2'
          #'nss>=3.26'
          'hunspell' 'sqlite')
 makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
+             #'python2-dbus' # 6:07.59 Notification center failed: Install the python dbus module to get a notification when the build finishes.  # ok this does nothing! except not show me this message!
              #disabled pgo: 'xorg-server-xvfb'
              'libpulse' 'gst-plugins-base-libs'
 #src: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
@@ -46,7 +47,7 @@ source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
 #        "$patch1"
         )
 sha256sums=('SKIP'
-            '115be91ddf725f790985a7869e530a75c91a06458b6988784d2217f6b6723072'
+            'd21b57b067d2917668f160a200f68b87a7601fe7b52698af7a546e75969ccc03'
             'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
             '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
             '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256')
@@ -114,9 +115,11 @@ build() {
 package() {
   cd "${_hgfolder}"
 
-#oldway:  make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
-#newway:
-  ./mach -v DESTDIR="$pkgdir" INSTALL_SDK= install
+#oldway: (this restarts the whole build process, wtf?) make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
+#newway:#doesn't work(destdir!)!  ./mach -v DESTDIR="$pkgdir" INSTALL_SDK= install
+  export DESTDIR="$pkgdir"
+  export INSTALL_SDK=
+  ./mach -v install
 
   #TODO: add my default values for a bunch of about:config settings in this:
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
