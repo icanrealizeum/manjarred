@@ -5,7 +5,7 @@
 # Contributor: Jakub Schmidtke <sjakub@gmail.com>
 
 pkgname=firefox-hg
-pkgver=307758+.6608e5864780+
+pkgver=307967+.de6fd5bb93d2+
 pkgrel=1
 pkgdesc="Latest firefox browser built from the trunk code"
 arch=('i686' 'x86_64')
@@ -36,6 +36,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
              'upower: Battery API')
 install=firefox.install
 #patch1='911546_good.patch'
+patch2='debug_exclude_3_files.patch'
 #options=('!emptydirs' '!makeflags')
 _hgfolder="$pkgname"
 #source=('hg+http://hg.mozilla.org/mozilla-central'
@@ -45,12 +46,14 @@ source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
         'vendor.js'
         'firefox-install-dir.patch'
 #        "$patch1"
+        "$patch2"
         )
 sha256sums=('SKIP'
-            'd21b57b067d2917668f160a200f68b87a7601fe7b52698af7a546e75969ccc03'
+            '33f1f2d81a502e15e6b3aa98b673f8784d41b003c252e3a3a9d0afe2325bc85f'
             'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
             '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
-            '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256')
+            '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256'
+            '32b5bf22a2869103222a7de9bb5fcc5c8cc253786c3f7e9e9ff5867f866bf0bf')
 #_pgo=1 # set to 0 to disable
 
 pkgver() {
@@ -66,6 +69,7 @@ prepare() {
 
   patch -Np1 -i "${srcdir}/firefox-install-dir.patch"
 #  patch -Np1 -i "${srcdir}/${patch1}"
+  patch -Np1 -i "${srcdir}/${patch2}"
 
   # https://bugs.archlinux.org/task/41689
 #  patch -Np2 -i ../rhbz-966424.patch

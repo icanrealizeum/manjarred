@@ -1,0 +1,23 @@
+these aren't compiled for some reason, when debug
+but install wants them, so fail!
+
+diff -r 6608e5864780 browser/installer/package-manifest.in
+--- a/browser/installer/package-manifest.in	Tue Aug 02 17:47:47 2016 +0200
++++ b/browser/installer/package-manifest.in	Wed Aug 03 15:53:10 2016 +0300
+@@ -565,11 +565,11 @@
+ @RESPATH@/components/MozKeyboard.js
+ @RESPATH@/components/InputMethod.manifest
+ 
+-#ifdef MOZ_DEBUG
+-@RESPATH@/components/TestInterfaceJS.js
+-@RESPATH@/components/TestInterfaceJS.manifest
+-@RESPATH@/components/TestInterfaceJSMaplike.js
+-#endif
++;#ifdef MOZ_DEBUG
++;//@RESPATH@/components/TestInterfaceJS.js
++;//@RESPATH@/components/TestInterfaceJS.manifest
++;//@RESPATH@/components/TestInterfaceJSMaplike.js
++;//#endif
+ 
+ @RESPATH@/components/PACGenerator.js
+ @RESPATH@/components/PACGenerator.manifest
