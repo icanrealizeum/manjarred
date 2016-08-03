@@ -551,4 +551,6 @@ export RUST_SRC_PATH=~/"build/1nonpkgs/rust/rust/src"
 
 #attempt:don't autoload some system packages placed plugins! - this doesn't work
 export MOZ_PLUGIN_PATH="/$RANDOM" #tried: /
+#^ but this is the default:export MOZ_PLUGIN_PATH="/usr/lib/mozilla/plugins", supposedly, when mozilla-common package is installed!
+
 

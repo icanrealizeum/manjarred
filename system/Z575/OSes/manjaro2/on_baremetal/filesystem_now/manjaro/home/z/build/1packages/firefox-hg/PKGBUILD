@@ -1,0 +1,148 @@
+# $Id$
+# Maintainer: Naoki Kawakami <nkawakami atto parallels dotto com>
+# Contributor: Alex Talker
+# Contributor: Ionut Biru <ibiru@archlinux.org>
+# Contributor: Jakub Schmidtke <sjakub@gmail.com>
+
+pkgname=firefox-hg
+pkgver=307758+.6608e5864780+
+pkgrel=1
+pkgdesc="Latest firefox browser built from the trunk code"
+arch=('i686' 'x86_64')
+license=('MPL' 'GPL' 'LGPL')
+url="https://www.mozilla.org/firefox/"
+conflicts=('firefox')
+depends=('gtk2'
+##'mozilla-common' #no because this sets this: export MOZ_PLUGIN_PATH="/usr/lib/mozilla/plugins"
+'libxt' 'startup-notification' 'mime-types'
+         'dbus-glib' 'alsa-lib' 'desktop-file-utils' 'hicolor-icon-theme'
+         'libvpx' 'icu' 'libevent' 
+         #'nss>=3.26'
+         'hunspell' 'sqlite')
+makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
+             #disabled pgo: 'xorg-server-xvfb'
+             'libpulse' 'gst-plugins-base-libs'
+#src: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Linux_Prerequisites
+'gtk2' 'libxt' 'dbus-glib' 'gcc>=4.8'
+             'freetype2>2.1.0' 'pkg-config>=0.9.0' 'libnotify' 'libidl2'
+#old             'iw' 'alsa-lib' 'curl' these are probably not needed?
+
+             'ccache>=3.2.0' #it must support -fprofile-generate or else cache misses! 3.1.9 the git version works, but not the 3.1.9 non-git which is current now.
+             'inetutils' 'mercurial' 'autoconf2.13' 'nss>=3.19.1' 'nspr>=4.10.8' 'libpng>=1.6.17')
+optdepends=('networkmanager: Location detection via available WiFi networks'
+            'gst-plugins-good: h.264 video'
+            'gst-libav: h.264 video'
+             'upower: Battery API')
+install=firefox.install
+#patch1='911546_good.patch'
+#options=('!emptydirs' '!makeflags')
+_hgfolder="$pkgname"
+#source=('hg+http://hg.mozilla.org/mozilla-central'
+source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
+        'mozconfig'
+        'firefox.desktop'
+        'vendor.js'
+        'firefox-install-dir.patch'
+#        "$patch1"
+        )
+sha256sums=('SKIP'
+            '115be91ddf725f790985a7869e530a75c91a06458b6988784d2217f6b6723072'
+            'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
+            '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
+            '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256')
+#_pgo=1 # set to 0 to disable
+
+pkgver() {
+  cd "${_hgfolder}"
+  echo $(hg identify -n).$(hg identify -i)
+}
+
+prepare() {
+  cd "${_hgfolder}"
+
+  #not .mozconfig anymore, src: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Configuring_Build_Options
+  cp -L -- "${srcdir}/mozconfig" mozconfig
+
+  patch -Np1 -i "${srcdir}/firefox-install-dir.patch"
+#  patch -Np1 -i "${srcdir}/${patch1}"
+
+  # https://bugs.archlinux.org/task/41689
+#  patch -Np2 -i ../rhbz-966424.patch
+
+#  [[ -d "$srcdir/path" ]] || mkdir "$srcdir/path"
+
+  # WebRTC build tries to execute "python" and expects Python 2
+#  [[ -L "$srcdir/path/python" ]] || ln -s /usr/bin/python2 "$srcdir/path/python"
+
+  # configure script misdetects the preprocessor without an optimization level
+  # https://bugs.archlinux.org/task/34644
+#  sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
+
+
+}
+
+build() {
+  cd "${_hgfolder}"
+
+#  export PATH="$srcdir/path:$PATH" #not in prepare() so...
+  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/firefox"
+  export PYTHON="/usr/bin/python2"
+  export MOZ_MAKE_FLAGS="$MAKEFLAGS"
+  unset CPPFLAGS
+
+# PGO will result in double compilation - disabled for now(due to a note in mozconfig that it'd lockup the build!)
+# http://en.wikipedia.org/wiki/Profile-guided_optimization
+# https://developer.mozilla.org/en/docs/Building_with_Profile-Guided_Optimization
+  # Do PGO
+#  if [[ $CARCH = x86_64 ]] && [[ $_pgo = 1 ]]; then
+#    msg2 'PGO build is selected'
+#    xvfb-run -a -s "-extension GLX -screen 0 1280x1024x24" \
+#    make -f client.mk profiledbuild
+#  else
+#    msg2 'Non-PGO build is selected or your architecture is not x86_64'
+#    make -f client.mk build
+#  fi
+
+  if ! ./mach -v build -v; then
+    kill $!
+    return 1
+  fi
+
+  kill $! || true
+}
+
+package() {
+  cd "${_hgfolder}"
+
+#oldway:  make -f client.mk DESTDIR="$pkgdir" INSTALL_SDK= install
+#newway:
+  ./mach -v DESTDIR="$pkgdir" INSTALL_SDK= install
+
+  #TODO: add my default values for a bunch of about:config settings in this:
+  install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
+
+  for i in 16 32 48; do
+      install -Dm644 browser/branding/unofficial/default$i.png \
+        "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
+  done
+  install -Dm644 browser/branding/unofficial/content/icon64.png \
+    "$pkgdir/usr/share/icons/hicolor/64x64/apps/firefox.png"
+  install -Dm644 browser/branding/unofficial/mozicon128.png \
+    "$pkgdir/usr/share/icons/hicolor/128x128/apps/firefox.png"
+  install -Dm644 browser/branding/unofficial/content/about-logo.png \
+    "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
+  install -Dm644 browser/branding/unofficial/content/about-logo@2x.png \
+    "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
+
+  install -Dm644 ../firefox.desktop \
+    "$pkgdir/usr/share/applications/firefox.desktop"
+
+  # Use system-provided dictionaries
+  rm -rf "$pkgdir"/usr/lib/firefox/{dictionaries,hyphenation}
+  ln -s /usr/share/hunspell "$pkgdir/usr/lib/firefox/dictionaries"
+  ln -s /usr/share/hyphen "$pkgdir/usr/lib/firefox/hyphenation"
+
+  #workaround for now
+  #https://bugzilla.mozilla.org/show_bug.cgi?id=658850
+  ln -sf firefox "$pkgdir/usr/lib/firefox/firefox-bin"
+}
