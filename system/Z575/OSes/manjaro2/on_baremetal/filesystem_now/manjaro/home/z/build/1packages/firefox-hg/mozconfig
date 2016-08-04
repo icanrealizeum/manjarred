@@ -9,7 +9,7 @@ ac_add_options --enable-application=browser
 
 #default:
 ac_add_options --enable-optimize
-#ac_add_options --enable-optimize=-O2
+ac_add_options --enable-optimize=-O2
 
 # https://developer.mozilla.org/en-US/docs/Configuring_Build_Options
 #XXX: no debug from gentoo
@@ -86,47 +86,50 @@ ac_add_options --disable-updater
 #/home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/js/src/vm/Compression.cpp:112:32: error: ‘__msan_unpoison’ was not declared in this scope
 #ac_add_options --enable-memory-sanitizer
 
-#ac_add_options --disable-profiling
-#ac_add_options --disable-systrace
-#ac_add_options --disable-valgrind
-#ac_add_options --disable-jprof
+ac_add_options --disable-profiling
+ac_add_options --disable-systrace
+ac_add_options --disable-valgrind
+ac_add_options --disable-jprof
 # 0:10.30 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-shark
 #ac_add_options --disable-shark
-#ac_add_options --disable-instruments
-#ac_add_options --disable-callgrind
-#ac_add_options --disable-vtune
-#ac_add_options --disable-cpp-rtti
+ac_add_options --disable-instruments
+ac_add_options --disable-callgrind
+ac_add_options --disable-vtune
+ac_add_options --disable-cpp-rtti
 ac_add_options --enable-gold
 #--with-pthreads
-#ac_add_options --disable-dtrace
+ac_add_options --disable-dtrace
 ac_add_options --with-x
-#ac_add_options --disable-printing
+ac_add_options --disable-printing
 #mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gnomevfs
 #ac_add_options --disable-gnomevfs
-#ac_add_options --disable-gio
+ac_add_options --disable-gio
 #ac_add_options --disable-gconf
-#ac_add_options --disable-libproxy
-#ac_add_options --disable-gnomeui
+ac_add_options --disable-libproxy
+ac_add_options --disable-gnomeui
 
 #this is optional tho:14:10.76 Notification center failed: Install the python dbus module to get a notification when the build finishes.
 #ac_add_options --disable-dbus #!!!!
-#ac_add_options --enable-dbus #!!!!
+ac_add_options --enable-dbus #!!!!
 
-#ac_add_options --disable-websms-backend
-#ac_add_options --disable-dbm #!!!!
-#ac_add_options --disable-accessibility
+ac_add_options --disable-websms-backend
+ac_add_options --disable-dbm #!!!!
+ac_add_options --disable-accessibility
 
 # 0:26.05 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/media/webrtc/MediaEngineCameraVideoSource.h:14:53: fatal error: webrtc/video_engine/include/vie_capture.h: No such file or directory
 #ac_add_options --disable-webrtc
-#ac_add_options --enable-webrtc
+ac_add_options --enable-webrtc
 
 
 #can't disable this because compilation error
 #WebIDL.WebIDLError: error: Unresolved type '<unresolved scope>::SpeechSynthesis'., /home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/obj-x86_64-unknown-linux-gnu/dom/bindings/Window.webidl line 231:68
-#ac_add_options --disable-webspeech
+#Compile without clean(from commented out to uncommented):
+# 1:58.81 WebIDL.WebIDLError: error: Unresolved type '<unresolved scope>::SpeechSynthesis'., /tmp/obj-x86_64-pc-linux-gnu/dom/bindings/Window.webidl line 262:68
+# 1:58.81   [Throws, Pref="media.webspeech.synth.enabled"] readonly attribute SpeechSynthesis speechSynthesis;
+ac_add_options --disable-webspeech
 
 #ac_add_options --enable-raw
-#ac_add_options --disable-raw
+ac_add_options --disable-raw
 
 #can't disable this because compilation error:
 #/home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/content/media/ogg/OggWriter.h:10:30: fatal error: OpusTrackEncoder.h: No such file or directory
@@ -143,13 +146,13 @@ ac_add_options --with-x
 
 
 
-#ac_add_options --disable-directshow
-#ac_add_options --disable-wmf
+ac_add_options --disable-directshow
+ac_add_options --disable-wmf
 #ac_add_options --disable-ffmpeg
-#ac_add_options --enable-ffmpeg
+ac_add_options --enable-ffmpeg
 #ac_add_options --disable-fmp4
 #XXX: mozbuild.configure.options.InvalidOptionError: '--enable-fmp4' implied by '--enable-ffmpeg' conflicts with '--disable-fmp4' from the mozconfig
-#ac_add_options --enable-fmp4
+ac_add_options --enable-fmp4
 
 
 #can't disable this or else compilation error:
@@ -161,15 +164,15 @@ ac_add_options --with-x
 #ac_add_options --disable-media-navigator
 
 
-#ac_add_options --disable-omx-plugin
+ac_add_options --disable-omx-plugin
 #unknown option:
 #ac_add_options --disable-wave
 
 #ac_add_options --enable-alsa
-#ac_add_options --disable-alsa
+ac_add_options --disable-alsa
 
 
-#ac_add_options --enable-pulseaudio
+ac_add_options --enable-pulseaudio
 #ac_add_options --disable-pulseaudio
 
 #ac_add_options --enable-gstreamer
@@ -197,12 +200,12 @@ ac_add_options --with-x
 
 #ac_add_options --disable-libjpeg-turbo
 #ac_add_options --enable-tree-freetype
-#ac_add_options --disable-webapp-runtime
+ac_add_options --disable-webapp-runtime
 ac_add_options --disable-maintenance-service
-#ac_add_options --disable-bundled-fonts
-#ac_add_options --disable-verify-mar
-#ac_add_options --disable-signmar
-#ac_add_options --disable-parental-controls
+ac_add_options --disable-bundled-fonts
+ac_add_options --disable-verify-mar
+ac_add_options --disable-signmar
+ac_add_options --disable-parental-controls
 ac_add_options --enable-sandbox
 ac_add_options --enable-content-sandbox
 
@@ -223,8 +226,8 @@ ac_add_options --enable-safe-browsing
 #ac_add_options --enable-mobile-optimize
 #unknown option:
 #ac_add_options --disable-logging
-#ac_add_options --disable-logrefcnt
-#ac_add_options --disable-dump-painting
+ac_add_options --disable-logrefcnt
+ac_add_options --disable-dump-painting
 #unknown option:
 #ac_add_options --disable-trace-malloc
 
@@ -242,20 +245,18 @@ ac_add_options --enable-safe-browsing
 #not needed, unless it fails at some point
 #ac_add_options --disable-elf-hack
 
-#ac_add_options --disable-tasktracer
+ac_add_options --disable-tasktracer
 #unknown option:
 #ac_add_options --disable-visual-event-tracer
-#ac_add_options --disable-stdcxx-compat
+ac_add_options --disable-stdcxx-compat
 
 ac_add_options --disable-startupcache
-#or else:  0:08.52 /tmp/obj-x86_64-pc-linux-gnu/dist/bin/xpcshell: /usr/lib/firefox/libxul.so: version `xul51a1' not found (required by /tmp/obj-x86_64-pc-linux-gnu/dist/bin/xpcshell)
 
-
-#ac_add_options --disable-b2g-ril
-#ac_add_options --disable-b2g-bt
-#ac_add_options --disable-nfc
-#ac_add_options --disable-synth-pico
-#ac_add_options --disable-b2g-camera
+ac_add_options --disable-b2g-ril
+ac_add_options --disable-b2g-bt
+ac_add_options --disable-nfc
+ac_add_options --disable-synth-pico
+ac_add_options --disable-b2g-camera
 
 #says invalid option, odd:
 #ac_add_options --jitreport-granularity=0
@@ -268,7 +269,7 @@ ac_add_options --disable-startupcache
 
 #ac_add_options --enable-system-cairo
 #XXX: not-system-cairo from gentoo
-#ac_add_options --disable-system-cairo
+ac_add_options --disable-system-cairo
 ac_add_options --enable-system-pixman
 
 #//old: trying to avoid a compilation error XPIDL_MODULE cannot be defined unless there are XPIDL_SOURCES
@@ -283,11 +284,11 @@ ac_add_options --enable-system-pixman
 ac_add_options --disable-necko-wifi
 #ac_add_options --disable-cookies
 
-#ac_add_options --disable-ctypes
+ac_add_options --disable-ctypes
 
 #XXX: system-icu from gentoo
 ac_add_options --with-system-icu
-#ac_add_options --without-intl-api
+ac_add_options --without-intl-api
 
 
 #tisdone: must update ccache or else -fprofile-generate  is not recognized and thus not ccached! >3.1.9  >=3.2.0 to be sure!
@@ -309,11 +310,13 @@ mk_add_options PYTHON=/usr/bin/python2
 mk_add_options MOZ_MAKE_FLAGS="-j4"
 
 
-#this seems useless! because if I delete MOZ_OBJDIR it will ccache miss everything basically; ok nevermind, it seems to work now - reran after successful compile and it does get hundreds of hits!
+#this seems useless! because if I delete MOZ_OBJDIR it will ccache miss everything basically; ok nevermind, it seems to work now - reran after successful compile and it does get hundreds of hits!  ok, after make clean, ccache misses all the time!! wtf is this?! r u friggin' kidding me!!!!(and I haven't updated anything in mercurial! eg. ran ./2 not ./1 and ./2) - well, ok, this might be because this variant was never cached(only a few files at the end, if even that)!! soooo... my bad then! assume ccache works! actually, you know what? I just make clean again after 21mins, hit ./2  and now we'll see if ccache hits!!! so, from 258444 to 258474 after configure and then to 258779 and it's been 14mins already(took 71mins+those 21min=92min total))! so I'm not sure it qualifies! but no worries, I'll make clean after it's done and ./2 to see if ccache works! wait... ok so during export cache misses, 259201 of hits atm...now it's compile and it cache hits(but also misses some)! thank god! finished at 261359 hits in 12m30s.; ok now, make clean again, put a new mozconfig with two options changed(extensions stuff not disabled), and cache misses (at 261392 hits now - no change lately) been 21mins.
 ac_add_options --with-ccache=/usr/bin/ccache
 
 
 #src: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Build_Instructions/Configuring_Build_Options
 mk_add_options MOZ_OBJDIR=/tmp/obj-@CONFIG_GUESS@
 
+ac_add_options --enable-rust
+#^ src: https://developer.mozilla.org/en-US/Firefox/Building_Firefox_with_Rust_code
 # vim:set ft=sh:
