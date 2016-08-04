@@ -3,8 +3,9 @@
 #2+ times ssh
 
 k=~/.../T400/koe
-chmod u+r -- "$k"
-(sleep 10 && chmod u-r -- "$k") &
+#chmod stuff disabled for use with distcc from /etc/makepkg.conf
+#chmod u+r -- "$k"
+#(sleep 10 && chmod u-r -- "$k") &
 ssh -i "$k" -p 802 -l root lmighty4
 #-v
 

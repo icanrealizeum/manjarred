@@ -445,6 +445,26 @@
   * sudo pacman -Rs reiserfsprogs
   * sudo pacman -Rs pamac
     * cd /etc && sudo mv pamac.conf.pacsave pamac.conf
+  * setup distcc with 3mighty4
+    \ src: https://wiki.archlinux.org/index.php/Distcc
+    * sudo pacman -S distcc
+    * sudo vim /etc/conf.d/distccd
+      \ DISTCC_ARGS="--allow 192.168.0.0/24"
+    * sudo systemctl enable distccd.service
+    * sudo systemctl start distccd.service
+    * pacman
+      * sudo vim /etc/makepkg.conf
+        \ in BUILDENV, ensure distcc is not !distcc
+        \ Uncomment the DISTCC_HOSTS line and add the IP address of 3mighty4 aka 192.168.1.233 then a slash and the number of threads they are to use. The subsequent IP address/threads should be separated by a white space. This list is ordered from most powerful to least powerful (processing power).
+        \ If users wish to use distcc through SSH, add an "@" symbol in front of the IP address in this section. - so add that, since we have this!
+        \
+        \ so: DISTCC_HOSTS="@192.168.1.233/2"
+        * you must set DISTCC_SSH !
+          \ ie. DISTCC_SSH="ssh -i \"/home/z/.../T400/koe\" -p 802 -l root"
+    * monitoring:
+      \ time watch -n5 -d distccmon-text
+
+
 
 
 

@@ -321,6 +321,24 @@
       \ add these two lines (presumably the entries don't already exist!)
       \ DefaultTimeoutStartSec=30s
       \ DefaultTimeoutStopSec=30s
+  * setup distcc with 4myzee
+    \ src: https://wiki.archlinux.org/index.php/Distcc
+    * sudo pacman -S distcc
+    * sudo vim /etc/conf.d/distccd
+      \ DISTCC_ARGS="--allow 192.168.0.0/24"
+    * sudo systemctl enable distccd.service
+    * sudo systemctl start distccd.service
+    * pacman
+      * sudo vim /etc/makepkg.conf
+        \ in BUILDENV, ensure distcc is not !distcc
+        \ Uncomment the DISTCC_HOSTS line and add the IP address of 4myzee aka 192.168.1.190 then a slash and the number of threads they are to use. The subsequent IP address/threads should be separated by a white space. This list is ordered from most powerful to least powerful (processing power).
+        \ If users wish to use distcc through SSH, add an "@" symbol in front of the IP address in this section. - so add that, since we have this!
+        \
+        \ so: DISTCC_HOSTS="@192.168.1.190/4"
+        * you must set DISTCC_SSH !
+          \ see 4myzee.wofl for an example
+    * monitoring:
+      \ time watch -n5 -d distccmon-text
 
 
 
