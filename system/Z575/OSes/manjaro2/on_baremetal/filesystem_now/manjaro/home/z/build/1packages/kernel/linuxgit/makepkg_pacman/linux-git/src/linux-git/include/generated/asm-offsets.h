@@ -40,9 +40,10 @@
 
 #define TI_flags 8 /* offsetof(struct thread_info, flags)	# */
 #define TI_status 12 /* offsetof(struct thread_info, status)	# */
-#define TI_addr_limit 24 /* offsetof(struct thread_info, addr_limit)	# */
 
-#define crypto_tfm_ctx_offset 80 /* offsetof(struct crypto_tfm, __crt_ctx)	# */
+#define TASK_addr_limit 2528 /* offsetof(struct task_struct, thread.addr_limit)	# */
+
+#define crypto_tfm_ctx_offset 64 /* offsetof(struct crypto_tfm, __crt_ctx)	# */
 
 #define pbe_address 0 /* offsetof(struct pbe, address)	# */
 #define pbe_orig_address 8 /* offsetof(struct pbe, orig_address)	# */

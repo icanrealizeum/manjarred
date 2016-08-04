@@ -553,4 +553,6 @@ export RUST_SRC_PATH=~/"build/1nonpkgs/rust/rust/src"
 export MOZ_PLUGIN_PATH="/$RANDOM" #tried: /
 #^ but this is the default:export MOZ_PLUGIN_PATH="/usr/lib/mozilla/plugins", supposedly, when mozilla-common package is installed!
 
+#distcc stuff, no need here(but ok in /etc/makepkg.conf):
+#DISTCC_SSH="ssh -i \"/home/z/.../T400/koe\" -p 802 -l root"
 

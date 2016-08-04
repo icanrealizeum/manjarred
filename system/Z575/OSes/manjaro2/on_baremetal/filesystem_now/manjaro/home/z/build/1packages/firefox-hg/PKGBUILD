@@ -5,7 +5,7 @@
 # Contributor: Jakub Schmidtke <sjakub@gmail.com>
 
 pkgname=firefox-hg
-pkgver=307968+.1576e7bc1bec+
+pkgver=308156+.0ba72e8027cf+
 pkgrel=1
 pkgdesc="Latest firefox browser built from the trunk code"
 arch=('i686' 'x86_64')
@@ -38,6 +38,10 @@ install=firefox.install
 #patch1='911546_good.patch'
 patch2='debug_exclude_3_files.patch'
 #options=('!emptydirs' '!makeflags')
+options=('!debug' '!ccache' 'distcc') #XXX: yep, man PKGBUILD confirms ccache distcc should be in options array!!!
+#BUILDENV=('!ccache') #oh don't use uppercase! it overrides /etc/makepkg.conf one! use lowercase it will merge!
+#BUILDENV=('!ccache' 'distcc')
+#buildenv=('!ccache' 'distcc') #not sure if this actually works; didn't work XXX: DON"T use these! use options array!
 _hgfolder="$pkgname"
 #source=('hg+http://hg.mozilla.org/mozilla-central'
 source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
@@ -49,7 +53,7 @@ source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
         "$patch2"
         )
 sha256sums=('SKIP'
-            'e264f30cd2711001557fac913936f28118704e8939d0034ddb28a238da37cc94'
+            '1b026447bcfdf51e2def152e7e862833c28848e7400a44d4a9d68c32c771bb66'
             'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
             '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
             '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256'
@@ -87,6 +91,7 @@ prepare() {
 }
 
 build() {
+  set|grep -i distcc
   cd "${_hgfolder}"
 
 #  export PATH="$srcdir/path:$PATH" #not in prepare() so...

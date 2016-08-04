@@ -325,7 +325,8 @@
     \ src: https://wiki.archlinux.org/index.php/Distcc
     * sudo pacman -S distcc
     * sudo vim /etc/conf.d/distccd
-      \ DISTCC_ARGS="--allow 192.168.0.0/24"
+      \ DISTCC_ARGS="--allow 127.0.0.1 --allow 192.168.0.0/24"
+      \ or else: Aug 04 20:16:38 myzee distccd[31102]: (dcc_check_client) ERROR: connection from client '127.0.0.1:38562' denied by access list
     * sudo systemctl enable distccd.service
     * sudo systemctl start distccd.service
     * pacman

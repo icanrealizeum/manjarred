@@ -22,7 +22,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.7.rc6.r0.ga99cde4
+pkgver=4.7.r11584.gc1ece76
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -31,7 +31,7 @@ KARCH="x86"
 url="https://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'pacman>4.1.2')
-options=('!strip')
+options=('!strip' '!ccache' 'distcc')
 
 manypatches=(
 "1700_enable-thinkpad-micled.patch::http://sources.gentoo.org/cgi-bin/viewvc.cgi/linux-patches/genpatches-2.6/trunk/3.15/1700_enable-thinkpad-micled.patch"

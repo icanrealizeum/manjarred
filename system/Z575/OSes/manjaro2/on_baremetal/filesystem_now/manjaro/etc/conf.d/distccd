@@ -1,0 +1,12 @@
+#
+# Parameters to be passed to distccd
+#
+# You must explicitly add IPs (or subnets) that are allowed to connect,
+# using the --allow switch.  See the distccd manpage for more info.
+#
+#DISTCC_ARGS="--allow 127.0.0.1 --allow 192.168.1.0/24 --log-file /tmp/distccd.log --log-level debug"
+DISTCC_ARGS="--allow 192.168.1.0/24 --log-file /tmp/distccd.log --log-level debug"
+#DISTCC_ARGS="--allow 192.168.0.0/24"
+#oh this is env var not here!!: DISTCC_LOG="/tmp/distccd.log"
+#XXX: has no effect here(should be in env!): DISTCC_SSH="ssh -i \"/home/z/.../T400/koe\" -p 802 -l root"
+
