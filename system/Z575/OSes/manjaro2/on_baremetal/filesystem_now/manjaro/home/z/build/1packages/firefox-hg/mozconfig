@@ -377,14 +377,39 @@ mk_add_options PYTHON=/usr/bin/python2
 #^ well wtf:  0:05.97 make: *** No rule to make target 'gcc''.  Stop.
 #src: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Mozilla_build_FAQ#Making_builds_faster
 #Ok, next, different way a' la: https://developer.mozilla.org/en-US/docs/Mozilla/Developer_guide/Using_Icecream
-export CC="distcc gcc"
-export CXX="distcc g++"
-export DISTCC_HOSTS="192.168.1.233/3 localhost/4"
-#mk_add_options MOZ_MAKE_FLAGS="-j6"
+#it just uses 4 cores locally, most of the time:
+#export CC="distcc gcc"
+#export CXX="distcc g++"
+#distcc isn't distributing because, slave says:
+#distccd[16478] (dcc_readx) ERROR: unexpected eof on fd5
+#distccd[16478] (dcc_r_token_int) ERROR: read failed while waiting for token "DOTI"
+#and local says:
+# 1:50.67 distcc[13126] ERROR: compile /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/pathsub.c on 192.168.1.233/3 failed with exit code 111
+# 1:50.67 distcc[13126] (dcc_build_somewhere) Warning: remote compilation of '/home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/pathsub.c' failed, retrying locally
+# 1:50.67 distcc[13126] Warning: failed to distribute /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/pathsub.c to 192.168.1.233/3, running locally instead
+# 1:50.67 distcc[13125] ERROR: compile /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/nsinstall.c on 192.168.1.233/3 failed with exit code 111
+# 1:50.67 distcc[13125] (dcc_build_somewhere) Warning: remote compilation of '/home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/nsinstall.c' failed, retrying locally
+# 1:50.67 distcc[13125] Warning: failed to distribute /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/nsinstall.c to 192.168.1.233/3, running locally instead
+# 1:50.91 distcc[13126] (dcc_please_send_email_after_investigation) Warning: remote compilation of '/home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/pathsub.c' failed, retried locally and got a different result.
+# 1:51.01 distcc[13125] (dcc_please_send_email_after_investigation) Warning: remote compilation of '/home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/config/nsinstall.c' failed, retried locally and got a different result.
+
+
+#export DISTCC_HOSTS="192.168.1.233/3 localhost/4"
+#^this isn't needed!
+##mk_add_options MOZ_MAKE_FLAGS="-j6"
 #ok, maybe we don't need the above at all! and let makepkg do this
 #I guess we do then?:  1:52.16 /usr/bin/ld: host_nsinstall.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a shared object; recompile with -fPIC
 # 1:52.16 host_nsinstall.o: error adding symbols: Bad value
 # 1:52.16 collect2: error: ld returned 1 exit status
+#let's see my way:
+#export CC="/usr/lib/distcc/bin/gcc"
+#export CXX="/usr/lib/distcc/bin/g++"
+#well...  1:46.65 Executing: /usr/lib/distcc/bin/gcc -std=gnu99 -o nsinstall_real -DXP_UNIX -MD -MP -MF .deps/nsinstall_real.pp -O2 -DDEBUG=1 -DTRACING=1 -D_UNICODE -DUNICODE host_nsinstall.o host_pathsub.o
+# 1:46.65 /usr/bin/ld: host_nsinstall.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a shared object; recompile with -fPIC
+#  1:46.65 host_nsinstall.o: error adding symbols: Bad value
+#1:46.65 collect2: error: ld returned 1 exit status
+mk_add_options MOZ_MAKE_FLAGS="-j5"
+
 
 
 #nevermind - ccache is good!//this seems useless! because if I delete MOZ_OBJDIR it will ccache miss everything basically; ok nevermind, it seems to work now - reran after successful compile and it does get hundreds of hits!  ok, after make clean, ccache misses all the time!! wtf is this?! r u friggin' kidding me!!!!(and I haven't updated anything in mercurial! eg. ran ./2 not ./1 and ./2) - well, ok, this might be because this variant was never cached(only a few files at the end, if even that)!! soooo... my bad then! assume ccache works! actually, you know what? I just make clean again after 21mins, hit ./2  and now we'll see if ccache hits!!! so, from 258444 to 258474 after configure and then to 258779 and it's been 14mins already(took 71mins+those 21min=92min total))! so I'm not sure it qualifies! but no worries, I'll make clean after it's done and ./2 to see if ccache works! wait... ok so during export cache misses, 259201 of hits atm...now it's compile and it cache hits(but also misses some)! thank god! finished at 261359 hits in 12m30s.; ok now, make clean again, put a new mozconfig with two options changed(extensions stuff not disabled), and cache misses (at 261392 hits now - no change lately) been 21mins.

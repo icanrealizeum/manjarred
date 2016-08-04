@@ -37,8 +37,9 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
 install=firefox.install
 #patch1='911546_good.patch'
 patch2='debug_exclude_3_files.patch'
+patch3='byebyeplugins_autoload.patch'
 #options=('!emptydirs' '!makeflags')
-options=('!debug' '!ccache' 'distcc') #XXX: yep, man PKGBUILD confirms ccache distcc should be in options array!!!
+options=('!debug' '!ccache' '!distcc') #XXX: yep, man PKGBUILD confirms ccache distcc should be in options array!!!
 #BUILDENV=('!ccache') #oh don't use uppercase! it overrides /etc/makepkg.conf one! use lowercase it will merge!
 #BUILDENV=('!ccache' 'distcc')
 #buildenv=('!ccache' 'distcc') #not sure if this actually works; didn't work XXX: DON"T use these! use options array!
@@ -51,13 +52,15 @@ source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
         'firefox-install-dir.patch'
 #        "$patch1"
         "$patch2"
+        "$patch3"
         )
 sha256sums=('SKIP'
-            '1b026447bcfdf51e2def152e7e862833c28848e7400a44d4a9d68c32c771bb66'
+            'd55afbb3a0cf5b88200020da4261a290ac3670bfb7cc1e72a7bad42523e2762b'
             'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
             '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
             '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256'
-            '32b5bf22a2869103222a7de9bb5fcc5c8cc253786c3f7e9e9ff5867f866bf0bf')
+            '32b5bf22a2869103222a7de9bb5fcc5c8cc253786c3f7e9e9ff5867f866bf0bf'
+            '277f4203880f13a75970a22e410e39a23c868e14f895e6af74443fe9ba356cac')
 #_pgo=1 # set to 0 to disable
 
 pkgver() {
@@ -74,6 +77,7 @@ prepare() {
   patch -Np1 -i "${srcdir}/firefox-install-dir.patch"
 #  patch -Np1 -i "${srcdir}/${patch1}"
   patch -Np1 -i "${srcdir}/${patch2}"
+  patch -Np1 -i "${srcdir}/${patch3}"
 
   # https://bugs.archlinux.org/task/41689
 #  patch -Np2 -i ../rhbz-966424.patch

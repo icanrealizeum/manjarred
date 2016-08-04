@@ -31,7 +31,10 @@ KARCH="x86"
 url="https://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'pacman>4.1.2')
-options=('!strip' '!ccache' 'distcc')
+options=('!strip' '!ccache' '!distcc')
+#so, distcc(and no ccache) works correctly when compiling this linuxgit (not so for firefox-hg though!)
+#XXX: using ccache AND distcc will make every compilation on slave(s) fail! due to including some ccache path that exists only on master(in ~/.ccache/*)
+#maybe search for this in man distcc: CCACHE_PREFIX="distcc"
 
 manypatches=(
 "1700_enable-thinkpad-micled.patch::http://sources.gentoo.org/cgi-bin/viewvc.cgi/linux-patches/genpatches-2.6/trunk/3.15/1700_enable-thinkpad-micled.patch"

@@ -1,0 +1,23 @@
+bye bye autoloaded plugins, like:
+/usr/lib/mozilla/plugins/libevbrowserplugin.so
+
+diff -r 0ba72e8027cf xpcom/io/nsAppFileLocationProvider.cpp
+--- a/xpcom/io/nsAppFileLocationProvider.cpp	Thu Aug 04 15:55:50 2016 +0200
++++ b/xpcom/io/nsAppFileLocationProvider.cpp	Fri Aug 05 01:27:08 2016 +0300
+@@ -187,13 +187,14 @@
+   else if (nsCRT::strcmp(aProp, NS_SYSTEM_PLUGINS_DIR) == 0) {
+ #ifdef ENABLE_SYSTEM_EXTENSION_DIRS
+     static const char* const sysLPlgDir =
+-#if defined(HAVE_USR_LIB64_DIR) && defined(__LP64__)
++      "/no-f-ing-plugins-firefox";
++/*#if defined(HAVE_USR_LIB64_DIR) && defined(__LP64__)
+       "/usr/lib64/mozilla/plugins";
+ #elif defined(__OpenBSD__) || defined (__FreeBSD__)
+       "/usr/local/lib/mozilla/plugins";
+ #else
+       "/usr/lib/mozilla/plugins";
+-#endif
++#endif*/
+     rv = NS_NewNativeLocalFile(nsDependentCString(sysLPlgDir),
+                                false, getter_AddRefs(localFile));
+ #else
