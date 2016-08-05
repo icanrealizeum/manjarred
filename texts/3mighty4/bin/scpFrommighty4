@@ -14,9 +14,9 @@ fi
 
 set -x
 k=~/.../T400/koe
-#chmod stuff disabled for use with distcc from /etc/makepkg.conf
-#chmod u+r -- "$k"
-#(sleep 10 && chmod u-r -- "$k") &
+#//chmod stuff disabled for use with distcc from /etc/makepkg.conf
+chmod u+r -- "$k"
+(sleep 10 && chmod u-r -- "$k") &
 time scp -i "$k" -vp4 -P 802 -r -- root@lmighty4:"$fromremotepath" "$tolocalpath"
 set +x
 
