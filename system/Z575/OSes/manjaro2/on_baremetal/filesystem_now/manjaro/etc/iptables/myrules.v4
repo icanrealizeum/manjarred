@@ -56,13 +56,13 @@
 #-A newTCPin -p tcp --dport 22 -j accepted
 #redundant: -A newTCPin -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW -j accepted
 #incoming distcc so they can compile on my machine
--A newTCPout -p tcp -s 192.168.1.0/24 --dport 3632 -j accepted
+#-A newTCPout -p tcp -s 192.168.1.0/24 --dport 3632 -j accepted
 #XXX: not really needed:
 -A newTCPin -j rejected
 
 #TODO: 
 #distcc on other machines
--A newTCPout -p tcp -d 192.168.1.0/24 --dport 3632 -j accepted
+#-A newTCPout -p tcp -d 192.168.1.0/24 --dport 3632 -j accepted
 #ftp:
 #-A newTCPout -p tcp --dport 21 -j accepted
 #21=ftp 11371=keyserver
