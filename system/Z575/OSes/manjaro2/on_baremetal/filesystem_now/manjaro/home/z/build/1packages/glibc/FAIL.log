@@ -1,3 +1,34 @@
+----2.23-5:
+gcc -Wl,-O1,--sort-common,--as-needed,-z,relro  -nostdlib -nostartfiles -r -o /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.os \
+ -Wl,-d -Wl,--whole-archive /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.a -o /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.os
+gcc -Wl,-O1,--sort-common,--as-needed,-z,relro  -nostdlib -nostartfiles -r -o /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/librtld.map.o '-Wl,-(' /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/dl-allobjs.os /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.a -lgcc '-Wl,-)' -Wl,-Map,/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/librtld.mapT
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.a(init-first.os):(.data+0x0): multiple definition of `__libc_multiple_libcs'
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/dl-allobjs.os:(.bss+0xf8): first defined here
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.a(libc_fatal.os): In function `__GI___libc_fatal':
+libc_fatal.c:(.text+0x380): multiple definition of `__GI___libc_fatal'
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/dl-allobjs.os:(.text+0x19000): first defined here
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.a(libc_fatal.os): In function `__GI___libc_fatal':
+libc_fatal.c:(.text+0x380): multiple definition of `__libc_fatal'
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/dl-allobjs.os:(.text+0x19000): first defined here
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc_pic.a(dl-addr.os): In function `_dl_addr_inside_object':
+dl-addr.c:(.text+0x300): multiple definition of `_dl_addr_inside_object'
+/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/dl-allobjs.os:(.text+0x14ee0): first defined here
+collect2: error: ld returned 1 exit status
+make[2]: *** [Makefile:342: /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/elf/librtld.map] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[2]: Leaving directory '/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc/elf'
+make[1]: *** [Makefile:214: elf/subdir_lib] Error 2
+make[1]: Leaving directory '/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc'
+make: *** [Makefile:9: all] Error 2
+==> ERROR: A failure occurred in build().
+    Aborting...
+
+real	22m19.727s
+user	17m20.155s
+sys	17m44.151s
+
+
+-----2.24:
 gcc ../sysdeps/x86_64/multiarch/strncase_l-ssse3.S -c  -U_FORTIFY_SOURCE -O2 -pipe -march=native --param=ssp-buffer-size=4  -Wno-trigraphs -fstack-protector-strong -fno-omit-frame-pointer -fPIC -fno-schedule-insns2 -fno-delete-null-pointer-checks  -I../include -I/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/string  -I/home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build  -I../sysdeps/unix/sysv/linux/x86_64/64  -I../sysdeps/unix/sysv/linux/x86_64  -I../sysdeps/unix/sysv/linux/x86  -I../sysdeps/unix/sysv/linux/wordsize-64  -I../sysdeps/x86_64/nptl  -I../sysdeps/unix/sysv/linux/include -I../sysdeps/unix/sysv/linux  -I../sysdeps/nptl  -I../sysdeps/pthread  -I../sysdeps/gnu  -I../sysdeps/unix/inet  -I../sysdeps/unix/sysv  -I../sysdeps/unix/x86_64  -I../sysdeps/unix  -I../sysdeps/posix  -I../sysdeps/x86_64/64  -I../sysdeps/x86_64/fpu/multiarch  -I../sysdeps/x86_64/fpu  -I../sysdeps/x86/fpu/include -I../sysdeps/x86/fpu  -I../sysdeps/x86_64/multiarch  -I../sysdeps/x86_64  -I../sysdeps/x86  -I../sysdeps/ieee754/ldbl-96  -I../sysdeps/ieee754/dbl-64/wordsize-64  -I../sysdeps/ieee754/dbl-64  -I../sysdeps/ieee754/flt-32  -I../sysdeps/wordsize-64  -I../sysdeps/ieee754  -I../sysdeps/generic  -I.. -I../libio -I. -nostdinc -isystem /usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include -isystem /usr/lib/gcc/x86_64-pc-linux-gnu/6.1.1/include-fixed -isystem /usr/include  -D_LIBC_REENTRANT -include /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/libc-modules.h -DMODULE_NAME=libc -include ../include/libc-symbols.h  -DPIC     -DASSEMBLER   -Werror=undef -Wa,--noexecstack   -o /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/string/strncase_l-ssse3.o -MD -MP -MF /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/string/strncase_l-ssse3.o.dt -MT /home/z/build/1packages/glibc/makepkg_pacman/glibc/src/glibc-build/string/strncase_l-ssse3.o
 ../sysdeps/x86_64/multiarch/memcpy-ssse3.S: Assembler messages:
 ../sysdeps/x86_64/multiarch/memcpy-ssse3.S:65: Error: operand type mismatch for `jb'
