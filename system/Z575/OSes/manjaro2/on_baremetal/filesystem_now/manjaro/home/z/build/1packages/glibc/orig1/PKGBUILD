@@ -5,51 +5,34 @@
 # NOTE: valgrind requires rebuilt with each major glibc version
 
 pkgname=glibc
-#pkgver=2.24
-#pkgrel=1
+pkgver=2.24
+pkgrel=1
 _commit=fdfc9260
-pkgver=2.23
-pkgrel=5
-_commit=1915d6d1
 pkgdesc="GNU C Library"
 arch=('i686' 'x86_64')
 url="http://www.gnu.org/software/libc"
 license=('GPL' 'LGPL')
 groups=('base')
-depends=('linux-api-headers>=4.1' 'tzdata' 'filesystem')
-makedepends=('gcc>=5.2' 'git')
-#nice try:depends=('linux-api-headers>=4.5.5' 'tzdata' 'filesystem')
-#depends=('linux-api-headers>=4.7' 'tzdata' 'filesystem')
-#makedepends=('gcc>=6' 'git')
+depends=('linux-api-headers>=4.7' 'tzdata' 'filesystem')
+makedepends=('gcc>=6' 'git')
 backup=(etc/gai.conf
         etc/locale.gen
         etc/nscd.conf)
 options=('!strip' 'staticlibs')
 install=glibc.install
-source=(
-git+https://sourceware.org/git/glibc.git#commit=${_commit}
-#git+https://sourceware.org/git/glibc.git
+source=(git://sourceware.org/git/glibc.git#commit=${_commit}
         locale.gen.txt
-        locale-gen
-        glibc.install)
+        locale-gen)
 md5sums=('SKIP'
          '07ac979b6ab5eeb778d55f041529d623'
-         '476e9113489f93b348b21e144b6a8fcf'
-         '658dc300daec50c2d331adbded1e5333')
-sha512sums=('SKIP'
-            '3d9facc6da5159dcd877473c8a4d77006ef5615e2619ef743255112bfa136baf65239367222e87e7ada823d5c7d747aa5204f8365a806141e5884477898ccd14'
-            'd92e6ba83ee86c3602e74c52bf5f99ca751f3867edb894dd22c179003cd58a1b4e11237a293a54fe126edafd5add78a65bf3368826b8bfa40451ee374e301961'
-            'c07de564d76a64939d8a31629a1bf5f461ecf4208d03780951a39165b1c8d7796142e9038ea313f84acccfe8e2ff373e8f4249662a4cafd481c5b10f1c9d76a8')
-
-
+         '476e9113489f93b348b21e144b6a8fcf')
 
 prepare() {
-  mkdir -p glibc-build
+  mkdir glibc-build
 }
 
 build() {
   cd glibc-build
-  make clean || true
 
   if [[ ${CARCH} = "i686" ]]; then
     # Hack to fix NPTL issues with Xen, only required on 32bit platforms
@@ -80,21 +63,13 @@ build() {
       --disable-werror
 
   # build libraries with hardening disabled
-  if ! grep -F -- "build-programs=" configparms ; then
-    echo "build-programs=no" >> configparms
-  else
-    sed -i "/build-programs=/s#yes#no#" configparms
-  fi
+  echo "build-programs=no" >> configparms
   make
 
   # re-enable hardening for programs
   sed -i "/build-programs=/s#no#yes#" configparms
-  if ! grep -F -- "CC += -fstack-protector-strong -D_FORTIFY_SOURCE=2" configparms; then
-    echo "CC += -fstack-protector-strong -D_FORTIFY_SOURCE=2" >> configparms
-  fi
-  if ! grep -F -- "CXX += -fstack-protector-strong -D_FORTIFY_SOURCE=2" configparms; then
-    echo "CXX += -fstack-protector-strong -D_FORTIFY_SOURCE=2" >> configparms
-  fi
+  echo "CC += -fstack-protector-strong -D_FORTIFY_SOURCE=2" >> configparms
+  echo "CXX += -fstack-protector-strong -D_FORTIFY_SOURCE=2" >> configparms
   make
 
   # remove harding in preparation to run test-suite

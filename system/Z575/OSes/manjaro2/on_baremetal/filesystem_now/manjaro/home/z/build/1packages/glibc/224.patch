@@ -1,0 +1,39 @@
+From 565d36b32989940e2fcc0e7fcc0c2ae3091a1778 Mon Sep 17 00:00:00 2001
+From: allan <allan@eb2447ed-0c53-47e4-bac8-5bc4a241df78>
+Date: Tue, 2 Aug 2016 05:14:41 +0000
+Subject: prepare glibc-2.24 toolchain rebuild
+
+git-svn-id: file:///srv/repos/svn-packages/svn@272798 eb2447ed-0c53-47e4-bac8-5bc4a241df78
+---
+ trunk/PKGBUILD | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/trunk/PKGBUILD b/trunk/PKGBUILD
+index 3d1d761..e68ee23 100644
+--- a/trunk/PKGBUILD
++++ b/trunk/PKGBUILD
+@@ -5,16 +5,16 @@
+ # NOTE: valgrind requires rebuilt with each major glibc version
+ 
+ pkgname=glibc
+-pkgver=2.23
+-pkgrel=5
+-_commit=1915d6d1
++pkgver=2.24
++pkgrel=1
++_commit=fdfc9260
+ pkgdesc="GNU C Library"
+ arch=('i686' 'x86_64')
+ url="http://www.gnu.org/software/libc"
+ license=('GPL' 'LGPL')
+ groups=('base')
+-depends=('linux-api-headers>=4.1' 'tzdata' 'filesystem')
+-makedepends=('gcc>=5.2' 'git')
++depends=('linux-api-headers>=4.7' 'tzdata' 'filesystem')
++makedepends=('gcc>=6' 'git')
+ backup=(etc/gai.conf
+         etc/locale.gen
+         etc/nscd.conf)
+-- 
+cgit v0.12
+
