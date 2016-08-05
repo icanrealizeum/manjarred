@@ -408,7 +408,10 @@ mk_add_options PYTHON=/usr/bin/python2
 # 1:46.65 /usr/bin/ld: host_nsinstall.o: relocation R_X86_64_32 against `.rodata.str1.1' can not be used when making a shared object; recompile with -fPIC
 #  1:46.65 host_nsinstall.o: error adding symbols: Bad value
 #1:46.65 collect2: error: ld returned 1 exit status
-mk_add_options MOZ_MAKE_FLAGS="-j5"
+mk_add_options MOZ_MAKE_FLAGS="-j4"
+#-j5 78m34s and 78:31.08 Overall system resources - Wall time: 4684s; CPU: 96%; Read bytes: 345931776; Write bytes: 1585983488; Read time: 13381; Write time: 4511
+#-j4 70min and 70:04.20 Overall system resources - Wall time: 4184s; CPU: 96%; Read bytes: 190730240; Write bytes: 2280861696; Read time: 4996; Write time: 4777
+#I literally recompiled the same thing after a make clean, so... wtf?
 
 
 

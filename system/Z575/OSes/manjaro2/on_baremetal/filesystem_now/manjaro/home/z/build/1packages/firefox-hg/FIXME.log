@@ -1,69 +1,72 @@
 firefox-hg $ ./mach run
- 0:00.77 /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox -no-remote -profile /tmp/obj-x86_64-pc-linux-gnu/tmp/scratch_user
-[628] WARNING: Unable to read system value: 'aValue > 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/base/nsSystemInfo.cpp, line 908
-[628] ###!!! ASSERTION: What?: '!mDynamicLowerValue', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 96
-[628] ###!!! ASSERTION: What?: 'mLastSampledUserEventTime == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 98
-[628] ###!!! ASSERTION: What?: 'mDeflectedCount == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 99
-[628] ###!!! ASSERTION: What?: 'mInMonolithicContainer == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 101
-[628] ###!!! ASSERTION: What?: 'mInNotification == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 102
-[628] ###!!! ASSERTION: What?: '!mDeferredLayoutStart', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 103
-[628] WARNING: NS_ENSURE_SUCCESS(rv, rv) failed with result 0x80520012: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2665
-++DOCSHELL 0x7ffa2e3ea800 == 1 [pid = 628] [id = 1]
-++DOMWINDOW == 1 (0x7ffa2e3eb000) [pid = 628] [serial = 1] [outer = (nil)]
-++DOMWINDOW == 2 (0x7ffa2e3ec000) [pid = 628] [serial = 2] [outer = 0x7ffa2e3eb000]
-[628] WARNING: NS_ENSURE_TRUE(document) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2004
-[628] WARNING: NS_ENSURE_SUCCESS(rv, false) failed with result 0x80004002: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsDocument.cpp, line 5947
-++DOCSHELL 0x7ffa28fc7800 == 2 [pid = 628] [id = 2]
-++DOMWINDOW == 3 (0x7ffa28fc9800) [pid = 628] [serial = 3] [outer = (nil)]
-++DOMWINDOW == 4 (0x7ffa28fca800) [pid = 628] [serial = 4] [outer = 0x7ffa28fc9800]
-[628] WARNING: NS_ENSURE_TRUE(document) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2004
-[628] WARNING: NS_ENSURE_SUCCESS(rv, false) failed with result 0x80004002: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsDocument.cpp, line 5947
-++DOMWINDOW == 5 (0x7ffa289b7000) [pid = 628] [serial = 5] [outer = 0x7ffa2e3eb000]
-[628] WARNING: NS_ENSURE_TRUE(document) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2004
-[628] WARNING: NS_ENSURE_SUCCESS(rv, false) failed with result 0x80004002: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsDocument.cpp, line 5947
-Chrome file doesn't exist: /tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
-Failed to load file:///tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
-[628] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
-[628] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
-[628] ###!!! ASSERTION: Shouldn't happen: '!aNewFrame->GetNextSibling()', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/base/nsCSSFrameConstructor.cpp, line 1251
+ 0:00.78 /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox -no-remote -profile /tmp/obj-x86_64-pc-linux-gnu/tmp/scratch_user
+[32733] WARNING: Unable to read system value: 'aValue > 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/base/nsSystemInfo.cpp, line 908
+[32733] ###!!! ASSERTION: What?: '!mDynamicLowerValue', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 96
+[32733] ###!!! ASSERTION: What?: 'mLastSampledUserEventTime == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 98
+[32733] ###!!! ASSERTION: What?: 'mDeflectedCount == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 99
+[32733] ###!!! ASSERTION: What?: 'mInMonolithicContainer == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 101
+[32733] ###!!! ASSERTION: What?: 'mInNotification == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 102
+[32733] ###!!! ASSERTION: What?: '!mDeferredLayoutStart', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 103
+[32733] ###!!! ASSERTION: What?: '!mDynamicLowerValue', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 96
+[32733] ###!!! ASSERTION: What?: 'mLastSampledUserEventTime == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 98
+[32733] ###!!! ASSERTION: What?: 'mDeflectedCount == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 99
+[32733] ###!!! ASSERTION: What?: 'mInMonolithicContainer == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 101
+[32733] ###!!! ASSERTION: What?: 'mInNotification == 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 102
+[32733] ###!!! ASSERTION: What?: '!mDeferredLayoutStart', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsContentSink.cpp, line 103
+++DOCSHELL 0x7f674a94f800 == 1 [pid = 32733] [id = 1]
+++DOMWINDOW == 1 (0x7f674aa7b800) [pid = 32733] [serial = 1] [outer = (nil)]
+++DOMWINDOW == 2 (0x7f674a55b800) [pid = 32733] [serial = 2] [outer = 0x7f674aa7b800]
+[32733] WARNING: NS_ENSURE_TRUE(document) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2004
+[32733] WARNING: NS_ENSURE_SUCCESS(rv, false) failed with result 0x80004002: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsDocument.cpp, line 5947
+++DOCSHELL 0x7f6745807800 == 2 [pid = 32733] [id = 2]
+++DOMWINDOW == 3 (0x7f6745808000) [pid = 32733] [serial = 3] [outer = (nil)]
+++DOMWINDOW == 4 (0x7f6745809000) [pid = 32733] [serial = 4] [outer = 0x7f6745808000]
+[32733] WARNING: NS_ENSURE_TRUE(document) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2004
+[32733] WARNING: NS_ENSURE_SUCCESS(rv, false) failed with result 0x80004002: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsDocument.cpp, line 5947
+++DOMWINDOW == 5 (0x7f674581f800) [pid = 32733] [serial = 5] [outer = 0x7f674aa7b800]
+[32733] WARNING: NS_ENSURE_TRUE(document) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 2004
+[32733] WARNING: NS_ENSURE_SUCCESS(rv, false) failed with result 0x80004002: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/base/nsDocument.cpp, line 5947
+[32733] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
+[32733] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
+[32733] ###!!! ASSERTION: Shouldn't happen: '!aNewFrame->GetNextSibling()', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/base/nsCSSFrameConstructor.cpp, line 1251
 
-Program /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox (pid = 628) received signal 11.
+Program /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox (pid = 32733) received signal 11.
 Stack:
-#01: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x50a0019]
+#01: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x50dc2b9]
 #02: ???[/usr/lib/libpthread.so.0 +0x10f00]
-#03: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d979f3]
-#04: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3e97d36]
-#05: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d32aaf]
-#06: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d60273]
-#07: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d60a45]
-#08: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d7e93e]
-#09: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d616ff]
-#10: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d61957]
-#11: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d61c62]
-#12: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d69a40]
-#13: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d6b267]
-#14: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3df29a0]
-#15: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1fa3b3b]
-#16: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x19ea57c]
-#17: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1a1a450]
-#18: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1a07396]
-#19: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1a14575]
-#20: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xb8fe19]
-#21: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xbd465b]
-#22: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xff00aa]
-#23: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xfb705a]
-#24: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xfb7115]
-#25: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x39e1b3c]
-#26: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x465ccd3]
-#27: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x4704028]
-#28: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x4705306]
-#29: XRE_main[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x470576f]
+#03: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3db2073]
+#04: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3eb5276]
+#05: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d4caaf]
+#06: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d7a273]
+#07: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d7aa45]
+#08: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d9893e]
+#09: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d7b6ff]
+#10: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d7b957]
+#11: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d7bc62]
+#12: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d83a40]
+#13: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3d85267]
+#14: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3e10980]
+#15: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1fad29b]
+#16: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x19f341c]
+#17: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1a232f0]
+#18: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1a10236]
+#19: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x1a1d415]
+#20: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xb98cb9]
+#21: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xbdd4fb]
+#22: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xff8f4a]
+#23: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xfbfefa]
+#24: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xfbffb5]
+#25: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x39ebfdc]
+#26: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x4698f73]
+#27: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x47402c8]
+#28: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x47415a6]
+#29: XRE_main[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x4741a0f]
 #30: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox +0x6129]
 #31: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox +0x5713]
 #32: __libc_start_main[/usr/lib/libc.so.6 +0x20741]
 #33: _start[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox +0x5989]
 #34: ??? (???:???)
 Sleeping for 300 seconds.
-Type 'gdb /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox 628' to attach your debugger to this thread.
-
+Type 'gdb /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox 32733' to attach your debugger to this thread.
+^CPress any key to continue...
 
