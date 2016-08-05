@@ -1,1 +1,1 @@
-#define UTS_RELEASE "4.7.0-gdd7fd3a+"
+#define UTS_RELEASE "4.7.0-g6c84239"

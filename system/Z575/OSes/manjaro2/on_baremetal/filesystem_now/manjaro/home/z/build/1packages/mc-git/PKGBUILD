@@ -6,7 +6,7 @@
 DEBUG=0
 
 pkgname=mc-git
-pkgver=4.8.17.50.g837a210
+pkgver=4.8.17.79.gc47f112
 pkgrel=1
 pkgdesc='GNU Midnight Commander is an s-lang based file manager'
 url='https://midnight-commander.org/'
@@ -19,19 +19,18 @@ provides=('mc')
 changelog=CHANGELOG
 fixflushpatch="fix_the_sometimes_truncated_shell_output_in_mc.patch"
 cannotcreatepipestreams_patch='createstreams.patch'
-ncursespatch='108.patch'
+#ncursespatch='108.patch'
 source=('git+https://github.com/MidnightCommander/mc'
 "$fixflushpatch"
 "$cannotcreatepipestreams_patch"
-"$ncursespatch"
+#"$ncursespatch"
 )
 if [ -n "$DEBUG" ]; then
   options+=(!strip)
 fi
 sha512sums=('SKIP'
             '20a73a8809758bd6b084c44fe37ee0b68f3116aea9105e96bf005a24bf1a9c2128edf133367cdbd7f3b5eec67a5765082ea2a8471379bb57cdf048db6bd6b4a9'
-            '627c80632cee4ac7ef2aca60e536c4c1e5dfde3cb983f3dcd2bf23466952ee021e1176f8d0bf10115d28732548ccca2ed269316bb236378102f40b2bf8dff7ca'
-            '3273999a7793ed7b8931de4718a66e20fdcf8f3dcf2ee593f06b880095a8e5b69cdd718a601b6b6bfdcb4e12b440ed785bd186e87e7b8aa50118a8182676710c')
+            '627c80632cee4ac7ef2aca60e536c4c1e5dfde3cb983f3dcd2bf23466952ee021e1176f8d0bf10115d28732548ccca2ed269316bb236378102f40b2bf8dff7ca')
 
 pkgver() {
     cd mc
@@ -44,7 +43,7 @@ prepare() { #this is temporarily here, but should be in build() because of the g
     sed -i 's/pkglibexec_SCRIPTS = $(SCRIPTS_OUT)/pkgdata_SCRIPTS = $(SCRIPTS_OUT)/g' contrib/Makefile.am
     patch -Np1 -i "../${fixflushpatch}"
     patch -Np1 -i "../${cannotcreatepipestreams_patch}"
-    patch -Np1 -i "../${ncursespatch}"
+    #patch -Np1 -i "../${ncursespatch}"
 }
 
 build() {
