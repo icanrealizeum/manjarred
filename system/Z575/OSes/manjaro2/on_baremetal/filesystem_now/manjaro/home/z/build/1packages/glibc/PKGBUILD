@@ -49,7 +49,7 @@ prepare() {
 
 build() {
   cd glibc-build
-  make clean || true
+#  make clean || true
 
   if [[ ${CARCH} = "i686" ]]; then
     # Hack to fix NPTL issues with Xen, only required on 32bit platforms

@@ -19,7 +19,7 @@ Preferred_Width=386
 Preferred_Height=375
 
 [Chip0]
-Name=acpitz-0
+Name=k10temp-c3
 Number=0
 
 [Chip0_Feature0]
@@ -29,9 +29,22 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
+Max=36.62
+
+[Chip1]
+Name=acpitz-0
+Number=1
+
+[Chip1_Feature0]
+Id=0
+Address=0
+Name=CPU temp
+Color=#00B000
+Show=true
+Min=0.00
 Max=35.00
 
-[Chip0_Feature1]
+[Chip1_Feature1]
 Id=-1
 Address=1
 Name=MOBO temp
@@ -40,11 +53,11 @@ Show=true
 Min=0.00
 Max=24.00
 
-[Chip1]
+[Chip2]
 Name=radeon-8
-Number=1
+Number=2
 
-[Chip1_Feature0]
+[Chip2_Feature0]
 Id=0
 Address=0
 Name=gfx card
@@ -52,19 +65,6 @@ Color=#00B000
 Show=true
 Min=0.00
 Max=38.00
-
-[Chip2]
-Name=k10temp-c3
-Number=2
-
-[Chip2_Feature0]
-Id=0
-Address=0
-Name=CPU temp
-Color=#00B000
-Show=true
-Min=0.00
-Max=36.62
 
 [Chip3]
 Name=ACPI

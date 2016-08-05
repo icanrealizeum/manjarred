@@ -22,7 +22,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.7.r11584.gc1ece76
+pkgver=4.7.r11891.gdd7fd3a
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -31,7 +31,7 @@ KARCH="x86"
 url="https://www.kernel.org/"
 license=('GPL2')
 makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git' 'pacman>4.1.2')
-options=('!strip' '!ccache' '!distcc')
+options=('!strip' 'ccache' '!distcc')
 #so, distcc(and no ccache) works correctly when compiling this linuxgit (not so for firefox-hg though!)
 #XXX: using ccache AND distcc will make every compilation on slave(s) fail! due to including some ccache path that exists only on master(in ~/.ccache/*)
 #maybe search for this in man distcc: CCACHE_PREFIX="distcc"
@@ -92,7 +92,7 @@ ${manypatches[@]}
 #src: https://wiki.archlinux.org/index.php/makepkg#Generate_new_checksums
 #problem is that it kill my spacing! those horizontal lines also
 sha512sums=('SKIP'
-            'd1d726472d908033fb327f9b530f50ba3d081acdda00ae78fc6792d3e5ddacdeb8c9915e28ff35e467618d5c926ffe3db884816f5e7e325b25e96728272c4f08'
+            'e323ef8a9b4ce38be61e80808d9164bb1f2759b360220b74887e19dcbe7725d16c448bc5365e50d1677855a82cf37d825ddd80c7ff0d3bee3c73902f052bc83d'
             '48a2d94108ec9dd0e8411330506d30d194f7e89c97e0f13537853359f0d16f2b8e32599008cba87b9e6522323ba952538286d6e4b85e0d222604d1f8ccdd0c45'
             '99dcd30805ddefe9fe6eba0316c29366442509f2727434e40a064eb7ec77bc211a7f75b356284fa2c358b09b13580fa073c493b629a2d92ebdf376d9894ec080'
             'bb62d66a95e2d27378433d0f9c2fc7943bbcd655a89952fc25ef28d5796b8d65ca6c9c48bc70d40d71daada20707b266f781f57ba71950009b32cb6d58e155d0'
