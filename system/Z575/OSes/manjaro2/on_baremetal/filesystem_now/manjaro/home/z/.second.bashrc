@@ -556,3 +556,5 @@ export MOZ_PLUGIN_PATH="/$RANDOM" #tried: /
 #distcc stuff, no need here(but ok in /etc/makepkg.conf):
 #DISTCC_SSH="ssh -i \"/home/z/.../T400/koe\" -p 802 -l root"
 
+export PATH=${PATH}:~/bin:/home/z/build/1nonpkgs/chars/target/debug
+
