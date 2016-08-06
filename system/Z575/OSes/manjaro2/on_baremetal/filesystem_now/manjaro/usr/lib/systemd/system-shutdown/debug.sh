@@ -4,9 +4,22 @@
 #^ this won't send to dmesg!
 
 exec 1>/dev/kmsg 2>&1
-
 set -x
+
+#seen args: reboot
 echo "Script args: $@"
+
+set
+
+#speed up
+showgov() {
+  cpupower frequency-info|grep --color=always -E '(The governor |current policy: frequency should be within|current CPU frequency:)'
+}
+
+showgov
+cpupower frequency-set --related --governor performance --min 1400MHz --max 1400MHz
+showgov
+
 mount -o remount,rw /
 sysctl -a|grep -i sysrq
 sysctl -w kernel.sysrq=1
@@ -45,18 +58,18 @@ echo m > /proc/sysrq-trigger #has no effect: ; dmesg|grep -F "pagecache pages"|t
 echo 'manually Freeing pagecache pages'
 #don't have sysctl: time sysctl vm.drop_caches=1
 #XXX: comment out following drop_caches line(s) to test deactivate_super's speed(it lingers at "Unmounting /oldroot")
-#To free pagecache(works fine):
+#To free pagecache(works fine: 51640 pagecache pages freed/sec + 10 sec spent in deactivate_super):
 #time echo 1 >/proc/sys/vm/drop_caches
 #To free dentries and inodes(untested):
 #time echo 2 >/proc/sys/vm/drop_caches
-#To free pagecache, dentries and inodes:
+#To free pagecache, dentries and inodes(41479 pagecache pages freed/sec):
 time echo 3 >/proc/sys/vm/drop_caches
 echo "After :"
 echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|tail -1
 
 echo 'end of log'
 
-dmesg > /shutdown-log.txt
+dmesg > /dmesg_shutdown.log
 time sync && sdparm --command=sync /dev/sda && sleep 1
 mount -o remount,ro /
 
@@ -75,6 +88,8 @@ sleep 1
 #make drive sleep(not suspend/shutdown)
 #hdparm -y /dev/sda
 #hdparm -C /dev/sda
+
+#deactivate_super runs after this script, when you see: "shutdown[1]: Unmounting /oldroot." this frees: 22342 pagecache pages per second (if the above manual freeing didn't happen - but sync was called like always)
 
 #this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
 echo "End of '$0'"
