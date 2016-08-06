@@ -1,10 +1,12 @@
 #!/bin/bash
 
-exec 1> >(logger -s -t $(basename $0)) 2>&1
+#exec 1> >(logger -s -t $(basename $0)) 2>&1
+#^ this won't send to dmesg!
+
+exec 1>/dev/kmsg 2>&1
 
 set -x
 mount -o remount,rw /
-dmesg > /shutdown-log.txt
 sysctl -a|grep -i sysrq
 sysctl -w kernel.sysrq=1
 sysctl -a|grep -i sysrq
@@ -20,7 +22,13 @@ echo t > /proc/sysrq-trigger
 echo w > /proc/sysrq-trigger
 echo 9 > /proc/sysrq-trigger
 
+
+dmesg > /shutdown-log.txt
 sync
 mount -o remount,ro /
+
+#src: https://bbs.archlinux.org/viewtopic.php?pid=1066560#p1066560
+#untested: echo 1 > /sys/block/sda/device/queue_depth
+
 #this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
 
