@@ -802,9 +802,33 @@
   \ chrome://flags
   \ disable smooth scrolling
 
-* umount is hanging...
+* umount is still hanging...
   \ and it's function umount2 (libc.so.6)
   \ so this is why it's hanging for like 30sec upon shutdown, most likely
+  \ https://bugzilla.kernel.org/show_bug.cgi?id=151621
+  * manually free pagecache pages
+    \ src: https://unix.stackexchange.com/questions/87908/how-do-you-empty-the-buffers-and-cache-on-a-linux-system/87909#87909
+    \ time echo 1 | sudo tee /proc/sys/vm/drop_caches
+  * check number of pagecache pages
+    \ echo m|sudo tee /proc/sysrq-trigger >/dev/null ; dmesg|grep -F "pagecache pages"|tail -1
+
+
+* Synchronizing SCSI cache fails?
+  * vim /usr/lib/systemd/system-shutdown/debug.sh
+    \ #!/bin/bash
+    \ sync && sdparm --command=sync /dev/sda && sleep 1
+    \ mount -o remount,ro /
+    \ #this is the IMPORTANT part:
+    \ #turn off drive cache, workaround for https://bugzilla.kernel.org/show_bug.cgi?id=151631
+    \ hdparm -W0 /dev/sda
+    \
+    \ #flush drive cache:
+    \ hdparm -F /dev/sda
+    \ hdparm -f /dev/sda
+    \ sleep 1
+
+* ohci-pci "controller won't resume" "HC died; cleaning up"
+  \ https://bugzilla.kernel.org/show_bug.cgi?id=151641
 
 * chromium hangs or slows down during playing youtube videos because of audio issues
   \ must use system-ffmpeg chromium //haven't figured out why or how to fix this!
