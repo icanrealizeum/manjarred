@@ -1,7 +1,10 @@
 #!/bin/bash
 
 out="`pagecachepages`"
+echo "Sync-ing first:"
+time sync
+echo "Freeing (some) pagecache pages:"
 time echo 1 | sudo tee /proc/sys/vm/drop_caches >/dev/null
-echo "Before: $out"
-echo "After : `pagecachepages`"
+echo "pagecache pages, Before: $out"
+echo "pagecache pages, After : `pagecachepages`"
 
