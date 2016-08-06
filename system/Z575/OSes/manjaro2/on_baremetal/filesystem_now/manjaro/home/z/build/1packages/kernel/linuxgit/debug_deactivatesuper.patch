@@ -1,0 +1,16 @@
+to see where "Unmounting /oldroot" is hanging
+
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 7bb2cda..33cb0dc 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -1064,7 +1064,9 @@ static void cleanup_mnt(struct mount *mnt)
+ 		mnt_pin_kill(mnt);
+ 	fsnotify_vfsmount_delete(&mnt->mnt);
+ 	dput(mnt->mnt.mnt_root);
++  printk(KERN_WARNING "%s: before deactivate_super()\n", __func__);
+ 	deactivate_super(mnt->mnt.mnt_sb);
++  printk(KERN_WARNING "%s: after deactivate_super()\n", __func__);
+ 	mnt_free_id(mnt);
+ 	call_rcu(&mnt->mnt_rcu, delayed_free_vfsmnt);
+ }

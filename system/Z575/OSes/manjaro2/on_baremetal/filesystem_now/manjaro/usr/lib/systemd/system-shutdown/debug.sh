@@ -31,8 +31,13 @@ echo -n 'Before:';  cat /sys/block/sda/device/queue_depth
 echo -n 'After:';  cat /sys/block/sda/device/queue_depth
 
 dmesg > /shutdown-log.txt
-sync
+sync && sdparm --command=sync /dev/sda && sleep 1
 mount -o remount,ro /
 
-#this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
+#src: https://unix.stackexchange.com/questions/55281/how-to-stop-waking-all-attached-drives-on-reboot-deactivating-swap/55417#55417
+hdparm -F /dev/sda
+hdparm -f /dev/sda
+sleep 1
 
+#this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
+echo "End of '$0'"
