@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo m|sudo tee /proc/sysrq-trigger >/dev/null ; dmesg|grep -F "pagecache pages"|tail -1
+
