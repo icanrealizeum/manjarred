@@ -23,12 +23,16 @@ echo w > /proc/sysrq-trigger
 echo 9 > /proc/sysrq-trigger
 
 
+
+#src: https://bbs.archlinux.org/viewtopic.php?pid=1066560#p1066560
+#tested, no effect:
+echo -n 'Before:';  cat /sys/block/sda/device/queue_depth
+#echo 1 > /sys/block/sda/device/queue_depth
+echo -n 'After:';  cat /sys/block/sda/device/queue_depth
+
 dmesg > /shutdown-log.txt
 sync
 mount -o remount,ro /
-
-#src: https://bbs.archlinux.org/viewtopic.php?pid=1066560#p1066560
-#untested: echo 1 > /sys/block/sda/device/queue_depth
 
 #this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
 
