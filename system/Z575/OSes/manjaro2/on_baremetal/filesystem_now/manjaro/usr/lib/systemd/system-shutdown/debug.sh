@@ -6,7 +6,10 @@
 exec 1>/dev/kmsg 2>&1
 set -x
 
-#seen args: reboot
+#seen args:
+#reboot
+#poweroff
+#
 echo "Script args: $@"
 
 set
@@ -84,9 +87,14 @@ hdparm -F /dev/sda
 hdparm -f /dev/sda
 sleep 1
 
-#this is not necessary(for clean shutdown):
+#this is not necessary(for clean reboot!):
 #make drive sleep(not suspend/shutdown)
-#hdparm -y /dev/sda
+##hdparm -y /dev/sda
+#if test "$@" == "poweroff"; then
+#  echo 'manually powering off /dev/sda'
+#  hdparm -Y /dev/sda
+#  #^ this works but systemd is waking it up from sleep as soon as this $0 script is done! so, it's useless to suspend it here! unless I force shutdown of system myself(dno how really)
+#fi
 #hdparm -C /dev/sda
 
 #deactivate_super runs after this script, when you see: "shutdown[1]: Unmounting /oldroot." this frees: 22342 pagecache pages per second (if the above manual freeing didn't happen - but sync was called like always)
