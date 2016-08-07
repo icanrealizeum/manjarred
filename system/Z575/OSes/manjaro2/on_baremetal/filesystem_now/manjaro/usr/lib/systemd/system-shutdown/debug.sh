@@ -100,4 +100,15 @@ sleep 1
 #deactivate_super runs after this script, when you see: "shutdown[1]: Unmounting /oldroot." this frees: 22342 pagecache pages per second (if the above manual freeing didn't happen - but sync was called like always)
 
 #this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
-echo "End of '$0'"
+if ! test "$1" == "poweroff"; then
+  #it's reboot, or something else(if ever possible)
+  echo "End of '$0'"
+else
+  #it's poweroff aka shutdown
+  echo 'Manually powering off /dev/sda:'
+  hdparm -Y /dev/sda
+  #poweroff by sysrq - this still needs kernel patch to not stop disk in kernel because that'd fail the same way!
+  echo 'Manual shutdown via sysrq:'
+  echo o > /proc/sysrq-trigger ; sleep 5
+  echo "End of '$0' (looks like shutdown failed - since you're still up!)"
+fi
