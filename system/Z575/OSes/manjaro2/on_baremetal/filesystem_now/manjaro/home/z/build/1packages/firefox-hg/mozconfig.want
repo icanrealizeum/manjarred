@@ -94,8 +94,8 @@ ac_add_options --disable-updater
 #/home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/js/src/vm/Compression.cpp:112:32: error: ‘__msan_unpoison’ was not declared in this scope
 #ac_add_options --enable-memory-sanitizer
 
-#ac_add_options --disable-profiling
-#ac_add_options --disable-systrace
+ac_add_options --disable-profiling
+ac_add_options --disable-systrace
 #Enable Valgrind integration hooks (default=no)
 ac_add_options --disable-valgrind
 ac_add_options --disable-jprof
@@ -105,14 +105,14 @@ ac_add_options --disable-instruments
 ac_add_options --disable-callgrind
 ac_add_options --disable-vtune
 #  --enable-cpp-rtti       Enable C++ RTTI "
-#ac_add_options --disable-cpp-rtti
+ac_add_options --disable-cpp-rtti
 #Enable GNU Gold Linker when it is not already the default
 ac_add_options --enable-gold
 #  --enable-pie           Enable Position Independent Executables"
-#ac_add_options --enable-pie
+ac_add_options --enable-pie
 #--with-pthreads
 #build with dtrace support if available (default=no)"
-#ac_add_options --disable-dtrace
+ac_add_options --disable-dtrace
 ac_add_options --with-x
 #  --disable-printing      Disable printing support"
 #ac_add_options --disable-printing
@@ -124,12 +124,12 @@ ac_add_options --enable-printing
 #mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gnomevfs
 #ac_add_options --disable-gnomevfs
 #  --disable-gio           Disable GIO support"
-#ac_add_options --disable-gio
+ac_add_options --disable-gio
 #ac_add_options --disable-gconf
 #  --enable-libproxy         Enable libproxy support "
 ac_add_options --disable-libproxy
 #  --enable-gnomeui        Enable libgnomeui instead of GIO & GTK for icon theme support "
-#ac_add_options --disable-gnomeui
+ac_add_options --disable-gnomeui
 
 #this is optional tho:14:10.76 Notification center failed: Install the python dbus module to get a notification when the build finishes.
 #ac_add_options --disable-dbus #!!!!
@@ -137,7 +137,7 @@ ac_add_options --enable-dbus #!!!!
 
 ac_add_options --disable-websms-backend
 #  --disable-dbm           Disable building dbm"
-#ac_add_options --disable-dbm #!!!!
+ac_add_options --disable-dbm #!!!!
 #  --disable-accessibility Disable accessibility support"
 ac_add_options --disable-accessibility
 

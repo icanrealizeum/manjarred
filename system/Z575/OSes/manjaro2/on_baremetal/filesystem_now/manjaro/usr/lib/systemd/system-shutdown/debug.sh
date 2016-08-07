@@ -70,6 +70,12 @@ time echo 3 >/proc/sys/vm/drop_caches
 echo "After :"
 echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|tail -1
 
+#XXX: temporary!!!
+#  time sync && sdparm --command=sync /dev/sda && sleep 1
+#  echo 'Manual shutdown attempt via sysrq:'
+#  echo o > /proc/sysrq-trigger ; sleep 5
+#XXX: end temp.
+
 echo 'end of log'
 
 dmesg > /dmesg_shutdown.log

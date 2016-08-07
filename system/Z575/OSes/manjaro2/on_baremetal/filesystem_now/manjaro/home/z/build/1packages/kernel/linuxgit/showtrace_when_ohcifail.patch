@@ -1,0 +1,14 @@
+this is from ML, thanks Alan Stern for this!
+
+diff --git a/drivers/usb/host/ohci-hub.c b/drivers/usb/host/ohci-hub.c
+index ed678c17..0ccee20 100644
+--- a/drivers/usb/host/ohci-hub.c
++++ b/drivers/usb/host/ohci-hub.c
+@@ -215,6 +215,7 @@ __acquires(ohci->lock)
+ 	temp &= OHCI_CTRL_HCFS;
+ 	if (temp != OHCI_USB_RESUME) {
+ 		ohci_err (ohci, "controller won't resume\n");
++    dump_stack();
+ 		spin_lock_irq(&ohci->lock);
+ 		return -EBUSY;
+ 	}

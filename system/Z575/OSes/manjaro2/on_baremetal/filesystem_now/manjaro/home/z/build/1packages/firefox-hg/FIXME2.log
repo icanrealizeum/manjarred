@@ -1,0 +1,54 @@
+without #ac_add_options --enable-pie
+recompile finished in 8-9min, so this probably didn't work, right? and I'm running the same prev. binaries:
+
+
+[12099] WARNING: '!compMgr', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/glue/nsComponentManagerUtils.cpp, line 63
+[12099] WARNING: dependent window created without a parent: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/toolkit/components/startup/nsAppStartup.cpp, line 668
+++DOCSHELL 0x7fcb46173800 == 1 [pid = 12099] [id = 1]
+++DOMWINDOW == 1 (0x7fcb46175800) [pid = 12099] [serial = 1] [outer = (nil)]
+++DOMWINDOW == 2 (0x7fcb46176800) [pid = 12099] [serial = 2] [outer = 0x7fcb46175800]
+[12099] WARNING: NS_ENSURE_SUCCESS(rv, NS_ERROR_UNEXPECTED) failed with result 0x80004005: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/extensions/cookie/nsPermissionManager.cpp, line 852
+JavaScript error: jar:file:///usr/lib/firefox/omni.ja!/components/XULStore.js, line 66: NS_ERROR_FAILURE: Component returned failure code: 0x80004005 (NS_ERROR_FAILURE) [nsIProperties.get]
+[12099] WARNING: '!mLocalStore', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/xul/XULDocument.cpp, line 2035
+[12099] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
+[12099] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
+[12099] ###!!! ASSERTION: Double-initing a frame?: '!mContent', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/generic/nsFrame.cpp, line 520
+[12099] ###!!! ASSERTION: Shouldn't happen: '!aNewFrame->GetNextSibling()', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/base/nsCSSFrameConstructor.cpp, line 1251
+
+Program firefox (pid = 12099) received signal 11.
+Stack:
+#01: ???[/usr/lib/libpthread.so.0 +0x10f00]
+#02: ???[/usr/lib/firefox/libxul.so +0x3dd7ff3]
+#03: ???[/usr/lib/firefox/libxul.so +0x3edb416]
+#04: ???[/usr/lib/firefox/libxul.so +0x3d72a2f]
+#05: ???[/usr/lib/firefox/libxul.so +0x3da01f3]
+#06: ???[/usr/lib/firefox/libxul.so +0x3da09c5]
+#07: ???[/usr/lib/firefox/libxul.so +0x3dbe8be]
+#08: ???[/usr/lib/firefox/libxul.so +0x3d9ec0c]
+#09: ???[/usr/lib/firefox/libxul.so +0x3daa265]
+#10: ???[/usr/lib/firefox/libxul.so +0x3dab207]
+#11: ???[/usr/lib/firefox/libxul.so +0x3e36940]
+#12: ???[/usr/lib/firefox/libxul.so +0x38d8dfa]
+#13: ???[/usr/lib/firefox/libxul.so +0x38f1603]
+#14: ???[/usr/lib/firefox/libxul.so +0x38fa789]
+#15: ???[/usr/lib/firefox/libxul.so +0x38fcf40]
+#16: ???[/usr/lib/firefox/libxul.so +0x38efe67]
+#17: ???[/usr/lib/firefox/libxul.so +0xb9b739]
+#18: ???[/usr/lib/firefox/libxul.so +0xbdff7b]
+#19: ???[/usr/lib/firefox/libxul.so +0x4458b35]
+#20: ???[/usr/lib/firefox/libxul.so +0x43efd40]
+#21: ???[/usr/lib/firefox/libxul.so +0x43f05d1]
+#22: ???[/usr/lib/firefox/libxul.so +0xa73df6]
+#23: ???[/usr/lib/firefox/libxul.so +0x476292a]
+#24: ???[/usr/lib/firefox/libxul.so +0x4764c18]
+#25: ???[/usr/lib/firefox/libxul.so +0x476785b]
+#26: XRE_main[/usr/lib/firefox/libxul.so +0x4767d2f]
+#27: ???[firefox +0x6129]
+#28: ???[firefox +0x5713]
+#29: __libc_start_main[/usr/lib/libc.so.6 +0x20741]
+#30: _start[firefox +0x5989]
+#31: ??? (???:???)
+Sleeping for 300 seconds.
+Type 'gdb firefox 12099' to attach your debugger to this thread.
+^C
+

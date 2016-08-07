@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo 'this is for gentoo only'
+exit 1
+
 iduser="`id -u`"
 if test -n "$iduser"; then
   if test "$iduser" -ne "0"; then

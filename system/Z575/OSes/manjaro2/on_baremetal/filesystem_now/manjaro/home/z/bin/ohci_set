@@ -1,0 +1,35 @@
+#!/bin/bash
+
+iduser="`id -u`"
+if test -n "$iduser"; then
+  if test "$iduser" -ne "0"; then
+    #XXX: re-execute myself as root (needed for ensure below to work ok, for filefrag to be found!)
+    #done: fail before exec, if sudo not found!
+    echo "Not already root, re-executing myself as root by using sudo(required!)..."
+    #we use validate to ask for pwd AND to see if we have sudo! or if pwd failed
+    sudo --validate --
+    ec="$?"
+    if test "$ec" -ne 0 ; then
+      echo "sudo failed or not found, aborting"
+      exit 12
+    fi
+    #---
+    exec sudo -- "$0" "$@"
+    #^ the above will exit with 127 if sudo is not found! unless shopt execfail is set (they say) but tested to always exit as such, regardless (btw, shopt -s execfail   sets it to on!)
+    echo "Impossibiru"
+    exit 3
+  fi
+else
+  echo "epic fail, bailing out!"
+  exit 2
+fi
+
+if test "$1" == "on" -o "$1" == "auto"; then
+ echo "Was: `cat /sys/bus/pci/devices/0000:00:12.0/power/control` `cat /sys/bus/pci/devices/0000:00:13.0/power/control`"
+ echo "Setting: '$1'"
+ echo "$1" > '/sys/bus/pci/devices/0000:00:13.0/power/control';
+ echo "$1" > '/sys/bus/pci/devices/0000:00:12.0/power/control';
+fi
+
+echo "Now: `cat /sys/bus/pci/devices/0000:00:12.0/power/control` `cat /sys/bus/pci/devices/0000:00:13.0/power/control`"
+

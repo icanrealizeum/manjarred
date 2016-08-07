@@ -1,0 +1,24 @@
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index d3e852a..5ec28445 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3233,12 +3233,17 @@ static void sd_shutdown(struct device *dev)
+ 		return;
+ 
+ 	if (sdkp->WCE && sdkp->media_present) {
+-		sd_printk(KERN_NOTICE, sdkp, "Synchronizing SCSI cache\n");
+-		sd_sync_cache(sdkp);
++		sd_printk(KERN_NOTICE, sdkp, "Synchronizing SCSI cache - nevermind\n");
++		//sd_sync_cache(sdkp);
+ 	}
+ 
+ 	if (system_state != SYSTEM_RESTART && sdkp->device->manage_start_stop) {
+ 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
++		sd_printk(KERN_NOTICE, sdkp, "waiting 30 seconds before dump_stack\n");
++    msleep(30000);
++    dump_stack();
++		sd_printk(KERN_NOTICE, sdkp, "waiting 30 more seconds before stop disk\n");
++    msleep(30000);
+ 		sd_start_stop_device(sdkp, 0);
+ 	}
+ }
