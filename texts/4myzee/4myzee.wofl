@@ -445,6 +445,19 @@
   * sudo pacman -Rs reiserfsprogs
   * sudo pacman -Rs pamac
     * cd /etc && sudo mv pamac.conf.pacsave pamac.conf
+  * no clear screen before login
+    \ src: https://wiki.archlinux.org/index.php/Systemd_FAQ#How_do_I_avoid_clearing_the_console_after_boot.3F
+    * sudo mkdir -p -- /etc/systemd/system/getty@.service.d
+    * sudo vim /etc/systemd/system/getty@.service.d/nodisallocate.conf
+      \ [Service]
+      \ TTYVTDisallocate=no
+  * cpumax on boot
+    * sudo systemctl disable cpupower.service
+      \ cpupower.service must not be enabled or else it will reset cpumax on multi-user.target which is after cpumax.service
+    * sudo vim /usr/lib/systemd/system/cpumax.service
+      \ put the right things here...
+      \ this file is backed up, so find it in this repo!
+    * sudo systemctl enable cpumax.service
 
 
 

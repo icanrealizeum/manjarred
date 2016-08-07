@@ -1,0 +1,24 @@
+[Unit]
+Description=max cpu on boot
+#After=local-fs-pre.target
+#After=systemd-modules-load.service
+#Before=systemd-remount-fs.service
+#After=systemd-fsck-root.service
+#Before=local-fs-pre.target local-fs.target shutdown.target
+#Wants=local-fs-pre.target
+DefaultDependencies=no
+Conflicts=shutdown.target
+Before=sysinit.target shutdown.target
+
+[Service]
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/home/z/bin
+WorkingDirectory=/tmp
+ExecStart=/home/z/bin/cpumax
+#ExecStop=/home/z/bin/cpunorm
+Type=oneshot
+RemainAfterExit=yes
+TimeoutSec=20s
+
+#[Install]
+#WantedBy=multi-user.target 
+#WantedBy=sysinit.target

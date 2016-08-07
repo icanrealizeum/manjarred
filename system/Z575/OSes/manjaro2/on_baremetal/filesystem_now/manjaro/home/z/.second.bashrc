@@ -1,3 +1,4 @@
+#!/bin/bash
 # /etc/skel/.bashrc
 #
 # This file is sourced by all *interactive* bash shells on startup,
@@ -511,7 +512,7 @@ export MAKEFLAGS=' -j4 '
 
 
 #workaround for ugly graphics (eg. on lsblk and mc) on virtual consoles
-#if test "$TERM" = "linux"; then
+#if test "$TERM" == "linux"; then
 #  #export TERM=xterm
 #  #^ nevermind that doesn't work, so only locale set to C works!
 #  export LC_ALL=C
@@ -557,4 +558,10 @@ export MOZ_PLUGIN_PATH="/$RANDOM" #tried: /
 #DISTCC_SSH="ssh -i \"/home/z/.../T400/koe\" -p 802 -l root"
 
 export PATH=${PATH}:~/bin:/home/z/build/1nonpkgs/chars/target/debug
+
+#if test "$TERM" = "linux"; then
+#  #XXX: this won't work, needs sudo password and I don't wanna make it suid!
+#   (sleep 15 ; logger "Normalizing CPU"; cpunorm && logger "success") &
+   #XXX: still reports success tho
+#fi
 
