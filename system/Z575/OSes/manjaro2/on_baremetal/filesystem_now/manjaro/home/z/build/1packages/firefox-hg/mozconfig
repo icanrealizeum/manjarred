@@ -22,6 +22,7 @@ ac_add_options --disable-strip
 ac_add_options --enable-debug
 ac_add_options --enable-debug-symbols
 #^ these three don't seem to show me the symbols on core dump(which is handled by journalctl aka systemd) - but at least they show me some messages/output
+# 0:15.44 mozbuild.configure.options.InvalidOptionError: '--enable-debug-symbols' implied by '--enable-debug' conflicts with '--disable-debug-symbols' from the mozconfig
 
 
 #speed up? when compiling

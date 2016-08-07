@@ -36,6 +36,17 @@
 # Dummy image chroma format (string)
 #dummy-chroma=
 
+[flaschen] # Flaschen-Taschen video output
+
+# Flaschen-Taschen display address (string)
+#flaschen-display=
+
+# Width (integer)
+#flaschen-width=25
+
+# Height (integer)
+#flaschen-height=20
+
 [vout_sdl] # Simple DirectMedia Layer video output
 
 # YUV overlay (boolean)
@@ -1043,23 +1054,6 @@ qt-privacy-ask=0
 # Filebrowser starting point (string)
 #browse-dir=
 
-[adaptive] # Unified adaptive streaming for DASH/HLS
-
-# Adaptation Logic (integer)
-#adaptive-logic=0
-
-# Preferred Width (integer)
-#adaptive-width=480
-
-# Preferred Height (integer)
-#adaptive-height=360
-
-# Fixed Bandwidth in KiB/s (integer)
-#adaptive-bw=250
-
-# Use regular HTTP modules (boolean)
-#adaptive-use-access=0
-
 [ts] # MPEG Transport Stream demuxer
 
 # Digital TV Standard (string)
@@ -1842,26 +1836,6 @@ avcodec-hw=vaapi_x11
 # Force Profile (string)
 #sout-schro-force-profile=
 
-[fluidsynth] # FluidSynth MIDI synthesizer
-
-# Sound fonts (string)
-#soundfont=
-
-# Chorus (boolean)
-#synth-chorus=1
-
-# Synthesis gain (float)
-#synth-gain=0.500000
-
-# Polyphony (integer)
-#synth-polyphony=256
-
-# Reverb (boolean)
-#synth-reverb=1
-
-# Sample rate (integer)
-#synth-sample-rate=44100
-
 [ddummy] # Dummy decoder
 
 # Save raw codec data (boolean)
@@ -2208,6 +2182,12 @@ equalizer-2pass=1
 # Force HTTP/2 (boolean)
 #http2=0
 
+# Cookies forwarding (boolean)
+#http-forward-cookies=1
+
+# User agent (string)
+#http-user-agent=
+
 [concat] # Concatenated inputs
 
 # Inputs list (string)
@@ -2251,20 +2231,8 @@ equalizer-2pass=1
 # HTTP proxy password (string)
 #http-proxy-pwd=
 
-# HTTP referer value (string)
-#http-referrer=
-
-# User Agent (string)
-#http-user-agent=
-
 # Auto re-connect (boolean)
 #http-reconnect=0
-
-# Continuous stream (boolean)
-#http-continuous=0
-
-# Forward Cookies (boolean)
-#http-forward-cookies=1
 
 [ftp] # FTP input
 
@@ -2930,6 +2898,9 @@ access=none
 
 # Stream filter module (string)
 #stream-filter=
+
+# Demux filter module (string)
+#demux-filter=
 
 # Default stream output chain (string)
 #sout=

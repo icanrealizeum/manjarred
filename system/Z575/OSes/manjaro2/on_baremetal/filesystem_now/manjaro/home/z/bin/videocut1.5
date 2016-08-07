@@ -23,12 +23,14 @@ ext="${fname##*.}"
 #extension is required so that ffmpeg can infer the format, apparently!
 
 #echo "$ext"
-suffix="_${0/*\//}_fromtime_${fromtime/:/_}_totaltime_${totaltime/:/_}.${ext}"
+suffix="_${0/*\//}_fromtime_${fromtime/:/_}_totaltime_${totaltime/:/_}_speed1p5x.${ext}"
 
 set -x
-ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -acodec copy -aq 1 -vcodec copy -to "$totaltime" "${prefix}${fname}${suffix}"
+#ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -acodec copy -aq 1 -vcodec copy -to "$totaltime" "${prefix}${fname}${suffix}"
 #XXX: accurate_seek will only work when using atempo or acodec mp3 not copy!(latter not tested - only both tested!)
 
 #this is 1.5x speed(both audio and video):
-#ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -af atempo=1.5 -threads 4  -acodec mp3 -aq 1 -vf "setpts=0.666666666666*PTS" -deinterlace -to "$totaltime" "${prefix}${fname}${suffix}"
-
+#with deintelace(seems to have no effect tho):
+#ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -af atempo=1.5 -threads 4  -acodec mp3 -aq 1 -vf "setpts=0.666666666666*PTS,yadif" -to "$totaltime" "${prefix}${fname}${suffix}"
+#without deinterlace:
+ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -af atempo=1.5 -threads 4  -acodec mp3 -aq 1 -vf "setpts=0.666666666666*PTS" -to "$totaltime" "${prefix}${fname}${suffix}"
