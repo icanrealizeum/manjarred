@@ -78,6 +78,11 @@ echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|ta
 
 ls /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
 cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
+#echo 'on' > /sys/bus/pci/devices/0000:00:12.0/power/control
+#echo 'on' > /sys/bus/pci/devices/0000:00:12.2/power/control
+#echo 'on' > /sys/bus/pci/devices/0000:00:13.0/power/control
+#echo 'on' > /sys/bus/pci/devices/0000:00:13.2/power/control
+#cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
 echo 'end of log'
 
 dmesg > /dmesg_shutdown.log
@@ -87,7 +92,9 @@ mount -o remount,ro /
 #src: https://unix.stackexchange.com/questions/55281/how-to-stop-waking-all-attached-drives-on-reboot-deactivating-swap/55417#55417
 #turn off drive cache, workaround for https://bugzilla.kernel.org/show_bug.cgi?id=151631
 #XXX: comment out following line to prevent rebooting from happening(due to aforementioned bug just 1 line above) after deactivate_super finished(aka when "Unmounting /oldroot" is done) to see the printk's time(uptime) so you can calc. the difference manually
-hdparm -W0 /dev/sda
+#ok, this turns off drive cache, so poweroff/reboot will not hang (but poweroff will still hang when attempting to stop drive which is its 2nd step after cache flushing)
+#XXX: temporarily commented out:
+#hdparm -W0 /dev/sda
 hdparm -W /dev/sda
 
 #flush drive cache:
@@ -110,6 +117,10 @@ sleep 1
 #this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
 if ! test "$1" == "poweroff"; then
   #it's reboot, or something else(if ever possible)
+  #XXX: the following 3 lines should be commented out! temporarily allowing them now:
+  #echo 'sleep 30' # then manual shutdown via sysrq'
+  sleep 30
+#  echo o > /proc/sysrq-trigger ; sleep 5
   echo "End of '$0'"
 else
   #it's poweroff aka shutdown

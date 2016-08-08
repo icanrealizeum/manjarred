@@ -26,12 +26,12 @@ ac_add_options --enable-debug-symbols
 
 
 #speed up? when compiling
-ac_add_options --disable-tests
+#ac_add_options --disable-tests
 #ac_add_options --enable-tests
 #^ Note: tests enabled needed for PGO!
 
 #  --enable-debug-js-modules  Enable debug mode for frontend JS libraries"      
-ac_add_options --disable-debug-js-modules
+#ac_add_options --disable-debug-js-modules
 
 #default:
 #XXX: mozbuild.configure.options.InvalidOptionError: Unknown option: --enable-crypto
@@ -49,13 +49,13 @@ ac_add_options --disable-debug-js-modules
 #ac_add_options --with-system-nspr
 
 #ac_add_options --with-system-nss  #nss>=3.26 !! have 3.25 now on Manjaro
-ac_add_options --without-system-nss
+#ac_add_options --without-system-nss
 
 #XXX: system-jpeg from gentoo
-ac_add_options --with-system-jpeg
+#ac_add_options --with-system-jpeg
 ac_add_options --with-system-zlib
-ac_add_options --with-system-bz2
-ac_add_options --with-system-png
+#ac_add_options --with-system-bz2
+#ac_add_options --with-system-png
 #ac_add_options --with-system-libevent
 
 #XXX: not-system-libvpx from gentoo
@@ -63,9 +63,9 @@ ac_add_options --with-system-png
 #chromium has system-libvpx:
 ac_add_options --with-system-libvpx
 
-ac_add_options --enable-system-hunspell
+#ac_add_options --enable-system-hunspell
 #XXX: system-sqlite from gentoo
-ac_add_options --enable-system-sqlite
+#ac_add_options --enable-system-sqlite
 #Use system libffi (located with pkgconfig)
 #ac_add_options --enable-system-ffi
 
@@ -127,7 +127,7 @@ ac_add_options --enable-printing
 #ac_add_options --disable-gio
 #ac_add_options --disable-gconf
 #  --enable-libproxy         Enable libproxy support "
-ac_add_options --disable-libproxy
+#ac_add_options --disable-libproxy
 #  --enable-gnomeui        Enable libgnomeui instead of GIO & GTK for icon theme support "
 #ac_add_options --disable-gnomeui
 

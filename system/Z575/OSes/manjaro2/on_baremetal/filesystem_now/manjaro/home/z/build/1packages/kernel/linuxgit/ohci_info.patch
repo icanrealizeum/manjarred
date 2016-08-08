@@ -1,0 +1,15 @@
+from linux-usb ML, Alan Stern
+
+Index: usb-4.x/drivers/usb/host/ohci-hub.c
+===================================================================
+--- usb-4.x.orig/drivers/usb/host/ohci-hub.c
++++ usb-4.x/drivers/usb/host/ohci-hub.c
+@@ -212,6 +212,7 @@ __acquires(ohci->lock)
+ 	msleep (20 /* usb 11.5.1.10 */ + 12 /* 32 msec counter */ + 1);
+ 
+ 	temp = ohci_readl (ohci, &ohci->regs->control);
++	ohci_info(ohci, "ohci_rh_resume: control %x\n", temp);
+ 	temp &= OHCI_CTRL_HCFS;
+ 	if (temp != OHCI_USB_RESUME) {
+ 		ohci_err (ohci, "controller won't resume\n");
+

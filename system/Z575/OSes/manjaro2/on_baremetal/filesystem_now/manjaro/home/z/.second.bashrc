@@ -99,7 +99,7 @@ alias rustfmt='/home/z/build/1nonpkgs/rustfmt/target/release/rustfmt'
 
 alias l='ls -rlact'
 alias cd..='cd ..' #windows-like
-alias sync='time sync'
+alias sync='time /home/z/bin/sync'
 
 #alias mc="(declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1 )"
 #alias mc="declare -gxr PS1=\"\$PS1mc\" ; echo $PS1; /usr/bin/mc; echo $PS1"
