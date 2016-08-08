@@ -111,12 +111,12 @@ if ! test "$1" == "poweroff"; then
   echo "End of '$0'"
 else
   #it's poweroff aka shutdown
-  echo 'Manually powering off /dev/sda:'
+#  echo 'Manually powering off /dev/sda:'
   #XXX: temp commented out!
-  hdparm -Y /dev/sda
+#  hdparm -Y /dev/sda
   #poweroff by sysrq - this still needs kernel patch to not stop disk in kernel because that'd fail the same way!
-  echo 'Manual shutdown via sysrq:'
+#  echo 'Manual shutdown via sysrq:'
   #XXX: temp commented out!
-  echo o > /proc/sysrq-trigger ; sleep 5
+#  echo o > /proc/sysrq-trigger ; sleep 5
   echo "End of '$0' (looks like shutdown failed - since you're still up!)"
 fi

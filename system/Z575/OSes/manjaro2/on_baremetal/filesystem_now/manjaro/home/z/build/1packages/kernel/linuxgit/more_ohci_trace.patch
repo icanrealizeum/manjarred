@@ -1,45 +1,43 @@
-this is from linux-usb ML, thanks Alan Stern for help on this!
+this is from linux-usb ML, thanks Alan Stern for this!
+don't know how to use ohci_info() so... these should do
 
 diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 1700908..3dbbafd 100644
+index 1700908..f20f0ff 100644
 --- a/drivers/usb/host/ohci-hcd.c
 +++ b/drivers/usb/host/ohci-hcd.c
-@@ -929,8 +929,12 @@ static irqreturn_t ohci_irq (struct usb_hcd *hcd)
+@@ -929,8 +929,11 @@ static irqreturn_t ohci_irq (struct usb_hcd *hcd)
  			spin_lock (&ohci->lock);
  			ohci_rh_resume (ohci);
  			spin_unlock (&ohci->lock);
 -		} else
 +		} else {
 +        pr_debug ("%s: ONE\n", hcd_name);
-+        ohci_info();
 +        dump_stack();
  			usb_hcd_resume_root_hub(hcd);
 +    }
  	}
  
  	spin_lock(&ohci->lock);
-@@ -1135,6 +1139,9 @@ int ohci_resume(struct usb_hcd *hcd, bool hibernated)
+@@ -1135,6 +1138,8 @@ int ohci_resume(struct usb_hcd *hcd, bool hibernated)
  		msleep(20);
  	}
  
 +        pr_debug ("%s: TWO\n", hcd_name);
-+        ohci_info();
 +        dump_stack();
  	usb_hcd_resume_root_hub(hcd);
  
  	return 0;
 diff --git a/drivers/usb/host/ohci-hub.c b/drivers/usb/host/ohci-hub.c
-index ed678c17..445b3cc 100644
+index ed678c17..35ec722 100644
 --- a/drivers/usb/host/ohci-hub.c
 +++ b/drivers/usb/host/ohci-hub.c
-@@ -397,8 +397,12 @@ static int ohci_root_hub_state_changes(struct ohci_hcd *ohci, int changed,
+@@ -397,8 +397,11 @@ static int ohci_root_hub_state_changes(struct ohci_hcd *ohci, int changed,
  		if (changed) {
  			if (ohci->autostop)
  				ohci_rh_resume(ohci);
 -			else
 +			else {
 +        pr_debug ("%s: THREE\n", hcd_name);
-+        ohci_info();
 +        dump_stack();
  				usb_hcd_resume_root_hub(ohci_to_hcd(ohci));
 +      }

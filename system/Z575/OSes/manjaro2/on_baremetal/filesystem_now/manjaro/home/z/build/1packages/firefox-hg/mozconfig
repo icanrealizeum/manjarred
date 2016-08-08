@@ -294,7 +294,7 @@ ac_add_options --disable-b2g-ril
 #  --enable-b2g-bt      Set compile flags necessary for compiling Bluetooth API for B2G "
 ac_add_options --disable-b2g-bt
 #  --enable-nfc         Set compile flags necessary for compiling NFC API "
-ac_add_options --disable-nfc
+#ac_add_options --disable-nfc
 
 #can't disable this because compilation error
 #WebIDL.WebIDLError: error: Unresolved type '<unresolved scope>::SpeechSynthesis'., /home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/obj-x86_64-unknown-linux-gnu/dom/bindings/Window.webidl line 231:68
@@ -321,8 +321,8 @@ ac_add_options --disable-b2g-camera
 #ac_add_options --enable-system-cairo
 #XXX: not-system-cairo from gentoo
 #  --enable-system-cairo   Use system cairo (located with pkgconfig)"           
-ac_add_options --disable-system-cairo
-ac_add_options --enable-system-pixman
+#ac_add_options --disable-system-cairo
+#ac_add_options --enable-system-pixman
 
 #//old: trying to avoid a compilation error XPIDL_MODULE cannot be defined unless there are XPIDL_SOURCES
 # 2:12.39 /tmp/obj-x86_64-pc-linux-gnu/dist/include/nsStyleStruct.h:2641:12: error: ‘NS_STYLE_DISPLAY_INLINE_XUL_GRID’ was not declared in this scope
@@ -349,7 +349,7 @@ ac_add_options --enable-ctypes
 
 #XXX: system-icu from gentoo
 ac_add_options --with-system-icu
-ac_add_options --without-intl-api
+#ac_add_options --without-intl-api
 #^Determine the status of the ECMAScript Internationalization API.  The first
 #    (or lack of any of these) builds and exposes the API.  The second builds it
 #    but doesn't use ICU or expose the API to script.  The third doesn't build
