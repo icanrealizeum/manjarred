@@ -72,8 +72,8 @@ echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|ta
 
 #XXX: temporary!!!
 #  time sync && sdparm --command=sync /dev/sda && sleep 1
-#  echo 'Manual shutdown attempt via sysrq:'
-#  echo o > /proc/sysrq-trigger ; sleep 5
+#  echo 'Manual shutdown attempt via sysrq(sleep 15) so it hangs on stopdisk'
+#  echo o > /proc/sysrq-trigger ; sleep 15
 #XXX: end temp.
 
 echo 'end of log'
@@ -112,9 +112,11 @@ if ! test "$1" == "poweroff"; then
 else
   #it's poweroff aka shutdown
   echo 'Manually powering off /dev/sda:'
+  #XXX: temp commented out!
   hdparm -Y /dev/sda
   #poweroff by sysrq - this still needs kernel patch to not stop disk in kernel because that'd fail the same way!
   echo 'Manual shutdown via sysrq:'
+  #XXX: temp commented out!
   echo o > /proc/sysrq-trigger ; sleep 5
   echo "End of '$0' (looks like shutdown failed - since you're still up!)"
 fi

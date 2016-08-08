@@ -22,7 +22,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.7.r12410.g52ddb7e
+pkgver=4.8.rc1.r0.g29b4817
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -59,9 +59,11 @@ radeon_thermal.patch
 3200_amd_errata_665.patch
 #3300_bug_119571.patch
 #sync_cache_debug.patch
-#XXX: temp: sync_cache_debug_and_disable_stopdisk.patch
+dumpstack1.patch
+#XXX: temp commented out: sync_cache_debug_and_disable_stopdisk.patch
 debug_deactivatesuper.patch
-showtrace_when_ohcifail.patch
+#showtrace_when_ohcifail.patch
+more_ohci_trace.patch
 )
 
 presetfile="${pkgbase}.preset"
@@ -117,8 +119,9 @@ sha512sums=('SKIP'
             '2508151b88e8f07644de1252f8af31c7d8c41fb026c120ea6a6c2633c0b22c669c560b451f40ced84b9c88006e86b2ef3f3ee57bc9baeaea3688b9eb4273abd4'
             '772ee9031ea20b63ce2743afa960d2a15e3e844e0641a613545f436f9e41514638d5730417efb5552d03b98577220e0255508ca036f68abc6d41210491e4cf93'
             'fe5aef25e8d021cd9a602a30ed26ff62ed1af2095e11bcc89ac771cf6fa68509994dd31d7bae84ebf9db4415a037c0c2160b69afe1793e55f7aea193f32c4c07'
+            'b3d2bf7b7f21401ee167b22fd354490178422f6073c8e452253cb97dda6efa100c74c150a1ad0b2c7fb7d4de0f256456cc84b76c9489cef28af442bd25a380e4'
             'bfaca51747d2421cd0e7e56bf5417dfa4996f7a7a3b4415e84d60fcd68cdb2e0cef52896be827e8d8b6de4fce7a7be36af80c7519da442d4c3f75610862df738'
-            'bed06ab660a9c9cadfd0b467a3626522012720986d1048e4437797bb49c042906454cc997c63a5c71dc12bf26a3e2915715109f043524326acc95f654af4913d')
+            '7d2469666cd0cbbbe56a21f10718cd18fc53d6e4f35fd3e0f9451ba29b72c253f17ec3c42957c034fd836821777ec8eb51e7a3d242fa602b109188690ce23a01')
 
 pkgver() {
   cd "${pkgbase}"

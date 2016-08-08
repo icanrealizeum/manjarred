@@ -1,7 +1,7 @@
 /*
  *
  * Automatically generated file; DO NOT EDIT.
- * Linux/x86 4.7.0 Kernel Configuration
+ * Linux/x86 4.8.0-rc1 Kernel Configuration
  *
  */
 #define CONFIG_HAVE_ARCH_SECCOMP_FILTER 1
@@ -887,7 +887,7 @@
 #define CONFIG_SPARSEMEM_ALLOC_MEM_MAP_TOGETHER 1
 #define CONFIG_HAVE_IOREMAP_PROT 1
 #define CONFIG_DEBUG_KERNEL 1
-#define CONFIG_LOCALVERSION "-g52ddb7e"
+#define CONFIG_LOCALVERSION "-g29b4817"
 #define CONFIG_HAVE_PCSPKR_PLATFORM 1
 #define CONFIG_ARCH_HAS_DEBUG_STRICT_USER_COPY_CHECKS 1
 #define CONFIG_CRYPTO 1
