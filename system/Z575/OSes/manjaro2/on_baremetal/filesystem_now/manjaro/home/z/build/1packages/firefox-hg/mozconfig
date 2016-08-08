@@ -38,7 +38,7 @@ ac_add_options --disable-debug-js-modules
 #ac_add_options --enable-crypto
 
 #install architecture-independent files in PREFIX  default: /usr/local
-ac_add_options --prefix=/usr
+#ac_add_options --prefix=/usr
 #XXX: 0:11.68 mozbuild.configure.options.InvalidOptionError: Unknown option: --libdir
 #ac_add_options --libdir=/usr/lib
 
@@ -67,7 +67,7 @@ ac_add_options --enable-system-hunspell
 #XXX: system-sqlite from gentoo
 ac_add_options --enable-system-sqlite
 #Use system libffi (located with pkgconfig)
-ac_add_options --enable-system-ffi
+#ac_add_options --enable-system-ffi
 
 # Features
 #ac_add_options --enable-startup-notification
@@ -97,17 +97,17 @@ ac_add_options --disable-updater
 #ac_add_options --disable-profiling
 #ac_add_options --disable-systrace
 #Enable Valgrind integration hooks (default=no)
-ac_add_options --disable-valgrind
-ac_add_options --disable-jprof
+#ac_add_options --disable-valgrind
+#ac_add_options --disable-jprof
 # 0:10.30 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-shark
 #ac_add_options --disable-shark
-ac_add_options --disable-instruments
-ac_add_options --disable-callgrind
-ac_add_options --disable-vtune
+#ac_add_options --disable-instruments
+#ac_add_options --disable-callgrind
+#ac_add_options --disable-vtune
 #  --enable-cpp-rtti       Enable C++ RTTI "
 #ac_add_options --disable-cpp-rtti
 #Enable GNU Gold Linker when it is not already the default
-ac_add_options --enable-gold
+#ac_add_options --enable-gold
 #  --enable-pie           Enable Position Independent Executables"
 #ac_add_options --enable-pie
 #--with-pthreads
@@ -133,7 +133,7 @@ ac_add_options --disable-libproxy
 
 #this is optional tho:14:10.76 Notification center failed: Install the python dbus module to get a notification when the build finishes.
 #ac_add_options --disable-dbus #!!!!
-ac_add_options --enable-dbus #!!!!
+#ac_add_options --enable-dbus #!!!!
 
 ac_add_options --disable-websms-backend
 #  --disable-dbm           Disable building dbm"
