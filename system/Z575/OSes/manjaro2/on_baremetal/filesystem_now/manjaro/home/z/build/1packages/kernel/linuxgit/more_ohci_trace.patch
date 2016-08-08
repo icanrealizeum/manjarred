@@ -11,7 +11,7 @@ index 1700908..f20f0ff 100644
  			spin_unlock (&ohci->lock);
 -		} else
 +		} else {
-+        pr_debug ("%s: ONE\n", hcd_name);
++        printk(KERN_ALERT "ONE\n");
 +        dump_stack();
  			usb_hcd_resume_root_hub(hcd);
 +    }
@@ -22,7 +22,7 @@ index 1700908..f20f0ff 100644
  		msleep(20);
  	}
  
-+        pr_debug ("%s: TWO\n", hcd_name);
++        printk(KERN_ALERT "TWO\n");
 +        dump_stack();
  	usb_hcd_resume_root_hub(hcd);
  
@@ -37,7 +37,7 @@ index ed678c17..35ec722 100644
  				ohci_rh_resume(ohci);
 -			else
 +			else {
-+        pr_debug ("%s: THREE\n", hcd_name);
++        printk(KERN_ALERT "THREE\n");
 +        dump_stack();
  				usb_hcd_resume_root_hub(ohci_to_hcd(ohci));
 +      }
