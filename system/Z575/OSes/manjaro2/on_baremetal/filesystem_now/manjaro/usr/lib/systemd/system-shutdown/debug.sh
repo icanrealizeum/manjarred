@@ -76,6 +76,8 @@ echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|ta
 #  echo o > /proc/sysrq-trigger ; sleep 15
 #XXX: end temp.
 
+ls /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
+cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
 echo 'end of log'
 
 dmesg > /dmesg_shutdown.log
@@ -118,5 +120,8 @@ else
 #  echo 'Manual shutdown via sysrq:'
   #XXX: temp commented out!
 #  echo o > /proc/sysrq-trigger ; sleep 5
-  echo "End of '$0' (looks like shutdown failed - since you're still up!)"
+  #echo "End of '$0' (looks like shutdown failed - since you're still up!)"
+  ls /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
+  cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
+  echo "End of '$0'"
 fi
