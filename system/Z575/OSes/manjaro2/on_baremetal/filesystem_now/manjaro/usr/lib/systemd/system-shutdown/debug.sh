@@ -60,7 +60,7 @@ echo "Before:"
 echo m > /proc/sysrq-trigger #has no effect: ; dmesg|grep -F "pagecache pages"|tail -1
 echo 'manually Freeing pagecache pages'
 #don't have sysctl: time sysctl vm.drop_caches=1
-#XXX: comment out following drop_caches line(s) to test deactivate_super's speed(it lingers at "Unmounting /oldroot")
+#//XXX: comment out the following drop_caches line(s) to test deactivate_super's speed(it lingers at "Unmounting /oldroot")
 #To free pagecache(works fine: 51640 pagecache pages freed/sec + 10 sec spent in deactivate_super):
 #time echo 1 >/proc/sys/vm/drop_caches
 #To free dentries and inodes(untested):
@@ -70,11 +70,11 @@ time echo 3 >/proc/sys/vm/drop_caches
 echo "After :"
 echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|tail -1
 
-#XXX: temporary!!!
+#//XXX: temporary!!!
 #  time sync && sdparm --command=sync /dev/sda && sleep 1
 #  echo 'Manual shutdown attempt via sysrq(sleep 15) so it hangs on stopdisk'
 #  echo o > /proc/sysrq-trigger ; sleep 15
-#XXX: end temp.
+#//XXX: end temp.
 
 ls /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
 cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
@@ -91,10 +91,10 @@ mount -o remount,ro /
 
 #src: https://unix.stackexchange.com/questions/55281/how-to-stop-waking-all-attached-drives-on-reboot-deactivating-swap/55417#55417
 #turn off drive cache, workaround for https://bugzilla.kernel.org/show_bug.cgi?id=151631
-#XXX: comment out following line to prevent rebooting from happening(due to aforementioned bug just 1 line above) after deactivate_super finished(aka when "Unmounting /oldroot" is done) to see the printk's time(uptime) so you can calc. the difference manually
-#ok, this turns off drive cache, so poweroff/reboot will not hang (but poweroff will still hang when attempting to stop drive which is its 2nd step after cache flushing)
-#XXX: temporarily commented out:
-#hdparm -W0 /dev/sda
+#//XXX: comment out following line to prevent rebooting from happening(due to aforementioned bug just 1 line above) after deactivate_super finished(aka when "Unmounting /oldroot" is done) to see the printk's time(uptime) so you can calc. the difference manually
+#This turns off drive cache, so poweroff/reboot will not hang (but poweroff will still hang when attempting to stop drive which is its 2nd step after cache flushing)
+#//XXX: temporarily commented out:
+hdparm -W0 /dev/sda
 hdparm -W /dev/sda
 
 #flush drive cache:
@@ -117,20 +117,20 @@ sleep 1
 #this won't run: (sleep 30 ; echo 'autorebooting'; sleep 1; echo b > /proc/sysrq-trigger ) &
 if ! test "$1" == "poweroff"; then
   #it's reboot, or something else(if ever possible)
-  #XXX: the following 3 lines should be commented out! temporarily allowing them now:
+  #//XXX: the following 3 lines should be commented out! temporarily allowing them now:
   #echo 'sleep 30' # then manual shutdown via sysrq'
-  sleep 30
+  #sleep 30
 #  echo o > /proc/sysrq-trigger ; sleep 5
   echo "End of '$0'"
 else
   #it's poweroff aka shutdown
 #  echo 'Manually powering off /dev/sda:'
-  #XXX: temp commented out!
-#  hdparm -Y /dev/sda
+  #//XXX: temp commented out!
+  hdparm -Y /dev/sda
   #poweroff by sysrq - this still needs kernel patch to not stop disk in kernel because that'd fail the same way!
 #  echo 'Manual shutdown via sysrq:'
-  #XXX: temp commented out!
-#  echo o > /proc/sysrq-trigger ; sleep 5
+  #//XXX: temp commented out!
+  echo o > /proc/sysrq-trigger ; sleep 5
   #echo "End of '$0' (looks like shutdown failed - since you're still up!)"
   ls /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
   cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
