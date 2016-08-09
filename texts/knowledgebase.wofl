@@ -883,6 +883,27 @@
   \ make sure uBlock(not just uMatrix) allows requests to s.youtube.com
 
 * firefox-hg compiles fine but coredumps on startup in libxul.so ?
-  \ recompile without --disable-wmf !!
+  \ oops my bad, it's not this://recompile without --disable-wmf !!
+  \ to fix, don't use: ac_add_options --enable-optimize=-O2
+  \ dang it, and I remember not using that at some point and it still crashed! but it seems i remember wrongly!
+
+* the dumbest issue with symlinked dirs, ever!
+  \ Linux myzee 4.8.0-rc1-g29b4817 #20 SMP PREEMPT Mon Aug 8 21:18:27 EEST 2016 x86_64 GNU/Linux
+  \ lrwxrwxrwx 1 z    z               24 06.07.2016 05:02 manjarred -> build/1nonpkgs/manjarred/
+  * while inside a symlink-dir, you cannot access a relative path file (but bash completion works just fine!)
+    \ cd ~/manjarred
+    \ ls -la ../build/1packages/firefox-hg/mozconfig
+    \ ls: cannot access '../build/1packages/firefox-hg/mozconfig': No such file or directory
+    \ cd ..
+    \ ls -la ./build/1packages/firefox-hg/mozconfig
+    \ -rw-r--r-- 1 z z 22516 09.08.2016 12:59 ./build/1packages/firefox-hg/mozconfig
+
+    \ l
+    \ lrwxrwxrwx 1 z    z               24 06.07.2016 05:02 manjarred -> build/1nonpkgs/manjarred/
+    \ are you friggin' kidding me with this?!
+    \ and of course this works:
+    \ /home/z/manjarred $ l ../../../build/1packages/firefox-hg/mozconfig
+    \ -rw-r--r-- 1 z z 22615 09.08.2016 13:09 ../../../build/1packages/firefox-hg/mozconfig
+    \ it's like I'm in the dir that the symlink points to, even though it doesn't look like that!
 
 

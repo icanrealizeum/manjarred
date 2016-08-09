@@ -10,6 +10,7 @@ ac_add_options --enable-application=browser
 #default:
 ac_add_options --enable-optimize
 #ac_add_options --enable-optimize=-O2
+#XXX: ^ don't use -O2 here or it will coredump crash on startup! compiles ok though.
 
 # https://developer.mozilla.org/en-US/docs/Configuring_Build_Options
 #XXX: no debug from gentoo
