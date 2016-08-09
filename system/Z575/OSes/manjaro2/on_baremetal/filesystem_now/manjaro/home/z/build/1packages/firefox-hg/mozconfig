@@ -1,5 +1,7 @@
 . $topsrcdir/browser/config/mozconfig
 
+#XXX: if you change this file, you don't have to run ./1 (if you already have ran ./1 and ./2) just put the file in the src dir, touch configure, then run ./2
+
 #this was on gentoo:
 #www-client/firefox -gmp-autoupdate -gstreamer pulseaudio system-jpeg system-icu -system-libvpx system-sqlite -wifi -debug -egl -system-cairo -hwaccel jit
 #TODO: not found yet: jit, egl, wifi(kinda) gmp-autoupdate hwaccel
@@ -27,19 +29,19 @@ ac_add_options --enable-debug-symbols
 
 
 #speed up? when compiling
-#ac_add_options --disable-tests
+ac_add_options --disable-tests
 #ac_add_options --enable-tests
 #^ Note: tests enabled needed for PGO!
 
 #  --enable-debug-js-modules  Enable debug mode for frontend JS libraries"      
-#ac_add_options --disable-debug-js-modules
+ac_add_options --disable-debug-js-modules
 
 #default:
 #XXX: mozbuild.configure.options.InvalidOptionError: Unknown option: --enable-crypto
 #ac_add_options --enable-crypto
 
 #install architecture-independent files in PREFIX  default: /usr/local
-#ac_add_options --prefix=/usr
+ac_add_options --prefix=/usr
 #XXX: 0:11.68 mozbuild.configure.options.InvalidOptionError: Unknown option: --libdir
 #ac_add_options --libdir=/usr/lib
 
@@ -47,28 +49,28 @@ ac_add_options --enable-debug-symbols
 #^ idno why not, maybe PKGBUILD install() icons?
 
 # System libraries
-#ac_add_options --with-system-nspr
+ac_add_options --with-system-nspr
 
 #ac_add_options --with-system-nss  #nss>=3.26 !! have 3.25 now on Manjaro
-#ac_add_options --without-system-nss
+ac_add_options --without-system-nss
 
 #XXX: system-jpeg from gentoo
-#ac_add_options --with-system-jpeg
+ac_add_options --with-system-jpeg
 ac_add_options --with-system-zlib
-#ac_add_options --with-system-bz2
-#ac_add_options --with-system-png
-#ac_add_options --with-system-libevent
+ac_add_options --with-system-bz2
+ac_add_options --with-system-png
+ac_add_options --with-system-libevent
 
 #XXX: not-system-libvpx from gentoo
 #ac_add_options --without-system-libvpx
 #chromium has system-libvpx:
 ac_add_options --with-system-libvpx
 
-#ac_add_options --enable-system-hunspell
+ac_add_options --enable-system-hunspell
 #XXX: system-sqlite from gentoo
-#ac_add_options --enable-system-sqlite
+ac_add_options --enable-system-sqlite
 #Use system libffi (located with pkgconfig)
-#ac_add_options --enable-system-ffi
+ac_add_options --enable-system-ffi
 
 # Features
 #ac_add_options --enable-startup-notification
@@ -95,25 +97,25 @@ ac_add_options --disable-updater
 #/home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/js/src/vm/Compression.cpp:112:32: error: ‘__msan_unpoison’ was not declared in this scope
 #ac_add_options --enable-memory-sanitizer
 
-#ac_add_options --disable-profiling
-#ac_add_options --disable-systrace
+ac_add_options --disable-profiling
+ac_add_options --disable-systrace
 #Enable Valgrind integration hooks (default=no)
-#ac_add_options --disable-valgrind
-#ac_add_options --disable-jprof
+ac_add_options --disable-valgrind
+ac_add_options --disable-jprof
 # 0:10.30 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-shark
 #ac_add_options --disable-shark
-#ac_add_options --disable-instruments
-#ac_add_options --disable-callgrind
-#ac_add_options --disable-vtune
+ac_add_options --disable-instruments
+ac_add_options --disable-callgrind
+ac_add_options --disable-vtune
 #  --enable-cpp-rtti       Enable C++ RTTI "
-#ac_add_options --disable-cpp-rtti
+ac_add_options --disable-cpp-rtti
 #Enable GNU Gold Linker when it is not already the default
-#ac_add_options --enable-gold
+ac_add_options --enable-gold
 #  --enable-pie           Enable Position Independent Executables"
-#ac_add_options --enable-pie
+ac_add_options --enable-pie
 #--with-pthreads
 #build with dtrace support if available (default=no)"
-#ac_add_options --disable-dtrace
+ac_add_options --disable-dtrace
 ac_add_options --with-x
 #  --disable-printing      Disable printing support"
 #ac_add_options --disable-printing
@@ -125,20 +127,20 @@ ac_add_options --enable-printing
 #mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gnomevfs
 #ac_add_options --disable-gnomevfs
 #  --disable-gio           Disable GIO support"
-#ac_add_options --disable-gio
+ac_add_options --disable-gio
 #ac_add_options --disable-gconf
 #  --enable-libproxy         Enable libproxy support "
-#ac_add_options --disable-libproxy
+ac_add_options --disable-libproxy
 #  --enable-gnomeui        Enable libgnomeui instead of GIO & GTK for icon theme support "
-#ac_add_options --disable-gnomeui
+ac_add_options --disable-gnomeui
 
 #this is optional tho:14:10.76 Notification center failed: Install the python dbus module to get a notification when the build finishes.
 #ac_add_options --disable-dbus #!!!!
-#ac_add_options --enable-dbus #!!!!
+ac_add_options --enable-dbus #!!!!
 
-#ac_add_options --disable-websms-backend
+ac_add_options --disable-websms-backend
 #  --disable-dbm           Disable building dbm"
-#ac_add_options --disable-dbm #!!!!
+ac_add_options --disable-dbm #!!!!
 #  --disable-accessibility Disable accessibility support"
 ac_add_options --disable-accessibility
 
@@ -150,7 +152,7 @@ ac_add_options --enable-webrtc
 
 #  --enable-raw           Enable support for RAW media"
 #ac_add_options --enable-raw
-#ac_add_options --disable-raw
+ac_add_options --disable-raw
 
 #can't disable this because compilation error:
 #/home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/content/media/ogg/OggWriter.h:10:30: fatal error: OpusTrackEncoder.h: No such file or directory
@@ -169,6 +171,7 @@ ac_add_options --enable-webrtc
 
 ac_add_options --disable-directshow
 ac_add_options --disable-wmf
+#XXX: you can disable wmf just fine! it's the -O2 that you shouldn't use above!
 #ac_add_options --disable-ffmpeg
 ac_add_options --enable-ffmpeg
 #ac_add_options --disable-fmp4
@@ -232,7 +235,7 @@ ac_add_options --enable-extensions=default,-skipgnomevfs,-skipgio
 #ac_add_options --enable-tree-freetype
 
 #can't find description for this:
-#ac_add_options --disable-webapp-runtime
+ac_add_options --disable-webapp-runtime
 
 #  --enable-maintenance-service       Enable building of maintenanceservice"
 ac_add_options --disable-maintenance-service
@@ -263,8 +266,8 @@ ac_add_options --enable-safe-browsing
 #ac_add_options --enable-mobile-optimize
 #unknown option:
 #ac_add_options --disable-logging
-#ac_add_options --disable-logrefcnt
-#ac_add_options --disable-dump-painting
+ac_add_options --disable-logrefcnt
+ac_add_options --disable-dump-painting
 #unknown option:
 #ac_add_options --disable-trace-malloc
 
@@ -282,11 +285,11 @@ ac_add_options --enable-safe-browsing
 #not needed, unless it fails at some point
 #ac_add_options --disable-elf-hack
 
-#ac_add_options --disable-tasktracer
+ac_add_options --disable-tasktracer
 #unknown option:
 #ac_add_options --disable-visual-event-tracer
 #  --enable-stdcxx-compat  Enable compatibility with older libstdc++"           
-#ac_add_options --disable-stdcxx-compat
+ac_add_options --disable-stdcxx-compat
 
 ac_add_options --disable-startupcache
 
@@ -295,7 +298,7 @@ ac_add_options --disable-b2g-ril
 #  --enable-b2g-bt      Set compile flags necessary for compiling Bluetooth API for B2G "
 ac_add_options --disable-b2g-bt
 #  --enable-nfc         Set compile flags necessary for compiling NFC API "
-#ac_add_options --disable-nfc
+ac_add_options --disable-nfc
 
 #can't disable this because compilation error
 #WebIDL.WebIDLError: error: Unresolved type '<unresolved scope>::SpeechSynthesis'., /home/emacs/build/firefox-hg/makepkg/firefox-hg/src/firefox-hg/obj-x86_64-unknown-linux-gnu/dom/bindings/Window.webidl line 231:68
@@ -322,8 +325,8 @@ ac_add_options --disable-b2g-camera
 #ac_add_options --enable-system-cairo
 #XXX: not-system-cairo from gentoo
 #  --enable-system-cairo   Use system cairo (located with pkgconfig)"           
-#ac_add_options --disable-system-cairo
-#ac_add_options --enable-system-pixman
+ac_add_options --disable-system-cairo
+ac_add_options --enable-system-pixman
 
 #//old: trying to avoid a compilation error XPIDL_MODULE cannot be defined unless there are XPIDL_SOURCES
 # 2:12.39 /tmp/obj-x86_64-pc-linux-gnu/dist/include/nsStyleStruct.h:2641:12: error: ‘NS_STYLE_DISPLAY_INLINE_XUL_GRID’ was not declared in this scope
@@ -350,7 +353,7 @@ ac_add_options --enable-ctypes
 
 #XXX: system-icu from gentoo
 ac_add_options --with-system-icu
-#ac_add_options --without-intl-api
+ac_add_options --without-intl-api
 #^Determine the status of the ECMAScript Internationalization API.  The first
 #    (or lack of any of these) builds and exposes the API.  The second builds it
 #    but doesn't use ICU or expose the API to script.  The third doesn't build

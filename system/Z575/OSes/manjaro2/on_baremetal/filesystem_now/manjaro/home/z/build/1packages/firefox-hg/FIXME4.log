@@ -1,0 +1,103 @@
+ok, now it's crash on exit when: time ./mach run
+and still crash on startup if installed!!!
+
+firefox-hg $ time ./mach run
+ 0:00.72 /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox -no-remote -profile /tmp/obj-x86_64-pc-linux-gnu/tmp/scratch_user
+[7385] WARNING: Unable to read system value: 'aValue > 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/base/nsSystemInfo.cpp, line 908
+++DOCSHELL 0x7f0c47b2d800 == 1 [pid = 7385] [id = 1]
+++DOMWINDOW == 1 (0x7f0c47b2f000) [pid = 7385] [serial = 1] [outer = (nil)]
+++DOMWINDOW == 2 (0x7f0c47b30000) [pid = 7385] [serial = 2] [outer = 0x7f0c47b2f000]
+++DOCSHELL 0x7f0c44fd1000 == 2 [pid = 7385] [id = 2]
+++DOMWINDOW == 3 (0x7f0c44fd1800) [pid = 7385] [serial = 3] [outer = (nil)]
+++DOMWINDOW == 4 (0x7f0c44fd2800) [pid = 7385] [serial = 4] [outer = 0x7f0c44fd1800]
+++DOMWINDOW == 5 (0x7f0c44fde000) [pid = 7385] [serial = 5] [outer = 0x7f0c47b2f000]
+[7385] WARNING: attempt to modify an immutable nsStandardURL: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/base/nsStandardURL.cpp, line 1424
+JavaScript error: resource://gre/modules/LoginManagerContextMenu.jsm, line 22: ReferenceError: Intl is not defined
+++DOCSHELL 0x7f0c3d9b7800 == 3 [pid = 7385] [id = 3]
+++DOMWINDOW == 6 (0x7f0c3d9b8000) [pid = 7385] [serial = 6] [outer = (nil)]
+++DOCSHELL 0x7f0c3d9b8800 == 4 [pid = 7385] [id = 4]
+++DOMWINDOW == 7 (0x7f0c3da85400) [pid = 7385] [serial = 7] [outer = (nil)]
+++DOCSHELL 0x7f0c3cfa4800 == 5 [pid = 7385] [id = 5]
+++DOMWINDOW == 8 (0x7f0c3ce0a000) [pid = 7385] [serial = 8] [outer = (nil)]
+++DOMWINDOW == 9 (0x7f0c3cef4800) [pid = 7385] [serial = 9] [outer = 0x7f0c3ce0a000]
+++DOMWINDOW == 10 (0x7f0c3ca89800) [pid = 7385] [serial = 10] [outer = 0x7f0c3d9b8000]
+++DOMWINDOW == 11 (0x7f0c3caa9c00) [pid = 7385] [serial = 11] [outer = 0x7f0c3da85400]
+[Child 7434] WARNING: '!compMgr', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/glue/nsComponentManagerUtils.cpp, line 63
+[Child 7434] WARNING: NS_ENSURE_SUCCESS(rv, rv) failed with result 0x80004005: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/toolkit/xre/nsXREDirProvider.cpp, line 1681
+[Child 7434] WARNING: Unable to read system value: 'aValue > 0', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/base/nsSystemInfo.cpp, line 908
+++DOCSHELL 0x7fd17584f800 == 1 [pid = 7434] [id = 1]
+++DOMWINDOW == 1 (0x7fd169f7c400) [pid = 7434] [serial = 1] [outer = (nil)]
+++DOMWINDOW == 2 (0x7fd16a219000) [pid = 7434] [serial = 2] [outer = 0x7fd169f7c400]
+++DOMWINDOW == 3 (0x7fd168c1d800) [pid = 7434] [serial = 3] [outer = 0x7fd169f7c400]
+[Child 7434] WARNING: attempt to modify an immutable nsStandardURL: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/base/nsStandardURL.cpp, line 1424
+[Parent 7385] WARNING: GetDefaultCharsetForLocale: need to add multi locale support: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/intl/locale/unix/nsUNIXCharset.cpp, line 98
+[Parent 7385] WARNING: NS_ENSURE_SUCCESS(rv, rv) failed with result 0x80070057: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/quota/ActorsParent.cpp, line 4674
+[Child 7434] WARNING: NS_ENSURE_SUCCESS(status, status) failed with result 0x804B000D: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/protocol/http/nsCORSListenerProxy.cpp, line 553
+++DOCSHELL 0x7f0c3a2f3800 == 6 [pid = 7385] [id = 6]
+++DOMWINDOW == 12 (0x7f0c3a444800) [pid = 7385] [serial = 12] [outer = (nil)]
+++DOMWINDOW == 13 (0x7f0c3a45c000) [pid = 7385] [serial = 13] [outer = 0x7f0c3a444800]
+++DOMWINDOW == 14 (0x7f0c3b2f6800) [pid = 7385] [serial = 14] [outer = 0x7f0c3a444800]
+++DOCSHELL 0x7f0c3a2e5800 == 7 [pid = 7385] [id = 7]
+++DOMWINDOW == 15 (0x7f0c3a536000) [pid = 7385] [serial = 15] [outer = (nil)]
+++DOMWINDOW == 16 (0x7f0c3cb8ac00) [pid = 7385] [serial = 16] [outer = 0x7f0c3a536000]
+[Parent 7385] WARNING: Could not get disk status from nsIDiskSpaceWatcher: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/uriloader/prefetch/nsOfflineCacheUpdateService.cpp, line 283
+++DOMWINDOW == 17 (0x7f0c3da85c00) [pid = 7385] [serial = 17] [outer = 0x7f0c3a536000]
+++DOMWINDOW == 4 (0x7fd167f4f800) [pid = 7434] [serial = 4] [outer = 0x7fd169f7c400]
+--DOCSHELL 0x7f0c3cfa4800 == 6 [pid = 7385] [id = 5]
+[Parent 7385] WARNING: Appending an extra chunk for SourceBuffer: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/image/SourceBuffer.cpp, line 128
+[Parent 7385] WARNING: We should have hit the document element...: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/xul/BoxObject.cpp, line 175
+--DOMWINDOW == 16 (0x7f0c3ce0a000) [pid = 7385] [serial = 8] [outer = (nil)] [url = about:blank]
+--DOMWINDOW == 15 (0x7f0c3cef4800) [pid = 7385] [serial = 9] [outer = (nil)] [url = about:blank]
+--DOMWINDOW == 14 (0x7f0c47b30000) [pid = 7385] [serial = 2] [outer = (nil)] [url = about:blank]
+--DOMWINDOW == 13 (0x7f0c3a45c000) [pid = 7385] [serial = 13] [outer = (nil)] [url = about:blank]
+--DOMWINDOW == 12 (0x7f0c3cb8ac00) [pid = 7385] [serial = 16] [outer = (nil)] [url = about:blank]
+--DOMWINDOW == 3 (0x7fd16a219000) [pid = 7434] [serial = 2] [outer = (nil)] [url = about:blank]
+--DOMWINDOW == 2 (0x7fd168c1d800) [pid = 7434] [serial = 3] [outer = (nil)] [url = about:home]
+++DOCSHELL 0x7fd165f71800 == 2 [pid = 7434] [id = 2]
+++DOMWINDOW == 3 (0x7fd165f9fc00) [pid = 7434] [serial = 5] [outer = (nil)]
+++DOMWINDOW == 4 (0x7fd165fbe800) [pid = 7434] [serial = 6] [outer = 0x7fd165f9fc00]
+++DOMWINDOW == 5 (0x7fd165fcd400) [pid = 7434] [serial = 7] [outer = 0x7fd165f9fc00]
+++DOMWINDOW == 6 (0x7fd16625e800) [pid = 7434] [serial = 8] [outer = 0x7fd169f7c400]
+--DOCSHELL 0x7f0c3a2f3800 == 5 [pid = 7385] [id = 6]
+--DOCSHELL 0x7f0c47b2d800 == 4 [pid = 7385] [id = 1]
+[Parent 7385] WARNING: cannot post event if not initialized: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/protocol/http/nsHttpConnectionMgr.cpp, line 232
+[Parent 7385] WARNING: cannot post event if not initialized: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/protocol/http/nsHttpConnectionMgr.cpp, line 232
+[Parent 7385] WARNING: cannot post event if not initialized: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/protocol/http/nsHttpConnectionMgr.cpp, line 232
+[Parent 7385] WARNING: cannot post event if not initialized: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/protocol/http/nsHttpConnectionMgr.cpp, line 232
+[Parent 7385] WARNING: cannot post event if not initialized: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/netwerk/protocol/http/nsHttpConnectionMgr.cpp, line 232
+--DOCSHELL 0x7f0c3d9b7800 == 3 [pid = 7385] [id = 3]
+--DOCSHELL 0x7f0c3a2e5800 == 2 [pid = 7385] [id = 7]
+--DOCSHELL 0x7f0c3d9b8800 == 1 [pid = 7385] [id = 4]
+--DOCSHELL 0x7f0c44fd1000 == 0 [pid = 7385] [id = 2]
+JavaScript error: file:///tmp/obj-x86_64-pc-linux-gnu/dist/bin/components/nsUrlClassifierListManager.js, line 511: TypeError: this.tablesData[table] is undefined
+]: [Parent 7385] WARNING: NS_ENSURE_TRUE(maybeContext) failed: file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/xpcom/threads/nsThread.cpp, line 911
+[Parent 7385] WARNING: 'NS_FAILED(RemovePermissionChangeObserver())', file /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/notification/Notification.cpp, line 677
+WARNING: YOU ARE LEAKING THE WORLD (at least one JSRuntime and everything alive inside it, that is) AT JS_ShutDown TIME.  FIX THIS!
+Assertion failure: uses_ == 0, at /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/js/src/vm/TraceLogging.h:138
+
+Program /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox (pid = 7385) received signal 11.
+Stack:
+#01: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3ae7e39]
+#02: ???[/usr/lib/libpthread.so.0 +0x10f00]
+#03: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x38c21f1]
+#04: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x38c31da]
+#05: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x38c370c]
+#06: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x38c139b]
+#07: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0xb97b51]
+#08: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3409940]
+#09: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x3409991]
+#10: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x340ec9f]
+#11: XRE_main[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/libxul.so +0x340eee5]
+#12: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox +0x5e39]
+#13: ???[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox +0x5434]
+#14: __libc_start_main[/usr/lib/libc.so.6 +0x20741]
+#15: _start[/tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox +0x5629]
+#16: ??? (???:???)
+Sleeping for 300 seconds.
+Type 'gdb /tmp/obj-x86_64-pc-linux-gnu/dist/bin/firefox 7385' to attach your debugger to this thread.
+^C
+real	0m47.245s
+user	0m47.384s
+sys	0m8.633s
+Press any key to continue...
+
