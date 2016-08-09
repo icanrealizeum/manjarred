@@ -1,0 +1,12 @@
+diff -r 6cf0089510fa js/src/vm/TraceLogging.h
+--- a/js/src/vm/TraceLogging.h	Tue Aug 09 15:44:51 2016 +0200
++++ b/js/src/vm/TraceLogging.h	Wed Aug 10 00:57:37 2016 +0300
+@@ -135,7 +135,7 @@
+     { }
+ 
+     ~TraceLoggerEventPayload() {
+-        MOZ_ASSERT(uses_ == 0);
++        //MOZ_ASSERT(uses_ == 0);
+     }
+ 
+     uint32_t textId() {

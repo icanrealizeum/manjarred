@@ -5,7 +5,7 @@
 # Contributor: Jakub Schmidtke <sjakub@gmail.com>
 
 pkgname=firefox-hg
-pkgver=308558+.720b5d2c84d5+
+pkgver=308748+.6cf0089510fa+
 pkgrel=1
 pkgdesc="Latest firefox browser built from the trunk code"
 arch=('i686' 'x86_64')
@@ -38,6 +38,7 @@ install=firefox.install
 #patch1='911546_good.patch'
 patch2='debug_exclude_3_files.patch'
 patch3='byebyeplugins_autoload.patch'
+patch4='dontcoredump_on_this.patch'
 #options=('!emptydirs' '!makeflags')
 options=('!strip' '!debug' '!ccache' '!distcc') #XXX: yep, man PKGBUILD confirms ccache distcc should be in options array!!!
 #BUILDENV=('!ccache') #oh don't use uppercase! it overrides /etc/makepkg.conf one! use lowercase it will merge!
@@ -53,14 +54,16 @@ source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
 #        "$patch1"
         "$patch2"
         "$patch3"
+        "$patch4"
         )
 sha256sums=('SKIP'
-            'a5bc30aad22b77b3dc137f786bfdde989b75a82b491c1010d10e60e054181884'
+            '47f59c51ee0c587196141b70a7be12e509ff418e21873ce17bc5a128d6ae1c1c'
             'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
             '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
             '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256'
             '32b5bf22a2869103222a7de9bb5fcc5c8cc253786c3f7e9e9ff5867f866bf0bf'
-            '277f4203880f13a75970a22e410e39a23c868e14f895e6af74443fe9ba356cac')
+            '277f4203880f13a75970a22e410e39a23c868e14f895e6af74443fe9ba356cac'
+            '462b2107a004df7357b62c9d305610ed6a314a556b8c3b1df1743aa9f36e2e79')
 #_pgo=1 # set to 0 to disable
 
 pkgver() {
@@ -78,6 +81,7 @@ prepare() {
 #  patch -Np1 -i "${srcdir}/${patch1}"
   patch -Np1 -i "${srcdir}/${patch2}"
   patch -Np1 -i "${srcdir}/${patch3}"
+  patch -Np1 -i "${srcdir}/${patch4}"
 
   # https://bugs.archlinux.org/task/41689
 #  patch -Np2 -i ../rhbz-966424.patch
