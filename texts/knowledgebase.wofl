@@ -897,7 +897,6 @@
     \ cd ..
     \ ls -la ./build/1packages/firefox-hg/mozconfig
     \ -rw-r--r-- 1 z z 22516 09.08.2016 12:59 ./build/1packages/firefox-hg/mozconfig
-
     \ l
     \ lrwxrwxrwx 1 z    z               24 06.07.2016 05:02 manjarred -> build/1nonpkgs/manjarred/
     \ are you friggin' kidding me with this?!
@@ -905,5 +904,9 @@
     \ /home/z/manjarred $ l ../../../build/1packages/firefox-hg/mozconfig
     \ -rw-r--r-- 1 z z 22615 09.08.2016 13:09 ../../../build/1packages/firefox-hg/mozconfig
     \ it's like I'm in the dir that the symlink points to, even though it doesn't look like that!
+    \ l and ls are aliases, so here's to be sure:
+    \ /home/z/manjarred $ /usr/bin/ls -la ../../../build/1packages/firefox-hg/mozconfig
+    \ -rw-r--r-- 1 z z 22615 Aug  9 13:09 ../../../build/1packages/firefox-hg/mozconfig
+
 
 
