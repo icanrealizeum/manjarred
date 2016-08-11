@@ -1,5 +1,7 @@
 . $topsrcdir/browser/config/mozconfig
 
+#FIXME: something gets configure stuck in a loop! repeating this part: Reticulating splines... it must be a new commit since the working one: 308748+.6cf0089510fa+-1  (current broken one is: 308879:c12bb83ad278)
+
 #XXX: if you change this file, you don't have to run ./1 (if you already have ran ./1 and ./2) just put the file in the src dir, touch configure, then run ./2
 
 #this was on gentoo:
@@ -13,6 +15,9 @@ ac_add_options --enable-application=browser
 ac_add_options --enable-optimize
 #ac_add_options --enable-optimize=-O2
 #XXX: ^ don't use -O2 here or it will coredump crash on startup! compiles ok though.
+#ac_add_options --enable-more-deterministic
+
+
 
 # https://developer.mozilla.org/en-US/docs/Configuring_Build_Options
 #XXX: no debug from gentoo
@@ -126,9 +131,9 @@ ac_add_options --disable-dtrace
 ac_add_options --with-x
 #  --disable-printing      Disable printing support"
 ac_add_options --disable-printing
-#^ causes: Chrome file doesn't exist: /tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
-#Failed to load file:///tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
-#and maybe MAYBE the core dump too! or that's something else!
+#//^ causes: Chrome file doesn't exist: /tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
+#//Failed to load file:///tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
+# ^ seem to work now!
 #ac_add_options --enable-printing
 
 #mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gnomevfs
@@ -213,6 +218,7 @@ ac_add_options --enable-pulseaudio
 #ac_add_options --enable-gstreamer
 #XXX: no gstreamer from gentoo
 #ac_add_options --disable-gstreamer
+# 0:14.32 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gstreamer
 #unknown option:
 #ac_add_options --enable-gstreamer=1.0
 #^ i dno about this! new PKGBUILD has it tho
@@ -323,6 +329,7 @@ ac_add_options --disable-b2g-camera
 #says invalid option, odd:
 #ac_add_options --jitreport-granularity=0
 
+#not listed in --help or old.configure, but untested:
 #ac_add_options --enable-xterm-updates
 
 #can't disable this because compilation error
@@ -331,7 +338,7 @@ ac_add_options --disable-b2g-camera
 
 #ac_add_options --enable-system-cairo
 #XXX: not-system-cairo from gentoo
-#  --enable-system-cairo   Use system cairo (located with pkgconfig)"           
+#  --enable-system-cairo   Use system cairo (located with pkgconfig)"
 ac_add_options --disable-system-cairo
 ac_add_options --enable-system-pixman
 
@@ -370,8 +377,8 @@ ac_add_options --without-intl-api
 
 #tisdone: must update ccache or else -fprofile-generate  is not recognized and thus not ccached! >3.1.9  >=3.2.0 to be sure!
 
-#FIXME: currently getting this error and don't know what causes it, doesn't seem to be these options, must be something else that changed because it worked ok before.
-#configure: error: Your toolchain does not support C++0x/C++11 mode properly. Please upgrade your toolchain
+#//currently getting this error and don't know what causes it, doesn't seem to be these options, must be something else that changed because it worked ok before.
+#//configure: error: Your toolchain does not support C++0x/C++11 mode properly. Please upgrade your toolchain
 
 # PGO
 #commented out to prevent lockup when compiling:

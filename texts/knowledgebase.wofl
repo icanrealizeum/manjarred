@@ -909,4 +909,11 @@
     \ -rw-r--r-- 1 z z 22615 Aug  9 13:09 ../../../build/1packages/firefox-hg/mozconfig
 
 
+* cpupower
+  * won't set governor if version is 4.7-1 instead of 4.6-4
+    \ [2016-08-11 00:02] [ALPM] upgraded cpupower (4.6-4 -> 4.7-1)
+    \ so, in 4.6-4
+    \ "Setting cpu:" is shown
+    \ even though you still get this message: modprobe: FATAL: Module msr not found in directory /lib/modules/4.8.0-rc1-g9512c47
+
 

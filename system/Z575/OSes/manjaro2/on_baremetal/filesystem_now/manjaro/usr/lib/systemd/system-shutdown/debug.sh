@@ -14,6 +14,13 @@ echo "Script args: $@"
 
 set
 
+onint() {
+  echo "${0}: Ignored C-c!"
+}
+trap onint sigint SIGHUP SIGALRM SIGTERM
+#FIXME: this script will get interrupted by systemd via SIGTERM if there are too many pagecache pages(like 1.2mil) and some timeout(dno what) happens which triggers a SIGALRM in systemd(or somewhere) which then triggers that SIGTERM - and thus it will hand on the 'Synchronizing SCSI cache' because this script didn't get the chance to turn off drive cache(due to SIGTERM) - unsure if the above will keep it from being terminated!
+
+
 #speed up
 showgov() {
   cpupower frequency-info|grep --color=always -E '(The governor |current policy: frequency should be within|current CPU frequency:)'
@@ -85,7 +92,11 @@ cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
 #cat /sys/bus/pci/devices/0000:00:1{2,3}*/power/runtime_status
 echo 'end of log'
 
-dmesg > /dmesg_shutdown.log
+logfile='/dmesg_shutdown.log'
+echo "//---Shutdown logfile started at: `date`" >> "$logfile"
+dmesg >> "$logfile"
+#echo "//---Shutdown logfile ended at: `date`"
+
 time sync && sdparm --command=sync /dev/sda && sleep 1
 mount -o remount,ro /
 

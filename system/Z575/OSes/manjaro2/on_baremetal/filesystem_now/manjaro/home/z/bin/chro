@@ -8,6 +8,7 @@ fi
 sudo --remove-timestamp
 pushd /tmp
 #time chromium --audio-buffer-size=8192 "$@"
+mkdir -p /tmp/chrodowns
 time chromium "$@"
 popd
 

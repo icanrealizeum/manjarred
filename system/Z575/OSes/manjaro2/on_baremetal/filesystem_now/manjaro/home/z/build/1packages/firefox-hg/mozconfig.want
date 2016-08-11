@@ -1,5 +1,9 @@
 . $topsrcdir/browser/config/mozconfig
 
+#FIXME: something gets configure stuck in a loop! repeating this part: Reticulating splines... it must be a new commit since the working one: 308748+.6cf0089510fa+-1  (current broken one is: 308879:c12bb83ad278)
+
+#XXX: if you change this file, you don't have to run ./1 (if you already have ran ./1 and ./2) just put the file in the src dir, touch configure, then run ./2
+
 #this was on gentoo:
 #www-client/firefox -gmp-autoupdate -gstreamer pulseaudio system-jpeg system-icu -system-libvpx system-sqlite -wifi -debug -egl -system-cairo -hwaccel jit
 #TODO: not found yet: jit, egl, wifi(kinda) gmp-autoupdate hwaccel
@@ -9,18 +13,22 @@ ac_add_options --enable-application=browser
 
 #default:
 ac_add_options --enable-optimize
-ac_add_options --enable-optimize=-O2
+#ac_add_options --enable-optimize=-O2
+#XXX: ^ don't use -O2 here or it will coredump crash on startup! compiles ok though.
+ac_add_options --enable-more-deterministic
+
+
 
 # https://developer.mozilla.org/en-US/docs/Configuring_Build_Options
 #XXX: no debug from gentoo
-#ac_add_options --disable-debug
-#ac_add_options --disable-debug-symbols
-#ac_add_options --enable-strip
+ac_add_options --disable-debug
+ac_add_options --disable-debug-symbols
+ac_add_options --enable-strip
 #^ no messages for ./mach run
 
-ac_add_options --disable-strip
-ac_add_options --enable-debug
-ac_add_options --enable-debug-symbols
+#ac_add_options --disable-strip
+#ac_add_options --enable-debug
+#ac_add_options --enable-debug-symbols
 #^ these three don't seem to show me the symbols on core dump(which is handled by journalctl aka systemd) - but at least they show me some messages/output
 # 0:15.44 mozbuild.configure.options.InvalidOptionError: '--enable-debug-symbols' implied by '--enable-debug' conflicts with '--disable-debug-symbols' from the mozconfig
 
@@ -30,7 +38,7 @@ ac_add_options --disable-tests
 #ac_add_options --enable-tests
 #^ Note: tests enabled needed for PGO!
 
-#  --enable-debug-js-modules  Enable debug mode for frontend JS libraries"      
+#  --enable-debug-js-modules  Enable debug mode for frontend JS libraries"
 ac_add_options --disable-debug-js-modules
 
 #default:
@@ -84,6 +92,13 @@ ac_add_options --disable-updater
 # 0:11.46 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-installer
 #ac_add_options --disable-installer
 
+#can't use this because
+#ac_add_options --disable-update-channel
+# 0:20.77   File "/home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/build/moz.configure/init.configure", line 698, in update_channel
+# 0:20.77     if channel[0] == '':
+#  0:20.77 IndexError: tuple index out of range
+
+
 
 #extra security
 #can't enable this because compiler errors:
@@ -115,11 +130,11 @@ ac_add_options --enable-pie
 ac_add_options --disable-dtrace
 ac_add_options --with-x
 #  --disable-printing      Disable printing support"
-#ac_add_options --disable-printing
-#^ causes: Chrome file doesn't exist: /tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
-#Failed to load file:///tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
-#and maybe MAYBE the core dump too! or that's something else!
-ac_add_options --enable-printing
+ac_add_options --disable-printing
+#//^ causes: Chrome file doesn't exist: /tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
+#//Failed to load file:///tmp/obj-x86_64-pc-linux-gnu/dist/bin/chrome/toolkit/content/global/printUtils.js
+# ^ seem to work now!
+#ac_add_options --enable-printing
 
 #mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gnomevfs
 #ac_add_options --disable-gnomevfs
@@ -142,8 +157,8 @@ ac_add_options --disable-dbm #!!!!
 ac_add_options --disable-accessibility
 
 # 0:26.05 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/media/webrtc/MediaEngineCameraVideoSource.h:14:53: fatal error: webrtc/video_engine/include/vie_capture.h: No such file or directory
-#ac_add_options --disable-webrtc
-ac_add_options --enable-webrtc
+ac_add_options --disable-webrtc
+#ac_add_options --enable-webrtc
 
 
 
@@ -168,6 +183,7 @@ ac_add_options --disable-raw
 
 ac_add_options --disable-directshow
 ac_add_options --disable-wmf
+#XXX: you can disable wmf just fine! it's the -O2 that you shouldn't use above!
 #ac_add_options --disable-ffmpeg
 ac_add_options --enable-ffmpeg
 #ac_add_options --disable-fmp4
@@ -202,6 +218,7 @@ ac_add_options --enable-pulseaudio
 #ac_add_options --enable-gstreamer
 #XXX: no gstreamer from gentoo
 #ac_add_options --disable-gstreamer
+# 0:14.32 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-gstreamer
 #unknown option:
 #ac_add_options --enable-gstreamer=1.0
 #^ i dno about this! new PKGBUILD has it tho
@@ -312,6 +329,7 @@ ac_add_options --disable-b2g-camera
 #says invalid option, odd:
 #ac_add_options --jitreport-granularity=0
 
+#not listed in --help or old.configure, but untested:
 #ac_add_options --enable-xterm-updates
 
 #can't disable this because compilation error
@@ -320,7 +338,7 @@ ac_add_options --disable-b2g-camera
 
 #ac_add_options --enable-system-cairo
 #XXX: not-system-cairo from gentoo
-#  --enable-system-cairo   Use system cairo (located with pkgconfig)"           
+#  --enable-system-cairo   Use system cairo (located with pkgconfig)"
 ac_add_options --disable-system-cairo
 ac_add_options --enable-system-pixman
 
@@ -328,7 +346,8 @@ ac_add_options --enable-system-pixman
 # 2:12.39 /tmp/obj-x86_64-pc-linux-gnu/dist/include/nsStyleStruct.h:2641:12: error: ‘NS_STYLE_DISPLAY_INLINE_XUL_GRID’ was not declared in this scope
 # 2:20.08 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/layout/style/nsStyleStruct.h:2642:12: error: ‘NS_STYLE_DISPLAY_INLINE_STACK’ was not declared in this scope
 #with this: ac_add_options --disable-xul
-#ac_add_options --enable-xul #this is the default
+ac_add_options --enable-xul
+#this is the default
 
 #unknown option:
 #ac_add_options --enable-profilelocking
@@ -358,8 +377,8 @@ ac_add_options --without-intl-api
 
 #tisdone: must update ccache or else -fprofile-generate  is not recognized and thus not ccached! >3.1.9  >=3.2.0 to be sure!
 
-#FIXME: currently getting this error and don't know what causes it, doesn't seem to be these options, must be something else that changed because it worked ok before.
-#configure: error: Your toolchain does not support C++0x/C++11 mode properly. Please upgrade your toolchain
+#//currently getting this error and don't know what causes it, doesn't seem to be these options, must be something else that changed because it worked ok before.
+#//configure: error: Your toolchain does not support C++0x/C++11 mode properly. Please upgrade your toolchain
 
 # PGO
 #commented out to prevent lockup when compiling:

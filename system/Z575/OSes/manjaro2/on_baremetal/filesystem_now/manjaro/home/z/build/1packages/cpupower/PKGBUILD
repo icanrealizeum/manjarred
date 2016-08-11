@@ -1,0 +1,267 @@
+# $Id$
+# Maintainer: Sébastien Luttringer
+
+pkgbase=linux-tools
+pkgname=(
+  'cpupower'
+)
+cat >/dev/null <<EOF
+  'cgroup_event_listener'
+  'libtraceevent'
+  'linux-tools-meta'
+  'perf'
+  'tmon'
+  'turbostat'
+  'usbip'
+  'x86_energy_perf_policy'
+)
+EOF
+
+pkgver=4.8.rc1.r70.g9512c47
+pkgrel=1
+license=('GPL2')
+arch=('i686' 'x86_64')
+url='http://www.kernel.org'
+options=('!strip')
+makedepends=('git')
+# split packages need all package dependencies set manually in makedepends
+# kernel source deps
+makedepends+=('asciidoc' 'xmlto')
+# perf deps
+makedepends+=('perl' 'python2' 'libnewt' 'elfutils' 'libunwind' 'numactl' 'audit' 'gtk2')
+# cpupower deps
+makedepends+=('pciutils')
+# usbip deps
+makedepends+=('glib2' 'sysfsutils' 'udev')
+# tmon deps
+makedepends+=('ncurses')
+groups=("$pkgbase")
+patch1="cpupower_frequency_set_and_governot_bug_135391.patch"
+source=(
+"${pkgbase}::git+file:///home/z/build/1packages/kernel/linuxgit/sources_pacman/linux-git/"
+#"git+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git#tag=v$pkgver"
+        'cpupower.default'
+        'cpupower.systemd'
+        'cpupower.service'
+        'usbipd.service'
+        '02-archlinux-paths.patch'
+        '04-fix-usip-h-path.patch'
+        "$patch1"
+        )
+md5sums=('SKIP'
+         '56883c159381ba89e50ab8ea65efec77'
+         '34f5ecc19770a1abbcd0fd65bfd1f065'
+         '86c4e419e4ba80835c330d49ba3f56ad'
+         'bb35634f480325a78b943f7e10165e86'
+         'f9a6551d0efc53a3bd6d2578b810d27f'
+         'a73ea3ea6d9c9ecb1cc910871eead3ff'
+         '33c871519adfd4e5575643c4579d019b')
+sha512sums=('SKIP'
+            '1f4e55bddfa3fdf91eeffe48c6482cf02467b0c12edce28b4b9d4be30b95f3151be896b7608e4802fe7779735e33ce93efc7a3038d89455ea6b8fe3bcd19b2f8'
+            '64d8a6071b045bd5343ca6567361ef45175787a245468185aa52716461cb66304c2d5b7a030f9b8aa275da0069357e82e11f191ce218be7c8c1014fd67255e4d'
+            '2467a9387229b69e683c4a83ce7b9cb539869011227669517716a0fba33e04902e86ff7581d7c0e7c1c98b70d59cdddb5cac167f51a4ee62d6bb2b6c217cc771'
+            '5a16d46ee1c2c758ee0425bd5f47db210cef996782fc3d2403691259ee26af55cc24e862990df9744eefe1a0b6a82433911b8add3b309bf7ffe32af91dff7d0e'
+            'c8abfce3df42400f57810644eee2baac8cbad52ef1cfffb869d5aa3452a63bb9a4a7a3514fe14c0e34d71d521ee5113a1e5a26c1893beb87909a2e6b5a3677ef'
+            'fac265b6d7b084bc02fbc3c4abbd8d1a38c50f7548ff184ec1b0c24af5e36dc74c4ff83ec149b3933260629698cb02c516a8dbc3546865fb640b262de4f2bf0b'
+            '1d0dcddafe43b985128e3043e181a48adc8eb708af80fa186348eadb9c7d481da477970e413dc269be7f99eb823bd69e41bdbc1a606831e8387812a154e9a8c8')
+
+
+
+pkgver() {
+  cd "${pkgbase}"
+  git describe --long | sed -E 's/^v//;s/([^-]*-g)/r\1/;s/-/./g'
+}
+
+prepare() {
+  cd "${pkgbase}"
+  # apply patch from the source array (should be a pacman feature)
+  local filename
+  for filename in "${source[@]}"; do
+    if [[ "$filename" =~ \.patch$ ]]; then
+      msg2 "Applying patch $filename"
+      patch -p1 -N -i "$srcdir/$filename"
+    fi
+  done
+  :
+}
+
+build() {
+cat >/dev/null <<EOF
+  msg2 'libtraceevent'
+  pushd "${pkgbase}/tools/lib/traceevent"
+  make
+  popd
+
+  msg2 'perf'
+  pushd "${pkgbase}/tools/perf"
+  make \
+    prefix=/usr \
+    DESTDIR="$pkgdir" \
+    WERROR=0 \
+    PYTHON=python2 \
+    PYTHON_CONFIG=python2-config \
+    PERF_VERSION=$pkgver-$pkgrel \
+    all man
+  popd
+EOF
+  msg2 'cpupower'
+  pushd "${pkgbase}/tools/power/cpupower"
+  # we cannot use --as-needed
+  #LDFLAGS=${LDFLAGS:+"$LDFLAGS,--no-as-needed"}
+  make VERSION=$pkgver-$pkgrel
+  popd
+
+cat >/dev/null <<EOF
+  msg2 'x86_energy_perf_policy'
+  pushd "${pkgbase}/tools/power/x86/x86_energy_perf_policy"
+  make
+  popd
+
+  msg2 'usbip'
+  pushd "${pkgbase}/tools/usb/usbip"
+  ./autogen.sh
+  ./configure --prefix=/usr --sbindir=/usr/bin
+  make
+  popd
+
+  msg2 'tmon'
+  pushd "${pkgbase}/tools/thermal/tmon"
+  make
+  popd
+
+  msg2 'cgroup_event_listener'
+  pushd "${pkgbase}/tools/cgroup"
+  make
+  popd
+
+  msg2 'turbostat'
+  pushd "${pkgbase}/tools/power/x86/turbostat"
+  make
+  popd
+EOF
+}
+
+cat >/dev/null <<EOF
+package_linux-tools-meta() {
+  pkgdesc='Linux kernel tools meta package'
+  groups=()
+  depends=(
+    'cgroup_event_listener'
+    'cpupower'
+    'libtraceevent'
+    'perf'
+    'tmon'
+    'turbostat'
+    'usbip'
+    'x86_energy_perf_policy'
+  )
+  conflicts=(
+    'acpidump'
+  )
+}
+
+package_libtraceevent() {
+  pkgdesc='Linux kernel trace event library'
+  depends=('glibc')
+
+  cd "${pkgbase}/tools/lib/traceevent"
+  install -dm 755 "$pkgdir/usr/lib"
+  install -m 644 libtraceevent.so "$pkgdir/usr/lib"
+}
+
+package_perf() {
+  pkgdesc='Linux kernel performance auditing tool'
+  depends=('perl' 'python2' 'libnewt' 'elfutils' 'libunwind' 'binutils'
+           'numactl' 'audit')
+  optdepends=('gtk2: support GTK2 browser for perf report')
+
+  cd "${pkgbase}/tools/perf"
+  make \
+    prefix=/usr \
+    DESTDIR="$pkgdir" \
+    WERROR=0 \
+    PYTHON=python2 \
+    PYTHON_CONFIG=python2-config \
+    PERF_VERSION=$pkgver-$pkgrel \
+    install install-man
+  cd "$pkgdir"
+  # move completion in new directory
+  install -Dm644 etc/bash_completion.d/perf usr/share/bash-completion/completions/perf
+  rm -r etc
+  # no exec on usr/share
+  find usr/share -type f -exec chmod a-x {} \;
+}
+EOF
+
+package_cpupower() {
+  pkgdesc='Linux kernel tool to examine and tune power saving related features of your processor'
+  backup=('etc/default/cpupower')
+  depends=('bash' 'pciutils')
+  conflicts=('cpufrequtils')
+  replaces=('cpufrequtils')
+  install=cpupower.install
+
+  pushd "${pkgbase}/tools/power/cpupower"
+  make \
+    DESTDIR="$pkgdir" \
+    sbindir='/usr/bin' \
+    mandir='/usr/share/man' \
+    docdir='/usr/share/doc/cpupower' \
+    install install-man
+  popd
+  # install startup scripts
+  install -Dm 644 $pkgname.default "$pkgdir/etc/default/$pkgname"
+  install -Dm 644 $pkgname.service "$pkgdir/usr/lib/systemd/system/$pkgname.service"
+  install -Dm 755 $pkgname.systemd "$pkgdir/usr/lib/systemd/scripts/$pkgname"
+}
+
+cat >/dev/null <<EOF
+package_x86_energy_perf_policy() {
+  pkgdesc='Read or write MSR_IA32_ENERGY_PERF_BIAS'
+  depends=('glibc')
+
+  cd "${pkgbase}/tools/power/x86/x86_energy_perf_policy"
+  install -Dm 755 x86_energy_perf_policy "$pkgdir/usr/bin/x86_energy_perf_policy"
+  install -Dm 644 x86_energy_perf_policy.8 "$pkgdir/usr/share/man/man8/x86_energy_perf_policy.8"
+}
+
+package_usbip() {
+  pkgdesc='An USB device sharing system over IP network'
+  depends=('glib2' 'sysfsutils' 'libsystemd')
+
+  pushd "${pkgbase}/tools/usb/usbip"
+  make install DESTDIR="$pkgdir"
+  popd
+  # module loading
+  install -Dm 644 /dev/null "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+  printf 'usbip-core\nusbip-host\n' > "$pkgdir/usr/lib/modules-load.d/$pkgname.conf"
+  # systemd
+  install -Dm 644 usbipd.service "$pkgdir/usr/lib/systemd/system/usbipd.service"
+}
+
+package_tmon() {
+  pkgdesc='Monitoring and Testing Tool for Linux kernel thermal subsystem'
+  depends=('glibc' 'ncurses')
+
+  cd "${pkgbase}/tools/thermal/tmon"
+  make install INSTALL_ROOT="$pkgdir"
+}
+
+package_cgroup_event_listener() {
+  pkgdesc='Simple listener of cgroup events'
+  depends=('glibc')
+
+  cd "${pkgbase}/tools/cgroup"
+  install -Dm755 cgroup_event_listener "$pkgdir/usr/bin/cgroup_event_listener"
+}
+
+package_turbostat() {
+  pkgdesc='Report processor frequency and idle statistics'
+  depends=('glibc')
+
+  cd "${pkgbase}/tools/power/x86/turbostat"
+  make install DESTDIR="$pkgdir"
+}
+EOF
+
+# vim:set ts=2 sw=2 et:
