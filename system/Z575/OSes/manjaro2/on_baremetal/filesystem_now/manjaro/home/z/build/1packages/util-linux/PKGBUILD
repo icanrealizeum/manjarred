@@ -1,0 +1,97 @@
+# $Id$
+# Maintainer: Tom Gundersen <teg@jklm.no>
+# Maintainer: Dave Reisner <dreisner@archlinux.org>
+# Contributor: judd <jvinet@zeroflux.org>
+
+pkgbase=util-linux
+pkgname=(util-linux libutil-linux)
+_pkgmajor=2.28
+pkgver=${_pkgmajor}
+pkgrel=1
+pkgdesc="Miscellaneous system utilities for Linux"
+url="https://www.kernel.org/pub/linux/utils/util-linux/"
+arch=('i686' 'x86_64')
+makedepends=('systemd' 'python')
+license=('GPL2')
+options=('strip' '!debug')
+
+#I don't have the keys, and can't contact any servers lookslike
+#validpgpkeys=('B0C64D14301CC6EFAEDF60E4E4B71D5EEC39C284')  # Karel Zak
+#source=("https://www.kernel.org/pub/linux/utils/util-linux/v$_pkgmajor/$pkgbase-$pkgver.tar."{xz,sign}
+source=("https://www.kernel.org/pub/linux/utils/util-linux/v$_pkgmajor/$pkgbase-$pkgver.tar.xz"
+        pam-{login,common,su})
+md5sums=('e534e6ccc49107e5d31c329af798ef7d'
+         '4368b3f98abd8a32662e094c54e7f9b1'
+         'a31374fef2cba0ca34dfc7078e2969e4'
+         'fa85e5cce5d723275b14365ba71a8aad')
+sha512sums=('a1f911bdfda5985de87105d39501e501a5f9ec0fe6a433e3f2fed9a80e104342bb4a7e0e6dc9b7d677d5429249f05b343cb5370b0ea0e068dc889699d4ec1f8a'
+            '7e52d2404f9ae393721a471b7b113effa969404253f730c1360001923742a1b84e131db33d988399dae93a788db33dc1bb40e22272cd6a31c0e94cfceb47ed8a'
+            '41c856d893c4157b158d79341fe2b1892be463e17f7a007f1c17397b5625c1d2d5671bc0b37879064ae715a918fb9b05c32d18d1aaa64284cddd8ecbda9b2434'
+            '35404980a339c8e002220fef7c09e70cb6fd3c02b2c38f2a00eef4e5caa3cb03685016f54b9e7600c3c97caa6dd5066620b138b14afd1656ff008f23cb6f556f')
+
+build() {
+  cd "$pkgbase-$pkgver"
+
+  ./configure --prefix=/usr \
+              --libdir=/usr/lib \
+              --bindir=/usr/bin \
+              --localstatedir=/run \
+              --enable-fs-paths-extra=/usr/bin \
+              --enable-raw \
+              --enable-vipw \
+              --enable-newgrp \
+              --enable-chfn-chsh \
+              --enable-write \
+              --enable-mesg \
+              --enable-libmount-force-mountinfo \
+              --with-python=3
+
+  make
+}
+
+package_util-linux() {
+  conflicts=('util-linux-ng' 'eject' 'zramctl')
+  provides=("util-linux-ng=$pkgver" 'eject' 'zramctl')
+  replaces=('zramctl')
+  depends=('pam' 'shadow' 'coreutils' 'libsystemd' 'libutil-linux')
+  optdepends=('python: python bindings to libmount')
+  groups=('base' 'base-devel')
+  backup=(etc/pam.d/chfn
+          etc/pam.d/chsh
+          etc/pam.d/login
+          etc/pam.d/su
+          etc/pam.d/su-l)
+
+  cd "$pkgbase-$pkgver"
+
+  make DESTDIR="$pkgdir" install
+
+  # setuid chfn and chsh
+  chmod 4755 "$pkgdir"/usr/bin/{newgrp,ch{sh,fn}}
+
+  # install PAM files for login-utils
+  install -Dm644 "$srcdir/pam-common" "$pkgdir/etc/pam.d/chfn"
+  install -m644 "$srcdir/pam-common" "$pkgdir/etc/pam.d/chsh"
+  install -m644 "$srcdir/pam-login" "$pkgdir/etc/pam.d/login"
+  install -m644 "$srcdir/pam-su" "$pkgdir/etc/pam.d/su"
+  install -m644 "$srcdir/pam-su" "$pkgdir/etc/pam.d/su-l"
+
+  # TODO(dreisner): offer this upstream?
+  sed -i '/ListenStream/ aRuntimeDirectory=uuidd' "$pkgdir/usr/lib/systemd/system/uuidd.socket"
+
+  # adjust for usrmove
+  # TODO(dreisner): fix configure.ac upstream so that this isn't needed
+  cd "$pkgdir"
+  mv {,usr/}sbin/* usr/bin
+  rmdir sbin usr/sbin
+
+  ### runtime libs are shipped as part of libutil-linux
+  rm "$pkgdir"/usr/lib/lib*.{a,so}*
+}
+
+package_libutil-linux() {
+  pkgdesc="util-linux runtime libraries"
+  provides=('libblkid.so' 'libfdisk.so' 'libmount.so' 'libsmartcols.so' 'libuuid.so')
+
+  make -C "$pkgbase-$pkgver" DESTDIR="$pkgdir" install-usrlib_execLTLIBRARIES
+}
