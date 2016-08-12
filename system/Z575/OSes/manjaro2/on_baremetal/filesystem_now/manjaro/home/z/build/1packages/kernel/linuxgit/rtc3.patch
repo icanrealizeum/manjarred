@@ -1,0 +1,136 @@
+We have observed on few machines with rtc-cmos device that
+hpet_rtc_interrupt() is called before cmos_do_probe() could call
+hpet_rtc_timer_init(). It has not been observed during normal boot/reboot
+of machines. It *sometime* happens when system is booted with kdump
+secondary kernel. So, neither hpet_default_delta nor hpet_t1_cmp is
+initialized by the time interrupt is raised in the given situation.
+Therefore while loop of hpet_cnt_ahead() in hpet_rtc_timer_reinit() never
+completes. This leads to "NMI watchdog: Watchdog detected hard LOCKUP on
+cpu 0".
+
+This patch factorize hpet_rtc_timer_init(), so that counter can be
+initialized before irq is registered.
+
+No functional change in this patch.
+
+Signed-off-by: Pratyush Anand <panand@xxxxxxxxxx>
+
+diff --git a/arch/x86/include/asm/hpet.h b/arch/x86/include/asm/hpet.h
+index cc285ec4b2c1..8eecb31bebcb 100644
+--- a/arch/x86/include/asm/hpet.h
++++ b/arch/x86/include/asm/hpet.h
+@@ -96,6 +96,8 @@ extern int hpet_set_alarm_time(unsigned char hrs, unsigned char min,
+ 			       unsigned char sec);
+ extern int hpet_set_periodic_freq(unsigned long freq);
+ extern int hpet_rtc_dropped_irq(void);
++extern int hpet_rtc_timer_counter_init(void);
++extern int hpet_rtc_timer_enable(void);
+ extern int hpet_rtc_timer_init(void);
+ extern irqreturn_t hpet_rtc_interrupt(int irq, void *dev_id);
+ extern int hpet_register_irq_handler(rtc_irq_handler handler);
+diff --git a/arch/x86/kernel/hpet.c b/arch/x86/kernel/hpet.c
+index 3d747070fe67..c9da694ff236 100644
+--- a/arch/x86/kernel/hpet.c
++++ b/arch/x86/kernel/hpet.c
+@@ -1075,14 +1075,12 @@ void hpet_unregister_irq_handler(rtc_irq_handler handler)
+ EXPORT_SYMBOL_GPL(hpet_unregister_irq_handler);
+ 
+ /*
+- * Timer 1 for RTC emulation. We use one shot mode, as periodic mode
+- * is not supported by all HPET implementations for timer 1.
+- *
+- * hpet_rtc_timer_init() is called when the rtc is initialized.
++ * hpet_rtc_timer_counter_init() is called before interrupt can be
++ * registered
+  */
+-int hpet_rtc_timer_init(void)
++int hpet_rtc_timer_counter_init(void)
+ {
+-	unsigned int cfg, cnt, delta;
++	unsigned int cnt, delta;
+ 	unsigned long flags;
+ 
+ 	if (!is_hpet_enabled())
+@@ -1107,6 +1105,22 @@ int hpet_rtc_timer_init(void)
+ 	hpet_writel(cnt, HPET_T1_CMP);
+ 	hpet_t1_cmp = cnt;
+ 
++	local_irq_restore(flags);
++
++	return 1;
++}
++EXPORT_SYMBOL_GPL(hpet_rtc_timer_counter_init);
++
++/*
++ * hpet_rtc_timer_enable() is called during RTC initialization
++ */
++int hpet_rtc_timer_enable(void)
++{
++	unsigned int cfg;
++	unsigned long flags;
++
++	local_irq_save(flags);
++
+ 	cfg = hpet_readl(HPET_T1_CFG);
+ 	cfg &= ~HPET_TN_PERIODIC;
+ 	cfg |= HPET_TN_ENABLE | HPET_TN_32BIT;
+@@ -1116,6 +1130,21 @@ int hpet_rtc_timer_init(void)
+ 
+ 	return 1;
+ }
++EXPORT_SYMBOL_GPL(hpet_rtc_timer_enable);
++
++/*
++ * Timer 1 for RTC emulation. We use one shot mode, as periodic mode
++ * is not supported by all HPET implementations for timer 1.
++ *
++ * hpet_rtc_timer_init() is called when the rtc is initialized.
++ */
++int hpet_rtc_timer_init(void)
++{
++	if (!hpet_rtc_timer_counter_init())
++		return 0;
++
++	return hpet_rtc_timer_enable();
++}
+ EXPORT_SYMBOL_GPL(hpet_rtc_timer_init);
+ 
+ static void hpet_disable_rtc_channel(void)
+diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+index fbe9c72438e1..101dc948295f 100644
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -129,6 +129,16 @@ static inline int hpet_rtc_dropped_irq(void)
+ 	return 0;
+ }
+ 
++static inline int hpet_rtc_timer_counter_init(void)
++{
++	return 0;
++}
++
++static inline int hpet_rtc_timer_enable(void)
++{
++	return 0;
++}
++
+ static inline int hpet_rtc_timer_init(void)
+ {
+ 	return 0;
+@@ -710,6 +720,7 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
+ 		goto cleanup1;
+ 	}
+ 
++	hpet_rtc_timer_counter_init();
+ 	if (is_valid_irq(rtc_irq)) {
+ 		irq_handler_t rtc_cmos_int_handler;
+ 
+@@ -732,7 +743,7 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
+ 			goto cleanup1;
+ 		}
+ 	}
+-	hpet_rtc_timer_init();
++	hpet_rtc_timer_enable();
+ 
+ 	/* export at least the first block of NVRAM */
+ 	nvram.size = address_space - NVRAM_OFFSET;
