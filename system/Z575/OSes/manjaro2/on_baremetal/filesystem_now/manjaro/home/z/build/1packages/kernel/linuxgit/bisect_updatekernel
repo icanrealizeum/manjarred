@@ -1,13 +1,23 @@
 #!/bin/bash
 
-source ./common.bash
+#As an example, suppose you are trying to find the commit that broke a
+#       feature that was known to work in version v2.6.13-rc2 of your project.
+#       You start a bisect session as follows:
+#
+#           $ git bisect start
+#           $ git bisect bad                 # Current version is bad
+#           $ git bisect good v2.6.13-rc2    # v2.6.13-rc2 is known to be good
 
 
-echo 'this will execute prepare too (which means: reapplies patches)'
-time makepkg --install  --force
+#echo 'this will execute prepare too (which means: reapplies patches)'
+#time makepkg --install  --force
+./2recompile_and_inst
 
-echo when done, do: git checkout .  to make sure the patches are cleaned
-echo then do: git bisect good OR git bisect bad
-echo then rerun this script which will reapply the patches on the new bisect
+#//echo when done, do: git checkout .  to make sure the patches are cleaned
+echo '1. reboot and test the newly installed kernel,'
+echo 'then do: git bisect good OR git bisect bad (if errors "git checkout ." first'
+echo then rerun this script
+echo 'goto 1'
+#//which will reapply the patches on the new bisect
 
 

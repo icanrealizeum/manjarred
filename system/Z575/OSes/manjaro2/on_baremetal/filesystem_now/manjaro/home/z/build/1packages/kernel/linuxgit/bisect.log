@@ -1,0 +1,35 @@
+git bisect start
+# bad: [29b4817d4018df78086157ea3a55c1d9424a7cfc] Linux 4.8-rc1
+git bisect bad 29b4817d4018df78086157ea3a55c1d9424a7cfc
+# good: [92d21ac74a9e3c09b0b01c764e530657e4c85c49] Linux 4.7-rc7
+git bisect good 92d21ac74a9e3c09b0b01c764e530657e4c85c49
+# skip: [6039b80eb50a893476fea7d56e86ed2d19290054] Merge tag 'dmaengine-4.8-rc1' of git://git.infradead.org/users/vkoul/slave-dma
+git bisect skip 6039b80eb50a893476fea7d56e86ed2d19290054
+# skip: [6039b80eb50a893476fea7d56e86ed2d19290054] Merge tag 'dmaengine-4.8-rc1' of git://git.infradead.org/users/vkoul/slave-dma
+git bisect skip 6039b80eb50a893476fea7d56e86ed2d19290054
+# good: [5cd3535a27a7cf8fc4070b499d66e419e7e72b61] dt-bindings: clock: Add PWM and USB clock IDs to Exynos5410
+git bisect good 5cd3535a27a7cf8fc4070b499d66e419e7e72b61
+# good: [dedeb13f9efb4439a37cf56317c8f25860dd667b] nfsd: allow mach_creds_match to be used more broadly
+git bisect good dedeb13f9efb4439a37cf56317c8f25860dd667b
+# good: [fc8a601e1175ae351f662506030f9939cb7fdbfe] hp-wmi: Fix wifi cannot be hard-unblocked
+git bisect good fc8a601e1175ae351f662506030f9939cb7fdbfe
+# good: [ebe69dd366dcb6514be78cfdb8e89d9cc2ebb361] drm/i915: Fix inconsistent indenting in vbt_panel_init()
+git bisect good ebe69dd366dcb6514be78cfdb8e89d9cc2ebb361
+# skip: [6a492b0f23d28e1f946cdf08e54617484400dafb] Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi
+git bisect skip 6a492b0f23d28e1f946cdf08e54617484400dafb
+# skip: [6a492b0f23d28e1f946cdf08e54617484400dafb] Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi
+git bisect skip 6a492b0f23d28e1f946cdf08e54617484400dafb
+# good: [ac29abf38176ec149671b01d228e0a9dc38e4e60] bus: mvebu-mbus: make mvebu_mbus_syscore_ops static
+git bisect good ac29abf38176ec149671b01d228e0a9dc38e4e60
+# good: [05af240fe823a6163a9081c106167f2e41d521ee] clk: samsung: exynos5410: Add WDT, ACLK266 and SSS clocks
+git bisect good 05af240fe823a6163a9081c106167f2e41d521ee
+# good: [68fa1636a4d0a206a4e80a4f2adc920bf102abc9] net: hns: delete redundant parenthese
+git bisect good 68fa1636a4d0a206a4e80a4f2adc920bf102abc9
+# good: [2324d15447a9db168b1f85e3feac635b1ff8edb8] ACPI / CPPC: Prevent cpc_desc_ptr points to the invalid data
+git bisect good 2324d15447a9db168b1f85e3feac635b1ff8edb8
+# good: [cdf8b4633075f2171d440d2e37c9c2609019a81a] tile: Define AT_VECTOR_SIZE_ARCH for ARCH_DLINFO
+git bisect good cdf8b4633075f2171d440d2e37c9c2609019a81a
+# good: [a13004a2449c56a83d5816e81d850ea92b6837c2] x86/microcode/AMD: Make amd_ucode_patch[] static
+git bisect good a13004a2449c56a83d5816e81d850ea92b6837c2
+# good: [a5547642a4e08c98edeaf4b62f6da0ac8ed2f6bd] arm64: dts: r8a7795: Add missing blank lines between cpu nodes
+git bisect good a5547642a4e08c98edeaf4b62f6da0ac8ed2f6bd
