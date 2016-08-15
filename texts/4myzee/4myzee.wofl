@@ -475,6 +475,13 @@
       \ the rtc bug got fixed (in a prev. commit but I tested this version)
       \ I don't know how stable this is though!
       * upgraded to 4.8.0-rc1-gf31494b on 13th aug 2016
+        \ high CPU load(70degC) eg. compiling rust, vlc, kernel  and mc  and playing a 720p video at the same time in vlc.
+        \ will fail to DNS: Name or service not known
+        \ youtube-dl and chromium both!
+        \ unsure since when!(which kernel version)
+        \ AND chromium: ERR_ADDRESS_UNREACHABLE  for github.com
+        \ so it must be at a lower level eg. IP level in kernel
+        \ OH, this happens even when the load is like 60% on one core(instead of 400%) so it must be load independent
   * unbootable kernels
     * 4.8.rc1.r70.g9512c47-1
       \ but 4.8.0-rc1-g574673c2 worked! - nevermind, this hangs too(but only sometimes!) in startx!

@@ -14,7 +14,7 @@ PKGEXT='.pkg.tar'
 
 _name=vlc
 pkgname=vlc-git
-pkgver=2.2.0.git.r8372.ga472d77
+pkgver=2.2.0.git.r8564.g81bb542
 pkgrel=1
 pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player (GIT Version)"
 arch=('i686' 'x86_64')
@@ -121,6 +121,9 @@ prepare() {
   cd "${srcdir}/${_name}"
 
   sed -i -e 's:truetype/ttf-dejavu:TTF:g' modules/visualization/projectm.cpp
+
+  #XXX: allow videos to be sized bigger than screen(as they were before!)
+  git revert -n 7e9d58705c550af692faa646751094a6ae0beaf5
 
   patch -Np1 -i "../${patch1}"
   patch -Np1 -i "../${patch2}"

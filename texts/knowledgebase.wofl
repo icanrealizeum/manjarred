@@ -917,4 +917,9 @@
     \ "Setting cpu:" is shown
     \ even though you still get this message: modprobe: FATAL: Module msr not found in directory /lib/modules/4.8.0-rc1-g9512c47
 
+* systemd-journald: Missed kernel messages
+  \ src: https://bbs.archlinux.org/viewtopic.php?id=172639
+  \ add --dmesg to the journalctl command (see ~/bin/logf)
 
+* after exit mc, copy paste adds 0~ and appends 1~ to whatever was pasted!
+  \ 

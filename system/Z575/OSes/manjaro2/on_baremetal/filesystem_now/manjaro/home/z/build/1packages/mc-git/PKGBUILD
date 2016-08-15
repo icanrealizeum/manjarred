@@ -44,16 +44,18 @@ prepare() { #this is temporarily here, but should be in build() because of the g
     patch -Np1 -i "../${fixflushpatch}"
     patch -Np1 -i "../${cannotcreatepipestreams_patch}"
     #patch -Np1 -i "../${ncursespatch}"
-}
 
-build() {
+
+    #otherwise the mc -V is reported wrong! and differs from the pkg version
+    #i put one more clean after autogen below
+    make clean || true
+
     #debug mode for gdb, in case seg faults
     if [ -n "$DEBUG" ]; then
       export CFLAGS="$CFLAGS -O0 -fbuiltin -g"
       export CXXFLAGS="$CXXFLAGS -O0 -fbuiltin -g"
     fi
 
-    cd mc
 
     ./autogen.sh
     export MCREVISION=$(git describe --tags)
@@ -78,6 +80,13 @@ build() {
 	--disable-dependency-tracking
 
 
+
+    make clean
+
+}
+
+build() {
+    cd mc
     echo ${MAKEFLAGS}
     make ${MAKEFLAGS}
 }

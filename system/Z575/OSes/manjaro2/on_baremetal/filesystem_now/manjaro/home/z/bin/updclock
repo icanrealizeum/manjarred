@@ -1,6 +1,9 @@
 #!/bin/bash
 
-sudo ntpdate -4vs time.nist.gov
+set -e
+
+#sudo ntpdate -4vs time.nist.gov
+sudo ntpdate -4vs 0.arch.pool.ntp.org
 #any output is logged to syslog (ie. dmesg)
 #man page is here: https://www.freebsd.org/cgi/man.cgi?query=ntpdate&sektion=8
 
