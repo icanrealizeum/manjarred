@@ -1,3 +1,11 @@
 #!/bin/bash
 
-journalctl -efa --dmesg
+journalctl -efa --no-hostname -m
+#--dmesg is limiting output! eg. no coredumps, no syslog
+#journalctl -efa _TRANSPORT=kernel + _TRANSPORT=syslog + _TRANSPORT=journal
+#^ this is just stripping the missed kernel messages and others from like profile-sync-daemon[5968]:
+#see: https://www.digitalocean.com/community/tutorials/how-to-use-journalctl-to-view-and-manipulate-systemd-logs?comment=50152
+#so -a is already showing everything! I just thought --dmesg was expanding the 'missing kernel' ones but it was in fact stripping out those info msgs.
+
+
+

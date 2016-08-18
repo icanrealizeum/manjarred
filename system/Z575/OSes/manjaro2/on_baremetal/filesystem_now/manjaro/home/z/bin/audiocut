@@ -3,7 +3,12 @@
 #$1 filename eg. Dream\ Theater\ -\ Illumination\ Theory\ \(Audio\)-fFMDGSWhHbo.m4a
 #$2 fromtime eg. 15:52
 #$3 totime eg. 3:53  (aka duration from fromtime)
-
+if test "$1" == "exact"; then
+  shift
+  exact=1
+else
+  exact=0
+fi
 if test "$#" -ne "3"; then
   cat << 'EOF'
 $1 filename eg. Dream\ Theater\ -\ Illumination\ Theory\ \(Audio\)-fFMDGSWhHbo.m4a
@@ -26,7 +31,14 @@ ext="${fname##*.}"
 suffix="_${0/*\//}_fromtime_${fromtime/:/_}_totaltime_${totaltime/:/_}.${ext}"
 
 set -x
-ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -acodec copy -aq 1 -vcodec copy -to "$totaltime" "${prefix}${fname}${suffix}"
+#FIXME: as this is currently, it's not doing accurate seeking! if you want that you can't use copy for codecs! at least this is true for -ss (start) but not for -to which CAN be accurate! and you can use like -to 0:49.4  (the dot)
+if test "$exact" == "0"; then
+  ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -acodec copy -aq 1 -vcodec copy -to "$totaltime" "${prefix}${fname}${suffix}"
+elif test "$exact" == "1"; then
+#XXX: good:
+  echo "$4"
+  ffmpeg -accurate_seek -ss "$fromtime" -i "$fname" -to "$totaltime" "${prefix}${fname}${suffix}".mp4
+fi
 #XXX: accurate_seek will only work when using atempo or acodec mp3 not copy!(latter not tested - only both tested!)
 
 #this is 1.5x speed(both audio and video):
