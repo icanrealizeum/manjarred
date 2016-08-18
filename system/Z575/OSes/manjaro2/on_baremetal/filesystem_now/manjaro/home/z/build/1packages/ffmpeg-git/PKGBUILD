@@ -3,7 +3,7 @@
 # Contributor: DrZaius <lou at fakeoutdoorsman.com>
 
 pkgname=ffmpeg-git
-pkgver=3.2.r81046.g450cf40
+pkgver=3.2.r81388.ge2a39b1
 pkgrel=1
 pkgdesc="Complete solution to record, convert and stream audio and video (git version)"
 arch=('i686' 'x86_64')
@@ -12,7 +12,9 @@ url="http://ffmpeg.org/"
 depends=('alsa-lib' 'bzip2' 'fontconfig' 'fribidi' 'gmp' 'gnutls' 'gsm' 'lame'
          'libass' 'libavc1394' 'libbluray' 'libiec61883' 'libmodplug' 'libpulse'
          'libsoxr' 'libssh' 'libtheora' 'libva' 'libvdpau' 'libwebp'
-         'netcdf' 'opencore-amr' 'openjpeg' 'opus' 'schroedinger' 'sdl' 'speex'
+         'netcdf' 'opencore-amr'
+         #'openjpeg' 
+         'opus' 'schroedinger' 'sdl' 'speex'
          'v4l-utils' 'xvidcore' 'zlib'  'libvidstab.so' 'libvorbis.so' 'libvorbisenc.so'
          'libvpx.so' 'libx264.so' 'libx265.so' 'libfdk-aac')
 makedepends=('hardening-wrapper' 'ladspa' 'libvdpau' 'yasm' 'git')
@@ -41,6 +43,8 @@ prepare() {
 
   patch -Np1 -i "../${patch1}"
 
+	      #--enable-libopenjpeg \
+              #^ linker errors! openjpeg 1.5.2-1
   ./configure --prefix=/usr \
 	      --disable-debug \
 	      --disable-static \
@@ -59,7 +63,6 @@ prepare() {
 	      --enable-libmp3lame \
 	      --enable-libopencore_amrnb \
 	      --enable-libopencore_amrwb \
-	      --enable-libopenjpeg \
 	      --enable-libopus \
 	      --enable-libfdk-aac \
 	      --enable-libpulse \

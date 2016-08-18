@@ -4,7 +4,7 @@
 # Contributor:	julroy67	<gmail.com:	julroy67>
 
 pkgname=libvpx-git
-pkgver=v1.5.0.1280.g3e04114
+pkgver=v1.6.0.310.g33dedd0
 pkgrel=1
 pkgdesc="The VP8 and VP9 Codec SDK (git version)"
 arch=('i686' 'x86_64')
@@ -12,7 +12,7 @@ url="http://www.webmproject.org/"
 license=('BSD')
 depends=('gcc-libs')
 makedepends=('git' 'yasm')
-provides=('libvpx=1.5.0' 'libvpx.so=3')
+provides=('libvpx=1.6.0' 'libvpx.so')
 conflicts=('libvpx')
 source=('git+https://chromium.googlesource.com/webm/libvpx')
 md5sums=('SKIP')

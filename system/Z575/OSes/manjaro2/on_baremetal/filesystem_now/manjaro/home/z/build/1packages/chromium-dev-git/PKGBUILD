@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=54.0.2825.0_r4723.1ebe1f9
+pkgver=54.0.2833.0_r6977.f15d4cc
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -132,7 +132,7 @@ OnReadFrameDone.patch
 FPE_INTDIV.patch
 handlebit_size0.patch
 chromium-system-ffmpeg-r3.patch
-clipboard_nospam.patch
+#clipboard_nospam.patch  #got removed by commit c46a48577b1b750f2561d7f3aeb45e354b45d3c4
 
 modified_chromium-hotwording-2403.patch
 
@@ -162,7 +162,7 @@ source=(
 #          "$(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz.hashes | grep sha1 | cut -d " " -f3)"
 sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db1ce670faefd460308548f2d861a935c12c8de24284edad58902cc89aac4a5'
             'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
-            '008a3fa78dc09493f98bc1d5f615fbf261c055a824f1edd920b775b4d87992120a1c27111c8d5e4a1b335b16c83066c01d22e4ac5b91b2d39f811aa9b0605c00'
+            '0f2a76de80e2c7ab59c3202375735e069e2432f0f140d2de3c7a64544a74b38cf0731756884a6accf44439d0fc00a98e91a3f590169bdc15f4ce959b91c3e3ed'
             'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
             '051e03a8d0d0c874091ee4b5008d3f4c4493e519a7e0ce5e3cee4fc2bf627c9b705b4c1838525e75d18ec9886edef4e832bcc7eb3b1c1c0dd279dc5591f08b99'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
@@ -172,7 +172,6 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             '42f7e222247892610e6e47bfd8249d252437b81eaffa80a0b98eefa7301fa2ef7ee54a2dbd147e06e2e710d847a63ad39f700ece6275239462e0b5511542e99b'
             '2314a9ce1cc4327ff03d574ffb0bcc2f2d642ce68fc558c1c772e61922e078e02f43684088452f9513382ddde5ec344554e1cfa85d195033b49261466c779d08'
             'bf6ad8f84d79fcf065a5ed1bb0e2a4908aa06a86e9e0116865a68f910440d8957b551925c22bafd2c56b722405a82c52a8d8b403b9922a2e78671b7cc1dae548'
-            '2f36f0da7a1c506ed396be10fdecb22faa3e7950e35857542b2204f2c829471a41fc3bb2bf4d4593a4bca02f14a161f12c43e9bd44c968512e7ffe862bdadf21'
             'dbb3c0084e100cbef90b025a381a6dee92037ad64dd362e4fc1308ade7e5d4ab11be9d4f80eed7b05e40bbc6dcdec2d8d3104179a8eaccfb91a8ce33d28a2a8c'
             '49a09b20288d269830212b72ffdeea95f8a6742a116d330982ad83f865e9082d643f468bc8f8408c274715502feadce38c9fa781bf92f7b46d294bbde80a48bf')
 options=('!strip' 'ccache' '!distcc')

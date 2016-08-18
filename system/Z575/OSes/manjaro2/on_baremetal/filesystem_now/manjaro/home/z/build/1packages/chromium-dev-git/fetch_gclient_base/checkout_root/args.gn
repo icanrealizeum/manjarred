@@ -108,7 +108,8 @@ clang_use_chrome_plugins = false #Default = false
 #    //build/toolchain/toolchain.gni:27
 #    Clang compiler version. Clang files are placed at version-dependent paths.
 
-cld2_table_size = 2 #Default = 2
+#XXX: has no effect
+#cld2_table_size = 2 #Default = 2
 #    //third_party/cld_2/BUILD.gn:11
 
 #TODO: false ?
@@ -804,7 +805,8 @@ proprietary_codecs = true #Default = false
 #    Enables proprietary codecs and demuxers; e.g. H264, AAC, MP3, and MP4.
 #    We always build Google Chrome and Chromecast with proprietary codecs.
 
-remoting_enable_cardboard = false #Default = false
+#XXX: has no effect, anymore
+#remoting_enable_cardboard = false #Default = false
 #    //remoting/remoting_options.gni:16
 #    Set this to enable Android Chromoting Cardboard Activity.
 

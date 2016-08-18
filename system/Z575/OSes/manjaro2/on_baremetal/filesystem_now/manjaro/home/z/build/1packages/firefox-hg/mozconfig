@@ -251,7 +251,8 @@ ac_add_options --enable-extensions=default,-skipgnomevfs,-skipgio
 #ac_add_options --enable-tree-freetype
 
 #can't find description for this:
-ac_add_options --disable-webapp-runtime
+# 0:15.27 mozbuild.configure.options.InvalidOptionError: Unknown option: --disable-webapp-runtime
+#ac_add_options --disable-webapp-runtime
 
 #  --enable-maintenance-service       Enable building of maintenanceservice"
 ac_add_options --disable-maintenance-service
