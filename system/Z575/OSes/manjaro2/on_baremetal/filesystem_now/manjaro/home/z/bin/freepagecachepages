@@ -6,6 +6,7 @@ time sync
 echo "Freeing (some) pagecache pages:"
 #
 time echo 1 | sudo tee /proc/sys/vm/drop_caches >/dev/null
+#eg. 55823.79246617536334390472 pagecache pages per second! (with cpumax)
 #alternative:
 #time sudo sysctl vm.drop_caches=1
 #
