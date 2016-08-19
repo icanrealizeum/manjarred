@@ -9,6 +9,8 @@ sudo --remove-timestamp
 pushd /tmp
 #time chromium --audio-buffer-size=8192 "$@"
 mkdir -p /tmp/chrodowns
-time chromium "$@"
+#time LD_LIBRARY_PATH=/backup2/usr/lib/ chromium "$@"
+time LD_LIBRARY_PATH= chromium "$@"
+#time chromium "$@"
 popd
 

@@ -483,6 +483,8 @@
           \ AND chromium: ERR_ADDRESS_UNREACHABLE  for github.com
           \ so it must be at a lower level eg. IP level in kernel
           \ OH, this happens even when the load is like 60% on one core(instead of 400%) so it must be load independent
+      * seems okay: 4.8.0-rc2-g694d0d0
+        \ except possibly the SCSI sync cache part which still locks-up
   * unbootable kernels
     * 4.8.rc1.r70.g9512c47-1
       \ but 4.8.0-rc1-g574673c2 worked! - nevermind, this hangs too(but only sometimes!) in startx!
