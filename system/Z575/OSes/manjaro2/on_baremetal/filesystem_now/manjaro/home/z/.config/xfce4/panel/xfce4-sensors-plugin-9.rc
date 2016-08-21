@@ -12,14 +12,14 @@ Exec_Command=true
 Show_Units=true
 Small_Spacings=false
 Command_Name=xfce4-terminal
-Number_Chips=5
+Number_Chips=4
 Suppress_Hddtemp_Message=false
 Suppress_Tooltip=false
 Preferred_Width=386
 Preferred_Height=375
 
 [Chip0]
-Name=acpitz-0
+Name=k10temp-c3
 Number=0
 
 [Chip0_Feature0]
@@ -29,19 +29,10 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=57.00
-
-[Chip0_Feature1]
-Id=-1
-Address=1
-Name=MOBO temp
-Color=#00B000
-Show=true
-Min=0.00
-Max=44.00
+Max=57.88
 
 [Chip1]
-Name=k10temp-c3
+Name=acpitz-0
 Number=1
 
 [Chip1_Feature0]
@@ -51,7 +42,16 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=57.88
+Max=57.00
+
+[Chip1_Feature1]
+Id=-1
+Address=1
+Name=MOBO temp
+Color=#00B000
+Show=true
+Min=0.00
+Max=44.00
 
 [Chip2]
 Name=radeon-8
@@ -67,23 +67,19 @@ Min=0.00
 Max=58.00
 
 [Chip3]
-Name=thinkpad-0
+Name=ACPI
 Number=3
 
-[Chip4]
-Name=ACPI
-Number=4
-
-[Chip4_Feature0]
+[Chip3_Feature0]
 Id=0
 Address=0
 Name=L09S6Y02
 Color=#0000B0
 Show=true
 Min=0.00
-Max=23730.00
+Max=23490.00
 
-[Chip4_Feature1]
+[Chip3_Feature1]
 Id=1
 Address=1
 Name=thermal_zone1
@@ -92,7 +88,7 @@ Show=true
 Min=20.00
 Max=60.00
 
-[Chip4_Feature2]
+[Chip3_Feature2]
 Id=2
 Address=2
 Name=thermal_zone0

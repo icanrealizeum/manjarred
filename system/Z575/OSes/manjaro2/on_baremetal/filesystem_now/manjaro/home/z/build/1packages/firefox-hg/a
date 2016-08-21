@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#grep --exclude-dir=.hg -nrZ MOZ_WEBRTC | cut -d '' -f1 | sort -u | xargs -I '{}' grep --color=tty -d skip -i --with-filename "_INTL_API" '{}'
+#grep --exclude-dir=.hg -nrZ ENABLE_INTL_API | cut -d '' -f1 | sort -u | xargs -I '{}' grep --color=tty -d skip -i --with-filename "USE_ICU" '{}'
+grep --exclude-dir=.hg -nrZ MOZ_WEBRTC | cut -d '' -f1 | sort -u | xargs -I '{}' grep --color=tty -d skip -i --with-filename "USE_ICU" '{}'
+
