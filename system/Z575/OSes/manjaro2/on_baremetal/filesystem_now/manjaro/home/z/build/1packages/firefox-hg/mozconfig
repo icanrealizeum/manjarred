@@ -374,10 +374,10 @@ ac_add_options --enable-ctypes
 #XXX: system-icu from gentoo
 ac_add_options --with-system-icu
 
-#XXX: always build with intl-api because otherwise context menu displays all options and they aren't working! see: https://bugs.gentoo.org/show_bug.cgi?id=571240#c11
+#XXX: always build with intl-api because otherwise context menu displays all options and they aren't working! see: https://bugs.gentoo.org/show_bug.cgi?id=571240#c11  tested/confirmed to work!
 #ac_add_options --without-intl-api
 ac_add_options --with-intl-api
-#FIXME ^ with-intl-api fails compilation:  1:36.20 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/media/webrtc/MediaEngine.h:14:34: fatal error: DeviceChangeCallback.h: No such file or directory
+#workaround: by enabling --enable-webrtc//FIXME ^ with-intl-api fails compilation:  1:36.20 /home/z/build/1packages/firefox-hg/makepkg_pacman/firefox-hg/src/firefox-hg/dom/media/webrtc/MediaEngine.h:14:34: fatal error: DeviceChangeCallback.h: No such file or directory
 #^Determine the status of the ECMAScript Internationalization API.  The first
 #    (or lack of any of these) builds and exposes the API.  The second builds it
 #    but doesn't use ICU or expose the API to script.  The third doesn't build
