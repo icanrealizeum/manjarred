@@ -491,7 +491,7 @@ gl=glx
 [transform] # Video transformation filter
 
 # Transform type (string)
-#transform-type=90
+transform-type=hflip
 
 [sharpen] # Sharpen video filter
 
@@ -1053,6 +1053,23 @@ qt-privacy-ask=0
 
 # Filebrowser starting point (string)
 #browse-dir=
+
+[adaptive] # Unified adaptive streaming for DASH/HLS
+
+# Adaptation Logic (integer)
+#adaptive-logic=0
+
+# Preferred Width (integer)
+#adaptive-width=0
+
+# Preferred Height (integer)
+#adaptive-height=0
+
+# Fixed Bandwidth in KiB/s (integer)
+#adaptive-bw=250
+
+# Use regular HTTP modules (boolean)
+#adaptive-use-access=0
 
 [ts] # MPEG Transport Stream demuxer
 
@@ -1836,6 +1853,16 @@ avcodec-hw=vaapi_x11
 # Force Profile (string)
 #sout-schro-force-profile=
 
+[dca] # DTS Coherent Acoustics audio decoder
+
+# DTS dynamic range compression (boolean)
+#dts-dynrng=1
+
+[liba52] # ATSC A/52 (AC-3) audio decoder
+
+# A/52 dynamic range compression (boolean)
+#a52-dynrng=1
+
 [ddummy] # Dummy decoder
 
 # Save raw codec data (boolean)
@@ -1860,19 +1887,6 @@ avcodec-hw=vaapi_x11
 
 # Sample rate converter type (integer)
 #src-converter-type=2
-
-[dtstofloat32] # DTS Coherent Acoustics audio decoder
-
-# DTS dynamic range compression (boolean)
-#dts-dynrng=1
-
-[a52tofloat32] # ATSC A/52 (AC-3) audio decoder
-
-# A/52 dynamic range compression (boolean)
-#a52-dynrng=1
-
-# Enable internal upmixing (boolean)
-#a52-upmix=0
 
 [remap] # Audio channel remapper
 
@@ -2192,6 +2206,14 @@ equalizer-2pass=1
 
 # Inputs list (string)
 #concat-list=
+
+[satip] # SAT>IP Receiver Plugin
+
+# Receive buffer (integer)
+#satip-buffer=4194304
+
+# Request multicast stream (boolean)
+#satip-multicast=0
 
 [avio] # libavformat AVIO access
 
@@ -2518,7 +2540,7 @@ equalizer-2pass=1
 # Remember the audio volume (boolean)
 #volume-save=1
 
-# Use S/PDIF when available (boolean)
+# Force S/PDIF support (boolean)
 #spdif=0
 
 # Force detection of Dolby Surround (integer)

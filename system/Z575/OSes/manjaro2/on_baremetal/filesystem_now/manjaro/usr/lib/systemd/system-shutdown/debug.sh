@@ -73,7 +73,10 @@ echo 'manually Freeing pagecache pages'
 #To free dentries and inodes(untested):
 #time echo 2 >/proc/sys/vm/drop_caches
 #To free pagecache, dentries and inodes(41479 pagecache pages freed/sec):
+echo '---------------------------------------------------'
 time echo 3 >/proc/sys/vm/drop_caches
+echo '---------------------------------------------------'
+sleep 1
 echo "After :"
 echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|tail -1
 
