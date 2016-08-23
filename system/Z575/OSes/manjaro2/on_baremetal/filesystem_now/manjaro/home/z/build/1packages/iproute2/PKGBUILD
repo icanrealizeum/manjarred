@@ -1,0 +1,81 @@
+# $Id$
+# Maintainer: Ronald van Haren <ronald.archlinux.org>
+# Contributor: Judd Vinet <jvinet@zeroflux.org>
+
+pkgname=iproute2
+pkgver=v4.7.0.r47.g06be01f
+pkgrel=1
+pkgdesc="IP Routing Utilities"
+arch=('i686' 'x86_64')
+license=('GPL2')
+url="http://www.linuxfoundation.org/collaborate/workgroups/networking/iproute2"
+depends=('glibc' 'iptables')
+#makedepends=('linux-atm')
+#optdepends=('linux-atm: ATM support')
+groups=('base')
+provides=('iproute')
+conflicts=('iproute')
+replaces=('iproute')
+options=('staticlibs' '!makeflags')
+backup=('etc/iproute2/ematch_map' 'etc/iproute2/rt_dsfield' 'etc/iproute2/rt_protos' \
+	'etc/iproute2/rt_realms' 'etc/iproute2/rt_scopes' 'etc/iproute2/rt_tables')
+#validpgpkeys=('9F6FC345B05BE7E766B83C8F80A77F6095CDE47E') # Stephen Hemminger
+#source=("http://www.kernel.org/pub/linux/utils/net/${pkgname}/${pkgname}-${pkgver}.tar."{xz,sign}
+_gitname="$pkgname"
+#source=(https://www.kernel.org/pub/linux/utils/net/$pkgname/$pkgname-$pkgver.tar.xz
+#source=("${_gitname}::git+https://git.kernel.org/pub/scm/linux/kernel/git/shemminger/iproute2.git#tag=v$pkgver"
+
+#XXX see: https://git.kernel.org/cgit/linux/kernel/git/shemminger/iproute2.git/log
+source=("${_gitname}::git+https://git.kernel.org/pub/scm/linux/kernel/git/shemminger/iproute2.git"
+        '0001-make-iproute2-fhs-compliant.patch'
+#        'unwanted-link-help.patch'
+        )
+sha1sums=('SKIP'
+          '1ed328854983b3f9df0a143aa7c77920916a13c1')
+sha512sums=('SKIP'
+            '40a670041b7d0a239facfc1fbe2243b71f540ec6144e656e717b44347f587190a89b635e666fd60b4820d8e9f3481fdbf0795d7746309f3ab555a80da88cc40b')
+
+
+pkgver() {
+  cd "$_gitname"
+  git describe --always --long | sed 's/-/-r/; s/-/./g'
+}
+
+prepare() {
+  #cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "$srcdir/$_gitname"
+
+  # allow operations on links called "h", "he", "hel", "help"
+  #already fixed in git: patch -Np1 -i "$srcdir/unwanted-link-help.patch"
+
+  # set correct fhs structure
+  patch -Np1 -i "${srcdir}/0001-make-iproute2-fhs-compliant.patch"
+
+  # do not treat warnings as errors
+  sed -i 's/-Werror//' Makefile
+
+  ./configure
+}
+
+build() {
+  #cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "$srcdir/$_gitname"
+
+  make
+}
+
+package() {
+  #cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "$srcdir/$_gitname"
+
+  make DESTDIR="${pkgdir}" install
+
+  # libnetlink isn't installed, install it FS#19385
+  install -Dm644 include/libnetlink.h "${pkgdir}/usr/include/libnetlink.h"
+  install -Dm644 lib/libnetlink.a "${pkgdir}/usr/lib/libnetlink.a"
+
+  # move binaries
+  cd "${pkgdir}"
+  mv sbin usr/bin
+
+}
