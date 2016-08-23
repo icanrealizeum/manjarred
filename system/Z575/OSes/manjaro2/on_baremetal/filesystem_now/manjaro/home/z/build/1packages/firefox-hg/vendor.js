@@ -70,7 +70,7 @@ pref("network.prefetch-next",	false);
 pref("network.tcp.keepalive.enabled",	false);//FIXME?
 //pref("places.database.lastMaintenance	1471305443");
 pref("places.history.expiration.transient_current_max_pages",	39883);
-lockPref("plugin.default.state",	"0");
+lockPref("plugin.default.state",	0);//how is this 1 after install?!!! or right, don't use "" for values!!
 lockPref("plugin.disable_full_page_plugin_for_types",	"application/pdf");
 pref("plugin.importedState",	true);//XXX ???
 lockPref("plugin.state.flash",	0);
