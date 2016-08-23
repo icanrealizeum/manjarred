@@ -5,7 +5,7 @@
 # Contributor: Jakub Schmidtke <sjakub@gmail.com>
 
 pkgname=firefox-hg
-pkgver=310393+.f97a056ae623+
+pkgver=310573+.24763f58772d+
 pkgrel=1
 pkgdesc="Latest firefox browser built from the trunk code"
 arch=('i686' 'x86_64')
@@ -34,7 +34,7 @@ optdepends=('networkmanager: Location detection via available WiFi networks'
             'gst-plugins-good: h.264 video'
             'gst-libav: h.264 video'
              'upower: Battery API')
-install=firefox.install
+#install=firefox.install
 #patch1='911546_good.patch'
 patch2='debug_exclude_3_files.patch'
 patch3='byebyeplugins_autoload.patch'
@@ -48,7 +48,7 @@ _hgfolder="$pkgname"
 #source=('hg+http://hg.mozilla.org/mozilla-central'
 source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
         'mozconfig'
-        'firefox.desktop'
+#        'firefox.desktop'
         'vendor.js'
         'firefox-install-dir.patch'
 #        "$patch1"
@@ -58,8 +58,7 @@ source=("${_hgfolder}::hg+https://hg.mozilla.org/mozilla-central"
         )
 sha256sums=('SKIP'
             '9a14af45a55c8c367b31ce35144a195e5edde6a69fc17e59ca84f3a52aa6f355'
-            'd2a7610393ba259c35e3227b92e02ec91095a95189f56ac93ccdf6732772719c'
-            '43ec3912e18a4d9beaa7fc072a39545f3022d9bb76676dbc7c96acaac1d2863b'
+            '374f36511d0eaa805a8946adf144236fff67f954556bd24422232b270372ad87'
             '0c7d91472e9244e1e414bd9da7252e824e6d9f8872ad7a636ee85585ad6e3256'
             '32b5bf22a2869103222a7de9bb5fcc5c8cc253786c3f7e9e9ff5867f866bf0bf'
             '277f4203880f13a75970a22e410e39a23c868e14f895e6af74443fe9ba356cac'
@@ -141,21 +140,21 @@ package() {
   #TODO: add my default values for a bunch of about:config settings in this:
   install -Dm644 ../vendor.js "$pkgdir/usr/lib/firefox/browser/defaults/preferences/vendor.js"
 
-  for i in 16 32 48; do
-      install -Dm644 browser/branding/unofficial/default$i.png \
-        "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
-  done
-  install -Dm644 browser/branding/unofficial/content/icon64.png \
-    "$pkgdir/usr/share/icons/hicolor/64x64/apps/firefox.png"
-  install -Dm644 browser/branding/unofficial/mozicon128.png \
-    "$pkgdir/usr/share/icons/hicolor/128x128/apps/firefox.png"
-  install -Dm644 browser/branding/unofficial/content/about-logo.png \
-    "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
-  install -Dm644 browser/branding/unofficial/content/about-logo@2x.png \
-    "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
+#  for i in 16 32 48; do
+#      install -Dm644 browser/branding/unofficial/default$i.png \
+#        "$pkgdir/usr/share/icons/hicolor/${i}x${i}/apps/firefox.png"
+#  done
+#  install -Dm644 browser/branding/unofficial/content/icon64.png \
+#    "$pkgdir/usr/share/icons/hicolor/64x64/apps/firefox.png"
+#  install -Dm644 browser/branding/unofficial/mozicon128.png \
+#    "$pkgdir/usr/share/icons/hicolor/128x128/apps/firefox.png"
+#  install -Dm644 browser/branding/unofficial/content/about-logo.png \
+#    "$pkgdir/usr/share/icons/hicolor/192x192/apps/firefox.png"
+#  install -Dm644 browser/branding/unofficial/content/about-logo@2x.png \
+#    "$pkgdir/usr/share/icons/hicolor/384x384/apps/firefox.png"
 
-  install -Dm644 ../firefox.desktop \
-    "$pkgdir/usr/share/applications/firefox.desktop"
+#  install -Dm644 ../firefox.desktop \
+#    "$pkgdir/usr/share/applications/firefox.desktop"
 
   # Use system-provided dictionaries
   rm -rf "$pkgdir"/usr/lib/firefox/{dictionaries,hyphenation}
