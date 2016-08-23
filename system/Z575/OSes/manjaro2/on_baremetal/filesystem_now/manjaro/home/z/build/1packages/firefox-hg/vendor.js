@@ -43,16 +43,17 @@ pref("dom.apps.reset-permissions",	true);
 pref("dom.mozApps.used",	"false");//why was this true?
 //pref("extensions.lastAppVersion	51.0a1");
 pref("layers.acceleration.disabled",	true);
-pref("media.gmp-gmpopenh264.enabled",	false);
+lockPref("media.gmp-gmpopenh264.enabled",	false);
 //pref("media.gmp-manager.buildID	20160823062219");
 //pref("media.gmp-manager.lastCheck	1467705787");
-pref("media.gmp-manager.url", "");
-pref("media.gmp-provider.enabled",	false);
+lockPref("media.gmp-manager.url", "");
+lockPref("media.gmp-provider.enabled",	false);
 //pref("media.gmp.storage.version.observed",	"1");
 pref("media.gmp.trial-create.enabled",	false);
 pref("media.peerconnection.identity.enabled",	false);
 pref("media.peerconnection.turn.disable",	true);
-pref("media.peerconnection.video.enabled",	false);
+lockPref("media.peerconnection.video.enabled",	false);
+lockPref("media.peerconnection.enabled",	false);//disable webrtc
 pref("media.webrtc.debug.aec_log_dir",	"/tmp");
 pref("media.webrtc.debug.log_file",	"/tmp/WebRTC.log");
 pref("mousewheel.with_shift.action",	1);
@@ -69,16 +70,16 @@ pref("network.prefetch-next",	false);
 pref("network.tcp.keepalive.enabled",	false);//FIXME?
 //pref("places.database.lastMaintenance	1471305443");
 pref("places.history.expiration.transient_current_max_pages",	39883);
-pref("plugin.default.state",	"0");
-pref("plugin.disable_full_page_plugin_for_types",	"application/pdf");
+lockPref("plugin.default.state",	"0");
+lockPref("plugin.disable_full_page_plugin_for_types",	"application/pdf");
 pref("plugin.importedState",	true);//XXX ???
-pref("plugin.state.flash",	0);
-pref("plugin.state.java",	0);
-pref("plugin.state.libevbrowserplugin",	0);
-pref("plugins.notifyMissingFlash",	false);
-pref("plugins.update.url",	"");
-pref("security.ssl.errorReporting.automatic",	true);//TODO: false
-pref("security.xpconnect.plugin.unrestricted",	false);
+lockPref("plugin.state.flash",	0);
+lockPref("plugin.state.java",	0);
+lockPref("plugin.state.libevbrowserplugin",	0);
+lockPref("plugins.notifyMissingFlash",	false);
+lockPref("plugins.update.url",	"");
+pref("security.ssl.errorReporting.automatic",	false);
+lockPref("security.xpconnect.plugin.unrestricted",	false);
 pref("services.sync.declinedEngines",	"");
 //pref("storage.vacuum.last.index",	"1");
 //pref("storage.vacuum.last.places.sqlite	1470332829");
