@@ -6,8 +6,9 @@ ssdwrittenlogfile='ssdwritten.log'
 #tmpfile="${ssdwrittenlogfile}.tmp"
 #ssdwritten > "$tmpfile"
 ssdwritten > "$ssdwrittenlogfile"
-if test -e "$ssdwrittenlogfile"; then
+if test -n "$ssdwrittenlogfile" -a -e "$ssdwrittenlogfile"; then
   #difference="`cat "$tmpfile" "$ssdwrittenlogfile" | awk '{print $3}' |sed ':a;N;$!ba;s/\n/-/'|bc`" #since last run of ~/rsync/4copytogit  but not since last commit
+  git reset HEAD "$ssdwrittenlogfile"
   difference="`git diff -R -- "$ssdwrittenlogfile" | tail -n2 | awk '{print $3}' |sed ':a;N;$!ba;s/\n/-/'|bc`"
   echo "$difference" > bytes_written_since_last_commit.log
 fi

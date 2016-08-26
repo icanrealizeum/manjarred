@@ -12,11 +12,16 @@
 #echo "not running $0"
 #exit 0
 
-#DOWNLINK=5000
-DOWNLINK=12000
-UPLINK=800
+#nhome
+DOWNLINK=30000
+UPLINK=20000
 #DEV=p4p1
 DEV=enp1s0
+
+#ohome:
+#DOWNLINK=12000
+#UPLINK=800
+#DEV=enp1s0
 
 # clean existing down- and uplink qdiscs, hide errors
 tc qdisc del dev $DEV root    2> /dev/null > /dev/null

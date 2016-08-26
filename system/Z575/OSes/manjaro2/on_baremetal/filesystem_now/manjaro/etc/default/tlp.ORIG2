@@ -1,15 +1,3 @@
-#on T400:
-#TODO: see why this happens twice on 'tlp start': acpi_call: Cannot get handle: Error: AE_NOT_FOUND
-#the only Bad is:
-#Bad           VM writeback timeout
-#that's because cat /proc/sys/vm/dirty_writeback_centisecs  reports 60000 as set below!
-#Note:
-#Fan gets to 0rpm and 40degC is max (24 and 32 is also seen on other temps)
-#Note: Xfce Power Manager reports 'Charging' when it isn't: https://github.com/linrunner/TLP/issues/216
-
-#on Z575:
-#not yet tested!
-
 # ------------------------------------------------------------------------------
 # tlp - Parameters for power save
 # See full explanation: http://linrunner.de/en/tlp/docs/tlp-configuration.html
@@ -19,7 +7,6 @@
 
 # Set to 0 to disable, 1 to enable TLP.
 TLP_ENABLE=1
-#TLP_ENABLE=0
 
 # Operation mode when no power supply can be detected: AC, BAT
 # Concerns some desktop and embedded hardware only.
@@ -27,32 +14,33 @@ TLP_DEFAULT_MODE=AC
 
 # Seconds laptop mode has to wait after the disk goes idle before doing a sync.
 # Non-zero value enables, zero disables laptop mode.
-# XXX: overrides any sysctl settings in /etc/sysctl.d/10_delay_writes.conf like: vm.dirty_writeback_centisecs and vm.dirty_expire_centisecs
-DISK_IDLE_SECS_ON_AC=600
-DISK_IDLE_SECS_ON_BAT=60
+DISK_IDLE_SECS_ON_AC=0
+DISK_IDLE_SECS_ON_BAT=2
 
 # Dirty page values (timeouts in secs).
-# 10min for AC, 1 min for battery
-MAX_LOST_WORK_SECS_ON_AC=600
+MAX_LOST_WORK_SECS_ON_AC=15
 MAX_LOST_WORK_SECS_ON_BAT=60
 
 # Hint: CPU parameters below are disabled by default, remove the leading #
 # to enable them, otherwise kernel default values are used.
 
-# Select a CPU frequency scaling governor:
-#   ondemand, powersave, performance, conservative
+# Select a CPU frequency scaling governor.
 # Intel Core i processor with intel_pstate driver:
-#   powersave, performance
+#   powersave(*), performance
+# Older hardware with acpi-cpufreq driver:
+#   ondemand(*), powersave, performance, conservative
+# (*) is recommended.
+# Hint: use tlp-stat -p to show the active driver and available governors.
 # Important:
 #   You *must* disable your distribution's governor settings or conflicts will
 #   occur. ondemand is sufficient for *almost all* workloads, you should know
 #   what you're doing!
-#CPU_SCALING_GOVERNOR_ON_AC=ondemand
-#CPU_SCALING_GOVERNOR_ON_BAT=ondemand
+#CPU_SCALING_GOVERNOR_ON_AC=powersave
+#CPU_SCALING_GOVERNOR_ON_BAT=powersave
 
 # Set the min/max frequency available for the scaling governor.
 # Possible values strongly depend on your CPU. For available frequencies see
-# tlp-stat output, Section "+++ Processor".
+# the output of tlp-stat -p.
 #CPU_SCALING_MIN_FREQ_ON_AC=0
 #CPU_SCALING_MAX_FREQ_ON_AC=0
 #CPU_SCALING_MIN_FREQ_ON_BAT=0
@@ -92,9 +80,8 @@ NMI_WATCHDOG=0
 # Set CPU performance versus energy savings policy:
 #   performance, normal, powersave
 # Requires kernel module msr and x86_energy_perf_policy from linux-tools
-#XXX: commented out
-#ENERGY_PERF_POLICY_ON_AC=performance
-#ENERGY_PERF_POLICY_ON_BAT=powersave
+ENERGY_PERF_POLICY_ON_AC=performance
+ENERGY_PERF_POLICY_ON_BAT=powersave
 
 # Hard disk devices; separate multiple devices with spaces (default: sda).
 # Devices can be specified by disk ID also (lookup with: tlp diskid).
@@ -102,73 +89,74 @@ DISK_DEVICES="sda sdb"
 
 # Hard disk advanced power management level: 1..254, 255 (max saving, min, off)
 # Levels 1..127 may spin down the disk; 255 allowable on most drives.
-# Separate values for multiple devices with spaces.
-#DISK_APM_LEVEL_ON_AC="254 254"
-#DISK_APM_LEVEL_ON_BAT="128 128"
-DISK_APM_LEVEL_ON_AC="keep"
-DISK_APM_LEVEL_ON_BAT="keep"
+# Separate values for multiple disks with spaces. Use the special value 'keep'
+# to keep the hardware default for the particular disk.
+DISK_APM_LEVEL_ON_AC="254 254"
+DISK_APM_LEVEL_ON_BAT="128 128"
 
 # Hard disk spin down timeout:
 #   0:        spin down disabled
 #   1..240:   timeouts from 5s to 20min (in units of 5s)
 #   241..251: timeouts from 30min to 5.5 hours (in units of 30min)
 # See 'man hdparm' for details.
-#DISK_SPINDOWN_TIMEOUT_ON_AC="240 240"
-#DISK_SPINDOWN_TIMEOUT_ON_BAT="12 12"
-#^12=60 sec
-DISK_SPINDOWN_TIMEOUT_ON_AC="keep"
-DISK_SPINDOWN_TIMEOUT_ON_BAT="keep"
+# Separate values for multiple disks with spaces. Use the special value 'keep'
+# to keep the hardware default for the particular disk.
+#DISK_SPINDOWN_TIMEOUT_ON_AC="0 0"
+#DISK_SPINDOWN_TIMEOUT_ON_BAT="0 0"
 
-# Select IO scheduler for the disk devices: noop, deadline, cfq (Default: cfq);
-# Separate values for multiple devices with spaces.
+# Select IO scheduler for the disk devices: cfq, deadline, noop (Default: cfq);
+# Separate values for multiple disks with spaces. Use the special value 'keep'
+# to keep the kernel default scheduler for the particular disk.
 #DISK_IOSCHED="cfq cfq"
-DISK_IOSCHED="noop noop"
 
 # SATA aggressive link power management (ALPM):
 #   min_power, medium_power, max_performance
-#SATA_LINKPWR_ON_AC=max_performance
-#XXX: min_power prevents ESATA detection when plugged in and stops detecting it once set to "Good"(min_power) with powertop even when set back to "Bad"(on) afterwards and replugged and stuff like that.
-#in other words once min_power gets set, it needs reboot to be able to detect ESATA plugged HDD again,
-#so min_power will make hdparm -I /dev/sdb  report a * before `Device-initiated interface power management` and powertop Good before `Enable SATA link power management for host{0,1,2,3}`; the * is removed when Bad is in effect(either manually set after Good was set, or when max_performance is in effect)
-SATA_LINKPWR_ON_AC=min_power
+SATA_LINKPWR_ON_AC=max_performance
 SATA_LINKPWR_ON_BAT=min_power
-#(XXX:does not apply to my T400 - manually tested with powertop to not affect me)To avoid filesystem corruption on btrfs formatted partitions, set:
-#SATA_LINKPWR_ON_BAT=max_performance
+
+# Exclude SATA host devices from link power management.
+# Separate multiple hosts with spaces.
+#SATA_LINKPWR_BLACKLIST="host1"
+
+# Runtime Power Management for AHCI controllers and disks:
+#   on=disable, auto=enable
+# EXPERIMENTAL ** WARNING: auto will most likely cause system lockups/data loss
+#AHCI_RUNTIME_PM_ON_AC=on
+#AHCI_RUNTIME_PM_ON_BAT=on
+
+# Seconds of inactivity before disk is suspended
+AHCI_RUNTIME_PM_TIMEOUT=15
 
 # PCI Express Active State Power Management (PCIe ASPM):
 #   default, performance, powersave
-#XXX: now-removed Hint: needs kernel boot option pcie_aspm=force on some machines
-PCIE_ASPM_ON_AC=powersave
+PCIE_ASPM_ON_AC=performance
 PCIE_ASPM_ON_BAT=powersave
 
 # Radeon graphics clock speed (profile method): low, mid, high, auto, default;
 # auto = mid on BAT, high on AC; default = use hardware defaults.
 # (Kernel >= 2.6.35 only, open-source radeon driver explicitly)
-RADEON_POWER_PROFILE_ON_AC=low
+RADEON_POWER_PROFILE_ON_AC=high
 RADEON_POWER_PROFILE_ON_BAT=low
 
 # Radeon dynamic power management method (DPM): battery, performance
 # (Kernel >= 3.11 only, requires boot option radeon.dpm=1)
-RADEON_DPM_STATE_ON_AC=thermal
-RADEON_DPM_STATE_ON_BAT=thermal
-#XXX: thermal  here on z575 with patched kernel!
+RADEON_DPM_STATE_ON_AC=performance
+RADEON_DPM_STATE_ON_BAT=battery
 
 # Radeon DPM performance level: auto, low, high; auto is recommended.
-RADEON_DPM_PERF_LEVEL_ON_AC=low
-RADEON_DPM_PERF_LEVEL_ON_BAT=low
+RADEON_DPM_PERF_LEVEL_ON_AC=auto
+RADEON_DPM_PERF_LEVEL_ON_BAT=auto
 
-#old:# WiFi power saving mode: 1=disable, 5=enable; not supported by all adapters.
-WIFI_PWR_ON_AC=on
+# WiFi power saving mode: on=enable, off=disable; not supported by all adapters.
+WIFI_PWR_ON_AC=off
 WIFI_PWR_ON_BAT=on
 
 # Disable wake on LAN: Y/N
 WOL_DISABLE=Y
-#disable? like this: ethtool -s enp1s0 wol d;
-
 
 # Enable audio power saving for Intel HDA, AC97 devices (timeout in secs).
 # A value of 0 disables, >=1 enables power save.
-SOUND_POWER_SAVE_ON_AC=1
+SOUND_POWER_SAVE_ON_AC=0
 SOUND_POWER_SAVE_ON_BAT=1
 
 # Disable controller too (HDA only): Y/N
@@ -179,12 +167,12 @@ SOUND_POWER_SAVE_CONTROLLER=Y
 # Drive can be powered on again by releasing (and reinserting) the eject lever
 # or by pressing the disc eject button on newer models.
 # Note: an UltraBay/MediaBay hard disk is never powered off.
-BAY_POWEROFF_ON_BAT=1
+BAY_POWEROFF_ON_BAT=0
 # Optical drive device to power off (default sr0).
 BAY_DEVICE="sr0"
 
 # Runtime Power Management for PCI(e) bus devices: on=disable, auto=enable
-RUNTIME_PM_ON_AC=auto
+RUNTIME_PM_ON_AC=on
 RUNTIME_PM_ON_BAT=auto
 
 # Runtime PM for *all* PCI(e) bus devices, except blacklisted ones:
@@ -194,16 +182,12 @@ RUNTIME_PM_ALL=1
 # Exclude PCI(e) device adresses the following list from Runtime PM
 # (separate with spaces). Use lspci to get the adresses (1st column).
 #RUNTIME_PM_BLACKLIST="bb:dd.f 11:22.3 44:55.6"
-#XXX: 01:00.0 is the network card, unless DIS (discrete gfx card) is enabled in bios, then it switches to 02:00.0 i believe
-#ok, don't blacklist network card because it doesn't fail unless only when using NetworkManager
-#RUNTIME_PM_BLACKLIST="01:00.0"
 
 # Exclude PCI(e) devices assigned to the listed drivers from Runtime PM
 # (should prevent accidential power on of hybrid graphics' discrete part).
 # Default is "radeon nouveau"; use "" to disable the feature completely.
 # Separate multiple drivers with spaces.
-#RUNTIME_PM_DRIVER_BLACKLIST="radeon nouveau"
-RUNTIME_PM_DRIVER_BLACKLIST=""
+RUNTIME_PM_DRIVER_BLACKLIST="radeon nouveau"
 
 # Set to 0 to disable, 1 to enable USB autosuspend feature.
 USB_AUTOSUSPEND=1
@@ -212,11 +196,9 @@ USB_AUTOSUSPEND=1
 # Use lsusb to get the ids.
 # Note: input devices (usbhid) are excluded automatically (see below)
 #USB_BLACKLIST="1111:2222 3333:4444"
-USB_BLACKLIST="0000:00:13.2"
 
-# WWAN devices are excluded from USB autosuspend:
-# 0=do not exclude / 1=exclude
-USB_BLACKLIST_WWAN=0
+# WWAN devices are excluded from USB autosuspend: 0=do not exclude / 1=exclude
+USB_BLACKLIST_WWAN=1
 
 # Include listed devices into USB autosuspend even if already excluded
 # by the driver or WWAN blacklists above (separate with spaces).
@@ -226,7 +208,6 @@ USB_BLACKLIST_WWAN=0
 # Set to 1 to disable autosuspend before shutdown, 0 to do nothing
 # (workaround for USB devices that cause shutdown problems).
 #USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN=1
-USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN=0
 
 # Restore radio device state (Bluetooth, WiFi, WWAN) from previous shutdown
 # on system startup: 0=disable, 1=enable.
@@ -236,42 +217,39 @@ RESTORE_DEVICE_STATE_ON_STARTUP=0
 
 # Radio devices to disable on startup: bluetooth, wifi, wwan.
 # Separate multiple devices with spaces.
-DEVICES_TO_DISABLE_ON_STARTUP="bluetooth wifi wwan"
+#DEVICES_TO_DISABLE_ON_STARTUP="bluetooth wifi wwan"
 
 # Radio devices to enable on startup: bluetooth, wifi, wwan.
 # Separate multiple devices with spaces.
 #DEVICES_TO_ENABLE_ON_STARTUP="wifi"
-DEVICES_TO_ENABLE_ON_STARTUP=""
 
 # Radio devices to disable on shutdown: bluetooth, wifi, wwan
 # (workaround for devices that are blocking shutdown).
-DEVICES_TO_DISABLE_ON_SHUTDOWN="bluetooth wifi wwan"
+#DEVICES_TO_DISABLE_ON_SHUTDOWN="bluetooth wifi wwan"
 
 # Radio devices to enable on shutdown: bluetooth, wifi, wwan
 # (to prevent other operating systems from missing radios).
 #DEVICES_TO_ENABLE_ON_SHUTDOWN="wwan"
-DEVICES_TO_ENABLE_ON_SHUTDOWN=""
 
 # Radio devices to enable on AC: bluetooth, wifi, wwan
 #DEVICES_TO_ENABLE_ON_AC="bluetooth wifi wwan"
-DEVICES_TO_ENABLE_ON_AC=""
 
 # Radio devices to disable on battery: bluetooth, wifi, wwan
-DEVICES_TO_DISABLE_ON_BAT="bluetooth wifi wwan"
+#DEVICES_TO_DISABLE_ON_BAT="bluetooth wifi wwan"
 
 # Radio devices to disable on battery when not in use (not connected):
 # bluetooth, wifi, wwan
-DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth wifi wwan"
+#DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE="bluetooth wifi wwan"
 
 # Battery charge thresholds (ThinkPad only, tp-smapi or acpi-call kernel module
 # required). Charging starts when the remaining capacity falls below the
-# START_CHARGE_TRESH value and stops when exceeding the STOP_CHARGE_TRESH value.
+# START_CHARGE_THRESH value and stops when exceeding the STOP_CHARGE_THRESH value.
 # Main / Internal battery (values in %)
-START_CHARGE_THRESH_BAT0=40
-STOP_CHARGE_THRESH_BAT0=50
+#START_CHARGE_THRESH_BAT0=75
+#STOP_CHARGE_THRESH_BAT0=80
 # Ultrabay / Slice / Replaceable battery (values in %)
-START_CHARGE_THRESH_BAT1=40
-STOP_CHARGE_THRESH_BAT1=50
+#START_CHARGE_THRESH_BAT1=75
+#STOP_CHARGE_THRESH_BAT1=80
 
 # ------------------------------------------------------------------------------
 # tlp-rdw - Parameters for the radio device wizard

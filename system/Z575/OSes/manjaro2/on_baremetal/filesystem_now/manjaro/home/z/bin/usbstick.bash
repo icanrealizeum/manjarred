@@ -10,6 +10,9 @@ if test ! -e "$dev"; then
   dev='/dev/sdb1' #fallback device - usb stick card reader with ...pro duo card
   if test ! -e "$dev"; then
     dev='/dev/sdd1' #8G mini SD card from android
+    if test ! -e "$dev"; then
+      dev='/dev/sde1' #4G mspro duo on card reader
+    fi
   fi
 fi
 

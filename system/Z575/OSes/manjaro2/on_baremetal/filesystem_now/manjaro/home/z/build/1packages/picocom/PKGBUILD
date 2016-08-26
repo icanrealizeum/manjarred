@@ -1,0 +1,48 @@
+# $Id$
+# Maintainer: Sébastien Luttringer
+# Contributor: Jens Adam (byte/jra) <j_adam@web.de>
+
+pkgname=picocom
+pkgver=2.1
+pkgrel=2
+pkgdesc='Minimal dumb-terminal emulation program, very much like minicom'
+url='https://github.com/npat-efault/picocom'
+license=('GPL2')
+arch=('i686' 'x86_64')
+depends=('glibc')
+install=$pkgname.install
+patch1file="log_file_feature_picocom21.diff"
+source=(
+    "$pkgname-$pkgver.tar.gz::https://github.com/npat-efault/picocom/archive/$pkgver.tar.gz"
+#####  "http://$pkgname.googlecode.com/files/$pkgname-$pkgver.tar.gz"
+  "$patch1file"
+)
+sha1sums=('ddcc98cdeefe1fa57b0349d86254932ae3b0edfe'
+          'f2dbf92d6764da0c4ab27504844d78668b03205b')
+sha512sums=('0df692118e3cfa27edd8ff9d5abbde8a9dc02fb015476ab1469337d616eb69411db125a967107276fb50bc58e7b9748429b9ded4943712a082a10827d595c03e'
+            '45c985e6f7b854eb428df023276daccfbc57cc973e0a471048d4b88b4a134890dde535cdb9c7fcd17764a589680cd3dffb0ea15237a3eceebb41d8eb15467128')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  pwd
+  patch -Np0 -i "../$patch1file"
+}
+
+build() {
+  cd "$pkgname-$pkgver"
+  make UUCP_LOCK_DIR=/run/lock/picocom
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -D -m 755 picocom "$pkgdir/usr/bin/picocom"
+#  install -D -m 644 picocom.8 "$pkgdir/usr/share/man/man8/picocom.8"
+  install -D -m 644 picocom.1 "$pkgdir/usr/share/man/man1/picocom.1"
+  # install tmpfiles for lock files
+  # http://lists.freedesktop.org/archives/systemd-devel/2011-March/001823.html
+  install -D -m 644 /dev/null "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+  echo "d /run/lock/$pkgname 0770 root uucp" \
+    > "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+}
+
+# vim:set ts=2 sw=2 et:

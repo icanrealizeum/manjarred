@@ -69,13 +69,13 @@ if test -d "${src}/etc/ssl/certs/"; then
   popd
 fi
 
-#echo "-- redacting local IP"
-#pushd "${src}/etc/conf.d/" || echo "FAIL!"
-#sed -i ./net -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
+echo "-- redacting local IP"
+pushd "${src}/etc/iptables/" || echo "FAIL!"
+sed -i ./myrules.v4 -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
 #sed -i ./nftables.rules -re 's/192\.168\.[0-9]+\.[0-9]+/192.168.redacted.redacted/g'
-#cat ./net ./nftables.rules | grep --color=always -E -- "(192|redacted)"
-#popd
-#echo "--"
+cat ./net ./nftables.rules | grep --color=always -E -- "(192|redacted)"
+popd
+echo "--"
 
 echo "-- removing ticuhost"
 pushd "${src}/etc/" || echo "FAIL!"
