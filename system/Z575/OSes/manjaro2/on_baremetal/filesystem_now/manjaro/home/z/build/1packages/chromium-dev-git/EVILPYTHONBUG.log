@@ -1,0 +1,278 @@
+this is during ./1...
+
+...
+  -> gclient sync (takes 33min on first time, on 13Mbps download, .git dir will be 776MiB and the whole src dir over 7GiB)
+*** Error in `python2': free(): invalid pointer: 0x00007f3580002670 ***    
+//======= Backtrace: =========
+/usr/lib/libc.so.6(+0x70c4b)[0x7f358fddac4b]
+/usr/lib/libc.so.6(+0x76fe6)[0x7f358fde0fe6]
+/usr/lib/libc.so.6(+0x777de)[0x7f358fde17de]
+/usr/lib/libpython2.7.so.1.0(PyThread_ReInitTLS+0x59)[0x7f359043fff9]
+/usr/lib/libpython2.7.so.1.0(PyOS_AfterFork+0x4c)[0x7f359044644c]
+/usr/lib/libpython2.7.so.1.0(+0x126059)[0x7f359044b059]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x6613)[0x7f359040f873]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7d08)[0x7f3590410f68]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x7308d)[0x7f359039808d]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x37dd)[0x7f359040ca3d]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x7308d)[0x7f359039808d]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(+0x5bfba)[0x7f3590380fba]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(+0xa7136)[0x7f35903cc136]
+/usr/lib/libpython2.7.so.1.0(+0xa5ced)[0x7f35903caced]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x37dd)[0x7f359040ca3d]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x7308d)[0x7f359039808d]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x37dd)[0x7f359040ca3d]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x7308d)[0x7f359039808d]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x37dd)[0x7f359040ca3d]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x7308d)[0x7f359039808d]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x37dd)[0x7f359040ca3d]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7d08)[0x7f3590410f68]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7d08)[0x7f3590410f68]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7d08)[0x7f3590410f68]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7d08)[0x7f3590410f68]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x7308d)[0x7f359039808d]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x37dd)[0x7f359040ca3d]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7ef9)[0x7f3590411159]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalFrameEx+0x7ef9)[0x7f3590411159]
+/usr/lib/libpython2.7.so.1.0(PyEval_EvalCodeEx+0x8dc)[0x7f3590412dcc]
+/usr/lib/libpython2.7.so.1.0(+0x72fab)[0x7f3590397fab]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(+0x5bfba)[0x7f3590380fba]
+/usr/lib/libpython2.7.so.1.0(PyObject_Call+0x52)[0x7f3590371662]
+/usr/lib/libpython2.7.so.1.0(PyEval_CallObjectWithKeywords+0x56)[0x7f3590408c46]
+/usr/lib/libpython2.7.so.1.0(+0x11f071)[0x7f3590444071]
+/usr/lib/libpthread.so.0(+0x7454)[0x7f359010f454]
+/usr/lib/libc.so.6(clone+0x5f)[0x7f358fe527df]
+//======= Memory map: ========
+563bbb060000-563bbb061000 r-xp 00000000 00:11 3290574                    /usr/bin/python2.7
+563bbb260000-563bbb261000 r--p 00000000 00:11 3290574                    /usr/bin/python2.7
+563bbb261000-563bbb262000 rw-p 00001000 00:11 3290574                    /usr/bin/python2.7
+563bbb8c6000-563bbbc09000 rw-p 00000000 00:00 0                          [heap]
+7f3564000000-7f3564021000 rw-p 00000000 00:00 0 
+7f3564021000-7f3568000000 ---p 00000000 00:00 0 
+7f3568000000-7f3568021000 rw-p 00000000 00:00 0 
+7f3568021000-7f356c000000 ---p 00000000 00:00 0 
+7f356c000000-7f356c022000 rw-p 00000000 00:00 0 
+7f356c022000-7f3570000000 ---p 00000000 00:00 0 
+7f35727fd000-7f35727fe000 ---p 00000000 00:00 0 
+7f35727fe000-7f3572ffe000 rw-p 00000000 00:00 0 
+7f3572ffe000-7f3572fff000 ---p 00000000 00:00 0 
+7f3572fff000-7f35737ff000 rw-p 00000000 00:00 0 
+7f35737ff000-7f3573800000 ---p 00000000 00:00 0 
+7f3573800000-7f3574000000 rw-p 00000000 00:00 0 
+7f3574000000-7f3574021000 rw-p 00000000 00:00 0 
+7f3574021000-7f3578000000 ---p 00000000 00:00 0 
+7f3578000000-7f3578021000 rw-p 00000000 00:00 0 
+7f3578021000-7f357c000000 ---p 00000000 00:00 0 
+7f357c000000-7f357c021000 rw-p 00000000 00:00 0 
+7f357c021000-7f3580000000 ---p 00000000 00:00 0 
+7f3580000000-7f3580021000 rw-p 00000000 00:00 0 
+7f3580021000-7f3584000000 ---p 00000000 00:00 0 
+7f3584000000-7f35840a3000 rw-p 00000000 00:00 0 
+7f35840a3000-7f3588000000 ---p 00000000 00:00 0 
+7f35883f3000-7f3588409000 r-xp 00000000 00:11 9218028                    /usr/lib/libgcc_s.so.1
+7f3588409000-7f3588608000 ---p 00016000 00:11 9218028                    /usr/lib/libgcc_s.so.1
+7f3588608000-7f3588609000 r--p 00015000 00:11 9218028                    /usr/lib/libgcc_s.so.1
+7f3588609000-7f358860a000 rw-p 00016000 00:11 9218028                    /usr/lib/libgcc_s.so.1
+7f358860a000-7f358860b000 ---p 00000000 00:00 0 
+7f358860b000-7f3588e0b000 rw-p 00000000 00:00 0 
+7f3588e0b000-7f3588e0c000 ---p 00000000 00:00 0 
+7f3588e0c000-7f358960c000 rw-p 00000000 00:00 0 
+7f358960c000-7f358960d000 ---p 00000000 00:00 0 
+7f358960d000-7f3589e0d000 rw-p 00000000 00:00 0 
+7f3589e0d000-7f3589e0e000 ---p 00000000 00:00 0 
+7f3589e0e000-7f358a60e000 rw-p 00000000 00:00 0 
+7f358a70f000-7f358a710000 ---p 00000000 00:00 0 
+7f358a710000-7f358af10000 rw-p 00000000 00:00 0 
+7f358af10000-7f358af23000 r-xp 00000000 00:11 3290440                    /usr/lib/python2.7/lib-dynload/cPickle.so
+7f358af23000-7f358b122000 ---p 00013000 00:11 3290440                    /usr/lib/python2.7/lib-dynload/cPickle.so
+7f358b122000-7f358b123000 r--p 00012000 00:11 3290440                    /usr/lib/python2.7/lib-dynload/cPickle.so
+7f358b123000-7f358b124000 rw-p 00013000 00:11 3290440                    /usr/lib/python2.7/lib-dynload/cPickle.so
+7f358b124000-7f358b12a000 r-xp 00000000 00:11 3290471                    /usr/lib/python2.7/lib-dynload/_multiprocessing.so
+7f358b12a000-7f358b329000 ---p 00006000 00:11 3290471                    /usr/lib/python2.7/lib-dynload/_multiprocessing.so
+7f358b329000-7f358b32a000 r--p 00005000 00:11 3290471                    /usr/lib/python2.7/lib-dynload/_multiprocessing.so
+7f358b32a000-7f358b32b000 rw-p 00006000 00:11 3290471                    /usr/lib/python2.7/lib-dynload/_multiprocessing.so
+7f358b32b000-7f358b332000 r-xp 00000000 00:11 3285921                    /usr/lib/libffi.so.6.0.4
+7f358b332000-7f358b532000 ---p 00007000 00:11 3285921                    /usr/lib/libffi.so.6.0.4
+7f358b532000-7f358b533000 r--p 00007000 00:11 3285921                    /usr/lib/libffi.so.6.0.4
+7f358b533000-7f358b534000 rw-p 00008000 00:11 3285921                    /usr/lib/libffi.so.6.0.4
+7f358b534000-7f358b54f000 r-xp 00000000 00:11 3290475                    /usr/lib/python2.7/lib-dynload/_ctypes.so
+7f358b54f000-7f358b74e000 ---p 0001b000 00:11 3290475                    /usr/lib/python2.7/lib-dynload/_ctypes.so
+7f358b74e000-7f358b74f000 r--p 0001a000 00:11 3290475                    /usr/lib/python2.7/lib-dynload/_ctypes.so
+7f358b74f000-7f358b753000 rw-p 0001b000 00:11 3290475                    /usr/lib/python2.7/lib-dynload/_ctypes.so
+7f358b753000-7f358b757000 r-xp 00000000 00:11 3290459                    /usr/lib/python2.7/lib-dynload/zlib.so
+7f358b757000-7f358b956000 ---p 00004000 00:11 3290459                    /usr/lib/python2.7/lib-dynload/zlib.so
+7f358b956000-7f358b957000 r--p 00003000 00:11 3290459                    /usr/lib/python2.7/lib-dynload/zlib.so
+7f358b957000-7f358b959000 rw-p 00004000 00:11 3290459                    /usr/lib/python2.7/lib-dynload/zlib.so
+7f358b959000-7f358b96b000 r-xp 00000000 00:11 3290418                    /usr/lib/python2.7/lib-dynload/datetime.so
+7f358b96b000-7f358bb6a000 ---p 00012000 00:11 3290418                    /usr/lib/python2.7/lib-dynload/datetime.so
+7f358bb6a000-7f358bb6b000 r--p 00011000 00:11 3290418                    /usr/lib/python2.7/lib-dynload/datetime.so
+7f358bb6b000-7f358bb6f000 rw-p 00012000 00:11 3290418                    /usr/lib/python2.7/lib-dynload/datetime.so
+7f358bb6f000-7f358bb74000 r-xp 00000000 00:11 3290437                    /usr/lib/python2.7/lib-dynload/select.so
+7f358bb74000-7f358bd73000 ---p 00005000 00:11 3290437                    /usr/lib/python2.7/lib-dynload/select.so
+7f358bd73000-7f358bd74000 r--p 00004000 00:11 3290437                    /usr/lib/python2.7/lib-dynload/select.so
+7f358bd74000-7f358bd76000 rw-p 00005000 00:11 3290437                    /usr/lib/python2.7/lib-dynload/select.so
+7f358bd76000-7f358bd78000 r-xp 00000000 00:11 3290435                    /usr/lib/python2.7/lib-dynload/grp.so
+7f358bd78000-7f358bf77000 ---p 00002000 00:11 3290435                    /usr/lib/python2.7/lib-dynload/grp.so
+7f358bf77000-7f358bf78000 r--p 00001000 00:11 3290435                    /usr/lib/python2.7/lib-dynload/grp.so
+7f358bf78000-7f358bf79000 rw-p 00002000 00:11 3290435                    /usr/lib/python2.7/lib-dynload/grp.so
+7f358bf79000-7f358bf7c000 r-xp 00000000 00:11 3290434                    /usr/lib/python2.7/lib-dynload/fcntl.so
+7f358bf7c000-7f358c17b000 ---p 00003000 00:11 3290434                    /usr/lib/python2.7/lib-dynload/fcntl.so
+7f358c17b000-7f358c17c000 r--p 00002000 00:11 3290434                    /usr/lib/python2.7/lib-dynload/fcntl.so
+7f358c17c000-7f358c17d000 rw-p 00003000 00:11 3290434                    /usr/lib/python2.7/lib-dynload/fcntl.so
+7f358c17d000-7f358c180000 r-xp 00000000 00:11 3290421                    /usr/lib/python2.7/lib-dynload/_random.so
+7f358c180000-7f358c37f000 ---p 00003000 00:11 3290421                    /usr/lib/python2.7/lib-dynload/_random.so
+7f358c37f000-7f358c380000 r--p 00002000 00:11 3290421                    /usr/lib/python2.7/lib-dynload/_random.so
+7f358c380000-7f358c381000 rw-p 00003000 00:11 3290421                    /usr/lib/python2.7/lib-dynload/_random.so
+7f358c381000-7f358c385000 r-xp 00000000 00:11 3290449                    /usr/lib/python2.7/lib-dynload/_hashlib.so
+7f358c385000-7f358c584000 ---p 00004000 00:11 3290449                    /usr/lib/python2.7/lib-dynload/_hashlib.so
+7f358c584000-7f358c585000 r--p 00003000 00:11 3290449                    /usr/lib/python2.7/lib-dynload/_hashlib.so
+7f358c585000-7f358c586000 rw-p 00004000 00:11 3290449                    /usr/lib/python2.7/lib-dynload/_hashlib.so
+7f358c586000-7f358c58d000 r-xp 00000000 00:11 3290415                    /usr/lib/python2.7/lib-dynload/math.so
+7f358c58d000-7f358c78c000 ---p 00007000 00:11 3290415                    /usr/lib/python2.7/lib-dynload/math.so
+7f358c78c000-7f358c78d000 r--p 00006000 00:11 3290415                    /usr/lib/python2.7/lib-dynload/math.so
+7f358c78d000-7f358c78f000 rw-p 00007000 00:11 3290415                    /usr/lib/python2.7/lib-dynload/math.so
+7f358c78f000-7f358c7ac000 r-xp 00000000 00:11 3290426                    /usr/lib/python2.7/lib-dynload/_io.so
+7f358c7ac000-7f358c9ab000 ---p 0001d000 00:11 3290426                    /usr/lib/python2.7/lib-dynload/_io.so
+7f358c9ab000-7f358c9ac000 r--p 0001c000 00:11 3290426                    /usr/lib/python2.7/lib-dynload/_io.so
+7f358c9ac000-7f358c9b6000 rw-p 0001d000 00:11 3290426                    /usr/lib/python2.7/lib-dynload/_io.so
+7f358c9b6000-7f358ca76000 rw-p 00000000 00:00 0 
+7f358cab6000-7f358cbb6000 rw-p 00000000 00:00 0 
+7f358cbb6000-7f358cbcb000 r-xp 00000000 00:11 7207                       /usr/lib/libz.so.1.2.8
+7f358cbcb000-7f358cdca000 ---p 00015000 00:11 7207                       /usr/lib/libz.so.1.2.8
+7f358cdca000-7f358cdcb000 r--p 00014000 00:11 7207                       /usr/lib/libz.so.1.2.8
+7f358cdcb000-7f358cdcc000 rw-p 00015000 00:11 7207                       /usr/lib/libz.so.1.2.8
+7f358cdcc000-7f358cdd1000 r-xp 00000000 00:11 3290460                    /usr/lib/python2.7/lib-dynload/binascii.so
+7f358cdd1000-7f358cfd0000 ---p 00005000 00:11 3290460                    /usr/lib/python2.7/lib-dynload/binascii.so
+7f358cfd0000-7f358cfd1000 r--p 00004000 00:11 3290460                    /usr/lib/python2.7/lib-dynload/binascii.so
+7f358cfd1000-7f358cfd2000 rw-p 00005000 00:11 3290460                    /usr/lib/python2.7/lib-dynload/binascii.so
+7f358cfd2000-7f358d21e000 r-xp 00000000 00:11 6927                       /usr/lib/libcrypto.so.1.0.0
+7f358d21e000-7f358d41e000 ---p 0024c000 00:11 6927                       /usr/lib/libcrypto.so.1.0.0
+7f358d41e000-7f358d43a000 r--p 0024c000 00:11 6927                       /usr/lib/libcrypto.so.1.0.0
+7f358d43a000-7f358d446000 rw-p 00268000 00:11 6927                       /usr/lib/libcrypto.so.1.0.0
+7f358d446000-7f358d449000 rw-p 00000000 00:00 0 
+7f358d449000-7f358d4af000 r-xp 00000000 00:11 7150                       /usr/lib/libssl.so.1.0.0
+7f358d4af000-7f358d6af000 ---p 00066000 00:11 7150                       /usr/lib/libssl.so.1.0.0
+7f358d6af000-7f358d6b3000 r--p 00066000 00:11 7150                       /usr/lib/libssl.so.1.0.0
+7f358d6b3000-7f358d6ba000 rw-p 0006a000 00:11 7150                       /usr/lib/libssl.so.1.0.0
+7f358d6ba000-7f358d6ce000 r-xp 00000000 00:11 3290448                    /usr/lib/python2.7/lib-dynload/_ssl.so
+7f358d6ce000-7f358d8cd000 ---p 00014000 00:11 3290448                    /usr/lib/python2.7/lib-dynload/_ssl.so
+7f358d8cd000-7f358d8ce000 r--p 00013000 00:11 3290448                    /usr/lib/python2.7/lib-dynload/_ssl.so
+7f358d8ce000-7f358d8d2000 rw-p 00014000 00:11 3290448                    /usr/lib/python2.7/lib-dynload/_ssl.so
+7f358d8d2000-7f358d8e1000 r-xp 00000000 00:11 3290447                    /usr/lib/python2.7/lib-dynload/_socket.so
+7f358d8e1000-7f358dae0000 ---p 0000f000 00:11 3290447                    /usr/lib/python2.7/lib-dynload/_socket.so
+7f358dae0000-7f358dae1000 r--p 0000e000 00:11 3290447                    /usr/lib/python2.7/lib-dynload/_socket.so
+7f358dae1000-7f358dae6000 rw-p 0000f000 00:11 3290447                    /usr/lib/python2.7/lib-dynload/_socket.so
+7f358dae6000-7f358dae9000 r-xp 00000000 00:11 3290427                    /usr/lib/python2.7/lib-dynload/_functools.so
+7f358dae9000-7f358dce8000 ---p 00003000 00:11 3290427                    /usr/lib/python2.7/lib-dynload/_functools.so
+7f358dce8000-7f358dce9000 r--p 00002000 00:11 3290427                    /usr/lib/python2.7/lib-dynload/_functools.so
+7f358dce9000-7f358dcea000 rw-p 00003000 00:11 3290427                    /usr/lib/python2.7/lib-dynload/_functools.so
+7f358dcea000-7f358dcef000 r-xp 00000000 00:11 3290416                    /usr/lib/python2.7/lib-dynload/strop.so
+7f358dcef000-7f358deee000 ---p 00005000 00:11 3290416                    /usr/lib/python2.7/lib-dynload/strop.so
+7f358deee000-7f358deef000 r--p 00004000 00:11 3290416                    /usr/lib/python2.7/lib-dynload/strop.so
+7f358deef000-7f358def1000 rw-p 00005000 00:11 3290416                    /usr/lib/python2.7/lib-dynload/strop.so
+7f358def1000-7f358def4000 r-xp 00000000 00:11 3290424                    /usr/lib/python2.7/lib-dynload/_heapq.so
+7f358def4000-7f358e0f3000 ---p 00003000 00:11 3290424                    /usr/lib/python2.7/lib-dynload/_heapq.so
+7f358e0f3000-7f358e0f4000 r--p 00002000 00:11 3290424                    /usr/lib/python2.7/lib-dynload/_heapq.so
+7f358e0f4000-7f358e0f6000 rw-p 00003000 00:11 3290424                    /usr/lib/python2.7/lib-dynload/_heapq.so
+7f358e0f6000-7f358e100000 r-xp 00000000 00:11 3290419                    /usr/lib/python2.7/lib-dynload/itertools.so
+7f358e100000-7f358e300000 ---p 0000a000 00:11 3290419                    /usr/lib/python2.7/lib-dynload/itertools.so
+7f358e300000-7f358e301000 r--p 0000a000 00:11 3290419                    /usr/lib/python2.7/lib-dynload/itertools.so
+7f358e301000-7f358e306000 rw-p 0000b000 00:11 3290419                    /usr/lib/python2.7/lib-dynload/itertools.so
+7f358e306000-7f358e30f000 r-xp 00000000 00:11 3290425                    /usr/lib/python2.7/lib-dynload/operator.so
+7f358e30f000-7f358e50e000 ---p 00009000 00:11 3290425                    /usr/lib/python2.7/lib-dynload/operator.so
+7f358e50e000-7f358e50f000 r--p 00008000 00:11 3290425                    /usr/lib/python2.7/lib-dynload/operator.so
+7f358e50f000-7f358e511000 rw-p 00009000 00:11 3290425                    /usr/lib/python2.7/lib-dynload/operator.so
+7f358e511000-7f358e517000 r-xp 00000000 00:11 3290422                    /usr/lib/python2.7/lib-dynload/_collections.so
+7f358e517000-7f358e717000 ---p 00006000 00:11 3290422                    /usr/lib/python2.7/lib-dynload/_collections.so
+7f358e717000-7f358e718000 r--p 00006000 00:11 3290422                    /usr/lib/python2.7/lib-dynload/_collections.so
+7f358e718000-7f358e71a000 rw-p 00007000 00:11 3290422                    /usr/lib/python2.7/lib-dynload/_collections.so
+7f358e71a000-7f358e71e000 r-xp 00000000 00:11 3290439                    /usr/lib/python2.7/lib-dynload/cStringIO.so
+7f358e71e000-7f358e91d000 ---p 00004000 00:11 3290439                    /usr/lib/python2.7/lib-dynload/cStringIO.so
+7f358e91d000-7f358e91e000 r--p 00003000 00:11 3290439                    /usr/lib/python2.7/lib-dynload/cStringIO.so
+7f358e91e000-7f358e920000 rw-p 00004000 00:11 3290439                    /usr/lib/python2.7/lib-dynload/cStringIO.so
+7f358e920000-7f358e924000 r-xp 00000000 00:11 3290417                    /usr/lib/python2.7/lib-dynload/time.so
+7f358e924000-7f358eb23000 ---p 00004000 00:11 3290417                    /usr/lib/python2.7/lib-dynload/time.so
+7f358eb23000-7f358eb24000 r--p 00003000 00:11 3290417                    /usr/lib/python2.7/lib-dynload/time.so
+7f358eb24000-7f358eb26000 rw-p 00004000 00:11 3290417                    /usr/lib/python2.7/lib-dynload/time.so
+7f358eb26000-7f358eb2e000 r-xp 00000000 00:11 3290428                    /usr/lib/python2.7/lib-dynload/_json.so
+7f358eb2e000-7f358ed2d000 ---p 00008000 00:11 3290428                    /usr/lib/python2.7/lib-dynload/_json.so
+7f358ed2d000-7f358ed2e000 r--p 00007000 00:11 3290428                    /usr/lib/python2.7/lib-dynload/_json.so
+7f358ed2e000-7f358ed2f000 rw-p 00008000 00:11 3290428                    /usr/lib/python2.7/lib-dynload/_json.so
+7f358ed2f000-7f358ed36000 r-xp 00000000 00:11 3290411                    /usr/lib/python2.7/lib-dynload/_struct.so
+7f358ed36000-7f358ef36000 ---p 00007000 00:11 3290411                    /usr/lib/python2.7/lib-dynload/_struct.so
+7f358ef36000-7f358ef37000 r--p 00007000 00:11 3290411                    /usr/lib/python2.7/lib-dynload/_struct.so
+7f358ef37000-7f358ef39000 rw-p 00008000 00:11 3290411                    /usr/lib/python2.7/lib-dynload/_struct.so
+7f358ef39000-7f358f0b9000 rw-p 00000000 00:00 0 
+7f358f0f8000-7f358f279000 rw-p 00000000 00:00 0 
+7f358f279000-7f358f45a000 r--p 00000000 00:11 10323523                   /usr/lib/locale/locale-archive
+7f358f45a000-7f358f45e000 r-xp 00000000 00:11 3290433                    /usr/lib/python2.7/lib-dynload/_locale.so
+7f358f45e000-7f358f65d000 ---p 00004000 00:11 3290433                    /usr/lib/python2.7/lib-dynload/_locale.so
+7f358f65d000-7f358f65e000 r--p 00003000 00:11 3290433                    /usr/lib/python2.7/lib-dynload/_locale.so
+7f358f65e000-7f358f65f000 rw-p 00004000 00:11 3290433                    /usr/lib/python2.7/lib-dynload/_locale.so
+7f358f65f000-7f358f762000 r-xp 00000000 00:11 9217166                    /usr/lib/libm-2.24.so
+7f358f762000-7f358f961000 ---p 00103000 00:11 9217166                    /usr/lib/libm-2.24.so
+7f358f961000-7f358f962000 r--p 00102000 00:11 9217166                    /usr/lib/libm-2.24.so
+7f358f962000-7f358f963000 rw-p 00103000 00:11 9217166                    /usr/lib/libm-2.24.so
+7f358f963000-7f358f965000 r-xp 00000000 00:11 9217170                    /usr/lib/libutil-2.24.so
+7f358f965000-7f358fb64000 ---p 00002000 00:11 9217170                    /usr/lib/libutil-2.24.so
+7f358fb64000-7f358fb65000 r--p 00001000 00:11 9217170                    /usr/lib/libutil-2.24.so
+7f358fb65000-7f358fb66000 rw-p 00002000 00:11 9217170                    /usr/lib/libutil-2.24.so
+7f358fb66000-7f358fb68000 r-xp 00000000 00:11 9217165                    /usr/lib/libdl-2.24.so
+7f358fb68000-7f358fd68000 ---p 00002000 00:11 9217165                    /usr/lib/libdl-2.24.so
+7f358fd68000-7f358fd69000 r--p 00002000 00:11 9217165                    /usr/lib/libdl-2.24.so
+7f358fd69000-7f358fd6a000 rw-p 00003000 00:11 9217165                    /usr/lib/libdl-2.24.so
+7f358fd6a000-7f358feff000 r-xp 00000000 00:11 9217112                    /usr/lib/libc-2.24.so
+7f358feff000-7f35900fe000 ---p 00195000 00:11 9217112                    /usr/lib/libc-2.24.so
+7f35900fe000-7f3590102000 r--p 00194000 00:11 9217112                    /usr/lib/libc-2.24.so
+7f3590102000-7f3590104000 rw-p 00198000 00:11 9217112                    /usr/lib/libc-2.24.so
+7f3590104000-7f3590108000 rw-p 00000000 00:00 0 
+7f3590108000-7f3590120000 r-xp 00000000 00:11 9217093                    /usr/lib/libpthread-2.24.so
+7f3590120000-7f359031f000 ---p 00018000 00:11 9217093                    /usr/lib/libpthread-2.24.so
+7f359031f000-7f3590320000 r--p 00017000 00:11 9217093                    /usr/lib/libpthread-2.24.so
+7f3590320000-7f3590321000 rw-p 00018000 00:11 9217093                    /usr/lib/libpthread-2.24.so
+7f3590321000-7f3590325000 rw-p 00000000 00:00 0 
+7f3590325000-7f35904ae000 r-xp 00000000 00:11 3285932                    /usr/lib/libpython2.7.so.1.0
+7f35904ae000-7f35906ad000 ---p 00189000 00:11 3285932                    /usr/lib/libpython2.7.so.1.0
+7f35906ad000-7f35906af000 r--p 00188000 00:11 3285932                    /usr/lib/libpython2.7.so.1.0
+7f35906af000-7f35906ed000 rw-p 0018a000 00:11 3285932                    /usr/lib/libpython2.7.so.1.0
+7f35906ed000-7f359070e000 rw-p 00000000 00:00 0 
+7f359070e000-7f3590731000 r-xp 00000000 00:11 9217111                    /usr/lib/ld-2.24.so
+7f3590751000-7f3590811000 rw-p 00000000 00:00 0 
+7f3590842000-7f3590906000 rw-p 00000000 00:00 0 
+7f359092e000-7f359092f000 rw-p 00000000 00:00 0 
+7f359092f000-7f3590930000 rwxp 00000000 00:00 0 Syncing projects:  20% (16/80) sSyncing projects:  28% (23/80) src/third_party/ffmpeg               
+
+src/third_party/cld_2/src (ERROR)
+----------------------------------------
+[0:00:02] Started.
+----------------------------------------
+Error: 18> 
+18> ____ src/third_party/cld_2/src at 84b58a5d7690ebf05a91406f371ce00c3daf31c0
+18> 	Your index contains uncommitted changes
+18> 	Please commit, stash, or reset.
+==> ERROR: A failure occurred in prepare().
+    Aborting...
+
+real	0m50.543s
+user	0m15.033s
+sys	0m55.553s
+

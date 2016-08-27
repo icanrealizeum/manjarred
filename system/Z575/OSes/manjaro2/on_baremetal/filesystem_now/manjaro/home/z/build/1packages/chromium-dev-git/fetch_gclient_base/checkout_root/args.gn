@@ -420,8 +420,9 @@ fatal_linker_warnings = true #Default = true
 #    of binutils can cause linker warning.
 #    See: https://bugs.chromium.org/p/chromium/issues/detail?id=457359
 
-#XXX: not an option when system-ffmpeg via PKGBUILD! so commenting out:
-#ffmpeg_branding = "ChromeOS" #Default = "Chromium"
+#XXX: 1. not an option when system-ffmpeg via PKGBUILD! so commenting out:
+#XXX: 2. nvm. 1. because now is required, or else: "proprietary codecs and ffmpeg_branding set to Chromium are incompatible"
+ffmpeg_branding = "ChromeOS" #Default = "Chromium"
 #    //third_party/ffmpeg/ffmpeg_options.gni:33
 #    Controls whether we build the Chromium or Google Chrome version of FFmpeg.
 #    The Google Chrome version contains additional codecs. Typical values are
@@ -816,7 +817,8 @@ remove_webcore_debug_symbols = true #Default = false
 #    If true, doesn't compile debug symbols into webcore reducing the
 #    size of the binary and increasing the speed of gdb.
 
-repack_whitelist = "" #Default = ""
+#XXX: no effect
+#repack_whitelist = "" #Default = ""
 #    //tools/grit/repack.gni:8
 #    Absolute path to a resource whitelist (generated using
 #    //tools/resources/find_used_resources.py).

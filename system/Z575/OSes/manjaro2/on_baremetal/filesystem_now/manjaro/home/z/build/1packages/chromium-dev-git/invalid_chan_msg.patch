@@ -1,0 +1,17 @@
+show diff for this error:
+[1:1:0827/055733:ERROR:broker_posix.cc(41)] Invalid node channel message
+
+
+diff --git a/mojo/edk/system/broker_posix.cc b/mojo/edk/system/broker_posix.cc
+index 5400ed2..376ebf2 100644
+--- a/mojo/edk/system/broker_posix.cc
++++ b/mojo/edk/system/broker_posix.cc
+@@ -38,7 +38,7 @@ bool WaitForBrokerMessage(PlatformHandle platform_handle,
+     PLOG(ERROR) << "Recvmsg error";
+     error = true;
+   } else if (static_cast<size_t>(read_result) != message->data_num_bytes()) {
+-    LOG(ERROR) << "Invalid node channel message";
++    LOG(ERROR) << "Invalid node channel message " << static_cast<size_t>(read_result) << " != " << message->data_num_bytes() << " (bytes).";
+     error = true;
+   } else if (incoming_platform_handles.size() != expected_num_handles) {
+     LOG(ERROR) << "Received unexpected number of handles";
