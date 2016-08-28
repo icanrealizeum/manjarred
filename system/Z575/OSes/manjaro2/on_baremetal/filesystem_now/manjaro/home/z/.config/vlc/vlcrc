@@ -181,7 +181,7 @@ gl=glx
 #rmtosd-password=
 
 # VNC poll interval (integer)
-#rmtosd-update=1000
+rmtosd-update=300
 
 # VNC polling (boolean)
 #rmtosd-vnc-polling=0
@@ -2718,10 +2718,10 @@ vout=xcb_glx
 spu=0
 
 # On Screen Display (boolean)
-osd=0
+#osd=1
 
 # Text rendering module (string)
-text-renderer=none
+text-renderer=any
 
 # Use subtitle file (string)
 #sub-file=
@@ -3129,13 +3129,13 @@ key-rate-normal=
 #global-key-rate-faster-fine=
 
 # Faster (fine) (string)
-key-rate-faster-fine=
+key-rate-faster-fine=d
 
 # Slower (fine) (string)
 #global-key-rate-slower-fine=
 
 # Slower (fine) (string)
-key-rate-slower-fine=
+key-rate-slower-fine=s
 
 # Next (string)
 #global-key-next=
@@ -3177,13 +3177,13 @@ key-position=
 #global-key-jump-short=
 
 # Short backwards jump (string)
-#key-jump-short=Alt+Left
+key-jump-short=z
 
 # Short forward jump (string)
 #global-key-jump+short=
 
 # Short forward jump (string)
-#key-jump+short=Alt+Right
+key-jump+short=x
 
 # Medium backwards jump (string)
 #global-key-jump-medium=
