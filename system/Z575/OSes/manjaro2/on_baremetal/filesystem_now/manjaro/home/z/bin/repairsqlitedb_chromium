@@ -5,4 +5,7 @@
 #IFS=$"\n"   #this no good!
 IFS="
 "
+pushd /tmp
 for I  in `file ~/.config/chromium/Default/*|grep SQL|cut -f1 -d:`; do echo '.dump' | sqlite3 $I > ${I}.sql && rm $I && sqlite3 $I < ${I}.sql && rm ${I}.sql ; done
+popd
+

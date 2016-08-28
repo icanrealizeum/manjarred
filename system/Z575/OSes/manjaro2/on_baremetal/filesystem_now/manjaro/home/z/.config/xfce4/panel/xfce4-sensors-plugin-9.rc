@@ -15,11 +15,11 @@ Command_Name=xfce4-sensors
 Number_Chips=4
 Suppress_Hddtemp_Message=false
 Suppress_Tooltip=false
-Preferred_Width=383
-Preferred_Height=375
+Preferred_Width=0
+Preferred_Height=0
 
 [Chip0]
-Name=acpitz-0
+Name=k10temp-c3
 Number=0
 
 [Chip0_Feature0]
@@ -29,19 +29,10 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=60.00
-
-[Chip0_Feature1]
-Id=-1
-Address=1
-Name=MOBO temp
-Color=#00B000
-Show=true
-Min=0.00
-Max=46.00
+Max=59.88
 
 [Chip1]
-Name=k10temp-c3
+Name=acpitz-0
 Number=1
 
 [Chip1_Feature0]
@@ -51,7 +42,16 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=61.25
+Max=59.00
+
+[Chip1_Feature1]
+Id=-1
+Address=1
+Name=MOBO temp
+Color=#00B000
+Show=true
+Min=0.00
+Max=45.00
 
 [Chip2]
 Name=radeon-8
@@ -64,7 +64,7 @@ Name=gfx card
 Color=#00B000
 Show=true
 Min=0.00
-Max=62.00
+Max=60.00
 
 [Chip3]
 Name=ACPI
