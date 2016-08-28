@@ -17,8 +17,10 @@ ${green}==>${all_off} ${bold}This Chromium package no longer supports custom fla
 
 post_install() {
   _instructions
+  modify_chromium_exe
 }
 
 post_upgrade() {
   _instructions
+  modify_chromium_exe
 }

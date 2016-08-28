@@ -1312,7 +1312,7 @@ use_system_sqlite = false #Default = false
 #    shipped with the system (currently only supported on iOS) or the one
 #    shipped with Chromium source.
 
-#XXX: must be true because:
+#nevermind(patched away!)//XXX: must be true because:
 #In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/serial/serial_device_enumerator_linux.cc:5:
 #In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/serial/serial_device_enumerator_linux.h:10:
 #In file included from ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/device/udev_linux/scoped_udev.h:10:
@@ -1325,7 +1325,8 @@ use_system_sqlite = false #Default = false
 ##error "USE_UDEV not defined"
 # ^
 #2 errors generated.
-use_udev = true #Default = false
+#use_udev = true #Default = false
+use_udev = false #Default = false
 #    //build/config/features.gni:102
 #    libudev usage. This currently only affects the content layer.
 

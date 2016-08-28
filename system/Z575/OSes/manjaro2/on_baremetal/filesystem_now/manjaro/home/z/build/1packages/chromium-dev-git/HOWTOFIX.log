@@ -1,0 +1,14 @@
+//---------------
+if you get missing functions or something, in generated_api_registration.cc
+then you need to find an *.idl file
+for example
+
+gen/extensions/browser/api/generated_api_registration.cc:101:30: error: unknown type name 'SerialGetDevicesFunction'; did you mean 'HidGetDevicesFunction'?
+  registry->RegisterFunction<SerialGetDevicesFunction>();
+                               ^~~~~~~~~~~~~~~~~~~~~~~~
+
+was a file extensions/common/api/serial.idl
+a function named: getDevices under interface Functions in namespace serial
+
+//---------------
+

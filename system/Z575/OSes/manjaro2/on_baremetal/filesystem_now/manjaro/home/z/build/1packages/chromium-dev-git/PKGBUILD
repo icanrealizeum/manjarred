@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2842.0_r8933.6b3dbcd
+pkgver=55.0.2843.0_r9010.beaf9f5
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -168,17 +168,17 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
             'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
             '0f2a76de80e2c7ab59c3202375735e069e2432f0f140d2de3c7a64544a74b38cf0731756884a6accf44439d0fc00a98e91a3f590169bdc15f4ce959b91c3e3ed'
             'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
-            '051e03a8d0d0c874091ee4b5008d3f4c4493e519a7e0ce5e3cee4fc2bf627c9b705b4c1838525e75d18ec9886edef4e832bcc7eb3b1c1c0dd279dc5591f08b99'
+            '4acc961878a9d7c3c2093fbc4b3d05a754c55fce917646caff2e40d8bec69d490a7a4d22e39249531357886df99f9704f5ed6f121da46454703cfd114608a9e7'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
             '305c09ca37cfeb290f7249c3d69679555fa74fb2a030a3ea8734b9ab2a045af17890813cfecb4add20b1e54e0476049a815fb29a3cdb5a30bd07c4281750f020'
             '6412c8db0792039be60331bd15feefc0bc1434d6bc95be605d4e848fa2cb6e53f124c8be6fd8a8c8a6519b5ba2676a0b78a029c1ad225e88d7f9bb08ee432bcf'
             '42f7e222247892610e6e47bfd8249d252437b81eaffa80a0b98eefa7301fa2ef7ee54a2dbd147e06e2e710d847a63ad39f700ece6275239462e0b5511542e99b'
             '2314a9ce1cc4327ff03d574ffb0bcc2f2d642ce68fc558c1c772e61922e078e02f43684088452f9513382ddde5ec344554e1cfa85d195033b49261466c779d08'
-            'bf6ad8f84d79fcf065a5ed1bb0e2a4908aa06a86e9e0116865a68f910440d8957b551925c22bafd2c56b722405a82c52a8d8b403b9922a2e78671b7cc1dae548'
-            'dbb3c0084e100cbef90b025a381a6dee92037ad64dd362e4fc1308ade7e5d4ab11be9d4f80eed7b05e40bbc6dcdec2d8d3104179a8eaccfb91a8ce33d28a2a8c'
+            '72c9fe7b966555c695c0cb54fa3fd708d12fb3192671eaec670108bc5e4616510434bbd9cfd49d09deb83e5b980e64336bf940be2d97b869ca763a3527a7bfeb'
+            '3b1d95b126bec820bd0d92e5050742196ebd1c1657bf8e33854633fb0c4be2f33f777312d53eb048043d7f91c3491bc957b2e98723b2d7de58fa114255e40d7c'
             '32b2240509cbe7d6e3e9f38003d7f6ff94f8bd03942661a10946bb14f74e3ace100f61beb88215b3b95aa3236001cc81dbfa2c0469f5ade83e22ee2691b79627'
-            '7d516c6c3caaca99d2338454233d374d99612a64d9fd984a88e5ebbd02d15e7190f728bd18e1f84c0c55653c4a830dddc0e2b50d3a04712a282d0049eb1f881b'
+            '15ea8f85e48070c841006b29b0356265a8712b347d9330444c89e7c9c5f925aed7301c0a82e49e7faf88adc0f80cf6325e582db9910a7c208254abe249e1979d'
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
@@ -471,6 +471,11 @@ components/cdm/renderer/widevine_key_system_properties.cc
 components/cdm/renderer/widevine_key_system_properties.h
 media/test/data/eme_player_js/widevine_player.js
 third_party/widevine
+device/serial
+device/udev_linux
+extensions/browser/api/serial
+extensions/common/api/serial.idl
+extensions/renderer/resources/serial_custom_bindings.js
 EOF
 
 removestuff "chrome/browser" <<EOF
@@ -486,6 +491,22 @@ component_updater/widevine_cdm_component_installer.cc
 renderer_host/pepper
 browsing_data/browsing_data_flash_lso_helper.h
 EOF
+
+removestuff "chrome/browser/extensions/api/image_writer_private" <<EOF
+removable_storage_provider.cc
+removable_storage_provider_chromeos.cc
+removable_storage_provider_chromeos_unittest.cc
+removable_storage_provider.h
+removable_storage_provider_linux.cc
+removable_storage_provider_mac.cc
+removable_storage_provider_win.cc
+EOF
+
+#yes the dir doesn't even exist yet!
+#grep -nF 'registry->RegisterFunction<Serial' /tmp/out/Default/gen/extensions/browser/api/generated_api_registration.cc
+#and in dir: /home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/
+# this doesn't return anything: grep -nirF SerialGetDevicesFunction
+#XXX ok so it's getDevices function under interface Functions in namespace serial in file: extensions/common/api/serial.idl //XXX so how teh fuck does the first grep return results (esp. this SerialGetDevicesFunction) later on!?!!???
 
 #  cd "chromium-${pkgver}"
 
@@ -605,7 +626,7 @@ local gn_system_libraries=(
   echo "$PATH"
   export GYP_CHROMIUM_NO_ACTION=1
   #src: https://www.chromium.org/developers/gn-build-configuration
-  msg2 "running: gclient runhooks (note: rerun this lots if you get this skippable error: CommandException: Invalid command \"stat\")"
+  msg2 "running: gclient runhooks" #fixed with patched depottools-git (note: rerun this lots if you get this skippable error: CommandException: Invalid command \"stat\")"
   #"${srcdir}/pythonic"
   gclient runhooks   #can't run this here because it runs gyp_chromium!
 

@@ -11,6 +11,9 @@ chrome/browser/content_settings/local_shared_objects_container.cc
 chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
 chrome/browser/extensions/api/content_settings/content_settings_api.cc
 chrome/browser/extensions/api/content_settings/content_settings_api.h
+chrome/browser/extensions/api/image_writer_private/image_writer_private_api.cc
+chrome/browser/extensions/api/image_writer_private/image_writer_private_api.h
+chrome/browser/extensions/api/image_writer_private/image_writer_private_apitest.cc
 chrome/browser/extensions/api/resources_private/resources_private_api.cc
 chrome/browser/extensions/browser_context_keyed_service_factories.cc
 chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
@@ -25,7 +28,6 @@ chrome/browser/resources/options/clear_browser_data_overlay.js
 chrome/browser/resources/options/content_settings_exceptions_area.html
 chrome/browser/resources/options/content_settings.html
 chrome/browser/resources/options/content_settings.js
-chrome/browser/search/hotword_service.cc
 chrome/browser/ui/browser.cc
 chrome/browser/ui/tab_helpers.cc
 chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
@@ -38,8 +40,10 @@ chrome/browser/ui/webui/options/core_options_handler.cc
 chrome/browser/ui/webui/options/core_options_handler.h
 chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
 chrome/BUILD.gn
+chrome/chrome_browser_extensions.gypi
 chrome/chrome_browser.gypi
 chrome/chrome_common.gypi
+chrome/chrome_tests_unit.gypi
 chrome/common/BUILD.gn
 chrome/common/chrome_content_client.cc
 chrome/common/chrome_paths.cc
@@ -50,6 +54,7 @@ chrome/renderer/pepper/chrome_pdf_print_client.cc
 chrome/renderer/plugins/plugin_uma.cc
 chrome/test/BUILD.gn
 components/cdm/renderer/BUILD.gn
+components/storage_monitor/storage_monitor.cc
 content/browser/renderer_host/render_message_filter.cc
 content/browser/renderer_host/render_process_host_impl.cc
 content/public/child/BUILD.gn
@@ -57,5 +62,14 @@ content/public/renderer/BUILD.gn
 content/renderer/BUILD.gn
 content/renderer/media/render_media_client.h
 content/test/BUILD.gn
+extensions/browser/browser_context_keyed_service_factories.cc
+extensions/browser/BUILD.gn
+extensions/browser/mojo/service_registration.cc
 extensions/BUILD.gn
+extensions/common/api/BUILD.gn
+extensions/common/api/schemas.gypi
+extensions/extensions.gypi
+extensions/renderer/dispatcher.cc
+extensions/renderer/resources/extensions_renderer_resources.grd
 media/base/key_systems.cc
+tools/battor_agent/BUILD.gn

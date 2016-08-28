@@ -1,6 +1,7 @@
 #!/bin/bash
 
-journalctl -efa --no-hostname -m
+journalctl -efa --no-hostname "$@"
+#-m
 #--dmesg is limiting output! eg. no coredumps, no syslog
 #journalctl -efa _TRANSPORT=kernel + _TRANSPORT=syslog + _TRANSPORT=journal
 #^ this is just stripping the missed kernel messages and others from like profile-sync-daemon[5968]:

@@ -60,10 +60,21 @@ index d4b20fa..cd7451d 100644
  
  TEST_P(HotwordServiceTest, DisableAlwaysOnOnLanguageChange) {
 diff --git a/chrome/browser/search/hotword_service.cc b/chrome/browser/search/hotword_service.cc
-index f5579e1..923f9d9 100644
+index 34b6fe4..e6b1a9e 100644
 --- a/chrome/browser/search/hotword_service.cc
 +++ b/chrome/browser/search/hotword_service.cc
-@@ -638,7 +638,7 @@ bool HotwordService::IsServiceAvailable() {
+@@ -592,4 +592,5 @@ bool HotwordService::UninstallHotwordExtension(
+ 
+ bool HotwordService::IsServiceAvailable() {
++#if defined(ENABLE_HOTWORDING)
+   error_message_ = 0;
+ 
+@@ -636,8 +637,11 @@ bool HotwordService::IsServiceAvailable() {
+ 
+   return (error_message_ == 0) && IsHotwordAllowed();
++#else
++  return 1 == 2;
++#endif
  }
  
  bool HotwordService::IsHotwordAllowed() {
@@ -71,4 +82,3 @@ index f5579e1..923f9d9 100644
 +#if defined(ENABLE_HOTWORDING) && defined(ENABLE_HOTWORDING_NOWAY)
    return DoesHotwordSupportLanguage(profile_);
  #else
-   return false;

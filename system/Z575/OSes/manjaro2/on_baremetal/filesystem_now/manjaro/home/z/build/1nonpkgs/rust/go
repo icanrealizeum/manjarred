@@ -25,7 +25,8 @@ set -x
 #make: *** [doc/not_found.html] Error 127
 #XXX: disabled RUST_BACKTRACE=1 due to some bug which delays rustc exit and uses CPU if rustc was built with debuginfo https://github.com/rust-lang/rust/issues/29293
 #XXX: disabled --verbose  AND -C debug-assertions=y  AND VERBOSE=1
-time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=0 TIME_PASSES=1 TIME_LLVM_PASSES=1 RUSTFLAGS=" -Z print-link-args -Z print-llvm-passes -C debug-assertions=n" && time make -j${cores} check VERBOSE=0 )
+time ( time RUST_LOG=rustc::metadata::loader make -j${cores} -- $what VERBOSE=0 TIME_PASSES=0 TIME_LLVM_PASSES=0 RUSTFLAGS=" -Z print-link-args -C debug-assertions=n" && time make -j${cores} check VERBOSE=0 )
+#XXX: aug 27 2016, removed: TIME_PASSES=1 TIME_LLVM_PASSES=1  and -Z print-llvm-passes   
 # adding SHELL='$$SHELL -x' to make doesn't work:  make: $SHELL: Command not found
 #compiling rust took:
 #with --disable-debuginfo

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#untested:
+#cat <( sqlite3 "$1" .dump | grep "^ROLLBACK" -v ) <( echo "COMMIT;" ) | sqlite3 "fix_$1"
+
+#cd $DATABASE_LOCATION
+DB_NAME="$@"
+dirname="`dirname "${DB_NAME}"`"
+DB_NAME="`basename "${DB_NAME}"`"
+if test -z "$DB_NAME"; then
+	echo 'specify a sqlite database file'
+  exit 1
+fi
+
+if ! test -d "$dirname"; then
+  echo "'$dirname' dir doesn't exist"
+  exit 2
+fi
+
+pushd "$dirname"
+if ! test -e "$DB_NAME"; then
+  echo "'$DB_NAME' file doesn't exist"
+  exit 3
+fi
+
+echo '.dump'|sqlite3 "$DB_NAME" | sqlite3 "repaired_$DB_NAME"
+mv "$DB_NAME" "corrupt_$DB_NAME"
+mv "repaired_$DB_NAME $DB_NAME"
+
+#src: https://stackoverflow.com/questions/5274202/sqlite3-database-or-disk-is-full-the-database-disk-image-is-malformed
+
+popd

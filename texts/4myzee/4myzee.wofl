@@ -486,9 +486,11 @@
           \ AND chromium: ERR_ADDRESS_UNREACHABLE  for github.com
           \ so it must be at a lower level eg. IP level in kernel
           \ OH, this happens even when the load is like 60% on one core(instead of 400%) so it must be load independent
-    * seems okay: 4.8.0-rc2-g694d0d0
+    - seems okay: 4.8.0-rc2-g694d0d0
       \ except possibly the SCSI sync cache part which still locks-up
       \ also audio can be borked/inexistent (or even oops/lockup on startup) when z575 is powered on
+      * froze after copying 1.2gig from /tmp to btrfs, and after reboot nothing was at destination!
+        \ could Sysrq-b(reboot) but not Sysrq+s(sync)!
   * unbootable kernels
     * 4.8.rc1.r70.g9512c47-1
       \ but 4.8.0-rc1-g574673c2 worked! - nevermind, this hangs too(but only sometimes!) in startx!
@@ -499,6 +501,8 @@
     * 4.8.rc2.r348.g6040e57-1
       \ reboots laptop on startup!
     * 4.8.rc3..r0.gfa8410b-1
+      \ reboots laptop on startup!
+    * linux-git-4.8.rc3.r183.g5e608a0
       \ reboots laptop on startup!
 
 

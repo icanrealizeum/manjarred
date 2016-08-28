@@ -1,3 +1,8 @@
+well, this commit removed gyp* files from /media
+cd8f9885e1a55d7388056632f12723481181dcfb
+
+so, fixing this patch to apply on BUILD.gn instead, oh nevermind that was already done! removing the gyp and gypi ones(2 files) then.
+//--
 modified to patch cleanly on the latest chromium git
 
 Description: Enables using VA-API hardware acceleration in Linux. The patch for bpf_gpu_policy_linux.cc initially came from https://codereview.chromium.org/15955009/diff/92001/content/common/sandbox_linux/bpf_gpu_policy_linux.cc.
@@ -603,59 +608,6 @@ Index: dev/media/gpu/vaapi_wrapper.cc
        return false;
      }
    }
-Index: dev/media/media.gyp
-===================================================================
---- dev.orig/media/media.gyp
-+++ dev/media/media.gyp
-@@ -747,7 +747,7 @@
-           ],
-         }],
-         # For VaapiVideoEncodeAccelerator.
--        ['target_arch != "arm" and chromeos == 1', {
-+        ['target_arch != "arm" and (chromeos == 1 or desktop_linux == 1)', {
-           'sources': [
-             'filters/h264_bitstream_buffer.cc',
-             'filters/h264_bitstream_buffer.h',
-@@ -1306,7 +1306,7 @@
-             }]
-            ],
-         }],
--        ['target_arch != "arm" and chromeos == 1 and use_x11 == 1', {
-+        ['target_arch != "arm" and (chromeos == 1 or desktop_linux == 1) and use_x11 == 1', {
-           'sources': [
-             'filters/h264_bitstream_buffer_unittest.cc',
-           ],
-@@ -2249,7 +2249,7 @@
-       ],
-     }],
- 
--    ['chromeos==1 and target_arch != "arm"', {
-+    ['(desktop_linux==1 or chromeos==1) and target_arch != "arm"', {
-       'targets': [
-           {
-             'target_name': 'vaapi_jpeg_decoder_unittest',
-Index: dev/media/media_gpu.gypi
-===================================================================
---- dev.orig/media/media_gpu.gypi
-+++ dev/media/media_gpu.gypi
-@@ -174,7 +174,7 @@
-         },
-       ],
-     }],
--    ['chromeos==1', {
-+    ['chromeos==1 or desktop_linux==1', {
-       'sources': [
-         'gpu/accelerated_video_decoder.h',
-         'gpu/h264_decoder.cc',
-@@ -230,7 +230,7 @@
-         'gpu/tegra_v4l2_device.h',
-       ],
-     }],
--    ['target_arch != "arm" and chromeos == 1', {
-+    ['target_arch != "arm" and (chromeos == 1 or desktop_linux == 1)', {
-       'dependencies': [
-         '../media/media.gyp:media',
-         '../third_party/libyuv/libyuv.gyp:libyuv',
 Index: dev/content/content_common.gypi
 ===================================================================
 --- dev.orig/content/content_common.gypi

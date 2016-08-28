@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#src: https://www.smipple.net/snippet/IanLewis/Fix%20google%20chrome%20profile%20databases
+
+#IFS=$"\n"   #this no good!
+IFS="
+"
+for I  in `file ~/.config/chromium/Default/*|grep SQL|cut -f1 -d:`; do echo '.dump' | sqlite3 $I > ${I}.sql && rm $I && sqlite3 $I < ${I}.sql && rm ${I}.sql ; done
