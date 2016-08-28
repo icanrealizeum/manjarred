@@ -17,10 +17,18 @@ ${green}==>${all_off} ${bold}This Chromium package no longer supports custom fla
 
 post_install() {
   _instructions
-  modify_chromium_exe
+  nortc
 }
 
 post_upgrade() {
   _instructions
-  modify_chromium_exe
+  nortc
 }
+
+nortc() {
+  #force backup
+  modify_chromium_exe backup
+  #modify
+  modify_chromium_exe nodiff
+}
+

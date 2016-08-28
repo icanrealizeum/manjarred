@@ -114,7 +114,7 @@ if diff -q "$exe" "$result"; then
 fi
 
 echo "content changes detected"
-if test -e "`which vbindiff`"; then
+if test -e "`which vbindiff`" -a "$1" != "nodiff"; then
   vbindiff "$exe" "$result"
 fi
 
@@ -123,7 +123,7 @@ echo "modified file is: $result"
 echo "copying modified over the original, C-c if you don't want this"
 
 #FIXME: handle case when root, better!
-if test "`id -u`" -eq "0"; then
+if test "`id -u`" -eq "0" -a "$1" != "nodiff"; then
   echo "press a key to continue with that copying..."
   read -s
 else
