@@ -143,8 +143,10 @@ all.patch
 invalid_chan_msg.patch
 )
 
+installfil=chromium-dev.install
 source=(
 #####"https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz"
+        "$installfil"
         "chromium-launcher-${_launcher_ver}.tar.gz::https://github.com/icanrealizeum/chromium-launcher/archive/v${_launcher_ver}.tar.gz"
         'chromium-dev.svg'
         # Patch form Gentoo
@@ -164,7 +166,8 @@ source=(
 
 ##"$(curl -sL https://gsdview.appspot.com/chromium-browser-official/?marker=chromium-${pkgver}.tar.xz.hashes | awk -v FS='<td>"' -v RS='"</td>' '$0=$2' | head -n1)"
 #          "$(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz.hashes | grep sha1 | cut -d " " -f3)"
-sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db1ce670faefd460308548f2d861a935c12c8de24284edad58902cc89aac4a5'
+sha512sums=('6204560e6199a44f3b58558b7459a3b133689adfdec3b5773987ba6b0027ac96d170c66f4f1ca0c78a3c62a4115764c26cbe7d534a3076ae98bf783d2aaf38bb'
+            'f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db1ce670faefd460308548f2d861a935c12c8de24284edad58902cc89aac4a5'
             'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
             '0f2a76de80e2c7ab59c3202375735e069e2432f0f140d2de3c7a64544a74b38cf0731756884a6accf44439d0fc00a98e91a3f590169bdc15f4ce959b91c3e3ed'
             'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
@@ -183,7 +186,7 @@ sha512sums=('f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 
-install=chromium-dev.install
+install="$installfil"
 _folder="${startdir}/fetch_gclient_base/checkout_root"
 _srcfolder="${_folder}/src"
 
