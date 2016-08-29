@@ -1217,12 +1217,19 @@
 
 
 - recompile chromium with udev=false
-* bisect kernel to find out what causes reboot on startup!
+- bisect kernel to find out what causes reboot on startup!
+  \ https://bugzilla.kernel.org/show_bug.cgi?id=153411
 - recompile vlc to get the new libvpx-git
   \ because:
   \ [00007f58d4c044b8] core decoder error: corrupt module: /usr/lib/vlc/plugins/codec/libvpx_plugin.so
 * vlc: find out what's up with this:
   \ [0000559dc73522e8] qt interface error: Unable to load extensions module
 
+* fix this? aka how to add ClockPM? and enable aspm in /etc/default/grub again
+  \ [    2.089628] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig Segments MSI]
+  \ [    2.096773] acpi PNP0A08:00: _OSC: not requesting OS control; OS requires [ExtendedConfig ASPM ClockPM MSI]
+
+* log panic/oops to ram buffer?
+  \ read: /home/z/build/1packages/kernel/linuxgit/makepkg_pacman/linux-git/src/linux-git/Documentation/ramoops.txt
 
 
