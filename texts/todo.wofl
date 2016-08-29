@@ -1231,12 +1231,14 @@
   * also undo cmdline:
     \ it currently has:
     \ pcie_aspm=off radeon.aspm=0
+  * ok maybe don't do this because of the comments I wrote in /etc/default/grub
 
 - nah// log panic/oops to ram buffer?
   \ read: /home/z/build/1packages/kernel/linuxgit/makepkg_pacman/linux-git/src/linux-git/Documentation/ramoops.txt
 
 * see if kernel/startx still works without this set:
   \ CONFIG_DRM_FBDEV_EMULATION
+  \ doubtful! it will probably be black screen!
   * disable CONFIG_VGACON_SOFT_SCROLLBACK since it's always fbdev!
     \ and CONFIG_VGACON_REMEMBER_SCROLLBACK
 
@@ -1245,9 +1247,10 @@
 - maybe don't need this set? CONFIG_BACKLIGHT_LM3639
   \ removed, backlight still works (but u have to wait until uptime is like 40sec for X to "hear" that I pressed any keys!!!)
 
-* undo setting this if failure: CONFIG_X86_SYSFB
+- undo setting this if failure: CONFIG_X86_SYSFB
   \ no failure...
-  * try unsetting it again? see if boottime is different?
+  - try unsetting it again? see if boottime is different?
+    \ i forgot
 
 - undo this for more performance(instead of powersaving): CONFIG_WQ_POWER_EFFICIENT_DEFAULT
   \ done
