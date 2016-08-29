@@ -1232,4 +1232,17 @@
 * log panic/oops to ram buffer?
   \ read: /home/z/build/1packages/kernel/linuxgit/makepkg_pacman/linux-git/src/linux-git/Documentation/ramoops.txt
 
+* see if kernel/startx still works without this set:
+  \ CONFIG_DRM_FBDEV_EMULATION
+  * disable CONFIG_VGACON_SOFT_SCROLLBACK since it's always fbdev!
+    \ and CONFIG_VGACON_REMEMBER_SCROLLBACK
+
+* try this set maybe? CONFIG_DRM_AMDGPU
+
+* maybe don't need this set? CONFIG_BACKLIGHT_LM3639
+
+* undo setting this if failure: CONFIG_X86_SYSFB
+
+* undo this for more performance(instead of powersaving): CONFIG_WQ_POWER_EFFICIENT_DEFAULT
+
 

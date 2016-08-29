@@ -7,6 +7,7 @@ echo "Freeing (some) pagecache pages:"
 #
 time echo 1 | sudo tee /proc/sys/vm/drop_caches >/dev/null
 #eg. 55823.79246617536334390472 pagecache pages per second! (with cpumax)
+#on kernel: 4.4.19-1-MANJARO it's 67543/sec
 #alternative:
 #time sudo sysctl vm.drop_caches=1
 #
