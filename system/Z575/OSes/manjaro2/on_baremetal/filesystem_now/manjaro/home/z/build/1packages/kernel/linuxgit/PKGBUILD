@@ -47,7 +47,7 @@ radeon_thermal.patch
 2000_bios_usb_legacy_Lenovo_Z575_avoid_CPU_Not_Responding.patch
 2100_DIScrete_gfx_card_systemfreeze.patch
 2200_fbcon_state_allocated_scrollbackbuffer.patch
-2300_DDEBUG_for_the_entire_acpi_folder.patch
+#2300_DDEBUG_for_the_entire_acpi_folder.patch
 2400_i8042_inside_virtualbox.patch
 2500_lei8042.patch
 2600_whichbug.patch
@@ -103,7 +103,7 @@ ${manypatches[@]}
 #src: https://wiki.archlinux.org/index.php/makepkg#Generate_new_checksums
 #problem is that it kill my spacing! those horizontal lines also
 sha512sums=('SKIP'
-            '30849227d5d76ab5bd9056ebcb5bac26ac4160010d7182a930036bb511f71f7586f829d8038fd56b35ebc19049d71c8072d304433022f03874c6cfbd6ba1de46'
+            'ce8a52a5d73bc2776331acd6be83b5f16d9dbdd56f072812f2747904a390c4dd9fe52b60a4c32d1edc8d07ab70d32fa6c6b5ba824f7ec3f055cabe87b6f7136a'
             '48a2d94108ec9dd0e8411330506d30d194f7e89c97e0f13537853359f0d16f2b8e32599008cba87b9e6522323ba952538286d6e4b85e0d222604d1f8ccdd0c45'
             '99dcd30805ddefe9fe6eba0316c29366442509f2727434e40a064eb7ec77bc211a7f75b356284fa2c358b09b13580fa073c493b629a2d92ebdf376d9894ec080'
             'bb62d66a95e2d27378433d0f9c2fc7943bbcd655a89952fc25ef28d5796b8d65ca6c9c48bc70d40d71daada20707b266f781f57ba71950009b32cb6d58e155d0'
@@ -116,7 +116,6 @@ sha512sums=('SKIP'
             '1c7a7644497aa904f2ac22178ba5d2c8fd2024db887c33d5ddd87e3926a15063eae9ac9c22b68c76d3b1781a8f507f0d7f756528aae6799b3d210e26dddcea20'
             '62c76a86ca0a7b3a8345f21f1aec66281bc5a9a2a498ab5c19720c592b899e5dda23e9542147a2268e19a08c1132dd78208f83842d36a972f2ba39f1ab8ef48f'
             '6c7486ef1f705c578a207280aa38c3dcf2e4bfd3c0b48db07a9b0d0c0a6076788082184fdf4b465aaf3cb449c4197d2d5b22cddbf41be9ee16b1d3e339e15e68'
-            '079e4aefe0eaf490025165a1e6e90de84f269372284e1dc1436b11925620b50e10e0316904c771f551b545a41067bbbdcbc0f89486f1054ae511b07848efb9b6'
             '863c616dfc8648c6462a29c20a2006a0c69b37564b60d5db67c920dd45f00b02f1a767c534fefbb70cacd518ee5c76eb38acc09e02a201130363d250a47aae9f'
             '4fd9d73af452a3cd594fa37d77b8887c5c195e22db623d76334454c4b07569ab6b16454ff20c579f6fd8e83ae9bc7a6a3f78cbdab10267f7464bafa43367cb66'
             '8f69ffbac1116fa80d8eaac017452c4a4ef51a17d08a82cf1d5f8b1a640ca3c5cca205936814c9f09b7e2096b5feafbe689173bfca5772c87741fb3ec183b99b'

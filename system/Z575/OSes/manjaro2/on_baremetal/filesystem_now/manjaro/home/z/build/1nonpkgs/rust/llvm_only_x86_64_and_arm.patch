@@ -35,10 +35,10 @@ index f2ff4f1..1b7a064 100644
                  interpreter instrumentation
  
 diff --git a/src/librustc_llvm/lib.rs b/src/librustc_llvm/lib.rs
-index c1b909b..acee5cb 100644
+index eb45d3d..1554e4a 100644
 --- a/src/librustc_llvm/lib.rs
 +++ b/src/librustc_llvm/lib.rs
-@@ -2339,7 +2339,7 @@ pub fn initialize_available_targets() {
+@@ -406,7 +406,7 @@ pub fn initialize_available_targets() {
                   LLVMInitializeARMTargetMC,
                   LLVMInitializeARMAsmPrinter,
                   LLVMInitializeARMAsmParser);
@@ -47,11 +47,12 @@ index c1b909b..acee5cb 100644
                   LLVMInitializeAArch64TargetInfo,
                   LLVMInitializeAArch64Target,
                   LLVMInitializeAArch64TargetMC,
-@@ -2361,6 +2361,7 @@ pub fn initialize_available_targets() {
-                  LLVMInitializePNaClTargetInfo,
-                  LLVMInitializePNaClTarget,
-                  LLVMInitializePNaClTargetMC);
-+                 */
+@@ -433,7 +433,7 @@ pub fn initialize_available_targets() {
+                  LLVMInitializeSystemZTarget,
+                  LLVMInitializeSystemZTargetMC,
+                  LLVMInitializeSystemZAsmPrinter,
+-                 LLVMInitializeSystemZAsmParser);
++                 LLVMInitializeSystemZAsmParser);*/
  }
  
  pub fn last_error() -> Option<String> {

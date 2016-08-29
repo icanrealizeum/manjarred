@@ -9,6 +9,7 @@ time echo 1 | sudo tee /proc/sys/vm/drop_caches >/dev/null
 #eg. 55823.79246617536334390472 pagecache pages per second! (with cpumax)
 #on kernel: 4.4.19-1-MANJARO it's 67543/sec
 #new kernel 4.8.0-rc4-g3eab887 (changed .config): 1150415/sec
+#https://bugzilla.kernel.org/show_bug.cgi?id=151621
 #alternative:
 #time sudo sysctl vm.drop_caches=1
 #
