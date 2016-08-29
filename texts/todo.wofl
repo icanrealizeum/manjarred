@@ -1228,8 +1228,11 @@
 * fix this? aka how to add ClockPM? and enable aspm in /etc/default/grub again
   \ [    2.089628] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig Segments MSI]
   \ [    2.096773] acpi PNP0A08:00: _OSC: not requesting OS control; OS requires [ExtendedConfig ASPM ClockPM MSI]
+  * also undo cmdline:
+    \ it currently has:
+    \ pcie_aspm=off radeon.aspm=0
 
-* log panic/oops to ram buffer?
+- nah// log panic/oops to ram buffer?
   \ read: /home/z/build/1packages/kernel/linuxgit/makepkg_pacman/linux-git/src/linux-git/Documentation/ramoops.txt
 
 * see if kernel/startx still works without this set:
@@ -1242,7 +1245,9 @@
 * maybe don't need this set? CONFIG_BACKLIGHT_LM3639
 
 * undo setting this if failure: CONFIG_X86_SYSFB
+  \ no failure...
 
-* undo this for more performance(instead of powersaving): CONFIG_WQ_POWER_EFFICIENT_DEFAULT
+- undo this for more performance(instead of powersaving): CONFIG_WQ_POWER_EFFICIENT_DEFAULT
+  \ done
 
 
