@@ -1,0 +1,8 @@
+requirements for powertop:
+https://wiki.gentoo.org/wiki/PowerTOP#Kernel
+$ zcat /proc/config.gz |grep -iE '(CONFIG_TRACING|CONFIG_TIMER_STATS|CONFIG_BLK_DEV_IO_TRACE|CONFIG_TIMER_STATS|CONFIG_TRACEPOINTS)'
+# CONFIG_TIMER_STATS is not set
+CONFIG_TRACING_SUPPORT=y
+
+that's what I currently have and seems ok enough for powetop
+
