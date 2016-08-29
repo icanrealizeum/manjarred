@@ -1242,10 +1242,12 @@
 
 * try this set maybe? CONFIG_DRM_AMDGPU
 
-* maybe don't need this set? CONFIG_BACKLIGHT_LM3639
+- maybe don't need this set? CONFIG_BACKLIGHT_LM3639
+  \ removed, backlight still works (but u have to wait until uptime is like 40sec for X to "hear" that I pressed any keys!!!)
 
 * undo setting this if failure: CONFIG_X86_SYSFB
   \ no failure...
+  * try unsetting it again? see if boottime is different?
 
 - undo this for more performance(instead of powersaving): CONFIG_WQ_POWER_EFFICIENT_DEFAULT
   \ done
