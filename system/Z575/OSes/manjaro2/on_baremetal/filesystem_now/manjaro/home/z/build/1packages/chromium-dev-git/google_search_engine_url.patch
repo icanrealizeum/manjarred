@@ -1,0 +1,52 @@
+fuckup google search
+
+diff --git a/components/policy/resources/policy_templates.json b/components/policy/resources/policy_templates.json
+index 617ca45..804f869 100644
+--- a/components/policy/resources/policy_templates.json
++++ b/components/policy/resources/policy_templates.json
+@@ -2552,7 +2552,7 @@
+           'tags': ['website-sharing'],
+           'desc': '''Specifies the URL of the search engine used when doing a default search. The URL should contain the string '<ph name="SEARCH_TERM_MARKER">{searchTerms}</ph>', which will be replaced at query time by the terms the user is searching for.
+ 
+-          Google's search URL can be specified as: <ph name="GOOGLE_SEARCH_URL">'{google:baseURL}search?q={searchTerms}&amp;{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}ie={inputEncoding}'</ph>.
++          Google's search URL can be specified as: <ph name="GOOGLE_SEARCH_URL">'https://encrypted.google.com/search?q={searchTerms}&amp;hl=en'</ph>.
+ 
+           This option must be set when the 'DefaultSearchProviderEnabled' policy is enabled and will only be respected if this is the case.''',
+         },
+diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
+index 612eee4..1d214c0 100644
+--- a/components/search_engines/prepopulated_engines.json
++++ b/components/search_engines/prepopulated_engines.json
+@@ -111,22 +111,18 @@
+     "google": {
+       "name": "Google",
+       "keyword": "google.com",
+-      "favicon_url": "http://www.google.com/favicon.ico",
+-      "search_url": "{google:baseURL}search?q={searchTerms}&{google:RLZ}{google:originalQueryForSuggestion}{google:assistedQueryStats}{google:searchFieldtrialParameter}{google:iOSSearchLanguage}{google:searchClient}{google:sourceId}{google:instantExtendedEnabledParameter}{google:contextualSearchVersion}ie={inputEncoding}",
+-      "suggest_url": "{google:baseSuggestURL}search?{google:searchFieldtrialParameter}client={google:suggestClient}&gs_ri={google:suggestRid}&xssi=t&q={searchTerms}&{google:inputType}{google:cursorPosition}{google:currentPageUrl}{google:pageClassification}{google:searchVersion}{google:sessionToken}{google:prefetchQuery}sugkey={google:suggestAPIKeyParameter}",
+-      "instant_url": "{google:baseURL}webhp?sourceid=chrome-instant&{google:RLZ}{google:forceInstantResults}{google:instantExtendedEnabledParameter}ie={inputEncoding}",
+-      "image_url": "{google:baseURL}searchbyimage/upload",
+-      "new_tab_url": "{google:baseURL}_/chrome/newtab?{google:RLZ}{google:instantExtendedEnabledParameter}ie={inputEncoding}",
+-      "contextual_search_url": "{google:baseURL}_/contextualsearch?{google:contextualSearchVersion}{google:contextualSearchContextData}",
+-      "image_url_post_params": "encoded_image={google:imageThumbnail},image_url={google:imageURL},sbisrc={google:imageSearchSource},original_width={google:imageOriginalWidth},original_height={google:imageOriginalHeight}",
++      "favicon_url": "https://www.google.com/favicon.ico",
++      "search_url": "https://encrypted.google.com/search?q={searchTerms}&hl=en",
++      "suggest_url": "",
++      "instant_url": "",
++      "image_url": "",
++      "new_tab_url": "",
++      "contextual_search_url": "",
++      "image_url_post_params": "",
+       "alternate_urls": [
+-        "{google:baseURL}#q={searchTerms}",
+-        "{google:baseURL}search#q={searchTerms}",
+-        "{google:baseURL}webhp#q={searchTerms}",
+-        "{google:baseURL}s#q={searchTerms}",
+-        "{google:baseURL}s?q={searchTerms}"
++        ""
+       ],
+-      "search_terms_replacement_key": "{google:instantExtendedEnabledKey}",
++      "search_terms_replacement_key": "",
+       "type": "SEARCH_ENGINE_GOOGLE",
+       "id": 1
+     },
