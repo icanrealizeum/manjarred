@@ -4,7 +4,7 @@ but possibly adding ppapi will allow pdf to link too(?) so it's not required to 
 - removed gcd_private - for mdns=false to link
 
 diff --git a/chrome/browser/browsing_data/cookies_tree_model.cc b/chrome/browser/browsing_data/cookies_tree_model.cc
-index 0e6e801..6ba587f 100644
+index ad13ac3..b988303 100644
 --- a/chrome/browser/browsing_data/cookies_tree_model.cc
 +++ b/chrome/browser/browsing_data/cookies_tree_model.cc
 @@ -18,5 +18,5 @@
@@ -362,10 +362,10 @@ index 03c71a9..7d57c63 100644
  
    // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index bcba015..b024662 100644
+index 47813be..63fede1 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -268,5 +268,5 @@ split_static_library("browser") {
+@@ -267,5 +267,5 @@ split_static_library("browser") {
      "//third_party/smhasher:cityhash",
      "//third_party/webrtc/modules/desktop_capture",
 -    "//third_party/widevine/cdm:version_h",
@@ -373,7 +373,7 @@ index bcba015..b024662 100644
      "//third_party/zlib",
      "//third_party/zlib:compression_utils",
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index adc1045..2255c70 100644
+index 1825228..4b58988 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -59,5 +59,5 @@
@@ -390,7 +390,7 @@ index adc1045..2255c70 100644
 +//#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
  #include "chrome/browser/defaults.h"
  #include "chrome/browser/first_run/first_run.h"
-@@ -624,7 +624,7 @@ void RegisterComponentsForUpdate() {
+@@ -616,7 +616,7 @@ void RegisterComponentsForUpdate() {
  #if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
    RegisterRecoveryComponent(cus, g_browser_process->local_state());
 -  RegisterPepperFlashComponent(cus);
@@ -401,10 +401,10 @@ index adc1045..2255c70 100644
  #endif  // !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
  
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index e8bec11..7b8c32a 100644
+index d5313df..07cb187 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -70,5 +70,5 @@
+@@ -69,5 +69,5 @@
  #include "chrome/browser/profiles/profile_io_data.h"
  #include "chrome/browser/renderer_host/chrome_render_message_filter.h"
 -#include "chrome/browser/renderer_host/pepper/chrome_browser_pepper_host_factory.h"
@@ -613,6 +613,32 @@ index 9b39773..1585e01 100644
 +//  extensions::MDnsAPI::GetFactoryInstance();
  #if defined(OS_CHROMEOS)
    extensions::MediaPlayerAPI::GetFactoryInstance();
+diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
+index 149073c..ce29775 100644
+--- a/chrome/browser/extensions/BUILD.gn
++++ b/chrome/browser/extensions/BUILD.gn
+@@ -265,9 +265,9 @@ static_library("extensions") {
+     "api/image_writer_private/operation_manager.cc",
+     "api/image_writer_private/operation_manager.h",
+-    "api/image_writer_private/removable_storage_provider.cc",
+-    "api/image_writer_private/removable_storage_provider.h",
+-    "api/image_writer_private/removable_storage_provider_chromeos.cc",
+-    "api/image_writer_private/removable_storage_provider_mac.cc",
+-    "api/image_writer_private/removable_storage_provider_win.cc",
++#    "api/image_writer_private/removable_storage_provider.cc",
++#    "api/image_writer_private/removable_storage_provider.h",
++#    "api/image_writer_private/removable_storage_provider_chromeos.cc",
++#    "api/image_writer_private/removable_storage_provider_mac.cc",
++#    "api/image_writer_private/removable_storage_provider_win.cc",
+     "api/image_writer_private/write_from_file_operation.cc",
+     "api/image_writer_private/write_from_file_operation.h",
+@@ -1000,5 +1000,5 @@ static_library("extensions") {
+       "api/easy_unlock_private/easy_unlock_private_crypto_delegate_stub.cc",
+       "api/image_writer_private/operation_nonchromeos.cc",
+-      "api/image_writer_private/removable_storage_provider_linux.cc",
++#      "api/image_writer_private/removable_storage_provider_linux.cc",
+       "api/messaging/native_message_process_host.cc",
+       "api/messaging/native_message_process_host.h",
 diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 index ca4d2cf..5ae9d30 100644
 --- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
@@ -625,7 +651,7 @@ index ca4d2cf..5ae9d30 100644
      case IDR_CRYPTOTOKEN_MANIFEST:
      case IDR_FEEDBACK_MANIFEST:
 diff --git a/chrome/browser/extensions/component_loader.cc b/chrome/browser/extensions/component_loader.cc
-index f61841e..9788589 100644
+index df0daf5..8a0557e 100644
 --- a/chrome/browser/extensions/component_loader.cc
 +++ b/chrome/browser/extensions/component_loader.cc
 @@ -510,6 +510,6 @@ void ComponentLoader::AddDefaultComponentExtensions(
@@ -1329,7 +1355,7 @@ index ae17b20..6591b62 100644
  
    // This maps pref names to filter functions. The callbacks should take the
 diff --git a/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc b/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
-index 3ee8c47..38c392d 100644
+index 6881c7e..616c7f1 100644
 --- a/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
 +++ b/chrome/browser/ui/webui/settings/settings_cookies_view_handler.cc
 @@ -19,5 +19,5 @@
@@ -1339,7 +1365,7 @@ index 3ee8c47..38c392d 100644
 +//#include "chrome/browser/browsing_data/browsing_data_flash_lso_helper.h"
  #include "chrome/browser/browsing_data/browsing_data_indexed_db_helper.h"
  #include "chrome/browser/browsing_data/browsing_data_local_storage_helper.h"
-@@ -163,6 +163,7 @@ void CookiesViewHandler::EnsureCookiesTreeModelCreated() {
+@@ -162,6 +162,7 @@ void CookiesViewHandler::EnsureCookiesTreeModelCreated() {
          BrowsingDataChannelIDHelper::Create(profile->GetRequestContext()),
          new BrowsingDataServiceWorkerHelper(service_worker_context),
 -        new BrowsingDataCacheStorageHelper(cache_storage_context),
@@ -1367,37 +1393,11 @@ index 1268872..b78396a 100644
 +#    data_deps += [ "//third_party/widevine/cdm:widevinecdmadapter" ]
  
      if (is_multi_dll_chrome) {
-diff --git a/chrome/chrome_browser_extensions.gypi b/chrome/chrome_browser_extensions.gypi
-index 08c02fa..8e035e0 100644
---- a/chrome/chrome_browser_extensions.gypi
-+++ b/chrome/chrome_browser_extensions.gypi
-@@ -64,5 +64,5 @@
-       'browser/extensions/api/easy_unlock_private/easy_unlock_private_crypto_delegate_stub.cc',
-       'browser/extensions/api/image_writer_private/operation_nonchromeos.cc',
--      'browser/extensions/api/image_writer_private/removable_storage_provider_linux.cc',
-+#      'browser/extensions/api/image_writer_private/removable_storage_provider_linux.cc',
-       'browser/extensions/api/messaging/native_message_process_host.cc',
-       'browser/extensions/api/messaging/native_message_process_host.h',
-@@ -326,9 +326,9 @@
-       'browser/extensions/api/image_writer_private/operation_manager.cc',
-       'browser/extensions/api/image_writer_private/operation_manager.h',
--      'browser/extensions/api/image_writer_private/removable_storage_provider.cc',
--      'browser/extensions/api/image_writer_private/removable_storage_provider.h',
--      'browser/extensions/api/image_writer_private/removable_storage_provider_chromeos.cc',
--      'browser/extensions/api/image_writer_private/removable_storage_provider_mac.cc',
--      'browser/extensions/api/image_writer_private/removable_storage_provider_win.cc',
-+#      'browser/extensions/api/image_writer_private/removable_storage_provider.cc',
-+#      'browser/extensions/api/image_writer_private/removable_storage_provider.h',
-+#      'browser/extensions/api/image_writer_private/removable_storage_provider_chromeos.cc',
-+#      'browser/extensions/api/image_writer_private/removable_storage_provider_mac.cc',
-+#      'browser/extensions/api/image_writer_private/removable_storage_provider_win.cc',
-       'browser/extensions/api/image_writer_private/write_from_file_operation.cc',
-       'browser/extensions/api/image_writer_private/write_from_file_operation.h',
 diff --git a/chrome/chrome_browser.gypi b/chrome/chrome_browser.gypi
-index 7b1383e..ca53d5d 100644
+index 557ca83..81fe34c 100644
 --- a/chrome/chrome_browser.gypi
 +++ b/chrome/chrome_browser.gypi
-@@ -1266,6 +1266,6 @@
+@@ -1264,6 +1264,6 @@
        'browser/chrome_process_singleton.cc',
        'browser/chrome_process_singleton.h',
 -      'browser/component_updater/widevine_cdm_component_installer.cc',
@@ -1406,7 +1406,7 @@ index 7b1383e..ca53d5d 100644
 +#      'browser/component_updater/widevine_cdm_component_installer.h',
        'browser/custom_handlers/register_protocol_handler_permission_request.cc',
        'browser/custom_handlers/register_protocol_handler_permission_request.h',
-@@ -3374,5 +3374,5 @@
+@@ -3372,5 +3372,5 @@
          '../third_party/icu/icu.gyp:icuuc',
          '../third_party/libxml/libxml.gyp:libxml',
 -        '../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
@@ -1434,10 +1434,10 @@ index 8492d96..4a80526 100644
            ],
          }, {  # OS == ios
 diff --git a/chrome/chrome_tests_unit.gypi b/chrome/chrome_tests_unit.gypi
-index 50203a8..f9857a2 100644
+index 30acd0e..4761512 100644
 --- a/chrome/chrome_tests_unit.gypi
 +++ b/chrome/chrome_tests_unit.gypi
-@@ -455,5 +455,5 @@
+@@ -454,5 +454,5 @@
        'browser/extensions/api/image_writer_private/operation_manager_unittest.cc',
        'browser/extensions/api/image_writer_private/operation_unittest.cc',
 -      'browser/extensions/api/image_writer_private/removable_storage_provider_chromeos_unittest.cc',
@@ -1463,10 +1463,10 @@ index 0bf6642..0159258 100644
    ]
  
 diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
-index 4325cec..6c00ff6 100644
+index 483c3c8..4b33029 100644
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
-@@ -48,5 +48,5 @@
+@@ -49,5 +49,5 @@
  #include "ui/base/layout.h"
  #include "ui/base/resource/resource_bundle.h"
 -#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
@@ -1662,7 +1662,7 @@ index c408279..b9eb808 100644
  #include "content/browser/renderer_host/render_process_host_impl.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 58d911e..cb76611 100644
+index dc2f91b..d315676 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
 @@ -105,6 +105,6 @@
@@ -1674,14 +1674,14 @@ index 58d911e..cb76611 100644
 +//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
  #include "content/browser/renderer_host/render_message_filter.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
-@@ -1546,5 +1546,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1556,5 +1556,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kDisableNotifications,
      switches::kDisableOverlayScrollbar,
 -    switches::kDisablePepper3DImageChromium,
 +    //switches::kDisablePepper3DImageChromium,
      switches::kDisablePermissionsAPI,
      switches::kDisablePresentationAPI,
-@@ -1634,5 +1634,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1644,5 +1644,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kReducedReferrerGranularity,
      switches::kReduceSecurityForTesting,
 -    switches::kRegisterPepperPlugins,

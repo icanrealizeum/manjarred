@@ -63,7 +63,7 @@ echo -n "" > "$temp_newlist" #start with empty contents
 
 #XXX: paths can't have spaces because of this(they will be treated as two different things!):
 #yep this takes a while, because it executes git diff for each file!!!
-echo "wait like 33sec currently"
+echo "wait like 17.5sec currently"
 time for eachf in ${params[@]}; do
   if ! test -f "$eachf" -o -d "$eachf" ; then
     echo "Inexistent file/dir: '$eachf'"
