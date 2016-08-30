@@ -72,7 +72,7 @@
 #ftp:
 #-A newTCPout -p tcp --dport 21 -j accepted
 #21=ftp 11371=keyserver
-#-A newTCPout -p tcp -m multiport --dports 21,11371 -j accepted
+-A newTCPout -p tcp -m multiport --dports 21,11371 -j accepted
 -A newTCPout -p tcp -m multiport --dports 80,443 -j accepted
 -A newTCPout -p tcp -m multiport --dports 802,46802 -j accepted
 -A newTCPout -p tcp --dport 22 -m hashlimit --hashlimit-name ssh_dest --hashlimit-mode dstip --hashlimit-upto 30/minute -j accepted

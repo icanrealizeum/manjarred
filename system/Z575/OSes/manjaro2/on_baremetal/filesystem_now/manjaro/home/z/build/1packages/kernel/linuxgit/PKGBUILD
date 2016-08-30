@@ -69,6 +69,8 @@ ohci_info.patch
 rtc3.patch
 rtc4.patch
 rtc5.patch
+
+mail.patch
 )
 
 presetfile="${pkgbase}.preset"
@@ -130,7 +132,8 @@ sha512sums=('SKIP'
             '45495b6737703a01fb39dda7ae68686010ddff45309526d8eb55c11d4776a427cdfbf17ea5896d9b1a1f2a395082be20fe1095d5f90f46aedf4ef237f48b71e0'
             '7fbcd37e937264432e732ef0d32b70db2c910f1b8f9e507f6fce30fb4984cbd0fdb1960e3ff00ea6310b48ba96038e6e97c53bfbdceab66fb5ae9b4f05e7de94'
             '786b1d12c223c0e3e323ebffa4367ec27aa016aab6a7751f4059182573a89af22f6468e6335c1a59e163a9516b8ba492bd05762a716f28e563ce6347df753f9a'
-            '883c280537d887ec91a2b8405b650f1109af28d54a9b8c128d2153a7577509a6feb13092658848e3a9eba6b8e180acfd65edc8018504a54b159869b4866c0b7f')
+            '883c280537d887ec91a2b8405b650f1109af28d54a9b8c128d2153a7577509a6feb13092658848e3a9eba6b8e180acfd65edc8018504a54b159869b4866c0b7f'
+            'b3e66eed6b461ab68ae105b6ece187dbc79e435fc97973ebbb6a2da730fdbe125f80b988167cd2676ea19dd8de22093e10d5eb3b2ff1747083cd1acf2d7c1437')
 
 pkgver() {
   cd "${pkgbase}"
@@ -236,7 +239,7 @@ prepare() {
 
 
   #FIXME don't reboot on boot
-  git revert -n 88b2f634028f1f38dcc3d412e10ff1f224976daa
+#  git revert -n 88b2f634028f1f38dcc3d412e10ff1f224976daa
 
   #emacs
   #time make nconfig
@@ -391,6 +394,8 @@ mv "${pkgdir}/lib" "${pkgdir}/usr/"
 
 # add vmlinux
 install -D -m644 vmlinux "${pkgdir}/usr/lib/modules/${_kernver}/build/vmlinux" 
+msg2 "removing msr module, moving to $USER ~/build/amdmsrtweaker-lnx/"
+mv -- "${pkgdir}/usr/lib/modules/${_kernver}/kernel/arch/x86/kernel/msr.ko" ~/build/amdmsrtweaker-lnx/
 #emacs:
 # save .config so that *.install file knows if to prepend microcode before firmware (FIXME: checking not yet implemented)
 cp "${srcdir}/${lfoldername}/.config" "${pkgdir}/kernel-${pkgver}.config"
