@@ -935,5 +935,11 @@
   \ you must use: ac_add_options --with-intl-api
   \ not tested yet! (but it was without so far!)
 
+* btrfs snapshots
+  * create new
+    \ btrfs subvolume snapshot -r / /backup
+  * delete old
+    \ btrfs subvolume delete /backup4
+
 
 

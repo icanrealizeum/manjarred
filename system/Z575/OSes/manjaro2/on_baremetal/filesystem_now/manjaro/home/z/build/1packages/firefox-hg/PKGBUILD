@@ -5,7 +5,7 @@
 # Contributor: Jakub Schmidtke <sjakub@gmail.com>
 
 pkgname=firefox-hg
-pkgver=311572+.acfb2c3ac6ae+
+pkgver=311717+.fecb1018cdcb+
 pkgrel=1
 pkgdesc="Latest firefox browser built from the trunk code"
 arch=('i686' 'x86_64')
@@ -98,7 +98,10 @@ prepare() {
   # https://bugs.archlinux.org/task/34644
 #  sed -i '/ac_cpp=/s/$CPPFLAGS/& -O2/' configure
 
-
+  #probably not the fix, but rather AOM=>DOM in here: ./dom/webidl/AccessibleNode.webidl
+#  if test -d 'accessible/aom'; then
+#     mv -- 'accessible/aom' 'accessible/dom'
+#  fi
 }
 
 build() {
