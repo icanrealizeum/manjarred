@@ -362,10 +362,10 @@ index 03c71a9..7d57c63 100644
  
    // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 47813be..63fede1 100644
+index f8e8aea..3ce8a97 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -267,5 +267,5 @@ split_static_library("browser") {
+@@ -1407,5 +1407,5 @@ split_static_library("browser") {
      "//third_party/smhasher:cityhash",
      "//third_party/webrtc/modules/desktop_capture",
 -    "//third_party/widevine/cdm:version_h",
@@ -373,7 +373,7 @@ index 47813be..63fede1 100644
      "//third_party/zlib",
      "//third_party/zlib:compression_utils",
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index 1825228..4b58988 100644
+index 725fdaa..c414b4b 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -59,5 +59,5 @@
@@ -390,7 +390,7 @@ index 1825228..4b58988 100644
 +//#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
  #include "chrome/browser/defaults.h"
  #include "chrome/browser/first_run/first_run.h"
-@@ -616,7 +616,7 @@ void RegisterComponentsForUpdate() {
+@@ -617,7 +617,7 @@ void RegisterComponentsForUpdate() {
  #if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
    RegisterRecoveryComponent(cus, g_browser_process->local_state());
 -  RegisterPepperFlashComponent(cus);
@@ -401,7 +401,7 @@ index 1825228..4b58988 100644
  #endif  // !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
  
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index d5313df..07cb187 100644
+index f3b8bcb..259d70f 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
 @@ -69,5 +69,5 @@
@@ -614,7 +614,7 @@ index 9b39773..1585e01 100644
  #if defined(OS_CHROMEOS)
    extensions::MediaPlayerAPI::GetFactoryInstance();
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 149073c..ce29775 100644
+index 5a4b41d..bfee903 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -265,9 +265,9 @@ static_library("extensions") {
@@ -632,7 +632,7 @@ index 149073c..ce29775 100644
 +#    "api/image_writer_private/removable_storage_provider_win.cc",
      "api/image_writer_private/write_from_file_operation.cc",
      "api/image_writer_private/write_from_file_operation.h",
-@@ -1000,5 +1000,5 @@ static_library("extensions") {
+@@ -1001,5 +1001,5 @@ static_library("extensions") {
        "api/easy_unlock_private/easy_unlock_private_crypto_delegate_stub.cc",
        "api/image_writer_private/operation_nonchromeos.cc",
 -      "api/image_writer_private/removable_storage_provider_linux.cc",
@@ -640,7 +640,7 @@ index 149073c..ce29775 100644
        "api/messaging/native_message_process_host.cc",
        "api/messaging/native_message_process_host.h",
 diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-index ca4d2cf..5ae9d30 100644
+index 64b8857..5a44b58 100644
 --- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 +++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 @@ -74,5 +74,5 @@ bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
@@ -651,10 +651,10 @@ index ca4d2cf..5ae9d30 100644
      case IDR_CRYPTOTOKEN_MANIFEST:
      case IDR_FEEDBACK_MANIFEST:
 diff --git a/chrome/browser/extensions/component_loader.cc b/chrome/browser/extensions/component_loader.cc
-index df0daf5..8a0557e 100644
+index 128aca7..a8af58e 100644
 --- a/chrome/browser/extensions/component_loader.cc
 +++ b/chrome/browser/extensions/component_loader.cc
-@@ -510,6 +510,6 @@ void ComponentLoader::AddDefaultComponentExtensions(
+@@ -507,6 +507,6 @@ void ComponentLoader::AddDefaultComponentExtensions(
        base::FilePath(FILE_PATH_LITERAL("bookmark_manager")));
    // Cloud Print component app. Not required on Chrome OS.
 -  Add(IDR_CLOUDPRINT_MANIFEST,
@@ -719,7 +719,7 @@ index 774bdcf..59895bc 100644
  }
  
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index c3d1343..e876cf3 100644
+index 1399791..bb4a8b4 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -37,5 +37,5 @@
@@ -906,17 +906,17 @@ index edcadaf..737849b 100644
  
    /**
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 70ebf85..a54ded3 100644
+index e9bc27e..4f1fa7c 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -67,5 +67,5 @@
+@@ -66,5 +66,5 @@
  #include "chrome/browser/memory/tab_manager_web_contents_data.h"
  #include "chrome/browser/notifications/notification_ui_manager.h"
 -#include "chrome/browser/pepper_broker_infobar_delegate.h"
 +//#include "chrome/browser/pepper_broker_infobar_delegate.h"
  #include "chrome/browser/permissions/permission_request_manager.h"
  #include "chrome/browser/prefs/incognito_mode_prefs.h"
-@@ -1845,5 +1845,5 @@ bool Browser::RequestPpapiBrokerPermission(
+@@ -1809,5 +1809,5 @@ bool Browser::RequestPpapiBrokerPermission(
      const base::FilePath& plugin_path,
      const base::Callback<void(bool)>& callback) {
 -  PepperBrokerInfoBarDelegate::Create(web_contents, url, plugin_path, callback);
@@ -967,10 +967,10 @@ index f73984c..69c7fb6 100644
 +);
  }
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-index ef08db7..736f9ad 100644
+index defe70e..ce35f48 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-@@ -792,7 +792,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+@@ -789,7 +789,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
  #endif
  
 +#if defined(ENABLE_PLUGINS)
@@ -980,7 +980,7 @@ index ef08db7..736f9ad 100644
 +#endif
  
    // Android uses the native download manager.
-@@ -812,7 +814,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+@@ -809,7 +811,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
  #endif
  
 +#if defined(ENABLE_PLUGINS)
@@ -1394,10 +1394,10 @@ index 1268872..b78396a 100644
  
      if (is_multi_dll_chrome) {
 diff --git a/chrome/chrome_browser.gypi b/chrome/chrome_browser.gypi
-index 557ca83..81fe34c 100644
+index 22b5efa..2a3e2a0 100644
 --- a/chrome/chrome_browser.gypi
 +++ b/chrome/chrome_browser.gypi
-@@ -1264,6 +1264,6 @@
+@@ -585,6 +585,6 @@
        'browser/chrome_process_singleton.cc',
        'browser/chrome_process_singleton.h',
 -      'browser/component_updater/widevine_cdm_component_installer.cc',
@@ -1406,38 +1406,18 @@ index 557ca83..81fe34c 100644
 +#      'browser/component_updater/widevine_cdm_component_installer.h',
        'browser/custom_handlers/register_protocol_handler_permission_request.cc',
        'browser/custom_handlers/register_protocol_handler_permission_request.h',
-@@ -3372,5 +3372,5 @@
+@@ -2191,5 +2191,5 @@
          '../third_party/icu/icu.gyp:icuuc',
          '../third_party/libxml/libxml.gyp:libxml',
 -        '../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
 +        #'../third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
          '../third_party/zlib/google/zip.gyp:compression_utils',
          '../third_party/zlib/google/zip.gyp:zip',
-diff --git a/chrome/chrome_common.gypi b/chrome/chrome_common.gypi
-index 8492d96..4a80526 100644
---- a/chrome/chrome_common.gypi
-+++ b/chrome/chrome_common.gypi
-@@ -108,6 +108,6 @@
-       'common/web_application_info.cc',
-       'common/web_application_info.h',
--      'common/widevine_cdm_constants.cc',
--      'common/widevine_cdm_constants.h',
-+      #'common/widevine_cdm_constants.cc',
-+      #'common/widevine_cdm_constants.h',
-     ],
-     'chrome_common_extensions_sources': [
-@@ -414,5 +414,5 @@
-             '<(DEPTH)/media/media.gyp:media',
-             '<(DEPTH)/third_party/re2/re2.gyp:re2',
--            '<(DEPTH)/third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
-+            #'<(DEPTH)/third_party/widevine/cdm/widevine_cdm.gyp:widevine_cdm_version_h',
-           ],
-         }, {  # OS == ios
 diff --git a/chrome/chrome_tests_unit.gypi b/chrome/chrome_tests_unit.gypi
-index 30acd0e..4761512 100644
+index d77c80c..0ed2e86 100644
 --- a/chrome/chrome_tests_unit.gypi
 +++ b/chrome/chrome_tests_unit.gypi
-@@ -454,5 +454,5 @@
+@@ -456,5 +456,5 @@
        'browser/extensions/api/image_writer_private/operation_manager_unittest.cc',
        'browser/extensions/api/image_writer_private/operation_unittest.cc',
 -      'browser/extensions/api/image_writer_private/removable_storage_provider_chromeos_unittest.cc',
@@ -1445,17 +1425,26 @@ index 30acd0e..4761512 100644
        'browser/extensions/api/image_writer_private/test_utils.cc',
        'browser/extensions/api/image_writer_private/write_from_file_operation_unittest.cc',
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 0bf6642..0159258 100644
+index 2c6d4fc..0539f5f 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -115,5 +115,5 @@ static_library("common") {
+@@ -138,6 +138,6 @@ static_library("common") {
+     "web_application_info.cc",
+     "web_application_info.h",
+-    "widevine_cdm_constants.cc",
+-    "widevine_cdm_constants.h",
++#    "widevine_cdm_constants.cc",
++#    "widevine_cdm_constants.h",
+   ]
+   defines = []
+@@ -211,5 +211,5 @@ static_library("common") {
      "//third_party/kasko:kasko_features",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
 +    #"//third_party/widevine/cdm:version_h",
      "//third_party/zlib:zip",
      "//ui/accessibility",
-@@ -315,5 +315,5 @@ static_library("constants") {
+@@ -555,5 +555,5 @@ static_library("constants") {
      "//components/nacl/common:switches",
      "//media:cdm_paths",  # Needed by chrome_paths.cc.
 -    "//third_party/widevine/cdm:version_h",
@@ -1463,7 +1452,7 @@ index 0bf6642..0159258 100644
    ]
  
 diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
-index 483c3c8..4b33029 100644
+index 92a23fb..bead838 100644
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
 @@ -49,5 +49,5 @@
@@ -1485,10 +1474,10 @@ index 8649931..20bd23b 100644
  
  namespace {
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index 200f03d..4547c03 100644
+index f91fa7f..9018a60 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -71,5 +71,5 @@ static_library("renderer") {
+@@ -72,5 +72,5 @@ static_library("renderer") {
      "//third_party/icu",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
@@ -1567,10 +1556,10 @@ index 8c7c7c1..533978a 100644
  
  namespace {
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 36693be..d7e1983 100644
+index dcadd5c..6149923 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -643,8 +643,16 @@ if (!is_android) {
+@@ -644,8 +644,16 @@ if (!is_android) {
      }  # enable_notifications
  
 -    if (!use_aura || is_chromeos) {
@@ -1591,28 +1580,28 @@ index 36693be..d7e1983 100644
 +#    }
    }
  
-@@ -989,5 +997,5 @@ test("browser_tests") {
+@@ -993,5 +1001,5 @@ test("browser_tests") {
        "//crypto:test_support",
        "//device/bluetooth:mocks",
 -      "//device/serial:test_support",
 +#      "//device/serial:test_support",
        "//device/usb:test_support",
        "//google_apis:test_support",
-@@ -1009,5 +1017,5 @@ test("browser_tests") {
+@@ -1013,5 +1021,5 @@ test("browser_tests") {
        "//third_party/libjingle",
        "//third_party/webrtc/modules/desktop_capture",
 -      "//third_party/widevine/cdm:version_h",
 +#      "//third_party/widevine/cdm:version_h",
        "//ui/accessibility:test_support",
        "//ui/base:test_support",
-@@ -1026,5 +1034,5 @@ test("browser_tests") {
+@@ -1030,5 +1038,5 @@ test("browser_tests") {
        "//remoting/webapp:unit_tests",
        "//third_party/mesa:osmesa",
 -      "//third_party/widevine/cdm:widevine_test_license_server",
 +#      "//third_party/widevine/cdm:widevine_test_license_server",
      ]
  
-@@ -1674,5 +1682,5 @@ if (!is_android) {
+@@ -1678,5 +1686,5 @@ if (!is_android) {
        "//testing/gtest",
        "//testing/perf",
 -      "//third_party/widevine/cdm:version_h",
@@ -1651,7 +1640,7 @@ index beb45fd..22edeaf 100644
  }
  
 diff --git a/content/browser/renderer_host/render_message_filter.cc b/content/browser/renderer_host/render_message_filter.cc
-index c408279..b9eb808 100644
+index 9e2aa1c..751840a 100644
 --- a/content/browser/renderer_host/render_message_filter.cc
 +++ b/content/browser/renderer_host/render_message_filter.cc
 @@ -35,5 +35,5 @@
@@ -1662,7 +1651,7 @@ index c408279..b9eb808 100644
  #include "content/browser/renderer_host/render_process_host_impl.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index dc2f91b..d315676 100644
+index 7a225cf..c2b2d64 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
 @@ -105,6 +105,6 @@
@@ -1674,14 +1663,14 @@ index dc2f91b..d315676 100644
 +//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
  #include "content/browser/renderer_host/render_message_filter.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
-@@ -1556,5 +1556,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1562,5 +1562,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kDisableNotifications,
      switches::kDisableOverlayScrollbar,
 -    switches::kDisablePepper3DImageChromium,
 +    //switches::kDisablePepper3DImageChromium,
      switches::kDisablePermissionsAPI,
      switches::kDisablePresentationAPI,
-@@ -1644,5 +1644,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1650,5 +1650,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kReducedReferrerGranularity,
      switches::kReduceSecurityForTesting,
 -    switches::kRegisterPepperPlugins,
@@ -1700,10 +1689,10 @@ index 00bdfa3..09f186f 100644
        ]
      }
 diff --git a/content/public/renderer/BUILD.gn b/content/public/renderer/BUILD.gn
-index fbdc573..1548315 100644
+index 05c6df7..624aedb 100644
 --- a/content/public/renderer/BUILD.gn
 +++ b/content/public/renderer/BUILD.gn
-@@ -46,5 +46,5 @@ target(link_target_type, "renderer_sources") {
+@@ -82,5 +82,5 @@ target(link_target_type, "renderer_sources") {
      "//third_party/WebKit/public:blink_headers",
      "//third_party/libjingle",
 -    "//third_party/widevine/cdm:version_h",
@@ -1711,10 +1700,10 @@ index fbdc573..1548315 100644
      "//ui/base",
      "//ui/base/ime",
 diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
-index 0da94dd..b5d1587 100644
+index 02e4ed9..994b8c8 100644
 --- a/content/renderer/BUILD.gn
 +++ b/content/renderer/BUILD.gn
-@@ -85,5 +85,5 @@ target(link_target_type, "renderer") {
+@@ -480,5 +480,5 @@ target(link_target_type, "renderer") {
      "//third_party/libjingle",
      "//third_party/libyuv",
 -    "//third_party/widevine/cdm:version_h",
@@ -1762,7 +1751,7 @@ index c779bc9..77e4254 100644
    ApiResourceManager<Socket>::GetFactoryInstance();
    ApiResourceManager<UsbDeviceResource>::GetFactoryInstance();
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 547b78c..7dab168 100644
+index 7580ca5..cb596e8 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
 @@ -64,5 +64,5 @@ source_set("browser") {
@@ -1771,7 +1760,7 @@ index 547b78c..7dab168 100644
 -      "//device/serial",
 +#      "//device/serial",
        "//device/usb",
-       "//extensions/common/api/cast_channel:cast_channel_proto",
+       "//extensions:extensions_browser_resources",
 diff --git a/extensions/browser/mojo/service_registration.cc b/extensions/browser/mojo/service_registration.cc
 index a23a53c..2c5efef 100644
 --- a/extensions/browser/mojo/service_registration.cc
@@ -1798,33 +1787,24 @@ index a23a53c..2c5efef 100644
    registry->AddInterface(base::Bind(
        KeepAliveImpl::Create,
 diff --git a/extensions/BUILD.gn b/extensions/BUILD.gn
-index 3e8c5ac..3d361f5 100644
+index af762db..131fd0a 100644
 --- a/extensions/BUILD.gn
 +++ b/extensions/BUILD.gn
-@@ -64,5 +64,5 @@ grit("extensions_renderer_resources") {
+@@ -56,5 +56,5 @@ grit("extensions_renderer_resources") {
    deps = [
      "//chrome/browser/media/router:mojo_bindings__generator",
 -    "//device/serial:serial_mojo__generator",
 +#    "//device/serial:serial_mojo__generator",
      "//extensions/common:mojo__generator",
      "//extensions/common/api:mojom__generator",
-@@ -177,6 +177,6 @@ test("extensions_unittests") {
-     "//device/core",
-     "//device/hid",
--    "//device/serial",
--    "//device/serial:test_support",
-+#    "//device/serial",
-+#    "//device/serial:test_support",
-     "//extensions/common",
-     "//extensions/common/api/cast_channel:cast_channel_proto",
-@@ -295,5 +295,5 @@ source_set("chrome_extensions_browsertests") {
+@@ -226,5 +226,5 @@ source_set("chrome_extensions_browsertests") {
      "//crypto:test_support",
      "//device/bluetooth:mocks",
 -    "//device/serial:test_support",
 +#    "//device/serial:test_support",
      "//extensions/common/api",
      "//google_apis:test_support",
-@@ -315,5 +315,5 @@ source_set("chrome_extensions_browsertests") {
+@@ -246,5 +246,5 @@ source_set("chrome_extensions_browsertests") {
      "//third_party/libjingle",
      "//third_party/webrtc/modules/desktop_capture",
 -    "//third_party/widevine/cdm:version_h",
@@ -1878,6 +1858,28 @@ index 881855a..eec3f58 100644
 +#      'browser/api/serial/serial_service_factory.h',
        'browser/api/socket/socket.cc',
        'browser/api/socket/socket.h',
+diff --git a/extensions/renderer/BUILD.gn b/extensions/renderer/BUILD.gn
+index 5743dda..feb1f40 100644
+--- a/extensions/renderer/BUILD.gn
++++ b/extensions/renderer/BUILD.gn
+@@ -53,7 +53,7 @@ source_set("unit_tests") {
+     "activity_log_converter_strategy_unittest.cc",
+     "api/mojo_private/mojo_private_unittest.cc",
+-    "api/serial/data_receiver_unittest.cc",
+-    "api/serial/data_sender_unittest.cc",
+-    "api/serial/serial_api_unittest.cc",
++#    "api/serial/data_receiver_unittest.cc",
++#    "api/serial/data_sender_unittest.cc",
++#    "api/serial/serial_api_unittest.cc",
+     "api_test_base.cc",
+     "api_test_base.h",
+@@ -79,5 +79,5 @@ source_set("unit_tests") {
+     ":renderer",
+     "//base",
+-    "//device/serial:test_support",
++#    "//device/serial:test_support",
+     "//extensions:extensions_renderer_resources",
+ 
 diff --git a/extensions/renderer/dispatcher.cc b/extensions/renderer/dispatcher.cc
 index ab8c2e3..04b1a80 100644
 --- a/extensions/renderer/dispatcher.cc

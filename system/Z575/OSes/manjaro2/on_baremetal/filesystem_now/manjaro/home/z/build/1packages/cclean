@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+source PKGBUILD
+set -x
+for pn in "${pkgname[@]}"; do
+  #FIXME: use IFS and find with \0  to ensure dirs with spaces are good!
+  for dir in `find "./makepkg_pacman/${pn}/src/" -maxdepth 1 -type d`; do
+    #cd -- "${dir}" &&
+    time make -C "${dir}" clean || true
+  done
+done
+

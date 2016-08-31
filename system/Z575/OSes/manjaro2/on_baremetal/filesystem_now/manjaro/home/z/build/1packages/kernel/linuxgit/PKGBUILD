@@ -21,7 +21,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.8.rc4.r119.ge4e98c4
+pkgver=4.8.rc4.r155.g86a1679
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -55,7 +55,8 @@ radeon_thermal.patch
 2800_anotherNULLandpanic.patch
 2900_prevent_dmesg_spam_from_preempt_notifier.patch
 3100_kernel_undervolting.patch
-3200_amd_errata_665.patch
+#3200_amd_errata_665.generic.patch
+3200_amd_errata_665.FULL.patch
 3300_bug_119571.patch
 #sync_cache_debug.patch
 #dumpstack1.patch
@@ -306,7 +307,14 @@ build() {
   fi
 
   # build!
-  make ${MAKEFLAGS} LOCALVERSION= bzImage modules
+  make ${MAKEFLAGS} EXTRA_CFLAGS=-Os LOCALVERSION= bzImage modules
+
+  #make ${MAKEFLAGS} EXTRA_CFLAGS=-W LOCALVERSION= bzImage modules
+  # 22: Newly-added code has been compiled with `gcc -W' (use "make
+  #  EXTRA_CFLAGS=-W").  This will generate lots of noise, but is good for
+  #  finding bugs like "warning: comparison between signed and unsigned".
+  # src: Documentation/SubmitChecklist
+  #THAT SPAM IS TOO CRAZY!!!
 
 }
 

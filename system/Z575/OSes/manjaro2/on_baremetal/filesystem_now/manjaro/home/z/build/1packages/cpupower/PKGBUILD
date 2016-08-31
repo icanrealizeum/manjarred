@@ -17,7 +17,7 @@ cat >/dev/null <<EOF
 )
 EOF
 
-pkgver=4.8.rc1.r70.g9512c47
+pkgver=4.8.rc4.r119.ge4e98c4
 pkgrel=1
 license=('GPL2')
 arch=('i686' 'x86_64')
@@ -36,7 +36,7 @@ makedepends+=('glib2' 'sysfsutils' 'udev')
 # tmon deps
 makedepends+=('ncurses')
 groups=("$pkgbase")
-patch1="cpupower_frequency_set_and_governot_bug_135391.patch"
+patch1="cpupower_frequency_set_and_governor_bug_135391.patch"
 source=(
 "${pkgbase}::git+file:///home/z/build/1packages/kernel/linuxgit/sources_pacman/linux-git/"
 #"git+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git#tag=v$pkgver"

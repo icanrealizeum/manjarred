@@ -1,0 +1,96 @@
+
+Apply suggested workaround for AMD CPU errata 665 Integer Divide Instruction May Cause Unpredictable Behavior
+
+Affects (at least)chromium: https://bugs.chromium.org/p/chromium/issues/detail?id=599899#c27
+With no665wo kernel cmdline(aka without this patch) the following video crashes in chromium: https://www.youtube.com/watch?v=hqKafI7Amd8
+
+Chromium  51.0.2704.19 (Developer Build) (64-bit)
+Revision  7ac91e6ac84fc4d63b4b5f1355fc94b40c9172b0
+
+Kernel tested: Linux gobaby 4.6.0-rc4 #9 SMP PREEMPT Tue Apr 26 01:41:26 EEST 2016 x86_64 AMD A6-3400M APU with Radeon(tm) HD Graphics AuthenticAMD GNU/Linux
+
+Implemented by Notase Cretagen
+
+--- orig/arch/x86/kernel/cpu/amd.c	2016-04-25 22:57:06.443140354 +0300
++++ patched/arch/x86/kernel/cpu/amd.c	2016-04-26 01:52:35.166230796 +0300
+@@ -590,6 +590,7 @@ static void early_init_amd(struct cpuinf
+ 
+ static const int amd_erratum_383[];
+ static const int amd_erratum_400[];
++static const int amd_erratum_665[];
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum);
+ 
+ static void init_amd_k8(struct cpuinfo_x86 *c)
+@@ -694,6 +695,17 @@ static void init_amd_bd(struct cpuinfo_x
+ 	}
+ }
+ 
++bool activate_665erratum = true;
++EXPORT_SYMBOL(activate_665erratum);
++
++static int __init oksomefunc(char *str)
++{
++	activate_665erratum = false;
++	return 0;
++}
++#define kernel_arg_for_disable665 "no665wo"
++early_param(kernel_arg_for_disable665, oksomefunc);
++
+ static void init_amd(struct cpuinfo_x86 *c)
+ {
+ 	u32 dummy;
+@@ -758,6 +770,45 @@ static void init_amd(struct cpuinfo_x86
+ 	if (c->x86 > 0x11)
+ 		set_cpu_cap(c, X86_FEATURE_ARAT);
+ 
++#define DE_CFG_MSR      0xC0011029
++
++  if (cpu_has_amd_erratum(c, amd_erratum_665)) {
++    //XXX: this does get called for each core! so, 4 times!
++      pr_info(FW_INFO "CPU: '%s' has AMD errata 665 Integer Divide Instruction May Cause Unpredictable Behavior.'\n", c->x86_model_id);
++      if ( (0x12 == c->x86) && (1 == c->x86_model) &&
++          (0 == strncmp(c->x86_model_id, "AMD A6-3400M APU with Radeon(tm) HD Graphics", 45)) ) {
++        pr_info(FW_INFO "CPU: Double-checked CPU type. '%s'\n", c->x86_model_id);
++
++        if (activate_665erratum) {
++        pr_info(FW_INFO "CPU: Setting workaround for 665...(set '%s' in /proc/cmdline to disable)\n", kernel_arg_for_disable665);
++        /* 665 Integer Divide Instruction May Cause Unpredictable Behavior
++         * Description
++         * Under a highly specific and detailed set of internal timing conditions, the processor core may abort a
++         * speculative DIV or IDIV integer divide instruction (due to the speculative execution being redirected,
++         * for example due to a mispredicted branch) but may hang or prematurely complete the first instruction
++         * of the non-speculative path.
++         * Potential Effect on System
++         * Unpredictable system behavior, usually resulting in a system hang.
++         * Suggested Workaround
++         * BIOS should set MSRC001_1029[31].
++         * This workaround alters the DIV/IDIV instruction latency specified in the Software Optimization
++         * Guide for AMD Family 10h and 12h Processors, order# 40546. With this workaround applied, the
++         * DIV/IDIV latency for AMD Family 12h Processors are similar to the DIV/IDIV latency for
++         * AMD Family 10h Processors.
++         * Fix Planned
++         * No
++         * src: page 45/53 of http://support.amd.com/us/Processor_TechDocs/44739_12h_Rev_Gd.pdf (which is a broken link currently, see the 2012 saved archive.org one)
++         */
++        int err=msr_set_bit(DE_CFG_MSR, 31);//FIXME: arch/x86/kernel/cpu/amd.c:802:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
++        if (err < 0) { //0=already set, 1=did set; <0 = error
++          pr_warn(FW_INFO "CPU: setting MSR failed for the 665 erratum workaround! err:%d", err);
++        }
++        } else {
++          pr_info(FW_INFO "CPU: not activating workaround for 665 due to kernel arg '%s' (see /proc/cmdline)\n", kernel_arg_for_disable665);
++        }
++      }
++  }
++
+ 	if (cpu_has_amd_erratum(c, amd_erratum_400))
+ 		set_cpu_bug(c, X86_BUG_AMD_APIC_C1E);
+ 
+@@ -897,6 +948,8 @@ static const int amd_erratum_400[] =
+ static const int amd_erratum_383[] =
+ 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
+ 
++static const int amd_erratum_665[] = AMD_LEGACY_ERRATUM(
++  AMD_MODEL_RANGE(0x12/*18*/, 0x1, 0x0, 0x1, 0x0));
+ 
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+ {

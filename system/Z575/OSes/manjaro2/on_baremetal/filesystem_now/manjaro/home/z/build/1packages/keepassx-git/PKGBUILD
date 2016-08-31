@@ -5,7 +5,7 @@
 
 pkgname=keepassx-git
 _gitname=keepassx
-pkgver=2.0.2.r65.gd4ed4f9
+pkgver=2.0.2.r87.g409e94d
 pkgrel=1
 pkgdesc="It is an OpenSource password safe which helps you to manage your passwords in an easy and secure way"
 arch=('i686' 'x86_64')
@@ -17,12 +17,12 @@ makedepends=('git' 'intltool' 'cmake' 'qt5-base' 'qt5-tools' 'zlib' 'libgcrypt')
 conflicts=('keepassx-svn' 'keepassx' 'keepassx2-git' 'keepassx2' 'keepassx2-yubikey-git')
 options=(!emptydirs)
 
-handlesavefailpatch="153.patch"
+handlesavefailpatch="PR153_mod.patch"
 source=('git+https://github.com/keepassx/keepassx.git'
 "$handlesavefailpatch"
 )
 sha512sums=('SKIP'
-            '05ea5816311a0fb95946d4f4dbe39cb5c19406e1a61f31064cb26a10f71805b4d9c6eb637762993187c5bdb98146dd7d8397e9424c4952afa3587f82b520fa46')
+            '455b8bdb8bddc5b83e8698ac6b0823b317469f08341865d1886399f6283452e48bc86f87690e93f1cd04cd747c06624b973841f766e881e3562570a79913fd1e')
 
 
 pkgver() {

@@ -1,0 +1,36 @@
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index f5c69d8..4ad0e18 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -669,6 +669,15 @@ static void init_amd_gh(struct cpuinfo_x86 *c)
+ 		set_cpu_bug(c, X86_BUG_AMD_TLB_MMATCH);
+ }
+ 
++static void init_amd_ln(struct cpuinfo_x86 *c)
++{
++	/*
++	 * Erratum 665 fix for machines without a BIOS fix.
++	 */
++#define MSR_AMD64_DE_CFG		0xC0011029
++	msr_set_bit(MSR_AMD64_DE_CFG, 31);
++}
++
+ static void init_amd_bd(struct cpuinfo_x86 *c)
+ {
+ 	u64 value;
+@@ -726,6 +735,7 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	case 6:	   init_amd_k7(c); break;
+ 	case 0xf:  init_amd_k8(c); break;
+ 	case 0x10: init_amd_gh(c); break;
++	case 0x12: init_amd_ln(c); break;
+ 	case 0x15: init_amd_bd(c); break;
+ 	}
+ 
+@@ -901,7 +911,6 @@ static const int amd_erratum_400[] =
+ static const int amd_erratum_383[] =
+ 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
+ 
+-
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+ {
+ 	int osvw_id = *erratum++;

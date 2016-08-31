@@ -1,0 +1,43 @@
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 56f4c66..0013fd4 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -284,6 +284,7 @@
+ #define MSR_AMD64_OSVW_STATUS		0xc0010141
+ #define MSR_AMD64_LS_CFG		0xc0011020
+ #define MSR_AMD64_DC_CFG		0xc0011022
++#define MSR_AMD64_DE_CFG		0xC0011029
+ #define MSR_AMD64_BU_CFG2		0xc001102a
+ #define MSR_AMD64_IBSFETCHCTL		0xc0011030
+ #define MSR_AMD64_IBSFETCHLINAD		0xc0011031
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index f5c69d8..f2e8aa2 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -593,6 +593,7 @@ static void early_init_amd(struct cpuinfo_x86 *c)
+ 
+ static const int amd_erratum_383[];
+ static const int amd_erratum_400[];
++static const int amd_erratum_665[];
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum);
+ 
+ static void init_amd_k8(struct cpuinfo_x86 *c)
+@@ -762,6 +763,9 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	if (c->x86 > 0x11)
+ 		set_cpu_cap(c, X86_FEATURE_ARAT);
+ 
++	if (cpu_has_amd_erratum(c, amd_erratum_665))
++		msr_set_bit(MSR_AMD64_DE_CFG, 31);
++
+ 	if (cpu_has_amd_erratum(c, amd_erratum_400))
+ 		set_cpu_bug(c, X86_BUG_AMD_APIC_C1E);
+ 
+@@ -901,6 +905,8 @@ static const int amd_erratum_400[] =
+ static const int amd_erratum_383[] =
+ 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
+ 
++static const int amd_erratum_665[] =
++	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x12, 0x1, 0x0, 0x1, 0x0));
+ 
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
+ {
