@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 47a732b..6d220c0 100644
+index 47a732b..c4c09e8 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -191,13 +191,13 @@ config("compiler") {
@@ -112,6 +112,16 @@ index 47a732b..6d220c0 100644
      } else {
 -      cflags = [ "-O2" ] + common_optimize_on_cflags
 +      cflags = [ "-Ofast", "-fno-fast-math" ] + common_optimize_on_cflags
+     }
+   }
+ }
+@@ -1470,7 +1482,8 @@ config("optimize_speed") {
+         ]
+       }
+     } else {
+-      cflags = [ "-O3" ] + common_optimize_on_cflags
++      cflags = [ "-Ofast", "-fno-fast-math" ] + common_optimize_on_cflags
++      #used for llvm within. was: -O3
      }
    }
  }
