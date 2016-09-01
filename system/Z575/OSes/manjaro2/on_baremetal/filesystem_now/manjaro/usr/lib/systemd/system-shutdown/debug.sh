@@ -76,7 +76,7 @@ echo 'manually Freeing pagecache pages'
 echo '---------------------------------------------------'
 time echo 3 >/proc/sys/vm/drop_caches
 echo '---------------------------------------------------'
-sleep 1
+#sleep 1
 echo "After :"
 echo m > /proc/sysrq-trigger #has no effect: ;dmesg|grep -F "pagecache pages"|tail -1
 
@@ -100,7 +100,8 @@ echo "//---Shutdown logfile started at: `date`" >> "$logfile"
 dmesg >> "$logfile"
 #echo "//---Shutdown logfile ended at: `date`"
 
-time sync && sdparm --command=sync /dev/sda && sleep 1
+time sync && sdparm --command=sync /dev/sda 
+#&& sleep 1  #don't need this one here because we got another one down below!
 mount -o remount,ro /
 
 #src: https://unix.stackexchange.com/questions/55281/how-to-stop-waking-all-attached-drives-on-reboot-deactivating-swap/55417#55417
@@ -110,6 +111,7 @@ mount -o remount,ro /
 #//XXX: temporarily commented out:
 hdparm -W0 /dev/sda
 hdparm -W /dev/sda
+#^turned off drive cache!
 
 #flush drive cache:
 hdparm -F /dev/sda
