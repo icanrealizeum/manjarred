@@ -1548,14 +1548,10 @@ diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
 index faab12d..5fb29a7 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -644,8 +644,16 @@ if (!is_android) {
+@@ -791,6 +791,14 @@ if (!is_android) {
      }  # enable_notifications
  
--    if (!use_aura || is_chromeos) {
--      sources -=
--          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
--    }
-+#    if (!use_aura || is_chromeos) {
+     if (!use_aura || is_chromeos) {
 +#ERROR at //chrome/test/BUILD.gn:664:13: Item not found
 +#          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
 +#            ^-------------------------------------------------------------
@@ -1564,11 +1560,9 @@ index faab12d..5fb29a7 100644
 +#See //BUILD.gn:526:9: which caused the file to be included.
 +#        "//chrome/test:load_library_perf_tests",
 +#        ^--------------------------------------
-+#      sources -=
-+#          [ "../../ui/views/corewm/desktop_capture_controller_unittest.cc" ]
-+#    }
+       sources -= [ "//ui/views/corewm/desktop_capture_controller_unittest.cc" ]
+     }
    }
- 
 @@ -997,5 +1005,5 @@ test("browser_tests") {
        "//crypto:test_support",
        "//device/bluetooth:mocks",

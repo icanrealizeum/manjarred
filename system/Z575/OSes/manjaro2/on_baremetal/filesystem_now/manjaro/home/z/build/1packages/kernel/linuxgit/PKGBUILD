@@ -318,8 +318,13 @@ build() {
 #scripts/mod/file2alias.c:193:102: error: ‘OFF_usb_device_id_match_flags’ undeclared (first use in this function)
 #  DEF_FIELD(symval, usb_device_id, match_flags);
 
-  make ${MAKEFLAGS} EXTRA_CFLAGS="-pipe -march=native -Wno-trigraphs -fno-schedule-insns2 -fno-delete-null-pointer-checks -mtune=native -fomit-frame-pointer -Ofast" LOCALVERSION= bzImage modules
-  #
+  make ${MAKEFLAGS} EXTRA_CFLAGS="-pipe -march=native -Wno-trigraphs -fno-delete-null-pointer-checks -mtune=native -fomit-frame-pointer -Ofast" LOCALVERSION= bzImage modules
+  #-fno-schedule-insns2
+
+  #make ${MAKEFLAGS} EXTRA_CFLAGS="-pipe -march=native -Wno-trigraphs -fno-schedule-insns2 -fno-delete-null-pointer-checks -mtune=native -fomit-frame-pointer -Ofast" LOCALVERSION= bzImage modules
+  #  LD      arch/x86/boot/setup.elf
+  #/usr/bin/ld: Setup too big!
+
 
   #make ${MAKEFLAGS} EXTRA_CFLAGS=-Os LOCALVERSION= bzImage modules
   #real 15m40.085s
