@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2846.0_r9690.eca2d62
+pkgver=55.0.2846.0_r9864.04a322f
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -129,7 +129,7 @@ no_sysroot.patch
 #foo_widevine.patch
 media_build.patch
 #OnReadFrameDone.patch
-FPE_INTDIV.patch
+#FPE_INTDIV.patch#don't set this so we can test that the kernel one works when no665wo is set in /proc/cmdline
 handlebit_size0.patch
 chromium-system-ffmpeg-r3.patch
 #clipboard_nospam.patch  #got removed by commit c46a48577b1b750f2561d7f3aeb45e354b45d3c4
@@ -143,7 +143,8 @@ all.patch
 invalid_chan_msg.patch
 google_search_engine_url.patch
 #nostackprotection.patch
-crazycflagstest.patch
+#crazycflagstest.patch
+crazycflagstest_Ofast.patch
 )
 
 installfil=chromium-dev.install
@@ -178,15 +179,14 @@ sha512sums=('6204560e6199a44f3b58558b7459a3b133689adfdec3b5773987ba6b0027ac96d17
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
             '305c09ca37cfeb290f7249c3d69679555fa74fb2a030a3ea8734b9ab2a045af17890813cfecb4add20b1e54e0476049a815fb29a3cdb5a30bd07c4281750f020'
-            '42f7e222247892610e6e47bfd8249d252437b81eaffa80a0b98eefa7301fa2ef7ee54a2dbd147e06e2e710d847a63ad39f700ece6275239462e0b5511542e99b'
             '2314a9ce1cc4327ff03d574ffb0bcc2f2d642ce68fc558c1c772e61922e078e02f43684088452f9513382ddde5ec344554e1cfa85d195033b49261466c779d08'
             '72c9fe7b966555c695c0cb54fa3fd708d12fb3192671eaec670108bc5e4616510434bbd9cfd49d09deb83e5b980e64336bf940be2d97b869ca763a3527a7bfeb'
             '3b1d95b126bec820bd0d92e5050742196ebd1c1657bf8e33854633fb0c4be2f33f777312d53eb048043d7f91c3491bc957b2e98723b2d7de58fa114255e40d7c'
             '32b2240509cbe7d6e3e9f38003d7f6ff94f8bd03942661a10946bb14f74e3ace100f61beb88215b3b95aa3236001cc81dbfa2c0469f5ade83e22ee2691b79627'
-            '38a02e1dd8a5633ab79870cd6ee2e1f997669e4958498fa47f5a4f545c44fa17f8f0ae80e48d4b2a77e8f0541ca008f5a73b4e41027d6f18cc3c53458bcd7e0a'
+            '714a57682271b96a549c67d0ccfe0a2ffb667c2c18793431fb9dbcc32d8fbb354e3710442856c178e1666d8526812450c0ba20a19a675705f4928c198b408c5a'
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89'
             'b4d3581f688efa18d94fd617a4364f36c471b746b6e899cfe0a7f7dd575dae59010d42bb68e6565b98a53e37a81dddfa913cde9c7cdf19716861ee9bb6d61f95'
-            '8e69edd7e8c73fe3438dcdd769573d376a00dfa26d43fe79ac5bd4a2a6dfb9ac4af86b7dd165f6bd98572d7f580715399c9de33fcbf180e1b34c5d7e6138db73')
+            '2f42298ac2b0af4ba5562b5b08ead3fbb8a8406564b36b151ef201729ce5e5fffc56cfa024287d15e4335e3ec4b88e246c675a45302ceb9449619c8f54f9dac7')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 

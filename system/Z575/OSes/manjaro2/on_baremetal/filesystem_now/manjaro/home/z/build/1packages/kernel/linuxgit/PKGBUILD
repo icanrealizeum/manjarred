@@ -21,7 +21,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.8.rc4.r155.g86a1679
+pkgver=4.8.rc4.r162.g071e31e
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -56,7 +56,7 @@ radeon_thermal.patch
 2900_prevent_dmesg_spam_from_preempt_notifier.patch
 3100_kernel_undervolting.patch
 #3200_amd_errata_665.generic.patch
-3200_amd_errata_665.FULL.patch
+3200_amd_errata_665.patch
 3300_bug_119571.patch
 #sync_cache_debug.patch
 #dumpstack1.patch
@@ -90,6 +90,7 @@ PKGEXT='.pkg.tar'
 
 source=(
 ####"${lfoldername}::git+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git#commit=694d0d0"
+###"${lfoldername}::git+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git#commit=86a1679"
 "${lfoldername}::git+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git"
 
 "config.x86_64"
@@ -307,7 +308,25 @@ build() {
   fi
 
   # build!
-  make ${MAKEFLAGS} EXTRA_CFLAGS=-Os LOCALVERSION= bzImage modules
+  #make ${MAKEFLAGS} LOCALVERSION= bzImage modules
+  #
+
+#  make ${MAKEFLAGS} EXTRA_CFLAGS="-Ofast -flto" LOCALVERSION= bzImage modules
+#-flto causes a ton of these:
+#  HOSTCC  scripts/mod/file2alias.o
+#scripts/mod/file2alias.c: In function ‘do_usb_entry’:
+#scripts/mod/file2alias.c:193:102: error: ‘OFF_usb_device_id_match_flags’ undeclared (first use in this function)
+#  DEF_FIELD(symval, usb_device_id, match_flags);
+
+  make ${MAKEFLAGS} EXTRA_CFLAGS="-pipe -march=native -Wno-trigraphs -fno-schedule-insns2 -fno-delete-null-pointer-checks -mtune=native -fomit-frame-pointer -Ofast" LOCALVERSION= bzImage modules
+  #
+
+  #make ${MAKEFLAGS} EXTRA_CFLAGS=-Os LOCALVERSION= bzImage modules
+  #real 15m40.085s
+  #user  35m37.491s
+  #sys 3m51.649s
+  #actually I C-c -ed it at some point because it seemed to be make -j1 but wasn't! was just using 1 core at some point, so total time is longer than seen above!
+
 
   #make ${MAKEFLAGS} EXTRA_CFLAGS=-W LOCALVERSION= bzImage modules
   # 22: Newly-added code has been compiled with `gcc -W' (use "make
