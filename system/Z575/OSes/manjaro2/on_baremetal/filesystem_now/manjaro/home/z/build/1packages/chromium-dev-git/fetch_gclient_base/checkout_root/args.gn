@@ -21,6 +21,14 @@ aec_untrusted_delay_for_testing = false #Default = false
 #    values the AEC receives. The corresponding define is set appropriately
 #    in the code, but it can be force-enabled here for testing.
 
+#XXX: -flto !
+#XXX when true, fails with:
+#[7/19138] ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++ -Wl,--fatal-warnings -fPIC -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,-z,defs -flto -Wl,-plugin-opt,O1 -Wl,-plugin-opt,-function-sections -fwhole-program-vtables -pthread -m64 -Wl,-O1 -Wl,--gc-sections -Wl,--no-as-needed -lpthread -Wl,--as-needed -Wl,-rpath-link=. -Wl,--disable-new-dtags -o "./chrome_sandbox" -Wl,--start-group @"./chrome_sandbox.rsp"  -Wl,--end-group  -ldl -lrt 
+#FAILED: chrome_sandbox 
+#../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++ -Wl,--fatal-warnings -fPIC -Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,-z,defs -flto -Wl,-plugin-opt,O1 -Wl,-plugin-opt,-function-sections -fwhole-program-vtables -pthread -m64 -Wl,-O1 -Wl,--gc-sections -Wl,--no-as-needed -lpthread -Wl,--as-needed -Wl,-rpath-link=. -Wl,--disable-new-dtags -o "./chrome_sandbox" -Wl,--start-group @"./chrome_sandbox.rsp"  -Wl,--end-group  -ldl -lrt 
+#/usr/bin/ld: /home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/../lib/LLVMgold.so: error loading plugin: /home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/../lib/LLVMgold.so: cannot open shared object file: No such file or directory
+#
+#allow_posix_link_time_opt = true #Default = false
 allow_posix_link_time_opt = false #Default = false
 #    //build/toolchain/toolchain.gni:16
 
@@ -159,7 +167,8 @@ disable_brotli_filter = false #Default = false
 #    //net/BUILD.gn:57
 #    Do not disable brotli filter by default.
 
-disable_display = false #Default = false
+#XXX disable_display Build argument has no effect.
+#disable_display = false #Default = false
 #    //build/config/chromecast_build.gni:14
 #    Set this true for an audio-only Chromecast build.
 

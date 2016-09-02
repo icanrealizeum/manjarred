@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+msg2() {
+ echo "$@"
+}
+
 source PKGBUILD
 set -x
 for pn in "${pkgname[@]}"; do

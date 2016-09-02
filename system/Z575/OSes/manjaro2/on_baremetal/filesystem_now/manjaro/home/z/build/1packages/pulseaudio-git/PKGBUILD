@@ -55,6 +55,11 @@ pkgver() {
     git describe --always | sed -e "s/-/./g" -e 's/^v//'
 }
 
+export CFLAGS="-pipe -march=native -Wno-trigraphs -fno-schedule-insns2 -fno-delete-null-pointer-checks -fomit-frame-pointer -O2"
+export CPPFLAGS="${CFLAGS}"
+export CXXFLAGS="${CFLAGS}"
+
+
 prepare() {
   #cd $pkgbase-$pkgver
   cd "$srcdir/$_pkgname"

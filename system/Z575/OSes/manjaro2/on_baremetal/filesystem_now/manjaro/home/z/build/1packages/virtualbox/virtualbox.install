@@ -1,8 +1,15 @@
 # vim:set ts=2 sw=2 ft=sh et:
 
+utils() {
+  if [ -x usr/bin/udevadm ]; then
+    usr/bin/udevadm control --reload
+  fi
+}
+
 # arg 1:  the new package version
 post_install() {
   systemd-sysusers virtualbox.conf
+  utils
 }
 
 # arg 1:  the new package version
@@ -13,3 +20,4 @@ post_upgrade() {
     echo '==> Check you have the headers matching your kernel installed'
   fi
 }
+

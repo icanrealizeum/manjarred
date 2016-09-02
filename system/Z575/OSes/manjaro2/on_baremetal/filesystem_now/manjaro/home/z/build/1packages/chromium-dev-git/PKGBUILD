@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2847.0_r9946.409437f
+pkgver=55.0.2847.0_r10006.95b6282
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -170,7 +170,7 @@ source=(
 
 ##"$(curl -sL https://gsdview.appspot.com/chromium-browser-official/?marker=chromium-${pkgver}.tar.xz.hashes | awk -v FS='<td>"' -v RS='"</td>' '$0=$2' | head -n1)"
 #          "$(curl -sL https://commondatastorage.googleapis.com/chromium-browser-official/chromium-${pkgver}.tar.xz.hashes | grep sha1 | cut -d " " -f3)"
-sha512sums=('6204560e6199a44f3b58558b7459a3b133689adfdec3b5773987ba6b0027ac96d170c66f4f1ca0c78a3c62a4115764c26cbe7d534a3076ae98bf783d2aaf38bb'
+sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf445762500d345725c47c23f8b63ed30fc02135db5edd72033f13da51292a3'
             'f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db1ce670faefd460308548f2d861a935c12c8de24284edad58902cc89aac4a5'
             'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
             '0f2a76de80e2c7ab59c3202375735e069e2432f0f140d2de3c7a64544a74b38cf0731756884a6accf44439d0fc00a98e91a3f590169bdc15f4ce959b91c3e3ed'
@@ -186,7 +186,7 @@ sha512sums=('6204560e6199a44f3b58558b7459a3b133689adfdec3b5773987ba6b0027ac96d17
             '9635d9c32730432273499c3e8940d05dbe5e9feda39b4c3675c93e7279580cd45d1cb0f9b8c84b29cc4273c0eff2d4ba3d967859c106cd6ba290964e61904b9e'
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89'
             'b4d3581f688efa18d94fd617a4364f36c471b746b6e899cfe0a7f7dd575dae59010d42bb68e6565b98a53e37a81dddfa913cde9c7cdf19716861ee9bb6d61f95'
-            '171065bfe3fa5281ed25e9d877600d98419fd42a3dfd2145f8ed5ae77653f760daeefd19b28aba85a60953d2429e4ac559ba99d7afd5e9669c1809182593e835')
+            '1c74eeb6ba3f33d3c1d30ccde8bb42919902fc62a774c77a706ef4b9f535c1a16ca9bd197d2c74262a440109e5a6dd5d2b30840dc3c9eb9263b56b04710ed317')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 

@@ -87,7 +87,9 @@ function replaxe()
   if test -z "$replwith"; then
     echo "failed"
   else
-    echo "replacing '$replwhat' with '$replwith' ($replsize bytes)"
+    if test "$2" != "noshow"; then
+      echo "replacing '$replwhat' with '$replwith' ($replsize bytes)"
+    fi
     sed --binary -re "s|$replwhat|$replwith|g" "$exe" > "$result"
   fi
 }

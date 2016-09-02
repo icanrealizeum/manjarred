@@ -1,0 +1,88 @@
+
+Thanks to Mike Stahl for the pointer (on the mozilla.dev.builds google group)
+https://bugzilla.mozilla.org/show_bug.cgi?id=1298459
+
+# HG changeset patch
+# User Ryan VanderMeulen <ryanvm@gmail.com>
+# Parent  a65b35c8e5b17c2585968974aef1da67a8c56642
+Bug 1298459 - Only include AccessibleNode.webidl if accessibility is enabled.
+
+diff --git a/dom/webidl/Node.webidl b/dom/webidl/Node.webidl
+--- a/dom/webidl/Node.webidl
++++ b/dom/webidl/Node.webidl
+@@ -103,11 +103,13 @@ interface Node : EventTarget {
+   any getUserData(DOMString key);
+   [ChromeOnly]
+   readonly attribute Principal nodePrincipal;
+   [ChromeOnly]
+   readonly attribute URI? baseURIObject;
+   [ChromeOnly]
+   sequence<MutationObserver> getBoundMutationObservers();
+ 
++#ifdef ACCESSIBILITY
+   [Pref="accessibility.AOM.enabled"]
+   readonly attribute AccessibleNode? accessibleNode;
++#endif
+ };
+diff --git a/dom/webidl/moz.build b/dom/webidl/moz.build
+--- a/dom/webidl/moz.build
++++ b/dom/webidl/moz.build
+@@ -6,25 +6,25 @@
+ 
+ GENERATED_WEBIDL_FILES = [
+     'CSS2Properties.webidl',
+ ]
+ 
+ PREPROCESSED_WEBIDL_FILES = [
+     'HTMLMediaElement.webidl',
+     'Navigator.webidl',
++    'Node.webidl',
+     'Promise.webidl',
+     'PromiseDebugging.webidl',
+     'ServiceWorkerRegistration.webidl',
+     'Window.webidl',
+ ]
+ 
+ WEBIDL_FILES = [
+     'AbstractWorker.webidl',
+-    'AccessibleNode.webidl',
+     'AddonManager.webidl',
+     'AnalyserNode.webidl',
+     'Animatable.webidl',
+     'Animation.webidl',
+     'AnimationEffectReadOnly.webidl',
+     'AnimationEffectTiming.webidl',
+     'AnimationEffectTimingReadOnly.webidl',
+     'AnimationEvent.webidl',
+@@ -346,17 +346,16 @@ WEBIDL_FILES = [
+     'MozWakeLock.webidl',
+     'MutationEvent.webidl',
+     'MutationObserver.webidl',
+     'NamedNodeMap.webidl',
+     'NativeOSFileInternals.webidl',
+     'NetDashboard.webidl',
+     'NetworkInformation.webidl',
+     'NetworkOptions.webidl',
+-    'Node.webidl',
+     'NodeFilter.webidl',
+     'NodeIterator.webidl',
+     'NodeList.webidl',
+     'Notification.webidl',
+     'NotificationEvent.webidl',
+     'NotifyPaintEvent.webidl',
+     'OfflineAudioCompletionEvent.webidl',
+     'OfflineAudioContext.webidl',
+@@ -928,8 +927,13 @@ if CONFIG['MOZ_B2G']:
+     GENERATED_EVENTS_WEBIDL_FILES += [
+         'MozApplicationEvent.webidl'
+     ]
+ 
+ if CONFIG['MOZ_WIDGET_TOOLKIT'] != 'android':
+     WEBIDL_FILES += [
+         'AlarmsManager.webidl',
+     ]
++
++if CONFIG['ACCESSIBILITY']:
++    WEBIDL_FILES += [
++        'AccessibleNode.webidl',
++    ]
