@@ -75,6 +75,12 @@ fi
 
 function replaxe() 
 {
+  if test "$1" == "noshow"; then
+    noshow=1
+    shift
+  else
+    noshow=0
+  fi
   if test "$#" -gt 1; then
     echo "too many args: $@"
     exit 22
@@ -87,15 +93,17 @@ function replaxe()
   if test -z "$replwith"; then
     echo "failed"
   else
-    if test "$2" != "noshow"; then
+    if test "$noshow" != "1"; then
       echo "replacing '$replwhat' with '$replwith' ($replsize bytes)"
+    else
+      echo "replacing..."
     fi
     sed --binary -re "s|$replwhat|$replwith|g" "$exe" > "$result"
   fi
 }
 
 #disable evil webrtc, to test: https://diafygi.github.io/webrtc-ips/
-replaxe "$zeestring"
+replaxe noshow "$zeestring"
 #sed --binary -re 's|RTCPeerConnection|LoLaJvyuoN3HnJogV|g' "$exe" > "$result"
 
 

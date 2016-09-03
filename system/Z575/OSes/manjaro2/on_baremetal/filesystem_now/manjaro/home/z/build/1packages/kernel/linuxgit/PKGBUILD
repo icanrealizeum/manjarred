@@ -21,7 +21,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.8.rc4.r175.g511a8cd
+pkgver=4.8.rc4.r264.g0141af1
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -71,7 +71,7 @@ rtc3.patch
 rtc4.patch
 rtc5.patch
 
-mail.patch
+microcode_dontreboot.patch
 )
 
 presetfile="${pkgbase}.preset"
@@ -149,6 +149,7 @@ generic_patch() {
   local lepatch="$1"
   shift
   local params=("$@")
+  msg2 "Applying patch: ${lepatch}"
   patch "${params[@]}" -i "${lepatch}"
 }
 

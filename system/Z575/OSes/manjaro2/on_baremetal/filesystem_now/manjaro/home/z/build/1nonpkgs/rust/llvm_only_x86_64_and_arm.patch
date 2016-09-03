@@ -12,24 +12,26 @@ index 60d3661..7cf274e 100755
        do
          make_dir $t/rt/stage$s/$i
        done
-@@ -1750,7 +1750,7 @@ do
+@@ -1747,7 +1783,8 @@ do
          CMAKE_ARGS="$CMAKE_ARGS -DLLVM_ENABLE_ASSERTIONS=ON"
      fi
  
--    CMAKE_ARGS="$CMAKE_ARGS -DLLVM_TARGETS_TO_BUILD='X86;ARM;AArch64;Mips;PowerPC'"
+-    CMAKE_ARGS="$CMAKE_ARGS -DLLVM_TARGETS_TO_BUILD='X86;ARM;AArch64;Mips;PowerPC;SystemZ'"
++#    CMAKE_ARGS="$CMAKE_ARGS -DLLVM_TARGETS_TO_BUILD='X86;ARM;AArch64;Mips;PowerPC;SystemZ'"
 +    CMAKE_ARGS="$CMAKE_ARGS -DLLVM_TARGETS_TO_BUILD='X86;ARM'"
      CMAKE_ARGS="$CMAKE_ARGS -G '$CFG_CMAKE_GENERATOR'"
      CMAKE_ARGS="$CMAKE_ARGS $CFG_LLVM_SRC_DIR"
  
 diff --git a/mk/main.mk b/mk/main.mk
-index f2ff4f1..1b7a064 100644
+index 5a849af..9edbd9b 100644
 --- a/mk/main.mk
 +++ b/mk/main.mk
-@@ -276,7 +276,7 @@ endif
+@@ -300,7 +300,8 @@ endif
  # LLVM macros
  ######################################################################
  
--LLVM_OPTIONAL_COMPONENTS=x86 arm aarch64 mips powerpc pnacl
+-LLVM_OPTIONAL_COMPONENTS=x86 arm aarch64 mips powerpc pnacl systemz
++#LLVM_OPTIONAL_COMPONENTS=x86 arm aarch64 mips powerpc pnacl systemz
 +LLVM_OPTIONAL_COMPONENTS=x86 arm
  LLVM_REQUIRED_COMPONENTS=ipo bitreader bitwriter linker asmparser mcjit \
                  interpreter instrumentation

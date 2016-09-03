@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2847.0_r10006.95b6282
+pkgver=55.0.2849.0_r10499.9d4d653
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -144,7 +144,8 @@ invalid_chan_msg.patch
 google_search_engine_url.patch
 #nostackprotection.patch
 #crazycflagstest.patch
-crazycflagstest_Ofast.patch
+#crazycflagstest_Ofast.patch
+crazycflagstest_O2.patch
 )
 
 installfil=chromium-dev.install
@@ -159,7 +160,7 @@ source=(
         'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-zlib-r0.patch'
 ##it is changed        'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-linker-warnings-r0.patch'
         # Misc Patches
-        'enable_vaapi_on_linux.diff' ###'https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/enable_vaapi_on_linux.diff'
+        #'enable_vaapi_on_linux.diff' ###'https://raw.githubusercontent.com/saiarcot895/chromium-ubuntu-build/master/debian/patches/enable_vaapi_on_linux.diff'
         'minizip.patch::http://pastebin.com/raw/QCqSDam5'
 #        # Patch from crbug (chromium bugtracker)
 #        'chromium-widevine-r1.patch' # https://crbug.com/473866
@@ -175,7 +176,6 @@ sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf
             'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
             '0f2a76de80e2c7ab59c3202375735e069e2432f0f140d2de3c7a64544a74b38cf0731756884a6accf44439d0fc00a98e91a3f590169bdc15f4ce959b91c3e3ed'
             'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
-            '4acc961878a9d7c3c2093fbc4b3d05a754c55fce917646caff2e40d8bec69d490a7a4d22e39249531357886df99f9704f5ed6f121da46454703cfd114608a9e7'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
             '305c09ca37cfeb290f7249c3d69679555fa74fb2a030a3ea8734b9ab2a045af17890813cfecb4add20b1e54e0476049a815fb29a3cdb5a30bd07c4281750f020'
@@ -183,10 +183,10 @@ sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf
             '72c9fe7b966555c695c0cb54fa3fd708d12fb3192671eaec670108bc5e4616510434bbd9cfd49d09deb83e5b980e64336bf940be2d97b869ca763a3527a7bfeb'
             '3b1d95b126bec820bd0d92e5050742196ebd1c1657bf8e33854633fb0c4be2f33f777312d53eb048043d7f91c3491bc957b2e98723b2d7de58fa114255e40d7c'
             '32b2240509cbe7d6e3e9f38003d7f6ff94f8bd03942661a10946bb14f74e3ace100f61beb88215b3b95aa3236001cc81dbfa2c0469f5ade83e22ee2691b79627'
-            '9635d9c32730432273499c3e8940d05dbe5e9feda39b4c3675c93e7279580cd45d1cb0f9b8c84b29cc4273c0eff2d4ba3d967859c106cd6ba290964e61904b9e'
+            'c4f2febdc0aa147e95d8d3138a3b008153ba62c489e0596401dc695cc427868e0c3ed6b719589ba7a8ab713a9c368786484d64f331d3a25d44b8f3832ba258ed'
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89'
             'b4d3581f688efa18d94fd617a4364f36c471b746b6e899cfe0a7f7dd575dae59010d42bb68e6565b98a53e37a81dddfa913cde9c7cdf19716861ee9bb6d61f95'
-            '1c74eeb6ba3f33d3c1d30ccde8bb42919902fc62a774c77a706ef4b9f535c1a16ca9bd197d2c74262a440109e5a6dd5d2b30840dc3c9eb9263b56b04710ed317')
+            '29d03d3e6a4c9bee4dd1430f1ba8584d22b8704d9becd446113beb25d45d12bdce8b89db9bdf67e1c4bb793ed4cd540c325562e16ff22c2231bdf670c1c02eeb')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 
@@ -532,7 +532,7 @@ EOF
 #  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch" #TODO: should set fatal_linker_warnings to false instead of applying this patch!
 
   # Misc Patches:
-  lepatch -Np1 -i "${srcdir}/enable_vaapi_on_linux.diff"
+  #lepatch -Np1 -i "${srcdir}/enable_vaapi_on_linux.diff"
   lepatch -Np1 -i "${srcdir}/minizip.patch"
 
   # Patch from crbug (chromium bugtracker)
