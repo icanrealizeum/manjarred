@@ -62,7 +62,8 @@ radeon_thermal.patch
 #dumpstack1.patch
 #//XXX: temp commented out:
 sync_cache_debug_and_disable_stopdisk.patch
-debug_deactivatesuper.patch
+#debug_deactivatesuper.patch #only needed when using the loaded .config which makes freeing pagecache pages take minutes
+
 #showtrace_when_ohcifail.patch
 #more_ohci_trace.patch
 ohci_info.patch
