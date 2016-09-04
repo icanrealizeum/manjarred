@@ -21,7 +21,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.8.rc4.r264.g0141af1
+pkgver=4.8.rc4.r366.g28e6815
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -131,7 +131,6 @@ sha512sums=('SKIP'
             'fe5aef25e8d021cd9a602a30ed26ff62ed1af2095e11bcc89ac771cf6fa68509994dd31d7bae84ebf9db4415a037c0c2160b69afe1793e55f7aea193f32c4c07'
             'a5c3add10462141e8a3dd972f55fe5a41150eb413af2904d0a799a8a543c7db4b854a0a1576be30fe6dbeb5099190cdf88f4452755578061c542a20a231eb3ed'
             'efc3e2d82cac43dbe62697d3dca9a4172fd91a2b03e20d009b849f9fce3bde0ef06f24a268411fd29b6e84260b816c244840a10c320def71697ad2e6c859f0e5'
-            'bfaca51747d2421cd0e7e56bf5417dfa4996f7a7a3b4415e84d60fcd68cdb2e0cef52896be827e8d8b6de4fce7a7be36af80c7519da442d4c3f75610862df738'
             '45495b6737703a01fb39dda7ae68686010ddff45309526d8eb55c11d4776a427cdfbf17ea5896d9b1a1f2a395082be20fe1095d5f90f46aedf4ef237f48b71e0'
             '7fbcd37e937264432e732ef0d32b70db2c910f1b8f9e507f6fce30fb4984cbd0fdb1960e3ff00ea6310b48ba96038e6e97c53bfbdceab66fb5ae9b4f05e7de94'
             '786b1d12c223c0e3e323ebffa4367ec27aa016aab6a7751f4059182573a89af22f6468e6335c1a59e163a9516b8ba492bd05762a716f28e563ce6347df753f9a'
