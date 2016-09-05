@@ -571,7 +571,7 @@
 #define CONFIG_HZ_1000 1
 #define CONFIG_ACPI_WMI 1
 #define CONFIG_HPET 1
-#define CONFIG_EXTRA_FIRMWARE "radeon/SUMO_me.bin radeon/SUMO_pfp.bin radeon/SUMO_rlc.bin radeon/SUMO_uvd.bin radeon/TURKS_mc.bin radeon/TURKS_me.bin radeon/TURKS_pfp.bin radeon/TURKS_smc.bin amd-ucode/microcode_amd.bin radeon/BTC_rlc.bin rtl_nic/rtl8105e-1.fw"
+#define CONFIG_EXTRA_FIRMWARE "radeon/SUMO_me.bin radeon/SUMO_pfp.bin radeon/SUMO_rlc.bin radeon/SUMO_uvd.bin radeon/TURKS_mc.bin radeon/TURKS_me.bin radeon/TURKS_pfp.bin radeon/TURKS_smc.bin radeon/BTC_rlc.bin rtl_nic/rtl8105e-1.fw"
 #define CONFIG_TCG_TPM 1
 #define CONFIG_ACPI_VIDEO 1
 #define CONFIG_VIRT_TO_BUS 1

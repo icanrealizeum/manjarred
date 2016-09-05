@@ -3,7 +3,7 @@ X.Org X Server 1.17.4
 Release Date: 2015-10-28
 X Protocol Version 11, Revision 0
 Build Operating System: Linux 4.5.7-1-MANJARO x86_64 
-Current Operating System: Linux myzee 4.8.0-rc4-g9ca581b #92 SMP PREEMPT Sun Sep 4 19:25:38 CEST 2016 x86_64
+Current Operating System: Linux myzee 4.8.0-rc5-gc693593 #94 SMP PREEMPT Mon Sep 5 13:13:48 CEST 2016 x86_64
 Kernel command line: BOOT_IMAGE=/boot/vmlinuz-linux-git root=UUID=96efaea0-86dc-485a-af36-36706f9f3908 rw root_trim=yes rd.luks.allow-discards ipv6.disable=1 loglevel=9 log_buf_len=16M printk.always_kmsg_dump=y printk.time=y printk.devkmsg=on mminit_loglevel=0 memory_corruption_check=1 nohz=on rcu_nocbs=1-3 fbcon=scrollback:4096k fbcon=font:ProFont6x11 acpi_backlight=vendor radeon.audio=0 radeon.lockup_timeout=999000 radeon.test=0 radeon.agpmode=-1 radeon.benchmark=0 radeon.tv=0 radeon.hard_reset=1 radeon.msi=1 radeon.pcie_gen2=-1 radeon.no_wb=1 radeon.dynclks=0 radeon.r4xx_atom=0 radeonfb radeon.fastfb=1 radeon.dpm=1 radeon.runpm=1 net.ifnames=1 pax_sanitize_slab=full noefi nolvm dobtrfs console=tty1 earlyprintk=vga CPUunderclocking radeon.modeset=1 audit=0 systemd.log_target=kmsg enforcing=0 pcie_aspm=off radeon.aspm=0 udev.children-max=1256 rd.udev.children-max=1256
 Build Date: 17 July 2016  10:10:01PM
  
@@ -13,7 +13,7 @@ Current version of pixman: 0.34.0
 Markers: (--) probed, (**) from config file, (==) default setting,
 	(++) from command line, (!!) notice, (II) informational,
 	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
-(==) Log file: "/home/z/.local/share/xorg/Xorg.0.log", Time: Mon Sep  5 07:28:36 2016
+(==) Log file: "/home/z/.local/share/xorg/Xorg.0.log", Time: Mon Sep  5 13:16:41 2016
 (==) Using config directory: "/etc/X11/xorg.conf.d"
 (==) Using system config directory "/usr/share/X11/xorg.conf.d"
 (==) No Layout section.  Using the first Screen section.
@@ -547,7 +547,7 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (**) Option "xkb_options" "terminate:ctrl_alt_bksp,numpad:microsoft"
 (II) input device 'Sleep Button', /dev/input/event2 is tagged by udev as: Keyboard
 (II) input device 'Sleep Button', /dev/input/event2 is a keyboard
-(II) config/udev: Adding input device HD-Audio Generic HDMI/DP,pcm=3 (/dev/input/event9)
+(II) config/udev: Adding input device HD-Audio Generic HDMI/DP,pcm=3 (/dev/input/event11)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
 (II) config/udev: Adding input device Genius 2.4G Wireless BlueEye Mouse (/dev/input/event7)
@@ -580,13 +580,13 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (**) Genius 2.4G Wireless BlueEye Mouse: Applying InputClass "system-keyboard"
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) config/udev: Adding input device HDA Digital PCBeep (/dev/input/event10)
+(II) config/udev: Adding input device HDA Digital PCBeep (/dev/input/event8)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) config/udev: Adding input device HD-Audio Generic Mic (/dev/input/event11)
+(II) config/udev: Adding input device HD-Audio Generic Mic (/dev/input/event9)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
-(II) config/udev: Adding input device HD-Audio Generic Headphone (/dev/input/event12)
+(II) config/udev: Adding input device HD-Audio Generic Headphone (/dev/input/event10)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
 (II) config/udev: Adding input device AT Translated Set 2 keyboard (/dev/input/event5)
@@ -645,7 +645,7 @@ Markers: (--) probed, (**) from config file, (==) default setting,
 (--) synaptics: SynPS/2 Synaptics TouchPad: touchpad found
 (II) config/udev: Adding input device SynPS/2 Synaptics TouchPad (/dev/input/mouse0)
 (**) SynPS/2 Synaptics TouchPad: Ignoring device from InputClass "touchpad ignore duplicates"
-(II) config/udev: Adding input device PC Speaker (/dev/input/event8)
+(II) config/udev: Adding input device PC Speaker (/dev/input/event12)
 (II) No input driver specified, ignoring this device.
 (II) This device may have been added with another device file.
 (**) Genius 2.4G Wireless BlueEye Mouse: Applying InputClass "evdev pointer catchall"
