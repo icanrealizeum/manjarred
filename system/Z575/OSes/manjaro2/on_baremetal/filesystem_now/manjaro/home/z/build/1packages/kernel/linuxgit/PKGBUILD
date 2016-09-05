@@ -21,7 +21,7 @@ pkgbase="linux-git"
 #fixing install order so that compiling fglrx doesn't fail the first time!
 pkgname=("${pkgbase}-headers" "$pkgbase" "${pkgbase}-docs")
 _kernelname="${pkgbase#linux}" #-git
-pkgver=4.8.rc4.r371.g9ca581b
+pkgver=4.8.rc5.r0.gc693593
 lfoldername="${pkgbase}"
 pkgrel=1
 arch=('x86_64')
@@ -107,7 +107,7 @@ ${manypatches[@]}
 #src: https://wiki.archlinux.org/index.php/makepkg#Generate_new_checksums
 #problem is that it kill my spacing! those horizontal lines also
 sha512sums=('SKIP'
-            'e97de881f03f0785a42879248df46c5a58e5dfbce3f0e2d1efbc5708067f25f3bad9934ab9dab868700e3f5f9697a4a66cebd8d329203d334cb9f9e8d0605586'
+            '422e9b21ca88ce1d24b0ee86873a296e38092d236e30afc7cf98678926761f624bc4111fbcacc8a608c735da31fd2cc86a6f42a71551eb8c8abc6f5b26f15833'
             '48a2d94108ec9dd0e8411330506d30d194f7e89c97e0f13537853359f0d16f2b8e32599008cba87b9e6522323ba952538286d6e4b85e0d222604d1f8ccdd0c45'
             '99dcd30805ddefe9fe6eba0316c29366442509f2727434e40a064eb7ec77bc211a7f75b356284fa2c358b09b13580fa073c493b629a2d92ebdf376d9894ec080'
             'bb62d66a95e2d27378433d0f9c2fc7943bbcd655a89952fc25ef28d5796b8d65ca6c9c48bc70d40d71daada20707b266f781f57ba71950009b32cb6d58e155d0'

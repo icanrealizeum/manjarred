@@ -391,7 +391,7 @@ if $HOME != "/root"
 endif
 
 " https://github.com/junegunn/fzf
-set rtp+=~/build/1nonpkgs/fzf
+"set rtp+=~/build/1nonpkgs/fzf
 
 " src: https://github.com/racer-rust/vim-racer/blob/master/README.md
 " settings for vim-racer
