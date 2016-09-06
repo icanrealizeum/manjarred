@@ -3,7 +3,7 @@
 # Contributor: DrZaius <lou at fakeoutdoorsman.com>
 
 pkgname=ffmpeg-git
-pkgver=3.2.r81524.g5dcd913
+pkgver=3.2.r81556.g496d97f
 pkgrel=1
 pkgdesc="Complete solution to record, convert and stream audio and video (git version)"
 arch=('i686' 'x86_64')
@@ -90,6 +90,8 @@ build() {
   cd "$srcdir/$pkgname"
 
 
+  #CFLAGS="-pipe -march=native -Wno-trigraphs -fno-schedule-insns2 -fno-delete-null-pointer-checks -mtune=native -fomit-frame-pointer -Ofast -fno-fast-math"
+  CFLAGS="-pipe -march=native -Wno-trigraphs -fno-schedule-insns2 -fno-delete-null-pointer-checks -fomit-frame-pointer -O2"
   make EXTRA_CFLAGS="$CFLAGS"
   make tools/qt-faststart
   make doc/ff{mpeg,play,server}.1

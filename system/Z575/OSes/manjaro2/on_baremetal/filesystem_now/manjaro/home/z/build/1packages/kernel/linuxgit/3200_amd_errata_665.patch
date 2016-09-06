@@ -51,7 +51,7 @@ index b81fe2d..d726900 100644
  	 */
 -	msr_set_bit(MSR_AMD64_DE_CFG, 31);
 +  if (activate_665erratum) {
-+    pr_info(FW_INFO "CPU: Setting workaround for 665...(set '%s' in /proc/cmdline to disable)\n", kernel_arg_for_disable665);
++    pr_info(FW_INFO "CPU: Setting workaround for AMD erratum 665 Integer Divide Instruction May Cause Unpredictable Behavior (set '%s' in /proc/cmdline to disable)\n", kernel_arg_for_disable665);
 +    /* 665 Integer Divide Instruction May Cause Unpredictable Behavior
 +     * Description
 +     * Under a highly specific and detailed set of internal timing conditions, the processor core may abort a

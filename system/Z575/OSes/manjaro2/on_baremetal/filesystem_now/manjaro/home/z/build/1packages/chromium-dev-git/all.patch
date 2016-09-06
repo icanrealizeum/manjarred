@@ -1018,7 +1018,7 @@ index afacc2b..30157f5 100644
      default:
  #if defined(OS_MACOSX)
 diff --git a/chrome/browser/ui/webui/options/content_settings_handler.cc b/chrome/browser/ui/webui/options/content_settings_handler.cc
-index 071a24e..683b43c 100644
+index 503ea0b..d25a293 100644
 --- a/chrome/browser/ui/webui/options/content_settings_handler.cc
 +++ b/chrome/browser/ui/webui/options/content_settings_handler.cc
 @@ -321,4 +321,5 @@ ContentSettingsHandler::MediaSettingsInfo::~MediaSettingsInfo() {
@@ -1133,6 +1133,13 @@ index 071a24e..683b43c 100644
 +/*void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
      ContentSettingsType type) {
    MediaSettingsInfo::ForOneType& settings = media_settings_->forType(type);
+@@ -949,5 +951,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
+   base::ListValue exceptions;
+   site_settings::GetExceptionsFromHostContentSettingsMap(settings_map, type,
+-      web_ui(), /*incognito=*/ false, &exceptions);
++      web_ui(), /*incognito= false, &exceptions);
+ 
+   settings.exceptions.clear();
 @@ -978,5 +980,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
    settings.exceptions_initialized = true;
    UpdateFlashMediaLinksVisibility(type);
@@ -1140,28 +1147,28 @@ index 071a24e..683b43c 100644
 +}*/
  
  void ContentSettingsHandler::UpdateMIDISysExExceptionsView() {
-@@ -1387,5 +1389,5 @@ Profile* ContentSettingsHandler::GetOTRProfile() {
+@@ -1386,5 +1388,5 @@ Profile* ContentSettingsHandler::GetOTRProfile() {
  }
  
 -void ContentSettingsHandler::RefreshFlashMediaSettings() {
 +/*void ContentSettingsHandler::RefreshFlashMediaSettings() {
    MediaSettingsInfo::ForFlash& settings = media_settings_->forFlash();
    settings.initialized = false;
-@@ -1411,5 +1413,5 @@ void ContentSettingsHandler::OnPepperFlashPrefChanged() {
+@@ -1410,5 +1412,5 @@ void ContentSettingsHandler::OnPepperFlashPrefChanged() {
    else
      media_settings_->forFlash().initialized = false;
 -}
 +}*/
  
  void ContentSettingsHandler::OnZoomLevelChanged(
-@@ -1418,5 +1420,5 @@ void ContentSettingsHandler::OnZoomLevelChanged(
+@@ -1417,5 +1419,5 @@ void ContentSettingsHandler::OnZoomLevelChanged(
  }
  
 -void ContentSettingsHandler::ShowFlashMediaLink(
 +/*void ContentSettingsHandler::ShowFlashMediaLink(
      LinkType link_type, ContentSettingsType content_type, bool show) {
    MediaSettingsInfo::ForOneType& settings =
-@@ -1484,5 +1486,5 @@ void ContentSettingsHandler::UpdateFlashMediaLinksVisibility(
+@@ -1483,5 +1485,5 @@ void ContentSettingsHandler::UpdateFlashMediaLinksVisibility(
      ShowFlashMediaLink(EXCEPTIONS, type, true);
    }
 -}
@@ -1621,7 +1628,7 @@ index 9e2aa1c..751840a 100644
  #include "content/browser/renderer_host/render_process_host_impl.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 328b867..6bd3b43 100644
+index 8132d91..60ec1ae 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
 @@ -105,6 +105,6 @@
@@ -1633,14 +1640,14 @@ index 328b867..6bd3b43 100644
 +//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
  #include "content/browser/renderer_host/render_message_filter.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
-@@ -1562,5 +1562,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1590,5 +1590,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kDisableNotifications,
      switches::kDisableOverlayScrollbar,
 -    switches::kDisablePepper3DImageChromium,
 +    //switches::kDisablePepper3DImageChromium,
      switches::kDisablePermissionsAPI,
      switches::kDisablePresentationAPI,
-@@ -1650,5 +1650,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1678,5 +1678,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kReducedReferrerGranularity,
      switches::kReduceSecurityForTesting,
 -    switches::kRegisterPepperPlugins,

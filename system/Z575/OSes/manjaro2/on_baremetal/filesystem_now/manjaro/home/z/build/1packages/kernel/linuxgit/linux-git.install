@@ -107,7 +107,7 @@ post_install () {
   echo ">>>          In order to use your keyboard during early init, you MUST"
   echo ">>>          include the 'keyboard' hook in your mkinitcpio.conf."
 
-	#prepend_microcode
+	prepend_microcode
 	update_grub  
 	rebuild_fglrx
 	run_dkms autoinstall
@@ -130,7 +130,7 @@ post_upgrade() {
     echo ">>>          include the 'keyboard' hook in your mkinitcpio.conf."
   fi
 
-	#prepend_microcode
+	prepend_microcode
 	update_grub  
 	rebuild_fglrx
 	run_dkms autoinstall

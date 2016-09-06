@@ -1,3 +1,203 @@
+same with -O2 and no -mtune ...
+getting this too often... seems to be pulseaudio-git
+
+Sep 05 18:19:54 systemd-coredump[25538]: Process 7928 (chromium) of user 1000 dumped core.
+                                         
+                                         Stack trace of thread 7979:
+                                         #0  0x000055d2a6c8c6ee n/a (chromium)
+                                         #1  0x00007f804925a5ef context_get_server_info_callback (libpulse.so.0)
+                                         #2  0x00007f80402dbf3d run_action (libpulsecommon-9.0.so)
+                                         #3  0x00007f804926601a pa_mainloop_dispatch (libpulse.so.0)
+                                         #4  0x00007f80492662cf pa_mainloop_iterate (libpulse.so.0)
+                                         #5  0x00007f8049266390 pa_mainloop_run (libpulse.so.0)
+                                         #6  0x00007f8049274fd5 thread (libpulse.so.0)
+                                         #7  0x00007f80402f3da6 internal_thread_func (libpulsecommon-9.0.so)
+                                         #8  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #9  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 7963:
+                                         #0  0x00007f8047843dd3 epoll_wait (libc.so.6)
+                                         #1  0x000055d2a7e033c8 n/a (chromium)
+                                         #2  0x000055d2a7e00f21 n/a (chromium)
+                                         #3  0x000055d2a7d925ce n/a (chromium)
+                                         #4  0x000055d2a7dac99e n/a (chromium)
+                                         #5  0x000055d2a7dca07b n/a (chromium)
+                                         #6  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #7  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #8  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 7962:
+                                         #0  0x00007f804fc19afb waitpid (libpthread.so.0)
+                                         #1  0x000055d2a7da6a9d n/a (chromium)
+                                         #2  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #3  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #4  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 7978:
+                                         #0  0x00007f80402f349d pa_thread_is_running (libpulsecommon-9.0.so)
+                                         #1  0x00007f80492757bd pa_threaded_mainloop_wait (libpulse.so.0)
+                                         #2  0x000055d2a6c8c5f8 n/a (chromium)
+                                         #3  0x000055d2a6c8a2e9 n/a (chromium)
+                                         #4  0x000055d2a6c7cf5a n/a (chromium)
+                                         #5  0x000055d2a76877a5 n/a (chromium)
+                                         #6  0x000055d2a768884e n/a (chromium)
+                                         #7  0x000055d2a768890f n/a (chromium)
+                                         #8  0x000055d2a7dc60e3 n/a (chromium)
+                                         #9  0x000055d2a7def2ad n/a (chromium)
+                                         #10 0x000055d2a7d8fe35 n/a (chromium)
+                                         #11 0x000055d2a7d90198 n/a (chromium)
+                                         #12 0x000055d2a7d905eb n/a (chromium)
+                                         #13 0x000055d2a7d91b2a n/a (chromium)
+                                         #14 0x000055d2a7dac99e n/a (chromium)
+                                         #15 0x000055d2a7dca07b n/a (chromium)
+                                         #16 0x000055d2a7dc5fb3 n/a (chromium)
+                                         #17 0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #18 0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 7928:
+                                         #0  0x00007f804fc1168d pthread_join (libpthread.so.0)
+                                         #1  0x000055d2a7dc5de8 n/a (chromium)
+                                         #2  0x000055d2a7dc9a33 n/a (chromium)
+                                         #3  0x000055d2a7dc9ae9 n/a (chromium)
+                                         #4  0x000055d2a749f49c n/a (chromium)
+                                         #5  0x000055d2a749f769 n/a (chromium)
+                                         #6  0x000055d2a74a66a0 n/a (chromium)
+                                         #7  0x000055d2a749f133 n/a (chromium)
+                                         #8  0x000055d2a7a8b687 n/a (chromium)
+                                         #9  0x000055d2a7a8a3d0 n/a (chromium)
+                                         #10 0x000055d2a6ad21ab ChromeMain (chromium)
+                                         #11 0x00007f804777b291 __libc_start_main (libc.so.6)
+                                         #12 0x000055d2a6ad205a _start (chromium)
+                                         
+                                         Stack trace of thread 7965:
+                                         #0  0x00007f804fc191cd read (libpthread.so.0)
+                                         #1  0x000055d2a7c4267f n/a (chromium)
+                                         #2  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #3  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #4  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 8763:
+                                         #0  0x00007f804fc1610f pthread_cond_wait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7dc6d3a n/a (chromium)
+                                         #2  0x000055d2a7dc6656 n/a (chromium)
+                                         #3  0x000055d2a7dc9707 n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 16317:
+                                         #0  0x00007f804fc1610f pthread_cond_wait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7dc6d3a n/a (chromium)
+                                         #2  0x000055d2a7dc6656 n/a (chromium)
+                                         #3  0x000055d2a7dc9707 n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 25479:
+                                         #0  0x00007f804fc164b8 pthread_cond_timedwait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7df40f3 n/a (chromium)
+                                         #2  0x000055d2a7dcc2cf n/a (chromium)
+                                         #3  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #4  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #5  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 16318:
+                                         #0  0x00007f804fc1610f pthread_cond_wait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7dc6d3a n/a (chromium)
+                                         #2  0x000055d2a7dc6656 n/a (chromium)
+                                         #3  0x000055d2a7dc9707 n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 10826:
+                                         #0  0x00007f804783a48d poll (libc.so.6)
+                                         #1  0x00007f804f09a066 n/a (libglib-2.0.so.0)
+                                         #2  0x00007f804f09a3f2 g_main_loop_run (libglib-2.0.so.0)
+                                         #3  0x00007f804bfaf7c6 n/a (libgio-2.0.so.0)
+                                         #4  0x00007f804f0c0345 n/a (libglib-2.0.so.0)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 22172:
+                                         #0  0x00007f804fc164b8 pthread_cond_timedwait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7df40f3 n/a (chromium)
+                                         #2  0x000055d2a7dccd8d n/a (chromium)
+                                         #3  0x000055d2a7dcd18b n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 20902:
+                                         #0  0x00007f804fc164b8 pthread_cond_timedwait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7df40f3 n/a (chromium)
+                                         #2  0x000055d2a7dccd8d n/a (chromium)
+                                         #3  0x000055d2a7dcd18b n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 10825:
+                                         #0  0x00007f804783a48d poll (libc.so.6)
+                                         #1  0x00007f804f09a066 n/a (libglib-2.0.so.0)
+                                         #2  0x00007f804f09a17c g_main_context_iteration (libglib-2.0.so.0)
+                                         #3  0x00007f804f09a1c1 n/a (libglib-2.0.so.0)
+                                         #4  0x00007f804f0c0345 n/a (libglib-2.0.so.0)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 22881:
+                                         #0  0x00007f804fc1610f pthread_cond_wait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7dc6d3a n/a (chromium)
+                                         #2  0x000055d2a7dc6656 n/a (chromium)
+                                         #3  0x000055d2a7dc9707 n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 22538:
+                                         #0  0x00007f804fc1610f pthread_cond_wait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a896d648 n/a (chromium)
+                                         #2  0x000055d2a896d546 n/a (chromium)
+                                         #3  0x000055d2a896e6fb n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 8454:
+                                         #0  0x00007f804fc1610f pthread_cond_wait@@GLIBC_2.3.2 (libpthread.so.0)
+                                         #1  0x000055d2a7dc6d3a n/a (chromium)
+                                         #2  0x000055d2a7dc6656 n/a (chromium)
+                                         #3  0x000055d2a7dc9707 n/a (chromium)
+                                         #4  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #5  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #6  0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 7966:
+                                         #0  0x00007f804783c0b3 __select (libc.so.6)
+                                         #1  0x000055d2a7d7f302 n/a (chromium)
+                                         #2  0x000055d2a7def2ad n/a (chromium)
+                                         #3  0x000055d2a7d8fe35 n/a (chromium)
+                                         #4  0x000055d2a7d90198 n/a (chromium)
+                                         #5  0x000055d2a7d905eb n/a (chromium)
+                                         #6  0x000055d2a7d91a8b n/a (chromium)
+                                         #7  0x000055d2a7dac99e n/a (chromium)
+                                         #8  0x000055d2a7dca07b n/a (chromium)
+                                         #9  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #10 0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #11 0x00007f80478437df __clone (libc.so.6)
+                                         
+                                         Stack trace of thread 7943:
+                                         #0  0x00007f804783a48d poll (libc.so.6)
+                                         #1  0x000055d2a76d4722 n/a (chromium)
+                                         #2  0x000055d2a7dc9707 n/a (chromium)
+                                         #3  0x000055d2a7dc5fb3 n/a (chromium)
+                                         #4  0x00007f804fc10454 start_thread (libpthread.so.0)
+                                         #5  0x00007f80478437df __clone (libc.so.6)
+
+
+-------
 coredump in pulse? (recompiling it with normal flags: -O2 and no -mtune=native)
 
 Sep 02 04:04:30 systemd-coredump[4210]: Process 3724 (chromium) of user 1000 dumped core.
