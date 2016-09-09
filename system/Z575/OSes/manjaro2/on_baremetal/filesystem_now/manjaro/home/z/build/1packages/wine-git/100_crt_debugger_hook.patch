@@ -1,0 +1,45 @@
+from http://marc.info/?l=wine-patches&m=138326288009051&w=2
+modified to add __crt_debugger_hook to msvcr100.dll
+
+diff --git a/dlls/msvcr100/msvcr100.spec b/dlls/msvcr100/msvcr100.spec
+index a6e7771..0a70ef9 100644
+--- a/dlls/msvcr100/msvcr100.spec
++++ b/dlls/msvcr100/msvcr100.spec
+@@ -745,7 +745,8 @@
+ @ cdecl _cputws(wstr)
+ @ cdecl _creat(str long) MSVCRT__creat
+ @ cdecl _create_locale(long str) MSVCRT__create_locale
+-@ stub _crt_debugger_hook
++@ cdecl _crt_debugger_hook(long) msvcrt._crt_debugger_hook
++@ cdecl __crt_debugger_hook(long) msvcrt._crt_debugger_hook
+ @ varargs _cscanf(str)
+ @ varargs _cscanf_l(str ptr)
+ @ varargs _cscanf_s(str)
+diff --git a/dlls/msvcrt/misc.c b/dlls/msvcrt/misc.c
+index c66152b..885cede 100644
+--- a/dlls/msvcrt/misc.c
++++ b/dlls/msvcrt/misc.c
+@@ -490,3 +490,11 @@ BOOL CDECL MSVCR110__crtInitializeCriticalSectionEx(
+     TRACE("(%p %x %x)\n", cs, spin_count, flags);
+     return InitializeCriticalSectionEx(cs, spin_count, flags);
+ }
++
++/*********************************************************************
++ * _crt_debugger_hook (MSVCRT.@)
++ */
++void CDECL MSVCRT__crt_debugger_hook(int reserved)
++{
++    TRACE("");
++}
+diff --git a/dlls/msvcrt/msvcrt.spec b/dlls/msvcrt/msvcrt.spec
+index 37046c3..ab27770 100644
+--- a/dlls/msvcrt/msvcrt.spec
++++ b/dlls/msvcrt/msvcrt.spec
+@@ -378,6 +378,7 @@
+ @ cdecl _cputws(wstr)
+ @ cdecl _creat(str long) MSVCRT__creat
+ @ cdecl _create_locale(long str) MSVCRT__create_locale
++@ cdecl _crt_debugger_hook(long) MSVCRT__crt_debugger_hook
+ # stub _crtAssertBusy
+ # stub _crtBreakAlloc
+ # stub _crtDbgFlag

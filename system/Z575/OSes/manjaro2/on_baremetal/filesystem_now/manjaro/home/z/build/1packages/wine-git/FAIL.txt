@@ -1,0 +1,38 @@
+due to commit bbcfa6b4ee5d7fea47c61c84d0bbe789e1ec4466
+
+
+gcc -c -o defaulthandler.o ../../../../wine-git/dlls/ole32/tests/defaulthandler.c -I. \
+  -I../../../../wine-git/dlls/ole32/tests -I../../../include -I../../../../wine-git/include \
+  -D__WINESRC__ -D_REENTRANT -fPIC -Wall -pipe -fno-strict-aliasing -Wdeclaration-after-statement \
+  -Wempty-body -Wignored-qualifiers -Wstrict-prototypes -Wtype-limits -Wunused-but-set-parameter \
+  -Wvla -Wwrite-strings -Wpointer-arith -Wlogical-op -march=native -O2 -pipe \
+  -fstack-protector-strong --param=ssp-buffer-size=4 -Wno-trigraphs -fno-omit-frame-pointer \
+  -ftrack-macro-expansion=2 -D_FORTIFY_SOURCE=0 -march=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wno-trigraphs -fno-omit-frame-pointer -ftrack-macro-expansion=2
+signal_x86_64.o: In function `libunwind_virtual_unwind':
+signal_x86_64.c:(.text+0x260c): undefined reference to `_Ux86_64_getcontext'
+signal_x86_64.c:(.text+0x2656): undefined reference to `_ULx86_64_init_local'
+signal_x86_64.c:(.text+0x266b): undefined reference to `_ULx86_64_set_reg'
+signal_x86_64.c:(.text+0x2684): undefined reference to `_ULx86_64_set_reg'
+signal_x86_64.c:(.text+0x2697): undefined reference to `_ULx86_64_set_reg'
+signal_x86_64.c:(.text+0x26b4): undefined reference to `_ULx86_64_set_reg'
+signal_x86_64.c:(.text+0x26d1): undefined reference to `_ULx86_64_set_reg'
+signal_x86_64.o:signal_x86_64.c:(.text+0x26ee): more undefined references to `_ULx86_64_set_reg' follow
+signal_x86_64.o: In function `libunwind_virtual_unwind':
+signal_x86_64.c:(.text+0x2844): undefined reference to `_ULx86_64_get_proc_info'
+signal_x86_64.c:(.text+0x28ea): undefined reference to `_ULx86_64_step'
+signal_x86_64.c:(.text+0x291b): undefined reference to `_ULx86_64_get_reg'
+signal_x86_64.c:(.text+0x2942): undefined reference to `_ULx86_64_get_reg'
+signal_x86_64.c:(.text+0x2966): undefined reference to `_ULx86_64_get_reg'
+signal_x86_64.c:(.text+0x298a): undefined reference to `_ULx86_64_get_reg'
+signal_x86_64.c:(.text+0x29b1): undefined reference to `_ULx86_64_get_reg'
+signal_x86_64.o:signal_x86_64.c:(.text+0x29d8): more undefined references to `_ULx86_64_get_reg' follow
+collect2: error: ld returned 1 exit status
+winegcc: gcc failed
+Makefile:1032: recipe for target 'ntdll.dll.so' failed
+make[1]: *** [ntdll.dll.so] Error 2
+make[1]: Leaving directory '/home/emacs/build/wine-git/makepkg/wine-git/src/wine-git-64-build/dlls/ntdll'
+Makefile:12585: recipe for target 'dlls/ntdll' failed
+make: *** [dlls/ntdll] Error 2
+make: *** Waiting for unfinished jobs....
+
+

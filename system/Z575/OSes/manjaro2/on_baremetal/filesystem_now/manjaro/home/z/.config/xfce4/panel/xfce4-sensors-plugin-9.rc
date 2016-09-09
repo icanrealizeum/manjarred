@@ -12,7 +12,7 @@ Exec_Command=true
 Show_Units=true
 Small_Spacings=false
 Command_Name=xfce4-sensors
-Number_Chips=4
+Number_Chips=5
 Suppress_Hddtemp_Message=false
 Suppress_Tooltip=false
 Preferred_Width=383
@@ -29,7 +29,7 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=59.88
+Max=47.50
 
 [Chip1]
 Name=acpitz-0
@@ -42,7 +42,7 @@ Name=CPU temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=59.00
+Max=47.00
 
 [Chip1_Feature1]
 Id=-1
@@ -51,7 +51,7 @@ Name=MOBO temp
 Color=#00B000
 Show=true
 Min=0.00
-Max=45.00
+Max=44.00
 
 [Chip2]
 Name=radeon-8
@@ -64,13 +64,26 @@ Name=gfx card
 Color=#00B000
 Show=true
 Min=0.00
-Max=60.00
+Max=49.00
 
 [Chip3]
-Name=ACPI
+Name=Hard disks
 Number=3
 
 [Chip3_Feature0]
+Id=0
+DeviceName=/dev/sda
+Name=/dev/sda
+Color=#B000B0
+Show=true
+Min=10.00
+Max=50.00
+
+[Chip4]
+Name=ACPI
+Number=4
+
+[Chip4_Feature0]
 Id=0
 Address=0
 Name=L09S6Y02
@@ -79,7 +92,7 @@ Show=true
 Min=0.00
 Max=23490.00
 
-[Chip3_Feature1]
+[Chip4_Feature1]
 Id=1
 Address=1
 Name=thermal_zone1
@@ -88,7 +101,7 @@ Show=true
 Min=20.00
 Max=60.00
 
-[Chip3_Feature2]
+[Chip4_Feature2]
 Id=2
 Address=2
 Name=thermal_zone0
