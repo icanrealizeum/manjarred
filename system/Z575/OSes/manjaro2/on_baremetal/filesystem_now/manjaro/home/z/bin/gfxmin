@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo -n 'before: '
+cat /sys/class/drm/card0/device/power_dpm_state
+sudo --validate
+echo -n 'after : '
+#echo 'powersave' | sudo tee /sys/class/drm/card0/device/power_dpm_state
+#XXX: safety in case thermal will fail due to having booted unpatched kernel(which allows thermal to work)
+echo 'battery' | sudo tee /sys/class/drm/card0/device/power_dpm_state
+echo 'thermal' | sudo tee /sys/class/drm/card0/device/power_dpm_state
+sudo -K

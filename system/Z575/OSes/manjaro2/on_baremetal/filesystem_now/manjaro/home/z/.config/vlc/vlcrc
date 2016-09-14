@@ -722,10 +722,10 @@ gamma=1.470000
 [freetype] # Freetype2 font renderer
 
 # Font (string)
-#freetype-font=Serif Bold
+freetype-font=DejaVu Sans
 
 # Monospace Font (string)
-#freetype-monofont=Monospace
+freetype-monofont=DejaVu Sans Mono
 
 # Font size in pixels (integer)
 #freetype-fontsize=0
@@ -1592,7 +1592,7 @@ sout-x264-tune=film
 [avcodec] # FFmpeg audio/video decoder
 
 # Direct rendering (boolean)
-#avcodec-dr=1
+avcodec-dr=0
 
 # Error resilience (integer)
 #avcodec-error-resilience=1
@@ -1622,7 +1622,7 @@ sout-x264-tune=film
 #avcodec-codec=
 
 # Hardware decoding (string)
-avcodec-hw=vaapi_x11
+avcodec-hw=none
 
 # Threads (integer)
 #avcodec-threads=0

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo -n 'before: '
+cat /sys/class/drm/card0/device/power_dpm_state
+sudo --validate
+echo -n 'after : '
+echo 'performance' | sudo tee /sys/class/drm/card0/device/power_dpm_state
+sudo -K
