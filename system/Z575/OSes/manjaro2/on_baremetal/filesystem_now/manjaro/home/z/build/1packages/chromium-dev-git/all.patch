@@ -362,17 +362,17 @@ index 03c71a9..7d57c63 100644
  
    // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index c1f3f23..9d05fe6 100644
+index 6fee225..0332a41 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1400,5 +1400,5 @@ split_static_library("browser") {
+@@ -1432,5 +1432,5 @@ split_static_library("browser") {
      "//third_party/smhasher:cityhash",
      "//third_party/webrtc/modules/desktop_capture",
 -    "//third_party/widevine/cdm:version_h",
 +#    "//third_party/widevine/cdm:version_h",
      "//third_party/zlib",
      "//third_party/zlib:compression_utils",
-@@ -2570,6 +2570,6 @@ split_static_library("browser") {
+@@ -2551,6 +2551,6 @@ split_static_library("browser") {
        "chrome_process_singleton.cc",
        "chrome_process_singleton.h",
 -      "component_updater/widevine_cdm_component_installer.cc",
@@ -382,7 +382,7 @@ index c1f3f23..9d05fe6 100644
        "custom_handlers/register_protocol_handler_permission_request.cc",
        "custom_handlers/register_protocol_handler_permission_request.h",
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index b3d5dcc..d4a5c64 100644
+index 728f6ae..10d9ca3 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -60,5 +60,5 @@
@@ -410,10 +410,10 @@ index b3d5dcc..d4a5c64 100644
  #endif  // !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
  
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 5d1c42c..c3a20e0 100644
+index 71fb48b..c95627b 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -69,5 +69,5 @@
+@@ -67,5 +67,5 @@
  #include "chrome/browser/profiles/profile_io_data.h"
  #include "chrome/browser/renderer_host/chrome_render_message_filter.h"
 -#include "chrome/browser/renderer_host/pepper/chrome_browser_pepper_host_factory.h"
@@ -421,7 +421,7 @@ index 5d1c42c..c3a20e0 100644
  #include "chrome/browser/safe_browsing/safe_browsing_service.h"
  #include "chrome/browser/safe_browsing/ui_manager.h"
 diff --git a/chrome/browser/content_settings/local_shared_objects_container.cc b/chrome/browser/content_settings/local_shared_objects_container.cc
-index d82aa46..b3bacee 100644
+index 2115b64..0b8f00f 100644
 --- a/chrome/browser/content_settings/local_shared_objects_container.cc
 +++ b/chrome/browser/content_settings/local_shared_objects_container.cc
 @@ -223,5 +223,6 @@ LocalSharedObjectsContainer::CreateCookiesTreeModel() const {
@@ -431,24 +431,24 @@ index d82aa46..b3bacee 100644
 +      cache_storages()//, nullptr
 +      );
  
-   return base::WrapUnique(new CookiesTreeModel(container, nullptr));
+   return base::MakeUnique<CookiesTreeModel>(container, nullptr);
 diff --git a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
-index f32aa58..6411186 100644
+index a282a8d..e1e4adb 100644
 --- a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
 +++ b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
-@@ -286,4 +286,5 @@ bool BrowsingDataRemoverFunction::RunAsync() {
+@@ -285,4 +285,5 @@ bool BrowsingDataRemoverFunction::RunAsync() {
      // If we're being asked to remove plugin data, check whether it's actually
      // supported.
 +    /*
      BrowserThread::PostTask(
          BrowserThread::FILE,
-@@ -293,4 +294,5 @@ bool BrowsingDataRemoverFunction::RunAsync() {
+@@ -292,4 +293,5 @@ bool BrowsingDataRemoverFunction::RunAsync() {
              this,
              PluginPrefs::GetForProfile(GetProfile())));
 +            */
    } else {
      StartRemoving();
-@@ -305,5 +307,5 @@ BrowsingDataRemoverFunction::~BrowsingDataRemoverFunction() {}
+@@ -304,5 +306,5 @@ BrowsingDataRemoverFunction::~BrowsingDataRemoverFunction() {}
  void BrowsingDataRemoverFunction::CheckRemovingPluginDataSupported(
      scoped_refptr<PluginPrefs> plugin_prefs) {
 -  if (!PluginDataRemoverHelper::IsSupported(plugin_prefs.get()))
@@ -456,7 +456,7 @@ index f32aa58..6411186 100644
      removal_mask_ &= ~BrowsingDataRemover::REMOVE_PLUGIN_DATA;
  
 diff --git a/chrome/browser/extensions/api/content_settings/content_settings_api.cc b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
-index 75351e8..2ea22db 100644
+index c5e4834..12f5156 100644
 --- a/chrome/browser/extensions/api/content_settings/content_settings_api.cc
 +++ b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
 @@ -37,5 +37,5 @@
@@ -466,13 +466,13 @@ index 75351e8..2ea22db 100644
 +//using content::PluginService;
  
  namespace Clear = extensions::api::content_settings::ContentSetting::Clear;
-@@ -288,4 +288,5 @@ bool ContentSettingsContentSettingSetFunction::RunSync() {
+@@ -273,4 +273,5 @@ ContentSettingsContentSettingSetFunction::Run() {
  }
  
 +
  bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
    ContentSettingsType content_type;
-@@ -297,11 +298,11 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
+@@ -282,11 +283,11 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
    }
  
 -  PluginService::GetInstance()->GetPlugins(
@@ -487,7 +487,7 @@ index 75351e8..2ea22db 100644
 +/*
  void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
      const std::vector<content::WebPluginInfo>& plugins) {
-@@ -330,5 +331,5 @@ void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
+@@ -315,5 +316,5 @@ void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
            this,
            true));
 -}
@@ -495,7 +495,7 @@ index 75351e8..2ea22db 100644
  
  }  // namespace extensions
 diff --git a/chrome/browser/extensions/api/content_settings/content_settings_api.h b/chrome/browser/extensions/api/content_settings/content_settings_api.h
-index a4706d1..1b2fbcf 100644
+index 95563d0..1e0ace4 100644
 --- a/chrome/browser/extensions/api/content_settings/content_settings_api.h
 +++ b/chrome/browser/extensions/api/content_settings/content_settings_api.h
 @@ -71,5 +71,5 @@ class ContentSettingsContentSettingGetResourceIdentifiersFunction
@@ -660,10 +660,10 @@ index 64b8857..5a44b58 100644
      case IDR_CRYPTOTOKEN_MANIFEST:
      case IDR_FEEDBACK_MANIFEST:
 diff --git a/chrome/browser/extensions/component_loader.cc b/chrome/browser/extensions/component_loader.cc
-index 128aca7..a8af58e 100644
+index f04ede6..9def585 100644
 --- a/chrome/browser/extensions/component_loader.cc
 +++ b/chrome/browser/extensions/component_loader.cc
-@@ -507,6 +507,6 @@ void ComponentLoader::AddDefaultComponentExtensions(
+@@ -484,6 +484,6 @@ void ComponentLoader::AddDefaultComponentExtensions(
        base::FilePath(FILE_PATH_LITERAL("bookmark_manager")));
    // Cloud Print component app. Not required on Chrome OS.
 -  Add(IDR_CLOUDPRINT_MANIFEST,
@@ -728,7 +728,7 @@ index 774bdcf..59895bc 100644
  }
  
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 1399791..bb4a8b4 100644
+index 0035f4b..5d54ee0 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -37,5 +37,5 @@
@@ -745,14 +745,14 @@ index 1399791..bb4a8b4 100644
 +//#include "chrome/browser/renderer_host/pepper/device_id_fetcher.h"
  #include "chrome/browser/search/search.h"
  #include "chrome/browser/signin/signin_manager_factory.h"
-@@ -542,5 +542,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -555,5 +555,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  #else
    AppShortcutManager::RegisterProfilePrefs(registry);
 -  DeviceIDFetcher::RegisterProfilePrefs(registry);
 +//  DeviceIDFetcher::RegisterProfilePrefs(registry);
    DevToolsWindow::RegisterProfilePrefs(registry);
  #if defined(ENABLE_APP_LIST)
-@@ -552,5 +552,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -565,5 +565,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    first_run::RegisterProfilePrefs(registry);
    NewTabUI::RegisterProfilePrefs(registry);
 -  PepperFlashSettingsManager::RegisterProfilePrefs(registry);
@@ -915,7 +915,7 @@ index edcadaf..737849b 100644
  
    /**
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 57867aa..7104705 100644
+index b9b1da9..e2e0ad4 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -66,5 +66,5 @@
@@ -933,17 +933,17 @@ index 57867aa..7104705 100644
    return true;
  }
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 20392e8..3f485f1 100644
+index f3e1ac6..a33c117 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -209,5 +209,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -220,5 +220,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
        web_contents);
    extensions::WebNavigationTabObserver::CreateForWebContents(web_contents);
 -  HungPluginTabHelper::CreateForWebContents(web_contents);
 +  //HungPluginTabHelper::CreateForWebContents(web_contents);
    ManagePasswordsUIController::CreateForWebContents(web_contents);
    pdf::PDFWebContentsHelper::CreateForWebContentsWithClient(
-@@ -215,5 +215,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -226,5 +226,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
                          new ChromePDFWebContentsHelperClient()));
    PermissionRequestManager::CreateForWebContents(web_contents);
 -  PluginObserver::CreateForWebContents(web_contents);
@@ -976,10 +976,10 @@ index 4253caa..2028436 100644
 +);
  }
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-index defe70e..ce35f48 100644
+index b5220b3..e2eb602 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-@@ -789,7 +789,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+@@ -799,7 +799,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
  #endif
  
 +#if defined(ENABLE_PLUGINS)
@@ -989,7 +989,7 @@ index defe70e..ce35f48 100644
 +#endif
  
    // Android uses the native download manager.
-@@ -809,7 +811,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+@@ -819,7 +821,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
  #endif
  
 +#if defined(ENABLE_PLUGINS)
@@ -1392,7 +1392,7 @@ index 6881c7e..616c7f1 100644
      cookies_tree_model_.reset(
          new CookiesTreeModel(container,
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 0534fd0..4539124 100644
+index 87d4743..432ba80 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -15,5 +15,5 @@ import("//chrome/chrome_repack_locales.gni")
@@ -1409,11 +1409,18 @@ index 0534fd0..4539124 100644
 +#    data_deps += [ "//third_party/widevine/cdm:widevinecdmadapter" ]
  
      if (is_multi_dll_chrome) {
+@@ -1718,5 +1718,5 @@ if (is_linux) {
+     } else {
+       name = "Chromium"
+-      filename = "chromium-browser"
++      filename = "chromium"
+       confdir = "chromium"
+     }
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 2c6d4fc..0539f5f 100644
+index d69ee49..c9cb4e1 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -138,6 +138,6 @@ static_library("common") {
+@@ -139,6 +139,6 @@ static_library("common") {
      "web_application_info.cc",
      "web_application_info.h",
 -    "widevine_cdm_constants.cc",
@@ -1437,10 +1444,10 @@ index 2c6d4fc..0539f5f 100644
    ]
  
 diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
-index 92a23fb..bead838 100644
+index eb4d107..c30a187 100644
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
-@@ -49,5 +49,5 @@
+@@ -48,5 +48,5 @@
  #include "ui/base/layout.h"
  #include "ui/base/resource/resource_bundle.h"
 -#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
@@ -1459,10 +1466,10 @@ index 8649931..20bd23b 100644
  
  namespace {
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index fe0d57d..b3cd28d 100644
+index dc4067c..e1e3408 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -128,5 +128,5 @@ static_library("renderer") {
+@@ -127,5 +127,5 @@ static_library("renderer") {
      "//third_party/icu",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
@@ -1470,24 +1477,24 @@ index fe0d57d..b3cd28d 100644
      "//ui/surface",
      "//v8:v8",
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 66b4564..b851a8a 100644
+index 79f1a16..0d973ef 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -115,5 +115,5 @@
+@@ -116,5 +116,5 @@
  #include "ui/base/resource/resource_bundle.h"
  #include "ui/base/webui/jstemplate_builder.h"
 -#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
 +//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
  
  #if !defined(DISABLE_NACL)
-@@ -432,5 +432,5 @@ void ChromeContentRendererClient::RenderThreadStarted() {
+@@ -433,5 +433,5 @@ void ChromeContentRendererClient::RenderThreadStarted() {
    WebSecurityPolicy::registerURLSchemeAsSecure(chrome_search_scheme);
  
 -#if defined(ENABLE_PRINT_PREVIEW)
 +#if defined(ENABLE_PRINT_PREVIEW) && defined(ENABLE_PEPPER_CDMS)
    pdf_print_client_.reset(new ChromePDFPrintClient());
    pdf::PepperPDFHost::SetPrintClient(pdf_print_client_.get());
-@@ -1210,5 +1210,5 @@ ChromeContentRendererClient::OverrideSpeechSynthesizer(
+@@ -1218,5 +1218,5 @@ ChromeContentRendererClient::OverrideSpeechSynthesizer(
  bool ChromeContentRendererClient::AllowPepperMediaStreamAPI(
      const GURL& url) {
 -#if defined(OS_ANDROID)
@@ -1541,10 +1548,10 @@ index 8c7c7c1..533978a 100644
  
  namespace {
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 00afecd..09096c4 100644
+index 31b0d2a..40280a2 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -787,4 +787,12 @@ if (!is_android) {
+@@ -789,4 +789,12 @@ if (!is_android) {
  
      if (!use_aura || is_chromeos) {
 +#ERROR at //chrome/test/BUILD.gn:664:13: Item not found
@@ -1557,28 +1564,28 @@ index 00afecd..09096c4 100644
 +#        ^--------------------------------------
        sources -= [ "//ui/views/corewm/desktop_capture_controller_unittest.cc" ]
      }
-@@ -1856,5 +1864,5 @@ test("browser_tests") {
+@@ -1863,5 +1871,5 @@ test("browser_tests") {
        "//crypto:test_support",
        "//device/bluetooth:mocks",
 -      "//device/serial:test_support",
 +#      "//device/serial:test_support",
        "//device/usb:test_support",
        "//google_apis:test_support",
-@@ -1876,5 +1884,5 @@ test("browser_tests") {
+@@ -1883,5 +1891,5 @@ test("browser_tests") {
        "//third_party/libjingle",
        "//third_party/webrtc/modules/desktop_capture",
 -      "//third_party/widevine/cdm:version_h",
 +#      "//third_party/widevine/cdm:version_h",
        "//ui/accessibility:test_support",
        "//ui/base:test_support",
-@@ -1892,5 +1900,5 @@ test("browser_tests") {
+@@ -1899,5 +1907,5 @@ test("browser_tests") {
        "//remoting/webapp:unit_tests",
        "//third_party/mesa:osmesa",
 -      "//third_party/widevine/cdm:widevine_test_license_server",
 +#      "//third_party/widevine/cdm:widevine_test_license_server",
      ]
  
-@@ -2856,5 +2864,5 @@ if (!is_android) {
+@@ -2870,5 +2878,5 @@ if (!is_android) {
        "//testing/gtest",
        "//testing/perf",
 -      "//third_party/widevine/cdm:version_h",
@@ -1628,11 +1635,11 @@ index 9e2aa1c..751840a 100644
  #include "content/browser/renderer_host/render_process_host_impl.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 8132d91..60ec1ae 100644
+index 547f1b3..d5fff0c 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
-@@ -105,6 +105,6 @@
- #include "content/browser/renderer_host/media/video_capture_host.h"
+@@ -106,6 +106,6 @@
+ #include "content/browser/renderer_host/offscreen_canvas_frame_receiver_impl.h"
  #include "content/browser/renderer_host/offscreen_canvas_surface_impl.h"
 -#include "content/browser/renderer_host/pepper/pepper_message_filter.h"
 -#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
@@ -1640,14 +1647,14 @@ index 8132d91..60ec1ae 100644
 +//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
  #include "content/browser/renderer_host/render_message_filter.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
-@@ -1590,5 +1590,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1567,5 +1567,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kDisableNotifications,
      switches::kDisableOverlayScrollbar,
 -    switches::kDisablePepper3DImageChromium,
 +    //switches::kDisablePepper3DImageChromium,
      switches::kDisablePermissionsAPI,
      switches::kDisablePresentationAPI,
-@@ -1678,5 +1678,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1655,5 +1655,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kReducedReferrerGranularity,
      switches::kReduceSecurityForTesting,
 -    switches::kRegisterPepperPlugins,
@@ -1677,10 +1684,10 @@ index 74205af..a49dcb8 100644
      "//ui/base",
      "//ui/base/ime",
 diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
-index c192a87..0a49a89 100644
+index 3d4e9a9..544e82e 100644
 --- a/content/renderer/BUILD.gn
 +++ b/content/renderer/BUILD.gn
-@@ -454,5 +454,5 @@ target(link_target_type, "renderer") {
+@@ -452,5 +452,5 @@ target(link_target_type, "renderer") {
      "//third_party/libjingle",
      "//third_party/libyuv",
 -    "//third_party/widevine/cdm:version_h",
@@ -1699,10 +1706,10 @@ index 8f793d9..d4c75ad 100644
  
  namespace content {
 diff --git a/content/test/BUILD.gn b/content/test/BUILD.gn
-index 4c494ab..fb791b7 100644
+index 5c92779..c79fdbb 100644
 --- a/content/test/BUILD.gn
 +++ b/content/test/BUILD.gn
-@@ -687,5 +687,5 @@ test("content_unittests") {
+@@ -1387,5 +1387,5 @@ test("content_unittests") {
      "//third_party/libjingle",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
@@ -1785,7 +1792,7 @@ index a23a53c..2c5efef 100644
    registry->AddInterface(base::Bind(
        KeepAliveImpl::Create,
 diff --git a/extensions/BUILD.gn b/extensions/BUILD.gn
-index 2e95119..eb84669 100644
+index dbd17c6..eb9c32b 100644
 --- a/extensions/BUILD.gn
 +++ b/extensions/BUILD.gn
 @@ -52,5 +52,5 @@ grit("extensions_renderer_resources") {
@@ -1795,14 +1802,14 @@ index 2e95119..eb84669 100644
 +#    "//device/serial:serial_mojo__generator",
      "//extensions/common:mojo__generator",
      "//extensions/common/api:mojom__generator",
-@@ -285,5 +285,5 @@ source_set("chrome_extensions_browsertests") {
+@@ -286,5 +286,5 @@ source_set("chrome_extensions_browsertests") {
      "//crypto:test_support",
      "//device/bluetooth:mocks",
 -    "//device/serial:test_support",
 +#    "//device/serial:test_support",
      "//extensions/common/api",
      "//google_apis:test_support",
-@@ -305,5 +305,5 @@ source_set("chrome_extensions_browsertests") {
+@@ -306,5 +306,5 @@ source_set("chrome_extensions_browsertests") {
      "//third_party/libjingle",
      "//third_party/webrtc/modules/desktop_capture",
 -    "//third_party/widevine/cdm:version_h",
@@ -1828,10 +1835,10 @@ index 0276c57..ed93100 100644
      "//extensions/common/api/cast_channel:cast_channel_proto",
      "//skia",
 diff --git a/extensions/renderer/BUILD.gn b/extensions/renderer/BUILD.gn
-index 551aa39..15e8be8 100644
+index cf47db1..9c3e47a 100644
 --- a/extensions/renderer/BUILD.gn
 +++ b/extensions/renderer/BUILD.gn
-@@ -251,7 +251,7 @@ source_set("unit_tests") {
+@@ -253,7 +253,7 @@ source_set("unit_tests") {
      "activity_log_converter_strategy_unittest.cc",
      "api/mojo_private/mojo_private_unittest.cc",
 -    "api/serial/data_receiver_unittest.cc",
@@ -1842,7 +1849,7 @@ index 551aa39..15e8be8 100644
 +#    "api/serial/serial_api_unittest.cc",
      "api_test_base.cc",
      "api_test_base.h",
-@@ -277,5 +277,5 @@ source_set("unit_tests") {
+@@ -279,5 +279,5 @@ source_set("unit_tests") {
      ":renderer",
      "//base",
 -    "//device/serial:test_support",
@@ -1850,7 +1857,7 @@ index 551aa39..15e8be8 100644
      "//extensions:extensions_renderer_resources",
  
 diff --git a/extensions/renderer/dispatcher.cc b/extensions/renderer/dispatcher.cc
-index 0533984..c3ea1b2 100644
+index b6559e1..e20882b 100644
 --- a/extensions/renderer/dispatcher.cc
 +++ b/extensions/renderer/dispatcher.cc
 @@ -775,9 +775,9 @@ std::vector<std::pair<std::string, int> > Dispatcher::GetJsResources() {
@@ -1880,7 +1887,7 @@ index 0533984..c3ea1b2 100644
  
    // Custom types sources.
 diff --git a/extensions/renderer/resources/extensions_renderer_resources.grd b/extensions/renderer/resources/extensions_renderer_resources.grd
-index cba871e..f8023b2 100644
+index b7e45c4..b318aad 100644
 --- a/extensions/renderer/resources/extensions_renderer_resources.grd
 +++ b/extensions/renderer/resources/extensions_renderer_resources.grd
 @@ -15,6 +15,6 @@

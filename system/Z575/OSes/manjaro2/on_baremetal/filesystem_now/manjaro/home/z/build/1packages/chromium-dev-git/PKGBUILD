@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2852.0_r10680.a879db6
+pkgver=55.0.2861.0_r12753.f5f0a49
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -144,8 +144,9 @@ invalid_chan_msg.patch
 google_search_engine_url.patch
 #nostackprotection.patch
 #crazycflagstest.patch
-#crazycflagstest_Ofast.patch
-crazycflagstest_O2.patch
+crazycflagstest_Ofast.patch
+#crazycflagstest_O2.patch
+chromium-system-jinja-r11.patch
 )
 
 installfil=chromium-dev.install
@@ -156,7 +157,7 @@ source=(
         'chromium-dev.svg'
         # Patch form Gentoo
         #'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-ffmpeg-r2.patch'
-        'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-jinja-r11.patch'
+#        'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-jinja-r11.patch'
         'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-system-zlib-r0.patch'
 ##it is changed        'https://raw.githubusercontent.com/gentoo/gentoo/master/www-client/chromium/files/chromium-linker-warnings-r0.patch'
         # Misc Patches
@@ -174,7 +175,6 @@ source=(
 sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf445762500d345725c47c23f8b63ed30fc02135db5edd72033f13da51292a3'
             'f3480752413ac722d4b70f8ae637303b3b958e27677c482dc75be8a52285c1aa4db1ce670faefd460308548f2d861a935c12c8de24284edad58902cc89aac4a5'
             'e13f13871cbbaf76dfdbd3c89619116d1264805562bffcef46380d59bd54483267a4c917bb4b8423cedd0e0ce96f15d5b3768eb533d8ec12fb825eda192c4042'
-            '8bea4fd88f8d5247a9d5d3b26a4e79c60cb4204b377c654ba4cbf02b8f8e72e7c5d60df6483e7c6228d6e1071a12722a76e65333efff8cc839c108c3be5c366a'
             'ea7b9da8bf504583e0753ed2d69e95e6d2579bb9640b52b9d575966f495bd4dc15ec94fb35ad9877a736dceed946a38dccac028a4130326fda3f7ad7dfb3b07c'
             '2108a3d40cef30de917af30945783da3b095cefac18ce7a37e9c6d184ede152dbc1671fa9fc89a1f183ab8b4b13f3237ec7834837a9c63a39ff31b26215f2320'
             '49534af6e37343732be13d6b704b81f77cdf6cba631b75514cacca795d244c4fbf960ddd634cbcb72f5f6c05af978d3515e2865d4eaf04a990bb6dfe098f550c'
@@ -183,10 +183,11 @@ sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf
             '72c9fe7b966555c695c0cb54fa3fd708d12fb3192671eaec670108bc5e4616510434bbd9cfd49d09deb83e5b980e64336bf940be2d97b869ca763a3527a7bfeb'
             '3b1d95b126bec820bd0d92e5050742196ebd1c1657bf8e33854633fb0c4be2f33f777312d53eb048043d7f91c3491bc957b2e98723b2d7de58fa114255e40d7c'
             '32b2240509cbe7d6e3e9f38003d7f6ff94f8bd03942661a10946bb14f74e3ace100f61beb88215b3b95aa3236001cc81dbfa2c0469f5ade83e22ee2691b79627'
-            '328d1cd432e1763a2651518993a1648043e1a93b9830e6512c570a82ebd94946f761a83357a482ba944d9cd1fa3129e446c2bc029f390b6ddc90b11d5f432c2e'
+            '4bbc255e2a423fa308b6179ee64d78f327f94f2c390e93e0d1a23149f40cce517fddc117372be2d1d168f5ba3afb4be8d04c88698d0c6e99156e09fe4ad7346e'
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89'
             'b4d3581f688efa18d94fd617a4364f36c471b746b6e899cfe0a7f7dd575dae59010d42bb68e6565b98a53e37a81dddfa913cde9c7cdf19716861ee9bb6d61f95'
-            '29d03d3e6a4c9bee4dd1430f1ba8584d22b8704d9becd446113beb25d45d12bdce8b89db9bdf67e1c4bb793ed4cd540c325562e16ff22c2231bdf670c1c02eeb')
+            '0c510f3c3a29f31786b0c793a23200e0afb77a111907f05846dd7305b048845a9854cedb18fea39ecef7b9439611ee15ba9827129a6348b6793f92da8220b0cc'
+            '19252791647b000353d9edf5fb6a496da1acfb3f81a82e252eab0f87fa305a2b920d91944da467999c618549977359fbb043846009c001ad4307303c2c0dac7f')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 
@@ -521,9 +522,11 @@ EOF
       #-e "s|'confdir': 'chromium'|'confdir': 'chromium'|" \
 #  sed -e "s|'filename': 'chromium-browser'|'filename': 'chromium'|" \
 #      -i chrome/chrome_exe.gypi
-  #chrome/chrome_exe.gypi got deleted due to obsoleted by BUILD.gn
-  sed -e 's|filename = "chromium-browser"|filename = "chromium"|' \
-      -i chrome/BUILD.gn
+  #XXX chrome/chrome_exe.gypi got deleted due to obsoleted by BUILD.gn
+  #the following is now in all.patch (caught)
+#  sed -e 's|filename = "chromium-browser"|filename = "chromium"|' \
+#      -i chrome/BUILD.gn
+
 #  sed -e 's|config_dir.Append("chromium")|config_dir.Append("chromium-dev")|' \
 #      -e 's|config_dir.Append("chrome-frame")|config_dir.Append("chrome-frame-dev")|' \
 #      -i chrome/common/chrome_paths_linux.cc
@@ -531,7 +534,7 @@ EOF
   msg2 "Patching the sources"
   # Patch sources from Gentoo
 #  lepatch -Np1 -i "${srcdir}/chromium-system-ffmpeg-r2.patch" #add/remove of this has no effect on this issue: https://bugs.chromium.org/p/chromium/issues/detail?id=422522#c354  FIXED by using system-ffmpeg and reported new here: https://bugs.chromium.org/p/chromium/issues/detail?id=629695
-  lepatch -Np0 -i "${srcdir}/chromium-system-jinja-r11.patch"
+#  lepatch -Np0 -i "${srcdir}/chromium-system-jinja-r11.patch"
 #  patch -p0 -i "${srcdir}/chromium-linker-warnings-r0.patch" #TODO: should set fatal_linker_warnings to false instead of applying this patch!
 
   # Misc Patches:
@@ -636,7 +639,7 @@ local gn_system_libraries=(
   echo "$PATH"
   export GYP_CHROMIUM_NO_ACTION=1
   #src: https://www.chromium.org/developers/gn-build-configuration
-  msg2 "running: gclient runhooks" #fixed with patched depottools-git (note: rerun this lots if you get this skippable error: CommandException: Invalid command \"stat\")"
+  msg2 "running: gclient runhooks (rerun ./1 if this is not executable: fetch_gclient_base/checkout_root/src/buildtools/linux64/gn ) (seems that depottools-git patch for stat isn't effective)" #fixed with patched depottools-git (note: rerun this lots if you get this skippable error: CommandException: Invalid command \"stat\")"
   #"${srcdir}/pythonic"
   gclient runhooks   #can't run this here because it runs gyp_chromium!
 

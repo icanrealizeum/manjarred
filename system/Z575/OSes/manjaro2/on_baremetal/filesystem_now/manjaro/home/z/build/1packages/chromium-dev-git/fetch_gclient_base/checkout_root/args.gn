@@ -32,6 +32,7 @@ aec_untrusted_delay_for_testing = false #Default = false
 #allow_posix_link_time_opt = true #Default = false
 allow_posix_link_time_opt = false #Default = false
 #    //build/toolchain/toolchain.gni:16
+use_thin_lto=true
 
 android_full_debug = false #Default = false
 #    //build/config/compiler/BUILD.gn:34
@@ -327,7 +328,8 @@ enable_nocompile_tests = false #Default = false
 #    //build/nocompile.gni:62
 #    TODO(crbug.com/105388): Disabled until http://crbug.com/105388 is resolved.
 
-enable_oilpan = true #Default = true
+#XXX no effect anymore
+#enable_oilpan = true #Default = true
 #    //third_party/WebKit/public/features.gni:7
 #    Enables the Oilpan garbage-collection infrastructure.
 

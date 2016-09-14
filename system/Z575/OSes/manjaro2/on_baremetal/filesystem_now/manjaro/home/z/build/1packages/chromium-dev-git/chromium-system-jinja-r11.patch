@@ -1,0 +1,13 @@
+diff --git a/third_party/WebKit/Source/bindings/scripts/BUILD.gn b/third_party/WebKit/Source/bindings/scripts/BUILD.gn
+index 3d09601..1a17673 100644
+--- a/third_party/WebKit/Source/bindings/scripts/BUILD.gn
++++ b/third_party/WebKit/Source/bindings/scripts/BUILD.gn
+@@ -36,7 +36,7 @@ action("cached_lex_yacc_tables") {
+ action("cached_jinja_templates") {
+   script = "code_generator_v8.py"
+ 
+-  inputs = jinja_module_files + [ "code_generator_v8.py" ] +
++  inputs = [ "code_generator_v8.py" ] +
+            code_generator_template_files
+ 
+   # Dummy file to track dependency.
