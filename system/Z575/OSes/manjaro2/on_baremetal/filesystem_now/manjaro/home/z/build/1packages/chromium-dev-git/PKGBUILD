@@ -519,8 +519,11 @@ EOF
 
   # Fix to save configuration in ~/.config/chromium
       #-e "s|'confdir': 'chromium'|'confdir': 'chromium'|" \
-  sed -e "s|'filename': 'chromium-browser'|'filename': 'chromium'|" \
-      -i chrome/chrome_exe.gypi
+#  sed -e "s|'filename': 'chromium-browser'|'filename': 'chromium'|" \
+#      -i chrome/chrome_exe.gypi
+  #chrome/chrome_exe.gypi got deleted due to obsoleted by BUILD.gn
+  sed -e 's|filename = "chromium-browser"|filename = "chromium"|' \
+      -i chrome/BUILD.gn
 #  sed -e 's|config_dir.Append("chromium")|config_dir.Append("chromium-dev")|' \
 #      -e 's|config_dir.Append("chrome-frame")|config_dir.Append("chrome-frame-dev")|' \
 #      -i chrome/common/chrome_paths_linux.cc
