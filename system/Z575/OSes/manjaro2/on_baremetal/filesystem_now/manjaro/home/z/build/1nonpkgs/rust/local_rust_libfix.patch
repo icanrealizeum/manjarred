@@ -31,7 +31,7 @@ index 60d3661..fb80af3 100755
      CMD="${CFG_LOCAL_RUST_ROOT}/bin/rustc${BIN_SUF}"
 +    export LD_LIBRARY_PATH
 +    step_msg "!! set LD_LIBRARY_PATH for rust: '$LD_LIBRARY_PATH'"
-     LRV=`$CMD --version`
+     LRV=`LD_LIBRARY_PATH=${CFG_LOCAL_RUST_ROOT}/lib $CMD --version`
 -    if [ $? -ne 0 ]
 +    ec=$?
 +    export -n LD_LIBRARY_PATH

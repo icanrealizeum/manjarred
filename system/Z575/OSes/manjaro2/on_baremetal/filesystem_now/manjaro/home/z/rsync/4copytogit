@@ -84,6 +84,12 @@ cat ./hosts | grep --color=always -- 'ticuhost'
 popd
 echo "--"
 
+echo "-- removing recents from whiskermenu"
+pushd "${src}/home/z/.config/xfce4/panel/" || echo "FAIL!"
+sed -i ./whiskermenu-8.rc -re '/^recent=/d'
+popd
+echo "--"
+
 #echo "-- removing permmac"
 #pushd "${src}/etc/local.d/" || echo "FAIL!"
 #thisarpfn='./010_arp.start'

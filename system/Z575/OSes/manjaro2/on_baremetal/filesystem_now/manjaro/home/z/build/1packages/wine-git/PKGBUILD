@@ -6,7 +6,7 @@
 DEBUG=0
 pkgname=wine-git
 _gitname="wine"
-pkgver=1.9.18.r19.gf53c320
+pkgver=1.9.18.r153.g4931e6f
 pkgrel=1
 pkgdesc="A compatibility layer for running Windows programs. Latest GIT version."
 url="http://www.winehq.com"
@@ -32,7 +32,7 @@ sha512sums=('SKIP'
 
 
 #CFLAGS="-march=native -O2 -pipe -fstack-protector-strong --param=ssp-buffer-size=4 -Wno-trigraphs -fno-omit-frame-pointer -ftrack-macro-expansion=2"
-CFLAGS="-march=native -O2 -pipe"
+CFLAGS="-march=native -Ofast -fno-fast-math -pipe -D_FORTIFY_SOURCE=2"
 CPPFLAGS="${CFLAGS}"
 CXXFLAGS="${CFLAGS}"
 
