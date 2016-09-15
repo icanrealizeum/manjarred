@@ -362,7 +362,7 @@ index 03c71a9..7d57c63 100644
  
    // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 6fee225..0332a41 100644
+index 7ab02d9..a4b4423 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -1432,5 +1432,5 @@ split_static_library("browser") {
@@ -382,7 +382,7 @@ index 6fee225..0332a41 100644
        "custom_handlers/register_protocol_handler_permission_request.cc",
        "custom_handlers/register_protocol_handler_permission_request.h",
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index 728f6ae..10d9ca3 100644
+index d8f8a12..5ad3b4a 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -60,5 +60,5 @@
@@ -933,7 +933,7 @@ index b9b1da9..e2e0ad4 100644
    return true;
  }
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index f3e1ac6..a33c117 100644
+index e2d3d7e..793f8c6 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
 @@ -220,5 +220,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
@@ -1392,7 +1392,7 @@ index 6881c7e..616c7f1 100644
      cookies_tree_model_.reset(
          new CookiesTreeModel(container,
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 87d4743..432ba80 100644
+index 8d1cef7..71b9e52 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -15,5 +15,5 @@ import("//chrome/chrome_repack_locales.gni")
@@ -1409,7 +1409,7 @@ index 87d4743..432ba80 100644
 +#    data_deps += [ "//third_party/widevine/cdm:widevinecdmadapter" ]
  
      if (is_multi_dll_chrome) {
-@@ -1718,5 +1718,5 @@ if (is_linux) {
+@@ -1732,5 +1732,5 @@ if (is_linux) {
      } else {
        name = "Chromium"
 -      filename = "chromium-browser"
@@ -1444,7 +1444,7 @@ index d69ee49..c9cb4e1 100644
    ]
  
 diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
-index eb4d107..c30a187 100644
+index e94b79c..cc9757d 100644
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
 @@ -48,5 +48,5 @@
@@ -1548,7 +1548,7 @@ index 8c7c7c1..533978a 100644
  
  namespace {
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 31b0d2a..40280a2 100644
+index 991e5a0..a3e9711 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -789,4 +789,12 @@ if (!is_android) {
@@ -1635,10 +1635,10 @@ index 9e2aa1c..751840a 100644
  #include "content/browser/renderer_host/render_process_host_impl.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 547f1b3..d5fff0c 100644
+index a12f3ae..6b3c12c 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
-@@ -106,6 +106,6 @@
+@@ -105,6 +105,6 @@
  #include "content/browser/renderer_host/offscreen_canvas_frame_receiver_impl.h"
  #include "content/browser/renderer_host/offscreen_canvas_surface_impl.h"
 -#include "content/browser/renderer_host/pepper/pepper_message_filter.h"
@@ -1647,14 +1647,14 @@ index 547f1b3..d5fff0c 100644
 +//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
  #include "content/browser/renderer_host/render_message_filter.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
-@@ -1567,5 +1567,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1605,5 +1605,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kDisableNotifications,
      switches::kDisableOverlayScrollbar,
 -    switches::kDisablePepper3DImageChromium,
 +    //switches::kDisablePepper3DImageChromium,
      switches::kDisablePermissionsAPI,
      switches::kDisablePresentationAPI,
-@@ -1655,5 +1655,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1693,5 +1693,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kReducedReferrerGranularity,
      switches::kReduceSecurityForTesting,
 -    switches::kRegisterPepperPlugins,
@@ -1684,10 +1684,10 @@ index 74205af..a49dcb8 100644
      "//ui/base",
      "//ui/base/ime",
 diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
-index 3d4e9a9..544e82e 100644
+index 8fdf5c2..0f80a8c 100644
 --- a/content/renderer/BUILD.gn
 +++ b/content/renderer/BUILD.gn
-@@ -452,5 +452,5 @@ target(link_target_type, "renderer") {
+@@ -451,5 +451,5 @@ target(link_target_type, "renderer") {
      "//third_party/libjingle",
      "//third_party/libyuv",
 -    "//third_party/widevine/cdm:version_h",
@@ -1706,16 +1706,27 @@ index 8f793d9..d4c75ad 100644
  
  namespace content {
 diff --git a/content/test/BUILD.gn b/content/test/BUILD.gn
-index 5c92779..c79fdbb 100644
+index 06f672b..037cf73 100644
 --- a/content/test/BUILD.gn
 +++ b/content/test/BUILD.gn
-@@ -1387,5 +1387,5 @@ test("content_unittests") {
+@@ -1392,5 +1392,5 @@ test("content_unittests") {
      "//third_party/libjingle",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
 +#    "//third_party/widevine/cdm:version_h",
      "//ui/accessibility",
      "//ui/base:test_support",
+diff --git a/extensions/browser/api/BUILD.gn b/extensions/browser/api/BUILD.gn
+index f164be1..7800376 100644
+--- a/extensions/browser/api/BUILD.gn
++++ b/extensions/browser/api/BUILD.gn
+@@ -53,5 +53,5 @@ source_set("api") {
+     "//extensions/browser/api/printer_provider_internal",
+     "//extensions/browser/api/runtime",
+-    "//extensions/browser/api/serial",
++    #"//extensions/browser/api/serial",
+     "//extensions/browser/api/socket",
+     "//extensions/browser/api/sockets_tcp",
 diff --git a/extensions/browser/browser_context_keyed_service_factories.cc b/extensions/browser/browser_context_keyed_service_factories.cc
 index c779bc9..77e4254 100644
 --- a/extensions/browser/browser_context_keyed_service_factories.cc
@@ -1735,31 +1746,10 @@ index c779bc9..77e4254 100644
    ApiResourceManager<Socket>::GetFactoryInstance();
    ApiResourceManager<UsbDeviceResource>::GetFactoryInstance();
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 7731e44..eb07461 100644
+index 93ecfcd..25171e8 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
-@@ -220,12 +220,12 @@ source_set("browser") {
-       "api/runtime/runtime_api_delegate.cc",
-       "api/runtime/runtime_api_delegate.h",
--      "api/serial/serial_api.cc",
--      "api/serial/serial_api.h",
--      "api/serial/serial_connection.cc",
--      "api/serial/serial_connection.h",
--      "api/serial/serial_event_dispatcher.cc",
--      "api/serial/serial_event_dispatcher.h",
--      "api/serial/serial_service_factory.cc",
--      "api/serial/serial_service_factory.h",
-+      #"api/serial/serial_api.cc",
-+#      "api/serial/serial_api.h",
-+#      "api/serial/serial_connection.cc",
-+#      "api/serial/serial_connection.h",
-+#      "api/serial/serial_event_dispatcher.cc",
-+#      "api/serial/serial_event_dispatcher.h",
-+#      "api/serial/serial_service_factory.cc",
-+#      "api/serial/serial_service_factory.h",
-       "api/socket/socket.cc",
-       "api/socket/socket.h",
-@@ -654,5 +654,5 @@ source_set("browser") {
+@@ -267,5 +267,5 @@ source_set("browser") {
        "//device/hid",
        "//device/power_save_blocker",
 -      "//device/serial",
@@ -1835,7 +1825,7 @@ index 0276c57..ed93100 100644
      "//extensions/common/api/cast_channel:cast_channel_proto",
      "//skia",
 diff --git a/extensions/renderer/BUILD.gn b/extensions/renderer/BUILD.gn
-index cf47db1..9c3e47a 100644
+index d0c28dc..e369295 100644
 --- a/extensions/renderer/BUILD.gn
 +++ b/extensions/renderer/BUILD.gn
 @@ -253,7 +253,7 @@ source_set("unit_tests") {

@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index c0ddf0d..e42aa08 100644
+index f0055e5..b249aa6 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -191,13 +191,13 @@ config("compiler") {
@@ -38,15 +38,15 @@ index c0ddf0d..e42aa08 100644
        "-pipe",  # Use pipes for communicating between sub-processes. Faster.
      ]
  
-@@ -417,6 +428,7 @@ config("compiler") {
+@@ -432,6 +443,7 @@ config("compiler") {
    # TODO(pcc): Make this conditional on is_official_build rather than on gn
    # flags for specific features.
    if (!is_debug && (allow_posix_link_time_opt || is_cfi) && !is_nacl) {
 +    #XXX don't use allow_posix_link_time_opt because compile errors(see in args.gn)
      if (use_thin_lto) {
        cflags += [ "-flto=thin" ]
-       ldflags += [ "-flto=thin" ]
-@@ -486,7 +498,8 @@ config("compiler_cpu_abi") {
+       ldflags += [
+@@ -507,7 +519,8 @@ config("compiler_cpu_abi") {
      if (current_cpu == "x64") {
        cflags += [
          "-m64",
@@ -56,7 +56,7 @@ index c0ddf0d..e42aa08 100644
        ]
        ldflags += [ "-m64" ]
      } else if (current_cpu == "x86") {
-@@ -1038,14 +1051,15 @@ config("chromium_code") {
+@@ -1059,14 +1072,15 @@ config("chromium_code") {
    if (is_win) {
      cflags = [ "/W4" ]  # Warning level 4.
    } else {
@@ -80,7 +80,7 @@ index c0ddf0d..e42aa08 100644
  
      # In Chromium code, we define __STDC_foo_MACROS in order to get the
      # C99 macros on Mac and Linux.
-@@ -1100,11 +1114,11 @@ config("no_chromium_code") {
+@@ -1121,11 +1135,11 @@ config("no_chromium_code") {
      if (treat_warnings_as_errors && is_clang) {
        cflags += [ "-Werror" ]
      }
@@ -97,25 +97,25 @@ index c0ddf0d..e42aa08 100644
    }
  
    if (is_clang) {
-@@ -1336,7 +1350,7 @@ config("optimize") {
+@@ -1342,7 +1356,7 @@ config("optimize") {
      # Favor size over speed.
      cflags = [ "-Os" ] + common_optimize_on_cflags
    } else {
 -    cflags = [ "-O2" ] + common_optimize_on_cflags
-+    cflags = [ "-Ofast", "-fno-fast-math" ] + common_optimize_on_cflags
++    cflags = [ "-Ofast" ] + common_optimize_on_cflags
    }
    ldflags = common_optimize_on_ldflags
  }
-@@ -1351,7 +1365,7 @@ config("optimize_no_wpo") {
+@@ -1357,7 +1371,7 @@ config("optimize_no_wpo") {
      # Favor size over speed.
      cflags = [ "-Os" ] + common_optimize_on_cflags
    } else {
 -    cflags = [ "-O2" ] + common_optimize_on_cflags
-+    cflags = [ "2-Ofast2" ] + common_optimize_on_cflags
++    cflags = [ "-2Ofast3", "-fno-fast-math" ] + common_optimize_on_cflags
    }
    ldflags = common_optimize_on_ldflags
  }
-@@ -1415,7 +1429,7 @@ config("optimize_max") {
+@@ -1421,7 +1435,7 @@ config("optimize_max") {
          ]
        }
      } else {
@@ -124,7 +124,7 @@ index c0ddf0d..e42aa08 100644
      }
    }
  }
-@@ -1458,7 +1472,8 @@ config("optimize_speed") {
+@@ -1464,7 +1478,8 @@ config("optimize_speed") {
          ]
        }
      } else {
