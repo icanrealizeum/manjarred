@@ -102,7 +102,7 @@ index f0055e5..b249aa6 100644
      cflags = [ "-Os" ] + common_optimize_on_cflags
    } else {
 -    cflags = [ "-O2" ] + common_optimize_on_cflags
-+    cflags = [ "-Ofast" ] + common_optimize_on_cflags
++    cflags = [ "-Ofast", "-fno-fast-math" ] + common_optimize_on_cflags
    }
    ldflags = common_optimize_on_ldflags
  }
