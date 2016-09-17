@@ -29,6 +29,6 @@ for i in "${searchdirs[@]}"; do
   fi
 done
 
-echo "!! not found '$fname' in search any of dirs: '${searchdirs[@]}'"
+echo "!! not found '$fname' in search any of dirs: '${searchdirs[@]}'" >&2
 
 

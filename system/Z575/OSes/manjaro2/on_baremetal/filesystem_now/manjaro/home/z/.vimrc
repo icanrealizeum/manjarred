@@ -379,6 +379,13 @@ let g:rustc_syntax_only = 0
 " 		\ "active_filetypes": [],
 " 		\ "passive_filetypes": ["rust"] }
 
+"when 1 it just isn't doing its job tho!
+let g:rustfmt_autosave = 0
+"see: https://github.com/rust-lang/rust.vim
+let g:rust_fold = 1
+let g:ftplugin_rust_source_path = $HOME.'/build/1nonpkgs/rust/rust/'
+let g:rust_playpen_url = ''
+let g:rust_shortener_url = ''
 
 
 " only works after - so, not in .vimrc! ffs
@@ -395,7 +402,13 @@ endif
 
 " src: https://github.com/racer-rust/vim-racer/blob/master/README.md
 " settings for vim-racer
+
 set hidden
+"It hides buffers instead of closing them. This means that you can have
+"unwritten changes to a file and open a new file using :e, without being
+"forced to write or undo your changes first. Also, undo buffers and marks are
+"preserved while the buffer is open.
+
 "let g:racer_cmd = "/home/z/build/1nonpkgs/racer/target/release/racer"
 "let $RUST_SRC_PATH="/home/z/build/1nonpkgs/rust/rust/src"
 
