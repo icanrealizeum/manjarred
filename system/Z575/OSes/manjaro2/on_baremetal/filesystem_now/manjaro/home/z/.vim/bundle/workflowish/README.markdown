@@ -42,6 +42,7 @@ By defining a simple syntax in Vim and using brilliant [folding capabilities](ht
 - folding and a `zoom/focus` mode
   - `zq` to focus on current item / toggle off
   - `zp` move focus to parent item
+  - `za` toggles folding. See [Vim wiki: Folding](http://vim.wikia.com/wiki/Folding#Opening_and_closing_folds)
 - notes (just add `\` in the beginning of the line to start a comment)
 - [vimgrep](http://vimdoc.sourceforge.net/htmldoc/quickfix.html#:vimgrep) for filtering lines
 - todos:
@@ -55,11 +56,25 @@ Thanks to the long running tradition, *workflowish* files have `.wofl` extension
 
 ## Installing
 
-[Use Tim Pope's Pathogen](https://github.com/tpope/vim-pathogen)
+[Use Tim Pope's Pathogen](https://github.com/tpope/vim-pathogen).
+
+> New to Pathogen? It's easy. You "install a plugin" by putting its files in a directory. i.e. `cd ~/.vim/bundle && git clone https://github.com/lukaszkorecki/workflowish` but please, [read the Pathogen README](https://github.com/tpope/vim-pathogen).)
+
+## Optional configuration tweak
+
+This is not necessary for most users, but if you're a perfectionist you can do it. Add this to your .vimrc to fix [an edge-case with folding single-items](https://github.com/lukaszkorecki/workflowish/issues/5):
+
+```
+autocmd BufWinLeave *.wofl mkview
+autocmd BufWinEnter *.wofl silent loadview
+```
 
 # Legal
 
 MIT  (c) Workflowish Team
 
-    15	Jimmie Elvenmark
-     7	Łukasz Korecki
+## Maintainers
+
+   15 Jimmie Elvenmark
+   10 Łukasz Korecki
+    4 hangtwentyy

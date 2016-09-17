@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2863.0_r13193.9d1e504
+pkgver=55.0.2864.0_r13422.52d02d1
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -718,7 +718,7 @@ build() {
 #  python2 build/gyp_chromium --depth=. -Drelease_extra_cflags="$CFLAGS" ${_flags[@]} ${_use_system[@]}
 
 
-  msg2 "ninja-ing"
+  msg2 "ninja-ing (if you get the following error, rerun ./1  this: /bin/sh: /home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/buildtools/linux64/gn: Permission denied"
 
   # Build all with ninja
   LC_ALL=C ninja -C "${_reldir}" -v chrome chrome_sandbox
