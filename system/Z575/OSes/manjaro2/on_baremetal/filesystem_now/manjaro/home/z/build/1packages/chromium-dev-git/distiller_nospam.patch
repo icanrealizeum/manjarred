@@ -1,0 +1,13 @@
+diff --git a/services/shell/public/cpp/lib/interface_registry.cc b/services/shell/public/cpp/lib/interface_registry.cc
+index 6f79a51..59eb2e7 100644
+--- a/services/shell/public/cpp/lib/interface_registry.cc
++++ b/services/shell/public/cpp/lib/interface_registry.cc
+@@ -96,7 +96,7 @@ void InterfaceRegistry::GetInterface(const std::string& interface_name,
+   } else if (!default_binder_.is_null()) {
+     default_binder_.Run(interface_name, std::move(handle));
+   } else {
+-    LOG(ERROR) << "Failed to locate a binder for interface: " << interface_name;
++    DVLOG(3) << "Failed to locate a binder for interface: " << interface_name;
+   }
+ }
+ 

@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2864.0_r13436.e1cc00b
+pkgver=55.0.2864.0_r13442.387c6ce
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -147,6 +147,7 @@ google_search_engine_url.patch
 crazycflagstest_Ofast.patch
 #crazycflagstest_O2.patch
 chromium-system-jinja-r11.patch
+distiller_nospam.patch
 )
 
 installfil=chromium-dev.install
@@ -187,7 +188,8 @@ sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89'
             'b4d3581f688efa18d94fd617a4364f36c471b746b6e899cfe0a7f7dd575dae59010d42bb68e6565b98a53e37a81dddfa913cde9c7cdf19716861ee9bb6d61f95'
             '6d5992d77c3ab0b34b376d81852911521dce4caba5bbadce7e894b31b7046362e60896e70d91ae7cb91dd05cb7c868475fce68d260b21f0ba3c0c97f42dbce03'
-            '19252791647b000353d9edf5fb6a496da1acfb3f81a82e252eab0f87fa305a2b920d91944da467999c618549977359fbb043846009c001ad4307303c2c0dac7f')
+            '19252791647b000353d9edf5fb6a496da1acfb3f81a82e252eab0f87fa305a2b920d91944da467999c618549977359fbb043846009c001ad4307303c2c0dac7f'
+            'b61202488cd364990a431b5be994680f1141c34784dabbf3f6049b70618af3c2a78c603e6e9d6be7f570d660e9e937f509fe49a7a15efd590fde0b38a9c616eb')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 
