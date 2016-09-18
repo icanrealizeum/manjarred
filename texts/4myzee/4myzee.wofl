@@ -467,6 +467,10 @@
     \ sudo pacman -S linux4{6,7}
     \ presumably linux44 is already installed!
   * sudo pacman -Rs lib32-acl lib32-alsa-lib lib32-alsa-plugins lib32-at-spi2-atk lib32-at-spi2-core lib32-atk lib32-attr lib32-bzip2 lib32-cairo lib32-colord lib32-cracklib lib32-dconf lib32-e2fsprogs lib32-elfutils lib32-expat lib32-flac lib32-fontconfig lib32-freetype2 lib32-gcc-libs lib32-gdk-pixbuf2 lib32-giflib lib32-glib-networking lib32-glib2 lib32-glibc lib32-gmp lib32-gnutls lib32-gtk3 lib32-harfbuzz lib32-icu lib32-js17 lib32-json-c lib32-json-glib lib32-keyutils lib32-krb5 lib32-lcms lib32-lcms2 lib32-libasyncns lib32-libcap lib32-libcroco lib32-libcups lib32-libdatrie lib32-libdbus lib32-libdrm lib32-libepoxy lib32-libffi lib32-libgcrypt lib32-libgpg-error lib32-libgudev lib32-libgusb lib32-libice lib32-libidn lib32-libjpeg-turbo lib32-libldap lib32-libltdl lib32-libnl lib32-libogg lib32-libpcap lib32-libpciaccess lib32-libpng lib32-libproxy lib32-libpulse lib32-librsvg lib32-libsm lib32-libsndfile lib32-libsoup lib32-libtasn1 lib32-libthai lib32-libtiff lib32-libtirpc lib32-libtxc_dxtn lib32-libusb lib32-libva lib32-libvorbis lib32-libx11 lib32-libxau lib32-libxcb lib32-libxcomposite lib32-libxcursor lib32-libxdamage lib32-libxdmcp lib32-libxext lib32-libxfixes lib32-libxft lib32-libxi lib32-libxinerama lib32-libxkbcommon lib32-libxml2 lib32-libxmu lib32-libxrandr lib32-libxrender lib32-libxshmfence lib32-libxslt lib32-libxt lib32-libxtst lib32-libxxf86vm lib32-llvm-libs lib32-mesa lib32-mpg123 lib32-ncurses lib32-nettle lib32-nspr lib32-ocl-icd lib32-openal lib32-openssl lib32-p11-kit lib32-pam lib32-pango lib32-pcre lib32-pixman lib32-polkit lib32-readline lib32-rest lib32-sqlite lib32-systemd lib32-util-linux lib32-v4l-utils lib32-wayland lib32-xz lib32-zlib dev86 manjaro-alsa
+  * sudo pacman -Rs hardening-wrapper
+    \ this has extra PATH as first element: /usr/lib/hardening-wrapper/bin
+    \ this files are there: ld.gold ld.bfd ld gcc g++ clang++ clang cc c99 c89 c++
+
 
 
 

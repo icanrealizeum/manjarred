@@ -944,4 +944,9 @@
 * sugar
   \ http://arstechnica.com/science/2016/09/sugar-industry-bought-off-scientists-skewed-dietary-guidelines-for-decades/
 
+* a running adb process causes this spam:
+  \ kernel: ohci-pci 0000:00:12.0: ohci_rh_resume: control 643
+  \ due to a patched kernel where I added that.
+  \ Even though adb listens on 127.0.0.1 apparently.
+  \ adb got started by cmd: idea(.sh)
 
