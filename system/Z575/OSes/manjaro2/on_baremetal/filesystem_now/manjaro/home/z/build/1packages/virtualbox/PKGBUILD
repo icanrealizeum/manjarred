@@ -10,7 +10,7 @@ pkgname=('virtualbox'
          'virtualbox-guest-utils'
          'virtualbox-guest-utils-nox'
          'virtualbox-ext-vnc')
-pkgver=5.1.4
+pkgver=5.1.6
 pkgrel=1
 arch=('i686' 'x86_64')
 url='http://virtualbox.org'
@@ -70,7 +70,7 @@ source=("https://download.virtualbox.org/virtualbox/$pkgver/VirtualBox-$pkgver.t
         '006-rdesktop-vrdp-keymap-path.patch'
         '007-python2-path.patch'
         )
-md5sums=('e25a6a1f3c113c373dc0433f9c2526f3'
+md5sums=('8c2331a718cfc038963c1214c2ba9811'
          'a19774e8c56f2c4d12c528992525c444'
          '331f69783ea9d4e762f7103954c500a3'
          '984412a63aa9c07ddc3cfd970381d5df'
@@ -87,7 +87,7 @@ md5sums=('e25a6a1f3c113c373dc0433f9c2526f3'
          'e8a0b47e61ddcffdeed71086585a1ef3'
          'd82a6f19be739341ed7f1cf4ee8070ca'
          '188ea65918309f737ce28216c2b07c3b')
-sha512sums=('f32ba9499754f84e98680cde7e807b3201dc906b7754c88a0910f88d88bea32318ccf396dea7a5320f8c6bbfbdf59a514f94576c830089da3ca5b04b42516d8b'
+sha512sums=('7b10c203692a091b3de8dda147b386e17fa7d2bdb56031163e0551e54c1ff6a8e953361d51cc6f7bb6978544a6517e843b446e866aa1fa6f96b4677dda27daa4'
             '2aee54d1e9c5d1e04e2aee1e913efa41a88e6dd409640c253317de6694b9ef5e33c3e1ac982801bb25fbe9e1fd1486ba7332cf9be6a231fde9fb3fb42e2f3502'
             'cd32e76fe5ef563739767ab476bd32528ea9d009b125408e9b35f8c3406aa33d6dc9ffc25c099d150779784d4527e6697ae0c7494a6ff5bb0538b08fab2a326d'
             '8780be6a610ff6b6bdf3a2cbf8debce6e8e652ecdba160b57a2fc2443a25f3a19189a54a13e7f16f3cd8e072079c231778091a24e2185aec82a49fb1e71d2fb8'
@@ -134,9 +134,6 @@ build() {
     msg2 'Build virtualbox'
     ./configure \
         --disable-docs \
-        --enable-webservice \
-        --enable-vde \
-        --enable-vnc \
         --disable-kmods \
         --with-makeself=/usr/bin/echo
     # fake makeself binary to compile without nofatal
@@ -144,11 +141,11 @@ build() {
     source ./env.sh
     kmk
 
-    msg2 'Build rdesktop-vrdp'
-    kmk -C src/VBox/RDP/client-1.8.3
+#    msg2 'Build rdesktop-vrdp'
+#    kmk -C src/VBox/RDP/client-1.8.3
 
-    msg2 'Build VNC extension pack'
-    kmk -C src/VBox/ExtPacks/VNC packing
+#    msg2 'Build VNC extension pack'
+#    kmk -C src/VBox/ExtPacks/VNC packing
 }
 
 package_virtualbox() {
