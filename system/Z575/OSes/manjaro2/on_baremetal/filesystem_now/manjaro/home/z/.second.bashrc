@@ -92,7 +92,8 @@ unset CDPATH
 #both should be in PATH because with just aliases cargo will fail
 #export PATH="$PATH:$rustroot/bin:$cargoroot"
 
-alias rustfmt='/home/z/build/1nonpkgs/rustfmt/target/release/rustfmt'
+#don't alias this! needs cargo-fmt too! or else `cargo fmt` won't work!
+#alias rustfmt='/home/z/build/1nonpkgs/rustfmt/target/release/rustfmt'
 ##alias rustc='LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/" /home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/rustc'
 ##alias cargo='LD_LIBRARY_PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/lib/" PATH="/home/emacs/build/rust/x86_64-unknown-linux-gnu/stage2/bin/:$PATH" /home/emacs/build/cargo/target/x86_64-unknown-linux-gnu/cargo'
 #----------
@@ -150,7 +151,7 @@ alias bc='bc -l' #decimals!
 #estimated firefox:
 #UA='Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
 #chromium now:
-UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2756.0 Safari/537.36,gzip(gfe),gzip(gfe)'
+UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2864.0 Safari/537.36'
 alias downmp3="time youtube-dl --user-agent \"${UA}\" --extract-audio --audio-format mp3"
 alias downaudio="time youtube-dl --user-agent \"${UA}\" --extract-audio"
 alias downvideo="time youtube-dl --user-agent \"${UA}\""
@@ -547,7 +548,7 @@ export GIT_SSH=~/bin/sshgit
 export GOPATH=~/"build/1nonpkgs/gopath"
 
 #add racer to PATH for rust autocompletion vim-racer
-export PATH="$PATH:/home/$USER/build/1nonpkgs/racer/target/release"
+#export PATH="$PATH:/home/$USER/build/1nonpkgs/racer/target/release"
 export RUST_SRC_PATH=~/"build/1nonpkgs/rust/rust/src"
 
 #attempt:don't autoload some system packages placed plugins! - this doesn't work
@@ -557,11 +558,13 @@ export MOZ_PLUGIN_PATH="/$RANDOM" #tried: /
 #distcc stuff, no need here(but ok in /etc/makepkg.conf):
 #DISTCC_SSH="ssh -i \"/home/z/.../T400/koe\" -p 802 -l root"
 
-export PATH=${PATH}:~/bin:/home/z/build/1nonpkgs/chars/target/debug
+export PATH=${PATH}:~/build/1nonpkgs/chars/target/debug
 
 #if test "$TERM" = "linux"; then
 #  #XXX: this won't work, needs sudo password and I don't wanna make it suid!
 #   (sleep 15 ; logger "Normalizing CPU"; cpunorm && logger "success") &
    #XXX: still reports success tho
 #fi
+
+export PATH="${PATH}:/home/z/build/1nonpkgs/rustfmt/target/release"
 
