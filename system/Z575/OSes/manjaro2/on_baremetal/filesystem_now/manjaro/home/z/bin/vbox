@@ -1,0 +1,39 @@
+#!/bin/bash
+
+basedir=/home/z/build/1packages/virtualbox/
+source "${basedir}/PKGBUILD"
+
+srcdir="${basedir}/makepkg_pacman/virtualbox/src/VirtualBox-${pkgver}/"
+moddir="${srcdir}/out/linux.amd64/release/bin/src/"
+
+set -e
+
+cd "$moddir"
+
+kerneldate="`date --date="$(uname -v|cut -f4- -d' ')" +%s`"
+moduledate="`stat --format=%Y -- ./vboxdrv.ko`"
+if test "$kerneldate" -ge "$moduledate"; then
+  #XXX recompile virtualbox host modules only if newer kernel than the last time modules were compiled!
+  make
+fi
+
+set +e
+
+sudo insmod -- ./vboxdrv.ko
+sudo insmod -- ./vboxnetadp.ko
+sudo insmod -- ./vboxnetflt.ko
+sudo insmod -- ./vboxpci.ko
+
+sudo -K
+
+/usr/bin/VirtualBox
+ec="$?"
+echo "exit code: $ec"
+
+sudo rmmod -- vboxnetadp vboxnetflt vboxpci vboxdrv
+#sudo rmmod -- /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetadp.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetflt.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxpci.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxdrv.ko
+
+sudo -K
+
+exit $ec
+

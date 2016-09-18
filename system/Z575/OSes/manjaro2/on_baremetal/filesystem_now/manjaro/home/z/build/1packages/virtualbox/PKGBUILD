@@ -4,12 +4,13 @@
 
 pkgbase=virtualbox
 pkgname=('virtualbox'
-         'virtualbox-host-dkms'
+#         'virtualbox-host-dkms'
          'virtualbox-guest-dkms'
          'virtualbox-sdk'
          'virtualbox-guest-utils'
          'virtualbox-guest-utils-nox'
-         'virtualbox-ext-vnc')
+         #'virtualbox-ext-vnc'
+         )
 pkgver=5.1.6
 pkgrel=1
 arch=('i686' 'x86_64')
@@ -153,11 +154,14 @@ package_virtualbox() {
     depends=('glibc' 'openssl' 'curl' 'gcc-libs' 'libpng' 'python2' 'sdl'
              'libvpx' 'libxml2' 'procps-ng' 'shared-mime-info' 'zlib'
              'libxcursor' 'libxinerama' 'libx11' 'libxext' 'libxmu' 'libxt'
-             'qt5-base' 'qt5-x11extras' 'VIRTUALBOX-HOST-MODULES')
+             'qt5-base' 'qt5-x11extras' 
+             #'VIRTUALBOX-HOST-MODULES'
+             #XXX I'll handle the modules manually! via ~/bin/vbox script!
+             )
     optdepends=('vde2: Virtual Distributed Ethernet support'
                 'net-tools: Host-only or bridged networking support'
                 'virtualbox-guest-iso: Guest Additions CD image'
-                'virtualbox-ext-vnc: VNC server support'
+                #'virtualbox-ext-vnc: VNC server support'
                 'virtualbox-sdk: Developer kit')
     backup=('etc/vbox/vbox.cfg')
     replaces=('virtualbox-ose')
@@ -170,7 +174,8 @@ package_virtualbox() {
     # binaries
     install -dm755 "$pkgdir/usr/bin"
     install -m755 VBox.sh "$pkgdir/usr/bin/VBox"
-    for i in VBoxHeadless VBoxManage VBoxSDL VirtualBox vboxwebsrv VBoxBalloonCtrl; do
+    #for i in VBoxHeadless VBoxManage VBoxSDL VirtualBox vboxwebsrv VBoxBalloonCtrl; do
+    for i in VBoxHeadless VBoxManage VBoxSDL VirtualBox VBoxBalloonCtrl; do
         ln -sf VBox "$pkgdir/usr/bin/$i"
         ln -sf VBox "$pkgdir/usr/bin/${i,,}"
     done
@@ -184,7 +189,8 @@ package_virtualbox() {
     ## setuid root binaries
     install -m4755 VBoxSDL VirtualBox VBoxHeadless VBoxNetDHCP VBoxNetAdpCtl VBoxNetNAT -t "$pkgdir/usr/lib/virtualbox"
     ## other binaries
-    install -m755 VBoxManage VBoxSVC VBoxExtPackHelperApp VBoxXPCOMIPCD VBoxTestOGL VBoxBalloonCtrl vboxwebsrv webtest -t "$pkgdir/usr/lib/virtualbox"
+    #install -m755 VBoxManage VBoxSVC VBoxExtPackHelperApp VBoxXPCOMIPCD VBoxTestOGL VBoxBalloonCtrl vboxwebsrv webtest -t "$pkgdir/usr/lib/virtualbox"
+    install -m755 VBoxManage VBoxSVC VBoxExtPackHelperApp VBoxXPCOMIPCD VBoxTestOGL VBoxBalloonCtrl -t "$pkgdir/usr/lib/virtualbox"
 
     # components
     install -dm755 "$pkgdir/usr/lib/virtualbox/components"
