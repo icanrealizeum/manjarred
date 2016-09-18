@@ -19,21 +19,27 @@ fi
 
 set +e
 
-sudo insmod -- ./vboxdrv.ko
-sudo insmod -- ./vboxnetadp.ko
-sudo insmod -- ./vboxnetflt.ko
-sudo insmod -- ./vboxpci.ko
+if ! lsmod|grep -i vbox >/dev/null; then
+ sudo insmod -- ./vboxdrv.ko
+ sudo insmod -- ./vboxnetadp.ko
+ sudo insmod -- ./vboxnetflt.ko
+ sudo insmod -- ./vboxpci.ko
+ sudo -K
+fi
 
-sudo -K
 
 /usr/bin/VirtualBox
 ec="$?"
 echo "exit code: $ec"
 
-sudo rmmod -- vboxnetadp vboxnetflt vboxpci vboxdrv
-#sudo rmmod -- /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetadp.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetflt.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxpci.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxdrv.ko
-
-sudo -K
+if lsmod|grep -i vbox >/dev/null; then
+  #if it's not still running
+  if ! ps axuw|grep -i virtualbox|grep -v grep >/dev/null; then
+    sudo rmmod -- vboxnetadp vboxnetflt vboxpci vboxdrv
+    #sudo rmmod -- /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetadp.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetflt.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxpci.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxdrv.ko
+    sudo -K
+  fi
+fi
 
 exit $ec
 
