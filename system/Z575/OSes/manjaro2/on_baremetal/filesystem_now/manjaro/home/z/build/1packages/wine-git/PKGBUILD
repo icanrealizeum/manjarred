@@ -6,7 +6,7 @@
 DEBUG=0
 pkgname=wine-git
 _gitname="wine"
-pkgver=1.9.18.r153.g4931e6f
+pkgver=1.9.19.r0.ge2ebc0d
 pkgrel=1
 pkgdesc="A compatibility layer for running Windows programs. Latest GIT version."
 url="http://www.winehq.com"
@@ -62,6 +62,9 @@ _depends=(
   libsm           lib32-libsm
   gcc-libs        lib32-gcc-libs
   desktop-file-utils
+
+  #unsure if needed:
+  lib32-alsa-plugins lib32-libpulse
 )
 
 makedepends=(autoconf ncurses bison perl fontforge flex prelink

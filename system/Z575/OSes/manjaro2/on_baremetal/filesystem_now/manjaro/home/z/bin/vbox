@@ -34,7 +34,7 @@ echo "exit code: $ec"
 
 if lsmod|grep -i vbox >/dev/null; then
   #if it's not still running
-  if ! ps axuw|grep -i virtualbox|grep -v grep >/dev/null; then
+  if ! ps axuw|grep VirtualBox|grep -v grep >/dev/null; then
     sudo rmmod -- vboxnetadp vboxnetflt vboxpci vboxdrv
     #sudo rmmod -- /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetadp.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxnetflt.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxpci.ko /home/z/build/1packages/virtualbox/makepkg_pacman/virtualbox/src/VirtualBox-5.1.6/out/linux.amd64/release/bin/src/vboxdrv.ko
     sudo -K

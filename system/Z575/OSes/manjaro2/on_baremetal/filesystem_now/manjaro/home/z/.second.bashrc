@@ -568,3 +568,10 @@ export PATH=${PATH}:~/build/1nonpkgs/chars/target/debug
 
 export PATH="${PATH}:/home/z/build/1nonpkgs/rustfmt/target/release"
 
+#freetype2 (package) Available settings:
+#      FT2_SUBPIXEL_HINTING=0  # Classic mode (default in 2.6)
+#      FT2_SUBPIXEL_HINTING=1  # Infinality mode
+#      FT2_SUBPIXEL_HINTING=2  # Minimal mode (default in 2.7)
+#export FT2_SUBPIXEL_HINTING=2
+#^works, but needs reboot(or X restart?)
+
