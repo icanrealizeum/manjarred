@@ -139,7 +139,7 @@
   * remove manjaro urls from firefox/chromium
     * sudo pacman -Rs manjaro-browser-settings
   * remove nfs
-    * sudo pacman -Rs nfs-utils
+    * sudo pacman -Rs nfs-utils mkinitcpio-nfs-utils
     - blacklist nfs module
       \ sudo vim /etc/modprobe.d/blacklist-nfs.conf
       \ add line:
