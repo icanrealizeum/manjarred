@@ -1,0 +1,111 @@
+apm_debug_dump = false #Default = false
+#    //third_party/webrtc/build/webrtc.gni:46
+#    Selects whether debug dumps for the audio processing module
+#    should be generated.
+
+enable_blimp_client = false #Default = false
+#    //blimp/client/core/config.gni:9
+#    Enables the blimp client. This is required to get the actual implementation
+#    of blimp.
+#    By default, only a dummy-implementation is provided.
+
+enable_nacl_nonsfi = true #Default = true
+#    //build/config/features.gni:38
+#    Non-SFI is not yet supported on mipsel
+
+enable_swiftshader = false #Default = false
+#    //ui/gl/BUILD.gn:13
+
+enable_vr_shell = false #Default = false
+#    //chrome/common/features.gni:40
+#    Enables vr shell.
+
+enable_vr_shell_ui_dev = false #Default = false
+#    //chrome/common/features.gni:43
+#    Enables vr shell UI development on local or remote page.
+
+enable_webvr = false #Default = false
+#    //build/config/features.gni:124
+#    Enable WebVR support by default on Android
+#    Still requires command line flag to access API
+
+enable_xpc_notifications = false #Default = false
+#    //chrome/common/features.gni:46
+#    Enable native notifications via XPC services (mac only).
+
+goma_dir = "/home/z/goma" #Default = "/home/z/goma"
+#    //build/toolchain/goma.gni:17
+#    Absolute directory containing the Goma source code.
+
+is_cast_audio_only = false #Default = false
+#    //build/config/chromecast_build.gni:14
+#    Set this true for an audio-only Chromecast build.
+
+is_component_ffmpeg = false #Default = false
+#    //third_party/ffmpeg/ffmpeg_options.gni:40
+#    Set true to build ffmpeg as a shared library. NOTE: this means we should
+#    always consult is_component_ffmpeg instead of is_component_build for
+#    ffmpeg targets. This helps linux chromium packagers that swap out our
+#    ffmpeg.so with their own. See discussion here
+#    https://groups.google.com/a/chromium.org/forum/#!msg/chromium-packagers/R5rcZXWxBEQ/B6k0zzmJbvcJ
+
+packages_directory = "Packages" #Default = "Packages"
+#    //services/shell/public/constants.gni:7
+#    Service package directories are created within this subdirectory.
+
+pdf_use_win32_gdi = true #Default = true
+#    //third_party/pdfium/pdfium.gni:24
+#    Build PDFium with or without experimental win32 GDI APIs.
+
+pgo_build = false #Default = false
+#    //chrome/common/features.gni:53
+#    Indicates if the build is using PGO.
+
+rtc_enable_intelligibility_enhancer = false #Default = false
+#    //third_party/webrtc/build/webrtc.gni:42
+#    Disable the code for the intelligibility enhancer by default.
+
+rtc_include_internal_audio_device = false #Default = false
+#    //third_party/webrtc/build/webrtc.gni:155
+#    Chromium uses its own IO handling, so the internal ADM is only built for
+#    standalone WebRTC.
+
+rtc_include_pulse_audio = false #Default = false
+#    //third_party/webrtc/build/webrtc.gni:151
+#    Excluded in Chromium since its prerequisites don't require Pulse Audio.
+
+rtc_include_tests = false #Default = false
+#    //third_party/webrtc/build/webrtc.gni:158
+#    Include tests in standalone checkout.
+
+rtc_sanitize_coverage = "" #Default = ""
+#    //third_party/webrtc/build/webrtc.gni:82
+#    Set to "func", "block", "edge" for coverage generation.
+#    At unit test runtime set UBSAN_OPTIONS="coverage=1".
+#    It is recommend to set include_examples=0.
+#    Use llvm's sancov -html-report for human readable reports.
+#    See http://clang.llvm.org/docs/SanitizerCoverage.html .
+
+rtc_use_dummy_audio_file_devices = false #Default = false
+#    //third_party/webrtc/build/webrtc.gni:127
+#    By default, use normal platform audio support or dummy audio, but don't
+#    use file-based audio playout and record.
+
+use_gnome_keyring = true #Default = true
+#    //components/os_crypt/features.gni:10
+#    Whether to use libgnome-keyring (deprecated by libsecret).
+#    See http://crbug.com/466975 and http://crbug.com/355223.
+
+use_locally_built_instrumented_libraries = false #Default = false
+#    //build/config/sanitizers/sanitizers.gni:45
+#    Use dynamic libraries instrumented by one of the sanitizers instead of the
+#    standard system libraries. Set this flag to build the libraries from source.
+
+v8_android_log_stdout = false #Default = false
+#    //v8/BUILD.gn:23
+#    Print to stdout on Android.
+
+v8_no_inline = false #Default = false
+#    //v8/BUILD.gn:66
+#    Switches off inlining in V8.
+

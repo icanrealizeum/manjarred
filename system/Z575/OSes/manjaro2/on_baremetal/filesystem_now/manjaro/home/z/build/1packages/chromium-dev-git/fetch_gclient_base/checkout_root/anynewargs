@@ -1,0 +1,22 @@
+#!/bin/bash
+
+export PATH=~/build/1packages/chromium-dev-git/makepkg_pacman/chromium-dev/src/python-path:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/depot_tools:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/z/bin
+
+set -e
+out="/tmp/out/Default"
+cd src
+#colordiff -up ../args.gn <(gn args "$out" --list) | less
+#gn args "$out" --list | grep -v '^ ' | grep -v '^$' | grep -v '^\['|sort -k1 -u
+#cat ../args.gn | grep -v '^ ' | grep -v '^$' | grep -v '^\['| grep -v '^#' |sort -k1 -u|cut -f 1 -d'='
+
+#colordiff -wup <(cat ../args.gn | grep -v '^ ' | grep -v '^$' | grep -v '^\['| grep -v '^#' |cut -f 1 -d' '|sort -k1 -u) <(gn args "$out" --list | grep -v '^ ' | grep -v '^$' | grep -v '^\[' | grep -vE '^(binutils_path|clang_version|current_cpu|current_os|host_cpu|host_os|target_cpu|target_os)' | cut -f 1 -d' ' | sort -k1 -u) | less
+
+time diff -wup <(cat ../args.gn | grep -v '^ ' | grep -v '^$' | grep -v '^\['| grep -v '^#' |cut -f 1 -d' '|sort -k1 -u) <(gn args "$out" --list | grep -v '^ ' | grep -v '^$' | grep -v '^\[' | grep -vE '^(packages_directory|is_component_ffmpeg|goma_dir|binutils_path|clang_version|current_cpu|current_os|host_cpu|host_os|target_cpu|target_os)' | cut -f 1 -d' ' | sort -k1 -u) | grep '^+' | cut -f2 -d '+' | xargs -n 1 -I '{}' -- gn args "$out" --list='{}' | grep -v "^\['" | sed -re 's/ Default = (.*)/= \1 #Default = \1/g' |sed -re 's/^( +)/#\1/g' >../THENEWargs.gn.shouldappend
+#takes 1min20sec while chromium is compiling with cpumax
+
+#show help for one of the args(example):
+#gn args "$out" --list=apm_debug_dump
+#only lists last:
+#gn args "$out" --list=apm_debug_dump --list=target_cpu
+#gn args "$out" --help
+
