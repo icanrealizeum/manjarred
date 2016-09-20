@@ -56,4 +56,7 @@ package() {
 
 	install -Dm644 "../${pkgname}-${_origver}/debian/hddtemp.db" "${pkgdir}/usr/share/${pkgname}/hddtemp.db"
 	install -Dm644 '../service' "${pkgdir}/usr/lib/systemd/system/hddtemp.service"
+  #this doesn't work after install(aka it's non suid after install!):
+  #sudo chown root:root "${pkdir}/usr/bin/hddtemp"
+  #sudo chmod u+s "${pkdir}/usr/bin/hddtemp"
 }
