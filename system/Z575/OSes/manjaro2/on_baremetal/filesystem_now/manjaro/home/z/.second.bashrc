@@ -148,6 +148,8 @@ mp3dir(){
 #alias zipwithpwd='zip -v -9 -r -T -e'  #follows: archive.zip *
 alias sl='ls'
 alias bc='bc -l' #decimals!
+
+alias vlca='vlc --no-video'
 #estimated firefox:
 #UA='Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
 #chromium now:
