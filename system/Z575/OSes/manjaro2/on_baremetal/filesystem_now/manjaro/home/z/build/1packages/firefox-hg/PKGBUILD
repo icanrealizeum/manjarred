@@ -5,7 +5,7 @@
 # Contributor: Jakub Schmidtke <sjakub@gmail.com>
 
 pkgname=firefox-hg
-pkgver=314344+.eaf5eb6f8fa0+
+pkgver=314369+.fc69febcbf6c+
 pkgrel=1
 pkgdesc="Latest firefox browser built from the trunk code"
 arch=('i686' 'x86_64')
@@ -28,7 +28,8 @@ makedepends=('unzip' 'zip' 'diffutils' 'python2' 'yasm' 'mesa' 'imake'
              'freetype2>2.1.0' 'pkg-config>=0.9.0' 'libnotify' 'libidl2'
 #old             'iw' 'alsa-lib' 'curl' these are probably not needed?
 
-             'ccache>=3.2.0' #it must support -fprofile-generate or else cache misses! 3.1.9 the git version works, but not the 3.1.9 non-git which is current now.
+             'ccache-git'
+             #'ccache>=3.2.0' #this fails when ccache-git 3.3.1_2_g31c67cb-1 #it must support -fprofile-generate or else cache misses! 3.1.9 the git version works, but not the 3.1.9 non-git which is current now.
              'inetutils' 'mercurial' 'autoconf2.13' 'nss>=3.19.1' 'nspr>=4.10.8' 'libpng>=1.6.17')
 optdepends=('networkmanager: Location detection via available WiFi networks'
             'gst-plugins-good: h.264 video'

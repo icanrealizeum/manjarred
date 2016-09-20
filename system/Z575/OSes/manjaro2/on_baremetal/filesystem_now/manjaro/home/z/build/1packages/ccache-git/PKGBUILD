@@ -1,5 +1,5 @@
 pkgname=ccache-git
-pkgver=v3.3.1_2_g31c67cb
+pkgver=3.3.1_2_g31c67cb
 pkgrel=1
 pkgdesc="A compiler cache"
 arch=('i686' 'x86_64')
@@ -17,7 +17,7 @@ sha256sums=('SKIP')
 
 pkgver() {
   cd "${srcdir}/${_gitfolder}"
-  git describe | sed 's/[- ]/_/g'
+  git describe | sed -e 's/[- ]/_/g' -e 's/^v//'
 }
 
 build() {
