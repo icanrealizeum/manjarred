@@ -1,0 +1,12 @@
+
+suidify() {
+  chmod u+s /usr/bin/hddtemp
+}
+
+post_install() {
+  suidify
+}
+
+post_upgrade() {
+  suidify
+}

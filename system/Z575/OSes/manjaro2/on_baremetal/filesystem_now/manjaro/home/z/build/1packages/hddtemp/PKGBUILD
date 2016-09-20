@@ -14,18 +14,22 @@ pkgdesc="Gives you the temperature of your hard drive by reading S.M.A.R.T. info
 url='https://savannah.nongnu.org/projects/hddtemp/'
 license=('GPL')
 arch=('i686' 'x86_64')
+install='hddtemp.install'
 sssdpatch="samsungSSD.patch"
 source=("http://download.savannah.gnu.org/releases/${pkgname}/${pkgname}-${_origver}.tar.bz2"
         "http://ftp.debian.org/debian/pool/main/h/${pkgname}/${pkgname}_${_patchver}.diff.gz"
         'service'
+        "$install"
         "${sssdpatch}")
 sha1sums=('65393b0a4d9862c030c81702d95c1acd00da275b'
           'b9bcdd0537c1540e55e5056445b571ea61d5a4a3'
           '9b02e5bed22f81ceab2b69bae788a9a3aa5c2147'
+          '5fdab7aefc2e57f2bef5574f8669a33e4e31d9c9'
           '6eca6f1bb38a4480c598cbc654dd7e022b5cb5bd')
 sha512sums=('7db5a3dff60c59ce147b996ea4f8b6de1abcd34301bb863507b4d4b44e72fdc031078867a7f37161e67e74f6b426a1d856d3081179c678d2a442815bb0faa94d'
             '2041047cedaba3cf8d1edf8f4d8fba6642dc1463562b1dcf0e070021c29cc729067a9c3225124bf6160d46d4f44500d318973c86c7edec14c9967a73cc8bbecc'
             'b09abf718d1f03677ef1ee5802735c5f8db13d2c6e83c223630ec48970eff5b8c01c4e413a68e3cbeacd6c92fb88e2b5266eba9f34814861c369ec5431535472'
+            'a258d19669e61778a73d3ab8aec20cd90a78824bbc72a5011bdc8f26b50948e5d86de9a6e88dad448a6f76d5b60d1071e83f4af0e902e49d79fd4e2c174996ea'
             '8d6ed96bde93814257b3676d33a2db1185e6d4a393d5f91e505f9057d7ac0702e0d2ec011293f47ce2afe5d4a66856470e633a14c5078e9c523b03a474df01fd')
 
 
