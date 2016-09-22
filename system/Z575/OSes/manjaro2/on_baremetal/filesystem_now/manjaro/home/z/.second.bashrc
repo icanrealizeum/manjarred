@@ -149,6 +149,7 @@ mp3dir(){
 alias sl='ls'
 alias bc='bc -l' #decimals!
 
+alias keepassx='echo "dont use this directly"'
 alias vlca='vlc --no-video'
 #estimated firefox:
 #UA='Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
