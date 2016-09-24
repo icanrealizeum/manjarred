@@ -1,0 +1,16 @@
+diff --git a/content/browser/renderer_host/media/video_capture_manager.cc b/content/browser/renderer_host/media/video_capture_manager.cc
+index c4fc6b6..49d156b 100644
+--- a/content/browser/renderer_host/media/video_capture_manager.cc
++++ b/content/browser/renderer_host/media/video_capture_manager.cc
+@@ -633,8 +633,9 @@ VideoCaptureManager::DoStartDesktopCaptureOnDeviceThread(
+ #elif defined(USE_AURA)
+     video_capture_device = DesktopCaptureDeviceAura::Create(desktop_id);
+ #endif
+-    if (!video_capture_device)
+-      video_capture_device = DesktopCaptureDevice::Create(desktop_id);
++//    if (!video_capture_device)
++//      video_capture_device = DesktopCaptureDevice::Create(desktop_id);
++    video_capture_device = NULL;
+   }
+ #endif  // defined(ENABLE_SCREEN_CAPTURE)
+ 

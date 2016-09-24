@@ -1,0 +1,17 @@
+diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
+index 135de55..cfd15a6 100644
+--- a/content/browser/BUILD.gn
++++ b/content/browser/BUILD.gn
+@@ -1478,9 +1478,9 @@ source_set("browser") {
+       "//third_party/webrtc/media:rtc_media",
+       "//third_party/webrtc/modules/desktop_capture:primitives",
+     ]
+-    if (!is_ios) {
+-      defines += [ "ENABLE_SCREEN_CAPTURE=1" ]
+-    }
++#    if (!is_ios) {
++#      defines += [ "ENABLE_SCREEN_CAPTURE=1" ]
++#    }
+     if (is_linux || is_mac || is_win) {
+       sources += [
+         "media/capture/desktop_capture_device.cc",

@@ -22,7 +22,7 @@ system_ffmpeg=1 # if 1 then make chromium use system's ffmpeg instead of its own
 ## -- Package and components information -- ##
 ##############################################
 pkgname=chromium-dev
-pkgver=55.0.2869.0_r14347.046f328
+pkgver=55.0.2871.0_r14891.9027b8b
 _launcher_ver=5
 pkgrel=1
 pkgdesc="The open-source project behind Google Chrome Dev Channel"
@@ -148,6 +148,8 @@ crazycflagstest_Ofast.patch
 #crazycflagstest_O2.patch
 chromium-system-jinja-r11.patch
 distiller_nospam.patch
+DesktopCaptureDevice.patch
+noscreencapture.patch
 )
 
 installfil=chromium-dev.install
@@ -184,12 +186,14 @@ sha512sums=('c675a4bfc2b1588fc876172cea003e42e812da797eeaf45b332f3554f22020d66cf
             '72c9fe7b966555c695c0cb54fa3fd708d12fb3192671eaec670108bc5e4616510434bbd9cfd49d09deb83e5b980e64336bf940be2d97b869ca763a3527a7bfeb'
             '3b1d95b126bec820bd0d92e5050742196ebd1c1657bf8e33854633fb0c4be2f33f777312d53eb048043d7f91c3491bc957b2e98723b2d7de58fa114255e40d7c'
             '32b2240509cbe7d6e3e9f38003d7f6ff94f8bd03942661a10946bb14f74e3ace100f61beb88215b3b95aa3236001cc81dbfa2c0469f5ade83e22ee2691b79627'
-            '330068d7418c7483aa79fa7d6e919f13493d9ea0d4c42f7ddc3cebcf54203ccefa049b2a79bb0c15235b2d6b28cb81082ee8858aca0b17cbcf164588bbee7f2f'
+            'b2298b75fabae715a0a80f44bf06662d7e0ca42a86f5664d998b2e98c1a493d0a9eb0cc30edd6c434166c9a95a77fc4a2860c9f4e6dde58ecabfd3b5c0292e58'
             '5e4178efd5f575d66f11940859375b5260a7fa384c90f30766988c89813055b9ae3b9c4fa9eaad4ac4dfce3faa6c82bb0381a13e5b3e0dfbdadc73d5456add89'
             'b4d3581f688efa18d94fd617a4364f36c471b746b6e899cfe0a7f7dd575dae59010d42bb68e6565b98a53e37a81dddfa913cde9c7cdf19716861ee9bb6d61f95'
             '6d5992d77c3ab0b34b376d81852911521dce4caba5bbadce7e894b31b7046362e60896e70d91ae7cb91dd05cb7c868475fce68d260b21f0ba3c0c97f42dbce03'
             '0c0a5a3ac24191417504ce92306e459ffc84c4cf39123d91992fcfb54df2c69cb373c48454343d3fb66a4f352d1c8bbefb15341b34e44a6798b47951f4c113ee'
-            'b61202488cd364990a431b5be994680f1141c34784dabbf3f6049b70618af3c2a78c603e6e9d6be7f570d660e9e937f509fe49a7a15efd590fde0b38a9c616eb')
+            'b61202488cd364990a431b5be994680f1141c34784dabbf3f6049b70618af3c2a78c603e6e9d6be7f570d660e9e937f509fe49a7a15efd590fde0b38a9c616eb'
+            'acc34998b53c2b17e74afedd56d8aee6e49d18f4761fd10eb156f5e5dd41460344494d65152a0fbd2cf234cdb7d01fe8533afc48b015c95a9666c246e566f0a7'
+            '6a277d07d2e83819aa3c141a663c5e67e8eef4a2da1ca2817b457aa3accc501bd03900168e63bfb0095123d11046687925a5f49ec4979bb53700ab7069e9e4c9')
 options=('!strip' 'ccache' '!distcc')
 #XXX: not distcc beccause: distccd[16604] (dcc_execvp) ERROR: failed to exec ../../../home/z/build/1packages/chromium-dev-git/fetch_gclient_base/checkout_root/src/third_party/llvm-build/Release+Asserts/bin/clang++: No such file or directory
 

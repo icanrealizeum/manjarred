@@ -362,17 +362,17 @@ index 03c71a9..7d57c63 100644
  
    // Callback called when sizes of all site data are fetched and accumulated.
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 96a89bd..b761a31 100644
+index c27862b..0cca4ec 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1432,5 +1432,5 @@ split_static_library("browser") {
+@@ -1437,5 +1437,5 @@ split_static_library("browser") {
      "//third_party/smhasher:cityhash",
      "//third_party/webrtc/modules/desktop_capture",
 -    "//third_party/widevine/cdm:version_h",
 +#    "//third_party/widevine/cdm:version_h",
      "//third_party/zlib",
      "//third_party/zlib:compression_utils",
-@@ -2552,6 +2552,6 @@ split_static_library("browser") {
+@@ -2554,6 +2554,6 @@ split_static_library("browser") {
        "chrome_process_singleton.cc",
        "chrome_process_singleton.h",
 -      "component_updater/widevine_cdm_component_installer.cc",
@@ -382,7 +382,7 @@ index 96a89bd..b761a31 100644
        "custom_handlers/register_protocol_handler_permission_request.cc",
        "custom_handlers/register_protocol_handler_permission_request.h",
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index d8f8a12..5ad3b4a 100644
+index 55816eb..72b778b 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -60,5 +60,5 @@
@@ -399,7 +399,7 @@ index d8f8a12..5ad3b4a 100644
 +//#include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
  #include "chrome/browser/defaults.h"
  #include "chrome/browser/first_run/first_run.h"
-@@ -616,7 +616,7 @@ void RegisterComponentsForUpdate() {
+@@ -615,7 +615,7 @@ void RegisterComponentsForUpdate() {
  #if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
    RegisterRecoveryComponent(cus, g_browser_process->local_state());
 -  RegisterPepperFlashComponent(cus);
@@ -410,7 +410,7 @@ index d8f8a12..5ad3b4a 100644
  #endif  // !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
  
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 23b8509..4a5588e 100644
+index 5a03ae3..f6ef361 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
 @@ -68,5 +68,5 @@
@@ -421,10 +421,10 @@ index 23b8509..4a5588e 100644
  #include "chrome/browser/safe_browsing/safe_browsing_service.h"
  #include "chrome/browser/safe_browsing/ui_manager.h"
 diff --git a/chrome/browser/content_settings/local_shared_objects_container.cc b/chrome/browser/content_settings/local_shared_objects_container.cc
-index 2115b64..0b8f00f 100644
+index a49f724..f67b7fd 100644
 --- a/chrome/browser/content_settings/local_shared_objects_container.cc
 +++ b/chrome/browser/content_settings/local_shared_objects_container.cc
-@@ -223,5 +223,6 @@ LocalSharedObjectsContainer::CreateCookiesTreeModel() const {
+@@ -220,5 +220,6 @@ LocalSharedObjectsContainer::CreateCookiesTreeModel() const {
        cookies(), databases(), local_storages(), session_storages(), appcaches(),
        indexed_dbs(), file_systems(), nullptr, channel_ids(), service_workers(),
 -      cache_storages(), nullptr);
@@ -623,7 +623,7 @@ index 9b39773..1585e01 100644
  #if defined(OS_CHROMEOS)
    extensions::MediaPlayerAPI::GetFactoryInstance();
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 5a4b41d..bfee903 100644
+index fcc33f1..0371f65 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -265,9 +265,9 @@ static_library("extensions") {
@@ -649,10 +649,10 @@ index 5a4b41d..bfee903 100644
        "api/messaging/native_message_process_host.cc",
        "api/messaging/native_message_process_host.h",
 diff --git a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-index 64b8857..5a44b58 100644
+index a7a91cd..bf96c86 100644
 --- a/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
 +++ b/chrome/browser/extensions/component_extensions_whitelist/whitelist.cc
-@@ -74,5 +74,5 @@ bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
+@@ -75,5 +75,5 @@ bool IsComponentExtensionWhitelisted(int manifest_resource_id) {
      case IDR_CHROME_APP_MANIFEST:
  #endif
 -    case IDR_CLOUDPRINT_MANIFEST:
@@ -728,7 +728,7 @@ index 774bdcf..59895bc 100644
  }
  
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 0035f4b..5d54ee0 100644
+index ee6f76f..355bc58 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -37,5 +37,5 @@
@@ -745,14 +745,14 @@ index 0035f4b..5d54ee0 100644
 +//#include "chrome/browser/renderer_host/pepper/device_id_fetcher.h"
  #include "chrome/browser/search/search.h"
  #include "chrome/browser/signin/signin_manager_factory.h"
-@@ -555,5 +555,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -560,5 +560,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  #else
    AppShortcutManager::RegisterProfilePrefs(registry);
 -  DeviceIDFetcher::RegisterProfilePrefs(registry);
 +//  DeviceIDFetcher::RegisterProfilePrefs(registry);
    DevToolsWindow::RegisterProfilePrefs(registry);
  #if defined(ENABLE_APP_LIST)
-@@ -565,5 +565,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -570,5 +570,5 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    first_run::RegisterProfilePrefs(registry);
    NewTabUI::RegisterProfilePrefs(registry);
 -  PepperFlashSettingsManager::RegisterProfilePrefs(registry);
@@ -861,10 +861,10 @@ index 4a16f4c..19e4f45 100644
      </div>
      <div contentType="ppapi-broker">
 diff --git a/chrome/browser/resources/options/content_settings.html b/chrome/browser/resources/options/content_settings.html
-index 85659d6..b4e20ec 100644
+index e53a13c..d3bf534 100644
 --- a/chrome/browser/resources/options/content_settings.html
 +++ b/chrome/browser/resources/options/content_settings.html
-@@ -396,9 +396,4 @@
+@@ -392,9 +392,4 @@
                i18n-content="manageExceptions"></button>
          </div>
 -        <div id="media-pepper-flash-default-mic" class="pepper-flash-settings">
@@ -874,7 +874,7 @@ index 85659d6..b4e20ec 100644
 -        </div>
        </div>
      </section>
-@@ -436,11 +431,4 @@
+@@ -432,11 +427,4 @@
            </button>
          </div>
 -        <div id="media-pepper-flash-default-camera"
@@ -915,7 +915,7 @@ index edcadaf..737849b 100644
  
    /**
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index b9b1da9..e2e0ad4 100644
+index eb78318..82a5da3 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -66,5 +66,5 @@
@@ -925,7 +925,7 @@ index b9b1da9..e2e0ad4 100644
 +//#include "chrome/browser/pepper_broker_infobar_delegate.h"
  #include "chrome/browser/permissions/permission_request_manager.h"
  #include "chrome/browser/prefs/incognito_mode_prefs.h"
-@@ -1809,5 +1809,5 @@ bool Browser::RequestPpapiBrokerPermission(
+@@ -1813,5 +1813,5 @@ bool Browser::RequestPpapiBrokerPermission(
      const base::FilePath& plugin_path,
      const base::Callback<void(bool)>& callback) {
 -  PepperBrokerInfoBarDelegate::Create(web_contents, url, plugin_path, callback);
@@ -933,17 +933,17 @@ index b9b1da9..e2e0ad4 100644
    return true;
  }
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index e2d3d7e..793f8c6 100644
+index bd9b52c..f4cde20 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -220,5 +220,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -221,5 +221,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
        web_contents);
    extensions::WebNavigationTabObserver::CreateForWebContents(web_contents);
 -  HungPluginTabHelper::CreateForWebContents(web_contents);
 +  //HungPluginTabHelper::CreateForWebContents(web_contents);
    ManagePasswordsUIController::CreateForWebContents(web_contents);
    pdf::PDFWebContentsHelper::CreateForWebContentsWithClient(
-@@ -226,5 +226,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -227,5 +227,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
                          new ChromePDFWebContentsHelperClient()));
    PermissionRequestManager::CreateForWebContents(web_contents);
 -  PluginObserver::CreateForWebContents(web_contents);
@@ -951,10 +951,10 @@ index e2d3d7e..793f8c6 100644
    SadTabHelper::CreateForWebContents(web_contents);
    safe_browsing::SafeBrowsingTabObserver::CreateForWebContents(web_contents);
 diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
-index 4253caa..2028436 100644
+index 7dd3f63..5f772ab 100644
 --- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
 +++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
-@@ -579,12 +579,17 @@ void BrowserTabStripController::OnFindURLMimeTypeCompleted(
+@@ -568,12 +568,17 @@ void BrowserTabStripController::OnFindURLMimeTypeCompleted(
    // TODO(bauerb): This possibly uses stale information, but it's guaranteed not
    // to do disk access.
 +#if defined(ENABLE_PLUGINS)
@@ -976,10 +976,10 @@ index 4253caa..2028436 100644
 +);
  }
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-index b5220b3..e2eb602 100644
+index 545729b..9de5609 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-@@ -799,7 +799,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+@@ -809,7 +809,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
  #endif
  
 +#if defined(ENABLE_PLUGINS)
@@ -989,7 +989,7 @@ index b5220b3..e2eb602 100644
 +#endif
  
    // Android uses the native download manager.
-@@ -819,7 +821,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
+@@ -829,7 +831,9 @@ base::RefCountedMemory* ChromeWebUIControllerFactory::GetFaviconResourceBytes(
  #endif
  
 +#if defined(ENABLE_PLUGINS)
@@ -1018,23 +1018,23 @@ index afacc2b..30157f5 100644
      default:
  #if defined(OS_MACOSX)
 diff --git a/chrome/browser/ui/webui/options/content_settings_handler.cc b/chrome/browser/ui/webui/options/content_settings_handler.cc
-index 9c3c6fb..74a7e97 100644
+index 776e933..291652c 100644
 --- a/chrome/browser/ui/webui/options/content_settings_handler.cc
 +++ b/chrome/browser/ui/webui/options/content_settings_handler.cc
-@@ -322,4 +322,5 @@ ContentSettingsHandler::MediaSettingsInfo::~MediaSettingsInfo() {
+@@ -323,4 +323,5 @@ ContentSettingsHandler::MediaSettingsInfo::~MediaSettingsInfo() {
  }
  
 +/*
  ContentSettingsHandler::MediaSettingsInfo::ForFlash::ForFlash()
      : default_setting(CONTENT_SETTING_DEFAULT),
-@@ -334,5 +335,5 @@ ContentSettingsHandler::MediaSettingsInfo::ForFlash&
+@@ -335,5 +336,5 @@ ContentSettingsHandler::MediaSettingsInfo::ForFlash&
      ContentSettingsHandler::MediaSettingsInfo::forFlash() {
    return flash_settings_;
 -}
 +}*/
  
  ContentSettingsHandler::MediaSettingsInfo::ForOneType&
-@@ -349,6 +350,6 @@ ContentSettingsHandler::MediaSettingsInfo::ForOneType&
+@@ -350,6 +351,6 @@ ContentSettingsHandler::MediaSettingsInfo::ForOneType&
  
  ContentSettingsHandler::MediaSettingsInfo::ForOneType::ForOneType()
 -    : show_flash_default_link(false),
@@ -1052,21 +1052,21 @@ index 9c3c6fb..74a7e97 100644
 +    //{"flashStorageUrl", IDS_FLASH_STORAGE_URL},
  #if BUILDFLAG(ENABLE_GOOGLE_NOW)
      {"googleGeolocationAccessEnable",
-@@ -460,5 +461,5 @@ void ContentSettingsHandler::GetLocalizedValues(
+@@ -458,5 +459,5 @@ void ContentSettingsHandler::GetLocalizedValues(
      {"mediaStreamCameraBlock", IDS_MEDIA_STREAM_BLOCK_VIDEO_ONLY_RADIO},
      // Flash media settings.
 -    {"mediaPepperFlashMicDefaultDivergedLabel",
 +/*    {"mediaPepperFlashMicDefaultDivergedLabel",
       IDS_MEDIA_PEPPER_FLASH_MIC_DEFAULT_DIVERGED_LABEL},
      {"mediaPepperFlashCameraDefaultDivergedLabel",
-@@ -470,5 +471,5 @@ void ContentSettingsHandler::GetLocalizedValues(
+@@ -468,5 +469,5 @@ void ContentSettingsHandler::GetLocalizedValues(
      {"mediaPepperFlashChangeLink", IDS_MEDIA_PEPPER_FLASH_CHANGE_LINK},
      {"mediaPepperFlashGlobalPrivacyURL", IDS_FLASH_GLOBAL_PRIVACY_URL},
 -    {"mediaPepperFlashWebsitePrivacyURL", IDS_FLASH_WEBSITE_PRIVACY_URL},
 +    {"mediaPepperFlashWebsitePrivacyURL", IDS_FLASH_WEBSITE_PRIVACY_URL},*/
      // PPAPI broker filter.
      {"ppapiBrokerHeader", IDS_PPAPI_BROKER_HEADER},
-@@ -587,8 +588,8 @@ void ContentSettingsHandler::InitializeHandler() {
+@@ -598,8 +599,8 @@ void ContentSettingsHandler::InitializeHandler() {
    PrefService* prefs = user_prefs::UserPrefs::Get(context);
    pref_change_registrar_.Init(prefs);
 -  pref_change_registrar_.Add(
@@ -1077,21 +1077,21 @@ index 9c3c6fb..74a7e97 100644
 +                 base::Unretained(this)));*/
    pref_change_registrar_.Add(
        prefs::kAudioCaptureAllowed,
-@@ -627,5 +628,5 @@ void ContentSettingsHandler::InitializeHandler() {
+@@ -638,5 +639,5 @@ void ContentSettingsHandler::InitializeHandler() {
                           base::Unretained(this)));
  
 -  flash_settings_manager_.reset(new PepperFlashSettingsManager(this, context));
 +  //flash_settings_manager_.reset(new PepperFlashSettingsManager(this, context));
  
    Profile* profile = Profile::FromWebUI(web_ui());
-@@ -641,5 +642,5 @@ void ContentSettingsHandler::InitializeHandler() {
+@@ -652,5 +653,5 @@ void ContentSettingsHandler::InitializeHandler() {
  void ContentSettingsHandler::InitializePage() {
    media_settings_.reset(new MediaSettingsInfo());
 -  RefreshFlashMediaSettings();
 +//  RefreshFlashMediaSettings();
  
    UpdateHandlersEnabledRadios();
-@@ -701,9 +702,10 @@ void ContentSettingsHandler::Observe(
+@@ -712,9 +713,10 @@ void ContentSettingsHandler::Observe(
  }
  
 -void ContentSettingsHandler::OnGetPermissionSettingsCompleted(
@@ -1105,70 +1105,70 @@ index 9c3c6fb..74a7e97 100644
 +    ) {
    MediaSettingsInfo::ForFlash& settings = media_settings_->forFlash();
    if (success && request_id == settings.last_refresh_request_id) {
-@@ -720,5 +722,5 @@ void ContentSettingsHandler::OnGetPermissionSettingsCompleted(
+@@ -731,5 +733,5 @@ void ContentSettingsHandler::OnGetPermissionSettingsCompleted(
      UpdateFlashMediaLinksVisibility(CONTENT_SETTINGS_TYPE_MEDIASTREAM_CAMERA);
    }
 -}
 +}*/
  
  void ContentSettingsHandler::UpdateSettingDefaultFromModel(
-@@ -781,5 +783,5 @@ void ContentSettingsHandler::UpdateMediaSettingsFromPrefs(
+@@ -792,5 +794,5 @@ void ContentSettingsHandler::UpdateMediaSettingsFromPrefs(
    settings.default_setting_initialized = true;
  
 -  UpdateFlashMediaLinksVisibility(type);
 +//  UpdateFlashMediaLinksVisibility(type);
    UpdateMediaDeviceDropdownVisibility(type);
  }
-@@ -821,5 +823,5 @@ void ContentSettingsHandler::UpdateExceptionsViewFromModel(
+@@ -832,5 +834,5 @@ void ContentSettingsHandler::UpdateExceptionsViewFromModel(
    } else if (type == CONTENT_SETTINGS_TYPE_MEDIASTREAM_MIC ||
               type == CONTENT_SETTINGS_TYPE_MEDIASTREAM_CAMERA) {
 -    CompareMediaExceptionsWithFlash(type);
 +    //CompareMediaExceptionsWithFlash(type);
      UpdateExceptionsViewFromHostContentSettingsMap(type);
    } else if (type == CONTENT_SETTINGS_TYPE_MIDI_SYSEX) {
-@@ -942,5 +944,5 @@ void ContentSettingsHandler::UpdateNotificationExceptionsView() {
+@@ -953,5 +955,5 @@ void ContentSettingsHandler::UpdateNotificationExceptionsView() {
  }
  
 -void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
 +/*void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
      ContentSettingsType type) {
    MediaSettingsInfo::ForOneType& settings = media_settings_->forType(type);
-@@ -950,5 +952,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
+@@ -961,5 +963,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
    base::ListValue exceptions;
    site_settings::GetExceptionsFromHostContentSettingsMap(settings_map, type,
 -      web_ui(), /*incognito=*/false, /*filter=*/nullptr, &exceptions);
 +      web_ui(), false, &exceptions);
  
    settings.exceptions.clear();
-@@ -979,5 +981,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
+@@ -990,5 +992,5 @@ void ContentSettingsHandler::CompareMediaExceptionsWithFlash(
    settings.exceptions_initialized = true;
    UpdateFlashMediaLinksVisibility(type);
 -}
 +}*/
  
  void ContentSettingsHandler::UpdateMIDISysExExceptionsView() {
-@@ -1387,5 +1389,5 @@ Profile* ContentSettingsHandler::GetOTRProfile() {
+@@ -1398,5 +1400,5 @@ Profile* ContentSettingsHandler::GetOTRProfile() {
  }
  
 -void ContentSettingsHandler::RefreshFlashMediaSettings() {
 +/*void ContentSettingsHandler::RefreshFlashMediaSettings() {
    MediaSettingsInfo::ForFlash& settings = media_settings_->forFlash();
    settings.initialized = false;
-@@ -1411,5 +1413,5 @@ void ContentSettingsHandler::OnPepperFlashPrefChanged() {
+@@ -1422,5 +1424,5 @@ void ContentSettingsHandler::OnPepperFlashPrefChanged() {
    else
      media_settings_->forFlash().initialized = false;
 -}
 +}*/
  
  void ContentSettingsHandler::OnZoomLevelChanged(
-@@ -1418,5 +1420,5 @@ void ContentSettingsHandler::OnZoomLevelChanged(
+@@ -1429,5 +1431,5 @@ void ContentSettingsHandler::OnZoomLevelChanged(
  }
  
 -void ContentSettingsHandler::ShowFlashMediaLink(
 +/*void ContentSettingsHandler::ShowFlashMediaLink(
      LinkType link_type, ContentSettingsType content_type, bool show) {
    MediaSettingsInfo::ForOneType& settings =
-@@ -1484,5 +1486,5 @@ void ContentSettingsHandler::UpdateFlashMediaLinksVisibility(
+@@ -1495,5 +1497,5 @@ void ContentSettingsHandler::UpdateFlashMediaLinksVisibility(
      ShowFlashMediaLink(EXCEPTIONS, type, true);
    }
 -}
@@ -1392,24 +1392,24 @@ index 6881c7e..616c7f1 100644
      cookies_tree_model_.reset(
          new CookiesTreeModel(container,
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 26fe3b0..0f96e4f 100644
+index 268328b..c477f5a 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -15,5 +15,5 @@ import("//chrome/chrome_repack_locales.gni")
+@@ -15,5 +15,5 @@ import("//chrome/chrome_paks.gni")
  import("//chrome/common/features.gni")
- import("//chrome/version.gni")
+ import("//chrome/process_version_rc_template.gni")
 -import("//third_party/widevine/cdm/widevine.gni")
 +#import("//third_party/widevine/cdm/widevine.gni")
- import("//ui/base/ui_features.gni")
+ import("//tools/resources/generate_resource_whitelist.gni")
  import("//v8/gni/v8.gni")
-@@ -268,5 +268,5 @@ if (!is_android && !is_mac) {
+@@ -262,5 +262,5 @@ if (!is_android && !is_mac) {
      }
  
 -    data_deps += [ "//third_party/widevine/cdm:widevinecdmadapter" ]
 +#    data_deps += [ "//third_party/widevine/cdm:widevinecdmadapter" ]
  
      if (is_multi_dll_chrome) {
-@@ -1694,5 +1694,5 @@ if (is_linux) {
+@@ -1457,5 +1457,5 @@ if (is_linux) {
      } else {
        name = "Chromium"
 -      filename = "chromium-browser"
@@ -1417,10 +1417,10 @@ index 26fe3b0..0f96e4f 100644
        confdir = "chromium"
      }
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index d69ee49..c9cb4e1 100644
+index b08bbac..20f9d1e 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -139,6 +139,6 @@ static_library("common") {
+@@ -142,6 +142,6 @@ static_library("common") {
      "web_application_info.cc",
      "web_application_info.h",
 -    "widevine_cdm_constants.cc",
@@ -1429,14 +1429,14 @@ index d69ee49..c9cb4e1 100644
 +#    "widevine_cdm_constants.h",
    ]
    defines = []
-@@ -211,5 +211,5 @@ static_library("common") {
+@@ -214,5 +214,5 @@ static_library("common") {
      "//third_party/kasko:kasko_features",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
 +    #"//third_party/widevine/cdm:version_h",
      "//third_party/zlib:zip",
      "//ui/accessibility",
-@@ -555,5 +555,5 @@ static_library("constants") {
+@@ -567,5 +567,5 @@ static_library("constants") {
      "//components/nacl/common:switches",
      "//media:cdm_paths",  # Needed by chrome_paths.cc.
 -    "//third_party/widevine/cdm:version_h",
@@ -1444,7 +1444,7 @@ index d69ee49..c9cb4e1 100644
    ]
  
 diff --git a/chrome/common/chrome_content_client.cc b/chrome/common/chrome_content_client.cc
-index e94b79c..cc9757d 100644
+index 75bd28d..59a5d80 100644
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
 @@ -48,5 +48,5 @@
@@ -1466,7 +1466,7 @@ index 8649931..20bd23b 100644
  
  namespace {
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index dc4067c..e1e3408 100644
+index 3b58979..7795613 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
 @@ -127,5 +127,5 @@ static_library("renderer") {
@@ -1477,24 +1477,17 @@ index dc4067c..e1e3408 100644
      "//ui/surface",
      "//v8:v8",
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 79f1a16..0d973ef 100644
+index 087e254..6324c11 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -116,5 +116,5 @@
- #include "ui/base/resource/resource_bundle.h"
- #include "ui/base/webui/jstemplate_builder.h"
--#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
-+//#include "widevine_cdm_version.h"  // In SHARED_INTERMEDIATE_DIR.
- 
- #if !defined(DISABLE_NACL)
-@@ -433,5 +433,5 @@ void ChromeContentRendererClient::RenderThreadStarted() {
+@@ -408,5 +408,5 @@ void ChromeContentRendererClient::RenderThreadStarted() {
    WebSecurityPolicy::registerURLSchemeAsSecure(chrome_search_scheme);
  
 -#if defined(ENABLE_PRINT_PREVIEW)
 +#if defined(ENABLE_PRINT_PREVIEW) && defined(ENABLE_PEPPER_CDMS)
    pdf_print_client_.reset(new ChromePDFPrintClient());
    pdf::PepperPDFHost::SetPrintClient(pdf_print_client_.get());
-@@ -1218,5 +1218,5 @@ ChromeContentRendererClient::OverrideSpeechSynthesizer(
+@@ -1204,5 +1204,5 @@ ChromeContentRendererClient::OverrideSpeechSynthesizer(
  bool ChromeContentRendererClient::AllowPepperMediaStreamAPI(
      const GURL& url) {
 -#if defined(OS_ANDROID)
@@ -1502,17 +1495,17 @@ index 79f1a16..0d973ef 100644
    return false;
  #else
 diff --git a/chrome/renderer/media/chrome_key_systems.cc b/chrome/renderer/media/chrome_key_systems.cc
-index 5ed6abb..2879002 100644
+index d71ae86..459217f 100644
 --- a/chrome/renderer/media/chrome_key_systems.cc
 +++ b/chrome/renderer/media/chrome_key_systems.cc
-@@ -16,5 +16,5 @@
- #include "build/build_config.h"
+@@ -17,5 +17,5 @@
  #include "chrome/common/render_messages.h"
+ #include "components/cdm/renderer/external_clear_key_key_system_properties.h"
 -#include "components/cdm/renderer/widevine_key_system_properties.h"
 +//#include "components/cdm/renderer/widevine_key_system_properties.h"
  #include "content/public/renderer/render_thread.h"
  #include "media/base/eme_constants.h"
-@@ -30,5 +30,5 @@
+@@ -31,5 +31,5 @@
  #endif
  
 -#include "widevine_cdm_version.h" // In SHARED_INTERMEDIATE_DIR.
@@ -1548,7 +1541,7 @@ index 8c7c7c1..533978a 100644
  
  namespace {
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 21a22ce..9bef059 100644
+index 7cd61dd..db0f048 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -790,4 +790,12 @@ if (!is_android) {
@@ -1564,28 +1557,28 @@ index 21a22ce..9bef059 100644
 +#        ^--------------------------------------
        sources -= [ "//ui/views/corewm/desktop_capture_controller_unittest.cc" ]
      }
-@@ -1878,5 +1886,5 @@ test("browser_tests") {
+@@ -1877,5 +1885,5 @@ test("browser_tests") {
        "//crypto:test_support",
        "//device/bluetooth:mocks",
 -      "//device/serial:test_support",
 +#      "//device/serial:test_support",
        "//device/usb:test_support",
        "//google_apis:test_support",
-@@ -1898,5 +1906,5 @@ test("browser_tests") {
+@@ -1897,5 +1905,5 @@ test("browser_tests") {
        "//third_party/libjingle",
        "//third_party/webrtc/modules/desktop_capture",
 -      "//third_party/widevine/cdm:version_h",
 +#      "//third_party/widevine/cdm:version_h",
        "//ui/accessibility:test_support",
        "//ui/base:test_support",
-@@ -1914,5 +1922,5 @@ test("browser_tests") {
+@@ -1913,5 +1921,5 @@ test("browser_tests") {
        "//remoting/webapp:unit_tests",
        "//third_party/mesa:osmesa",
 -      "//third_party/widevine/cdm:widevine_test_license_server",
 +#      "//third_party/widevine/cdm:widevine_test_license_server",
      ]
  
-@@ -2885,5 +2893,5 @@ if (!is_android) {
+@@ -2879,5 +2887,5 @@ if (!is_android) {
        "//testing/gtest",
        "//testing/perf",
 -      "//third_party/widevine/cdm:version_h",
@@ -1593,19 +1586,19 @@ index 21a22ce..9bef059 100644
      ]
  
 diff --git a/components/cdm/renderer/BUILD.gn b/components/cdm/renderer/BUILD.gn
-index f364f89..47c67d4 100644
+index 9ec8fd0..2203354 100644
 --- a/components/cdm/renderer/BUILD.gn
 +++ b/components/cdm/renderer/BUILD.gn
-@@ -5,6 +5,6 @@
- static_library("renderer") {
-   sources = [
+@@ -7,6 +7,6 @@ static_library("renderer") {
+     "external_clear_key_key_system_properties.cc",
+     "external_clear_key_key_system_properties.h",
 -    "widevine_key_system_properties.cc",
 -    "widevine_key_system_properties.h",
 +#    "widevine_key_system_properties.cc",
 +#    "widevine_key_system_properties.h",
    ]
  
-@@ -21,5 +21,5 @@ static_library("renderer") {
+@@ -23,5 +23,5 @@ static_library("renderer") {
      "//content/public/renderer",
      "//media",
 -    "//third_party/widevine/cdm:version_h",
@@ -1624,7 +1617,7 @@ index beb45fd..22edeaf 100644
  }
  
 diff --git a/content/browser/renderer_host/render_message_filter.cc b/content/browser/renderer_host/render_message_filter.cc
-index 9e2aa1c..751840a 100644
+index 29b8c8a..1d9a3d0 100644
 --- a/content/browser/renderer_host/render_message_filter.cc
 +++ b/content/browser/renderer_host/render_message_filter.cc
 @@ -35,5 +35,5 @@
@@ -1635,11 +1628,11 @@ index 9e2aa1c..751840a 100644
  #include "content/browser/renderer_host/render_process_host_impl.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
 diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
-index 92b2132..75f12b3 100644
+index a8d7570..dfbcd0a 100644
 --- a/content/browser/renderer_host/render_process_host_impl.cc
 +++ b/content/browser/renderer_host/render_process_host_impl.cc
 @@ -105,6 +105,6 @@
- #include "content/browser/renderer_host/offscreen_canvas_frame_receiver_impl.h"
+ #include "content/browser/renderer_host/offscreen_canvas_compositor_frame_sink_provider_impl.h"
  #include "content/browser/renderer_host/offscreen_canvas_surface_impl.h"
 -#include "content/browser/renderer_host/pepper/pepper_message_filter.h"
 -#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
@@ -1647,14 +1640,14 @@ index 92b2132..75f12b3 100644
 +//#include "content/browser/renderer_host/pepper/pepper_renderer_connection.h"
  #include "content/browser/renderer_host/render_message_filter.h"
  #include "content/browser/renderer_host/render_view_host_delegate.h"
-@@ -1609,5 +1609,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1638,5 +1638,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kDisableNotifications,
      switches::kDisableOverlayScrollbar,
 -    switches::kDisablePepper3DImageChromium,
 +    //switches::kDisablePepper3DImageChromium,
      switches::kDisablePermissionsAPI,
      switches::kDisablePresentationAPI,
-@@ -1697,5 +1697,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
+@@ -1725,5 +1725,5 @@ void RenderProcessHostImpl::PropagateBrowserCommandLineToRenderer(
      switches::kReducedReferrerGranularity,
      switches::kReduceSecurityForTesting,
 -    switches::kRegisterPepperPlugins,
@@ -1673,10 +1666,10 @@ index 26d28e5..a6d8682 100644
        ]
      }
 diff --git a/content/public/renderer/BUILD.gn b/content/public/renderer/BUILD.gn
-index 74205af..a49dcb8 100644
+index c9b39c9..a67ea2f 100644
 --- a/content/public/renderer/BUILD.gn
 +++ b/content/public/renderer/BUILD.gn
-@@ -77,5 +77,5 @@ target(link_target_type, "renderer_sources") {
+@@ -79,5 +79,5 @@ target(link_target_type, "renderer_sources") {
      "//third_party/WebKit/public:blink_headers",
      "//third_party/libjingle",
 -    "//third_party/widevine/cdm:version_h",
@@ -1684,10 +1677,10 @@ index 74205af..a49dcb8 100644
      "//ui/base",
      "//ui/base/ime",
 diff --git a/content/renderer/BUILD.gn b/content/renderer/BUILD.gn
-index 8fdf5c2..0f80a8c 100644
+index 4ade134..ff9ba6e 100644
 --- a/content/renderer/BUILD.gn
 +++ b/content/renderer/BUILD.gn
-@@ -451,5 +451,5 @@ target(link_target_type, "renderer") {
+@@ -452,5 +452,5 @@ target(link_target_type, "renderer") {
      "//third_party/libjingle",
      "//third_party/libyuv",
 -    "//third_party/widevine/cdm:version_h",
@@ -1706,10 +1699,10 @@ index 8f793d9..d4c75ad 100644
  
  namespace content {
 diff --git a/content/test/BUILD.gn b/content/test/BUILD.gn
-index dcd2f1c..edb9099 100644
+index 1f46652..0f538e3 100644
 --- a/content/test/BUILD.gn
 +++ b/content/test/BUILD.gn
-@@ -1393,5 +1393,5 @@ test("content_unittests") {
+@@ -1412,5 +1412,5 @@ test("content_unittests") {
      "//third_party/libjingle",
      "//third_party/re2",
 -    "//third_party/widevine/cdm:version_h",
@@ -1847,7 +1840,7 @@ index d0c28dc..e369295 100644
      "//extensions:extensions_renderer_resources",
  
 diff --git a/extensions/renderer/dispatcher.cc b/extensions/renderer/dispatcher.cc
-index b6559e1..e20882b 100644
+index ae1ba0e..c2db998 100644
 --- a/extensions/renderer/dispatcher.cc
 +++ b/extensions/renderer/dispatcher.cc
 @@ -775,9 +775,9 @@ std::vector<std::pair<std::string, int> > Dispatcher::GetJsResources() {
@@ -1901,7 +1894,7 @@ index b7e45c4..b318aad 100644
        <include name="IDR_SET_ICON_JS" file="set_icon.js" type="BINDATA" />
        <include name="IDR_STASH_CLIENT_JS" file="stash_client.js" type="BINDATA" />
 diff --git a/media/base/key_systems.cc b/media/base/key_systems.cc
-index 4567bf4..463f263 100644
+index 25676ba..afddcf5 100644
 --- a/media/base/key_systems.cc
 +++ b/media/base/key_systems.cc
 @@ -21,5 +21,5 @@
