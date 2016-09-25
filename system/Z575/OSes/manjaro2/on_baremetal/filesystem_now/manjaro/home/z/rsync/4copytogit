@@ -79,7 +79,7 @@ echo "--"
 
 echo "-- removing ticuhost"
 pushd "${src}/etc/" || echo "FAIL!"
-sed -i ./hosts -re 's/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+.*ticuhost.*$//g'
+sed -i ./hosts -re 's/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+.*(ticuhost|remoterouter).*$//g'
 cat ./hosts | grep --color=always -- 'ticuhost'
 popd
 echo "--"

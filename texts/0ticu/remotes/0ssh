@@ -20,7 +20,7 @@ if test -z "$routerhost"; then
   routerhost='remoterouter' #XXX: must be set in /etc/hosts
 fi
 
-keyfile=~/ticu/dns/lekeyofhss/privk
+keyfile=~/privaterepos/ticu/dns/lekeyofhss/privk
 
 if test -n "$dovnc"; then
   vncval="-L 5900:127.0.1.2:$localvncport"

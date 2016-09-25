@@ -38,6 +38,8 @@
 -A newUDPin -p udp --sport 33445 --dport 33445 -d 255.255.255.255,192.168.redacted.255  -j accepted
 -A newUDPin -p udp --sport 33445 --dport 33445 -j accepted
 #^ eg. bcast packets from qtoxes running on local LAN machines
+#XXX ^ looks like we got some with different sports! [ 5650.616511] rejected:IN=enp1s0 OUT= ... SRC=45.55.232.1 DST=192.168.me LEN=141 TOS=0x00 PREC=0x20 TTL=53 ID=23501 DF PROTO=UDP SPT=33446 DPT=33445 LEN=121   UNSURE YET IF THIS IS NEEDED!
+#
 #XXX: not really needed:
 -A newUDPin -j rejected
 #^ so not specifying this means it will still fall through to rejected but it's easier to see if anything got rejected in this category
