@@ -29,6 +29,7 @@ else
 fi
 
 set -x
-ssh -i "$keyfile" -v -p "$prt" -l root "$vncval" "$routerhost"
+ssh -i "$keyfile" -v -p "$prt" -l root $vncval "$routerhost"
+#XXX: no doublequotes around "$vncval" because when empty it's passing an empty arg! :)
 set +x
 
