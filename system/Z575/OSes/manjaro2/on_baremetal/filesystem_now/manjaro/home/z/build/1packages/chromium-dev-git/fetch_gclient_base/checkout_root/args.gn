@@ -566,6 +566,7 @@ is_component_build = false #Default = false
 
 #XXX: no good reason to enable this! when enabled creates libffmpeg.so which you cannot use from system's ffmpeg!
 #XXX: not an option when system-ffmpeg via PKGBUILD! so commenting out:
+#XXX nvm, looks like it doesn't complain anymore.
 is_component_ffmpeg = false #Default = false
 #    //third_party/ffmpeg/ffmpeg_options.gni:40
 #    Set true to build ffmpeg as a shared library. NOTE: this means we should
